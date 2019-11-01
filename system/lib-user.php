@@ -32,6 +32,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\Session;
+
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-user.php') !== false) {
     die('This file can not be used on its own!');
 }
@@ -1098,6 +1100,13 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     if (!$preview) {
         if ($msg > 0) {
             $retval .= COM_showMessage($msg, $plugin);
+        }
+
+        $systemMessages = Session::getVar('system-msg');
+        foreach ($systemMessages as $systemMessage) {
+            if (!empty($systemMessage)) {
+                $retval .= COM_showMessageText($systemMessage);
+            }
         }
     }
 

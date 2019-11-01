@@ -1295,7 +1295,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     // Display any Geeklog System messages
     // You can set system messages by using the function COM_setSystemMessage
     $system_messages = Session::getVar('system-msg');
-    $system_messages = (is_array($system_messages)) ? $system_messages : [$system_messages];
+    $system_messages = is_array($system_messages) ? $system_messages : [$system_messages];
     $messages_display = '';
 	foreach ($system_messages as $message){
 		if (!empty($message)) {
@@ -1303,7 +1303,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 		}
 	}
 	$page->set_var('system_messsages', $messages_display);
-    Session::setVar('system-msg', ''); // Since now displayed. Clear it.
+	COM_setSystemMessage('');   // Since now displayed. Clear it.
 
     // Add Cookie Consent ( https://cookieconsent.osano.com )
     if (isset($_CONF['cookie_consent']) && $_CONF['cookie_consent']) {
@@ -3666,11 +3666,11 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
                 ENT_QUOTES,
                 $charset
             );
+
+            $fromAddress = array_keys($from)[0];
             if (is_array($to)) {
-                $fromAddress = array_keys($from)[0];
                 $fromAlias = array_values($from)[0];
             } else {
-                $fromAddress = $from;
                 $fromAlias = '';
             }
             $from = htmlspecialchars(
@@ -3678,6 +3678,7 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
                 ENT_QUOTES,
                 $charset
             );
+
             $priority = htmlspecialchars($priority, ENT_QUOTES, $charset);
 
             if (!$html) {
@@ -3717,13 +3718,22 @@ EOD;
  *
  * @param    string $message       Message to add to system messages
  */
- function COM_setSystemMessage($message) {
-     $system_messages = Session::getVar('system-msg');
+function COM_setSystemMessage($message) {
+    if ($message === '') {
+        // Clear system messages
+        Session::setVar('system-msg', '');
+    } else {
+        $system_messages = Session::getVar('system-msg', '');
 
-     $system_messages[] = $message;
+        if (is_array($system_messages)) {
+            $system_messages[] = $message;
+        } else {
+            $system_messages = (array) $message;
+        }
 
-     Session::setVar('system-msg', $system_messages);
- }
+        Session::setVar('system-msg', $system_messages);
+    }
+}
 
 /**
  * Shows older story information in a block

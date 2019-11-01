@@ -400,6 +400,13 @@ abstract class Session
     {
         if (self::check()) {
             $_SESSION[self::NS_GL][self::NS_VAR][$name] = $value;
+
+            if (is_array($value)) {
+                ob_start();
+                var_dump($value);
+                $value = ob_get_clean();
+            }
+
             $msg = sprintf('name = %s, value = %s', $name, $value);
         } else {
             $msg = '(skipped)';
