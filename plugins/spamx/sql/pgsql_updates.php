@@ -53,15 +53,15 @@ $_UPDATES = array(
 
     '1.3.2' => array(
         "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN regdate DATETIME DEFAULT NULL",
-        "DROP INDEX `primary` ON {$_TABLES['spamx']}",
+        "ALTER TABLE {$_TABLES['spamx']} DROP CONSTRAINT {$_TABLES['spamx']}_pkey",
         "DROP INDEX `spamx_name` ON {$_TABLES['spamx']}",
-        "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name)"
+        "ALTER TABLE {$_TABLES['spamx']} ADD CONSTRAINT {$_TABLES['spamx']}_pkey PRIMARY KEY (name)"
     ),
     
     '1.3.3' => array(
-        "DROP INDEX `primary` ON {$_TABLES['spamx']}",
+        "ALTER TABLE {$_TABLES['spamx']} DROP CONSTRAINT {$_TABLES['spamx']}_pkey",
         "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN `value` VARCHAR(191)",
-        "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name, value)"
+        "ALTER TABLE {$_TABLES['spamx']} ADD CONSTRAINT {$_TABLES['spamx']}_pkey PRIMARY KEY (name, value)"
     )   
 );
 

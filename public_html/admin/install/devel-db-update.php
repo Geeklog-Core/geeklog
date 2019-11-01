@@ -363,7 +363,7 @@ function update_DatabaseFor213()
 
 
     // SpamX
-    $_SQL[] = "DROP INDEX `primary` ON {$_TABLES['spamx']}";
+    $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} DROP PRIMARY KEY";
     $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN `value` VARCHAR(191)";
     $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name, value)";
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.4' WHERE pi_name='spamx'";
@@ -495,7 +495,7 @@ function update_DatabaseFor212()
 
     // SpamX
     $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN regdate DATETIME DEFAULT NULL";
-    $_SQL[] = "DROP INDEX `primary` ON {$_TABLES['spamx']}";
+    $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} DROP PRIMARY KEY";
     $_SQL[] = "DROP INDEX `spamx_name` ON {$_TABLES['spamx']}";
     $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name)";
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.3', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='spamx'";
