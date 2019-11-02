@@ -138,8 +138,7 @@ $LANG_SX00 = array (
     'edit_sfs_blacklist' => 'Edit SFS Email Blacklist',
     'edit_slv_whitelist' => 'Edit SLV Whitelist',
 
-    'plugin_name' => 'Spam-X',
-    'slvwhitelist' => 'SLV Whitelist'
+    'plugin_name' => 'Spam-X'
 );
 
 

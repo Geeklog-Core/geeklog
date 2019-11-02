@@ -140,8 +140,8 @@ $LANG_SX00 = array(
     'edit_ip_url_blacklist' => 'Edit URLのIPアドレスのブラックリストを編集',
     'edit_sfs_blacklist' => 'Edit Stop Forum Spamのメールのブラックリストを編集',
     'edit_slv_whitelist' => 'Edit スパムリンク検証のホワイトリストを編集',
-    'plugin_name' => 'Spam-X',
-    'slvwhitelist' => 'スパムリンク検証のホワイトリスト'
+
+    'plugin_name' => 'Spam-X'
 );
 
 // Define Messages that are shown when Spam-X module action is taken

@@ -89,7 +89,9 @@ $files = array();
 if ($dir = @opendir($_CONF['path'] . 'plugins/spamx/')) {
     while (($file = readdir($dir)) !== false) {
         if (is_file($_CONF['path'] . 'plugins/spamx/' . $file)) {
-            if (substr($file, -16) === '.Admin.class.php') {
+            if ((substr($file, -16) === '.Admin.class.php') &&
+                (stripos($file, 'SLV') !== 0) &&
+                (stripos($file, 'LogView') !== 0)) {
                 $tmp = str_replace('.Admin.class.php', '', $file);
                 array_push($files, $tmp);
             }

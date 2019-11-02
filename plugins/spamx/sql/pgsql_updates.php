@@ -62,7 +62,11 @@ $_UPDATES = array(
         "ALTER TABLE {$_TABLES['spamx']} DROP CONSTRAINT {$_TABLES['spamx']}_pkey",
         "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN `value` VARCHAR(191)",
         "ALTER TABLE {$_TABLES['spamx']} ADD CONSTRAINT {$_TABLES['spamx']}_pkey PRIMARY KEY (name, value)"
-    )   
+    ),
+
+    '1.3.5' => array(
+        "DELETE FROM {$_TABLES['spamx']} WHERE name = 'SLVwhitelist'"
+    )
 );
 
 /**

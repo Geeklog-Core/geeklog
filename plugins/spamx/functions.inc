@@ -113,10 +113,6 @@ function plugin_showstats_spamx($showSiteStats)
                 'label' => $LANG_SX00['stats_header'],
                 'stats' => COM_numberFormat(DB_count($_TABLES['spamx'], 'name', 'HTTPHeader')),
             ),
-            array(
-                'label' => $LANG_SX00['slvwhitelist'],
-                'stats' => COM_numberFormat(DB_count($_TABLES['spamx'], 'name', 'SLVwhitelist')),
-            ),
         );
         $retval .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
     }
