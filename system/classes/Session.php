@@ -15,6 +15,7 @@ abstract class Session
     const NS_GL = '__gl';
     const NS_FLASH_VAR = '__f';
     const NS_VAR = '__v';
+    const NS_VAR_ONCE = '__o';
 
     // Default session name
     const DEFAULT_SESSION_NAME = 'GLSESSION';
@@ -62,7 +63,7 @@ abstract class Session
      *
      * @var array
      */
-    private static $flashVars = array();
+    private static $flashVars = [];
 
     /**
      * Init the Session class
@@ -132,20 +133,23 @@ abstract class Session
             !is_array($_SESSION[self::NS_GL][self::NS_VAR]) ||
             !isset($_SESSION[self::NS_GL][self::NS_VAR]['uid']) ||
             !is_int($_SESSION[self::NS_GL][self::NS_VAR]['uid']) ||
-            ($_SESSION[self::NS_GL][self::NS_VAR]['uid'] < self::ANON_USER_ID)
+            ($_SESSION[self::NS_GL][self::NS_VAR]['uid'] < self::ANON_USER_ID) ||
+            !isset($_SESSION[self::NS_GL][self::NS_VAR_ONCE]) ||
+            !is_array($_SESSION[self::NS_GL][self::NS_VAR_ONCE])
         ) {
-            $_SESSION[self::NS_GL] = array(
-                self::NS_FLASH_VAR => array(),
-                self::NS_VAR       => array(
+            $_SESSION[self::NS_GL] = [
+                self::NS_FLASH_VAR => [],
+                self::NS_VAR       => [
                     'uid' => self::ANON_USER_ID,
-                ),
-            );
+                ],
+                self::NS_VAR_ONCE  => [],
+            ];
             $retval = false;
         }
 
         // Move "flash" session vars to the property of the class
         self::$flashVars = $_SESSION[self::NS_GL][self::NS_FLASH_VAR];
-        $_SESSION[self::NS_GL][self::NS_FLASH_VAR] = array();
+        $_SESSION[self::NS_GL][self::NS_FLASH_VAR] = [];
 
         // Finish initialization
         self::$isInitialized = true;
@@ -391,15 +395,22 @@ abstract class Session
     }
 
     /**
-     * Set a session variable
+     * Common method for setting a session variable
      *
      * @param  string  $name
      * @param  mixed   $value
+     * @param  string  $type
      */
-    public static function setVar($name, $value)
+    private static function setVarCommon($name, $value, $type)
     {
         if (self::check()) {
-            $_SESSION[self::NS_GL][self::NS_VAR][$name] = $value;
+            if ($type === 'normal') {
+                $_SESSION[self::NS_GL][self::NS_VAR][$name] = $value;
+            } elseif ($type === 'once') {
+                $_SESSION[self::NS_GL][self::NS_VAR_ONCE][$name] = $value;
+            } else {
+                $_SESSION[self::NS_GL][self::NS_FLASH_VAR][$name] = $value;
+            }
 
             if (is_array($value)) {
                 ob_start();
@@ -407,7 +418,7 @@ abstract class Session
                 $value = ob_get_clean();
             }
 
-            $msg = sprintf('name = %s, value = %s', $name, $value);
+            $msg = sprintf('name = %s, type = %s, value = %s', $name, $type, $value);
         } else {
             $msg = '(skipped)';
         }
@@ -419,24 +430,88 @@ abstract class Session
     }
 
     /**
+     * Set a session variable
+     *
+     * This method sets a variable which persists between sessions.
+     *
+     * @param  string  $name
+     * @param  mixed   $value
+     */
+    public static function setVar($name, $value)
+    {
+        self::setVarCommon($name, $value, 'normal');
+    }
+
+    /**
      * Set a "flash" session variable
+     *
+     * This method sets a variable which will be automatically deleted after the new page is loaded.
      *
      * @param  string  $name
      * @param  mixed   $value
      */
     public static function setFlashVar($name, $value)
     {
+        self::setVarCommon($name, $value, 'flash');
+    }
+
+    /**
+     * Set a one-time session variable
+     *
+     * This method sets a variable which persists between sessions but will be automatically deleted after it is read
+     * once.
+     *
+     * @param  string  $name
+     * @param  mixed   $value
+     */
+    public static function setVarOnce($name, $value)
+    {
+        self::setVarCommon($name, $value, 'once');
+    }
+
+    /**
+     * Common method to get a session variable
+     *
+     * @param  string  $name
+     * @param  mixed   $defaultValue
+     * @param  string  $type
+     * @return mixed
+     */
+    private static function getVarCommon($name, $defaultValue = null, $type = 'normal')
+    {
         if (self::check()) {
-            $_SESSION[self::NS_GL][self::NS_FLASH_VAR][$name] = $value;
-            $msg = sprintf('name = %s, value = %s', $name, $value);
+            if ($type === 'normal') {
+                $retval = isset($_SESSION[self::NS_GL][self::NS_VAR][$name])
+                    ? $_SESSION[self::NS_GL][self::NS_VAR][$name]
+                    : $defaultValue;
+            } elseif ($type === 'once') {
+                $retval = isset($_SESSION[self::NS_GL][self::NS_VAR_ONCE][$name])
+                    ? $_SESSION[self::NS_GL][self::NS_VAR_ONCE][$name]
+                    : $defaultValue;
+                unset($_SESSION[self::NS_GL][self::NS_VAR_ONCE][$name]);
+            } else {
+                $retval = isset($_SESSION[self::NS_GL][self::NS_FLASH_VAR][$name])
+                    ? $_SESSION[self::NS_GL][self::NS_FLASH_VAR][$name]
+                    : $defaultValue;
+            }
         } else {
-            $msg = '(skipped)';
+            $retval = $defaultValue;
         }
 
         // Debug info
         if (self::$isDebug) {
-            self::log(__METHOD__ . ': ' . $msg);
+            if (is_array($retval)) {
+                ob_start();
+                var_dump($retval);
+                $value = ob_get_clean();
+            } else {
+                $value = $retval;
+            }
+
+            self::log(sprintf(__METHOD__ . ': name = "%s", value = "%s"', $name, $value));
         }
+
+        return $retval;
     }
 
     /**
@@ -448,20 +523,7 @@ abstract class Session
      */
     public static function getVar($name, $defaultValue = null)
     {
-        if (self::check()) {
-            $retval = isset($_SESSION[self::NS_GL][self::NS_VAR][$name])
-                ? $_SESSION[self::NS_GL][self::NS_VAR][$name]
-                : $defaultValue;
-        } else {
-            $retval = $defaultValue;
-        }
-
-        // Debug info
-        if (self::$isDebug) {
-            self::log(sprintf(__METHOD__ . ': name = "%s", value = "%s"', $name, $retval));
-        }
-
-        return $retval;
+        return self::getVarCommon($name, $defaultValue, 'normal');
     }
 
     /**
@@ -473,18 +535,40 @@ abstract class Session
      */
     public static function getFlashVar($name, $defaultValue = null)
     {
+        return self::getVarCommon($name, $defaultValue, 'flash');
+    }
+
+    /**
+     * Get a one-time session variable
+     *
+     * @param  string  $name
+     * @param  mixed   $defaultValue
+     * @return mixed
+     * @see Session::setVarOnce()
+     */
+    public static function getVarOnce($name, $defaultValue = null)
+    {
+        return self::getVarCommon($name, $defaultValue, 'once');
+    }
+
+    /**
+     * Unset a session variable
+     *
+     * @param  string  $name
+     */
+    public static function unsetVar($name)
+    {
         if (self::check()) {
-            $retval = isset(self::$flashVars[$name]) ? self::$flashVars[$name] : $defaultValue;
+            unset($_SESSION[self::NS_GL][self::NS_VAR][$name]);
+            $msg = sprintf('name = %s', $name);
         } else {
-            $retval = $defaultValue;
+            $msg = '(skipped)';
         }
 
         // Debug info
         if (self::$isDebug) {
-            self::log(sprintf(__METHOD__ . ': name = "%s", value = "%s"', $name, $retval));
+            self::log(__METHOD__ . ': ' . $msg);
         }
-
-        return $retval;
     }
 
     /**
