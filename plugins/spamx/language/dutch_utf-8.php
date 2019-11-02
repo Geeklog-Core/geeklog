@@ -135,8 +135,7 @@ $LANG_SX00 = array(
     'edit_ip_url_blacklist' => 'Edit IP of URL Blacklist',
     'edit_sfs_blacklist' => 'Edit SFS Email Blacklist',
     'edit_slv_whitelist' => 'Edit SLV Whitelist',
-    'plugin_name' => 'Spam-X',
-    'slvwhitelist' => 'SLV Witte Lijst'
+    'plugin_name' => 'Spam-X'
 );
 
 // Define Messages that are shown when Spam-X module action is taken

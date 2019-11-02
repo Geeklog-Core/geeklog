@@ -41,7 +41,7 @@ $LANG_SX00 = array(
     'clicki' => 'クリックしてブラックリストをインポート',
     'ok' => 'OK',
     'rsscreated' => 'RSSフィードを作成しました',
-    'add1' => '',
+    'add1' => 'Added ',
     'add2' => ' 個のエントリを ',
     'add3' => 'さんのブラックリストから追加しました。',
     'adminc' => '管理者コマンド:',
@@ -140,7 +140,6 @@ $LANG_SX00 = array(
     'edit_ip_url_blacklist' => 'Edit URLのIPアドレスのブラックリストを編集',
     'edit_sfs_blacklist' => 'Edit Stop Forum Spamのメールのブラックリストを編集',
     'edit_slv_whitelist' => 'Edit スパムリンク検証のホワイトリストを編集',
-
     'plugin_name' => 'Spam-X'
 );
 
