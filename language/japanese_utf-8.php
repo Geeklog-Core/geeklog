@@ -841,13 +841,11 @@ $LANG_ENVCHECK = array(
     'post_max_size' => 'Geeklogはプラグインと画像、ファイルのアップロードを許可しています。アップロードファイル制限を少なくとも8M以上にしてください。',
     'recheck' => '環境を再チェック',
     'recommended' => '推奨',
-    'register_globals' => 'PHPの<strong>register_globals</strong>が有効なら、セキュリティ上の問題が発生します。',
-    'safe_mode' => 'PHPの<strong>safe_mode</strong>が有効なら、いくつかのGeeklogの関数が動かなくなります。特にMediaGalleryプラグイン。',
     'setting' => '設定',
     'unable_mkdir' => 'ディレクトリ作成が可能',
     'upload_max_filesize' => 'Geeklogプラグインと画像、ファイルのアップロードが有効です。アップロードファイル制限を少なくとも8M以上にしてください。',
     'not_checked' => 'スキップ',
-    'bypass_note' => 'Safe Modeまたはopen_basedir制限を検出したので、グラフィックライブラリのチェックをスキップしました。',
+    'bypass_note' => 'open_basedir制限を検出したので、グラフィックライブラリのチェックをスキップしました。',
     'not_used_note' => 'Geeklogのグラフィックライブラリはセットされていません。',
     'location' => 'ロケーション',
     'status' => 'ステータス',
@@ -861,7 +859,7 @@ $LANG_ENVCHECK = array(
     'showhide_phpinfo' => 'phpinfo 表示/非表示',
     'view_online' => 'オンライン表示はここ %s をクリック',
     'no_new_items' => '新アイテムはありません',
-    'max_execution_time' => 'Geeklogは最少値として30秒を要求していますが、プラグインアップロードなどを行う場合、サーバー環境によってはそれ以上を要求します。もしsafe_mode (上記)がOffなら、php.iniで<b>max_execution_time</b> を増やすことで対応できます。'
+    'max_execution_time' => 'Geeklogは最少値として30秒を要求していますが、プラグインアップロードなどを行う場合、サーバー環境によってはそれ以上を要求します。php.iniで<b>max_execution_time</b> を増やすことで対応できます。'
 );
 
 ###############################################################################

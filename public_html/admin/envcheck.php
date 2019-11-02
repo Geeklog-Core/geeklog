@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog Environment Check.                                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2013 by the following authors:                         |
+// | Copyright (C) 2000-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Mark R. Evans      - mark AT glfusion DOT org                    |
 // |          Tom Homer          - tomhomer AT gmail DOT com                   |
@@ -165,36 +165,6 @@ function _checkEnvironment()
         'notes'       => $LANG_ENVCHECK['php_req_version']
     );
 
-    $rg = ini_get('register_globals');
-    $className = 'yes';
-    $value = $LANG_ENVCHECK['off'];
-    if ($rg == 1) {
-        $className = 'notok';
-        $value = $LANG_ENVCHECK['on'];
-    }
-    $current = _getStatusTags($T, $className, $value);
-    $data_arr[] = array(
-        'settings'    => 'register_globals',
-        'current'     => $current,
-        'recommended' => $LANG_ENVCHECK['off'],
-        'notes'       => $LANG_ENVCHECK['register_globals']
-    );
-
-    $sm = ini_get('safe_mode');
-    $className = 'yes';
-    $value = $LANG_ENVCHECK['off'];
-    if ($sm == 1) {
-        $className = 'notok';
-        $value = $LANG_ENVCHECK['on'];
-    }
-    $current = _getStatusTags($T, $className, $value);
-    $data_arr[] = array(
-        'settings'    => 'safe_mode',
-        'current'     => $current,
-        'recommended' => $LANG_ENVCHECK['off'],
-        'notes'       => $LANG_ENVCHECK['safe_mode']
-    );
-
     $ob = ini_get('open_basedir');
     if ($ob == '') {
         $open_basedir_restriction = 0;
@@ -324,7 +294,7 @@ function _checkEnvironment()
         );
     }
 
-    if ($sm != 1 && $open_basedir_restriction != 1) {
+    if ($open_basedir_restriction != 1) {
         switch ($_CONF['image_lib']) {
             case 'imagemagick':    // ImageMagick
                 if (PHP_OS == "WINNT") {

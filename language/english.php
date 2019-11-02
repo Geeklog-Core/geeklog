@@ -834,13 +834,11 @@ $LANG_ENVCHECK = array(
     'post_max_size'             => 'Geeklog allows you to upload plugins, images, and files. You should allow at least 8M for the maximum post size.',
     'recheck'                   => 'Recheck Environment',
     'recommended'               => 'Recommended',
-    'register_globals'          => 'If PHP\'s <strong>register_globals</strong> is enabled, it can create security issues.',
-    'safe_mode'                 => 'If PHP\'s <strong>safe_mode</strong> is enabled, some functions of Geeklog may not work correctly. Specifically the Media Gallery plugin.',
     'setting'                   => 'Setting',
     'unable_mkdir'              => 'Unable to create directory',
     'upload_max_filesize'       => 'Geeklog allows you to upload plugins, images, and files. You should allow at least 8M for the upload size.',
     'not_checked'               => 'Skipped',
-    'bypass_note'               => 'Since either Safe Mode or open_basedir restrictions were detected, the check for graphic libraries were skipped.',
+    'bypass_note'               => 'Since open_basedir restrictions was detected, the check for graphic libraries were skipped.',
     'not_used_note'             => 'No graphic libraries are set to be used by Geeklog.',
     'location'                  => 'Location',
     'status'                    => 'Status',
@@ -857,7 +855,7 @@ $LANG_ENVCHECK = array(
     'showhide_phpinfo'          => 'Show/Hide Full PHP Info',
     'view_online'               => 'Click here %s to view online',
     'no_new_items'              => 'No New Items',
-    'max_execution_time'        => 'Geeklog recommends the PHP default value of 30 seconds as a minimum, but plugin uploads and other operations may take longer than this depending upon your hosting environment.  If safe_mode (above) is Off, you may be able to increase this by modifying the value of <b>max_execution_time</b> in your php.ini file.'
+    'max_execution_time'        => 'Geeklog recommends the PHP default value of 30 seconds as a minimum, but plugin uploads and other operations may take longer than this depending upon your hosting environment.  You may be able to increase this by modifying the value of <b>max_execution_time</b> in your php.ini file.'
 );
 
 ###############################################################################
