@@ -6,7 +6,7 @@
  * 
  * Copyright (C) 2004-2017 by the following authors:
  * Author        Tom Willett        tomw AT pigstye DOT net
- * Tranlated by Ivy (Geeklog Japanese)
+ * Translated by Ivy (Geeklog Japanese)
  * Copyright (C) 2008 Takahiro Kambe
  * Additional translation to Japanese by taca AT back-street DOT net
  * Copyright (C) 2006-2019 Geeklog.jp group
@@ -41,7 +41,7 @@ $LANG_SX00 = array(
     'clicki' => 'クリックしてブラックリストをインポート',
     'ok' => 'OK',
     'rsscreated' => 'RSSフィードを作成しました',
-    'add1' => 'Added ',
+    'add1' => '',
     'add2' => ' 個のエントリを ',
     'add3' => 'さんのブラックリストから追加しました。',
     'adminc' => '管理者コマンド:',

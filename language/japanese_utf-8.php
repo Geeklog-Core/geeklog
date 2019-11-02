@@ -842,7 +842,7 @@ $LANG_ENVCHECK = array(
     'recheck' => '環境を再チェック',
     'recommended' => '推奨',
     'register_globals' => 'PHPの<strong>register_globals</strong>が有効なら、セキュリティ上の問題が発生します。',
-    'safe_mode' => 'PHPの<strong>safe_mode</strong>が有効なら、いくつかのGeeklogの関数が動かなくなります。特にMedia Galleryプラグイン。',
+    'safe_mode' => 'PHPの<strong>safe_mode</strong>が有効なら、いくつかのGeeklogの関数が動かなくなります。特にMediaGalleryプラグイン。',
     'setting' => '設定',
     'unable_mkdir' => 'ディレクトリ作成が可能',
     'upload_max_filesize' => 'Geeklogプラグインと画像、ファイルのアップロードが有効です。アップロードファイル制限を少なくとも8M以上にしてください。',
@@ -861,7 +861,7 @@ $LANG_ENVCHECK = array(
     'showhide_phpinfo' => 'phpinfo 表示/非表示',
     'view_online' => 'オンライン表示はここ %s をクリック',
     'no_new_items' => '新アイテムはありません',
-    'max_execution_time' => 'Geeklogは 最少値として30秒を要求していますが、プラグインアップロードなどを行う場合、サーバー環境によってはそれ以上を要求します。もしsafe_mode (上記)がOffなら、php.iniで<b>max_execution_time</b> を増やすことで対応できます。'
+    'max_execution_time' => 'Geeklogは最少値として30秒を要求していますが、プラグインアップロードなどを行う場合、サーバー環境によってはそれ以上を要求します。もしsafe_mode (上記)がOffなら、php.iniで<b>max_execution_time</b> を増やすことで対応できます。'
 );
 
 ###############################################################################
@@ -1843,7 +1843,7 @@ $LANG_BUTTONS = array(
 
 $LANG_404 = array(
     1 => '404 Error',
-    2 => '<strong>%s</strong>はどこにも見つかりませんでした。',
+    2 => '<strong>%s</strong>は見つかりませんでした。',
     3 => "<p>指定したファイルは存在しません。<a href=\"{$_CONF['site_url']}\">メインページ</a>をチェックしたり、<a href=\"{$_CONF['site_url']}/search.php\">検索ページ</a>で探してみてください。",
     4 => "<p>リクエストされたページは見つかりません。<a href=\"%s\">関連ページ</a>に戻るか、<a href=\"{$_CONF['site_url']}/\">ホームページ</a>に戻る、あるいは<a href=\"{$_CONF['site_url']}/search.php\">検索ページ</a>で目的のページを探してください。"
 );
