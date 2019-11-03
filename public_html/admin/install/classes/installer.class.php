@@ -4094,7 +4094,7 @@ HTML;
         $_CONF['path_editors'] = $html_path . 'editors/';
         $config->set('path_editors', $_CONF['path_editors']);
         $_CONF['rdf_file'] = $html_path . 'backend/geeklog.rss';
-        $config->set('rdf_file', $html_path . $_CONF['rdf_file']);
+        $config->set('rdf_file', $_CONF['rdf_file']);
 
         // reset cookie domain and path as wrong values may prevent login
         $_CONF['cookiedomain'] = '';
