@@ -833,7 +833,7 @@ function plugin_statssummary_staticpages()
 
     $total_pages = SP_countVisiblePages();
 
-    return array($LANG_STATIC['staticpages'], COM_numberFormat($total_pages));
+    return array($LANG_STATIC['pages'], COM_numberFormat($total_pages));
 }
 
 /**

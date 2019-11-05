@@ -180,7 +180,7 @@ if ($nrows > 0) {
 $sql = "SELECT sid,title,comments
     FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
     WHERE ta.type = 'article' AND ta.id = sid
-    AND (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL('AND') . $topicsql 
+    AND (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL('AND') . $topicsql
     . " GROUP BY sid, title, comments "
     . " ORDER BY comments DESC LIMIT 10";
 
@@ -322,8 +322,8 @@ if ($_CONF['likes_enabled'] != 0 AND $_CONF['likes_articles'] != 0) {
             SELECT s.sid, s.title
             FROM {$_TABLES['stories']} s,{$_TABLES['likes']} AS l, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = s.sid
-            AND (s.draft_flag = 0) AND (s.date <= NOW()) AND (s.sid = l.id) AND (l.type = 'article') AND (l.action = 1)" . COM_getPermSQL('AND') . $topicsql . " 
-            GROUP BY l.id, s.sid, s.title, l.lid 
+            AND (s.draft_flag = 0) AND (s.date <= NOW()) AND (s.sid = l.id) AND (l.type = ta.type) AND (l.action = 1)" . COM_getPermSQL('AND') . $topicsql . "
+            GROUP BY l.id, s.sid, s.title, l.lid
         ) sub
         GROUP BY sid, sub.title ORDER BY count DESC LIMIT 10";
 
@@ -365,6 +365,11 @@ if ($_CONF['likes_enabled'] != 0 AND $_CONF['likes_articles'] != 0) {
         $display .= COM_endBlock();
     }
 }
+
+// Top Ten Liked Article Comments
+// Decided not to do this since comment permissions can be tricky since its permissions rely on the item that the comment is for
+// Plus it wouldn't look very good since comments tend to share the same title of the item the comment is for
+// It is also difficult to say add The Top Ten Liked Items since we don't know if the user has access to the item and there for information about the like
 
 
 // Now show stats for any plugins that want to be included
