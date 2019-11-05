@@ -1809,7 +1809,7 @@ function TOPIC_relatedItems($type, $id, $include_types = array(), $max = 10, $tr
     }
 
     // Make html list
-    $retval = COM_makeList($related_items, PLG_getCSSClasses('topic-list-related', 'core'));
+    $retval = COM_makeList($related_items, PLG_getThemeItem('topic-css-list-related', 'topic'));
 
     return $retval;
 }

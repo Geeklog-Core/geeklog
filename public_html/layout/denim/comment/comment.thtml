@@ -1,19 +1,22 @@
 {# start {templatelocation} #}
 
-<div class="block-comment-content level-{indent}">
-  <ul class="comment_status">
-    <li class="comment_title">{title}</li>
-    <li class="comment_author">{lang_authoredby}&nbsp;{author_link}&nbsp;{lang_on}&nbsp;{date}</li>
-  </ul>
-
-  <div class="comment_content">{comments}</div>
-  {comment_signature}
-  {comment_edit}
-
-  <div class="comment_navi" role="navigation" {hide_if_preview}>[
-   <span>{reply_option} {parent_link} {likes_control} {delete_option} <a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="bookmark" title="{lang_permlink}">#</a></span>
-  ]</div>
-</div>
+<article class="uk-comment uk-margin-bottom level-{indent}">
+    <header class="uk-comment-header">
+        {author_photo}
+        <h4 class="uk-comment-title">{title}</h4>
+        <div class="uk-comment-meta">{lang_authoredby}&nbsp;{author_link}&nbsp;{lang_on}&nbsp;{date}</div>
+    </header>
+    <div class="uk-comment-body">
+        {comments}
+        {comment_signature}
+    </div>
+    {comment_edit}
+    <footer role="navigation" class="uk-margin-small-top" {hide_if_preview}>
+    [
+     <span>{reply_option} {parent_link} {likes_control} {delete_option} <a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="bookmark" title="{lang_permlink}">#</a></span>
+    ]
+    </footer>
+</article>
 
 <!-- BEGIN comment_signature -->
 <div class="comment-sig">
@@ -23,7 +26,7 @@
 <!-- END comment_signature -->
 
 <!-- BEGIN comment_edit -->
-<div class="comment-edit">{user_edit_info}</div>
+<div class="uk-comment-meta uk-margin-small uk-margin-left">{user_edit_info}</div>
 <!-- END comment_edit -->
 
 {# end {templatelocation} #}

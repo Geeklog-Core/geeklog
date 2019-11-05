@@ -164,10 +164,10 @@ function phpblock_calendar($help = '', $title = '')
                 $theRow = 1;           // Start with today!
                 $oldDate1 = 'no_day';  // Invalid Date!
                 $oldDate2 = 'last_d';  // Invalid Date!
-                $className = PLG_getCSSClasses('core-list-default', 'core'); 
+                $className = PLG_getThemeItem('core-css-list-default', 'core'); 
                 $headline = false;
             } else {
-                $className = PLG_getCSSClasses('core-list-default', 'core'); 
+                $className = PLG_getThemeItem('core-css-list-default', 'core'); 
                 $headline = false;
             }
             if ($_CA_CONF['personalcalendars'] == 0) {

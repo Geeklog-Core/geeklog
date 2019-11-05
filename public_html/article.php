@@ -433,7 +433,7 @@ if ($A['count'] > 0) {
         if (count($story_options) > 0) {
             $optionsblock = COM_startBlock($LANG11[4], '',
                     COM_getBlockTemplate('story_options_block', 'header'))
-                . COM_makeList($story_options, PLG_getCSSClasses('article-list-options', 'core'))
+                . COM_makeList($story_options, PLG_getThemeItem('article-css-list-options', 'article'))
                 . COM_endBlock(COM_getBlockTemplate('story_options_block',
                     'footer'));
         } else {

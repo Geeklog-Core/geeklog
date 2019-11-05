@@ -262,7 +262,8 @@ $LANG03 = array(
     106 => 'Perform bulk action on comments and comment submissions including approval and deleting. You can also bulk ban users and IP addresses. <span style="color: red;">IP addresses in red</span> are the ones banned by the Spam-X plugin (banned from submissions only) and/or Ban plugin (banned from visiting site).  <span style="color: red;">User names in red</span> are users that have been banned.',
     'record_edit' => 'Record user and time of edit?',
     'ban_plugin_ban_ip' => 'Ban this IP address with the Ban plugin',
-    'num_comments' => '%s Comment(s)'
+    'num_comments' => '%s Comment(s)',
+    'anon_user_name' => '%s (Anonymous User)'
 );
 
 ###############################################################################

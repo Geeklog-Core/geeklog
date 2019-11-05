@@ -169,7 +169,7 @@ function plugin_getwhatsnew_links()
             $newlinks[] = COM_createLink($title, $lcount, $link_title) . LB;
         }
 
-        $retval .= COM_makeList($newlinks, PLG_getCSSClasses('core-list-new', 'core'));
+        $retval .= COM_makeList($newlinks, PLG_getThemeItem('core-css-list-new', 'core'));
     } else {
         $retval .= $LANG_LINKS[88] . '<br' . XHTML . '>' . LB;
     }

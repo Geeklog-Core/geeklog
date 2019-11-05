@@ -2250,7 +2250,7 @@ function plugin_getwhatsnew_staticpages()
             $newstaticpages[] = COM_createLink($astaticpage, $url, $attr);
         }
 
-        $retval .= COM_makeList($newstaticpages, PLG_getCSSClasses('core-list-new', 'core'));
+        $retval .= COM_makeList($newstaticpages, PLG_getThemeItem('core-css-list-new', 'core'));
     } else {
         $retval .= $LANG_STATIC['no_new_pages'] . '<br' . XHTML . '>' . LB;
     }

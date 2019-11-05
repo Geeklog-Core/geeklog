@@ -1766,7 +1766,7 @@ function plugin_getwhatsnew_polls()
         }
 
         if (isset($url)) {
-            $retval .= COM_makeList($newpolls, PLG_getCSSClasses('core-list-new', 'core'));
+            $retval .= COM_makeList($newpolls, PLG_getThemeItem('core-css-list-new', 'core'));
         }
     }
 

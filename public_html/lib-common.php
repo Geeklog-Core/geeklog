@@ -3803,7 +3803,7 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '', $cssId =
 
             if ($day != $dayCheck) {
                 if ($day !== 'noday') {
-                    $dayList = COM_makeList($oldNews, PLG_getCSSClasses('article-list-older', 'article'));
+                    $dayList = COM_makeList($oldNews, PLG_getThemeItem('article-css-list-older', 'article'));
                     $oldNews = array(); // Reset old news array
                     $dayList = preg_replace("/(\015\012)|(\015)|(\012)/", '', $dayList);
 
@@ -3825,7 +3825,7 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '', $cssId =
         }
 
         if (!empty($oldNews)) {
-            $dayList = COM_makeList($oldNews, 'article-list-older');
+            $dayList = COM_makeList($oldNews, PLG_getThemeItem('article-css-list-older', 'article'));
             $dayList = preg_replace("/(\015\012)|(\015)|(\012)/", '', $dayList);
 
             $t->set_var('older-articles-list', $dayList);
@@ -4295,7 +4295,7 @@ function COM_rdfImport($bid, $rdfUrl, $maxHeadlines = 0)
         }
 
         // build a list
-        $content = COM_makeList($articles, PLG_getCSSClasses('core-list-feed', 'core'));
+        $content = COM_makeList($articles, PLG_getThemeItem('core-css-list-feed', 'core'));
         $content = str_replace(array("\015", "\012"), '', $content);
 
         if (strlen($content) > 65000) {
@@ -4840,7 +4840,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
                 $newArticles[] = COM_createLink($anchorText, $url, $attr);
             }
 
-            $t->set_var('new-item-list', COM_makeList($newArticles, PLG_getCSSClasses('core-list-new', 'core')));
+            $t->set_var('new-item-list', COM_makeList($newArticles, PLG_getThemeItem('core-css-list-new', 'core')));
         } else {
             $t->set_var('no-items', $LANG01[100]);
         }
@@ -4914,7 +4914,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
 
             }
 
-            $t->set_var('new-item-list', COM_makeList($newComments, PLG_getCSSClasses('core-list-new', 'core')));
+            $t->set_var('new-item-list', COM_makeList($newComments, PLG_getThemeItem('core-css-list-new', 'core')));
         } else {
             $t->set_var('no-items', $LANG01[86]);
         }
@@ -4974,7 +4974,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
                 $newComments[] = COM_createLink($anchorComment, $url, $attr);
             }
 
-            $t->set_var('new-item-list', COM_makeList($newComments, PLG_getCSSClasses('core-list-new', 'core')));
+            $t->set_var('new-item-list', COM_makeList($newComments, PLG_getThemeItem('core-css-list-new', 'core')));
         } else {
             $t->set_var('no-items', $LANG01[115]);
         }
@@ -4995,7 +4995,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
                 $t->set_var('time-span', $smallHeadlines[$i]);
 
                 if (is_array($content[$i])) {
-                    $t->set_var('new-item-list', COM_makeList($content[$i], PLG_getCSSClasses('core-list-new', 'core')));
+                    $t->set_var('new-item-list', COM_makeList($content[$i], PLG_getThemeItem('core-css-list-new', 'core')));
                 } else {
                     // plugins already used COM_makeList on content plus add <br> on no-items text so just use new-item-list
                     $t->set_var('new-item-list', $content[$i]);
@@ -5823,7 +5823,7 @@ function COM_getAmPmFormSelection($name, $selected = '')
  * @param    array  $listOfItems Items to list out
  * @param    string $className   optional CSS class name for the list
  * @return   string              HTML unordered list of array items
- * @see      PLG_getCSSClasses   Use this function to pass in $className set by the theme or plugin theme
+ * @see      PLG_getThemeItem    Use this function to pass in $className set by the theme or plugin theme
  */
 function COM_makeList($listOfItems, $className = '')
 {

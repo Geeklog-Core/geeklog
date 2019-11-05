@@ -414,9 +414,11 @@ function USER_sendInvalidLoginAlert($userName, $email, $uid, $mode = 'inactive')
  * @param    string $photo name of the user's uploaded image
  * @param    string $email user's email address (for gravatar.com)
  * @param    int    $width preferred image width
+ * @param    string $cssClasses extra css classes to apply to img
+ * @param    string $anonName   If uid = 1 then this anonymous display name will be used
  * @return   string        <img> tag or empty string if no image available
  */
-function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0)
+function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0, $cssClasses = 'userphoto', $anonName = '')
 {
     global $_CONF, $_TABLES, $_USER;
 
@@ -499,13 +501,14 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0)
         }
 
         if (!empty($img)) {
+            $displayName = COM_getDisplayName($uid);
             $userPhoto = '<img src="' . $img . '"';
             if ($width > 0) {
                 $userPhoto .= ' width="' . $width . '"';
             }
-            $userPhoto .= ' alt="" class="userphoto"' . XHTML . '>';
+            $userPhoto .= ' alt="" title="' . $displayName . '" class="' . $cssClasses . '"' . XHTML . '>';
         } else {
-            $userPhoto = USER_generateUserICON($uid);
+            $userPhoto = USER_generateUserICON($uid, $width, $cssClasses, $anonName);
         }
     }
 
@@ -515,13 +518,16 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0)
 /**
  * Generate an icon for a logged-in user who has no profile photo
  *
- * @param  int $uid
+ * @param   int     $uid
+ * @param   int     $width      preferred image width
+ * @param   string  $cssClasses extra css classes to apply to img
+ * @param   string  $anonName   If uid = 1 then this anonymous display name will be used
  * @return string
  * @see    https://stackoverflow.com/questions/34310271/css-place-in-circle-first-letter-of-the-name
  */
-function USER_generateUserICON($uid)
+function USER_generateUserICON($uid, $width = 0, $cssClasses = '', $anonName = '')
 {
-    global $_CONF, $_USER;
+    global $_CONF, $_USER, $LANG03;
 
     $retval = '';
 
@@ -554,16 +560,27 @@ function USER_generateUserICON($uid)
             }
 
             if ($uid == 1) {
+                if (empty($anonName)) {
+                    $anonName = $displayName;
+                }
+                $altText = sprintf($LANG03['anon_user_name'], $anonName);
                 $letters = MBYTE_strtoupper(MBYTE_substr($parts[0], 0, 1));
             } else {
+                $altText = $displayName;
                 $letters = MBYTE_strtoupper(MBYTE_substr($parts[0], 0, 1))
                     . MBYTE_strtoupper(MBYTE_substr($parts[1], 0, 1));
             }
             $letters = htmlspecialchars($letters, ENT_QUOTES, 'utf-8');
             $bg_color = _textToColor($displayName);
-            $text_color = _textColorBasedOnBgColor($bg_color, '#FFFFFF', '#000000');
-            // Note custom css properties not supported by older browsers
-            $retval = '<span data-letters="' . $letters . '" style="--bg-color:' . $bg_color . '; --text-color: ' . $text_color . ';"></span>';
+            $text_color = _textColorBasedOnBgColor($bg_color, 'FFFFFF', '000000');
+            // See https://ui-avatars.com/ for API
+            // See https://github.com/LasseRafn/php-initial-avatar-generator and https://github.com/LasseRafn/ui-avatars for github libraries
+            $retval = '<img src="https://ui-avatars.com/api/?name=' . $letters . '&color=' . $text_color . '&background=' . $bg_color . '&size=' . $_CONF['max_photo_width'] . '"  alt="" title="' . $altText . '" class="' . $cssClasses . '"';
+            if ($width > 0) {
+                // Since a square is returned set height as well
+                $retval .= ' width="' . $width . '" height="' . $width . '"';
+            }
+            $retval .= XHTML . '>';
         }
     }
 
@@ -608,7 +625,7 @@ function _textToColor($text)
     $R = sprintf('%02X', floor(hexdec($R16) / $darker));
     $G = sprintf('%02X', floor(hexdec($G16) / $darker));
     $B = sprintf('%02X', floor(hexdec($B16) / $darker));
-    return '#' . $R . $G . $B;
+    return $R . $G . $B;
 }
 
 /**
@@ -798,6 +815,20 @@ function USER_emailMatches($email, $domain_list)
     }
 
     return $match_found;
+}
+
+/**
+ * Convert the accents to their non-accented counter part. Case insensitive
+ * Note: This function starts with _ therefore it is only meant to be called from within the user library for a specific task
+ *       Function meant to be used for php when comparing for example user names to make sure they are unique
+ * From: https://stackoverflow.com/questions/27680624/compare-two-string-and-ignore-but-not-replace-accents-php
+ *
+ * @param  string $text
+ * @return string           hexadecimal color to use
+ */
+function _removeAccents($text)
+{
+    return strtolower(trim(preg_replace('~[^0-9a-z]+~i', '-', preg_replace('~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', htmlentities($string, ENT_QUOTES, 'UTF-8'))), ' '));
 }
 
 /**

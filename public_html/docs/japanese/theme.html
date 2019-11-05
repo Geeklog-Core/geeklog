@@ -114,6 +114,12 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 
 <ul>
     <li>"functions.php"中のAPIがテーマ名を接尾辞として必要としなくなりました。たとえば、theme_config_mytheme()は依然として有効ですが、theme_config()も受け入れられるようになりました。この変更は特に子テーマを作るときに役立つでしょう。</li>
+    <li>The main theme <span class="tt">header.thtml</span> and <span class="tt">footer.thtml</span> files have been combined into one file called <span class="tt">index.thtml</span>. This means any template variable available to either of the old files is now available in the new index file.</li>
+    <li>For the new <span class="tt">index.thtml</span> file, the {content} template variable has been added which is where the main page content is placed.</li>
+    <li>For the new <span class="tt">index.thtml</span> file, the {system_messsages} template variable has been added which is where system messages may appear.</li>
+    <li>New theme config options include: 'theme_name', 'theme_version', 'theme_gl_version', 'theme_author', 'theme_license'</li>
+    <li>Theme variable $theme_config['supported_version_theme'] has been depreciated in the <span class="tt">functions.php</span> file. Please use 'theme_gl_version' instead.</li>
+    <li>PLG_getThemeItem and theme_getThemeItem_foo api functions have been added so themes can specify certain css classes, styles, and other info for certain items in Geeklog.</li>
 </ul>
 
 <h2><a name="changes220">Geeklog 2.2.0におけるテーマの変更点</a></h2>
@@ -178,9 +184,9 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 <li>削除: <span class="tt">menuitem.thtml</span>, <span class="tt">menuitem_last.thtml</span> と <span class="tt">menuitem_none.thtml</span>.
     追加: <span class="tt">menunavigation.thtml</span> which uses blocks から テンプレートの数を減らします。</li>
 <li>削除: <span class="tt">adminoption.thtml</span> と <span class="tt">adminoption_off.thtml</span>.<br>
-    追加: <span class="tt">adminavigation.thtml</span> which uses blocks から テンプレートの数を減らします。</li>    
+    追加: <span class="tt">adminavigation.thtml</span> which uses blocks から テンプレートの数を減らします。</li>
 <li>削除: <span class="tt">adminoption.thtml</span> と <span class="tt">adminoption_off.thtml</span>.<br>
-    追加: <span class="tt">adminavigation.thtml</span> which uses blocks から テンプレートの数を減らします。</li>    
+    追加: <span class="tt">adminavigation.thtml</span> which uses blocks から テンプレートの数を減らします。</li>
 <li>削除: <span class="tt">useroption.thtml</span> と <span class="tt">useroption.thtml</span>.<br>
     追加: <span class="tt">usernavigation.thtml</span> which uses blocks から テンプレートの数を減らします。</li>
 <li>削除: <span class="tt">listitem.thtml</span>. <span class="tt">list.thtml</span> now uses blocks から  テンプレートの数を減らします。</li>
@@ -204,7 +210,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 
 <h2><a name="changes200">Geeklog 2.0.0におけるテーマの変更点</a></h2>
 
-<p>Geeklog 2.0.0には2つのテーマエンジンが存在します。現在、DeminとModern Curveテーマは2.0.0のテーマエンジンを使っています。Professional および Professional CSS テーマは1.8.1テーマエンジンを使っています。 
+<p>Geeklog 2.0.0には2つのテーマエンジンが存在します。現在、DeminとModern Curveテーマは2.0.0のテーマエンジンを使っています。Professional および Professional CSS テーマは1.8.1テーマエンジンを使っています。
 1.8.1テーマエンジンはそのうちGeeklogからなくなります。そのため、テーマを開発するなら新しいテーマエンジンを使ってください。くわしくはGeeklog Wiki <a href="http://wiki.geeklog.net/index.php/Theme_Developers_Guide">Theme Developers Guide</a>を。</p>
 
 <h3>変更点全般</h3>
@@ -215,7 +221,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 <li>話題、記事と静的ページのパンくずリスト表示には、テンプレート変数 {breadcrumb_trail} をheader.thtmlに追加します。</li>
 <li>話題選択のための新しいファイルedit_topics.thtmlが/admin/commonに追加されました。</li>
 <li>topicoption.thtmlとtopicoption_off.thtml がテーマのrootフォルダに追加されました。</li>
-<li>adminフォルダの話題フォルダの入れ替え。たくさんのファイルに変更があります。</li>  
+<li>adminフォルダの話題フォルダの入れ替え。たくさんのファイルに変更があります。</li>
 <li>話題選択のために、テーマ変数 {topic_selection} が、ファイル /admin/block/blockeditor.thtml, /admin/block/defaultblockeditor.thtml, /admin/article/articleeditor.thtml, /admin/article/articleeditor_advenced.thtml, /submit/submitstory.thtml, と /submit/submitstory_advanced.thtmlに追加されました。</li>
 <li>同じページでコメントする機能で多くの変更があります。すべてのコメントフォルダとcommentbar.thtml と comment.thtmlを必要に応じてカスタマイズします。</li>
 <li>静的ページとブロック編集のための新しいCSSが追加されました。</li>
@@ -258,7 +264,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 
 <h3>その他の変更</h3>
 <ul>
-<li>コメント投稿と編集で、キャンセルと削除のボタンを必要に応じて追加しました。(e.g. レビュー時等). 
+<li>コメント投稿と編集で、キャンセルと削除のボタンを必要に応じて追加しました。(e.g. レビュー時等).
     <span class="tt">comment/commentform.thtml</span> と <span class="tt">comment/commentform_advanced.thtml</span>。</li>
 <li><span class="tt">loginform_openid.thtml</span>で、<span class="tt">&lt;/div&gt;</span>に変更しました。</li>
 <li>Cosmetics: <span class="tt">block-bg-left</span> と<span class="tt">block-bg-right</span> クラスから1px borderを削除しました。</li>
@@ -283,7 +289,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
     追加しました。</li>
 <li>記事エディターテンプレート<span class="tt">admin/topic/storyeditor.thtml</span> と
     <span class="tt">admin/topic/storyeditor_advanced.thtml</span>に、メタタグが無効のとき、
-    メタ description と メタ keywordsを隠すためのテーマ変数 
+    メタ description と メタ keywordsを隠すためのテーマ変数
     <code>{hide_meta}</code> を新たに追加しました。</li>
 <li><span class="tt">admin/topic/storyeditor_advanced.thtml</span>で、許可するHTMLタグと
     自動タグを常に表示するため、<code>&lt;div id="editor-mode"&gt;</code>の
@@ -300,7 +306,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
     これらは動的なドロップダウンメニュー（たとえば<code>$_CONF['menu_elements']</code>）の
     追加・削除に必要なものでした。</li>
 <li>グループエディターテンプレート <span class="tt">admin/group/groupeditor.thtml</span>で、
-    デフォルトグループの2つの新たなオプション (<span class="tt">chk_grpdefault</span> と 
+    デフォルトグループの2つの新たなオプション (<span class="tt">chk_grpdefault</span> と
     <span class="tt">chk_applydefault</span> チェックボックスと言語変数)を追加しました。</li>
 <li><span class="tt">fieldhelp</span>クラスに左右paddingを含めるようにしました。
     よってグループ編集テンプレート（<span class="tt">admin/group/groupeditor.thtml</span>）に
@@ -400,7 +406,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
     テンプレート(<span class="tt">admin/block/blockeditor.thtml</span>)から削除しました。</li>
 <li>軽微な変更: パーミションを指定するチェックボックス(<span class="tt">admin/common/edit_permissions.thtml</span>)の
     外見を管理者リストの外見に揃えました。新しいCSSクラス(<span class="tt">admin-list-smalltable</span>)を
-    導入しました。このクラスは<span class="tt">admin-list-table</span> とほぼ同じですが 
+    導入しました。このクラスは<span class="tt">admin-list-table</span> とほぼ同じですが
     <code>width:100%;</code> の指定がありません。</li>
 </ul>
 
@@ -506,7 +512,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 
 <h2><a name="changes152">Geeklog 1.5.2におけるテーマの変更点</a></h2>
 
- 
+
 <p>注: Geeklog 1.5.0ないし1.5.1用に作成されたテーマはGeeklog 1.5.2でも問題なく動作するはずです。今回のリリースでは、1.5.0と1.5.1に悪影響を与えていたバグ（下記参照）を修正するだけです。他の変更点はオプションです。</p>
 
 <h3>バグ修正</h3>

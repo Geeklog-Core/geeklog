@@ -276,7 +276,7 @@ function DIR_displayMonth($template, $dir_topic, $year, $month)
 
             if ($mday != $A['mday']) {
                 if (count($entries) > 0) {
-                    $retval .= COM_makeList($entries, PLG_getCSSClasses('article-list-directory', 'article'));
+                    $retval .= COM_makeList($entries, PLG_getThemeItem('article-css-list-directory', 'article'));
                     $entries = array();
                 }
 
@@ -293,7 +293,7 @@ function DIR_displayMonth($template, $dir_topic, $year, $month)
         }
 
         if (count($entries) > 0) {
-            $retval .= COM_makeList($entries, PLG_getCSSClasses('article-list-directory', 'article'));
+            $retval .= COM_makeList($entries, PLG_getThemeItem('article-css-list-directory', 'article'));
         }
     } else {
         $retval .= $template->parse('message', 'no-articles') . PHP_EOL;
@@ -376,7 +376,7 @@ function DIR_displayYear($template, $dir_topic, $year)
             $items[] = DIR_monthLink($dir_topic, $year, $month, $numArticles[$month]);
         }
 
-        $retval .= COM_makeList($items, PLG_getCSSClasses('article-list-directory', 'article'));
+        $retval .= COM_makeList($items, PLG_getThemeItem('article-css-list-directory', 'article'));
     } else {
         $retval .= $template->parse('message', 'no-articles') . PHP_EOL;
     }

@@ -62,7 +62,7 @@ function theme_config_denim_three()
         'theme_version'     => '1.0.0',
         'theme_gl_version'  => '2.2.1',
         'theme_author'      => '',
-        'theme_license'     => '',    
+        'theme_license'     => '',
         'image_type' => 'png',
         'doctype'    => 'xhtml5',
         'etag'       => false, // never set this true. instead use $options['enable_etag'] above.
@@ -233,53 +233,63 @@ function theme_init_denim_three()
 }
 
 /**
- * Return a list of one or more CSS classes for the request item location
- *
+* Return information for the request item location
+* CSS Classes, Styles, etc... can be passed
  */
-function theme_getCSSClasses_denim($item)
+function theme_getThemeItem_denim_three($item)
 {
     $retval = '';
-    
+
     switch ($item) {
         // ***************************
-        // Item names used for lists created by COM_makeList 
-        
+        // Item names used for lists created by COM_makeList
         // These original list items css classes which were defined way back in Geeklog 1.3. Most are not in use anymore by any updated theme
         // 'list-new-plugins', 'list-story-options', 'list-older-stories', 'list-feed', 'list-new-comments', 'list-new-trackbacks', 'list-whats-related', 'list-new-links', 'list-personal-events', 'list-site-events'
-        
-        // New Core, Article, Topic locations added Geeklog 2.2.1
-        // Theme can pass a specific css class(es) if needed else return empty string. Plugins can also set their own item locations and define their css classes in the plugin templates functions.php file
-        case 'core-list-default': // Default List styling - not used yet
-        case 'core-list-new': // For What's New Block - replacing "list-new-plugins", 'list-new-comments', 'list-new-trackbacks'
-        case 'core-list-feed': // For RSS Feed Portal Block - replacing "list-feed"
-        case 'article-list-directory':  // For Article Directory page - New item as of GL v2.2.1
-        case 'article-list-related': // For Article Page What's Related List - replacing 'list-whats-related'
-        case 'article-list-options':  // For Article Page Options List - replacing "list-story-options"
-        case 'article-list-older':  // For Older Articles Block - replacing "list-older-stories"
-        case 'topic-list-related': // For Autotags Related Topic items list - New item as of GL v2.2.1
+
+        // New Core, Article, Topic, Comment locations added Geeklog 2.2.1
+        // Theme can pass a specific infor if needed else return empty string. Plugins can also set their own item locations and define their css classes in the plugin templates functions.php file
         // ***************************
+        case 'article-css-list-options':  // Return 1 or more CSS Classes - replacing "list-story-options"
+            $retval = 'list-story-options'; // used by denim, denim_curve, modern_curve
+            break;
+
+        case 'comment-css-user-avatar': // Return 1 or more CSS Classes - Add to user generated photo for comments - New item as of GL v2.2.1
+            $retval = 'uk-comment-avatar';
+            break;
+
+        case 'comment-width-user-avatar': // Return width in pixels of user photos in comments - New item as of GL v2.2.1
+            $retval = '80';
+            break;
+
+        case 'core-css-list-default': // Return 1 or more CSS Classes -  Default List styling - not used yet
+        case 'core-css-list-new': // Return 1 or more CSS Classes - For What's New Block - replacing "list-new-plugins", 'list-new-comments', 'list-new-trackbacks'
+        case 'core-css-list-feed': // Return 1 or more CSS Classes - For RSS Feed Portal Block - replacing "list-feed"
+        case 'article-css-list-directory':  // Return 1 or more CSS Classes - For Article Directory page - New item as of GL v2.2.1
+        case 'article-css-list-related': // Return 1 or more CSS Classes - For Article Page What's Related List - replacing 'list-whats-related'
+        case 'article-css-list-older':  // Return 1 or more CSS Classes - For Older Articles Block - replacing "list-older-stories"
+        case 'topic-css-list-related': // Return 1 or more CSS Classes - For Autotags Related Topic items list - New item as of GL v2.2.1
 
         // If any other items requested return empty string
         default:
            break;
     }
-    
+
     return $retval;
 }
 
 /**
  * Return an array of Block Locations for a theme (besides left and right)
  */
-/* 
+/*
 EXAMPLE CODE ONLY. Follow instructions below to implement.
 
 The code below can be added to the footer.html where you want the blocks to appear
 {!if blocks_footer}
 {blocks_footer}
-{!endif}  
-    
+{!endif}
+
 Then uncomment this function below to register the above block location with Geeklog. Any new or updated blocks can then be assigned the following block location in the Block Editor
-    
+
 function theme_getBlockLocations_denim_three()
 {
     $block_locations = array();

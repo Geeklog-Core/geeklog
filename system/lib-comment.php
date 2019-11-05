@@ -335,16 +335,14 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             }
             $fullname = COM_getDisplayName($A['uid'], $A['username'],
                 $fullname);
-            $template->set_var('author_fullname', $fullname);
             $template->set_var('author', $fullname);
             $altText = $fullname;
-
             $photo = '';
             if ($_CONF['allow_user_photo']) {
                 if (isset($A['photo']) && empty($A['photo'])) {
                     $A['photo'] = '(none)';
                 }
-                $photo = USER_getPhoto($A['uid'], $A['photo'], $A['email']);
+                $photo = USER_getPhoto($A['uid'], $A['photo'], $A['email'], PLG_getThemeItem('comment-width-user-avatar', 'comment'), PLG_getThemeItem('comment-css-user-avatar', 'comment'));
             }
             $profile_link = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'];
             if (!empty($photo)) {
@@ -370,10 +368,15 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             }
             $A['username'] = GLText::remove4byteUtf8Chars($A['username']); // Need to do this if doing a comment preview when adding/editing a comment
 
-            $template->set_var('author', $A['username']);
-            $template->set_var('author_fullname', $A['username']);
-            $template->set_var('author_link', $A['username']);
-            $template->set_var('author_photo', '');
+            $anon_username = sprintf($LANG03['anon_user_name'], $A['username']);
+            $template->set_var('author', $anon_username);
+            $template->set_var('author_link', $anon_username);
+            if ($_CONF['allow_user_photo']) {
+                $photo = USER_getPhoto($A['uid'], '', '', PLG_getThemeItem('comment-width-user-avatar', 'comment'), PLG_getThemeItem('comment-css-user-avatar', 'comment'), $A['username']);
+                $template->set_var('author_photo', $photo);
+            }  else {
+                $template->set_var('author_photo', '');
+            }
             $template->set_var('camera_icon', '');
             $template->set_var('start_author_anchortag', '');
             $template->set_var('end_author_anchortag', '');
@@ -583,6 +586,9 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
                 $template->set_var('user_signature', COM_nl2br($sig));
                 $template->parse('comment_signature', 'comment_signature');
             }
+        } else {
+            $template->set_var('user_signature', '');
+            $template->set_var('comment_signature', '');
         }
 
         // check for comment edit

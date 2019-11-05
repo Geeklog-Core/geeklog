@@ -270,7 +270,8 @@ $LANG03 = array(
     106 => 'ユーザーやIPアドレスの一括承認・削除・禁止を含めて、コメントに対するアクションを一括して行います。<span style="color: red;">赤字のIPアドレス</span>は、承認待ちのコメントをSpam-Xプラグインで禁止されたユーザーかBanプラグインで退去処分を受けたユーザーのIPです。</span><span style="color: red;">赤字のユーザー名</span>は退去処分を受けたユーザーです。',
     'record_edit' => '編集者と編集時刻を記録する',
     'ban_plugin_ban_ip' => 'BanプラグインでこのIPアドレスを禁止する',
-    'num_comments' => '%s件のコメント'
+    'num_comments' => '%s件のコメント',
+    'anon_user_name' => '%s (Anonymous User)'
 );
 
 ###############################################################################
@@ -1981,7 +1982,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
+#
 # This here determines the order of the sentence "No new articles in 2 hrs"
 # order it so it makes sense in your language:
 # %i    item, "Articles"
@@ -2039,7 +2040,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-# 
+#
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2723,4 +2724,3 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
-

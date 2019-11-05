@@ -2669,7 +2669,7 @@ function PLG_itemDisplay($id, $type)
 }
 
 /**
- * Get list of CSS classes for different items
+ * Get theme information for the request item location. For example CSS Classes or Styles
  * Introduced in Geeklog v2.2.1
  *
  * @param    string $id   unique ID of the item (either defined by core or a plugin)
@@ -2677,7 +2677,7 @@ function PLG_itemDisplay($id, $type)
  *
  * @return   string One or more CSS classes to be used in HTML
   */
-function PLG_getCSSClasses($id, $type)
+function PLG_getThemeItem($id, $type)
 {
     global $_CONF;
 
@@ -2691,12 +2691,12 @@ function PLG_getCSSClasses($id, $type)
         case 'comment';
         case 'topic';
             // Check theme for these types
-            $function = 'theme_getCSSClasses_' . $_CONF['theme'];
+            $function = 'theme_getThemeItem_' . $_CONF['theme'];
             if (function_exists($function)) {
                 $retval = $function($id);
             } elseif (!empty($_CONF['theme_default'])) {
                 // See if default theme if so check for it
-                $function = 'theme_getCSSClasses_' . $_CONF['theme_default'];
+                $function = 'theme_getThemeItem_' . $_CONF['theme_default'];
                 if (function_exists($function)) {
                     $retval = $function($id);
                 }
@@ -2706,12 +2706,12 @@ function PLG_getCSSClasses($id, $type)
 
         default;
             // Assume type is plugin so check plugin specific theme templates
-            $function = $type . '_getCSSClasses_' . $_CONF['theme'];
+            $function = $type . '_getThemeItem_' . $_CONF['theme'];
             if (function_exists($function)) {
                 $retval = $function($id);
             } elseif (!empty($_CONF['theme_default'])) {
                 // See if default theme if so check if plugin templates exist
-                $function = $type . '_getCSSClasses_' . $_CONF['theme_default'];
+                $function = $type . '_getThemeItem_' . $_CONF['theme_default'];
                 if (function_exists($function)) {
                     $retval = $function($id);
                 }
