@@ -197,10 +197,10 @@ CREATE TABLE {$_TABLES['likes']} (
   type varchar(30) NOT NULL,
   subtype varchar(30) NOT NULL DEFAULT '',
   id varchar(30) NOT NULL,
-  uid smallint NOT NULL, 
-  ipaddress VARCHAR(39) NOT NULL, 
+  uid smallint NOT NULL,
+  ipaddress VARCHAR(39) NOT NULL,
   action smallint NOT NULL,
-  created timestamp NOT NULL DEFAULT current_timestamp, 
+  created DATETIME NOT NULL, 
   PRIMARY KEY (lid)
 )
 ";
@@ -516,8 +516,8 @@ CREATE TABLE {$_TABLES['users']} (
   emailtoconfirm varchar(96) default NULL,
   status smallint NOT NULL default 1,
   num_reminders smallint NOT NULL default 0,
-  invalidlogins SMALLINT NOT NULL DEFAULT 0, 
-  lastinvalid int default NULL, 
+  invalidlogins SMALLINT NOT NULL DEFAULT 0,
+  lastinvalid int default NULL,
   twofactorauth_enabled SMALLINT NOT NULL DEFAULT 0,
   twofactorauth_secret VARCHAR(255) NOT NULL DEFAULT '',
   autologin_key VARCHAR(255) NOT NULL DEFAULT '',

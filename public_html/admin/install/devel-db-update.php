@@ -98,7 +98,7 @@ function update_DatabaseFor221()
       uid MEDIUMINT NOT NULL,
       ipaddress VARCHAR(39) NOT NULL,
       action TINYINT NOT NULL,
-      created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      created DATETIME NOT NULL, 
       PRIMARY KEY (lid)
     ) ENGINE=MyISAM
     ";

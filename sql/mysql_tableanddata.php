@@ -200,10 +200,10 @@ CREATE TABLE {$_TABLES['likes']} (
   type varchar(30) NOT NULL,
   subtype varchar(30) NOT NULL DEFAULT '',
   id varchar(30) NOT NULL,
-  uid MEDIUMINT NOT NULL, 
-  ipaddress VARCHAR(39) NOT NULL, 
+  uid MEDIUMINT NOT NULL,
+  ipaddress VARCHAR(39) NOT NULL,
   action TINYINT NOT NULL,
-  created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+  created DATETIME NOT NULL, 
   PRIMARY KEY (lid)
 ) ENGINE=MyISAM
 ";
@@ -518,7 +518,7 @@ CREATE TABLE {$_TABLES['users']} (
   emailtoconfirm varchar(96) default NULL,
   status smallint(5) unsigned NOT NULL default '1',
   num_reminders tinyint(1) NOT NULL default 0,
-  invalidlogins SMALLINT NOT NULL DEFAULT '0', 
+  invalidlogins SMALLINT NOT NULL DEFAULT '0',
   lastinvalid int(10) unsigned default NULL,
   twofactorauth_enabled TINYINT(3) NOT NULL DEFAULT 0,
   twofactorauth_secret VARCHAR(255) NOT NULL DEFAULT '',
@@ -526,7 +526,7 @@ CREATE TABLE {$_TABLES['users']} (
   postmode VARCHAR (10) NOT NULL DEFAULT 'plaintext',
   PRIMARY KEY  (uid),
   KEY LOGIN (uid,passwd,username),
-  UNIQUE KEY users_username (username), 
+  UNIQUE KEY users_username (username),
   INDEX users_fullname(fullname),
   INDEX users_email(email),
   INDEX users_passwd(passwd),
