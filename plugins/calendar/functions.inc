@@ -65,7 +65,11 @@ Language::override(array(
 if (!isset($_CA_CONF['calendarloginrequired'])) {
     $ca_config = config::get_instance();
     $_CA_CONF = $ca_config->get_config('calendar');
-    $_CA_CONF['recaptcha'] = (int) $_CA_CONF['recaptcha'];
+
+    // $_CA_CONF['recaptcha'] inctroduced in polls v1.1.8
+    // Need to check if it exists before updating incase user is actually doing a upgrade to this version and it doesn't exist yet
+    // ie code base version doesn't match database version
+    $_CA_CONF['recaptcha'] = (isset($_CA_CONF['recaptcha'])) ? (int) $_CA_CONF['recaptcha'] : 0;
 }
 
 // +---------------------------------------------------------------------------+
@@ -164,10 +168,10 @@ function phpblock_calendar($help = '', $title = '')
                 $theRow = 1;           // Start with today!
                 $oldDate1 = 'no_day';  // Invalid Date!
                 $oldDate2 = 'last_d';  // Invalid Date!
-                $className = PLG_getThemeItem('core-css-list-default', 'core'); 
+                $className = PLG_getThemeItem('core-css-list-default', 'core');
                 $headline = false;
             } else {
-                $className = PLG_getThemeItem('core-css-list-default', 'core'); 
+                $className = PLG_getThemeItem('core-css-list-default', 'core');
                 $headline = false;
             }
             if ($_CA_CONF['personalcalendars'] == 0) {
@@ -426,7 +430,7 @@ function plugin_savesubmission_calendar($A)
 
         return $retval;
     }
-    
+
     // check ok, proceed to saving
     if (isset($A['end_year'])) {
         $A['end_year'] = COM_applyFilter($A['end_year'], true);
@@ -497,8 +501,8 @@ function plugin_savesubmission_calendar($A)
         if (!empty($_USER['homepage'])) {
             $authorurl = $_USER['homepage'];
         }
-    }    
-    
+    }
+
     $result = PLG_checkForSpam($spamCheck, $_CONF['spamx'], $permanentlink, Geeklog\Akismet::COMMENT_TYPE_EVENT, $authorname, $authoremail, $authorurl);
     if ($result > PLG_SPAM_NOT_FOUND) {
         COM_updateSpeedlimit('submit');
@@ -705,7 +709,7 @@ function plugin_submit_calendar($mode = 'master')
             // If missing must set or process goes into infinite loop
             $_POST['title'] = $LANG_CAL_2[32]; // Default title will be "Event"
         }
-        
+
         // quick add form, just save it.
         $display = plugin_savesubmission_calendar($_POST);
 
@@ -1519,9 +1523,9 @@ function plugin_upgrade_calendar()
     if (!plugin_compatible_with_this_version_calendar('calendar')) {
         return 3002;
     }
-    
-    // Retrieve other plugin info like min geeklog version and homepage 
-    $inst_parms = plugin_autoinstall_calendar('calendar');    
+
+    // Retrieve other plugin info like min geeklog version and homepage
+    $inst_parms = plugin_autoinstall_calendar('calendar');
 
     require_once $_CONF['path'] . 'plugins/calendar/sql/'
         . $_DB_dbms . '_updates.php';
@@ -1633,7 +1637,7 @@ function plugin_upgrade_calendar()
             case '1.1.5':
                 $current_version = '1.1.6';
                 break;
-                
+
             case '1.1.6':
                 $current_version = '1.1.7';
                 break;
@@ -1652,7 +1656,7 @@ function plugin_upgrade_calendar()
     // update plugin version number and other info
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'calendar'");
 
-    COM_errorLog( "Updated calendar plugin from v$installed_version to v$code_version", 1 );       
+    COM_errorLog( "Updated calendar plugin from v$installed_version to v$code_version", 1 );
 
     return true;
 }
@@ -2342,7 +2346,7 @@ function plugin_usercontributed_calendar($uid)
 
     // Include events and event submissions
     $count = DB_getItem($_TABLES['events'], 'COUNT(owner_id)', "owner_id = {$uid}") + DB_getItem($_TABLES['eventsubmission'], 'COUNT(owner_id)', "owner_id = {$uid}");
-    
+
     if ($count > 0) {
         $retval = str_replace('%s', $count, $LANG_CAL_ADMIN['num_events']);
     }

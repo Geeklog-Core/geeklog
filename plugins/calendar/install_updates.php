@@ -67,7 +67,7 @@ function calendar_update_ConfValues_1_1_2()
 
 function calendar_update_ConfValues_1_1_7()
 {
-    global $_CONF, $_CA_DEFAULT, $_CA_CONF, $_GROUPS, $_TABLES;
+    global $_CONF, $_CA_DEFAULT;
 
     $c = config::get_instance();
 
