@@ -198,7 +198,7 @@ class Installer
         }
         $retval .= '<div class="uk-alert uk-alert-' . $style . '">';
         $retval .= '<span class="uk-label uk-label-' . $style . '">' . $type . '</span> ' . $message . '</div>' . PHP_EOL;
-            
+
         return $retval;
     }
 
@@ -697,7 +697,7 @@ class Installer
             $paths['public_html/'] . 'images/_thumbs/articles/',        // Used by File Manager when launched from Geeklog Control Panel. Article Editor also stores article thumbnail images here
             $paths['public_html/'] . 'images/_thumbs/userphotos/',      // Used by File Manager when launched from Geeklog Control Panel
         );
-        
+
         if ($_DB_dbms === 'mysql') {
             array_splice($fileList, 1, 0, $this->env['gl_path'] . 'backups/');
         }
@@ -721,13 +721,13 @@ class Installer
                     $checkSelinux = true;
                     $cmdSelinux .= $file . ' ';
                 }
-                
+
                 $retval_permissions .= '
                     <tr>
                         <td><code>' . $file . '</code></td>
                         <td><span class="uk-text-danger uk-text-nowrap">' . $this->LANG['INSTALL'][12] . ' ' . $permShouldBe . '</span> (' . $this->LANG['INSTALL'][13] . ' ' . $permission . ')</td>
                     </tr>';
-                    
+
                 $chmodString .= $file . ' ';
                 $numWrong++;
             }
@@ -897,7 +897,7 @@ class Installer
         global $LANG_HELP, $LANG_LABEL;
 
         $id = 'help-' . $var;
-        
+
         return '<span uk-icon="icon: info" uk-tooltip="' . htmlentities($LANG_HELP[$var]) . '"</span>';
     }
 
@@ -2940,10 +2940,10 @@ class Installer
                     break;
                 case '2.1.2':
                     // there were no database changes in 2.1.2
-                
+
                     $currentGlVersion = '2.1.3';
                     break;
-                    
+
                 case '2.1.3':
                     require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.1.3_to_2.2.0.php';
                     if ($checkForMessage) {
@@ -2959,7 +2959,7 @@ class Installer
                     }
                     $currentGlVersion = '2.2.0';
                     $_SQL = array();
-                    break;                    
+                    break;
 
                 case '2.2.0':
                     require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.2.0_to_2.2.1.php';
@@ -2975,7 +2975,7 @@ class Installer
                     }
                     $currentGlVersion = '2.2.1';
                     break;
-                                        
+
                 default:
                     $done = true;
                     break;
@@ -4905,6 +4905,12 @@ HTML;
      */
     public function display($content)
     {
+		// Need to do this for install-plugins.php when called for a new install but want to select plugins
+		if (!isset($this->env['language_selector_menu'])) {
+			$this->env['language_selector'] = '';
+			$this->env['language_selector_menu'] = 'uk-hidden';
+		}
+
         $this->env['content'] = $content;
         $T = $this->getTemplateObject();
         $T->set($this->env);
