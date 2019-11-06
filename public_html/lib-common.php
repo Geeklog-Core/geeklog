@@ -108,6 +108,16 @@ Autoload::initialize();
 // Initialize system classes
 Input::init();
 
+// *********************************************************
+// IMPORTANT: Have to redeclare the variables below as Global here for Geeklog Install/Upgrade/Migrate.
+// For some reason the scope is not correct for these variables when lib-common is included in the Geeklog Install
+// For more info see https://github.com/Geeklog-Core/geeklog/issues/980
+// Once install is fixed this can be removed...
+global $_RIGHTS; // For Geeklog install when lib-common included  SEC_getUserPermissions fails as $_RIGHTS doesn't get loaded
+global $_USER; // For Geeklog install when lib-common included when current user may already be logged an error happens because of $_USER not retrieved when SESS_sessionCheck is called
+global $TEMPLATE_OPTIONS; // For Geeklog install when lib-common included - COM_rdfUpToDateCheck is called when the template class is used an error happens because of $TEMPLATE_OPTIONS being empty.
+// *********************************************************
+
 // Load configuration
 $config = config::get_instance();
 $config->set_configfile($_CONF['path'] . 'db-config.php');
@@ -7928,7 +7938,7 @@ HTML;
                 }
                 if (count($btr) > 0) {
                     $output .= <<<HTML
-<table class="xdebug-error" dir="ltr" style="font-size: xx-small; border-width: 1px; border-collapse: collapse;">
+<table class="xdebug-error" dir="ltr" style="font-size: small; border-width: 1px; border-collapse: collapse;">
   <tr>
     <th style="text-align: left; background-color: #e9b96e;" colspan="5">Call Stack</th>
   </tr>
