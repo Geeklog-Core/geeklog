@@ -35,15 +35,15 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 /**
  * Returns possible theme template directories.
  *
- * @param    string or array    $root Path to template root. 
-                                If Root is string then assumes it is a call from Geeklog Core or older plugin that does not use CTL_plugin_templatePath
-                                If Root is an array assume plugin supports CTL_plugin_templatePath
+ * @param    string or array    $root Path to template root.
+ *                                If Root is string then assumes it is a call from Geeklog Core or older plugin that does not use CTL_plugin_templatePath
+ *                                If Root is an array assume plugin supports CTL_plugin_templatePath
  * @return   array              Theme template directories
  */
 function CTL_setTemplateRoot($root)
 {
     global $_CONF;
-    
+
     COM_deprecatedLog(__FUNCTION__, '2.2.0', '3.0.0', 'CTL_core_templatePath. Setting template class directly has been depreciated. See COM_newTemplate, CTL_core_templatePath, and CTL_plugin_templatePath for more info.');
 
     $retval = array();
@@ -79,7 +79,7 @@ function CTL_setTemplateRoot($root)
         // So just pass through since it already contains all locations
         $retval = $root;
     }
-    
+
     return $retval;
 }
 
@@ -129,8 +129,8 @@ function CTL_clearCache($plugin = '')
 /**
  * Returns possible theme template directories for Core only (not any plugins, see CTL_plugin_templatePath).
  *
- * @since  v2.2.0 
- * @param    string or array    $root Path to template root. 
+ * @since  v2.2.0
+ * @param    string or array    $root Path to template root.
  * @return   array              Theme template directories
  */
 function CTL_core_templatePath($root)
@@ -156,7 +156,7 @@ function CTL_core_templatePath($root)
             }
         }
     }
-    
+
     return $retval;
 }
 
@@ -215,7 +215,7 @@ function CTL_plugin_templatePath($plugin, $path = '')
 
 /**
  * Get HTML path for a plugin file (url or physical file location).
- * Usually used to find .css, .js files needed by plugin 
+ * Usually used to find .css, .js files needed by plugin
  * Order of checking is:
  * - theme path/plugin/file
  * - html path/plugin/directory/file
@@ -295,7 +295,7 @@ function CTL_plugin_themeFindFile($plugin, $directory, $filename, $return_url = 
                             $file = "{$_CONF['path']}plugins/$plugin/$directory/{$_CONF['theme_plugins']}/$filename";
                             if (file_exists($file)) {
                                 $retval = $file;
-                            } else {                        
+                            } else {
                                 // See if current theme templates stored with plugin
                                 $file = "{$_CONF['path']}plugins/$plugin/$directory/{$_CONF['theme']}/$filename";
                                 if (file_exists($file)) {
@@ -323,7 +323,7 @@ function CTL_plugin_themeFindFile($plugin, $directory, $filename, $return_url = 
 
     // Remove filename if needed
     if (!empty($retval) && !$include_filename) {
-        $dirname = pathinfo($file, PATHINFO_DIRNAME); 
+        $dirname = pathinfo($file, PATHINFO_DIRNAME);
     }
 
     return $retval;
@@ -382,7 +382,7 @@ function CTL_plugin_setTemplatesFunctions($plugin)
         // It would have been checked in the following order. When found then quit
         $themes = array();
         if (isset($_CONF['theme_plugins']) AND ($_CONF['theme_plugins'] !='')) {;
-            // EXPERIMENTAL - Not required - Is used by all plugins - You can specify a COMPATIBLE theme (not a child theme) to use templates stored with some plugins. Can have problems if plugins include css and js files via their own functions.php            
+            // EXPERIMENTAL - Not required - Is used by all plugins - You can specify a COMPATIBLE theme (not a child theme) to use templates stored with some plugins. Can have problems if plugins include css and js files via their own functions.php
             // Problem is that $_CONF['theme'] can be set in functions.php. With $_CONF['theme_plugins'] set files will not be loaded as the wrong dir is used. $_CONF['theme'] needs to be used in functions.php for fallback with child themes
             $themes[] = $_CONF['theme_plugins']; // Override of theme to set which theme template files to use for plugins (if found)
         }
@@ -391,7 +391,7 @@ function CTL_plugin_setTemplatesFunctions($plugin)
         $themes[] = 'default';
 
         $function_found = false;
-        
+
         foreach ($themes as $theme) {
             // Include scripts on behalf of plugin template files that are theme specific
             $func = $plugin . '_css_' . $theme;
@@ -567,7 +567,7 @@ function plugin_itemsaved_template($id, $type, $old_id = '')
 function plugin_itemdeleted_template($id, $type)
 {
     global $_STRUCT_DATA;
-    
+
     // See if uses what's new block then delete cache of whatsnew
     // This will not catch everything though like trackbacks, comments, and
     // plugins that do not use itemsaved but let's delete the cache when we can
