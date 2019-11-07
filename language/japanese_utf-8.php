@@ -1982,7 +1982,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-#
+# 
 # This here determines the order of the sentence "No new articles in 2 hrs"
 # order it so it makes sense in your language:
 # %i    item, "Articles"
@@ -2040,7 +2040,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-#
+# 
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2724,3 +2724,4 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
+

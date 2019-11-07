@@ -269,7 +269,8 @@ $LANG03 = array(
     106 => 'Perform bulk action on comments and comment submissions including approval, deleting, and banning of user or IP address.',
     'record_edit' => 'Record user and time of edit?',
     'ban_plugin_ban_ip' => 'Ban this IP address with the Ban plugin',
-    'num_comments' => '%s Comment(s)'
+    'num_comments' => '%s Comment(s)',
+    'anon_user_name' => '%s (Anonymous User)'
 );
 
 ###############################################################################
@@ -840,8 +841,6 @@ $LANG_ENVCHECK = array(
     'post_max_size' => 'Geeklog allows you to upload plugins, images, and files. You should allow at least 8M for the maximum post size.',
     'recheck' => 'Recheck Environment',
     'recommended' => 'Recommended',
-    'register_globals' => 'If PHP\'s <strong>register_globals</strong> is enabled, it can create security issues.',
-    'safe_mode' => 'If PHP\'s <strong>safe_mode</strong> is enabled, some functions of Geeklog may not work correctly. Specifically the Media Gallery plugin.',
     'setting' => 'Setting',
     'unable_mkdir' => 'Unable to create directory',
     'upload_max_filesize' => 'Geeklog allows you to upload plugins, images, and files. You should allow at least 8M for the upload size.',
