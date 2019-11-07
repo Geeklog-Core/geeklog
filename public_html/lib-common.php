@@ -131,6 +131,7 @@ $_CONF = $config->get_config('Core');
 // Installer calls lib-common so make sure it doesn't get affectd by certain config options
 if (defined('GL_INSTALL_ACTIVE')) {
     $_CONF['site_enabled'] = true;
+    $_CONF['demo_mode'] = false;
     $_CONF['cache_templates'] = false;
     $_CONF['cache_resource'] = false; // If site disabled then resources cannot be used on success page which is created by Geeklog since r.php checks site_enabled independantly
 }
