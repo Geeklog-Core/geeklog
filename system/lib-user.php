@@ -575,7 +575,9 @@ function USER_generateUserICON($uid, $width = 0, $cssClasses = '', $anonName = '
             $text_color = _textColorBasedOnBgColor($bg_color, 'FFFFFF', '000000');
             // See https://ui-avatars.com/ for API
             // See https://github.com/LasseRafn/php-initial-avatar-generator and https://github.com/LasseRafn/ui-avatars for github libraries
-            $retval = '<img src="https://ui-avatars.com/api/?name=' . $letters . '&color=' . $text_color . '&background=' . $bg_color . '&size=' . $_CONF['max_photo_width'] . '"  alt="" title="' . $altText . '" class="' . $cssClasses . '"';
+            $extrasettings = PLG_getThemeItem('core-auto-generated-user-avatar-settings', 'core');
+            $retval = '<img src="https://ui-avatars.com/api/?name=' . $letters . '&color=' . $text_color . '&background=' . $bg_color . '&size=' . $_CONF['max_photo_width']
+                . $extrasettings . '"  alt="" title="' . $altText . '" class="' . $cssClasses . '"';
             if ($width > 0) {
                 // Since a square is returned set height as well
                 $retval .= ' width="' . $width . '" height="' . $width . '"';

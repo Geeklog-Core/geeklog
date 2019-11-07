@@ -203,6 +203,14 @@ function theme_getThemeItem_modern_curve($item)
         case 'article-css-list-options':  // Return 1 or more CSS Classes - replacing "list-story-options"
             $retval = 'list-story-options'; // used by denim, denim_curve, modern_curve
             break;
+
+        // If Generate User Icon Automatically (config option generate_user_icon) is true  use the setting below to change the look
+        // Geeklog generates a URL with letters and color settings like this: https://ui-avatars.com/api/?name=ME&color=000000&background=B4ED88&size=128
+        // This option will add extra settings to the end of this URL.
+        // Please visit https://ui-avatars.com/ for the full list of options you can change (which include, bold, font-size and rounded)
+        case 'core-auto-generated-user-avatar-settings':
+            //$retval = '&rounded=true';
+            break;
             
         case 'core-css-list-default': // Return 1 or more CSS Classes -  Default List styling - not used yet
         case 'core-css-list-new': // Return 1 or more CSS Classes - For What's New Block - replacing "list-new-plugins", 'list-new-comments', 'list-new-trackbacks'
