@@ -35,6 +35,10 @@
 
 global $_CONF, $_TABLES, $LANG_INSTALL, $LANG_PLUGINS;
 
+if (!defined('GL_INSTALL_ACTIVE')) {
+    define('GL_INSTALL_ACTIVE', true);
+}
+
 if (!defined('BASE_FILE')) {
     define(
         'BASE_FILE',
@@ -50,7 +54,7 @@ if (!defined('PATH_LAYOUT')) {
     define('PATH_LAYOUT', PATH_INSTALL . 'layout');
 }
 
-require_once '../../lib-common.php';
+require_once '../../lib-common.php'; // Error reporting is set by lib-common
 require_once './classes/micro_template.class.php';
 require_once './classes/installer.class.php';
 $installer = new Installer();
@@ -210,21 +214,21 @@ switch ($step) {
         // If the web server will allow the user to upload a plugin
         if ($upload_enabled) {
             // Show the upload form
-            $content .= 
+            $content .=
                   ($upload_success
                     ? '<div class="uk-alert-success" uk-alert><p><span class="uk-label uk-label-success">' . $LANG_PLUGINS[7] . '</span> ' . sprintf($LANG_PLUGINS[8], $pi_name) . '</p></div>'
                     : '') . PHP_EOL
                 . '<h2>' . $LANG_PLUGINS[9] . '</h2>' . PHP_EOL
                 . '<form name="plugins_upload" action="install-plugins.php" method="post" enctype="multipart/form-data">' . PHP_EOL
                 . '<input type="hidden" name="language" value="' . $language . '">' . PHP_EOL
-                
+
                 . ' <div class="uk-margin" uk-margin>
                         <div uk-form-custom="target: true">
                             <input type="file" name="plugin">
                             <input class="uk-input uk-form-width-medium" type="text" placeholder="' . $LANG_PLUGINS[10] . '" disabled>
                         </div>
                         <button type="submit" class="uk-button uk-button-primary uk-margin-small" name="upload" value="' . $LANG_PLUGINS[11] . '">' . $LANG_PLUGINS[11] . '</button>
-                    </div>'                
+                    </div>'
                 . '</form>' . PHP_EOL;
         }
 
@@ -258,7 +262,7 @@ switch ($step) {
                 . '<input type="hidden" name="step" value="2">' . PHP_EOL
 
                 . '<div class="uk-overflow-auto">' . PHP_EOL
-                
+
                 . '<table class="uk-table uk-table-small uk-table-middle">' . PHP_EOL
                 . '<thead>' . PHP_EOL
                 . '<tr>' . PHP_EOL
@@ -392,7 +396,7 @@ switch ($step) {
         } else {
             $content .= '<p>' . $LANG_PLUGINS[20] . '</p>' . PHP_EOL
                 . '<form action="install-plugins.php" method="post">' . PHP_EOL
-                . '<button type="submit" class="uk-button uk-button-primary uk-margin-small" name="refresh" value="' 
+                . '<button type="submit" class="uk-button uk-button-primary uk-margin-small" name="refresh" value="'
                 . $LANG_PLUGINS[19] . '">' . $LANG_INSTALL[50] . '</button>' . PHP_EOL
                 . '</form>' . PHP_EOL;
         }

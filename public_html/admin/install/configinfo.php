@@ -39,6 +39,10 @@
 *
 */
 
+if (!defined('GL_INSTALL_ACTIVE')) {
+    define('GL_INSTALL_ACTIVE', true);
+}
+
 if (file_exists('../../lib-common.php')) {
     require_once '../../lib-common.php';
 } else {
@@ -88,7 +92,7 @@ $display .= '
                 <table class="uk-table uk-table-striped">
                     <thead><tr><th>Option</th><th>Value</th></tr></thead>
                     <tbody>';
-                
+
 foreach ($_CONF as $option => $value) {
     $display .= '<tr>';
     $display .= '<td><strong>$_CONF[\'<a href="'

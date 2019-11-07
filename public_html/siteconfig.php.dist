@@ -27,7 +27,7 @@ $_CONF['site_enabled'] = true;
 /**
  * Demo mode
  *
- * If you uncomment the line below the site will be in a demo mode. This will disable 
+ * If you uncomment the line below the site will be in a demo mode. This will disable
  * certain config options from being changed and from certain features being enabled.
  * This includes the File Manager, Saving of Static Pages, Uploading Plugins, and
  * Sending Bulk Emails. Some plugins may support this setting as well.
@@ -42,6 +42,7 @@ $_CONF['site_enabled'] = true;
  *
  * If you set this flag to true, detailed information will be displayed and/or logged.
  * When this flag is not set or set to false, all the options below DO NOT take effect.
+ * Works with Geeklog itself and the Geeklog Installer
  *
  * @var boolean
  * @since v2.1.2
@@ -49,7 +50,7 @@ $_CONF['site_enabled'] = true;
 // $_CONF['developer_mode'] = true;
 
 /**
- * This overwrites error_reporting level set in lib-common.php
+ * This overwrites error_reporting level set in lib-common.php and Geeklog Installer
  *
  * @var int
  * @see http://php.net/manual/en/function.error-reporting.php and for a list of PHP
@@ -81,7 +82,7 @@ $_CONF['path_system'] = $_CONF['path'] . 'system/';
 
 // Please note: If you change this you need to make sure your database is using a compatible character set as well (also see dbconfig.php and $_DB_charset setting).
 // Changing the default character set setting to one that is not backwards compatible on an established site may result in content not displaying correctly.
-// Geeklogs default character set is 'iso-8859-1' (Latin-1). It is an older legacy encoding standard that supports a limited number of languages. 
+// Geeklogs default character set is 'iso-8859-1' (Latin-1). It is an older legacy encoding standard that supports a limited number of languages.
 // For multi-language sites and those who wish to use emojis then 'UTF-8' should be the setting for the default character set.
 $_CONF['default_charset'] = 'iso-8859-1';
 

@@ -33,12 +33,21 @@
 // | docs/english/install.html which describes how to install Geeklog.         |
 // +---------------------------------------------------------------------------+
 
+// Used to tell Geeklog when it's own libraries like lib-common.php is required and being used by the install
+define('GL_INSTALL_ACTIVE', true); // Introduced in Geeklog v2.2.1
+
 define('PATH_INSTALL', __DIR__ . '/');
 define('PATH_LAYOUT', PATH_INSTALL . 'layout');
 define('BASE_FILE', str_replace('\\', '/', __FILE__));
 
 require_once __DIR__ . '/classes/micro_template.class.php';
 require_once __DIR__ . '/classes/installer.class.php';
+
+// Note: PHP error repoting uses the settings found in siteconfig.php for developer mode
+//  PHP error reporting is set in the spots below and should be covered by most parts of install (except in help and stuff above):
+//  - installer run function (not construct)
+//  - By lib-common.php when required
+//  - bigdump.php
 
 $installer = new Installer();
 $installer->run();

@@ -45,6 +45,7 @@
 // THIS SCRIPT IS PROVIDED AS IS, WITHOUT ANY WARRANTY OR GUARANTEE OF ANY KIND
 //
 
+define('GL_INSTALL_ACTIVE', true);
 define('PATH_INSTALL', __DIR__ . '/');
 define('PATH_LAYOUT', PATH_INSTALL . 'layout');
 define('BASE_FILE', str_replace('\\', '/', __FILE__));
@@ -58,6 +59,16 @@ require_once __DIR__ . '/classes/installer.class.php';
 require_once __DIR__ . '/classes/db.class.php';
 require_once __DIR__ . '/../../siteconfig.php';
 require_once $_CONF['path'] . 'db-config.php';
+
+// Set PHP error reporting
+if ((isset($_CONF['developer_mode']) && ($_CONF['developer_mode'] === true)) &&
+    isset($_CONF['developer_mode_php'], $_CONF['developer_mode_php']['error_reporting'])) {
+    error_reporting((int) $_CONF['developer_mode_php']['error_reporting']);
+} else {
+    // Same setting as Geeklog - Prevent PHP from reporting uninitialized variables
+    error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
+}
+
 $installer = new Installer();
 
 $db_server = $_DB_host;
@@ -405,18 +416,18 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
                 $url = 'index.php?mode=migrate&step=4'
                             . '&language=' . urlencode($installer->getLanguage())
                             . '&site_url=' . urlencode($_REQUEST['site_url'])
-                            . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']); 
-                            
+                            . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']);
+
                 $content .= "<script>
                     window.setTimeout(function () {
                         window.location.href=\""
-                            . $url . "\"; 
+                            . $url . "\";
                     }, 3000); // Wait 3 seconds before redirect
                 </script>\n";
-                
+
                 // Add button since above javascript settimeout function doesn't seem to work in development enviroment for Firefox for some reason (at least in 2019)
                 $content .= '<button class="uk-button uk-button-primary uk-margin-small" onClick="location.href=' . "'" . $url . "'" . '">' . $LANG_INSTALL[62] . '</button>';
-                
+
             } else {
                 if ($delayPerSession != 0) {
                     $content .= '<p><b>' . $LANG_BIGDUMP[24] . $delayPerSession . $LANG_BIGDUMP[25] . PHP_EOL;

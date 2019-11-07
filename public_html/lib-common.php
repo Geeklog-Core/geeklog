@@ -41,7 +41,7 @@ use Geeklog\Mail;
 use Geeklog\Resource;
 use Geeklog\Session;
 
-// Prevent PHP from reporting uninitialized variables
+// Prevent PHP from reporting uninitialized variables - Same setting as Geeklog installer
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
 
 /**
@@ -108,15 +108,17 @@ Autoload::initialize();
 // Initialize system classes
 Input::init();
 
-// *********************************************************
-// IMPORTANT: Have to redeclare the variables below as Global here for Geeklog Install/Upgrade/Migrate.
-// For some reason the scope is not correct for these variables when lib-common is included in the Geeklog Install
-// For more info see https://github.com/Geeklog-Core/geeklog/issues/980
-// Once install is fixed this can be removed...
-global $_RIGHTS; // For Geeklog install when lib-common included  SEC_getUserPermissions fails as $_RIGHTS doesn't get loaded
-global $_USER; // For Geeklog install when lib-common included when current user may already be logged an error happens because of $_USER not retrieved when SESS_sessionCheck is called
-global $TEMPLATE_OPTIONS; // For Geeklog install when lib-common included - COM_rdfUpToDateCheck is called when the template class is used an error happens because of $TEMPLATE_OPTIONS being empty.
-// *********************************************************
+if (defined('GL_INSTALL_ACTIVE')) {
+    // *********************************************************
+    // IMPORTANT: Have to redeclare the variables below as Global here for Geeklog Install/Upgrade/Migrate.
+    // For some reason the scope is not correct for these variables when lib-common is included in the Geeklog Install
+    // For more info see https://github.com/Geeklog-Core/geeklog/issues/980
+    // Once install is fixed this can be removed...
+    global $_RIGHTS; // For Geeklog install when lib-common included  SEC_getUserPermissions fails as $_RIGHTS doesn't get loaded
+    global $_USER; // For Geeklog install when lib-common included when current user may already be logged an error happens because of $_USER not retrieved when SESS_sessionCheck is called
+    global $TEMPLATE_OPTIONS; // For Geeklog install when lib-common included - COM_rdfUpToDateCheck is called when the template class is used an error happens because of $TEMPLATE_OPTIONS being empty.
+    // *********************************************************
+}
 
 // Load configuration
 $config = config::get_instance();
@@ -125,6 +127,13 @@ $config->load_baseconfig();
 $config->initConfig();
 
 $_CONF = $config->get_config('Core');
+
+// Installer calls lib-common so make sure it doesn't get affectd by certain config options
+if (defined('GL_INSTALL_ACTIVE')) {
+    $_CONF['site_enabled'] = true;
+    $_CONF['cache_templates'] = false;
+    $_CONF['cache_resource'] = false; // If site disabled then resources cannot be used on success page which is created by Geeklog since r.php checks site_enabled independantly
+}
 
 // Get features that has ft_name like 'config%'
 $_CONF_FT = $config->_get_config_features();
@@ -147,7 +156,6 @@ while ($row = DB_fetchArray($result)) {
     $_VARS[$row['name']] = $row['value'];
 }
 
-// Before we do anything else, check to ensure site is enabled
 if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
     if (empty($_CONF['site_disabled_msg'])) {
         header("HTTP/1.1 503 Service Unavailable");

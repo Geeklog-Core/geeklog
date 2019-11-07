@@ -202,7 +202,8 @@ $LANG_SUCCESS = array(
     22 => '移行',
     23 => 'インストールに使用したファイルとディレクトリをすべて削除しますか?',
     24 => 'はい、削除します。',
-    25 => 'いいえ、後で自分で削除します。'
+    25 => 'いいえ、後で自分で削除します。',
+    26 => 'Remember, if you have disabled your site in <code>public_html/siteconfig.php</code>, you will need to reenable it again before you can use your site.'
 );
 
 // +---------------------------------------------------------------------------+

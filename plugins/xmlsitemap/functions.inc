@@ -261,13 +261,15 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
 {
     global $_CONF, $_XMLSMAP_CONF;
 
-    // Load the plugin configuration again
-    // Need to do this as Geeklog Installer and migration has issues loading the XML Sitemap config
-    $_XMLSMAP_CONF = XMLSMAP_loadConfig();
-    // Fail gracefully here if $_XMLSMAP_CONF not completely loaded
-    // This means after migrate the sitemap most likely will be outdated
-    if (($_XMLSMAP_CONF === false) || !is_array($_XMLSMAP_CONF['types']) || !is_array($_XMLSMAP_CONF['exclude']) ) {
-        return true;
+    if (defined('GL_INSTALL_ACTIVE')) {
+        // Load the plugin configuration again
+        // Need to do this as Geeklog Installer and migration has issues loading the XML Sitemap config
+        $_XMLSMAP_CONF = XMLSMAP_loadConfig();
+        // Fail gracefully here if $_XMLSMAP_CONF not completely loaded
+        // This means after migrate the sitemap most likely will be outdated
+        if (($_XMLSMAP_CONF === false) || !is_array($_XMLSMAP_CONF['types']) || !is_array($_XMLSMAP_CONF['exclude']) ) {
+            return true;
+        }
     }
 
     if (($type !== null) && !in_array($type, $_XMLSMAP_CONF['types'])) {

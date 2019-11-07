@@ -8,6 +8,8 @@
     {lang_success_8}<strong>{lang_success_9}</strong></p>
     {!endif!}
 
+    <p>{lang_success_26}</p>
+
     <h2>{lang_success_10}</h2>
     <p>{lang_success_11} <strong>{!if is_install}3{!else!}2{!endif!}</strong> {lang_success_12}:</p>
     <ul>

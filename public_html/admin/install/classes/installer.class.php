@@ -4943,6 +4943,18 @@ HTML;
         $this->env['dbconfig_path'] = $this->sanitizePath($this->env['dbconfig_path']);
         $this->env['use_innodb'] = false;
 
+
+        // Need conf php error reporting settings
+        // Use Geeklog settings since they get overwritten anyways when lib-common is included
+        require_once $this->env['siteconfig_path'];
+        if ((isset($_CONF['developer_mode']) && ($_CONF['developer_mode'] === true)) &&
+            isset($_CONF['developer_mode_php'], $_CONF['developer_mode_php']['error_reporting'])) {
+            error_reporting((int) $_CONF['developer_mode_php']['error_reporting']);
+        } else {
+            // Same setting as Geeklog - Prevent PHP from reporting uninitialized variables
+            error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
+        }
+
         // Set UI language selector if necessary
         if (empty($this->env['mode']) || ($this->env['mode'] === 'check_permissions')) {
             $this->env['language_selector'] = $this->getLanguageSelector();

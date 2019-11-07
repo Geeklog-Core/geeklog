@@ -30,6 +30,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+if (!defined('GL_INSTALL_ACTIVE')) {
+    define('GL_INSTALL_ACTIVE', true);
+}
+
 if (!defined('BASE_FILE')) {
     define(
         'BASE_FILE',

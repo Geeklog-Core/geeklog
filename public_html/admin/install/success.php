@@ -34,6 +34,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+ // Need to set incase site is disabled as we want the User to know of the success of the Installer
+define('GL_INSTALL_ACTIVE', true);
+
 use Geeklog\Input;
 
 require_once '../../lib-common.php';
@@ -110,8 +113,8 @@ if (is_readable($languagePath)) {
 // enable detailed error reporting
 $_CONF['rootdebug'] = true;
 
-// Prevent the template class from creating a cache file
-$_CONF['cache_templates'] = false;
+// Prevent the template class from creating a cache file (now done in lib-common as we had to disable cache_resource as well)
+// $_CONF['cache_templates'] = false;
 
 switch ($submit) {
     case $LANG_SUCCESS[24]:  // Delete all the fies and directories
@@ -172,6 +175,7 @@ $T->set_var(array(
     'lang_success_23'     => $LANG_SUCCESS[23],
     'lang_success_24'     => $LANG_SUCCESS[24],
     'lang_success_25'     => $LANG_SUCCESS[25],
+    'lang_success_26'     => $LANG_SUCCESS[26],
     'lang_confirm_delete' => $MESSAGE[76],
     'install_path'        => $_CONF['path_html'] . SUCCESS_getInstallPath(),
     'older_geeklog'       => (DB_count($_TABLES['users'], 'username', 'NewAdmin') > 0),
