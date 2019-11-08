@@ -54,11 +54,7 @@
                 <input type="text" id="db_prefix" name="db_prefix" value="{! db_prefix !}" class="uk-input uk-width-small">
             </div>
         </div>
-    </fieldset>
-
-    <h2>{{ LANG.INSTALL.44 }}</h2>
-
-    <fieldset class="uk-fieldset">
+		
         <div class="uk-margin">
             <label class="uk-form-label" for="site_url">{{ LANG.INSTALL.45 }} {{ help_site_url }}</label>
             <div class="uk-form-controls">
