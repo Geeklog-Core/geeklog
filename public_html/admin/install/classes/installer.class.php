@@ -4118,9 +4118,12 @@ HTML;
             $theme = $_CONF['theme'];
         }
 
-        if (!file_exists($_CONF['path_themes'] . $theme . '/header.thtml')) {
-            $config->set('theme', self::DEFAULT_THEME);
-            $_CONF['theme'] = self::DEFAULT_THEME;
+        if (!file_exists($_CONF['path_themes'] . $theme . '/index.thtml')) {
+            // make sure default theme exists before setting config
+            if (file_exists($_CONF['path_themes'] . self::DEFAULT_THEME . '/index.thtml')) {
+                $config->set('theme', self::DEFAULT_THEME);
+                $_CONF['theme'] = self::DEFAULT_THEME;
+            }
         }
 
         // set noreply_mail when updating from an old version
