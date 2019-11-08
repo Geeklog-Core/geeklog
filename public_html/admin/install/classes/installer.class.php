@@ -585,7 +585,7 @@ class Installer
 
         // $_CONF['path']
         $_CONF = array();
-        require_once $this->env['siteconfig_path'];
+        require $this->env['siteconfig_path']; // must aquire CONF again for compare so use require and not require_once as file could have been called before
         $siteConfigData = str_replace(
             "\$_CONF['path'] = '{$_CONF['path']}';",
             "\$_CONF['path'] = '" . str_replace('db-config.php', '', $paths['db-config.php']) . "';",
@@ -3797,7 +3797,7 @@ class Installer
                     break;
 
                 case 'dbcontent':
-                    require_once $_CONF['path_system'] . 'lib-database.php';
+		            require_once $_CONF['path_system'] . 'lib-database.php';
 
                     // we need the following information
                     $has_config = false;
@@ -4946,6 +4946,7 @@ HTML;
 
         // Need conf php error reporting settings
         // Use Geeklog settings since they get overwritten anyways when lib-common is included
+		// Need conf settings for migration as well
         require_once $this->env['siteconfig_path'];
         if ((isset($_CONF['developer_mode']) && ($_CONF['developer_mode'] === true)) &&
             isset($_CONF['developer_mode_php'], $_CONF['developer_mode_php']['error_reporting'])) {
@@ -4991,10 +4992,6 @@ HTML;
             case 'install': // Deliberate fall-through, no "break"
             case 'upgrade':
             case 'migrate':
-                if ($this->env['mode'] === 'migrate') {
-                    // Need conf paths etc for migration
-                    require_once $this->env['siteconfig_path'];
-                }
                 if (($this->env['step'] == 4) && ($this->env['mode'] !== 'migrate')) {
                     // for the plugin install and upgrade,
                     // we need lib-common.php in the global(!) namespace
