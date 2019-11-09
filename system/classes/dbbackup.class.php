@@ -386,7 +386,12 @@ class dbBackup
                             $defs[strtolower($key)] : $value;
                     $values[] = ( '' === $value ) ? "''" : $value;
                 } else {
-                    $values[] = "'" . str_replace($search, $replace, DB_escapeString($value)) . "'";
+                    if ($value === null) {
+                        // DATETIME, DATE, TIME fields must not be ''
+                        $values[] = 'NULL';
+                    } else {
+                        $values[] = "'" . str_replace($search, $replace, DB_escapeString($value)) . "'";
+                    }
                 }
             }
             $this->stow(" \n" . $insert . implode(', ', $values) . ');');
