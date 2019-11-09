@@ -3663,6 +3663,10 @@ class Installer
 
         $this->env['alert_message2'] = $alertMessage2;
 
+        // Update migration warning language about outdated custom theme with default theme
+        // Use env to overwrite Language Variable with updated info
+        $this->env['LANG']['MIGRATE'][5] = sprintf($LANG_MIGRATE[5], self::DEFAULT_THEME);
+
         return MicroTemplate::quick(PATH_LAYOUT, 'step1-migrate', $this->env);
     }
 
