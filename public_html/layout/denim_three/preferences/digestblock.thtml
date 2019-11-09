@@ -16,7 +16,7 @@
   <div class="compact">
     <dl class="form_block">
       <dt><label>{lang_topics}</label></dt>
-      <dd>{email_topic_checklist}</dd>
+      <dd class="controls_text"><div id="email_topics" class="uk-panel uk-panel-scrollable">{email_topic_checklist}</div></dd>
     </dl>
   </div>
 </fieldset>
