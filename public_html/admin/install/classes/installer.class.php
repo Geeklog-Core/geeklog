@@ -4118,7 +4118,9 @@ HTML;
             $theme = $_CONF['theme'];
         }
 
-        if (!file_exists($_CONF['path_themes'] . $theme . '/index.thtml')) {
+        // All themes require a functions.php (ie child themes don't require any template files) so check for that
+        // At some point could actualy check for min geeklog version of theme theme_gl_version wgich was introduced in Geeklog v2.2.1
+        if (!file_exists($_CONF['path_themes'] . $theme . '/functions.php')) {
             // make sure default theme exists before setting config
             if (file_exists($_CONF['path_themes'] . self::DEFAULT_THEME . '/index.thtml')) {
                 $config->set('theme', self::DEFAULT_THEME);
