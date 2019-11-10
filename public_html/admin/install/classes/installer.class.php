@@ -4278,12 +4278,12 @@ HTML;
         $missing_topic_images = false;
         $result = DB_query("SELECT `imageurl` FROM {$_TABLES['topics']}");
         $num_topic_images = DB_numRows($result);
-        $pathTopicBase = rtrim($html_path, '/\\');
 
         for ($i = 0; $i < $num_topic_images; $i++) {
             $topic_image = DB_fetchArray($result, false);
 
-            if (!file_exists($pathTopicBase . $topic_image['imageurl'])) { // If topic image does not exist
+			// Topic image stores part of the path
+            if (!file_exists($html_path . $topic_image['imageurl'])) { // If topic image does not exist
                 // Log the error
                 COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[29] . $topic_image['imageurl'] . $LANG_MIGRATE[30] . $_TABLES['topics'] . $LANG_MIGRATE[31] . $html_path . 'images/topics/');
                 $missing_topic_images = true;
