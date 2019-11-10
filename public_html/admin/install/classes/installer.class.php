@@ -3315,6 +3315,55 @@ class Installer
     }
 
     /**
+     * Unpack a db backup file with its file name ending ".sql.gz"
+     *
+     * @param  string  $backupPath
+     * @param  string  $backupFile
+     * @param  string  $display
+     * @return string|false
+     */
+    private function unpackSqlGzFile($backupPath, $backupFile, &$display)
+    {
+        global $LANG_MIGRATE;
+
+        if (!is_callable('gzopen')) {
+            $display .= $this->getAlertMsg($LANG_MIGRATE[39], 'error');
+
+            return false;
+        }
+
+        $in = @gzopen($backupPath . $backupFile, 'rb');
+        if (!$in) {
+            $display .= $this->getAlertMsg($LANG_MIGRATE[41], 'error');
+
+            return false;
+        }
+
+        $destFile = substr($backupFile, 0, - strlen('.gz'));
+        $out = @fopen($backupPath . $destFile, 'wb');
+        if (!$out) {
+            $display .= $this->getAlertMsg($LANG_MIGRATE[41], 'error');
+
+            return false;
+        }
+
+        while (!gzeof($in)) {
+            $data = gzread($in, 512);
+
+            if (empty($data)) {
+                break;
+            } else {
+                fwrite($out, $data);
+            }
+        }
+
+        @fclose($out);
+        @gzclose($in);
+
+        return $destFile;
+    }
+
+    /**
      * Unpack a db backup file, if necessary
      * Note: This requires a minimal PEAR setup (incl. Tar and Zip classes) and a
      *       way to set the PEAR include path. But if that doesn't work on your
@@ -3328,6 +3377,11 @@ class Installer
     private function unpackFile($backupPath, $backupFile, &$display)
     {
         global $_CONF, $LANG_MIGRATE;
+
+        // Backup files created with Geeklog's DBBackUp feature needs to be treated separately
+        if (preg_match('/\.sql.gz\z/', $backupFile)) {
+            return $this->unpackSqlGzFile($backupPath, $backupFile, $display);
+        }
 
         if (!preg_match('/\.(zip|tar\.gz|tgz|gz)$/i', $backupFile)) {
             // not packed

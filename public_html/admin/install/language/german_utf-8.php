@@ -247,7 +247,7 @@ $LANG_MIGRATE = array(
     36 => 'Diese Probleme k&ouml;nnen anschlie&szlig;end von Hand korrigiert werden.',
     37 => 'Migration abgeschlossen',
     38 => 'Die Datenbank-Migration wurde erfolgreich abgeschlossen. Es wurden allerdings die folgenden Probleme gefunden:',
-    39 => 'Der Pfad f&uuml;r PEAR konnte nicht gesetzt werden. Ohne PEAR k&ouml;nnen leider keine komprimierten Datenbank-Backups importiert werden.',
+    39 => "Zlib extension is not loaded. Sorry, can't handle compressed database backups.",
     40 => 'Das Archiv "%1$s" scheint keine SQL-Dateien zu enthalten. Um es erneut zu versuchen, klicken Sie auf <a href="%2$s\"> hier.</a> ',
     41 => 'Fehler beim extrahieren des Datenbank-Backups \'%s\' aus dem Archiv.',
     42 => 'Backup-Datei \'%s\' nicht (mehr) auffindbar ...',
