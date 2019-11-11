@@ -17,6 +17,9 @@
     <dl class="form_block">
       <dt><label>{lang_blocks}</label></dt>
       <dd><div id="exclude_blocks" class="uk-panel uk-panel-scrollable">{boxes_checklist}</div></dd>
+
+      <dt><label for="displayprefs-noboxes">{lang_noboxes}</label></dt>
+      <dd class="controls_text"><label><input type="checkbox" {noboxes_checked} name="noboxes" id="displayprefs-noboxes" class="uk-checkbox"{xhtml}>{lang_noboxes_text}</label></dd>
     </dl>
   </div>
 </fieldset>

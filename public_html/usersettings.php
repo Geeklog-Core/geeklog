@@ -474,8 +474,6 @@ function editpreferences()
     $preferences->set_var('lang_misc_help', $LANG04[140]);
     $preferences->set_var('lang_noicons', $LANG04[40]);
     $preferences->set_var('lang_noicons_text', $LANG04[49]);
-    $preferences->set_var('lang_noboxes', $LANG04[44]);
-    $preferences->set_var('lang_noboxes_text', $LANG04[51]);
     $preferences->set_var('lang_maxstories', $LANG04[43]);
     if (strpos($LANG04[52], '%d') === false) {
         $maxtext = $LANG04[52] . ' ' . $_CONF['limitnews'];
@@ -493,6 +491,8 @@ function editpreferences()
     $preferences->set_var('lang_digest_help_header', $LANG04[132]);
     $preferences->set_var('lang_boxes_title', $LANG04[144]);
     $preferences->set_var('lang_boxes_help_title', $LANG04[143]);
+    $preferences->set_var('lang_noboxes', $LANG04[44]);
+    $preferences->set_var('lang_noboxes_text', $LANG04[51]);
     $preferences->set_var('lang_boxes', $LANG04[55]);
     $preferences->set_var('lang_blocks', $LANG04[151]);
     $preferences->set_var('lang_displaymode', $LANG04[57]);
@@ -691,12 +691,6 @@ function editpreferences()
         $preferences->set_var('noicons_checked', '');
     }
 
-    if (isset($A['noboxes']) && $A['noboxes'] == '1') {
-        $preferences->set_var('noboxes_checked', 'checked="checked"');
-    } else {
-        $preferences->set_var('noboxes_checked', '');
-    }
-
     $preferences->set_var('maxstories_value', $A['maxstories']);
 
     $items = COM_optionList($_TABLES['dateformats'], 'dfid,description', $A['dfid']);
@@ -789,6 +783,13 @@ function editpreferences()
         $preferences->parse('digest_block', 'digest', true);
     } else {
         $preferences->set_var('digest_block', '');
+    }
+
+
+    if (isset($A['noboxes']) && $A['noboxes'] == '1') {
+        $preferences->set_var('noboxes_checked', 'checked="checked"');
+    } else {
+        $preferences->set_var('noboxes_checked', '');
     }
 
     // boxes block
@@ -1311,11 +1312,6 @@ function savepreferences($A)
     } else {
         $A['willing'] = 0;
     }
-    if (isset($A['noboxes']) && ($A['noboxes'] === 'on')) {
-        $A['noboxes'] = 1;
-    } else {
-        $A['noboxes'] = 0;
-    }
     if (isset($A['emailfromadmin']) && ($A['emailfromadmin'] === 'on')) {
         $A['emailfromadmin'] = 1;
     } else {
@@ -1361,6 +1357,12 @@ function savepreferences($A)
     $AIDS = array();
     if (isset($A['selauthors']) && is_array($A['selauthors'])) {
         $AIDS = array_values($A['selauthors']); // array of integers
+    }
+
+    if (isset($A['noboxes']) && ($A['noboxes'] === 'on')) {
+        $A['noboxes'] = 1;
+    } else {
+        $A['noboxes'] = 0;
     }
 
     $BOXES = array();

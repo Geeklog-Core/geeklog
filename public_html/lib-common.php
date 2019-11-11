@@ -4133,7 +4133,7 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
         } else {
             // The only time cache_time would not be set if for dynamic blocks (they can handle their own caching if needed)
             // Don't Cache default blocks either
-            if (isset($A['cache_time']) && (($A['cache_time'] > 0) || ($A['cache_time'] == -1))) {
+            if ((isset($A['cache_time']) && (($A['cache_time'] > 0) || ($A['cache_time'] == -1))) &&  !$noBoxes) {
                 $cacheInstance = 'block__' . $A['bid'] . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
                 $retval = CACHE_check_instance($cacheInstance);
                 if ($retval && ($A['cache_time'] == -1)) {
@@ -4150,7 +4150,7 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
             }
         }
 
-        if ($A['type'] === 'portal') {
+        if ($A['type'] === 'portal' &&  !$noBoxes) {
             COM_rdfImport($A['bid'], $A['rdfurl'], $A['rdflimit']);
             $A['content'] = DB_getItem($_TABLES['blocks'], 'content', "bid = '{$A['bid']}'");
         }

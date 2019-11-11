@@ -11,6 +11,9 @@
   <dl>
     <dt>{lang_blocks}</dt>
     <dd>{boxes_checklist}</dd>
+
+    <dt><label for="displayprefs-noboxes">{lang_noboxes}</label></dt>
+    <dd><input type="checkbox" {noboxes_checked} name="noboxes" id="displayprefs-noboxes" class="text"{xhtml}>{lang_noboxes_text}</dd>
   </dl>
 </fieldset>
 
