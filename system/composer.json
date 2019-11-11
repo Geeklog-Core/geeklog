@@ -14,7 +14,7 @@
     "pear/net_dns2": "~1.4",
     "pear/net_url2": "~2.2",
     "pear/http_request2": "~2.3.0",
-    "splitbrain/php-archive": "1.0.9",
+    "splitbrain/php-archive": "^1.1.0",
     "swiftmailer/swiftmailer": "~5",
     "phpclasses/oauth-api": ">=1.0.105",
     "robthree/twofactorauth": "^1.6",
@@ -28,9 +28,6 @@
     {
       "type": "composer",
       "url": "https:\/\/www.phpclasses.org\/"
-    },
-    {
-      "packagist": false
     }
   ]
 }

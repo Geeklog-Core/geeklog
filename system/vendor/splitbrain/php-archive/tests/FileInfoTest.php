@@ -1,8 +1,10 @@
-<?php
+<?php /** @noinspection PhpUnhandledExceptionInspection */
 
-use splitbrain\PHPArchive\FileInfo;
+namespace splitbrain\PHPArchive;
 
-class FileInfoTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class FileInfoTest extends TestCase
 {
 
     public function testDefaults()
@@ -95,5 +97,13 @@ class FileInfoTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('zip', $fileinfo->getPath());
         $this->assertTrue($fileinfo->getIsdir());
         $this->assertSame(0, $fileinfo->getSize());
+    }
+
+    /**
+     * @expectedException \splitbrain\PHPArchive\FileInfoException
+     */
+    public function testFromPathWithFileNotExisted()
+    {
+        FileInfo::fromPath('invalid_file_path');
     }
 }
