@@ -150,7 +150,7 @@ $LANG_INSTALL = array(
     96 => 'インストーラはここで %s を探しています:',
     97 => 'パーミッション設定',
     98 => 'アドバンストユーザ',
-    99 => 'コマンドライン (SSH) が使えるなら、Webサーバーにアクアセスしてください。shellを使えば、以下のコマンドのコピー・ペーストで簡単に実行できます。:',
+    99 => 'コマンドライン(SSH)が使えるなら、Webサーバーにアクアセスしてください。shellを使えば、以下のコマンドのコピー・ペーストで簡単に実行できます。:',
     100 => '無効なモードを指定',
     101 => 'ステップ',
     102 => 'コンフィギュレーションモード入力',
@@ -203,7 +203,7 @@ $LANG_SUCCESS = array(
     23 => 'インストールに使用したファイルとディレクトリをすべて削除しますか?',
     24 => 'はい、削除します。',
     25 => 'いいえ、後で自分で削除します。',
-    26 => 'Remember, if you have disabled your site in <code>public_html/siteconfig.php</code>, you will need to reenable it again before you can use your site.'
+    26 => '注意: <code>public_html/siteconfig.php</code>内の設定でサイトを無効にしている場合、再び有効にするまではサイトを使用できません。'
 );
 
 // +---------------------------------------------------------------------------+
@@ -215,7 +215,7 @@ $LANG_MIGRATE = array(
     2 => '以前のプラグインが新しいサーバーにコピーされていることを確認してください。',
     3 => '画像ディレクトリ:<br><code>public_html/images/articles/</code><br><code>public_html/images/topics/</code><br><code>public_html/images/userphotos/</code><br>が、新しいサーバーに移行されていることを確認してください。',
     4 => '<strong>1.5.0</strong>以前のバージョンからアップグレードする場合は、<code>config.php</code>もコピーしてください。移行後、これを参照して設定できます。',
-    5 => 'If you\'re upgrading to a new Geeklog version during your migration and your current theme is not packaged with Geeklog, <em>then don\'t upload your theme just yet unless you are sure it supports this version of Geeklog</em>. Use the included default theme "%s" until you can be sure your migrated site works properly.',
+    5 => 'マイグレーションの過程でGeeklogのバージョンアップを行い、しかも、使用中のテーマがGeeklogの新しいバージョンに含まれていない場合は、<em>使用中のテーマがGeeklogの新バージョンをサポートしているのを確認してからアップロードしてください</em>。マイグレーションを行ったサイトが適切に稼働することを確認できるまで、同梱されているデフォルトのテーマ "%s" を使用してください。',
     6 => 'バックアップファイルを選択',
     7 => 'ファイル選択...',
     8 => 'サーバーのbackupsディレクトリから',
