@@ -104,7 +104,7 @@ function install_config(ConfigInterface $c)
 
     $c->add('tab_database', NULL, 'tab', 0, 5, NULL, 0, TRUE, $me, 5);
     $c->add('fs_database_backup', NULL, 'fieldset', 0, 5, NULL, 0, TRUE, $me, 5);
-    $c->add('dbdump_filename_prefix','geeklog_db_backup','text',0,5,NULL,170,TRUE, $me, 5);    
+    $c->add('dbdump_filename_prefix','geeklog_db_backup','text',0,5,NULL,170,TRUE, $me, 5);
     $c->add('dbdump_tables_only',1,'select',0,5,0,175,TRUE, $me, 5);
     $c->add('dbdump_gzip',1,'select',0,5,0,180,TRUE, $me, 5);
     $c->add('dbdump_max_files',10,'text',0,5,NULL,185,TRUE, $me, 5);
@@ -253,7 +253,7 @@ function install_config(ConfigInterface $c)
     $c->add('twitter_consumer_secret','','text',4,16,NULL,358,TRUE, $me, 16);
     $c->add('google_login',0,'select',4,16,1,359,TRUE, $me, 16);
     $c->add('google_consumer_key','','text',4,16,NULL,360,TRUE, $me, 16);
-    $c->add('google_consumer_secret','','text',4,16,NULL,361,TRUE, $me, 16);    
+    $c->add('google_consumer_secret','','text',4,16,NULL,361,TRUE, $me, 16);
     $c->add('microsoft_login',0,'select',4,16,1,362,TRUE, $me, 16);
     $c->add('microsoft_consumer_key','','text',4,16,NULL,363,TRUE, $me, 16);
     $c->add('microsoft_consumer_secret','','text',4,16,NULL,364,TRUE, $me, 16);
@@ -262,8 +262,8 @@ function install_config(ConfigInterface $c)
     $c->add('yahoo_consumer_secret','','text',4,16,NULL,367,TRUE, $me, 16);
     $c->add('github_login',0,'select',4,16,1,368,TRUE, $me, 16);
     $c->add('github_consumer_key','','text',4,16,NULL,369,TRUE, $me, 16);
-    $c->add('github_consumer_secret','','text',4,16,NULL,370,TRUE, $me, 16);    
-    
+    $c->add('github_consumer_secret','','text',4,16,NULL,370,TRUE, $me, 16);
+
     $c->add('aftersave_user','item','select',4,16,9,1340,TRUE, $me, 16);
 
     $c->add('tab_spamx', NULL, 'tab', 4, 17, NULL, 0, TRUE, $me, 17);
@@ -342,7 +342,7 @@ function install_config(ConfigInterface $c)
     $so += 10;
     $c->add('likes_comments',1,'select',$sg,$fs,41,$so,TRUE, $me, $tab);
     $so += 10;
-    $c->add('likes_speedlimit',20,'text',$sg,$fs,NULL,$so,TRUE, $me, $tab);    
+    $c->add('likes_speedlimit',20,'text',$sg,$fs,NULL,$so,TRUE, $me, $tab);
     $so += 10;
 
     // Subgroup: Images
@@ -398,8 +398,8 @@ function install_config(ConfigInterface $c)
     $c->add('switchlang_homepage',0,'select',6,28,0,370,TRUE, $me, 28);
     $c->add('new_item_set_current_lang',0,'select',6,28,0,380,TRUE, $me, 28);
     $c->add('fs_multilanguage', NULL, 'fieldset', 6, 29, NULL, 0, TRUE, $me, 28);
-    $c->add('language_files',array('en'=>'english_utf-8', 'de'=>'german_formal_utf-8'),'*text',6,29,NULL,470,FALSE, $me, 28);
-    $c->add('languages',array('en'=>'English', 'de'=>'Deutsch'),'*text',6,29,NULL,480,FALSE, $me, 28);
+    $c->add('language_files',array('en'=>'english_utf-8', 'de'=>'german_formal_utf-8', 'ja'=>'japanese_utf-8'),'*text',6,29,NULL,470,FALSE, $me, 28);
+    $c->add('languages',array('en'=>'English', 'de'=>'Deutsch', 'ja'=>'Japanese'),'*text',6,29,NULL,480,FALSE, $me, 28);
 
     $c->add('tab_locale', NULL, 'tab', 6, 29, NULL, 0, TRUE, $me, 29);
     $c->add('fs_locale', NULL, 'fieldset', 6, 29, NULL, 0, TRUE, $me, 29);
