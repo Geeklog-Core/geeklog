@@ -132,7 +132,7 @@ $LANG_STATIC = array(
     'prev_page' => 'Previous page',
     'next_page' => 'Next page',
     'parent_page' => 'Parent page',
-    'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel=”next” and rel=”prev” to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
+    'page_desc' => 'Setting a previous and/or next page will indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
     'num_pages' => '%s Page(s)'
 );
 
