@@ -361,7 +361,6 @@ class dbBackup
                     (0 === strpos(strtolower($struct['Type']), 'mediumint')) ||
                     (0 === strpos(strtolower($struct['Type']), 'int')) ||
                     (0 === strpos(strtolower($struct['Type']), 'timestamp')) ||
-                    (0 === strpos(strtolower($struct['Type']), 'time')) ||
                     (0 === strpos(strtolower($struct['Type']), 'bigint')) ) {
                 $defs[strtolower($struct['Field'])] = (null === $struct['Default']) ? 'NULL' : $struct['Default'];
                 $ints[strtolower($struct['Field'])] = "1";
