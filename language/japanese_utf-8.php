@@ -1986,7 +1986,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-#
+# 
 # This here determines the order of the sentence "No new articles in 2 hrs"
 # order it so it makes sense in your language:
 # %i    item, "Articles"
@@ -2044,7 +2044,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-#
+# 
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2733,3 +2733,4 @@ $LANG_VALIDATION = array(
     'config_setting_lang_array' => 'Each element requires a unique language shortcut (\'en\', \'de\', etc.) and the corresponding field must contain a value',
     'config_setting_lang_array_element_req' => 'Requires at least one element. Each element requires a unique language shortcut (\'en\', \'de\', etc.) and the corresponding field must contain a value'
 );
+

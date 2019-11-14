@@ -247,7 +247,7 @@ $LANG_MIGRATE = array(
     36 => 'You can correct these any time.',
     37 => 'Migration Complete',
     38 => 'The migration process has completed. However, the installation script found the following issues:',
-    39 => "Zlib extension is not loaded. Sorry, can't handle compressed database backups.",
+    39 => 'Zlib extension is not loaded. Sorry, can\'t handle compressed database backups.',
     40 => 'The archive "%1$s" does not appear to contain any SQL files.  To retry, click on <a href="%2$s\">this</a>',
     41 => 'Error extracting database backup \'%s\' from compressed backup file.',
     42 => 'Backup file \'%s\' just vanished ...',

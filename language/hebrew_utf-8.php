@@ -201,7 +201,11 @@ $LANG01 = array(
     'ok' => 'OK',
     'filemanager' => 'File Manager',
     'error_invalid_password' => 'Error, invalid password for username',
-    'error_filemanager_disabled' => 'Filemanager is disabled'
+    'error_filemanager_disabled' => 'Filemanager is disabled',
+    'terms_of_use' => 'Terms of Use',
+    'terms_of_service' => 'Terms of Service',
+    'privacy_policy' => 'Privacy Policy',
+    'about_cookies' => 'About Cookies'
 );
 
 ###############################################################################
@@ -2506,7 +2510,10 @@ $LANG_confignames['Core'] = array(
     'filemanager_videos_player_height' => 'Video player height (px)',
     'filemanager_show_audio_player' => 'Show audio player?',
     'filemanager_audios_ext' => 'Audio file extensions',
-    'cookie_consent' => 'Enable Cookie Consent'
+    'cookie_consent' => 'Enable Cookie Consent',
+    'terms_of_use_link' => 'Terms of Use Link',
+    'privacy_policy_link' => 'Privacy Policy Link',
+    'about_cookies_link' => 'About Cookies Consent Link'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2715,6 +2722,8 @@ $LANG_VALIDATION = array(
     'timezone' => 'איזור זמן שגוי',
     'single_char' => 'שדה חייב להיות תו בודד',
     'page_navigation_max_pages' => 'שדה זה חייב להיות בטווח 2 - 21',
-    'hash' => 'שדה זה להיות בפונקציית קידוד הנתמכת על ידי גרסת ה-PHP שלכם'
+    'hash' => 'שדה זה להיות בפונקציית קידוד הנתמכת על ידי גרסת ה-PHP שלכם',
+    'config_setting_lang_array' => 'Each element requires a unique language shortcut (\'en\', \'de\', etc.) and the corresponding field must contain a value',
+    'config_setting_lang_array_element_req' => 'Requires at least one element. Each element requires a unique language shortcut (\'en\', \'de\', etc.) and the corresponding field must contain a value'
 );
 
