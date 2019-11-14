@@ -209,10 +209,10 @@ $LANG01 = array(
     'filemanager' => 'ファイルマネージャー',
     'error_invalid_password' => 'エラー: パスワードが無効です',
     'error_filemanager_disabled' => 'ファイルマネージャーは無効にされています。',
-    'terms_of_use' => 'Terms of Use',
-    'terms_of_service' => 'Terms of Service',
-    'privacy_policy' => 'Privacy Policy',
-    'about_cookies' => 'About Cookies'
+    'terms_of_use' => '利用規約',
+    'terms_of_service' => '利用規約',
+    'privacy_policy' => 'プライバシーポリシー',
+    'about_cookies' => 'クッキーについて'
 );
 
 ###############################################################################
@@ -2518,9 +2518,9 @@ $LANG_confignames['Core'] = array(
     'filemanager_show_audio_player' => 'オーディオプレーヤーを表示する',
     'filemanager_audios_ext' => 'オーディオファイルの拡張子',
     'cookie_consent' => 'Cookie Consent(クッキー使用通知)を有効にする',
-    'terms_of_use_link' => 'Terms of Use Link',
-    'privacy_policy_link' => 'Privacy Policy Link',
-    'about_cookies_link' => 'About Cookies Consent Link'
+    'terms_of_use_link' => '「利用規約」のリンク',
+    'privacy_policy_link' => '「プライバシーポリシー」のリンク',
+    'about_cookies_link' => '「クッキーについて」のリンク'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2730,7 +2730,7 @@ $LANG_VALIDATION = array(
     'single_char' => 'このフィールドには半角1文字を入力してください',
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません',
-    'config_setting_lang_array' => 'Each element requires a unique language shortcut (\'en\', \'de\', etc.) and the corresponding field must contain a value',
-    'config_setting_lang_array_element_req' => 'Requires at least one element. Each element requires a unique language shortcut (\'en\', \'de\', etc.) and the corresponding field must contain a value'
+    'config_setting_lang_array' => 'それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください',
+    'config_setting_lang_array_element_req' => '少なくとも1つキーを指定してください。それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください'
 );
 
