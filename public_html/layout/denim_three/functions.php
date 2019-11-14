@@ -201,6 +201,53 @@ function theme_js_files_denim_three()
 }
 
 /**
+ * Return an array of javascript code to be loaded
+ */
+function theme_js_denim_three()
+{
+    global $_CONF;
+
+    $result = array();
+
+    // For Cookie consent v3.1.1 customizations
+    // Add EU Cookie Consent - https://www.osano.com/cookieconsent
+    // Customizations - https://www.osano.com/cookieconsent/documentation/javascript-api/
+    if (isset($_CONF['cookie_consent']) && $_CONF['cookie_consent']) {
+        $_CONF['cookie_consent_theme_customization'] = true; // Let's Geeklog know their are customizations
+
+        $cookie_consent_href = '';
+        if (isset($_CONF['about_cookies_link']) && !empty($_CONF['about_cookies_link'])) {
+            $cookie_consent_href = '"href": "' . $_CONF['about_cookies_link'] . '",';
+        }
+
+        $result[] = array(
+            'code'     => '
+                            window.cookieconsent.initialise({
+                                "palette": {
+                                    "popup": {
+                                        "background": "#000"
+                                    },
+                                    "button": {
+                                        "background": "#f1d600"
+                                    }
+                                },
+                                "content": {
+                                    "message": "This website uses cookies to ensure you get the best experience on our website.",
+                                    "dismiss": "Got it!",
+                                    ' . $cookie_consent_href . '
+                                    "link": "Learn more"
+                                }
+                            });
+                        ',
+            'wrap'     => true, // Not required, wrap code <script> and </script> tags
+            'footer'   => true, // Not required, default = true
+        );
+    }
+
+    return $result;
+}
+
+/**
  * Do any other initialisation here
  */
 function theme_init_denim_three()

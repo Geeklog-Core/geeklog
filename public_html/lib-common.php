@@ -455,7 +455,7 @@ if (isset($_COOKIE[$_CONF['cookie_language']]) && empty($_USER['language'])) {
     ) {
         $_CONF['language'] = $_USER['language'];
     }
-} elseif (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
+} elseif (COM_isMultiLanguageEnabled()) {
     $_CONF['language'] = COM_getLanguage();
 }
 
@@ -467,6 +467,7 @@ if (empty($LANG_DIRECTION)) {
     $LANG_DIRECTION = 'ltr';
 }
 
+// Update any language specfic Configuration options with proper language if exists
 COM_switchLocaleSettings();
 
 if (setlocale(LC_ALL, $_CONF['locale']) === false) {
@@ -1336,11 +1337,15 @@ function COM_createHTMLDocument(&$content = '', $information = array())
             array('data-cfasync' => 'false')
         );
 
-        // To customize appearance and behavior, edit the following file
-        $_SCRIPTS->setJavaScriptFile(
-            'cookie_consent_config', '/javascript/cookie_consent.js',
-            true, 110
-        );
+        if (isset($_CONF['cookie_consent_theme_customization']) && $_CONF['cookie_consent_theme_customization']) {
+            // Theme should have already set customizations in functions.php
+
+        } else {
+            $_SCRIPTS->setJavaScriptFile(
+                'cookie_consent_config', '/javascript/cookie_consent.js',
+                true, 110
+            );
+        }
     }
 
     COM_hit();
@@ -1355,6 +1360,14 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $page->set_var('powered_by', $LANG01[95]);
     $page->set_var('geeklog_url', 'https://www.geeklog.net/');
     $page->set_var('geeklog_version', VERSION);
+
+    $page->set_var('lang_terms_of_use', $LANG01['terms_of_use']);
+    $page->set_var('lang_terms_of_service', $LANG01['terms_of_service']);
+    $page->set_var('terms_of_use_link', $_CONF['terms_of_use_link']);
+    $page->set_var('lang_privacy_policy', $LANG01['privacy_policy']);
+    $page->set_var('privacy_policy_link', $_CONF['privacy_policy_link']);
+    $page->set_var('lang_about_cookies', $LANG01['about_cookies']);
+    $page->set_var('about_cookies_link', $_CONF['about_cookies_link']);
 
     $page->set_var($template_vars);
 
@@ -7405,7 +7418,7 @@ function COM_getLangSQL($field, $type = 'WHERE', $table = '')
 
     $sql = '';
 
-    if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
+    if (COM_isMultiLanguageEnabled()) {
         if (!empty($table)) {
             $table .= '.';
         }
@@ -7497,7 +7510,7 @@ function COM_switchLocaleSettings()
 {
     global $_CONF;
 
-    if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
+    if (COM_isMultiLanguageEnabled()) {
         $overridables = array(
             'locale',
             'date', 'daytime', 'shortdate', 'dateonly', 'timeonly',
@@ -7505,6 +7518,8 @@ function COM_switchLocaleSettings()
             'thousand_separator', 'decimal_separator',
             // Since GL-2.1.2
             'meta_description', 'meta_keywords', 'site_name', 'owner_name', 'site_slogan',
+            // Since Geeklog v2.2.1
+            'terms_of_use_link', 'privacy_policy_link', 'about_cookies_link'
         );
 
         $langId = COM_getLanguageId();
@@ -7526,7 +7541,7 @@ function COM_switchLanguageIdForObject($id)
 {
     global $_CONF;
 
-    if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
+    if (COM_isMultiLanguageEnabled()) {
         $new_id = COM_getLanguageId();
         $old_id = COM_getLanguageIdForObject($id);
         if (!empty($new_id) && !empty($old_id)) {
@@ -8278,7 +8293,7 @@ function COM_setLangIdAndAttribute($template)
 
     $langAttr = '';
 
-    if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
+    if (COM_isMultiLanguageEnabled()) {
         $langId = COM_getLanguageId();
     } else {
         $langId = $LANG_ISO639_1;
@@ -8303,7 +8318,7 @@ function COM_setLangIdAndAttribute($template)
     }
     $template->set_var('lang_id', $langId);
 
-    if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
+    if (COM_isMultiLanguageEnabled()) {
         $template->set_var('lang_attribute', ' ' . $langAttr);
     } else {
         $template->set_var('lang_attribute', ' lang="' . $LANG_ISO639_1 . '"');

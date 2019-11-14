@@ -990,15 +990,15 @@ class config implements ConfigInterface
                     if ( in_array($name,array(
                     'site_url','site_admin_url'
                     ,'url_routing'
-                    
+
                     ,'path_html','path_log','path_language','backup_path','path_data','path_data','path_themes','path_images','path_editors','rdf_file'
-                    
+
                     ,'path_to_mogrify', 'path_to_netpbm', 'image_lib'
-                    
+
                     ,'custom_registration','user_login_method'
-                    
+
                     ,'mail_cc_enabled','mail_cc_default'
-                    
+
                     ,'facebook_login','facebook_consumer_key','facebook_consumer_secret'
                     ,'linkedin_login','linkedin_consumer_key','linkedin_consumer_secret'
                     ,'twitter_login','twitter_consumer_key','twitter_consumer_secret'
@@ -1006,15 +1006,15 @@ class config implements ConfigInterface
                     ,'microsoft_login','microsoft_consumer_key','microsoft_consumer_secret'
                     ,'yahoo_login','yahoo_consumer_key','yahoo_consumer_secret'
                     ,'github_login','github_consumer_secret','github_consumer_key'
-                    
+
                     ,'filemanager_upload_restrictions','filemanager_images_ext','filemanager_videos_ext','filemanager_audios_ext'
-                    
+
                     // For reCaptcha Plugin
                     ,'public_key','private_key','enable_emailstory','enable_registration','enable_contact','remoteusers','anonymous_only'
                     ))) {
                         continue;
                     }
-                }     
+                }
 
                 if ($e['type'] === 'fieldset' && $e['fieldset'] != $current_fs) {
                     $fs_flag = true;
@@ -1506,21 +1506,34 @@ class config implements ConfigInterface
                         $pass_validation[$param_name] = $change_array[$param_name];
                     }
                 } elseif (is_array($change_array[$param_name])) {
-                    // if array such as mail settings
+                    // if array such as mail settings or language
                     $_changed = false;
                     if (count($this->config_array[$group][$param_name]) != count($change_array[$param_name])) {
                         $_changed = true;
                     }
-                    foreach ($change_array[$param_name] as $_param_name => $_param_value) {
-                        if (!isset($this->config_array[$group][$param_name][$_param_name])) {
-                            $_changed = true;
-                        } elseif ($change_array[$param_name][$_param_name] != $this->config_array[$group][$param_name][$_param_name]) {
-                            $_changed = true;
-                        }
-                        if ($_changed) {
-                            if ($this->_validates($param_name . '[' . $_param_name . ']', $group, $change_array[$param_name][$_param_name], $change_array[$param_name])) {
-                                $this->changedArray[$group][$param_name][$_param_name] = true;
+
+                    if (!empty($change_array[$param_name])) {
+                        foreach ($change_array[$param_name] as $_param_name => $_param_value) {
+                            if (!isset($this->config_array[$group][$param_name][$_param_name])) {
+                                $_changed = true;
+                            } elseif ($change_array[$param_name][$_param_name] != $this->config_array[$group][$param_name][$_param_name]) {
+                                $_changed = true;
                             }
+                            if ($_changed) {
+                                // Detect array validation based on array name and element name (either numeric or named)
+                                if ($this->_validates($param_name . '[' . $_param_name . ']', $group, $change_array[$param_name][$_param_name], $change_array[$param_name])) {
+                                    $this->changedArray[$group][$param_name][$_param_name] = true;
+                                }
+                                // Detect array validation based on array name alone
+                                if ($this->_validates($param_name, $group, $change_array[$param_name][$_param_name], $change_array[$param_name])) {
+                                    $this->changedArray[$group][$param_name][$_param_name] = true;
+                                }
+                            }
+                        }
+                    } else {
+                        // Detect array validation based on array name alone
+                        if ($this->_validates($param_name, $group, $change_array[$param_name], $change_array[$param_name])) {
+                            $this->changedArray[$group][$param_name][$_param_name] = true;
                         }
                     }
 
@@ -1759,7 +1772,10 @@ class config implements ConfigInterface
                         is_string($_CONF_VALIDATE[$group][$config]['message'])
                     ) {
                         $validator['message'] = $_CONF_VALIDATE[$group][$config]['message'];
-                        unset($_CONF_VALIDATE[$group][$config]['message']);
+                        // Not sure why Message is unset here in $_CONF_VALIDATE array. Rules from the same array below are also unset but that is required so the function can cycle through the rules
+                        // Unsetting the Message here creates problems when we are trying to deal with array validation since each element of the array has to go through the validation process and requires the same message
+                        // Left the code in but commented out just in case this messes something else up
+                        //unset($_CONF_VALIDATE[$group][$config]['message']);
                     }
                     $validator = array_merge($default, $validator);
 

@@ -32,7 +32,7 @@ CREATE TABLE {$_TABLES['likes']} (
   uid MEDIUMINT NOT NULL,
   ipaddress VARCHAR(39) NOT NULL,
   action TINYINT NOT NULL,
-  created DATETIME NOT NULL, 
+  created DATETIME NOT NULL,
   PRIMARY KEY (lid)
 ) ENGINE=MyISAM
 ";
@@ -147,6 +147,11 @@ function update_ConfValuesFor221()
 
     // Add generate user icon option
     $c->add('generate_user_icon',true,'select',5,26,1,1640,true, $me, 26);
+
+    // Add Links to legal Terms and Policies
+    $c->add('about_cookies_link','','text',0,0,NULL,2040,TRUE, $me, 0);
+    $c->add('terms_of_use_link','','text',0,0,NULL,2050,TRUE, $me, 0);
+    $c->add('privacy_policy_link','','text',0,0,NULL,2060,TRUE, $me, 0);
 
     return true;
 }

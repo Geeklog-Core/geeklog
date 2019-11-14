@@ -153,6 +153,53 @@ function theme_js_files_modern_curve()
 }
 
 /**
+ * Return an array of javascript code to be loaded
+ */
+function theme_js_modern_curve()
+{
+    global $_CONF;
+
+    $result = array();
+
+    // For Cookie consent v3.1.1 customizations
+    // Add EU Cookie Consent - https://www.osano.com/cookieconsent
+    // Customizations - https://www.osano.com/cookieconsent/documentation/javascript-api/
+    if (isset($_CONF['cookie_consent']) && $_CONF['cookie_consent']) {
+        $_CONF['cookie_consent_theme_customization'] = true; // Let's Geeklog know their are customizations
+
+        $cookie_consent_href = '';
+        if (isset($_CONF['about_cookies_link']) && !empty($_CONF['about_cookies_link'])) {
+            $cookie_consent_href = '"href": "' . $_CONF['about_cookies_link'] . '",';
+        }
+
+        $result[] = array(
+            'code'     => '
+                            window.cookieconsent.initialise({
+                                "palette": {
+                                    "popup": {
+                                        "background": "#000"
+                                    },
+                                    "button": {
+                                        "background": "#f1d600"
+                                    }
+                                },
+                                "content": {
+                                    "message": "This website uses cookies to ensure you get the best experience on our website.",
+                                    "dismiss": "Got it!",
+                                    ' . $cookie_consent_href . '
+                                    "link": "Learn more"
+                                }
+                            });
+                        ',
+            'wrap'     => true, // Not required, wrap code <script> and </script> tags
+            'footer'   => true, // Not required, default = true
+        );
+    }
+
+    return $result;
+}
+
+/**
  * Do any other initialization here
  */
 function theme_init_modern_curve()
@@ -211,7 +258,7 @@ function theme_getThemeItem_modern_curve($item)
         case 'core-auto-generated-user-avatar-settings':
             //$retval = '&rounded=true';
             break;
-            
+
         case 'core-css-list-default': // Return 1 or more CSS Classes -  Default List styling - not used yet
         case 'core-css-list-new': // Return 1 or more CSS Classes - For What's New Block - replacing "list-new-plugins", 'list-new-comments', 'list-new-trackbacks'
         case 'core-css-list-feed': // Return 1 or more CSS Classes - For RSS Feed Portal Block - replacing "list-feed"

@@ -192,6 +192,50 @@ function custom_validation_copyrightyear($rule, $ruleParams)
 }
 
 /**
+ * Custom validation rule for a config option which is an array that if an element exists ir must contain at least some text
+ *
+ * @param string $rule       String of rule name
+ * @param array  $ruleParams Parameter of validation
+ * @return boolean Success
+ */
+function custom_validation_arrayElementString($rule, $ruleParams)
+{
+    $ret = false;
+
+    // Make sure at element is not empty
+    foreach ($ruleParams[0] as $key => $value) {
+        if (!empty($value)) {
+            $ret = true;
+        }
+    }
+
+    return $ret;
+}
+
+/**
+ * Custom validation rule for a config option which is an array that requires at least 1 element and that all elements contain at least some text
+ *
+ * @param string $rule       String of rule name
+ * @param array  $ruleParams Parameter of validation
+ * @return boolean Success
+ */
+function custom_validation_arrayLeastOneElementString($rule, $ruleParams)
+{
+    $ret = false;
+    // Array in array so if count less than 2 then no elements in base rule
+    if (count($ruleParams) > 2) {
+        // Now make sure at element is not empty
+        foreach ($ruleParams[0] as $key => $value) {
+            if (!empty($value)) {
+                $ret = true;
+            }
+        }
+    }
+
+    return $ret;
+}
+
+/**
  * Custom validation rule for mail_settings[sendmail_path]
  *
  * @param string $rule       String of rule name

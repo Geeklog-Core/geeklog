@@ -58,6 +58,10 @@ $_CONF_VALIDATE['Core']['cdn_hosted'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['meta_tags'] = array('rule' => array('inList', array(0, 1, 2), false));
 $_CONF_VALIDATE['Core']['meta_description'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['meta_keywords'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['cookie_consent'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['terms_of_use_link'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['privacy_policy_link'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['about_cookies_link'] = array('rule' => 'stringOrEmpty');
 
 /* Subgroup Site, Tab Mail */
 $_CONF_VALIDATE['Core']['site_mail'] = array('rule' => 'email');
@@ -207,10 +211,10 @@ $_CONF_VALIDATE['Core']['article_image_align'] = array(
 );
 $_CONF_VALIDATE['Core']['show_topic_icon'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['structured_data_type_default'] = array(
-	'rule' => array('inList', array('', 'core-webpage', 'core-article', 'core-newsarticle', 'core-blogposting'), true)	
+	'rule' => array('inList', array('', 'core-webpage', 'core-article', 'core-newsarticle', 'core-blogposting'), true)
 );
 $_CONF_VALIDATE['Core']['structured_data_article_topic'] = array(
-	'rule' => array('inList', array(0, 1))	
+	'rule' => array('inList', array(0, 1))
 );
 $_CONF_VALIDATE['Core']['draft_flag'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['frontpage'] = array('rule' => 'boolean');

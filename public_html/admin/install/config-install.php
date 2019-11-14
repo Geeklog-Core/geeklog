@@ -67,6 +67,9 @@ function install_config(ConfigInterface $c)
     $c->add('meta_description','Geeklog - The secure Content Management System.','textarea',0,0,NULL,2010,TRUE, $me, 0);
     $c->add('meta_keywords','Geeklog, Content Management System, CMS, Open Source, Secure, Security, Blog, Weblog','textarea',0,0,NULL,2020,TRUE, $me, 0);
     $c->add('cookie_consent',true,'select',0,0,1,2030,true, $me, 0);
+    $c->add('about_cookies_link','','text',0,0,NULL,2040,TRUE, $me, 0);
+    $c->add('terms_of_use_link','','text',0,0,NULL,2050,TRUE, $me, 0);
+    $c->add('privacy_policy_link','','text',0,0,NULL,2060,TRUE, $me, 0);
 
     $c->add('tab_mail', NULL, 'tab', 0, 1, NULL, 0, TRUE, $me, 1);
     $c->add('fs_mail', NULL, 'fieldset', 0, 1, NULL, 0, TRUE, $me, 1);

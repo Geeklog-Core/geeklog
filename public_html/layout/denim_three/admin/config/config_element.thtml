@@ -60,6 +60,7 @@
 <input type="button" value="+" class="toggle_hidden" onclick="toggleHidden('arr_{id_name}', this);"{xhtml}>
 {delete}
 <input type="hidden" value="true" name="{name}[nameholder]"{xhtml}>
+{error_block}
 <div style="display:none" id="arr_{id_name}" class="{arr_class_list}">
 {my_elements}
 {my_add_element_button}

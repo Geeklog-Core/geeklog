@@ -208,7 +208,11 @@ $LANG01 = array(
     'ok' => 'OK',
     'filemanager' => 'ファイルマネージャー',
     'error_invalid_password' => 'エラー: パスワードが無効です',
-    'error_filemanager_disabled' => 'ファイルマネージャーは無効にされています。'
+    'error_filemanager_disabled' => 'ファイルマネージャーは無効にされています。',
+    'terms_of_use' => 'Terms of Use',
+    'terms_of_service' => 'Terms of Service',
+    'privacy_policy' => 'Privacy Policy',
+    'about_cookies' => 'About Cookies'
 );
 
 ###############################################################################
@@ -1982,7 +1986,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
+#
 # This here determines the order of the sentence "No new articles in 2 hrs"
 # order it so it makes sense in your language:
 # %i    item, "Articles"
@@ -2040,7 +2044,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-# 
+#
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2513,7 +2517,10 @@ $LANG_confignames['Core'] = array(
     'filemanager_videos_player_height' => '動画プレーヤーの高さ',
     'filemanager_show_audio_player' => 'オーディオプレーヤーを表示する',
     'filemanager_audios_ext' => 'オーディオファイルの拡張子',
-    'cookie_consent' => 'Cookie Consent(クッキー使用通知)を有効にする'
+    'cookie_consent' => 'Cookie Consent(クッキー使用通知)を有効にする',
+    'terms_of_use_link' => 'Terms of Use Link',
+    'privacy_policy_link' => 'Privacy Policy Link',
+    'about_cookies_link' => 'About Cookies Consent Link'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2722,5 +2729,7 @@ $LANG_VALIDATION = array(
     'timezone' => '無効なタイムゾーンです',
     'single_char' => 'このフィールドには半角1文字を入力してください',
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
-    'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
+    'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません',
+    'config_setting_lang_array' => 'Each element requires a unique language shortcut (\'en\', \'de\', etc.) and the corresponding field must contain a value',
+    'config_setting_lang_array_element_req' => 'Requires at least one element. Each element requires a unique language shortcut (\'en\', \'de\', etc.) and the corresponding field must contain a value'
 );
