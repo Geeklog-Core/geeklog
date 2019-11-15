@@ -16,7 +16,7 @@ class Installer
     const DEFAULT_LANGUAGE = 'english';
 
     // Default theme
-    const DEFAULT_THEME = 'denim';
+    const DEFAULT_THEME = 'denim_three';
 
     // Database configuration file
     const DB_CONFIG_FILE = 'db-config.php';

@@ -300,13 +300,13 @@ if (!empty($useTheme) && is_dir($_CONF['path_themes'] . $useTheme)) {
 
 // Fix a wrong theme name, since "professional" and "professional_css" themes are deprecated as of Geeklog 2.1.2
 if (($_CONF['theme'] === 'professional') || ($_CONF['theme'] === 'professional_css')) {
-    $_CONF['theme'] = $_USER['theme'] = 'denim';
+    $_CONF['theme'] = $_USER['theme'] = 'denim_three';
     $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
     $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 
     if (!headers_sent()) {
         @setcookie(
-            $_CONF['cookie_theme'], 'denim', time() + 31536000, $_CONF['cookie_path'],
+            $_CONF['cookie_theme'], 'denim_three', time() + 31536000, $_CONF['cookie_path'],
             $_CONF['cookiedomain'], $_CONF['cookiesecure']
         );
     }
