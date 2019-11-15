@@ -298,7 +298,6 @@ if (!empty($useTheme) && is_dir($_CONF['path_themes'] . $useTheme)) {
     }
 }
 
-/*
 // Fix a wrong theme name, since "professional" and "professional_css" themes are deprecated as of Geeklog 2.1.2
 if (($_CONF['theme'] === 'professional') || ($_CONF['theme'] === 'professional_css')) {
     $_CONF['theme'] = $_USER['theme'] = 'denim';
@@ -312,7 +311,6 @@ if (($_CONF['theme'] === 'professional') || ($_CONF['theme'] === 'professional_c
         );
     }
 }
-*/
 
 // Geeklog Theme Support
 // If ANY theme changes related to:
