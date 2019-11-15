@@ -373,6 +373,7 @@ public_html/admin/plugins/recaptcha/docs/english/config.html
 public_html/admin/plugins/recaptcha/docs/english/install.html
 public_html/admin/plugins/recaptcha/docs/japanese/config.html
 public_html/admin/plugins/recaptcha/docs/japanese/install.html
+public_html/admin/plugins/spamx/index.php
 public_html/admin/plugins/staticpages/index.php
 public_html/admin/router.php
 public_html/admin/sectest.php
@@ -3007,6 +3008,9 @@ public_html/layout/denim/index.thtml
 public_html/layout/denim/leftblocks.thtml
 public_html/layout/denim/loginform.thtml
 public_html/layout/denim/pagenavigation.thtml
+public_html/layout/denim/preferences/boxesblock.thtml
+public_html/layout/denim/preferences/digestblock.thtml
+public_html/layout/denim/preferences/displayblock.thtml
 public_html/layout/denim/preferences/profile.thtml
 public_html/layout/denim/submit/submitarticle.thtml
 public_html/layout/denim/submit/submitarticle_advanced.thtml
@@ -3020,6 +3024,7 @@ public_html/layout/denim_curve/css_rtl/style.gradient.css
 public_html/layout/denim_curve/css_rtl/style.gradient.min.css
 public_html/layout/denim_curve/css_src/src/stylus/sub/compatible.styl
 public_html/layout/denim_curve/css_src/src/stylus/sub/form_basic.styl
+public_html/layout/denim_curve/footer.thtml
 public_html/layout/denim_curve/functions.php
 public_html/layout/denim_curve/index.thtml
 public_html/layout/denim_three/admin/article/articleeditor.thtml
@@ -3059,6 +3064,9 @@ public_html/layout/denim_three/index.thtml
 public_html/layout/denim_three/leftblocks.thtml
 public_html/layout/denim_three/loginform.thtml
 public_html/layout/denim_three/pagenavigation.thtml
+public_html/layout/denim_three/preferences/boxesblock.thtml
+public_html/layout/denim_three/preferences/digestblock.thtml
+public_html/layout/denim_three/preferences/displayblock.thtml
 public_html/layout/denim_three/preferences/profile.thtml
 public_html/layout/denim_three/submit/submitarticle.thtml
 public_html/layout/denim_three/submit/submitarticle_advanced.thtml
@@ -3092,6 +3100,8 @@ public_html/layout/modern_curve/index.thtml
 public_html/layout/modern_curve/leftblocks.thtml
 public_html/layout/modern_curve/loginform.thtml
 public_html/layout/modern_curve/pagenavigation.thtml
+public_html/layout/modern_curve/preferences/boxesblock.thtml
+public_html/layout/modern_curve/preferences/displayblock.thtml
 public_html/layout/modern_curve/preferences/profile.thtml
 public_html/layout/modern_curve/submit/submitarticle.thtml
 public_html/layout/modern_curve/submit/submitarticle_advanced.thtml
@@ -3139,6 +3149,7 @@ system/classes/TwoFactorAuthentication.php
 system/classes/XML/RPC.php
 system/classes/article.class.php
 system/classes/config.class.php
+system/classes/dbbackup.class.php
 system/classes/gltext.class.php
 system/classes/htmLawed/htmLawed.php
 system/classes/htmLawed/htmLawedTest.php
@@ -3437,6 +3448,20 @@ system/vendor/servocoder/richfilemanager-php/src/Repository/StorageInterface.php
 system/vendor/servocoder/richfilemanager-php/src/config/config.local.php
 system/vendor/servocoder/richfilemanager-php/src/config/config.s3.php
 system/vendor/servocoder/richfilemanager-php/src/helpers.php
+system/vendor/splitbrain/php-archive/.travis.yml
+system/vendor/splitbrain/php-archive/composer.json
+system/vendor/splitbrain/php-archive/phpunit.xml
+system/vendor/splitbrain/php-archive/src/Archive.php
+system/vendor/splitbrain/php-archive/src/ArchiveCorruptedException.php
+system/vendor/splitbrain/php-archive/src/ArchiveIOException.php
+system/vendor/splitbrain/php-archive/src/ArchiveIllegalCompressionException.php
+system/vendor/splitbrain/php-archive/src/FileInfo.php
+system/vendor/splitbrain/php-archive/src/FileInfoException.php
+system/vendor/splitbrain/php-archive/src/Tar.php
+system/vendor/splitbrain/php-archive/src/Zip.php
+system/vendor/splitbrain/php-archive/tests/FileInfoTest.php
+system/vendor/splitbrain/php-archive/tests/TarTestCase.php
+system/vendor/splitbrain/php-archive/tests/ZipTestCase.php
 system/vendor/swiftmailer/swiftmailer/CHANGES
 system/vendor/swiftmailer/swiftmailer/VERSION
 system/vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php
