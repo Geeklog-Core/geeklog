@@ -115,7 +115,11 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
     }
 
     $ret = CMT_saveComment($title, $comment, $id, $pid, 'polls', $postmode);
-    if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
+    if (($ret > 0) || is_string($ret)) { // failure //FIXME: some failures should not return to comment form
+        if (is_string($ret)) {
+            $retval .= $ret;
+        }
+
         $retval .= CMT_commentForm($title, $comment, $id, $pid, 'polls',
             $LANG03[14], $postmode);
 

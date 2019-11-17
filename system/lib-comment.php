@@ -1317,7 +1317,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
  * @param    int    $pid      ID of parent comment
  * @param    string $type     Type of comment this is (article, polls, etc)
  * @param    string $postmode Indicates if text is HTML or plain text
- * @return   int         -1 == queued, 0 == comment saved, > 0 indicates error
+ * @return   int|string       -1 == queued, 0 == comment saved, > 0 or a string indicates error
  */
 function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 {
@@ -1388,7 +1388,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 
     // Let plugins have a chance to decide what to do before saving the comment, return errors.
     if ($someError = PLG_commentPreSave($uid, $title, $comment, $sid, $pid, $type, $postmode)) {
-        return $someError;
+        return COM_showMessageText($title, $someError);
     }
 
     // Store unescaped comment and title for use in notification.

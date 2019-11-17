@@ -208,9 +208,12 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
-    $ret = CMT_saveComment($title, $comment, $id, $pid, 'staticpages',
-        $postmode);
-    if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
+    $ret = CMT_saveComment($title, $comment, $id, $pid, 'staticpages', $postmode);
+    if (($ret > 0) || is_string($ret)) { // failure //FIXME: some failures should not return to comment form
+        if (is_string($ret)) {
+            $retval .= $ret;
+        }
+
         $retval .= CMT_commentForm($title, $comment, $id, $pid, 'staticpages',
             $LANG03[14], $postmode);
 
