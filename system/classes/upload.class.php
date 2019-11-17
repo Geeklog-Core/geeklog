@@ -547,6 +547,8 @@ class Upload
 
         if (!$sizeOK) {
             // OK, resize
+            $retval = 0;
+
             $sizeFactor = $this->_calcSizeFactor($imageInfo['width'], $imageInfo['height']);
             $newWidth = (int) ($imageInfo['width'] * $sizeFactor);
             $newHeight = (int) ($imageInfo['height'] * $sizeFactor);
@@ -646,6 +648,13 @@ class Upload
                    0, 0, 0, 0, $newWidth, $newHeight,
                    $imageInfo['width'], $imageInfo['height']);
                 $this->_outputImageToFile_gdlib($image_dest, $filename);
+
+                $temp = getimagesize($filename);
+                if ($temp !== false) {
+                    $newSize = $temp[0] . 'x' . $temp[1];
+                } else {
+                    $newSize = '?';
+                }
             }
 
             if ($retval > 0) {
