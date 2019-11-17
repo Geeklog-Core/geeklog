@@ -121,7 +121,7 @@ $LANG_STATIC = array(
     'use_template' => '選択',
     'template_msg' => 'チェックした場合、静的ページをテンプレートとしてします。',
     'none' => 'なし',
-    'use_template_msg' => 'この静的ページがテンプレートでなければ、テンプレートを選んで利用できます。利用する場合は、このページのコンテンツをXML形式で記述しなければならないので注意してください。 For more information see the <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages" target="_blank">Geeklog Wiki</a>.',
+    'use_template_msg' => 'この静的ページがテンプレートでなければ、テンプレートを選んで利用できます。利用する場合は、このページのコンテンツをXML形式で記述しなければならないので注意してください。詳しくは <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages" target="_blank">Geeklog Wiki</a>をご覧ください。',
     'draft' => 'ドラフト',
     'draft_yes' => '○',
     'draft_no' => '-',
