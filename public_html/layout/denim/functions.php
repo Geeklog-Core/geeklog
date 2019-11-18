@@ -85,15 +85,18 @@ function theme_config_denim()
 
     return array(
         'theme_name'        => 'Denim',
-        'theme_version'     => '1.0.0',
+        'theme_version'     => '1.1.1',
         'theme_gl_version'  => '2.2.1',
-        'theme_author'      => '',
-        'theme_license'     => '',
-        'image_type' => 'png',
-        'doctype'    => 'xhtml5',
-        'etag'       => false, // never set this true. instead use $options['enable_etag'] above.
-        'theme_plugins' => '', // EXPERIMENTAL - Not required - Is used by all plugins - You can specify a COMPATIBLE theme (not a child theme) to use templates stored with some plugins. Can have problems if plugins include css and js files via their own functions.php
-        'options'    => $options // Not required, some options of this theme
+        'theme_description' => '',
+        'theme_author'      => 'dengen',
+        'theme_homepage'    => 'https://www.geeklog.net/',
+        'theme_copyright'   => '2012-2016',
+        'theme_license'     => 'GPL-2.0+',
+        'image_type'        => 'png',
+        'doctype'           => 'xhtml5',
+        'etag'              => false, // never set this true. instead use $options['enable_etag'] above.
+        'theme_plugins'     => '', // EXPERIMENTAL - Not required - Is used by all plugins - You can specify a COMPATIBLE theme (not a child theme) to use templates stored with some plugins. Can have problems if plugins include css and js files via their own functions.php
+        'options'           => $options // Not required, some options of this theme
     );
 }
 

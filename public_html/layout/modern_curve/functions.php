@@ -48,11 +48,14 @@ function theme_config_modern_curve()
         'theme_name'        => 'Modern Curve',
         'theme_version'     => '1.0.0',
         'theme_gl_version'  => '2.2.1',
+        'theme_description' => '',
         'theme_author'      => '',
-        'theme_license'     => '',
-        'image_type' => 'png',
-        'doctype'    => 'xhtml5',
-        'etag'       => true,
+        'theme_homepage'    => 'https://www.geeklog.net/'
+        'theme_copyright'   => '2019',
+        'theme_license'     => 'GPL-2.0+',
+        'image_type'        => 'png',
+        'doctype'           => 'xhtml5',
+        'etag'              => true,
     );
 }
 
