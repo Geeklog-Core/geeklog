@@ -254,7 +254,7 @@ $_SQL[] = "CREATE TABLE {$_TABLES['routes']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['sessions']} (
-  sess_id VARCHAR(250) NOT NULL default '',
+  sess_id VARCHAR(190) NOT NULL default '',
   start_time int NOT NULL default '0',
   remote_ip varchar(39) NOT NULL default '',
   uid smallint NOT NULL default '1',
@@ -520,7 +520,7 @@ CREATE TABLE {$_TABLES['users']} (
   lastinvalid int default NULL,
   twofactorauth_enabled SMALLINT NOT NULL DEFAULT 0,
   twofactorauth_secret VARCHAR(255) NOT NULL DEFAULT '',
-  autologin_key VARCHAR(255) NOT NULL DEFAULT '',
+  autologin_key VARCHAR(190) NOT NULL DEFAULT '',
   postmode VARCHAR (10) NOT NULL DEFAULT 'plaintext',
   PRIMARY KEY (uid)
 );
