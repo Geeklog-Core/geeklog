@@ -482,6 +482,11 @@ class SitemapXML
                 return false;
             }
 
+            // Prepend the homepage (feature #997)
+            $sitemap .= '  <url>' . self::LB
+                . '    <loc>' . $this->normalizeURL($_CONF['site_url']) . '</loc>' . self::LB
+                . '  </url>' . self::LB;
+
             foreach ($types as $type) {
                 $result = array();
 
