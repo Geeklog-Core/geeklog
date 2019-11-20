@@ -135,6 +135,7 @@ abstract class BaseCommand
      */
     protected function prepareRegularExpression($pattern, $delimiter = self::REGX_DELIMITER, $caseSensitive = false)
     {
+        $pattern = str_replace($delimiter, '\\' . $delimiter, $pattern);
         $pattern = $delimiter . $pattern . $delimiter;
 
         if (!$caseSensitive) {
