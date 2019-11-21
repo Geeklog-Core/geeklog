@@ -200,7 +200,7 @@ CREATE TABLE {$_TABLES['likes']} (
   uid smallint NOT NULL,
   ipaddress VARCHAR(39) NOT NULL,
   action smallint NOT NULL,
-  created DATETIME NOT NULL, 
+  created DATETIME NOT NULL,
   PRIMARY KEY (lid)
 )
 ";
@@ -298,7 +298,7 @@ CREATE TABLE {$_TABLES['stories']} (
   featured smallint NOT NULL default '0',
   show_topic_icon smallint NOT NULL default '1',
   commentcode smallint NOT NULL default '0',
-  structured_data_type smallint NOT NULL DEFAULT '0',
+  structured_data_type varchar(40) NOT NULL DEFAULT '',
   trackbackcode smallint NOT NULL default '0',
   statuscode smallint NOT NULL default '0',
   expire timestamp default NULL,

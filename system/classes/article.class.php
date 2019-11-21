@@ -271,7 +271,7 @@ class Article
             '_commentcode',
         ),
         'structured_data_type' => array(
-            STORY_AL_NUMERIC,
+            STORY_AL_ALPHANUM,
             '_structured_data_type',
         ),
         'trackbackcode'    => array(

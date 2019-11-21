@@ -203,7 +203,7 @@ CREATE TABLE {$_TABLES['likes']} (
   uid MEDIUMINT NOT NULL,
   ipaddress VARCHAR(39) NOT NULL,
   action TINYINT NOT NULL,
-  created DATETIME NOT NULL, 
+  created DATETIME NOT NULL,
   PRIMARY KEY (lid)
 ) ENGINE=MyISAM
 ";
@@ -301,7 +301,7 @@ CREATE TABLE {$_TABLES['stories']} (
   featured tinyint(1) unsigned NOT NULL default '0',
   show_topic_icon tinyint(1) unsigned NOT NULL default '1',
   commentcode tinyint(4) NOT NULL default '0',
-  structured_data_type tinyint(4) NOT NULL DEFAULT '0',
+  structured_data_type varchar(40) NOT NULL DEFAULT '',
   trackbackcode tinyint(4) NOT NULL default '0',
   statuscode tinyint(4) NOT NULL default '0',
   expire DATETIME default NULL,

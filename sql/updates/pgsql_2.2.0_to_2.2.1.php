@@ -16,7 +16,7 @@ $_SQL[] = "DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = 2 
 $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'geeklog'";
 
 // Add structured data type to article table and modified date
-$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `structured_data_type` tinyint(4) NOT NULL DEFAULT 0 AFTER `commentcode`";
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} `structured_data_type` varchar(40) NOT NULL DEFAULT '' AFTER `commentcode`";
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `modified` timestamp default NULL AFTER `date`";
 
 // Language Override value can now be longer than 255 characters
