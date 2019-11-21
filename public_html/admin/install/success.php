@@ -98,6 +98,9 @@ function SUCCESS_deleteAll($baseDir)
 // Main
 global $_TABLES, $LANG_SUCCESS, $MESSAGE;
 
+// Clear all speed limits for login to prevent login issues after install/upgrade/migrate (bug #995)
+COM_clearSpeedlimit(0, 'login');
+
 $type = Input::fGet('type', 'install');
 $submit = Input::post('submit', '');
 $language = Input::fGet('language', 'english');
