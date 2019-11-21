@@ -98,7 +98,7 @@ function plugin_getmenuitems_links()
         return false;
     }
 
-    $menuitems[$LANG_LINKS[114]] = $_CONF['site_url'] . '/links/index.php';
+    $menuitems[$LANG_LINKS[114]] = COM_buildURL($_CONF['site_url'] . '/links/index.php');
 
     return $menuitems;
 }
