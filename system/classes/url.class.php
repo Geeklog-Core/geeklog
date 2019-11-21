@@ -239,8 +239,17 @@ class Url
             }
             array_shift($this->arguments);
         } elseif (isset($_ENV['ORIG_PATH_INFO'])) {
-            $this->arguments = explode('/', substr($_ENV['ORIG_PATH_INFO'], 1));
-            $check_for_dirs = true;
+			if ($_ENV['ORIG_PATH_INFO'] == $_SERVER['SCRIPT_NAME']) {
+				// Added this check for Apache to work for PHP FastCGI
+				// This check is needed if the url does not contain any variables (ie "/links/index.php") in FastCGI on Apache. 
+				// If contains variable then  $_SERVER['PATH_INFO'] gets set (with or with out using FastCGI)
+				// On Apache that does not use FastCGI then none of the variables gets set ($_SERVER['PATH_INFO'], $_ENV['ORIG_PATH_INFO'], $_SERVER['ORIG_PATH_INFO']) 
+				// so it ends up in the ELSE of the original IF statement
+				$this->arguments = array();
+			} else {
+				$this->arguments = explode('/', substr($_ENV['ORIG_PATH_INFO'], 1));
+				$check_for_dirs = true;
+			}
         } elseif (isset($_SERVER['ORIG_PATH_INFO'])) {
             $this->arguments = explode('/', substr($_SERVER['ORIG_PATH_INFO'], 1));
             $check_for_dirs = true;
