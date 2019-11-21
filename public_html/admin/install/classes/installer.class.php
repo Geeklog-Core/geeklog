@@ -5061,6 +5061,9 @@ HTML;
                     // for the plugin install and upgrade,
                     // we need lib-common.php in the global(!) namespace
                     require_once dirname(dirname(dirname(__DIR__))) . '/lib-common.php';
+
+                    // Clear all speed limits for login to prevent login issues after install/upgrade/migrate (bug #995)
+                    COM_clearSpeedlimit(0, 'login');
                 }
 
                 // Run the installation function
