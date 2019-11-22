@@ -3044,15 +3044,16 @@ class Installer
             $config->set('path_html', $path_html);
         }
 
+        // Functions.php is the only file required for a theme
         if (!file_exists($_CONF['path_themes'] . $_CONF['theme']
-            . '/header.thtml')
+            . '/functions.php')
         ) {
             $config->set('path_themes', $path_html . 'layout/');
 
             if (!file_exists($path_html . 'layout/' . $_CONF['theme']
-                . '/header.thtml')
+                . '/functions.php')
             ) {
-                $config->set('theme', 'professional');
+                $config->set('theme', self::DEFAULT_THEME);
             }
         }
 
