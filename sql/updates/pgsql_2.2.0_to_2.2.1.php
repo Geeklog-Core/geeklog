@@ -153,6 +153,13 @@ function update_ConfValuesFor221()
     $c->add('terms_of_use_link','','text',0,0,NULL,2050,TRUE, $me, 0);
     $c->add('privacy_policy_link','','text',0,0,NULL,2060,TRUE, $me, 0);
 
+    // Update default theme and reset to original value
+    // Since actual Core config not loaded yet by installer lets load it into temp value so we don't mess things up
+    $c->initConfig();
+    $_TEMP_CONF = $c->get_config('Core');
+    $c->add('theme','denim_three','select',2,10,NULL,190,TRUE, $me, 10);
+    $c->set('theme',$_TEMP_CONF['theme'], $me);
+
     return true;
 }
 
