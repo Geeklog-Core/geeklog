@@ -50,7 +50,7 @@ function theme_config_modern_curve()
         'theme_gl_version'  => '2.2.1',
         'theme_description' => '',
         'theme_author'      => '',
-        'theme_homepage'    => 'https://www.geeklog.net/'
+        'theme_homepage'    => 'https://www.geeklog.net/',
         'theme_copyright'   => '2019',
         'theme_license'     => 'GPL-2.0+',
         'image_type'        => 'png',
