@@ -121,12 +121,12 @@ function update_DatabaseFor221()
     $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN `md5_sess_id`";
     $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN `topic`";
 
-    // Add `autologin_key` column to `users' table
+    // Add `autologin_key` column to `sessions' table
     $_SQL[] = "ALTER TABLE {$_TABLES['users']} DROP COLUMN `autologin_key`"; // this was added and then taken away so make sure gone
-    $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD COLUMN autologin_key VARCHAR(190) NOT NULL DEFAULT ''";    
+    $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD COLUMN autologin_key VARCHAR(190) NOT NULL DEFAULT ''";
 
     // Add `postmode` column to `users' table
-    $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `postmode` VARCHAR(10) NOT NULL DEFAULT 'plaintext' AFTER `autologin_key`";
+    $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `postmode` VARCHAR(10) NOT NULL DEFAULT 'plaintext'";
 
     // ***************************************
     // Core Plugin Updates Here (including version update)
