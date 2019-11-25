@@ -88,7 +88,7 @@ class Mail
                 }
 
                 break;
-                
+
             case 'smtps':
                 $transport = Swift_SmtpTransport::newInstance($_CONF['mail_settings']['host'], $_CONF['mail_settings']['port'], 'ssl');
 
@@ -97,7 +97,7 @@ class Mail
                     $transport->setPassword($_CONF['mail_settings']['password']);
                 }
 
-                break;                
+                break;
 
             case 'mail':
             default:

@@ -3829,7 +3829,7 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
             );
 
             $priority = htmlspecialchars($priority, ENT_QUOTES, $charset);
-
+            
             if (!$html) {
                 $message = GLText::removeAllHTMLTagsAndAttributes($message);
             }

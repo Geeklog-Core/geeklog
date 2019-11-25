@@ -143,7 +143,7 @@ class GLText
             $text = PLG_replaceTags(self::_displayEscape($text), '', false, $type, $id);
         } else {
             $text = PLG_replaceTags(self::_displayEscape($text));
-        }        
+        }
 
         return $text;
     }
@@ -303,7 +303,7 @@ class GLText
         // http://www.bioinformatics.org/phplabware/forum/viewtopic.php?id=88
         $config = [
             'elements' => '-*',
-            'keep_bad' => 0,
+            'keep_bad' => 1,
         ];
         $text = htmLawed($text, $config);
 
