@@ -1687,8 +1687,8 @@ $MESSAGE = array(
     502 => '新しいメールアドレスのリクエストが期限切れになりました。以下からもう一度お試しください。',
     503 => 'あなたのメールアドレスは正常に検証されました。',
     504 => 'パスワードは8文字以上で、少なくとも1つの数字と1文字を含める必要があります。パスワードは大文字と小文字が区別されます。',
-    505 => "<em>Current Site Default theme set is not valid.</em> Using Geeklog Default theme \"{$_CONF['theme']}\" for now. <br" . XHTML . "><br" . XHTML . ">This version of Geeklog you are running (v" . VERSION . ") supports Themes with Geeklog v{$_CONF['min_theme_gl_version']} support.<br" . XHTML . "><br" . XHTML . ">Please update by reselecting a valid theme for the sites Config Theme setting in the Geeklog Configuration and resave.",
-    506 => "<em>Current Site Default theme set is not valid.</em> Using Geeklog theme \"{$_CONF['theme']}\" for now.<br" . XHTML . "><br" . XHTML . ">This version of Geeklog you are running (v" . VERSION . ") supports Themes with Geeklog v{$_CONF['min_theme_gl_version']} support.<br" . XHTML . "><br" . XHTML . ">Please update by reselecting a valid theme for the sites Config Theme setting in the Geeklog Configuration and resave."
+    505 => "<em>Current set Site Default theme \"{$_CONF['theme_site_default']}\" is not valid.</em> Using Geeklog Default theme \"{$_CONF['theme']}\" for now. <br" . XHTML . "><br" . XHTML . ">This version of Geeklog you are running (v" . VERSION . ") supports Themes with Geeklog v{$_CONF['min_theme_gl_version']} support.<br" . XHTML . "><br" . XHTML . ">Please update by reselecting a valid theme for the sites Config Theme setting in the Geeklog Configuration and resave.",
+    506 => "<em>Current set Site Default theme \"{$_CONF['theme_site_default']}\" is not valid.</em> Using Geeklog theme \"{$_CONF['theme']}\" for now.<br" . XHTML . "><br" . XHTML . ">This version of Geeklog you are running (v" . VERSION . ") supports Themes with Geeklog v{$_CONF['min_theme_gl_version']} support.<br" . XHTML . "><br" . XHTML . ">Please update by reselecting a valid theme for the sites Config Theme setting in the Geeklog Configuration and resave."
 );
 
 ###############################################################################
