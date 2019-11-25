@@ -418,42 +418,28 @@ function SESS_handleAutoLogin($lifeTime = -1)
         return 1;
     }
 
+    // Try to get a record with the auto-login key from `gl_sessions` table
     $escAutoLoginKey = DB_escapeString($autoLoginKey);
-    $sql = "SELECT uid FROM {$_TABLES['users']} WHERE autologin_key = '{$escAutoLoginKey}'";
+    $sql = "SELECT uid FROM {$_TABLES['sessions']} WHERE autologin_key = '{$escAutoLoginKey}'";
     $result = DB_query($sql);
     if (DB_error()) {
         return 1;
     }
 
-    switch (DB_numRows($result)) {
-        case 0:
-            // The Auto-login key given was not found in database.  Possible attack
-            COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
-            if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
-                COM_displayMessageAndAbort(82, '', 403, 'Access denied');
-            }
-            COM_updateSpeedlimit('login');
+    if (DB_numRows($result) == 1) {
+        $A = DB_fetchArray($result, false);
+        $uid = (int) $A['uid'];
 
-            return 1;
-            break;
+        // Issue a new auto-login key
+        SESS_issueAutoLoginCookie($uid);
 
-        case 1:
-            $A = DB_fetchArray($result, false);
-            $uid = (int) $A['uid'];
+        return $uid;
+    } else {
+        // The auto-login key contained in the cookie was not found in the database.
+        // We should remove invalid auto-login key from both cookie and database
+        SESS_deleteAutoLoginKey();
 
-            // Issue a new auto-login key
-            SESS_issueAutoLoginCookie($uid);
-
-            return $uid;
-            break;
-
-        default:
-            // very unlikely case
-            $sql = "UPDATE {$_TABLES['users']} SET autologin_key = '' WHERE autologin_key = {$escAutoLoginKey}";
-            DB_query($sql);
-
-            return 1;
-            break;
+        return 1;
     }
 }
 
@@ -462,7 +448,7 @@ function SESS_handleAutoLogin($lifeTime = -1)
  *
  * @param  int     $userId
  * @param  int     $lifeTime
- * @return string  a newly created auto-login key or false on failure
+ * @return string|false  a newly created auto-login key or false on failure
  */
 function SESS_issueAutoLoginCookie($userId, $lifeTime = -1)
 {
@@ -489,8 +475,11 @@ function SESS_issueAutoLoginCookie($userId, $lifeTime = -1)
 
     if (SEC_setCookie($_CONF['cookie_name'], $autoLoginKey, time() + $lifeTime)) {
         $escAutoLoginKey = DB_escapeString($autoLoginKey);
-        $sql = "UPDATE {$_TABLES['users']} SET autologin_key = '{$escAutoLoginKey}' WHERE uid = {$userId}";
+        $sessionId = DB_escapeString(Session::getSessionId());
+        $sql = "UPDATE {$_TABLES['sessions']} SET autologin_key = '{$escAutoLoginKey}' "
+            . "WHERE (uid = {$userId}) AND (sess_id = '{$sessionId}')";
         DB_query($sql);
+
         return $autoLoginKey;
     } else {
         return false;
@@ -508,7 +497,7 @@ function SESS_deleteAutoLoginKey()
 
     if (!empty($autoLoginKey)) {
         $escAutoLoginKey = DB_escapeString($autoLoginKey);
-        $sql = "UPDATE {$_TABLES['users']} SET autologin_key = '' WHERE autologin_key = '{$escAutoLoginKey}'";
+        $sql = "UPDATE {$_TABLES['sessions']} SET autologin_key = '' WHERE autologin_key = '{$escAutoLoginKey}'";
         DB_query($sql);
         SEC_setCookie($_CONF['cookie_name'], '', time() - 10000);
     }

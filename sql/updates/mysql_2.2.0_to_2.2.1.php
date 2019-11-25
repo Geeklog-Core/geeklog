@@ -54,12 +54,10 @@ $_SQL[] = "DELETE FROM {$_TABLES['sessions']}";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} MODIFY `sess_id` VARCHAR(190) NOT NULL default ''";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN `md5_sess_id`";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN `topic`";
-
-// Add `autologin_key` column to `users' table
-$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `autologin_key` VARCHAR(190) NOT NULL DEFAULT '' AFTER `twofactorauth_secret`";
+$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD `autologin_key` VARCHAR(190) NOT NULL DEFAULT '' AFTER `whos_online`";
 
 // Add `postmode` column to `users' table
-$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `postmode` VARCHAR(10) NOT NULL DEFAULT 'plaintext' AFTER `autologin_key`";
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `postmode` VARCHAR(10) NOT NULL DEFAULT 'plaintext'";
 
 /**
  * Upgrade Messages

@@ -261,8 +261,8 @@ CREATE TABLE {$_TABLES['sessions']} (
   remote_ip VARCHAR(39) NOT NULL DEFAULT '',
   uid MEDIUMINT(8) NOT NULL DEFAULT '1',
   whos_online TINYINT(1) NOT NULL DEFAULT '1',
+  autologin_key VARCHAR(190) NOT NULL DEFAULT '',
   PRIMARY KEY  (sess_id),
-  KEY sess_id (sess_id),
   KEY start_time (start_time),
   KEY remote_ip (remote_ip)
 ) ENGINE=MyISAM
@@ -522,7 +522,6 @@ CREATE TABLE {$_TABLES['users']} (
   lastinvalid int(10) unsigned default NULL,
   twofactorauth_enabled TINYINT(3) NOT NULL DEFAULT 0,
   twofactorauth_secret VARCHAR(255) NOT NULL DEFAULT '',
-  autologin_key VARCHAR(190) NOT NULL DEFAULT '',
   postmode VARCHAR (10) NOT NULL DEFAULT 'plaintext',
   PRIMARY KEY  (uid),
   KEY LOGIN (uid,passwd,username),
