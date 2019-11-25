@@ -188,24 +188,6 @@ if (SEC_inGroup('Root') && ($page === 1)) {
             $display .= COM_showMessageText($secMsg);
         }
     }
-    // Theme Compatibility Check
-    // If ANY theme changes related to template variables (new or deleted) and template files (name of files, new or deleted files) happened since previous version of Geeklog then current version is required
-    // If nothing has changed related to this then the last version of Geeklog that meet these standards can be used here.
-    if (COM_versionCompare($_CONF['min_theme_gl_version'], $_CONF['theme_gl_version'], '>')) {
-        // Version to low so issue warning message to root users
-        if (empty($_CONF['theme_gl_version'])) {
-            $themeMsg = $MESSAGE[506];
-        } else {
-            $themeMsg = $MESSAGE[505];
-        }
-        $display .= COM_showMessageText($themeMsg);
-    } elseif (COM_versionCompare($_CONF['min_theme_gl_version'], $_CONF['theme_gl_version'], '<')) {
-        // Version to high so issue warning message
-        if (COM_versionCompare(VERSION, $_CONF['theme_gl_version'], '<')) {
-            $themeMsg = $MESSAGE[507];
-            $display .= COM_showMessageText($themeMsg);
-        }
-    }
 }
 
 // Show any Plugin formatted blocks
@@ -337,8 +319,8 @@ $msql = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
             ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND
             {$sql} GROUP BY s.sid, s.uid, s.draft_flag, s.date, s.modified, s.title, s.page_title, s.introtext,
             s.bodytext, s.text_version, s.hits, s.numemails, s.comments, s.comment_expire, s.trackbacks,
-            s.related, s.featured, s.show_topic_icon, s.commentcode, s.structured_data_type, s.trackbackcode, 
-            s.statuscode, s.expire, s.postmode, s.advanced_editor_mode, s.frontpage, s.meta_description, 
+            s.related, s.featured, s.show_topic_icon, s.commentcode, s.structured_data_type, s.trackbackcode,
+            s.statuscode, s.expire, s.postmode, s.advanced_editor_mode, s.frontpage, s.meta_description,
             s.meta_keywords, s.cache_time, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members,
             s.perm_anon, expireunix, {$userfields}, date
             ORDER BY featured DESC, date DESC LIMIT {$offset}, {$limit}";

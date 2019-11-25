@@ -113,7 +113,6 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 <h2><a name="changes221">Geeklog 2.2.1におけるテーマの変更点</a></h2>
 
 <ul>
-    <li>"functions.php"中のAPIがテーマ名を接尾辞として必要としなくなりました。たとえば、theme_config_mytheme()は依然として有効ですが、theme_config()も受け入れられるようになりました。この変更は特に子テーマを作るときに役立つでしょう。</li>
     <li>The main theme <span class="tt">header.thtml</span> and <span class="tt">footer.thtml</span> files have been combined into one file called <span class="tt">index.thtml</span>. This means any template variable available to either of the old files is now available in the new index file.</li>
     <li>For the new <span class="tt">index.thtml</span> file, the {content} template variable has been added which is where the main page content is placed.</li>
     <li>For the new <span class="tt">index.thtml</span> file, the {system_messsages} template variable has been added which is where system messages may appear.</li>

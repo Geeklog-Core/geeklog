@@ -180,7 +180,7 @@ function install_config(ConfigInterface $c)
 
     $c->add('tab_theme', NULL, 'tab', 2, 10, NULL, 0, TRUE, $me, 10);
     $c->add('fs_theme', NULL, 'fieldset', 2, 10, NULL, 0, TRUE, $me, 10);
-    $c->add('theme','denim','select',2,10,NULL,190,TRUE, $me, 10);
+    $c->add('theme','denim_three','select',2,10,NULL,190,TRUE, $me, 10);
     $c->add('doctype','html401strict','select',2,10,21,195,TRUE, $me, 10);
     $c->add('menu_elements',array('contribute','search','stats','directory','plugins'),'%select',2,10,24,200,TRUE, $me, 10);
     $c->add('path_themes','','text',2,10,NULL,210,TRUE, $me, 10);

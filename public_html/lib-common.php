@@ -129,6 +129,21 @@ $config->initConfig();
 
 $_CONF = $config->get_config('Core');
 
+// Some hard coded additional config options
+$_CONF['theme_geeklog_default'] = 'denim_three'; // Geeklog default theme. If this changes then remember to change default theme in Installer for Install class and config-install.php files
+$_CONF['theme_site_default'] = $_CONF['theme']; // Store original theme set in config
+$_CONF['language_site_default'] = $_CONF['language']; // Store original site default language before it may get changed depending on other settings
+
+// Geeklog Theme Support
+// If ANY theme changes related to:
+//      template variables (new or deleted)
+//      template files (name of files, new or deleted files)
+//      New/Updated Features (for example added the scripts class to handle css and javascript)
+// has happened since previous version of Geeklog then current Geeklog version is required.
+// If nothing has changed related to this, then the last version of Geeklog that meet these standards can be used here.
+// If versions are not compatible then a warning message will be displayed to the Root user on the homepage
+$_CONF['min_theme_gl_version'] = '2.2.1'; // Updated to 2.2.1 since index.thtml file added and header and footer files removed. Multiple new Template Variables also exist
+
 // Installer calls lib-common so make sure it doesn't get affectd by certain config options
 if (defined('GL_INSTALL_ACTIVE')) {
     $_CONF['site_enabled'] = true;
@@ -270,64 +285,117 @@ if (COM_isAnonUser()) {
 // Please use the functions TOPIC_setTopic to set the current topic if needed or TOPIC_currentTopic to retrieve the current topic id
 TOPIC_setTopic(''); // Initialize current topic id variable and set current topic to All Topics - Current user topic id at this point untill TOPIC_getTopic is called (if ever) or TOPIC_setTopic is called by something else
 
-// Set theme
-$useTheme = '';
-if (isset($_POST['usetheme'])) {
-    $useTheme = COM_sanitizeFilename($_POST['usetheme'], true);
-}
-if (!empty($useTheme) && is_dir($_CONF['path_themes'] . $useTheme)) {
-    $_CONF['theme'] = $useTheme;
-    $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
-    $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
-} elseif ($_CONF['allow_user_themes'] == 1) {
-    if (isset($_COOKIE[$_CONF['cookie_theme']]) && empty($_USER['theme'])) {
-        $theme = COM_sanitizeFilename($_COOKIE[$_CONF['cookie_theme']], true);
-        if (is_dir($_CONF['path_themes'] . $theme)) {
-            $_USER['theme'] = $theme;
+// Set theme for current user (anonymous or logged in user)
+$temp_theme = '';
+$found_valid_theme = false;
+if ($_CONF['allow_user_themes'] == 1) {
+    // Check for theme switch via url variable
+    if (isset($_POST['usetheme'])) {
+        $temp_theme = COM_sanitizeFilename($_POST['usetheme'], true);
+        if (COM_validateTheme($temp_theme)) {
+            $found_valid_theme = true;
         }
     }
 
-    if (!empty($_USER['theme'])) {
-        if (is_dir($_CONF['path_themes'] . $_USER['theme'])) {
-            $_CONF['theme'] = $_USER['theme'];
-            $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
-            $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
-        } else {
+    if (!$found_valid_theme) {
+        // Check for theme set with a cookie then
+        // Cookies are set everytime a user logs in (USER_doLogin) and has a theme set or possibly by a plugin like vThemes
+        if (isset($_COOKIE[$_CONF['cookie_theme']])) {
+            $temp_theme = COM_sanitizeFilename($_COOKIE[$_CONF['cookie_theme']], true);
+            if (COM_validateTheme($temp_theme)) {
+                $found_valid_theme = true;
+            }
+        }
+    }
+
+    if (!$found_valid_theme) {
+        // Check for a user theme then
+        if (isset($_USER['theme'])) {
+            $temp_theme = $_USER['theme'];
+            if (COM_validateTheme($temp_theme)) {
+                $found_valid_theme = true;
+            }
+        }
+    }
+}
+
+$setSystemMessage505_flag = false;
+$setSystemMessage506_flag = false;
+if (!$found_valid_theme) {
+    // So either no user themes allowed or user theme set is not valid anymore (ie old theme that has since been removed)
+    // Lets make sure site default theme is valid
+    $temp_theme = $_CONF['theme'];
+    if (COM_validateTheme($temp_theme)) {
+        $found_valid_theme = true;
+    } else {
+        // no valid themes in config settings so try Geeklog default theme
+        $temp_theme = $_CONF['theme_geeklog_default'];
+        if (COM_validateTheme($temp_theme)) {
+            $found_valid_theme = true;
+
+            // Theme may be valid but settings are not so notify current user if they are Root
+            if (!defined('GL_INSTALL_ACTIVE') && SEC_inGroup('Root')) {
+                $setSystemMessage505_flag = true; // have to set flag here and set later on since language files are not loaded
+            }
+        }
+
+        if (!$found_valid_theme) {
+            // Nothing set is valid so lets just try to find any valid theme
+            $themeFiles = COM_getThemes(true);
+            if (isset($themeFiles[1])) {
+                // Grab first valid theme
+                $temp_theme = $themeFiles[1];
+
+                $found_valid_theme = true;
+
+                // Theme may be valid but settings are not so notify current user if they are Root
+                if (!defined('GL_INSTALL_ACTIVE') && SEC_inGroup('Root')) {
+                    $setSystemMessage506_flag = true; // have to set flag here and set later on since language files are not loaded
+                }
+            }
+        }
+    }
+}
+
+if ($found_valid_theme) {
+    // Set all related theme variables now
+    $_CONF['theme'] = $temp_theme;
+    $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
+    $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
+    if (!COM_isAnonUser()) {
+        // User Theme is always saved even if $_CONF['allow_user_themes'] is false as per savepreferences function in usersettings. So do same thing here
+        if (!isset($_USER['theme']) || (isset($_USER['theme']) && $_USER['theme'] != $_CONF['theme'])) {
+            // Update user record if it had to be changed due to passed url theme variable, cookie found, or not a valid user theme in record
             $_USER['theme'] = $_CONF['theme'];
+            DB_query("UPDATE {$_TABLES['users']} SET theme='{$_USER['theme']}' WHERE uid = {$_USER['uid']}");
+            // Update Cookie as well
+            if (!headers_sent()) {
+                @setcookie(
+                    $_CONF['cookie_theme'], $_USER['theme'], time() + 31536000, $_CONF['cookie_path'],
+                    $_CONF['cookiedomain'], $_CONF['cookiesecure']
+                );
+            }
         }
     }
-}
 
-// Fix a wrong theme name, since "professional" and "professional_css" themes are deprecated as of Geeklog 2.1.2
-if (($_CONF['theme'] === 'professional') || ($_CONF['theme'] === 'professional_css')) {
-    $_CONF['theme'] = $_USER['theme'] = 'denim_three';
-    $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
-    $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
-
-    if (!headers_sent()) {
-        @setcookie(
-            $_CONF['cookie_theme'], 'denim_three', time() + 31536000, $_CONF['cookie_path'],
-            $_CONF['cookiedomain'], $_CONF['cookiesecure']
-        );
+    // If root lets check if theme_site_default is a valid theme (if we are not already using it) as this can affect other users
+    if (!defined('GL_INSTALL_ACTIVE') && SEC_inGroup('Root') && $_CONF['allow_user_themes'] && $_CONF['theme_site_default'] != $_CONF['theme']) {
+        $_CONF['theme_geeklog_default'];
+        $temp_theme = $_CONF['theme_site_default'];
+        if (!COM_validateTheme($temp_theme)) {
+            if ($_CONF['theme'] == $_CONF['theme_geeklog_default']) {
+                $setSystemMessage505_flag = true; // have to set flag here and set later on since language files are not loaded
+            } else {
+                $setSystemMessage506_flag = true; // have to set flag here and set later on since language files are not loaded
+            }
+        }
     }
+} else {
+    // No valid theme found. Error out here as it will error out later anyways when the template class is used
+    COM_handleGeeklogError('gl-no-valid-themes', "No valid themes for this version of Geeklog found in: {$_CONF['path_themes']}");
 }
 
-// Geeklog Theme Support
-// If ANY theme changes related to:
-//      template variables (new or deleted)
-//      template files (name of files, new or deleted files)
-//      New/Updated Features (for example added the scripts class to handle css and javascript)
-// has happened since previous version of Geeklog then current Geeklog version is required.
-// If nothing has changed related to this, then the last version of Geeklog that meet these standards can be used here.
-// If versions are not compatible then a warning message will be displayed to the Root user on the homepage
-$_CONF['min_theme_gl_version'] = VERSION;
-
-
-// Include theme functions file (required)
-if (file_exists($_CONF['path_layout'] . 'functions.php')) {
-    require_once $_CONF['path_layout'] . 'functions.php';
-}
-
+// Require theme functions.php should already be loaded and theme_config_foo already be checked to exist along with correct version from above as they could not get this far otherwise
 // Get the configuration values from the theme
 $_CONF['theme_default'] = ''; // Default is none
 $_CONF['path_layout_default'] = ''; // Default is none
@@ -337,41 +405,35 @@ $_CONF['theme_plugins'] = ''; // Default is none - CANNOT be a child theme
 $_CONF['theme_options'] = array(); // Default is empty array
 
 $func = 'theme_config_' . $_CONF['theme'];
-if (!is_callable($func)) {
-    $func = 'theme_config';
+$theme_config = $func();
+$_CONF['doctype'] = $theme_config['doctype'];
+$_CONF['theme_oauth_icons'] = isset($theme_config['theme_oauth_icons'])
+    ? $theme_config['theme_oauth_icons']
+    : '';
+$_IMAGE_TYPE = $theme_config['image_type'];
+if (isset($theme_config['theme_default'])) {
+    $_CONF['theme_default'] = $theme_config['theme_default'];
+    $_CONF['path_layout_default'] = $_CONF['path_themes'] . $_CONF['theme_default'] . '/';
 }
-
-if (is_callable($func)) {
-    $theme_config = $func();
-    $_CONF['doctype'] = $theme_config['doctype'];
-    $_CONF['theme_oauth_icons'] = isset($theme_config['theme_oauth_icons'])
-        ? $theme_config['theme_oauth_icons']
-        : '';
-    $_IMAGE_TYPE = $theme_config['image_type'];
-    if (isset($theme_config['theme_default'])) {
-        $_CONF['theme_default'] = $theme_config['theme_default'];
-        $_CONF['path_layout_default'] = $_CONF['path_themes'] . $_CONF['theme_default'] . '/';
-    }
-	// Remove references to supported_version_theme by Geeklog v3.0.0
-    if (isset($theme_config['supported_version_theme'])) {
-		COM_deprecatedLog('Theme Variable $theme_config[' . "'supported_version_theme'" . ']', '2.2.1', '3.0.0', '$theme_config[' . "'supported_version_theme'" . '] instead');
-        $_CONF['theme_gl_version'] = $theme_config['supported_version_theme'];
-    } else {
-        $_CONF['theme_gl_version'] = $theme_config['theme_gl_version'];
-    }
-    $_CONF['theme_etag'] = (!isset($theme_config['etag']))
-        ? $_CONF['theme_etag'] : $theme_config['etag'];
-    if ($_CONF['theme_etag'] && !file_exists($_CONF['path_layout'] . 'style.css.php')) {
-        // See if style.css.php file exists that is required
-        $_CONF['theme_etag'] = false;
-    }
-    if (isset($theme_config['theme_plugins'])) {
-        // EXPERIMENTAL for theme_gl_version v2.2.0 and higher (See Geeklog Core theme functions.php and theme_plugins for further explanation or  https://github.com/Geeklog-Core/geeklog/issues/767)
-        $_CONF['theme_plugins'] = $theme_config['theme_plugins'];
-    }
-    if (isset($theme_config['options']) && is_array($theme_config['options'])) {
-        $_CONF['theme_options'] = $theme_config['options'];
-    }
+// Remove references to supported_version_theme by Geeklog v3.0.0 (see See COM_validateTheme as well)
+if (isset($theme_config['supported_version_theme'])) {
+	COM_deprecatedLog('Theme Variable $theme_config[' . "'supported_version_theme'" . ']', '2.2.1', '3.0.0', '$theme_config[' . "'supported_version_theme'" . '] instead');
+    $_CONF['theme_gl_version'] = $theme_config['supported_version_theme'];
+} else {
+    $_CONF['theme_gl_version'] = $theme_config['theme_gl_version'];
+}
+$_CONF['theme_etag'] = (!isset($theme_config['etag']))
+    ? $_CONF['theme_etag'] : $theme_config['etag'];
+if ($_CONF['theme_etag'] && !file_exists($_CONF['path_layout'] . 'style.css.php')) {
+    // See if style.css.php file exists that is required
+    $_CONF['theme_etag'] = false;
+}
+if (isset($theme_config['theme_plugins'])) {
+    // EXPERIMENTAL for theme_gl_version v2.2.0 and higher (See Geeklog Core theme functions.php and theme_plugins for further explanation or  https://github.com/Geeklog-Core/geeklog/issues/767)
+    $_CONF['theme_plugins'] = $theme_config['theme_plugins'];
+}
+if (isset($theme_config['options']) && is_array($theme_config['options'])) {
+    $_CONF['theme_options'] = $theme_config['options'];
 }
 
 /**
@@ -438,7 +500,6 @@ Autoload::load('template');
 require_once $_CONF['path_system'] . 'lib-template.php';
 
 // Set language
-$_CONF['language_site_default'] = $_CONF['language']; // Store original site default language before it may get changed depending on other settings
 if (isset($_COOKIE[$_CONF['cookie_language']]) && empty($_USER['language'])) {
     $language = COM_sanitizeFilename($_COOKIE[$_CONF['cookie_language']]);
     if (is_file($_CONF['path_language'] . $language . '.php') &&
@@ -665,6 +726,15 @@ foreach ($_PLUGINS as $pi_name) {
 // Plugins can provide Structured Data Types, see if any (needs to be done after loading functions.inc)
 $_STRUCT_DATA->load_plugin_types();
 
+// Set any System messages since where the flags set language files not loaded yet
+if ($setSystemMessage505_flag) {
+    COM_setSystemMessage($MESSAGE[505]); // Deals with Site theme setting error
+}
+if ($setSystemMessage506_flag) {
+    COM_setSystemMessage($MESSAGE[506]);  // Deals with Site theme setting error
+}
+
+
 // +---------------------------------------------------------------------------+
 // | HTML WIDGETS                                                              |
 // +---------------------------------------------------------------------------+
@@ -745,14 +815,56 @@ function COM_getBlockTemplate($blockName, $which, $position = '', $plugin = '')
 }
 
 /**
+ * See if passed theme is valid.
+ *
+ * @param    string theme   id of theme (which is also the directory name that should be located in the layout folder)
+ */
+function COM_validateTheme($theme)
+{
+    global $_CONF;
+
+    $valid = false;
+
+    // All themes require a functions.php (ie child themes don't require any template files) so check for just this one file
+    // At some point could actualy check for min geeklog version of theme theme_gl_version wgich was introduced in Geeklog v2.2.1
+    if (!empty($theme)) {
+        $temp_path_layout = $_CONF['path_themes'] . $theme . '/';
+        if (file_exists($temp_path_layout . 'functions.php')) {
+            require_once $temp_path_layout . 'functions.php';
+            $func = 'theme_config_' . $theme;
+            if (is_callable($func)) {
+                $theme_config = $func();
+            	// Remove references to supported_version_theme by Geeklog v3.0.0
+                $temp_theme_gl_version = '';
+                if (isset($theme_config['supported_version_theme'])) {
+                    $temp_theme_gl_version = $theme_config['supported_version_theme'];
+                } else {
+                    if (isset($theme_config['theme_gl_version'])) {
+                        $temp_theme_gl_version = $theme_config['theme_gl_version'];
+                    }
+                }
+
+                // Version Compare. Check to see if Theme Geeklog Version support equals current Geeklog min theme version
+                if (!empty($temp_theme_gl_version) && COM_versionCompare($temp_theme_gl_version, $_CONF['min_theme_gl_version'], '==')) {
+                    $valid = true;
+                }
+            }
+        }
+    }
+
+    return $valid;
+}
+
+/**
  * Gets all installed themes
  * Returns a list of all the directory names in $_CONF['path_themes'], i.e.
  * a list of all the theme names.
  *
  * @param    boolean $all if true, return all themes even if users aren't allowed to change their default themes
+ * @param    boolean $valid if true, return all valid themes only
  * @return   array        All installed themes
  */
-function COM_getThemes($all = false)
+function COM_getThemes($all = false, $valid = true)
 {
     global $_CONF;
 
@@ -771,7 +883,13 @@ function COM_getThemes($all = false)
                 ($dir !== 'CVS') && (substr($dir, 0, 1) !== '.')
             ) {
                 clearstatcache();
-                $themes[$index] = $dir;
+                if ($valid) {
+                    if (COM_validateTheme($dir)) {
+                        $themes[$index] = $dir;
+                    }
+                } else {
+                    $themes[$index] = $dir;
+                }
                 $index++;
             }
         }
@@ -7857,6 +7975,18 @@ function COM_handle404($alternate_url = '')
 }
 
 /**
+ * Default Geeklog Specific Error handler
+ *
+ * @param  string $errCode    Error Number.
+ * @param  string $errStr     Error Message.
+ */
+function COM_handleGeeklogError($errCode, $errStr)
+{
+    COM_handleError($errCode, $errStr, '', 0, array(), 2);
+    die(1);
+}
+
+/**
  * Handle errors.
  * This function will handle all PHP errors thrown at it, without exposing
  * paths, and hopefully, providing much more information to Root Users than
@@ -7872,8 +8002,9 @@ function COM_handle404($alternate_url = '')
  * @param  string $errFile    The file the error was raised in.
  * @param  int    $errLine    The line of the file that the error was raised at.
  * @param  array  $errContext An array that points to the active symbol table at the point the error occurred.
+* @param  int    $type        Geeklog Error Type - 1 = PHP, 2 = Geeklog Specific
  */
-function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errContext = array())
+function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errContext = array(), $type = 1)
 {
     global $_CONF, $_USER, $LANG01;
 
@@ -7913,7 +8044,11 @@ function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errConte
             header('Status: 500 Internal Server Error');
             header('Content-Type: text/html; charset=' . COM_getCharset());
 
-            $title = 'An Error Occurred';
+            if (!isset($LANG01[141])) {
+                $title = 'An Error Occurred';
+            } else {
+                $title = $LANG01[141];
+            }
             if (!empty($_CONF['site_name'])) {
                 $title = $_CONF['site_name'] . ' - ' . $title;
             }
@@ -7925,8 +8060,13 @@ function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errConte
   <title>{$title}</title>
 </head>
 <body>
-<h1>An error has occurred:</h1>
 HTML;
+            if ($type == 1) {
+                $output .= '<h1>A PHP error has occurred:</h1>';
+            } else {
+                $output .= '<h1>A Geeklog Specfic error has occurred:</h1>';
+            }
+
             if ($_CONF['rootdebug']) {
                 $output .= <<<HTML
 <h2 style="color: red;">This is being displayed as "Root Debugging" is enabled in your Geeklog configuration.</h2>
@@ -7936,31 +8076,41 @@ HTML;
                 $output .= '<p>(This text is only displayed to users in the group \'Root\')</p>';
             }
 
-            $output .= "<p>$errorTypes[$errNo]($errNo) - $errStr @ $errFile line $errLine</p>";
+            if ($type == 1) {
+                $output .= "<p>$errorTypes[$errNo]($errNo) - $errStr @ $errFile line $errLine</p>";
+            } else {
+                $output .= $errStr;
+            }
 
-            if (!function_exists('SEC_inGroup') || !SEC_inGroup('Root')) {
-                if ('force' != '' . $_CONF['rootdebug']) {
-                    $errContext = COM_rootDebugClean($errContext);
-                } else {
-                    $output .= <<<HTML
+			if ($type == 1) {
+				if (!function_exists('SEC_inGroup') || !SEC_inGroup('Root')) {
+					if ('force' != '' . $_CONF['rootdebug']) {
+						$errContext = COM_rootDebugClean($errContext);
+					} else {
+						$output .= <<<HTML
 <h2 style="color: red;">Root Debug is set to "force", this means that passwords and session cookies are exposed in this message!!!</h2>
 HTML;
+					}
                 }
             }
+
             if (@ini_get('xdebug.default_enable') == 1) {
                 ob_start();
-                var_dump($errContext);
+                if ($type == 1) {
+					var_dump($errContext);
+                }
                 $output .= ob_get_clean() . PHP_EOL . '</body></html>';
                 echo $output;
             } else {
-                $btr = debug_backtrace();
-                if (count($btr) > 0) {
-                    if ($btr[0]['function'] == 'COM_handleError') {
-                        array_shift($btr);
+                if ($type == 1) {
+                    $btr = debug_backtrace();
+                    if (count($btr) > 0) {
+                        if ($btr[0]['function'] == 'COM_handleError') {
+                            array_shift($btr);
+                        }
                     }
-                }
-                if (count($btr) > 0) {
-                    $output .= <<<HTML
+                    if (count($btr) > 0) {
+                        $output .= <<<HTML
 <table class="xdebug-error" dir="ltr" style="font-size: small; border-width: 1px; border-collapse: collapse;">
   <tr>
     <th style="text-align: left; background-color: #e9b96e;" colspan="5">Call Stack</th>
@@ -7973,18 +8123,18 @@ HTML;
   </tr>
 HTML;
 
-                    $i = 1;
-                    foreach ($btr as $b) {
-                        $f = '';
-                        if (!empty($b['file'])) {
-                            $f = $b['file'];
-                        }
-                        $l = '';
-                        if (!empty($b['line'])) {
-                            $l = $b['line'];
-                        }
+                        $i = 1;
+                        foreach ($btr as $b) {
+                            $f = '';
+                            if (!empty($b['file'])) {
+                                $f = $b['file'];
+                            }
+                            $l = '';
+                            if (!empty($b['line'])) {
+                                $l = $b['line'];
+                            }
 
-                        $output .= <<<HTML
+                            $output .= <<<HTML
   <tr>
     <td style="text-align: right; background-color: #eeeeec;">{$i}</td>
     <td style="background-color: #eeeeec;">{$b['function']}</td>
@@ -7992,23 +8142,26 @@ HTML;
     <td style="text-align: right; background-color: #eeeeec;">{$l}</td>
   </tr>
 HTML;
-                        $i++;
-                        if ($i > 100) {
-                            $output .= <<<HTML
+                            $i++;
+                            if ($i > 100) {
+                                $output .= <<<HTML
   <tr>
     <td style="text-align: left; background-color: #eeeeec;" colspan="4">Possible recursion - aborting.</td>
   </tr>
 HTML;
-                            break;
+                                break;
+                            }
                         }
-                    }
 
-                    $output .= '</table>' . PHP_EOL;
+                        $output .= '</table>' . PHP_EOL;
+                    }
 ;               }
 
                 $output .= '<pre>';
                 ob_start();
-                var_dump($errContext);
+                if ($type == 1) {
+                    var_dump($errContext);
+                }
                 $output .= htmlspecialchars(ob_get_clean()) . '</pre></body></html>';
                 echo $output;
             }
@@ -8032,7 +8185,11 @@ HTML;
     }
 
     // if we do not throw the error back to an admin, still log it in the error.log
-    COM_errorLog("$errorTypes[$errNo]($errNo) - $errStr @ $errFile line $errLine", 1);
+    if ($type == 1) {
+        COM_errorLog("$errorTypes[$errNo]($errNo) - $errStr @ $errFile line $errLine", 1);
+    } else {
+        COM_errorLog("$errNo - $errStr", 1);
+    }
 
     header('HTTP/1.1 500 Internal Server Error');
     header('Status: 500 Internal Server Error');
@@ -8051,7 +8208,13 @@ HTML;
         include $_CONF['path_layout_default'] . 'errormessage.html';
     } else {
         // Otherwise, display simple error message
-        $title = $LANG01[141];
+        // Depending on the error sometimes $LANG01 is not set
+        if (!isset($LANG01[141])) {
+            $title = 'An Error Occurred';
+            $LANG01[142] = 'Unfortunately, an error has occurred rendering this page. Please try again later.';
+        } else {
+            $title = $LANG01[141];
+        }
 
         if (!empty($_CONF['site_name'])) {
             $title = $_CONF['site_name'] . ' - ' . $title;
@@ -8098,11 +8261,16 @@ function COM_rootDebugClean($array, $blank = false)
             $blankField = $blank;
         }
 
-        if (is_array($value)) {
-            $array[$key] = COM_rootDebugClean($value, $blankField);
-        } elseif ($blankField) {
-            $array[$key] = '[VALUE REMOVED]';
-        }
+		// Recursive errors (function nesting) happen if GLOBALS variable array included in $errContext which can happen if error is in the main part of lib-common (and not a function of lib-common)
+        // If GlOBALS gets changed for some reason the initial arrays (from $errContext) passed into COM_rootDebugClean by COM_handleError automatically all get duplicated which then runs through COM_rootDebugClean again which creates an infinite loop.
+		// So do not change GLOBALS if that is the array key
+		if ($key != 'GLOBALS') {
+			if (is_array($value)) {
+				$array[$key] = COM_rootDebugClean($value, $blankField);
+			} elseif ($blankField) {
+				$array[$key] = '[VALUE REMOVED]';
+			}
+		}
     }
 
     return $array;
