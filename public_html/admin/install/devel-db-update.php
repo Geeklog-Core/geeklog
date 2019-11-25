@@ -98,7 +98,7 @@ function update_DatabaseFor221()
       uid MEDIUMINT NOT NULL,
       ipaddress VARCHAR(39) NOT NULL,
       action TINYINT NOT NULL,
-      created DATETIME NOT NULL, 
+      created DATETIME NOT NULL,
       PRIMARY KEY (lid)
     ) ENGINE=MyISAM
     ";
@@ -122,7 +122,8 @@ function update_DatabaseFor221()
     $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN `topic`";
 
     // Add `autologin_key` column to `users' table
-    $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `autologin_key` VARCHAR(250) NOT NULL DEFAULT '' AFTER `twofactorauth_secret`";
+    $_SQL[] = "ALTER TABLE {$_TABLES['users']} DROP COLUMN `autologin_key`"; // this was added and then taken away so make sure gone
+    $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD COLUMN autologin_key VARCHAR(190) NOT NULL DEFAULT ''";    
 
     // Add `postmode` column to `users' table
     $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `postmode` VARCHAR(10) NOT NULL DEFAULT 'plaintext' AFTER `autologin_key`";
