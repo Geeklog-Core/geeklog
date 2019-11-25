@@ -259,6 +259,7 @@ CREATE TABLE {$_TABLES['sessions']} (
   remote_ip varchar(39) NOT NULL default '',
   uid smallint NOT NULL default '1',
   whos_online smallint NOT NULL default '1',
+  autologin_key VARCHAR(190) NOT NULL DEFAULT '',
   PRIMARY KEY (sess_id)
 );
   CREATE INDEX {$_TABLES['sessions']}_start_time ON {$_TABLES['sessions']} (start_time);
@@ -520,7 +521,6 @@ CREATE TABLE {$_TABLES['users']} (
   lastinvalid int default NULL,
   twofactorauth_enabled SMALLINT NOT NULL DEFAULT 0,
   twofactorauth_secret VARCHAR(255) NOT NULL DEFAULT '',
-  autologin_key VARCHAR(190) NOT NULL DEFAULT '',
   postmode VARCHAR (10) NOT NULL DEFAULT 'plaintext',
   PRIMARY KEY (uid)
 );

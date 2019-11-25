@@ -54,9 +54,7 @@ $_SQL[] = "DELETE FROM {$_TABLES['sessions']}";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ALTER COLUMN sess_id TYPE VARCHAR(190) NOT NULL default ''";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN md5_sess_id";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN topic";
-
-// Add `autologin_key` column to `users' table
-$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD COLUMN autologin_key VARCHAR(190) NOT NULL DEFAULT ''";
+$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD COLUMN autologin_key VARCHAR(190) NOT NULL DEFAULT ''";
 
 // Add `postmode` column to `users' table
 $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD COLUMN postmode VARCHAR(10) NOT NULL DEFAULT 'plaintext'";
