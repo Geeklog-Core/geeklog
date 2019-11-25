@@ -1546,7 +1546,7 @@ function USER_isValidEmailAddress($email)
         $parts = explode('@', $email, 2);
 
         // Additional check for Gmail.  See Issue #918
-        if ($parts[1] === 'gmail.com') {
+        if (isset($parts[1]) && $parts[1] === 'gmail.com') {
             // Ignore all dots '.' and anything after plus sign '+'
             $parts[0] = str_replace('.', '', $parts[0]);
             $plusSign = strpos($parts[0], '+');

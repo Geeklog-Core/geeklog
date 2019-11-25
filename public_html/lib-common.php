@@ -3815,10 +3815,11 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
                 $charset
             );
 
-            $fromAddress = array_keys($from)[0];
-            if (is_array($to)) {
+            if (is_array($from)) {
+                $fromAddress = array_keys($from)[0];
                 $fromAlias = array_values($from)[0];
             } else {
+                $fromAddress = $from;
                 $fromAlias = '';
             }
             $from = htmlspecialchars(
