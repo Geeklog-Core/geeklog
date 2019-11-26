@@ -290,8 +290,9 @@ $temp_theme = '';
 $found_valid_theme = false;
 if ($_CONF['allow_user_themes'] == 1) {
     // Check for theme switch via url variable
-    if (isset($_POST['usetheme'])) {
-        $temp_theme = COM_sanitizeFilename($_POST['usetheme'], true);
+    // Used by plugins like vThemes
+    if (isset($_POST['gl-usetheme'])) {
+        $temp_theme = COM_sanitizeFilename($_POST['gl-usetheme'], true);
         if (COM_validateTheme($temp_theme)) {
             $found_valid_theme = true;
         }
@@ -368,13 +369,16 @@ if ($found_valid_theme) {
             // Update user record if it had to be changed due to passed url theme variable, cookie found, or not a valid user theme in record
             $_USER['theme'] = $_CONF['theme'];
             DB_query("UPDATE {$_TABLES['users']} SET theme='{$_USER['theme']}' WHERE uid = {$_USER['uid']}");
-            // Update Cookie as well
-            if (!headers_sent()) {
-                @setcookie(
-                    $_CONF['cookie_theme'], $_USER['theme'], time() + 31536000, $_CONF['cookie_path'],
-                    $_CONF['cookiedomain'], $_CONF['cookiesecure']
-                );
-            }
+        }
+    }
+
+    // Update Cookie as well if needed for anonymous and users
+    if (!isset($_COOKIE[$_CONF['cookie_theme']]) || (isset($_COOKIE[$_CONF['cookie_theme']]) && $_COOKIE[$_CONF['cookie_theme']] != $_CONF['theme'])) {
+        if (!headers_sent()) {
+            @setcookie(
+                $_CONF['cookie_theme'], $_CONF['theme'], time() + 31536000, $_CONF['cookie_path'],
+                $_CONF['cookiedomain'], $_CONF['cookiesecure']
+            );
         }
     }
 
@@ -3829,7 +3833,7 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
             );
 
             $priority = htmlspecialchars($priority, ENT_QUOTES, $charset);
-            
+
             if (!$html) {
                 $message = GLText::removeAllHTMLTagsAndAttributes($message);
             }
