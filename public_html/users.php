@@ -245,14 +245,13 @@ function USER_createUser($username, $email, $email_conf)
         $_CONF['disallow_domains'] = '';
     }
 
+    // USER_isValidEmailAddress checks if actually proper format and if it exists in the user table and if domain has been banned plus a few other things
     if (USER_isValidEmailAddress($email) && !empty($username) && ($email === $email_conf) &&
         (strlen($username) <= 16)) {
 
         // Remember some database collations are case and accent insensitive and some are not. They would consider "nina", "nina  ", "Nina", and, "niña" as the same
         $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)', "TRIM(LOWER(username)) = TRIM(LOWER('$username'))");
-        $ecount = DB_count($_TABLES['users'], 'email', DB_escapeString($email));
-
-        if (($ucount == 0) && ($ecount == 0)) {
+        if ($ucount == 0) {
             // For Geeklog, it would be okay to create this user now. But check
             // with a custom userform first, if one exists.
             if ($_CONF['custom_registration'] && function_exists('CUSTOM_userCheck')) {
@@ -315,7 +314,11 @@ function USER_createUser($username, $email, $email_conf)
         if ((empty($username)) || (strlen($username) > 16)) {
             $msg = $LANG01[32]; // invalid username
         } else {
-            $msg = $LANG04[18]; // invalid email address
+            if (!COM_isEmail($email)) {
+                $msg = $LANG04[18]; // invalid email address
+            } else {
+                $msg = $LANG04[20];
+            }
         }
         if ($_CONF['custom_registration'] && function_exists('CUSTOM_userForm')) {
             $retval .= CUSTOM_userForm($msg);
