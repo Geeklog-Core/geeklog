@@ -141,7 +141,8 @@ $_CONF['language_site_default'] = $_CONF['language']; // Store original site def
 //      New/Updated Features (for example added the scripts class to handle css and javascript)
 // has happened since previous version of Geeklog then current Geeklog version is required.
 // If nothing has changed related to this, then the last version of Geeklog that meet these standards can be used here.
-// If versions are not compatible then a warning message will be displayed to the Root user on the homepage
+// If this version and the gl version of the theme are not compatible (checked in COM_validateTheme) then theme will not load and alternate will be selected
+// If default site theme is not compatible then a warning message will be displayed to the Root user
 $_CONF['min_theme_gl_version'] = '2.2.1'; // Updated to 2.2.1 since index.thtml file added and header and footer files removed. Multiple new Template Variables also exist
 
 // Installer calls lib-common so make sure it doesn't get affectd by certain config options
