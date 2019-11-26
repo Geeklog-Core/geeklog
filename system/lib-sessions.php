@@ -304,22 +304,16 @@ function SESS_newSession($userId, $remote_ip, $lifespan)
 * This is called whenever a page is hit by a user with a valid session.
 *
 * @param   string  $sessId  Session ID to update time for
-* @return  string           a new session ID
 */
 function SESS_updateSessionTime($sessId)
 {
     global $_TABLES;
 
-    $escOldSessionId = DB_escapeString($sessId);
-    $newSessionId = Session::regenerateId();
-    $escNewSessionId = DB_escapeString($newSessionId);
+    $escSessionId = DB_escapeString($sessId);
     $newTime = (string) time();
-    $sql = "UPDATE {$_TABLES['sessions']} SET start_time = {$newTime}, "
-        . "whos_online = 1, sess_id = '{$escNewSessionId}' "
-        . "WHERE sess_id = '{$escOldSessionId}'";
+    $sql = "UPDATE {$_TABLES['sessions']} SET start_time = {$newTime}, whos_online = 1 "
+        . "WHERE sess_id = '{$escSessionId}'";
     DB_query($sql);
-
-    return $newSessionId;
 }
 
 /**
@@ -335,7 +329,12 @@ function SESS_endUserSession($userId)
     global $_TABLES;
 
     $userId = (int) $userId;
-    DB_delete($_TABLES['sessions'], 'uid', $userId);
+    $oldSessionId = DB_escapeString(Session::getSessionId());
+    $newSessionId = Session::regenerateId();
+    $newSessionId = DB_escapeString($newSessionId);
+    $sql = "UPDATE {$_TABLES['sessions']} SET uid = " . Session::ANON_USER_ID . ", sess_id = '{$newSessionId}' "
+        . " WHERE (uid = {$userId}) AND (sess_id = '{$oldSessionId}')";
+    DB_query($sql);
     Session::setUid(Session::ANON_USER_ID);
 
     return 1;
@@ -493,12 +492,8 @@ function SESS_deleteAutoLoginKey()
 {
     global $_CONF, $_TABLES;
 
-    $autoLoginKey = Input::fCookie($_CONF['cookie_name'], '');
-
-    if (!empty($autoLoginKey)) {
-        $escAutoLoginKey = DB_escapeString($autoLoginKey);
-        $sql = "UPDATE {$_TABLES['sessions']} SET autologin_key = '' WHERE autologin_key = '{$escAutoLoginKey}'";
-        DB_query($sql);
-        SEC_setCookie($_CONF['cookie_name'], '', time() - 10000);
-    }
+    $sessionId = DB_escapeString(Session::getSessionId());
+    $sql = "UPDATE {$_TABLES['sessions']} SET autologin_key = '' WHERE sess_id = '{$sessionId}'";
+    DB_query($sql);
+    SEC_setCookie($_CONF['cookie_name'], '', time() - 10000);
 }
