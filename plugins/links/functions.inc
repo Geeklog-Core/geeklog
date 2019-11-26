@@ -1203,13 +1203,13 @@ function LINKS_sendNotification ($table, $A)
     $description = PLG_replaceTags( stripslashes($A['description']) );
 
     $mailbody = "$LANG_LINKS_SUBMIT[8]: $title\n"
-              . "$LANG_LINKS_SUBMIT[9]: <{$A['url']}>\n"
+              . "$LANG_LINKS_SUBMIT[9]: {$A['url']}\n"
               . "$LANG_LINKS_SUBMIT[3]: {$A['category']}\n\n"
               . $description . "\n\n";
     if ($table == $_TABLES['linksubmission']) {
-        $mailbody .= "$LANG_LINKS[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
+        $mailbody .= "$LANG_LINKS[10]: {$_CONF['site_admin_url']}/moderation.php\n\n";
     } else {
-        $mailbody .= "{$LANG_LINKS[114]} <" . COM_buildURL($_CONF['site_url'] . '/links/index.php?category=' . rawurlencode($A['category'])) . ">\n\n";
+        $mailbody .= "{$LANG_LINKS[114]}: " . COM_buildURL($_CONF['site_url'] . '/links/index.php?category=' . rawurlencode($A['category'])) . "\n\n";
     }
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG_LINKS_SUBMIT[11];
 

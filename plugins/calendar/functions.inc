@@ -1100,13 +1100,13 @@ function CALENDAR_sendNotification($table, $A)
     }
     $mailBody .= "\n";
     if (!empty($A['url']) && ($A['url'] !== 'http://') && ($A['url'] !== 'https://')) {
-        $mailBody .= "$LANG09[33]: <" . $A['url'] . ">\n";
+        $mailBody .= "$LANG09[33]: " . $A['url'] . "\n";
     }
     $mailBody .= "\n" . $description . "\n\n";
     if ($table == $_TABLES['eventsubmission']) {
-        $mailBody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
+        $mailBody .= "$LANG01[10]: {$_CONF['site_admin_url']}/moderation.php\n\n";
     } else {
-        $mailBody .= "$LANG_CAL_1[12] <{$_CONF['site_url']}/calendar/event.php?eid={$A['eid']}>\n\n";
+        $mailBody .= "$LANG_CAL_1[12]: {$_CONF['site_url']}/calendar/event.php?eid={$A['eid']}\n\n";
     }
     $mailSubject = $_CONF['site_name'] . ' ' . $LANG_CAL_2[43];
 

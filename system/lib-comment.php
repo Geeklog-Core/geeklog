@@ -1630,12 +1630,12 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
 
     if ($cid == 0) {
         $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[41];
-        $mailbody .= $LANG01[10] . ' <' . $_CONF['site_admin_url']
-            . "/moderation.php>\n\n";
+        $mailbody .= $LANG01[10] . ': ' . $_CONF['site_admin_url']
+            . "/moderation.php\n\n";
     } else {
         $mailsubject = $_CONF['site_name'] . ' ' . $LANG03[9];
-        $mailbody .= $LANG03[39] . ' <' . $_CONF['site_url']
-            . '/comment.php?mode=view&cid=' . $cid . ">\n\n";
+        $mailbody .= $LANG03[39] . ': ' . $_CONF['site_url']
+            . '/comment.php?mode=view&cid=' . $cid . "\n\n";
     }
 
     $mailbody .= "\n------------------------------\n";
@@ -1843,8 +1843,8 @@ function CMT_sendReport($cid, $type)
         $mailBody .= $comment . "\n\n";
     }
 
-    $mailBody .= $LANG08[33] . ' <' . $_CONF['site_url']
-        . '/comment.php?mode=view&cid=' . $cid . ">\n\n";
+    $mailBody .= $LANG08[33] . ': ' . $_CONF['site_url']
+        . '/comment.php?mode=view&cid=' . $cid . "\n\n";
 
     $mailBody .= "\n------------------------------\n";
     $mailBody .= "\n$LANG08[34]\n";

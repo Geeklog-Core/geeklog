@@ -261,12 +261,12 @@ function sendNotification($table, $story)
         $mailbody .= $introtext . "\n\n";
     }
     if ($table == $_TABLES['storysubmission']) {
-        $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
+        $mailbody .= "$LANG01[10]: {$_CONF['site_admin_url']}/moderation.php\n\n";
     } else {
         $articleUrl = COM_buildUrl($_CONF['site_url']
             . '/article.php?story=' . $story->getSid()
         );
-        $mailbody .= $LANG08[33] . ' <' . $articleUrl . ">\n\n";
+        $mailbody .= $LANG08[33] . ': ' . $articleUrl . "\n\n";
     }
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[35];
     $mailbody .= "\n------------------------------\n";
