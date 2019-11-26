@@ -54,7 +54,12 @@ if (empty($_CONF['cookiedomain'])) {
             // e.g. 'localhost' or other local names
             $_CONF['cookiedomain'] = '';
         } else {
-            $_CONF['cookiedomain'] = '.' . $server[1];
+            // Issue #465 - IP Check Added: Google Chrome doesn't like it when IP is used as domain and cookies do not get set
+			if (filter_var($server[1], FILTER_VALIDATE_IP)) {
+				$_CONF['cookiedomain'] = '';
+			} else {
+				$_CONF['cookiedomain'] = '.' . $server[1];
+			}
         }
     }
     if ($_SESS_VERBOSE) {
@@ -193,11 +198,11 @@ function SESS_sessionCheck()
             $_USER['status'] = USER_ACCOUNT_NEW_EMAIL;
             DB_change($_TABLES['users'], 'status', USER_ACCOUNT_NEW_EMAIL, 'uid', $_USER['uid']);
         }
-        
+
         if ($_USER['status'] == USER_ACCOUNT_LOCKED) {
             // Account is locked so user shouldn't be logged in
             if ($_SERVER['PHP_SELF'] !== '/users.php') {
-                COM_redirect($_CONF['site_url'] . '/users.php?mode=logout&msg=17');  
+                COM_redirect($_CONF['site_url'] . '/users.php?mode=logout&msg=17');
             }
         } elseif ($_USER['status']  == USER_ACCOUNT_NEW_EMAIL || $_USER['status'] == USER_ACCOUNT_NEW_PASSWORD) {
             // Account requires additional info so get it
@@ -208,8 +213,8 @@ function SESS_sessionCheck()
                     COM_redirect($_CONF['site_url'] . '/users.php?mode=newpwdstatus');
                 }
             }
-            
-        }      
+
+        }
     }
 }
 
