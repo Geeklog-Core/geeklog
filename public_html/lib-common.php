@@ -289,7 +289,7 @@ TOPIC_setTopic(''); // Initialize current topic id variable and set current topi
 $temp_theme = '';
 $found_valid_theme = false;
 if ($_CONF['allow_user_themes'] == 1) {
-    // Check for theme switch via url variable
+    // Check for theme switch via url variable. Don't want plugins messing with setting themes
     // Used by plugins like vThemes
     if (isset($_POST['gl-usetheme'])) {
         $temp_theme = COM_sanitizeFilename($_POST['gl-usetheme'], true);
