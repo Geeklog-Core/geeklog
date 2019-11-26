@@ -303,7 +303,7 @@ class GLText
         // http://www.bioinformatics.org/phplabware/forum/viewtopic.php?id=88
         $config = [
             'elements' => '-*',
-            'keep_bad' => 1,
+            'keep_bad' => 1, // See Issue #1000 - Was 0 but needed to change to 1 to keep our links (as we wrap them in <>) in our notification emails about users, comments, etc...
         ];
         $text = htmLawed($text, $config);
 
