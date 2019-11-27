@@ -130,7 +130,7 @@ function SESS_sessionCheck()
                     COM_errorLog($str, 1);
                 }
 
-                SESS_issueAutoLoginCookie($userId);
+                SESS_issueAutoLoginCookie($userId, true);
             }
         } elseif ($userId === Session::ANON_USER_ID) {
             // Check if the permanent cookie exists
@@ -139,7 +139,7 @@ function SESS_sessionCheck()
             if ($userId > Session::ANON_USER_ID) {
                 SESS_newSession($userId, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout']);
                 $_USER = SESS_getUserDataFromId($userId);
-                SESS_issueAutoLoginCookie($userId);
+                SESS_issueAutoLoginCookie($userId, true);
             } else {
                 // Anonymous User has session so update any information
                 SESS_updateSessionTime($sessId);
@@ -451,10 +451,10 @@ function SESS_handleAutoLogin($lifeTime = -1)
  * Issue a cookie containing an auto-login cookie
  *
  * @param  int     $userId
- * @param  int     $lifeTime
+ * @param  bool    $onlyExtendLifeSpan
  * @return string|false  a newly created auto-login key or false on failure
  */
-function SESS_issueAutoLoginCookie($userId, $lifeTime = -1)
+function SESS_issueAutoLoginCookie($userId, $onlyExtendLifeSpan = true)
 {
     global $_CONF, $_TABLES;
 
@@ -464,18 +464,19 @@ function SESS_issueAutoLoginCookie($userId, $lifeTime = -1)
         return false;
     }
 
-    $lifeTime = (int) $lifeTime;
+    $lifeTime = COM_getUserCookieTimeout();
     if ($lifeTime <= 0) {
-        $lifeTime = COM_getUserCookieTimeout();
-
         // This user doesn't want auto-login feature
-        if ($lifeTime <= 0) {
-            return false;
-        }
+        return false;
     }
 
-    $autoLoginKey = SEC_randomBytes(80);
-    $autoLoginKey = sha1($autoLoginKey);
+    if ($onlyExtendLifeSpan) {
+        $autoLoginKey = Input::cookie($_CONF['cookie_name'], '');
+        $autoLoginKey = preg_replace('/[^0-9a-f]/', '', $autoLoginKey);
+    } else {
+        $autoLoginKey = SEC_randomBytes(80);
+        $autoLoginKey = sha1($autoLoginKey);
+    }
 
     if (SEC_setCookie($_CONF['cookie_name'], $autoLoginKey, time() + $lifeTime)) {
         $escAutoLoginKey = DB_escapeString($autoLoginKey);

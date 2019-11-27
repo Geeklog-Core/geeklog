@@ -663,7 +663,7 @@ function USER_doLogin()
     PLG_loginUser($_USER['uid']);
 
     // Issue an auto-login key
-    SESS_issueAutoLoginCookie($_USER['uid']);
+    SESS_issueAutoLoginCookie($_USER['uid'], false);
 
     // Now that we have user's data see if their theme cookie is set.
     // If not set it
