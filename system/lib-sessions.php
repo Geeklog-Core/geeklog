@@ -50,16 +50,16 @@ if (empty($_CONF['cookiedomain'])) {
     if (substr($server[1], 0, 4) === 'www.') {
         $_CONF['cookiedomain'] = substr($server[1], 3);
     } else {
+        // Issue #465
+        // local names part works fine and if domain is an ip it works fine for browsers Firefox and Edge
+        // If browser is Chrome if an IP cookie domain needs to be set to ''.
+        // Unfortantly Firefox and Edge doesn't work with cookie domain set to ''
+        // So left as is with Google Chrome sessions not working properly if IP is the cookie domain
         if (strpos($server[1], '.') === false) {
             // e.g. 'localhost' or other local names
             $_CONF['cookiedomain'] = '';
         } else {
-            // Issue #465 - IP Check Added: Google Chrome doesn't like it when IP is used as domain and cookies do not get set
-			if (filter_var($server[1], FILTER_VALIDATE_IP)) {
-				$_CONF['cookiedomain'] = '';
-			} else {
-				$_CONF['cookiedomain'] = '.' . $server[1];
-			}
+			$_CONF['cookiedomain'] = '.' . $server[1];
         }
     }
     if ($_SESS_VERBOSE) {
