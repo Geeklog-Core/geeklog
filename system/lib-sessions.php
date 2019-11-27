@@ -485,9 +485,19 @@ function SESS_issueAutoLoginCookie($userId, $onlyExtendLifeSpan = true)
     }
 
     if ($onlyExtendLifeSpan) {
+        // Need to make sure cookie is the same as what is in the database though
         $autoLoginKey = Input::cookie($_CONF['cookie_name'], '');
         $autoLoginKey = preg_replace('/[^0-9a-f]/', '', $autoLoginKey);
-    } else {
+
+        // Make sure autologin key cookie still is the same as what is stored in the sessions table and both are not empty
+        $sessionId = DB_escapeString(Session::getSessionId());
+        if (empty(trim($autoLoginKey)) || $autoLoginKey != DB_getItem($_TABLES['sessions'], 'autologin_key', "sess_id = '$sessionId'")) {
+            // Something is not right since cookie does not match key stored in db so generate a new one since the user is already logged in by this point
+            $onlyExtendLifeSpan = false;
+        }
+    }
+
+    if (!$onlyExtendLifeSpan) {
         $autoLoginKey = SEC_randomBytes(80);
         $autoLoginKey = sha1($autoLoginKey);
     }
