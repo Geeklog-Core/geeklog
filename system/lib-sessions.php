@@ -112,6 +112,20 @@ function SESS_sessionCheck()
             COM_errorLog("Got {$userId} as User ID from the session ID",1);
         }
 
+        // Make sure corresponding record exists in Geeklog Session Table
+        // Shouldn't have been deleted by anything but you never know...
+        if (!DB_getItem($_TABLES['sessions'], 'sess_id', "sess_id = '$sessId'")) {
+            // If deleted add in basic session record back into Geeklog database
+            $ctime = time();
+            $currentTime = (string) ($ctime);
+            $escSessionId = DB_escapeString($sessId);
+            $escRemoteIp = DB_escapeString($_SERVER['REMOTE_ADDR']);
+
+            $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, uid, start_time, remote_ip, whos_online) "
+                . "VALUES ('{$escSessionId}', {$userId}, {$currentTime}, '{$escRemoteIp}', 1)";
+            $result = DB_query($sql);
+        }
+
         if ($userId > Session::ANON_USER_ID) {
             // Check user status
             $status = SEC_checkUserStatus($userId);
