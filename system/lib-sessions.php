@@ -184,10 +184,11 @@ function SESS_sessionCheck()
                     COM_errorLog('Create new session', 1);
                 }
 
-                // Create new session and write cookie
+                // Create new session and write cookie since user is now logged in
                 SESS_newSession($userId, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout']);
                 $_USER = SESS_getUserDataFromId($userId);
                 $_USER['auto_login'] = true;
+				SESS_issueAutoLoginCookie($userId, false);
             }
         } else {
             if ($_SESS_VERBOSE) {
@@ -438,7 +439,7 @@ function SESS_handleAutoLogin($lifeTime = -1)
 
     // Try to get a record with the auto-login key from `gl_sessions` table
     $escAutoLoginKey = DB_escapeString($autoLoginKey);
-    $sql = "SELECT uid FROM {$_TABLES['sessions']} WHERE autologin_key = '{$escAutoLoginKey}'";
+    $sql = "SELECT uid, sess_id FROM {$_TABLES['sessions']} WHERE autologin_key = '{$escAutoLoginKey}'";
     $result = DB_query($sql);
     if (DB_error()) {
         return 1;
@@ -448,9 +449,13 @@ function SESS_handleAutoLogin($lifeTime = -1)
         $A = DB_fetchArray($result, false);
         $uid = (int) $A['uid'];
 
-        // Issue a new auto-login key
-        SESS_issueAutoLoginCookie($uid);
+		// Delete old original session as it does not exist anymore and a new one will be created as this visitor is going
+        // from the current anonymous session to a new actual user session
+		$oldSessionId = $A['sess_id']; // Original session id that does not exist anymore from auto login key
+		$escOldSessionId = DB_escapeString($oldSessionId);
+		DB_query("DELETE FROM {$_TABLES['sessions']} WHERE sess_id = '{$escOldSessionId}'");
 
+		// Note: A new logged in user session will be create after this function based on the uid
         return $uid;
     } else {
         // The auto-login key contained in the cookie was not found in the database.
