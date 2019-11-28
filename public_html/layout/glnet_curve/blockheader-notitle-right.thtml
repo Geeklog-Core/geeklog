@@ -1,0 +1,6 @@
+{# begin {templatelocation} #}
+
+    <section class="block-right">
+      <div class="block-right-content">
+
+{# end {templatelocation} #}

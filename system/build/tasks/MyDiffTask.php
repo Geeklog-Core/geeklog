@@ -22,7 +22,7 @@ class MyDiffTask extends Task
         '.idea',
         'build',
         'phpunit.xml',
-        'public_html/layout/professional_css',
+        'public_html/layout/glnet_curve',
         'system/build',
         'tests',
     );
@@ -95,13 +95,13 @@ class MyDiffTask extends Task
     {
         $currentDir = getcwd();
         chdir(__DIR__ . '/../../../');
-		
+
 		exec('git config diff.renameLimit 999999');
-        
+
 		exec(sprintf('git diff --name-only %s %s', $this->previousVersionSHA, $this->currentVersionSHA), $lines);
         $lines = array_filter($lines, array($this, 'shouldInclude'));
         @file_put_contents('./public_html/docs/changed-files', implode("\n", $lines) . "\n");
-		
+
 		exec('git config --unset diff.renameLimit');
 
         if ($currentDir !== false) {

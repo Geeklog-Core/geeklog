@@ -1,0 +1,15 @@
+
+.block-left-content #loginform-loginname,
+.block-left-content #service,
+.block-left-content #loginform-passwd,
+.block-left-content #loginform button,
+.block-left-content .third-party-login input {
+	width: 100%;
+}
+
+/* Make sure footer content stays within footer div */
+#footer-content {
+  width: auto !important;
+  margin: 0 auto;
+  /* width: 1140px; */
+}
