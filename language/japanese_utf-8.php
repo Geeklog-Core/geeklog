@@ -300,7 +300,7 @@ $LANG04 = array(
     'email_convert_remote' => "{$_CONF['site_name']} さんのリモートアカウントは通常アカウントに変換されました。このアカウントを続けて使用するには、以下の情報を用いてログインする必要があります。このメールは保存してください。",
     16 => 'ユーザー情報',
     17 => 'アカウントがありません',
-    19 => 'The username provided already exists. Please choose another one.',
+    18 => 'The email address provided does not appear to be a valid email address.',
     19 => 'ユーザー名かメールアドレスは既に使用しています。',
     20 => 'The email address is either already in use or it\'s domain has been banned.<br' . XHTML . '><br' . XHTML . '>If you have an account already, please <a href="/users.php">login here</a>.',
     21 => 'エラー',
@@ -1687,8 +1687,8 @@ $MESSAGE = array(
     502 => '新しいメールアドレスのリクエストが期限切れになりました。以下からもう一度お試しください。',
     503 => 'あなたのメールアドレスは正常に検証されました。',
     504 => 'パスワードは8文字以上で、少なくとも1つの数字と1文字を含める必要があります。パスワードは大文字と小文字が区別されます。',
-    505 => "<em>Current set Site Default theme \"{$_CONF['theme_site_default']}\" is not valid.</em> Using Geeklog Default theme \"{$_CONF['theme']}\" for now. <br" . XHTML . "><br" . XHTML . ">This version of Geeklog you are running (v" . VERSION . ") supports Themes with Geeklog v{$_CONF['min_theme_gl_version']} support.<br" . XHTML . "><br" . XHTML . ">Please update by reselecting a valid theme for the sites Config Theme setting in the Geeklog Configuration and resave.",
-    506 => "<em>Current set Site Default theme \"{$_CONF['theme_site_default']}\" is not valid.</em> Using Geeklog theme \"{$_CONF['theme']}\" for now.<br" . XHTML . "><br" . XHTML . ">This version of Geeklog you are running (v" . VERSION . ") supports Themes with Geeklog v{$_CONF['min_theme_gl_version']} support.<br" . XHTML . "><br" . XHTML . ">Please update by reselecting a valid theme for the sites Config Theme setting in the Geeklog Configuration and resave."
+    505 => "<em>Current set Site Default theme \"{$_CONF['theme_site_default']}\" is not valid.</em> Using Geeklog Default theme \"{$_CONF['theme']}\" for now. <br" . XHTML . "><br" . XHTML . ">This version of Geeklog you are running (v2.2.1) supports Themes with Geeklog v{$_CONF['min_theme_gl_version']} support.<br" . XHTML . "><br" . XHTML . ">Please update by reselecting a valid theme for the sites Config Theme setting in the Geeklog Configuration and resave.",
+    506 => "<em>Current set Site Default theme \"{$_CONF['theme_site_default']}\" is not valid.</em> Using Geeklog theme \"{$_CONF['theme']}\" for now.<br" . XHTML . "><br" . XHTML . ">This version of Geeklog you are running (v2.2.1) supports Themes with Geeklog v{$_CONF['min_theme_gl_version']} support.<br" . XHTML . "><br" . XHTML . ">Please update by reselecting a valid theme for the sites Config Theme setting in the Geeklog Configuration and resave."
 );
 
 ###############################################################################
@@ -1985,7 +1985,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-#
+# 
 # This here determines the order of the sentence "No new articles in 2 hrs"
 # order it so it makes sense in your language:
 # %i    item, "Articles"
@@ -2043,7 +2043,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-#
+# 
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2732,3 +2732,4 @@ $LANG_VALIDATION = array(
     'config_setting_lang_array' => 'それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください',
     'config_setting_lang_array_element_req' => '少なくとも1つキーを指定してください。それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください'
 );
+
