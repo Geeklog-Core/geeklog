@@ -772,12 +772,13 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             $largethumblink = '';
             if (!empty($ai_filenames[$z])) {
                 $imagename = $ai_filenames[$z];
-                $imagelink = $_CONF['site_url'] . '/images/articles/' . $ai_filenames[$z];
+                $imagelink = $_CONF['site_url'] . '/images/articles/' . $imagename;
+                $imagepath = $_CONF['path_images'] . 'articles/' . $imagename;
 
                 $thumbname = substr_replace($imagename, '_64x64px.', strrpos($imagename, '.'), 1);
                 $thumblink = $_CONF['site_url'] . '/images/_thumbs/articles/'. $thumbname;
                 $thumbpath = $_CONF['path_images'] . '_thumbs/articles/' . $thumbname;
-                if (!file_exists($thumbpath)) {
+                if (!file_exists($thumbpath) && file_exists($imagepath)) {
                     createThumbnail($imagename);
                 }
 
@@ -883,7 +884,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 /**
  * Create thumbnail of attached image
  *
- * @param    string $ai_fname file name of attached image
+ * @param    string     $ai_fname file name of attached image
+ * @return   boolean    true on success
  */
 function createThumbnail($ai_fname)
 {
@@ -904,19 +906,30 @@ function createThumbnail($ai_fname)
         }
     }
 
-    if (!$upload->setPath($_CONF['path_images'] . 'articles')) {
-        $output = COM_showMessageText($upload->printErrors(false), $LANG24[30]);
-        $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[30]));
-        echo $output;
+    if (!$upload->setPath($_CONF['path_images'] . 'articles')
+        || !$upload->setThumbsPath($_CONF['path_images'] . '_thumbs/articles')
+        || !file_exists($_CONF['path_images'] . 'articles/' . $ai_fname)
+        ) {
+
+        // Don't print a message let calling function handle any errors
+        return false;
+        /*
+        if (empty($upload->printErrors(false))) {
+            $errormsg = $LANG24[30];
+        } else {
+            $errormsg = $upload->printErrors(false);
+        }
+        $display = COM_showMessageText($errormsg, $LANG24[30]);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[30]));
+         COM_output($display);
         exit;
+        */
+
+    } else {
+        $upload->createThumbnail($ai_fname);
+
+        return true;
     }
-    if (!$upload->setThumbsPath($_CONF['path_images'] . '_thumbs/articles')) {
-        $output = COM_showMessageText($upload->printErrors(false), $LANG24[30]);
-        $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[30]));
-        echo $output;
-        exit;
-    }
-    $upload->createThumbnail($ai_fname);
 }
 
 /**
