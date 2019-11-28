@@ -86,7 +86,6 @@ define('RECAPTCHA_SUPPORT_V2_INVISIBLE', 2);
 $_DB_mysqldump_path = '{$_DB_mysqldump_path}';
 $_CONF['backup_path'] = '{$_CONF[\'backup_path\']}';
 $_CONF['commentspeedlimit'] = '{$_CONF[\'commentspeedlimit\']}';
-$_CONF['min_theme_gl_version'] = '{$_CONF[\'min_theme_gl_version\']}';
 $_CONF['site_admin_url'] = '{$_CONF[\'site_admin_url\']}';
 $_CONF['site_name'] = '{$_CONF[\'site_name\']}';
 $_CONF['site_url'] = '{$_CONF[\'site_url\']}';
@@ -95,6 +94,8 @@ $_CONF['invalidloginattempts'] = '{$_CONF[\'invalidloginattempts\']}';
 $_CONF['invalidloginmaxtime'] = '{$_CONF[\'invalidloginmaxtime\']}';
 $_CONF['theme'] = '{$_CONF[\'theme\']}';
 $_CONF['theme_gl_version'] = '{$_CONF[\'theme_gl_version\']}';
+$_CONF['min_theme_gl_version'] = '{$_CONF[\'min_theme_gl_version\']}';
+$_CONF['theme_site_default'] = '{$_CONF[\'theme_site_default\']}';
 $_USER['username'] = '{$_USER[\'username\']}';
 
 $failures = '{$failures}';
