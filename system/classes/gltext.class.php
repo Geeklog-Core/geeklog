@@ -307,6 +307,9 @@ class GLText
         ];
         $text = htmLawed($text, $config);
 
+        // Need to do this since htmLawed not only strips the tags it converts html special chars to entities which we do not want
+        $text = htmlspecialchars_decode($text);
+
         return $text;
     }
 
