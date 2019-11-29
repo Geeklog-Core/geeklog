@@ -1,5 +1,28 @@
+# If the Geeklog site is installed within a folder such as at
+# e.g. www.example.com/geeklog/ the robots.txt file MUST be
+# moved to the site root at e.g. www.example.com/robots.txt
+# AND the Geeklog folder name MUST be prefixed to the disallowed
+# path, e.g. the Disallow rule for the admin folder
+# MUST be changed to read Disallow: /geeklog/admin/
+#
+# For more information about the robots.txt standard, see:
+# http://www.robotstxt.org/orig.html
+#
+# For syntax checking, see:
+# http://tool.motoricerca.info/robots-checker.phtml
+
 User-agent: *
-Disallow: /docs
+Allow: /*.js*
+Allow: /*.css*
+Allow: /*.png*
+Allow: /*.jpg*
+Allow: /*.gif*
+
+Disallow: /admin/
+Disallow: /filemanager/
+Disallow: /editors/
+Disallow: /webservices/
+Disallow: /docs/
 Disallow: /pingback.php
 Disallow: /search.php
 Disallow: /submit.php
