@@ -3840,8 +3840,8 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
             }
 
             // Just in case
-            $message = htmlspecialchars($message, ENT_QUOTES, $charset);
-            $message = str_replace(["\r\n", "\n", "\r"], '<br>', $message);
+            //$message = htmlspecialchars($message, ENT_QUOTES, $charset); // Can't do this as it corrupts our urls in Geeklogs Notifications
+            $message = str_replace(["\r\n", "\n", "\r"], '<br' . XHTML . '>', $message);
             $system_message = <<<EOD
 <h2>{$LANG_DEMO['notice']}</h2>
 <p>{$LANG_DEMO['emails_disabled_msg']}</p>
