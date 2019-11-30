@@ -161,6 +161,10 @@ class Mail
         if (!$html) {
             // bug #430
             $body = GLText::removeAllHTMLTagsAndAttributes($body);
+
+            // bug #1000
+            // Need to do this since htmLawed not only strips the tags it converts html special chars to entities which we do not want
+            $body = htmlspecialchars_decode($body, ENT_QUOTES);
         }
 
         $message->setBody($body);
