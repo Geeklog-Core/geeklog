@@ -308,7 +308,12 @@ class GLText
         $text = htmLawed($text, $config);
 
         // Need to do this since htmLawed not only strips the tags it converts html special chars to entities which we do not want
-        $text = htmlspecialchars_decode($text);
+        //$text = htmlspecialchars_decode($text); // Don't use htmlspecialchars_decode as we don't want <> entities converted as a security precaution
+        $text = str_replace(
+            ['&amp;', '&quot;', '&apos;', '&#039;'],
+            ['&', '"', "'", "'"],
+            $text
+        );
 
         return $text;
     }
