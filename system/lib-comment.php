@@ -1592,12 +1592,13 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
 
     $comment = str_replace("\r\n", "\n", $comment);
 
+    // Replace tags first incase they insert html
+    $comment = PLG_replaceTags($comment, '', false, 'comment', $cid);
+
     // strip HTML if posted in HTML mode
     if (preg_match('/<.*>/', $comment) != 0) {
         $comment = GLText::stripTags($comment);
     }
-
-    $comment = PLG_replaceTags($comment, '', false, 'comment', $cid);
 
     if ($uid < 1) {
         $uid = 1;
