@@ -10,7 +10,7 @@
 // | Based on the CAPTCHA Plugin by Ben                                        |
 // |                                                - ben AT geeklog DOT fr    |
 // | Based on the original CAPTCHA Plugin by Mark R. Evans                     |
-// |                                                - mark AT glfusion DOT org | 
+// |                                                - mark AT glfusion DOT org |
 // | Constructed with the Universal Plugin                                     |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -146,7 +146,7 @@ function plugin_upgrade_recaptcha()
 
     require_once __DIR__ . '/autoinstall.php';
 
-    // Retrieve other plugin info like min geeklog version and homepage 
+    // Retrieve other plugin info like min geeklog version and homepage
     $inst_parms = plugin_autoinstall_recaptcha('recaptcha');
 
     $pluginVersionInDb = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'recaptcha'");
@@ -276,13 +276,19 @@ function plugin_templatesetvars_recaptcha($type, Template $template)
 
     if ($pluginInfo[$type]['version'] == RECAPTCHA_SUPPORT_V2_INVISIBLE) {
         $formId = $pluginInfo[$type]['form_id'];
+		$js_onSubmit = '';
+		if (isset($pluginInfo[$type]['js_onsubmit'])) {
+			$js_onSubmit = $pluginInfo[$type]['js_onsubmit'];
+		}
         $code = <<<JS
 var onFormSubmit = function () {
     var form = document.getElementById('{$formId}');
     if (!form) {
         form = document.getElementById('{$formId}_advanced');
     }
-    
+
+	{$js_onSubmit}
+
     if (form) {
         form.submit();
     }
@@ -730,11 +736,12 @@ function RECAPTCHA_getIP()
  * This function returns core-related parts.  Other plugins reply through plugin_supportsRecaptcha_xxx().
  *
  * @return  array of type => [
- *              'type'     => type               // required, passed as the 1st parameter to
+ *              'type'     		=> type               		// required, passed as the 1st parameter to
  *                                                  plugin_templatesetvars_xxx()
- *              'version'  => reCAPTCHA version, // required: RECAPTCHA_NO_SUPPORT(0), RECAPTCHA_SUPPORT_V2(1),
+ *              'version'  		=> reCAPTCHA version, 		// required: RECAPTCHA_NO_SUPPORT(0), RECAPTCHA_SUPPORT_V2(1),
  *                                                  RECAPTCHA_SUPPORT_V2_INVISIBLE(2)
- *              'form_id'  => form id,           // required only for reCAPTCHA V2 Invisible
+ *              'form_id'  		=> form id,           		// required only for reCAPTCHA V2 Invisible
+ *              'js_onsubmit'  	=> On Submit Javascript,	// Used only for reCAPTCHA V2 Invisible if needed
  *           ]
  */
 function plugin_supportsRecaptcha_recaptcha()
@@ -743,9 +750,10 @@ function plugin_supportsRecaptcha_recaptcha()
 
     return [
         [
-            'type'    => 'comment',
-            'version' => $_RECAPTCHA_CONF['enable_comment'],
-            'form_id' => 'commentform',
+            'type'    		=> 'comment',
+            'version' 		=> $_RECAPTCHA_CONF['enable_comment'],
+            'form_id' 		=> 'commentform',
+            'js_onsubmit' 	=> 'set_postcontent();',
         ],
         [
             'type'    => 'contact',
