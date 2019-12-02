@@ -255,7 +255,7 @@ function plugin_getconfigtooltip_recaptcha($id)
  */
 function plugin_templatesetvars_recaptcha($type, Template $template)
 {
-    global $_RECAPTCHA_CONF, $_SCRIPTS;
+    global $_RECAPTCHA_CONF, $_SCRIPTS, $_CONF, $_USER;
     static $pluginInfo = null;
 
     if ($pluginInfo === null) {
@@ -277,8 +277,14 @@ function plugin_templatesetvars_recaptcha($type, Template $template)
     if ($pluginInfo[$type]['version'] == RECAPTCHA_SUPPORT_V2_INVISIBLE) {
         $formId = $pluginInfo[$type]['form_id'];
 		$js_onSubmit = '';
-		if (isset($pluginInfo[$type]['js_onsubmit'])) {
-			$js_onSubmit = $pluginInfo[$type]['js_onsubmit'];
+		if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
+			if (isset($pluginInfo[$type]['js_onsubmit_advanced_editor']) && !empty($pluginInfo[$type]['js_onsubmit_advanced_editor'])) {
+				$js_onSubmit = $pluginInfo[$type]['js_onsubmit_advanced_editor'];
+			}
+		} else {
+			if (isset($pluginInfo[$type]['js_onsubmit']) && !empty($pluginInfo[$type]['js_onsubmit'])) {
+				$js_onSubmit = $pluginInfo[$type]['js_onsubmit'];
+			}
 		}
         $code = <<<JS
 var onFormSubmit = function () {
@@ -741,7 +747,8 @@ function RECAPTCHA_getIP()
  *              'version'  		=> reCAPTCHA version, 		// required: RECAPTCHA_NO_SUPPORT(0), RECAPTCHA_SUPPORT_V2(1),
  *                                                  RECAPTCHA_SUPPORT_V2_INVISIBLE(2)
  *              'form_id'  		=> form id,           		// required only for reCAPTCHA V2 Invisible
- *              'js_onsubmit'  	=> On Submit Javascript,	// Used only for reCAPTCHA V2 Invisible if needed
+ *              'js_onsubmit'  					=> On Submit JavaScript,	// Used only for reCAPTCHA V2 Invisible if needed
+ *              'js_onsubmit_advanced_editor'  	=> On Submit JavaScript when advanced editor enabled,	// Used only for reCAPTCHA V2 Invisible if needed
  *           ]
  */
 function plugin_supportsRecaptcha_recaptcha()
@@ -753,7 +760,8 @@ function plugin_supportsRecaptcha_recaptcha()
             'type'    		=> 'comment',
             'version' 		=> $_RECAPTCHA_CONF['enable_comment'],
             'form_id' 		=> 'commentform',
-            'js_onsubmit' 	=> 'set_postcontent();',
+			'js_onsubmit' 	=> '',
+			'js_onsubmit_advanced_editor' 	=> 'set_postcontent();',
         ],
         [
             'type'    => 'contact',
