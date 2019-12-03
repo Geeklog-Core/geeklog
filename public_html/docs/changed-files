@@ -1,4 +1,5 @@
 data/cacert.pem
+emailgeeklogstories
 language/afrikaans.php
 language/afrikaans_utf-8.php
 language/bosnian.php
@@ -321,6 +322,7 @@ public_html/admin/auth.inc.php
 public_html/admin/block.php
 public_html/admin/clearctl.php
 public_html/admin/comment.php
+public_html/admin/configuration.php
 public_html/admin/configuration_validation.php
 public_html/admin/database.php
 public_html/admin/envcheck.php
@@ -567,6 +569,8 @@ public_html/editors/ckeditor/plugins/colordialog/dialogs/colordialog.css
 public_html/editors/ckeditor/plugins/colordialog/dialogs/colordialog.js
 public_html/editors/ckeditor/plugins/copyformatting/styles/copyformatting.css
 public_html/editors/ckeditor/plugins/dialog/dialogDefinition.js
+public_html/editors/ckeditor/plugins/dialog/styles/dialog.css
+public_html/editors/ckeditor/plugins/div/dialogs/div.js
 public_html/editors/ckeditor/plugins/find/dialogs/find.js
 public_html/editors/ckeditor/plugins/flash/dialogs/flash.js
 public_html/editors/ckeditor/plugins/forms/dialogs/button.js
@@ -582,7 +586,9 @@ public_html/editors/ckeditor/plugins/image/dialogs/image.js
 public_html/editors/ckeditor/plugins/link/dialogs/anchor.js
 public_html/editors/ckeditor/plugins/link/dialogs/link.js
 public_html/editors/ckeditor/plugins/liststyle/dialogs/liststyle.js
+public_html/editors/ckeditor/plugins/pastefromgdocs/filter/default.js
 public_html/editors/ckeditor/plugins/pastefromword/filter/default.js
+public_html/editors/ckeditor/plugins/pastetools/filter/common.js
 public_html/editors/ckeditor/plugins/scayt/README.md
 public_html/editors/ckeditor/plugins/scayt/dialogs/options.js
 public_html/editors/ckeditor/plugins/smiley/dialogs/smiley.js
@@ -3112,6 +3118,7 @@ public_html/links/index.php
 public_html/links/portal.php
 public_html/profiles.php
 public_html/r.php
+public_html/robots.txt
 public_html/search.php
 public_html/staticpages/index.php
 public_html/stats.php
@@ -3164,6 +3171,7 @@ system/classes/search.class.php
 system/classes/structureddata.class.php
 system/classes/template.class.php
 system/classes/timezoneconfig.class.php
+system/classes/upload.class.php
 system/classes/url.class.php
 system/classes/validator.class.php
 system/composer.json
@@ -3181,6 +3189,7 @@ system/lib-sessions.php
 system/lib-structureddata.php
 system/lib-template.php
 system/lib-topic.php
+system/lib-trackback.php
 system/lib-user.php
 system/lib-webservices.php
 system/vendor/bin/minifycss
@@ -3391,6 +3400,7 @@ system/vendor/paragonie/random_compat/lib/random_bytes_mcrypt.php
 system/vendor/paragonie/random_compat/lib/random_int.php
 system/vendor/pear/console_getopt/Console/Getopt.php
 system/vendor/pear/console_getopt/package.xml
+system/vendor/pear/pear-core-minimal/src/OS/Guess.php
 system/vendor/pear/pear-core-minimal/src/PEAR.php
 system/vendor/pear/pear-core-minimal/src/PEAR/ErrorStack.php
 system/vendor/pear/pear-core-minimal/src/System.php
@@ -3570,6 +3580,7 @@ system/vendor/symfony/http-foundation/Tests/CookieTest.php
 system/vendor/symfony/http-foundation/Tests/ExpressionRequestMatcherTest.php
 system/vendor/symfony/http-foundation/Tests/File/FakeFile.php
 system/vendor/symfony/http-foundation/Tests/File/FileTest.php
+system/vendor/symfony/http-foundation/Tests/File/Fixtures/-test
 system/vendor/symfony/http-foundation/Tests/File/Fixtures/.unknownextension
 system/vendor/symfony/http-foundation/Tests/File/Fixtures/case-sensitive-mime-type.xlsm
 system/vendor/symfony/http-foundation/Tests/File/Fixtures/directory/.empty
