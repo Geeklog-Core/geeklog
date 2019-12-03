@@ -83,8 +83,8 @@
                 <exclude name="build.properties"/>
                 <exclude name="phpunit.xml"/>
                 <exclude name="**/buildpackage.php"/>
-                <exclude name="public_html/layout/professional_css"/>
-                <exclude name="public_html/layout/professional_css/**"/>
+                <exclude name="public_html/layout/glnet_curve"/>
+                <exclude name="public_html/layout/glnet_curve/**"/>
                 <exclude name="system/build"/>
                 <exclude name="system/build/**"/>
                 <exclude name="system/composer.phar"/>
