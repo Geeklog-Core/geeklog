@@ -5,7 +5,7 @@
 //
 // For this script to work you must have compiled PHP so it can also be
 // used as a shell scripting language. You should call this script from
-// your crontab (man crontab). You will also need to set the exectuable
+// your crontab (man crontab). You will also need to set the executable
 // flags for this file.
 
 // Change this path to point to your lib-common.php file
