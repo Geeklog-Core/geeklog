@@ -1348,7 +1348,7 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
                     break;
 
                 case 'description':
-                    $props['description'] = trim(PLG_replaceTags(stripslashes($A['introtext']) . ' ' . stripslashes($A['bodytext'], '', false , 'article', $sid)));
+                    $props['description'] = trim(PLG_replaceTags(stripslashes($A['introtext']) . ' ' . stripslashes($A['bodytext']), '', false , 'article', $sid));
                     break;
 
                 case 'excerpt':
