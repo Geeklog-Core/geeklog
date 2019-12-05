@@ -1,7 +1,5 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * Function and class to dump XML_RPC_Value objects in a nice way
  *
@@ -15,6 +13,12 @@
  * @version    SVN: $Id: Dump.php 300962 2010-07-03 02:24:24Z danielc $
  * @link       http://pear.php.net/package/XML_RPC
  */
+
+
+/**
+ * Pull in the XML_RPC class
+ */
+require_once __DIR__ . '/../RPC.php';
 
 
 /**
@@ -171,13 +175,5 @@ class XML_RPC_Dump
         return $this->arIndent[$nLevel];
     }
 }
-
-/*
- * Local variables:
- * tab-width: 4
- * c-basic-offset: 4
- * c-hanging-comment-ender-p: nil
- * End:
- */
 
 ?>

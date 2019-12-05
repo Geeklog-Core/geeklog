@@ -112,6 +112,11 @@ function PNB_sendPingback($sourceURI, $targetURI)
             $parts['port'] = 80;
         }
     }
+
+    if (!isset($parts['path'])) {
+        $parts['path'] = '';
+    }
+
     if (!empty ($parts['query'])) {
         $parts['path'] .= '?' . $parts['query'];
     }
@@ -154,6 +159,11 @@ function PNB_sendPing($url, $blogname, $blogurl, $changedurl)
             $parts['port'] = 80;
         }
     }
+
+    if (!isset($parts['path'])) {
+        $parts['path'] = '';
+    }
+
     $client = new XML_RPC_Client ($parts['path'], $parts['host'], $parts['port']);
     //$client->setDebug (1);
 
@@ -164,7 +174,7 @@ function PNB_sendPing($url, $blogname, $blogurl, $changedurl)
 
     $response = $client->send($msg, 0, $parts['scheme']);
     if (!is_object($response) && ($response == 0)) {
-        $retval = $client->errstring;
+        $retval = $client->errstr;
     } else if ($response->faultCode() != 0) {
         $retval = $response->faultString();
     }
@@ -193,6 +203,11 @@ function PNB_sendExtendedPing($url, $blogname, $blogurl, $changedurl, $feedurl)
             $parts['port'] = 80;
         }
     }
+
+    if (!isset($parts['path'])) {
+        $parts['path'] = '';
+    }
+
     $client = new XML_RPC_Client ($parts['path'], $parts['host'], $parts['port']);
     //$client->setDebug (1);
 
@@ -204,7 +219,7 @@ function PNB_sendExtendedPing($url, $blogname, $blogurl, $changedurl, $feedurl)
 
     $response = $client->send($msg, 0, $parts['scheme']);
     if (!is_object($response) && ($response == 0)) {
-        $retval = $client->errstring;
+        $retval = $client->errstr;
     } else if ($response->faultCode() != 0) {
         $retval = $response->faultString();
     }
