@@ -746,6 +746,12 @@ function TRB_sendTrackbackPing($targeturl, $url, $title, $excerpt, $blog = '')
     }
 
     $target = parse_url($targeturl);
+	if (!isset($target['host'])) {
+		$target['host'] = '';
+	}	
+	if (!isset($target['path'])) {
+		$target['path'] = '';
+	}
     if (!isset($target['query'])) {
         $target['query'] = '';
     } else if (!empty($target['query'])) {

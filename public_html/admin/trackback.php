@@ -244,6 +244,10 @@ function sendPingbacks($type, $id)
                     // TBD: $resend = '...';
                 }
                 $parts = parse_url($URLtoPing);
+				
+				if (!isset($parts['host'])) {
+					$parts['host'] = '';
+				}
 
                 $template->set_var('url_to_ping', $URLtoPing);
                 $template->set_var('link_text', $linktext);
@@ -876,7 +880,8 @@ if (($mode === 'delete') && SEC_checkToken()) {
         if (!empty($url)) {
             $excerpt = trim(GLText::stripTags($excerpt));
             $blog = TRB_filterBlogname($_CONF['site_name']);
-
+			
+			$target = '';
             $display .= trackback_editor($target, $url, $title, $excerpt, $blog);
             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
         } else {
