@@ -1297,7 +1297,7 @@ function TOPIC_setTopic($tid)
 		// See if user has access to new topic. If not then keep same topic since assume user has access to it...
 		$test_topic = DB_getItem($_TABLES['topics'], 'tid', "tid = '" . DB_escapeString($tid) . "' " . COM_getPermSQL('AND'));
 		if (strtolower($tid) == strtolower($test_topic)) {
-			$_USER['topic_id'] = $tid;
+			$_USER['topic_id'] = $test_topic; // Set to topic id in database incase the letter case is incorrect
 		}
 	}
 
