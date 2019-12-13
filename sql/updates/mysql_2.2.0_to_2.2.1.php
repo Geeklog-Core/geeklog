@@ -54,10 +54,22 @@ $_SQL[] = "DELETE FROM {$_TABLES['sessions']}";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} MODIFY `sess_id` VARCHAR(190) NOT NULL default ''";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN `md5_sess_id`";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN `topic`";
-$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD `autologin_key` VARCHAR(190) NOT NULL DEFAULT '' AFTER `whos_online`";
+$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD `autologin_key_hash` VARCHAR(190) NOT NULL DEFAULT '' AFTER `whos_online`";
 
 // Add `postmode` column to `users' table
 $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `postmode` VARCHAR(10) NOT NULL DEFAULT 'plaintext'";
+
+// Add User Autologin table
+$_SQL[] = "
+CREATE TABLE {$_TABLES['userautologin']} (
+  autologin_key_hash VARCHAR(190) NOT NULL DEFAULT '',
+  expiry_time INT(10) unsigned NOT NULL DEFAULT '0',
+  uid MEDIUMINT(8) NOT NULL,
+  PRIMARY KEY  (autologin_key_hash),
+  KEY expiry_time (expiry_time),
+  KEY uid (uid)
+) ENGINE=MyISAM
+";
 
 /**
  * Upgrade Messages

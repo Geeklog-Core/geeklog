@@ -54,10 +54,22 @@ $_SQL[] = "DELETE FROM {$_TABLES['sessions']}";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ALTER COLUMN sess_id TYPE VARCHAR(190) NOT NULL default ''";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN md5_sess_id";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN topic";
-$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD COLUMN autologin_key VARCHAR(190) NOT NULL DEFAULT ''";
+$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD COLUMN autologin_key_hash VARCHAR(190) NOT NULL DEFAULT ''";
 
 // Add `postmode` column to `users' table
 $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD COLUMN postmode VARCHAR(10) NOT NULL DEFAULT 'plaintext'";
+
+// Add User Autologin table
+$_SQL[] = "
+CREATE TABLE {$_TABLES['userautologin']} (
+  autologin_key_hash VARCHAR(190) NOT NULL DEFAULT '',
+  expiry_time int NOT NULL default '0',
+  uid smallint NOT NULL default '1',
+  PRIMARY KEY (autologin_key_hash)
+);
+  CREATE INDEX {$_TABLES['userautologin']}_expiry_time ON {$_TABLES['userautologin']} (expiry_time);
+  CREATE INDEX {$_TABLES['userautologin']}_uid ON {$_TABLES['userautologin']}(uid);
+";
 
 /**
  * Upgrade Messages

@@ -259,7 +259,7 @@ CREATE TABLE {$_TABLES['sessions']} (
   remote_ip varchar(39) NOT NULL default '',
   uid smallint NOT NULL default '1',
   whos_online smallint NOT NULL default '1',
-  autologin_key VARCHAR(190) NOT NULL DEFAULT '',
+  autologin_key_hash VARCHAR(190) NOT NULL DEFAULT '',
   PRIMARY KEY (sess_id)
 );
   CREATE INDEX {$_TABLES['sessions']}_start_time ON {$_TABLES['sessions']} (start_time);
@@ -491,6 +491,17 @@ CREATE TABLE {$_TABLES['userprefs']} (
   showonline smallint NOT NULL default '1',
   PRIMARY KEY (uid)
 )
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['userautologin']} (
+  autologin_key_hash VARCHAR(190) NOT NULL DEFAULT '',
+  expiry_time int NOT NULL default '0',
+  uid smallint NOT NULL default '1',
+  PRIMARY KEY (autologin_key_hash)
+);
+  CREATE INDEX {$_TABLES['userautologin']}_expiry_time ON {$_TABLES['userautologin']} (expiry_time);
+  CREATE INDEX {$_TABLES['userautologin']}_uid ON {$_TABLES['userautologin']}(uid);
 ";
 
 $_SQL[] = "

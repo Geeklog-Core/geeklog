@@ -69,14 +69,8 @@ if ($status == USER_ACCOUNT_ACTIVE) {
     $_USER = SESS_getUserDataFromId($uid);
     SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout']);
     PLG_loginUser($_USER['uid']);
-
-    // Now that we handled session cookies, handle long-term cookie
-    $cookieTime = COM_getUserCookieTimeout();
-    if (!empty($cookieTime) && ($cookieTime > 0)) {
-        SESS_handleAutoLogin($cookieTime);
-    } else {
-        SESS_deleteAutoLoginKey();
-    }
+	
+	SESS_issueAutoLoginCookie($_USER['uid'], false);
 
     if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,syndication.edit,theme.edit','OR')) {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');

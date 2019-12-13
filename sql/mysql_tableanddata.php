@@ -261,7 +261,7 @@ CREATE TABLE {$_TABLES['sessions']} (
   remote_ip VARCHAR(39) NOT NULL DEFAULT '',
   uid MEDIUMINT(8) NOT NULL DEFAULT '1',
   whos_online TINYINT(1) NOT NULL DEFAULT '1',
-  autologin_key VARCHAR(190) NOT NULL DEFAULT '',
+  autologin_key_hash VARCHAR(190) NOT NULL DEFAULT '',
   PRIMARY KEY  (sess_id),
   KEY start_time (start_time),
   KEY remote_ip (remote_ip)
@@ -491,6 +491,17 @@ CREATE TABLE {$_TABLES['userprefs']} (
   emailfromuser tinyint(1) NOT NULL default '1',
   showonline tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (uid)
+) ENGINE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['userautologin']} (
+  autologin_key_hash VARCHAR(190) NOT NULL DEFAULT '',
+  expiry_time INT(10) unsigned NOT NULL DEFAULT '0',
+  uid MEDIUMINT(8) NOT NULL,
+  PRIMARY KEY  (autologin_key_hash),
+  KEY expiry_time (expiry_time),
+  KEY uid (uid)
 ) ENGINE=MyISAM
 ";
 

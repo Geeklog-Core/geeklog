@@ -1249,7 +1249,7 @@ function SEC_generateSalt()
 
 /**
  * Encrypt User Password
- * Verify that the provided password authenticates the specified user (defualts
+ * Verify that the provided password authenticates the specified user (defaults
  * to the current user).
  *
  * @param  string $password password to verify
@@ -1389,10 +1389,13 @@ function SEC_updateUserPassword(&$password = '', $uid = 0)
     // update the database with the new password using algorithm and stretch from $_CONF
     $salt = SEC_generateSalt();
     $newhash = SEC_encryptPassword($password, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']);
-    $query = 'UPDATE ' . $_TABLES['users'] . " SET passwd = '$newhash', "
+    $sql = 'UPDATE ' . $_TABLES['users'] . " SET passwd = '$newhash', "
         . "salt = '$salt', algorithm ='" . $_CONF['pass_alg'] . "', "
         . 'stretch = ' . $_CONF['pass_stretch'] . " WHERE uid = $uid";
-    DB_query($query);
+    DB_query($sql);
+
+    // Delete all autologin keys associated with user since password reset
+    SESS_deleteUserAutoLoginKeys($uid);
 
     // return success
     return 0;

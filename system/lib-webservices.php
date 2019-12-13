@@ -909,6 +909,8 @@ function WS_authenticate()
 
         $_USER = SESS_getUserDataFromId($uid);
         PLG_loginUser($_USER['uid']);
+		
+		SESS_issueAutoLoginCookie($_USER['uid'], false);
 
         // Global array of groups current user belongs to
         $_GROUPS = SEC_getUserGroups($_USER['uid']);

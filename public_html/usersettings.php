@@ -1056,6 +1056,7 @@ function saveuser(array $A)
     // to change the password, email address, or cookie timeout,
     // we need the user's current password
     $service = DB_getItem($_TABLES['users'], 'remoteservice', "uid = {$_USER['uid']}");
+    $criticUserSecurityChanges = false; // Important User Security Settings changed so delete all autologin keys to force relogin on other devices
     if ($service == '') {
         if (!empty($A['passwd']) || !empty($A['delete_emailtoconfirm']) || ($A['email'] != $_USER['email']) || ($A['cooktime'] != $_USER['cookietimeout'])) {
             // verify password
@@ -1085,10 +1086,13 @@ function saveuser(array $A)
                 COM_redirect("{$_CONF['site_url']}/usersettings.php?msg={$ret['number']}");
             }
         }
+        $criticUserSecurityChanges = true;
     } else {
         if (($A['email'] != $_USER['email']) || ($A['cooktime'] != $_USER['cookietimeout'])) {
             // re-authenticate remote user again for these changes to take place
             // Can't just be done here since user may have to re-login to his service which then sends us back here and we lose his changes
+
+            $criticUserSecurityChanges = true;
         }
     }
 
@@ -1190,11 +1194,14 @@ function saveuser(array $A)
         if ($_US_VERBOSE) {
             COM_errorLog('cooktime = ' . $A['cooktime'], 1);
         }
-
-        if ($A['cooktime'] <= 0) {
-            SESS_deleteAutoLoginKey();
-        } else {
-            SESS_handleAutoLogin();
+        // Important User Security Settings changed so delete all autologin keys to force relogin on other devices
+        if ($criticUserSecurityChanges || $A['cooktime'] <= 0) {
+            // If password change then this is already run in SEC_updateUserPassword but do it here as well for email and remember me changes
+            SESS_deleteUserAutoLoginKeys($_USER['uid']);
+        }
+        // Now reset autologin key and cookie if changed for this session
+        if ($criticUserSecurityChanges && $A['cooktime'] > 0) {
+            SESS_issueAutoLoginCookie($_USER['uid']);
         }
 
         if ($_CONF['allow_user_photo'] == 1) {

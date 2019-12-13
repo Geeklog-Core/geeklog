@@ -187,7 +187,6 @@ function SESS_sessionCheck()
                 // Create new session and write cookie since user is now logged in
                 SESS_newSession($userId, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout']);
                 $_USER = SESS_getUserDataFromId($userId);
-                $_USER['auto_login'] = true;
 				SESS_issueAutoLoginCookie($userId, false);
             }
         } else {
@@ -256,7 +255,11 @@ function SESS_newSession($userId, $remote_ip, $lifespan)
         );
     }
 
-    // Delete expired sessions from database
+    // ******************************************************
+    // Note this check obviously only runs when a new session happens not with existing sessions
+    // Assumed done this way to prevent check happening with every single page load
+
+    // Check to delete expired sessions from database
     $ctime = time();
     $currentTime = (string) ($ctime);
     $expiryTime = (string) ($ctime - $lifespan);
@@ -285,9 +288,14 @@ function SESS_newSession($userId, $remote_ip, $lifespan)
         die("Delete failed in SESS_newSession()");
     }
 
-    // Delete old session from database
+    // Delete Expired User Auto Login Keys
+    DB_query("DELETE FROM {$_TABLES['userautologin']} WHERE expiry_time < $currentTime");
+    // ******************************************************
+
     $oldSessionId = Session::getSessionId();
     $escOldSessionId = DB_escapeString($oldSessionId);
+
+    // Delete old session from database
     DB_query("DELETE FROM {$_TABLES['sessions']} WHERE sess_id = '{$escOldSessionId}'");
 
     // Create new session ID and insert it into database
@@ -348,6 +356,8 @@ function SESS_endUserSession($userId)
 {
     global $_TABLES;
 
+    SESS_deleteAutoLoginKey();
+
     $userId = (int) $userId;
     $oldSessionId = DB_escapeString(Session::getSessionId());
     $newSessionId = Session::regenerateId();
@@ -355,6 +365,7 @@ function SESS_endUserSession($userId)
     $sql = "UPDATE {$_TABLES['sessions']} SET uid = " . Session::ANON_USER_ID . ", sess_id = '{$newSessionId}' "
         . " WHERE (uid = {$userId}) AND (sess_id = '{$oldSessionId}')";
     DB_query($sql);
+
     Session::setUid(Session::ANON_USER_ID);
 
     return 1;
@@ -368,7 +379,7 @@ function SESS_endUserSession($userId)
 */
 function SESS_getUserDataFromId($userId)
 {
-    global $_TABLES;
+    global $_TABLES, $_USER;
 
     $userId = (int) $userId;
     if ($userId <= Session::ANON_USER_ID) {
@@ -388,6 +399,12 @@ function SESS_getUserDataFromId($userId)
             'username' => 'anonymous',
             'error'    => '1',
         );
+    }
+
+    // Need to store auto login key this time so it can be reused for current session
+    if (isset($_USER['auto_login']) && $_USER['auto_login']) {
+        $myRow['auto_login'] = true;
+        $myRow['autoLoginKeyHash'] = $_USER['autoLoginKeyHash'];
     }
 
     return $myRow;
@@ -420,11 +437,11 @@ function SESS_setVariable($name, $value)
 
 /**
  * Handle an auto-login key
+ * Anonymous session should already be created
  *
- * @param   int  $lifeTime  cookie lifetime
  * @return  int  user id or 1 when no auto-login key was found
  */
-function SESS_handleAutoLogin($lifeTime = -1)
+function SESS_handleAutoLogin()
 {
     global $_CONF, $_TABLES;
 
@@ -438,8 +455,10 @@ function SESS_handleAutoLogin($lifeTime = -1)
     }
 
     // Try to get a record with the auto-login key from `gl_sessions` table
-    $escAutoLoginKey = DB_escapeString($autoLoginKey);
-    $sql = "SELECT uid, sess_id FROM {$_TABLES['sessions']} WHERE autologin_key = '{$escAutoLoginKey}'";
+    $salt = '';
+    $autoLoginKeyHash = SEC_encryptPassword($autoLoginKey, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']);
+    $escAutoLoginKeyHash = DB_escapeString($autoLoginKeyHash);
+    $sql = "SELECT uid FROM {$_TABLES['userautologin']} WHERE autologin_key_hash = '{$escAutoLoginKeyHash}'";
     $result = DB_query($sql);
     if (DB_error()) {
         return 1;
@@ -449,13 +468,17 @@ function SESS_handleAutoLogin($lifeTime = -1)
         $A = DB_fetchArray($result, false);
         $uid = (int) $A['uid'];
 
-		// Delete old original session as it does not exist anymore and a new one will be created as this visitor is going
+        // Delete old original session record tied to this auto login key if it exists (this only may happen if the server has been rebooted or something which flushed all the sesions) as actual PHP Session doesn't exist anymore
         // from the current anonymous session to a new actual user session
-		$oldSessionId = $A['sess_id']; // Original session id that does not exist anymore from auto login key
-		$escOldSessionId = DB_escapeString($oldSessionId);
-		DB_query("DELETE FROM {$_TABLES['sessions']} WHERE sess_id = '{$escOldSessionId}'");
+		DB_query("DELETE FROM {$_TABLES['sessions']} WHERE autologin_key_hash = '{$escAutoLoginKeyHash}'");
+
+        // Auto login is successful. Update user array with new information (at this point user array is still for anonymous user and hasn't been loaded yet)
+        global $_USER;
+        $_USER['auto_login'] = true;
+        $_USER['autoLoginKeyHash'] = $autoLoginKeyHash;
 
 		// Note: A new logged in user session will be create after this function based on the uid
+        // At this point this anonymous user with an auto login key will be transferred over
         return $uid;
     } else {
         // The auto-login key contained in the cookie was not found in the database.
@@ -468,6 +491,7 @@ function SESS_handleAutoLogin($lifeTime = -1)
 
 /**
  * Issue a cookie containing an auto-login cookie
+ * User is already logged in and user data loaded at this point, and session has already been created
  *
  * @param  int     $userId
  * @param  bool    $onlyExtendLifeSpan
@@ -475,7 +499,7 @@ function SESS_handleAutoLogin($lifeTime = -1)
  */
 function SESS_issueAutoLoginCookie($userId, $onlyExtendLifeSpan = true)
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_USER;
 
     // We don't issue auto-login cookies for anonymous users
     $userId = (int) $userId;
@@ -489,29 +513,60 @@ function SESS_issueAutoLoginCookie($userId, $onlyExtendLifeSpan = true)
         return false;
     }
 
+    $sessionId = DB_escapeString(Session::getSessionId());
+
     if ($onlyExtendLifeSpan) {
         // Need to make sure cookie is the same as what is in the database though
         $autoLoginKey = Input::cookie($_CONF['cookie_name'], '');
         $autoLoginKey = preg_replace('/[^0-9a-f]/', '', $autoLoginKey);
 
         // Make sure autologin key cookie still is the same as what is stored in the sessions table and both are not empty
-        $sessionId = DB_escapeString(Session::getSessionId());
-        if (empty(trim($autoLoginKey)) || $autoLoginKey != DB_getItem($_TABLES['sessions'], 'autologin_key', "sess_id = '$sessionId'")) {
+        $salt = '';
+        if (empty(trim($autoLoginKey)) || SEC_encryptPassword($autoLoginKey, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']) != DB_getItem($_TABLES['sessions'], 'autologin_key_hash', "sess_id = '$sessionId'")) {
             // Something is not right since cookie does not match key stored in db so generate a new one since the user is already logged in by this point
             $onlyExtendLifeSpan = false;
         }
     }
 
+    $autoLoginKeyHash = '';
     if (!$onlyExtendLifeSpan) {
+        // This is the key we store as a cookie
         $autoLoginKey = SEC_randomBytes(80);
         $autoLoginKey = sha1($autoLoginKey);
+
+        // Extra bit of security. We store hash of key bassed on current Geeklog password encryption settings
+        // Calculate hash to store in database so actual key is only stored in cookie on users device
+        $salt = ''; // Can't use salt as we don't know the user at the point the auto login key is checked
+        $autoLoginKeyHash = SEC_encryptPassword($autoLoginKey, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']);
     }
 
-    if (SEC_setCookie($_CONF['cookie_name'], $autoLoginKey, time() + $lifeTime)) {
-        $escAutoLoginKey = DB_escapeString($autoLoginKey);
-        $sessionId = DB_escapeString(Session::getSessionId());
-        $sql = "UPDATE {$_TABLES['sessions']} SET autologin_key = '{$escAutoLoginKey}' "
-            . "WHERE (uid = {$userId}) AND (sess_id = '{$sessionId}')";
+    $expiry_time = time() + $lifeTime;
+    if (SEC_setCookie($_CONF['cookie_name'], $autoLoginKey, $expiry_time)) {
+        // See if a auto login happened for this session and if so use same autologin key
+        if (isset($_USER['auto_login']) && $_USER['auto_login']) {
+            $origAutoLoginKeyHash = $_USER['autoLoginKeyHash'];
+        } else {
+            $origAutoLoginKeyHash = DB_getItem($_TABLES['sessions'], 'autologin_key_hash', "sess_id = '$sessionId'");
+        }
+        if (empty($autoLoginKeyHash)) {
+            $autoLoginKeyHash = $origAutoLoginKeyHash;
+        }
+        $escOrigAutoLoginKeyHash = DB_escapeString($origAutoLoginKeyHash);
+
+        $escAutoLoginKeyHash = DB_escapeString($autoLoginKeyHash);
+        $escSessionId = DB_escapeString($sessionId);
+        $sql = "UPDATE {$_TABLES['sessions']} SET autologin_key_hash = '{$escAutoLoginKeyHash}' "
+            . "WHERE (uid = {$userId}) AND (sess_id = '{$escSessionId}')";
+        DB_query($sql);
+
+        // Replace record or create a new one. Always replace if we can as we don't want extra records hanging around
+        if (!empty($origAutoLoginKeyHash) && !empty(DB_getItem($_TABLES['userautologin'], 'autologin_key_hash', "autologin_key_hash = '$escOrigAutoLoginKeyHash'"))) {
+            $sql = "UPDATE {$_TABLES['userautologin']} SET autologin_key_hash = '{$escAutoLoginKeyHash}',  expiry_time = $expiry_time "
+                . "WHERE (uid = {$userId}) AND (autologin_key_hash = '{$escOrigAutoLoginKeyHash}')";
+        } else {
+            $sql = "INSERT INTO {$_TABLES['userautologin']} (autologin_key_hash, expiry_time, uid) "
+                . "VALUES ('{$escAutoLoginKeyHash}', $expiry_time, $userId) ";
+        }
         DB_query($sql);
 
         return $autoLoginKey;
@@ -521,14 +576,37 @@ function SESS_issueAutoLoginCookie($userId, $onlyExtendLifeSpan = true)
 }
 
 /**
- * Delete an existing auto-login key for the current user
+ * Delete an existing auto-login key for the current user (based on session id)
  */
 function SESS_deleteAutoLoginKey()
 {
     global $_CONF, $_TABLES;
 
     $sessionId = DB_escapeString(Session::getSessionId());
-    $sql = "UPDATE {$_TABLES['sessions']} SET autologin_key = '' WHERE sess_id = '{$sessionId}'";
+    $autoLoginKeyHash = DB_escapeString(DB_getItem($_TABLES['sessions'], 'autologin_key_hash', "sess_id = '$sessionId'"));
+    $sql = "UPDATE {$_TABLES['sessions']} SET autologin_key_hash = '' WHERE sess_id = '{$sessionId}'";
     DB_query($sql);
+
+    $sql = "DELETE FROM {$_TABLES['userautologin']} WHERE autologin_key_hash = '{$autoLoginKeyHash}' ";
+    DB_query($sql);
+
     SEC_setCookie($_CONF['cookie_name'], '', time() - 10000);
+}
+
+/**
+ * Delete any existing auto-login keys for a specified user
+ *
+ * @param  int     $uid
+ */
+function SESS_deleteUserAutoLoginKeys($uid)
+{
+    global $_TABLES, $_USER;
+
+    if ($uid > 1) {
+        $sql = "UPDATE {$_TABLES['sessions']} SET autologin_key_hash = '' WHERE uid = $uid";
+        DB_query($sql);
+
+        $sql = "DELETE FROM {$_TABLES['userautologin']} WHERE uid = $uid";
+        DB_query($sql);
+    }
 }

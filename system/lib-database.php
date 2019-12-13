@@ -82,6 +82,7 @@ $_TABLES['usercomment'] = $_DB_table_prefix . 'usercomment';
 $_TABLES['userindex'] = $_DB_table_prefix . 'userindex';
 $_TABLES['userinfo'] = $_DB_table_prefix . 'userinfo';
 $_TABLES['userprefs'] = $_DB_table_prefix . 'userprefs';
+$_TABLES['userautologin'] = $_DB_table_prefix . 'userautologin';
 $_TABLES['users'] = $_DB_table_prefix . 'users';
 $_TABLES['vars'] = $_DB_table_prefix . 'vars';
 
