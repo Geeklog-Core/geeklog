@@ -88,7 +88,7 @@ function SESS_sessionCheck()
     // Check for a cookie on the users's machine.  If the cookie exists, build
     // an array of the users info and setup the theme.
 
-    // Flag indicates if session cookie and session data exist
+    // Flag indicates if session cookie exists on users device and session data exist on server
     $sessionExists = Session::init(array(
         'debug'           => isset($_CONF['developer_mode_log']['session']) && $_CONF['developer_mode_log']['session'],
         'logger'          => 'COM_errorLog',
@@ -100,9 +100,12 @@ function SESS_sessionCheck()
         'session_name'    => $_CONF['cookie_session'],
     ));
     $sessId = Session::getSessionId();
+    $escSessionId = DB_escapeString($sessId);
     $status = -1;
 
-    if ($sessionExists) {
+    // For valid session required data on server, user session cookie, and our session record in table.
+    // If any missing or expired then do not enter
+    if ($sessionExists && DB_getItem($_TABLES['sessions'], 'sess_id', "sess_id = '$escSessionId'")) {
         if ($_SESS_VERBOSE) {
             COM_errorLog("Got {$sessId} as the session ID",1);
         }
@@ -110,20 +113,6 @@ function SESS_sessionCheck()
         $userId = Session::getUid();
         if ($_SESS_VERBOSE) {
             COM_errorLog("Got {$userId} as User ID from the session ID",1);
-        }
-
-        // Make sure corresponding record exists in Geeklog Session Table
-        // Shouldn't have been deleted by anything but you never know...
-        if (!DB_getItem($_TABLES['sessions'], 'sess_id', "sess_id = '$sessId'")) {
-            // If deleted add in basic session record back into Geeklog database
-            $ctime = time();
-            $currentTime = (string) ($ctime);
-            $escSessionId = DB_escapeString($sessId);
-            $escRemoteIp = DB_escapeString($_SERVER['REMOTE_ADDR']);
-
-            $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, uid, start_time, remote_ip, whos_online) "
-                . "VALUES ('{$escSessionId}', {$userId}, {$currentTime}, '{$escRemoteIp}', 1)";
-            $result = DB_query($sql);
         }
 
         if ($userId > Session::ANON_USER_ID) {
@@ -162,7 +151,7 @@ function SESS_sessionCheck()
     } else {
         // Session cookie was not found, but the Session class was initialized.
         if ($_SESS_VERBOSE) {
-            COM_errorLog("Session cookie not found",1);
+            COM_errorLog("Session cookie, and/or session data on server, and/or session record in DB not found",1);
         }
 
         // Check if the permanent cookie exists
