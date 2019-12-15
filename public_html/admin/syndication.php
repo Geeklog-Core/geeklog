@@ -448,10 +448,6 @@ function savefeed($A)
 {
     global $_CONF, $_TABLES, $LANG33;
 
-    foreach ($A as $name => $value) {
-        $A[$name] = COM_stripslashes($value);
-    }
-
     if (isset($A['is_enabled']) && ($A['is_enabled'] == 'on')) {
         $A['is_enabled'] = 1;
     } else {

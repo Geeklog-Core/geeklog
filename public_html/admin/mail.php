@@ -230,9 +230,9 @@ function send_messages(array $vars)
     $numRows = DB_numRows($result);
 
     $from = array($vars['fraepost'] => $vars['fra']);
-    $subject = COM_stripslashes($vars['subject']);
+    $subject = $vars['subject'];
     $subject = GLText::stripTags($subject);
-    $message = COM_stripslashes($vars['message']);
+    $message = $vars['message'];
 
     if ($html) {
         if (stripos($message, '<body') === false) {

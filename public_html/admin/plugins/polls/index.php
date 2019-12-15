@@ -165,11 +165,10 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $topic_description, $me
     // Convert array values to numeric permission values
     list($perm_owner, $perm_group, $perm_members, $perm_anon) = SEC_getPermissionValues($perm_owner, $perm_group, $perm_members, $perm_anon);
 
-    $topic = COM_stripslashes($topic);
     $topic = COM_checkHTML($topic);
-    $topic_description = GLText::stripTags(COM_stripslashes($topic_description));
-    $meta_description = GLText::stripTags(COM_stripslashes($meta_description));
-    $meta_keywords = GLText::stripTags(COM_stripslashes($meta_keywords));
+    $topic_description = GLText::stripTags($topic_description);
+    $meta_description = GLText::stripTags($meta_description);
+    $meta_keywords = GLText::stripTags($meta_keywords);
     $pid = COM_sanitizeID($pid);
     $old_pid = COM_sanitizeID($old_pid);
     if (empty($pid)) {
@@ -276,10 +275,9 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $topic_description, $me
     $num_total_votes = 0;
     $num_questions_exist = 0;
     for ($i = 0; $i < $num_questions; $i++) {
-        $Q[$i] = COM_stripslashes($Q[$i]);
         $Q[$i] = COM_checkHTML($Q[$i]);
         $Q[$i] = GLText::remove4byteUtf8Chars($Q[$i]);
-        $description[$i] = GLText::remove4byteUtf8Chars(COM_checkHTML(COM_stripslashes($description[$i])));
+        $description[$i] = GLText::remove4byteUtf8Chars(COM_checkHTML($description[$i]));
         if (isset($allow_multipleanswers[$i])) {
             $allow_multipleanswers[$i] = ($allow_multipleanswers[$i] == 'on') ? 1 : 0;
         } else {
@@ -298,10 +296,8 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $topic_description, $me
             // votes and remarks
             $num_answers = count($A[$i]);
             for ($j = 0; $j < $num_answers; $j++) {
-                $A[$i][$j] = COM_stripslashes($A[$i][$j]);
                 $A[$i][$j] = COM_checkHTML($A[$i][$j]);
                 $A[$i][$j] = GLText::remove4byteUtf8Chars($A[$i][$j]);
-                $R[$i][$j] = COM_stripslashes($R[$i][$j]);
                 $R[$i][$j] = COM_checkHTML($R[$i][$j]);
                 $R[$i][$j] = GLText::remove4byteUtf8Chars($R[$i][$j]);
 

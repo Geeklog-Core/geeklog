@@ -48,11 +48,6 @@ $configs = array(
 );
 
 // Start it off
-if (get_magic_quotes_gpc()) {
-    $_GET  = array_map('stripslashes', $_GET);
-    $_POST = array_map('stripslashes', $_POST);
-}
-
 $lang = 'english';
 
 if (isset($_POST['lang'])) {

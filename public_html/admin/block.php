@@ -768,8 +768,8 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
 
     $retval = '';
 
-    $title = DB_escapeString(COM_stripslashes(GLText::stripTags($title)));
-    $phpBlockFn = DB_escapeString(COM_stripslashes(trim($phpBlockFn)));
+    $title = DB_escapeString(GLText::stripTags($title));
+    $phpBlockFn = DB_escapeString(trim($phpBlockFn));
     if (empty($title) || !TOPIC_checkTopicSelectionControl()) {
         $retval .= COM_showMessageText($LANG21[64], $LANG21[63])
             . editblock($bid);
