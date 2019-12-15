@@ -92,13 +92,10 @@ function contactemail($uid, $cc, $author, $authorEmail, $subject, $message)
                 $sig = DB_getItem($_TABLES['users'], 'sig',
                                   "uid={$_USER['uid']}");
                 if (!empty($sig)) {
-                    $sig = GLText::stripTags(COM_stripslashes($sig));
+                    $sig = GLText::stripTags($sig);
                     $sig = "\n\n-- \n" . $sig;
                 }
             }
-
-            $subject = COM_stripslashes($subject);
-            $message = COM_stripslashes($message);
 
             // do a spam check with the unfiltered message text and subject
             $mailtext = $subject . "\n" . $message . $sig;
@@ -350,7 +347,6 @@ function mailstory($sid, $to, $toEmail, $from, $fromEmail, $shortMessage)
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
-    $shortMessage = COM_stripslashes($shortMessage);
     $mailText = sprintf($LANG08[23], $from, $fromEmail) . LB;
     if (strlen($shortMessage) > 0) {
         $mailText .= LB . sprintf($LANG08[28], $from) . $shortMessage . LB;

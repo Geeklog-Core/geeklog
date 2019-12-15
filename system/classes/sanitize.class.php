@@ -190,7 +190,7 @@ class sanitizer
     /* Default filter for character and numeric data */
     private function _applyFilter($parameter, $isnumeric = false)
     {
-        $p = COM_stripslashes($parameter);
+        $p = $parameter;
         $p = GLText::stripTags($p);
         $p = COM_killJS($p); // doesn't help a lot right now, but still ...
         if ($isnumeric) {

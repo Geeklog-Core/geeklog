@@ -34,11 +34,6 @@ class Installer
     private $env = array();
 
     /**
-     * @var bool
-     */
-    private $isMagicQuotes = false;
-
-    /**
      * @var array
      */
     private $LANG = array();
@@ -86,7 +81,6 @@ class Installer
         uasort($langInfo, function ($a, $b) { return strcasecmp($a['langName'], $b['langName']); });
         $this->languages = $langInfo;
 
-        $this->isMagicQuotes = (bool) get_magic_quotes_gpc();
         $this->env['mode'] = $this->get('mode', $this->post('mode', ''));
         $this->env['step'] = intval($this->get('step', $this->post('step', 1)), 10);
         $this->env['language_selector'] = '';
@@ -285,21 +279,6 @@ class Installer
     }
 
     /**
-     * Return a request variable undoing magic_quotes
-     *
-     * @param  array|string $var
-     * @return array|string
-     */
-    private function processRequestVar($var)
-    {
-        if (is_array($var)) {
-            return array_map(array($this, 'processRequestVar'), $var);
-        } else {
-            return $this->isMagicQuotes ? stripslashes($var) : $var;
-        }
-    }
-
-    /**
      * Return a $_GET variable
      *
      * @param  string       $name
@@ -308,7 +287,7 @@ class Installer
      */
     public function get($name, $defaultValue = null)
     {
-        return array_key_exists($name, $_GET) ? $this->processRequestVar($_GET[$name]) : $defaultValue;
+        return array_key_exists($name, $_GET) ? $_GET[$name] : $defaultValue;
     }
 
     /**
@@ -320,7 +299,7 @@ class Installer
      */
     public function post($name, $defaultValue = null)
     {
-        return array_key_exists($name, $_POST) ? $this->processRequestVar($_POST[$name]) : $defaultValue;
+        return array_key_exists($name, $_POST) ? $_POST[$name] : $defaultValue;
     }
 
     /**
@@ -332,7 +311,7 @@ class Installer
      */
     public function request($name, $defaultValue = null)
     {
-        return array_key_exists($name, $_REQUEST) ? $this->processRequestVar($_REQUEST[$name]) : $defaultValue;
+        return array_key_exists($name, $_REQUEST) ? $_REQUEST[$name] : $defaultValue;
     }
 
     /**

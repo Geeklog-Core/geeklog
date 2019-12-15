@@ -1149,20 +1149,20 @@ function saveuser(array $A)
     $A['postmode'] = ($A['postmode'] === 'html') ? 'html' : 'plaintext';
 
     // basic filtering only
-    $A['fullname'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['fullname'])));
-    $A['location'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['location'])));
+    $A['fullname'] = GLText::stripTags(GLText::remove4byteUtf8Chars($A['fullname']));
+    $A['location'] = GLText::stripTags(GLText::remove4byteUtf8Chars($A['location']));
 
     if ($A['postmode'] === 'html') {
         // HTML
-        $A['sig'] = GLText::checkHTML(GLText::remove4byteUtf8Chars(COM_stripslashes($A['sig'])), '');
-        $A['about'] = GLText::checkHTML(GLText::remove4byteUtf8Chars(COM_stripslashes($A['about'])), '');
+        $A['sig'] = GLText::checkHTML(GLText::remove4byteUtf8Chars($A['sig']), '');
+        $A['about'] = GLText::checkHTML(GLText::remove4byteUtf8Chars($A['about']), '');
     } else {
         // Plaintext
-        $A['sig'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['sig'])));
-        $A['about'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['about'])));
+        $A['sig'] = GLText::stripTags(GLText::remove4byteUtf8Chars($A['sig']));
+        $A['about'] = GLText::stripTags(GLText::remove4byteUtf8Chars($A['about']));
     }
 
-    $A['pgpkey'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['pgpkey'])));
+    $A['pgpkey'] = GLText::stripTags(GLText::remove4byteUtf8Chars($A['pgpkey']));
 
     if (!COM_isEmail($A['email'])) {
         COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=52');

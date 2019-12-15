@@ -46,9 +46,9 @@ class EditIPofUrl extends BaseAdmin {
 
         $entry = '';
         if (isset($_GET['entry'])) {
-            $entry = COM_stripslashes($_GET['entry']);
+            $entry = $_GET['entry'];
         } elseif (isset($_POST['pentry'])) {
-            $entry = COM_stripslashes($_POST['pentry']);
+            $entry = $_POST['pentry'];
         }
 
         if (($action == 'delete') && SEC_checkToken()) {

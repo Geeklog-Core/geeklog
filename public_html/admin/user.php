@@ -670,11 +670,11 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
         }
 
         // basic filtering only (same as in usersettings.php)
-        $fullname = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($fullname)));
-        $location = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($location)));
-        $signature = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($signature)));
-        $about = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($about)));
-        $pgpkey = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($pgpkey)));
+        $fullname = GLText::stripTags(GLText::remove4byteUtf8Chars($fullname));
+        $location = GLText::stripTags(GLText::remove4byteUtf8Chars($location));
+        $signature = GLText::stripTags(GLText::remove4byteUtf8Chars($signature));
+        $about = GLText::stripTags(GLText::remove4byteUtf8Chars($about));
+        $pgpkey = GLText::stripTags(GLText::remove4byteUtf8Chars($pgpkey));
 
         // Escape these here since used both in new and updates
         $location = DB_escapeString($location);

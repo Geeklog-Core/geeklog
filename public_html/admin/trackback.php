@@ -656,9 +656,9 @@ function saveService($pid, $name, $site_url, $ping_url, $method, $enabled)
         $method = 'weblogUpdates.ping';
     }
 
-    $name = GLText::stripTags(COM_stripslashes($name));
-    $site_url = GLText::stripTags(COM_stripslashes($site_url));
-    $ping_url = GLText::stripTags(COM_stripslashes($ping_url));
+    $name = GLText::stripTags($name);
+    $site_url = GLText::stripTags($site_url);
+    $ping_url = GLText::stripTags($ping_url);
 
     $errormsg = '';
     if (empty($name)) {

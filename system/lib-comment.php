@@ -959,7 +959,6 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             // $commentText is what the user entered and goes back into the
             // <textarea> -> don't strip HTML
 
-            $commentText = COM_stripslashes($comment);
             $commentText = GLText::remove4byteUtf8Chars($commentText);
             $commentText = htmlspecialchars($commentText);
 
@@ -976,7 +975,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             $commentText = str_replace('[', '&#91;', $commentText);
             $commentText = str_replace(']', '&#93;', $commentText);
 
-            $title = COM_checkWords(GLText::stripTags(COM_stripslashes($title)), 'comment');
+            $title = COM_checkWords(GLText::stripTags($title), 'comment');
             $title = GLText::remove4byteUtf8Chars($title);
 
             // $title = str_replace('$','&#36;',$title); done in CMT_getComment
@@ -1165,7 +1164,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                     // stored as cookie, name used before
                     $name = htmlspecialchars(
                         COM_checkWords(
-                            GLText::stripTags(COM_stripslashes($_COOKIE[$_CONF['cookie_anon_name']])),
+                            GLText::stripTags($_COOKIE[$_CONF['cookie_anon_name']]),
                             'comment'
                         )
                     );
@@ -2004,18 +2003,13 @@ function CMT_prepareText($comment, $postMode, $type)
     if ($postMode === 'html') {
         $html_perm = ($type == 'article') ? 'story.edit' : "$type.edit";
         $comment = COM_checkWords(
-            COM_checkHTML(
-                COM_stripslashes($comment), $html_perm
-            ),
+            COM_checkHTML($comment, $html_perm),
             'comment'
         );
     } else {
         // plaintext
         $comment = htmlspecialchars(
-            COM_checkWords(
-                COM_stripslashes($comment),
-                'comment'
-            )
+            COM_checkWords($comment, 'comment')
         );
         $newComment = COM_makeClickableLinks($comment);
         if (strcmp($comment, $newComment) != 0) {
@@ -2399,8 +2393,8 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
 
     if (DB_numRows($result) == 1) {
         $A = DB_fetchArray($result);
-        $title = COM_stripslashes($A['title']);
-        $commentText = COM_stripslashes(COM_undoSpecialChars($A['comment']));
+        $title = $A['title'];
+        $commentText = COM_undoSpecialChars($A['comment']);
 
         // Comments really should a postmode that is saved with the comment (ie store either 'html' or 'plaintext') but they don't so lets figure out if comment is html by searching for html tags
         if (preg_match('/<.*>/', $commentText) != 0) {

@@ -1041,11 +1041,6 @@ class Article
             $this->_comment_expire = 0;
         }
 
-        // Handle Magic GPC Garbage:
-        foreach ($array as $key => $value) {
-            $array[$key] = COM_stripslashes($value);
-        }
-
         // initialize the GLText version to the latest version
         $this->_text_version = GLTEXT_LATEST_VERSION;
 
