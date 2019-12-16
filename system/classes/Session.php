@@ -102,7 +102,12 @@ abstract class Session
             ini_set('session.use_only_cookies', 1);
             ini_set('session.use_trans_sid', 0);
             ini_set('session.cache_limiter', 'nocache');
-            ini_set('session.cookie_lifetime', 0);
+            ini_set('session.cookie_lifetime', 0); // Set to 0 so cookie is deleted if browser is closed
+            // This gc_maxlifetime setting is just to prevent PHP Session handler from deleting the session data file to early on the server.
+            // Expired Sessions are only deleted by the PHP garbage collector but it is only started with a probability as it is expensive to run
+            // With that session handler, the age of the session data is calculated on the file's last modification date and not the last access date
+            // The main date that will expire a session is the Geeklog recorded one in the sessions table and the users session cookie expiry date
+            ini_set('session.gc_maxlifetime', $config['cookie_lifetime']);
         }
 
         // Set debug mode
@@ -315,7 +320,10 @@ abstract class Session
             return true;
         }
 
-        session_write_close();
+        // just had session_write_close before. Apparantly need all 3 to be compatible with all browsers
+        session_unset(); // Free all session variables
+        session_destroy(); // Destroys all data registered to a session
+        session_write_close(); // Write session data and end session
         self::$isSessionHasStarted = false;
 
         if (self::$isDebug) {
