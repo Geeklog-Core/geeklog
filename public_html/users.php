@@ -871,7 +871,6 @@ switch ($mode) {
             SESS_endUserSession($_USER['uid']);
             PLG_logoutUser($_USER['uid']);
         }
-        SESS_deleteAutoLoginKey();
 
         $msg = (int) Geeklog\Input::fGet('msg', 0);
         if ($msg == 0) {
