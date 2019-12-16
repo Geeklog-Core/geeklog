@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file deals with input variables.                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2015-2017 by the following authors:                         |
+// | Copyright (C) 2015-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO        - mystralkk AT gmail DOT com                    |
 // +---------------------------------------------------------------------------+
@@ -31,6 +31,9 @@
 
 namespace Geeklog;
 
+use Exception;
+use GLText;
+
 /**
  * Class Input
  *
@@ -45,17 +48,11 @@ class Input
     private static $initialized = false;
 
     /**
-     * @var bool the current value of magic_quotes_gpc
-     */
-    private static $magicQuotes = false;
-
-    /**
      * Initialize the Input class
      */
     public static function init()
     {
         if (!self::$initialized) {
-            self::$magicQuotes = (bool) get_magic_quotes_gpc();
             self::$initialized = true;
         }
     }
@@ -77,8 +74,8 @@ class Input
             $var = COM_applyBasicFilter($var);
         } else {
             // Simulate COM_applyBasicFilter
-            $var = \GLText::remove4byteUtf8Chars($var);
-            $var = \GLText::stripTags($var);
+            $var = GLText::remove4byteUtf8Chars($var);
+            $var = GLText::stripTags($var);
 
             if (is_callable('COM_killJS')) {
                 $var = COM_killJS($var); // doesn't help a lot right now, but still ...
@@ -107,21 +104,6 @@ class Input
     }
 
     /**
-     * Remove an added slash if necessary
-     *
-     * @param     array|string $value
-     * @return    array|string
-     */
-    private static function undoMagicQuotes($value)
-    {
-        if (self::$magicQuotes) {
-            return is_array($value) ? array_map(__METHOD__, $value) : stripslashes($value);
-        } else {
-            return $value;
-        }
-    }
-
-    /**
      * Return the value of $_GET variable
      *
      * @param    string       $name an index of $_GET
@@ -130,7 +112,7 @@ class Input
      */
     public static function get($name, $defaultValue = null)
     {
-        return isset($_GET[$name]) ? self::undoMagicQuotes($_GET[$name]) : $defaultValue;
+        return isset($_GET[$name]) ? $_GET[$name] : $defaultValue;
     }
 
     /**
@@ -142,7 +124,7 @@ class Input
      */
     public static function post($name, $defaultValue = null)
     {
-        return isset($_POST[$name]) ? self::undoMagicQuotes($_POST[$name]) : $defaultValue;
+        return isset($_POST[$name]) ? $_POST[$name] : $defaultValue;
     }
 
     /**
@@ -154,7 +136,7 @@ class Input
      */
     public static function cookie($name, $defaultValue = null)
     {
-        return isset($_COOKIE[$name]) ? self::undoMagicQuotes($_COOKIE[$name]) : $defaultValue;
+        return isset($_COOKIE[$name]) ? $_COOKIE[$name] : $defaultValue;
     }
 
     /**
@@ -202,7 +184,7 @@ class Input
      */
     public static function request($name, $defaultValue = null)
     {
-        return isset($_REQUEST[$name]) ? self::undoMagicQuotes($_REQUEST[$name]) : $defaultValue;
+        return isset($_REQUEST[$name]) ? $_REQUEST[$name] : $defaultValue;
     }
 
     /**
@@ -211,12 +193,12 @@ class Input
      * @param    string       $name an index of $_SESSION
      * @param    string|array $defaultValue
      * @return   array|null|string
-     * @throws   \Exception
+     * @throws   Exception
      */
     public static function session($name, $defaultValue = null)
     {
         if (session_id() === '') {
-            throw new \Exception('Session has not started yet');
+            throw new Exception('Session has not started yet');
         }
 
         return isset($_SESSION[$name]) ? $_SESSION[$name] : $defaultValue;
@@ -362,12 +344,12 @@ class Input
      * @param    string       $name an index of $_SESSION
      * @param    string|array $defaultValue
      * @return   array|null|string
-     * @throws   \Exception
+     * @throws   Exception
      */
     public static function fSession($name, $defaultValue = null)
     {
         if (session_id() === '') {
-            throw new \Exception('Session has not started yet');
+            throw new Exception('Session has not started yet');
         }
 
         return isset($_SESSION[$name]) ? self::applyFilter(self::session($name)) : $defaultValue;

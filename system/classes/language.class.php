@@ -380,7 +380,7 @@ class Language
         $varName = trim(Input::fPost('var_name', ''));
         $language = Input::fPost('language', '');
         $name = trim(Input::fPost('name', ''));
-        $value = COM_stripslashes(Input::Post('value', ''));
+        $value = Input::Post('value', '');
 
         if (($id >= 0) && !empty($varName) && !empty($language)) {
             $varName = DB_escapeString($varName);

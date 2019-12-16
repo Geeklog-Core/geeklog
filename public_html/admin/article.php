@@ -285,17 +285,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     }
 
     $story = new Article();
-    if ($mode == 'preview') {
-        // Handle Magic GPC Garbage:
-        foreach ($_POST as $key => $value) {
-            if (!is_array($value)) {
-                $_POST[$key] = COM_stripslashes($value);
-            } else {
-                foreach ($value as $subkey => $subvalue) {
-                    $value[$subkey] = COM_stripslashes($subvalue);
-                }
-            }
-        }
+    if ($mode === 'preview') {
         $result = $story->loadFromArgsArray($_POST);
 
         if ($_CONF['maximagesperarticle'] > 0) {
@@ -966,17 +956,6 @@ function submitstory($type = '')
     $output = '';
 
     $args = &$_POST;
-
-    // Handle Magic GPC Garbage:
-    foreach ($args as $key => $value) {
-        if (!is_array($value)) {
-            $args[$key] = COM_stripslashes($value);
-        } else {
-            foreach ($value as $subkey => $subvalue) {
-                $value[$subkey] = COM_stripslashes($subvalue);
-            }
-        }
-    }
 
     /* ANY FURTHER PROCESSING on POST variables - COM_stripslashes etc.
      * Do it HERE on $args */

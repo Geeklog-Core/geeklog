@@ -650,7 +650,6 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
             }
         }
 
-        $grp_descr = COM_stripslashes($grp_descr);
         $grp_descr = DB_escapeString($grp_descr);
 
         $grp_applydefault_add = true;

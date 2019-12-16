@@ -8,7 +8,7 @@
 // |                                                                           |
 // | User authentication module.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2017 by the following authors:                         |
+// | Copyright (C) 2000-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -473,28 +473,6 @@ function USER_displayLoginErrorAndAbort($msg, $message_title, $message_text)
 }
 
 /**
- * Helper function: When magic_quotes_gpc = On, everything in $_GET and $_POST
- * has already been auto-escaped. So we need to undo this before re-creating
- * the GET or POST request.
- * NOTE: Assumes that is only being called when magic_quotes_gpc = On
- *
- * @param    ref $value value to un-escape
- * @return   mixed           un-escaped value or array of values
- * @see      COM_stripslashes
- */
-function stripslashes_gpc_recursive(&$value)
-{
-    if (is_array($value)) {
-        array_map('stripslashes_gpc_recursive', $value);
-    } else {
-        // don't use COM_stripslashes here - no need to check magic_quotes_gpc
-        $value = stripslashes($value);
-    }
-
-    return $value;
-}
-
-/**
  * Re-send a request after successful re-authentication
  * Re-creates a GET or POST request based on data passed along in a form. Used
  * in case of an expired security token so that the user doesn't lose changes.
@@ -532,8 +510,6 @@ function USER_resendRequest()
         ((($method === 'POST') && !empty($postData)) ||
             (($method === 'GET') && !empty($getData)))
     ) {
-        $magic = get_magic_quotes_gpc();
-
         $req = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_POST);
         $req->setConfig(array(
             'adapter' => 'HTTP_Request2_Adapter_Curl',
@@ -549,9 +525,6 @@ function USER_resendRequest()
                 if ($key == CSRF_TOKEN) {
                     $req->addPostParameter($key, SEC_createToken());
                 } else {
-                    if ($magic) {
-                        $value = stripslashes_gpc_recursive($value);
-                    }
                     $req->addPostParameter($key, $value);
                 }
             }
@@ -571,10 +544,6 @@ function USER_resendRequest()
             foreach ($data as $key => &$value) {
                 if ($key == CSRF_TOKEN) {
                     $value = SEC_createToken();
-                } else {
-                    if ($magic) {
-                        $value = stripslashes_gpc_recursive($value);
-                    }
                 }
             }
             unset($value);

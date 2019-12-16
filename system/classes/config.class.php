@@ -1630,7 +1630,7 @@ class config implements ConfigInterface
                 $r = $r2;
             }
         } else {
-            $r = COM_stripslashes($input_val);
+            $r = $input_val;
             // Boolean default check
             // Numeric check
             // String Sanitize

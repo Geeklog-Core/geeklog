@@ -1117,7 +1117,7 @@ function plugin_save_submit_links($A)
         return $retval;
     }
 
-    $A['cid'] = GLText::stripTags(COM_stripslashes($A['categorydd']));
+    $A['cid'] = GLText::stripTags($A['categorydd']);
 
     $validcat = false;
     if (!empty($A['cid'])) {

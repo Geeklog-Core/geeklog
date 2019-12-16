@@ -6412,16 +6412,11 @@ function COM_getTopicSQL($type = 'WHERE', $u_id = 0, $table = '', $access = 2)
  *
  * @param   string $text The text
  * @return  string|array The text, possibly without slashes.
+ * @deprecated since Geeklog 2.2.1
  */
 function COM_stripslashes($text)
 {
-    if (@get_magic_quotes_gpc()) {
-        if (is_array($text)) {
-            return array_map('stripslashes', $text);
-        } else {
-            return stripslashes($text);
-        }
-    }
+    COM_deprecatedLog('COM_stripslashes', '2.2.1', '2.3.0', '');
 
     return $text;
 }
@@ -6436,9 +6431,7 @@ function COM_stripslashes($text)
  */
 function COM_applyFilter($parameter, $isNumeric = false)
 {
-    $p = COM_stripslashes($parameter);
-
-    return COM_applyBasicFilter($p, $isNumeric);
+    return COM_applyBasicFilter($parameter, $isNumeric);
 }
 
 /**

@@ -1276,7 +1276,7 @@ function ADMIN_getListField_moderation($fieldName, $fieldValue, $A, $icon_arr)
         case 'uid':
             $name = '';
             if ($A['uid'] == 1) {
-                $name = htmlspecialchars(COM_stripslashes(DB_getItem($_TABLES['commentsubmissions'], 'name', "cid = '{$A['id']}'")));
+                $name = htmlspecialchars(DB_getItem($_TABLES['commentsubmissions'], 'name', "cid = '{$A['id']}'"));
             }
             if (empty($name)) {
                 $name = COM_getDisplayName($A['uid']);

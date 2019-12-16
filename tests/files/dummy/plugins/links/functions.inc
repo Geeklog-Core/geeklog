@@ -931,7 +931,7 @@ function plugin_save_submit_links($A)
         COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
     }
 
-    $A['cid'] = strip_tags(COM_stripslashes($A['categorydd']));
+    $A['cid'] = strip_tags($A['categorydd']);
 
     $validcat = false;
     if (!empty($A['cid'])) {
