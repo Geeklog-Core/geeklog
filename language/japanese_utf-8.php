@@ -352,6 +352,7 @@ $LANG04 = array(
     67 => '登録日時',
     68 => '認証の保存期間',
     69 => 'いったんログインした後、どのくらいの間認証情報を残しますか?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "{$_CONF['site_name']}の表示と内容を設定",
     71 => "{$_CONF['site_name']}では、レイアウトを自由に変えることができます。そのためには、{$_CONF['site_name']}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">登録</a>する必要があります。もし、既に登録済みなら左のフォームを利用してログインしてください。",
     72 => 'テーマ',
@@ -1985,7 +1986,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
+#
 # This here determines the order of the sentence "No new articles in 2 hrs"
 # order it so it makes sense in your language:
 # %i    item, "Articles"
@@ -2043,7 +2044,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-# 
+#
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2732,4 +2733,3 @@ $LANG_VALIDATION = array(
     'config_setting_lang_array' => 'それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください',
     'config_setting_lang_array_element_req' => '少なくとも1つキーを指定してください。それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください'
 );
-

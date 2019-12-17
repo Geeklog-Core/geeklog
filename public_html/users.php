@@ -628,11 +628,11 @@ function USER_doLogin()
     global $_CONF, $_USER, $USER_VERBOSE;
 
     COM_resetSpeedlimit('login');
-    SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout']);
+    SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR']);
     PLG_loginUser($_USER['uid']);
 
-    // Issue an auto-login key
-    SESS_issueAutoLoginCookie($_USER['uid'], false);
+    // Issue an auto-login key user cookie and record hash in db if needed
+    SESS_issueAutoLogin($_USER['uid']);
 
     // Now that we have user's data see if their theme cookie is set.
     // If not set it

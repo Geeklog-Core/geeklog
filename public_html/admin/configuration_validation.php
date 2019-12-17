@@ -532,7 +532,7 @@ $_CONF_VALIDATE['Core']['cookie_ip'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['default_perm_cookie_timeout'] = array(
     'rule' => array('inList', array(0, 3600, 7200, 10800, 28800, 86400, 604800, 2678400), false)
 );
-$_CONF_VALIDATE['Core']['session_cookie_timeout'] = array('rule' => 'numeric');
+$_CONF_VALIDATE['Core']['session_cookie_timeout'] = array('rule' => array('range', 299, 86401)); // 5 Mins to 1 day range in seconds
 $_CONF_VALIDATE['Core']['cookiesecure'] = array('rule' => 'boolean');
 
 /* Subgroup Misc, Tab Misc */

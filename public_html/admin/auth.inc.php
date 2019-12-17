@@ -67,10 +67,11 @@ $display = '';
 if ($status == USER_ACCOUNT_ACTIVE) {
     DB_query("UPDATE {$_TABLES['users']} SET pwrequestid = NULL WHERE uid = $uid");
     $_USER = SESS_getUserDataFromId($uid);
-    SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout']);
+    SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR']);
     PLG_loginUser($_USER['uid']);
-	
-	SESS_issueAutoLoginCookie($_USER['uid'], false);
+
+    // Issue an auto-login key user cookie and record hash in db if needed
+	SESS_issueAutoLogin($_USER['uid']);
 
     if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,syndication.edit,theme.edit','OR')) {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
@@ -83,11 +84,11 @@ if ($status == USER_ACCOUNT_ACTIVE) {
 
     $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'users'));
     $template->set_file(array('authenticationrequired' => 'authenticationrequired.thtml'));
-    
+
     if (!empty($error_msg)) {
         $display .= COM_errorLog($error_msg, 2);
     }
-    
+
     $display .= COM_startBlock($LANG20[1]);
     if (!$_CONF['user_login_method']['standard']) {
         $template->set_var('lang_nonstandardlogin', $LANG_LOGIN[2]);
@@ -100,13 +101,13 @@ if ($status == USER_ACCOUNT_ACTIVE) {
         if (isset($_POST['warn'])) {
             $template->set_var('lang_incorrectlogin', $LANG20[2]);
             COM_accessLog($LANG20[3] . ' ' . Geeklog\Input::post('loginname'));
-        }        
+        }
     }
-    
-    // For Captcha 
+
+    // For Captcha
     PLG_templateSetVars('loginform', $template);
-    
-    $display .= $template->finish($template->parse('output', 'authenticationrequired'));        
+
+    $display .= $template->finish($template->parse('output', 'authenticationrequired'));
 
     $display .= COM_endBlock();
     $display = COM_createHTMLDocument($display);

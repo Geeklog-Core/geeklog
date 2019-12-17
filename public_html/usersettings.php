@@ -135,6 +135,7 @@ function edituser()
     $preferences->set_var('lang_old_password_text', $LANG04[111]);
     $preferences->set_var('lang_cooktime', $LANG04[68]);
     $preferences->set_var('lang_cooktime_text', $LANG04[69]);
+    $preferences->set_var('lang_cooktime_tooltip', COM_getTooltip('', htmlspecialchars(sprintf($LANG04['cookietimeout_tooltip'],$_CONF['session_cookie_timeout'])), '', '', 'information'));
     $preferences->set_var('lang_email', $LANG04[5]);
     $preferences->set_var('lang_email_text', $LANG04[33]);
     $preferences->set_var('lang_email_conf', $LANG04[124]);
@@ -1201,7 +1202,7 @@ function saveuser(array $A)
         }
         // Now reset autologin key and cookie if changed for this session
         if ($criticUserSecurityChanges && $A['cooktime'] > 0) {
-            SESS_issueAutoLoginCookie($_USER['uid']);
+            SESS_issueAutoLogin($_USER['uid']);
         }
 
         if ($_CONF['allow_user_photo'] == 1) {

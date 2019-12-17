@@ -47,8 +47,9 @@
 
         {resynch_option}
 
-        <dt><label for="cooktime">{lang_cooktime}</label></dt>
+        <dt><label for="cooktime">{lang_cooktime} {lang_cooktime_tooltip}</label></dt>
         <dd>{cooktime_selector}</dd>
+        <dd class="description" id="desc-profile-cooktime">{lang_cooktime_text}</dd>
 
         <dt><label for="profile-email">{lang_email}</label></dt>
         <dd><input type="text" maxlength="96" value="{email_value}" name="email" id="profile-email" class="size6" aria-describedby="desc-profile-email"{xhtml}></dd>

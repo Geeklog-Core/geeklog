@@ -906,11 +906,11 @@ function WS_authenticate()
     }
 
     if ($status == USER_ACCOUNT_ACTIVE) {
-
         $_USER = SESS_getUserDataFromId($uid);
         PLG_loginUser($_USER['uid']);
-		
-		SESS_issueAutoLoginCookie($_USER['uid'], false);
+
+        // Issue an auto-login key user cookie and record hash in db if needed
+		SESS_issueAutoLogin($_USER['uid']);
 
         // Global array of groups current user belongs to
         $_GROUPS = SEC_getUserGroups($_USER['uid']);

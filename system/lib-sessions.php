@@ -89,7 +89,7 @@ function SESS_sessionCheck()
     // an array of the users info and setup the theme.
 
     // Flag indicates if session cookie exists on users device and session data exist on server
-    $sessionExists = Session::init(array(
+    $validUserSessionExists = Session::init(array(
         'debug'           => isset($_CONF['developer_mode_log']['session']) && $_CONF['developer_mode_log']['session'],
         'logger'          => 'COM_errorLog',
         'cookie_disabled' => false,
@@ -103,9 +103,38 @@ function SESS_sessionCheck()
     $escSessionId = DB_escapeString($sessId);
     $status = -1;
 
+    // See if session database record is expired (it is okay if missing as it can be a brand new session)
+    // Need to do this check here since deleting of expired sessions and auto login keys is handled in SESS_newSession which may not have been run for a while
+    if ($validUserSessionExists) {
+        $lifespan =  $_CONF['session_cookie_timeout'];
+        $ctime = time();
+        $currentTime = (string) ($ctime);
+        $expiryTime = (string) ($ctime - $lifespan);
+        $sql = "SELECT start_time, autologin_key_hash FROM {$_TABLES['sessions']} WHERE sess_id = '$escSessionId'";
+        $result = DB_query($sql);
+        $numRows = DB_numRows($result);
+        if ($numRows) {
+            $A = DB_fetchArray($result);
+            $sessionStartTime = $A['start_time'];
+            if (empty($sessionStartTime) || (!empty($sessionStartTime) && $sessionStartTime < $expiryTime)) {
+                // Session found but should have been deleted since expired so delete it now then
+                $validUserSessionExists = false;
+                $escSessionAutoLoginKeyHash = DB_escapeString($A['autologin_key_hash']);
+                DB_query("DELETE FROM {$_TABLES['sessions']} WHERE sess_id = '$escSessionId'");
+
+                // Also delete auto login key associated with session if key expired
+                if (!empty($sessionAutoLoginKeyHash)) {
+                    DB_query("DELETE FROM {$_TABLES['userautologin']} WHERE autologin_key_hash  = '$escSessionAutoLoginKeyHash' AND expiry_time < $currentTime");
+                }
+            }
+        } else {
+            // Treat as a brand new session since our db session record not found
+            $validUserSessionExists = false;
+        }
+    }
+
     // For valid session required data on server, user session cookie, and our session record in table.
-    // If any missing or expired then do not enter
-    if ($sessionExists && DB_getItem($_TABLES['sessions'], 'sess_id', "sess_id = '$escSessionId'")) {
+    if ($validUserSessionExists) {
         if ($_SESS_VERBOSE) {
             COM_errorLog("Got {$sessId} as the session ID",1);
         }
@@ -133,16 +162,16 @@ function SESS_sessionCheck()
                     COM_errorLog($str, 1);
                 }
 
-                SESS_issueAutoLoginCookie($userId, true);
+                SESS_issueAutoLogin($userId);
             }
         } elseif ($userId === Session::ANON_USER_ID) {
             // Check if the permanent cookie exists
             $userId = SESS_handleAutoLogin();
 
             if ($userId > Session::ANON_USER_ID) {
-                SESS_newSession($userId, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout']);
+                SESS_newSession($userId, $_SERVER['REMOTE_ADDR']);
                 $_USER = SESS_getUserDataFromId($userId);
-                SESS_issueAutoLoginCookie($userId, true);
+                SESS_issueAutoLogin($userId);
             } else {
                 // Anonymous User has session so update any information
                 SESS_updateSessionTime($sessId);
@@ -174,9 +203,9 @@ function SESS_sessionCheck()
                 }
 
                 // Create new session and write cookie since user is now logged in
-                SESS_newSession($userId, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout']);
+                SESS_newSession($userId, $_SERVER['REMOTE_ADDR']);
                 $_USER = SESS_getUserDataFromId($userId);
-				SESS_issueAutoLoginCookie($userId, false);
+				SESS_issueAutoLogin($userId); // New session here so auto login key will be new
             }
         } else {
             if ($_SESS_VERBOSE) {
@@ -185,7 +214,7 @@ function SESS_sessionCheck()
 
             // Anonymous user has session id but it has been expired and wiped from the db so reset.
             // Or new anonymous user so create new session and write cookie.
-            SESS_newSession($userId, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout']);
+            SESS_newSession($userId, $_SERVER['REMOTE_ADDR']);
         }
     }
 
@@ -232,14 +261,14 @@ function SESS_sessionCheck()
 * @param   string  $lifespan   How long (seconds) this cookie should persist
 * @return  string              Session ID
 */
-function SESS_newSession($userId, $remote_ip, $lifespan)
+function SESS_newSession($userId, $remote_ip)
 {
     global $_TABLES, $_CONF, $_SESS_VERBOSE;
 
     if ($_SESS_VERBOSE) {
         COM_errorLog("*** Inside SESS_newSession ***", 1);
         COM_errorLog(
-            "Args to SESS_newSession: userid = {$userId}, remote_ip = {$remote_ip}, lifespan = {$lifespan}",
+            "Args to SESS_newSession: userid = {$userId}, remote_ip = {$remote_ip}",
             1
         );
     }
@@ -249,6 +278,7 @@ function SESS_newSession($userId, $remote_ip, $lifespan)
     // Assumed done this way to prevent check happening with every single page load
 
     // Check to delete expired sessions from database
+    $lifespan =  $_CONF['session_cookie_timeout'];
     $ctime = time();
     $currentTime = (string) ($ctime);
     $expiryTime = (string) ($ctime - $lifespan);
@@ -277,8 +307,9 @@ function SESS_newSession($userId, $remote_ip, $lifespan)
         die("Delete failed in SESS_newSession()");
     }
 
-    // Delete Expired User Auto Login Keys
-    DB_query("DELETE FROM {$_TABLES['userautologin']} WHERE expiry_time < $currentTime");
+    // Delete Expired User Auto Login Keys as long as the expired key is not tied to an active session
+    // If active session then need to keep expired autologin key info since we do not want to create a new key until this current session has expired since we want to force an actual manual login
+    DB_query("DELETE FROM {$_TABLES['userautologin']} WHERE autologin_key_hash NOT IN (SELECT autologin_key_hash FROM {$_TABLES['sessions']}) AND expiry_time < $currentTime");
     // ******************************************************
 
     $oldSessionId = Session::getSessionId();
@@ -443,11 +474,12 @@ function SESS_handleAutoLogin()
         return 1;
     }
 
-    // Try to get a record with the auto-login key from `gl_sessions` table
+    // Try to get a record with the auto-login key from `gl_sessions` table that is not expired (as expired keys are not checked for on every page load)
     $salt = '';
     $autoLoginKeyHash = SEC_encryptPassword($autoLoginKey, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']);
     $escAutoLoginKeyHash = DB_escapeString($autoLoginKeyHash);
-    $sql = "SELECT uid FROM {$_TABLES['userautologin']} WHERE autologin_key_hash = '{$escAutoLoginKeyHash}'";
+    $currentTime = (string) time();
+    $sql = "SELECT uid FROM {$_TABLES['userautologin']} WHERE autologin_key_hash = '{$escAutoLoginKeyHash}' AND expiry_time > $currentTime";
     $result = DB_query($sql);
     if (DB_error()) {
         return 1;
@@ -479,14 +511,13 @@ function SESS_handleAutoLogin()
 }
 
 /**
- * Issue a cookie containing an auto-login cookie
+ * Issue a cookie containing an auto-login key cookie and update session with auto-login key hash
  * User is already logged in and user data loaded at this point, and session has already been created
  *
  * @param  int     $userId
- * @param  bool    $onlyExtendLifeSpan
- * @return string|false  a newly created auto-login key or false on failure
+ * @return string|false  a newly created auto-login key hash or false on failure
  */
-function SESS_issueAutoLoginCookie($userId, $onlyExtendLifeSpan = true)
+function SESS_issueAutoLogin($userId)
 {
     global $_CONF, $_TABLES, $_USER;
 
@@ -504,43 +535,76 @@ function SESS_issueAutoLoginCookie($userId, $onlyExtendLifeSpan = true)
 
     $sessionId = DB_escapeString(Session::getSessionId());
 
-    if ($onlyExtendLifeSpan) {
-        // Need to make sure cookie is the same as what is in the database though
-        $autoLoginKey = Input::cookie($_CONF['cookie_name'], '');
-        $autoLoginKey = preg_replace('/[^0-9a-f]/', '', $autoLoginKey);
-
-        // Make sure autologin key cookie still is the same as what is stored in the sessions table and both are not empty
-        $salt = '';
-        if (empty(trim($autoLoginKey)) || SEC_encryptPassword($autoLoginKey, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']) != DB_getItem($_TABLES['sessions'], 'autologin_key_hash', "sess_id = '$sessionId'")) {
-            // Something is not right since cookie does not match key stored in db so generate a new one since the user is already logged in by this point
-            $onlyExtendLifeSpan = false;
-        }
+    // Need to make sure cookie is the same as what is in the database so retrieve
+    $autoLoginKey = Input::cookie($_CONF['cookie_name'], '');
+    $autoLoginKey = preg_replace('/[^0-9a-f]/', '', $autoLoginKey);
+    $salt = ''; // no salt since must be same for all users. When user logsin in SESS_handleAutoLogin, we don't know user id  until it happens
+    if (!empty($autoLoginKey)) {
+        $cookieAutoLoginKeyHash = SEC_encryptPassword($autoLoginKey, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']);
+    } else {
+        $cookieAutoLoginKeyHash = '';
     }
 
-    $autoLoginKeyHash = '';
-    if (!$onlyExtendLifeSpan) {
-        // This is the key we store as a cookie
-        $autoLoginKey = SEC_randomBytes(80);
-        $autoLoginKey = sha1($autoLoginKey);
-
-        // Extra bit of security. We store hash of key bassed on current Geeklog password encryption settings
-        // Calculate hash to store in database so actual key is only stored in cookie on users device
-        $salt = ''; // Can't use salt as we don't know the user at the point the auto login key is checked
-        $autoLoginKeyHash = SEC_encryptPassword($autoLoginKey, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']);
+    // If auto login happens we still have to update things as session id changes going from anoymous user to actual user
+    $auto_login = false;
+    if (isset($_USER['auto_login']) && $_USER['auto_login']) {
+        $auto_login = true;
+        $origAutoLoginKeyHash = $_USER['autoLoginKeyHash'];
+    } else {
+        $origAutoLoginKeyHash = DB_getItem($_TABLES['sessions'], 'autologin_key_hash', "sess_id = '$sessionId'");
     }
 
-    $expiry_time = time() + $lifeTime;
-    if (SEC_setCookie($_CONF['cookie_name'], $autoLoginKey, $expiry_time)) {
-        // See if a auto login happened for this session and if so use same autologin key
-        if (isset($_USER['auto_login']) && $_USER['auto_login']) {
-            $origAutoLoginKeyHash = $_USER['autoLoginKeyHash'];
+    // Either autologin happened and we have to update our new session record OR
+    // No autologin set yet for user session OR
+    // Something is not right since cookie does not match key stored in db so generate a new one since the user is already logged in by this point
+    // Make sure autologin key cookie still is the same as what is stored in the sessions table and both are not empty
+    if ($auto_login
+            || (empty($cookieAutoLoginKeyHash) || empty($origAutoLoginKeyHash)
+            || (!empty($cookieAutoLoginKeyHash) && !empty($origAutoLoginKeyHash) && $cookieAutoLoginKeyHash != $origAutoLoginKeyHash))) {
+        // Something is not right since cookie does not match key stored in db so generate a new one since the user is already logged in by this point
+
+        // If session has a auto login key hash already get expiry time
+        $expiry_time = '';
+        $escOrigAutoLoginKeyHash = '';
+        if (!empty($origAutoLoginKeyHash)) {
+            // So existing autologin key has been already set lets grab the expiry to use with this new one and delete existing hash records
+            // this also makes sure that the record exists in the userautologin table
+            $escOrigAutoLoginKeyHash = DB_escapeString($origAutoLoginKeyHash);
+            $expiry_time = DB_getItem($_TABLES['userautologin'], 'expiry_time', "autologin_key_hash = '$escOrigAutoLoginKeyHash'");
+
+            // If expiry time less than current time (give 10 second buffer) then record has not been delete.
+            // This can happen if a new session has not been created for a while by SESS_newSession which actually deletes expired sessions and auto login keys
+            // This can also happen if the users session is continuously active longer than the Auto Login Key expiry date (if for example the expiry is set to 1 hour this can happen easily)
+            // So lets keep key the way it is which will force a manual login if the session expires because of inactivity
+            $newTime = (string) (time() - 10);
+            if ($expiry_time < $newTime) {
+                return false;
+            }
+
+            // Make sure expiry is valid future date. This can sometimes happen if user logged in and then auto login key expired later during same session
+
         } else {
-            $origAutoLoginKeyHash = DB_getItem($_TABLES['sessions'], 'autologin_key_hash', "sess_id = '$sessionId'");
+            // Include session time in expiry time so auto login key will not expire before session
+            $expiry_time = (string) (time() + $_CONF['session_cookie_timeout'] + $lifeTime);
         }
-        if (empty($autoLoginKeyHash)) {
+
+        if (!$auto_login) {
+            // This is the key we store as a cookie. If old key exists do not trust since not in DB and from user cookie which can be changed
+            $autoLoginKey = SEC_randomBytes(80);
+            $autoLoginKey = sha1($autoLoginKey);
+
+            // Extra bit of security. We store hash of key bassed on current Geeklog password encryption settings
+            // Calculate hash to store in database so actual key is only stored in cookie on users device
+            $salt = ''; // Can't use salt as we don't know the user at the point the auto login key is checked
+            $autoLoginKeyHash = SEC_encryptPassword($autoLoginKey, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']);
+
+            // Note setting cookie can return true even if cookie is not set by browser due to expiry time < current time on users device
+            if (!SEC_setCookie($_CONF['cookie_name'], $autoLoginKey, $expiry_time)) {
+                return false;
+            }
+        } else {
             $autoLoginKeyHash = $origAutoLoginKeyHash;
         }
-        $escOrigAutoLoginKeyHash = DB_escapeString($origAutoLoginKeyHash);
 
         $escAutoLoginKeyHash = DB_escapeString($autoLoginKeyHash);
         $escSessionId = DB_escapeString($sessionId);
@@ -549,7 +613,7 @@ function SESS_issueAutoLoginCookie($userId, $onlyExtendLifeSpan = true)
         DB_query($sql);
 
         // Replace record or create a new one. Always replace if we can as we don't want extra records hanging around
-        if (!empty($origAutoLoginKeyHash) && !empty(DB_getItem($_TABLES['userautologin'], 'autologin_key_hash', "autologin_key_hash = '$escOrigAutoLoginKeyHash'"))) {
+        if (!empty($origAutoLoginKeyHash) && !empty($expiry_time)) {
             $sql = "UPDATE {$_TABLES['userautologin']} SET autologin_key_hash = '{$escAutoLoginKeyHash}',  expiry_time = $expiry_time "
                 . "WHERE (uid = {$userId}) AND (autologin_key_hash = '{$escOrigAutoLoginKeyHash}')";
         } else {
@@ -558,9 +622,9 @@ function SESS_issueAutoLoginCookie($userId, $onlyExtendLifeSpan = true)
         }
         DB_query($sql);
 
-        return $autoLoginKey;
+        return $autoLoginKeyHash;
     } else {
-        return false;
+        return $origAutoLoginKeyHash;
     }
 }
 
