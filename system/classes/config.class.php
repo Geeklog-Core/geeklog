@@ -1533,7 +1533,7 @@ class config implements ConfigInterface
                     } else {
                         // Detect array validation based on array name alone
                         if ($this->_validates($param_name, $group, $change_array[$param_name], $change_array[$param_name])) {
-                            $this->changedArray[$group][$param_name][$_param_name] = true;
+                            $this->changedArray[$group][$param_name] = true;
                         }
                     }
 
