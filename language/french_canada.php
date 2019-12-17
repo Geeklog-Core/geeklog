@@ -346,6 +346,7 @@ $LANG04 = array(
     67 => 'Membre depuis',
     68 => 'S\'en souvenir pour moi',
     69 => 'Combien de temps devrions-nous garder votre connection  active?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Personnaliser l'aspect et le contenu de {$_CONF['site_name']}",
     71 => "Une fonctionnalit&eacute; int&eacute;ressante de {$_CONF['site_name']} est que vous pouvez en personnaliser l'aspect et le contenu. Afin de pouvoir utiliser ces fonctionnalit&eacute;s vous devez vous <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">enregistrer</a> au pr&egrave;s de {$_CONF['site_name']}.  Vous êtes d&eacute;j&agrave; membre?  Alors utilisez la passerelle de connection dans la barre de gauche pour vous connecter!",
     72 => 'Aspect',

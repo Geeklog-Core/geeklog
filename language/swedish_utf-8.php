@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ###############################################################################
 # swedish.php
@@ -27,7 +27,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
+﻿
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'sv';
@@ -347,6 +347,7 @@ $LANG04 = array(
     67 => 'Medlem sedan',
     68 => 'Kom ihåg mig i',
     69 => 'Hur länge ska vi komma ihåg dig från det att du loggar in?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Personliga inställningar för utseende och innehåll av {$_CONF['site_name']}",
     71 => "En av de bästa funktionerna i {$_CONF['site_name']} är att du kan göra personliga inställningar för det innehåll du vill se och du kan förändra utseendet på sajten.  För att ta tillvara på dessa funktioner måste du först <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">registrera</a> med {$_CONF['site_name']}.  Redan medlem?  Använd i så fall inloggningsrutan till vänster för att logga in!",
     72 => 'Utseende',

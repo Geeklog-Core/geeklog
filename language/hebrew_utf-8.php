@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ###############################################################################
 # hebrew.php
@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
+﻿
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'he';
@@ -345,6 +345,7 @@ $LANG04 = array(
     67 => 'חבר/ה חדש/ה מאז',
     68 => 'המערכת תזכור אותי עד',
     69 => 'לכמה זמן הנכם מעוניינים שהמערכת תזכור אתכם לאחר שתיכנסו אליה?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "התאימו אישית את מראה האתר ואת התוכן של {$_CONF['site_name']}",
     71 => "אחת מהאפשרויות של אתר {$_CONF['site_name']} היא שהנכם יכולים להתאים אישית את התוכן שאתם מקבלים ולשנות את המראה הכללי של האתר. על מנת ליהנות מיתרונות אלו, עליכם <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">להירשם</a> ב-{$_CONF['site_name']}. האם אתם כבר רשומים? אם כן, השתמשו בטופס הכניסה והתחברו!",
     72 => 'מראה האתר',

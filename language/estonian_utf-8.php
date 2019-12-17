@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ###############################################################################
 # estonian_utf-8.php
@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
+﻿
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'et';
@@ -344,6 +344,7 @@ $LANG04 = array(
     67 => 'Liige alates',
     68 => 'Mäleta mind',
     69 => 'Kui kaua peale sisselogimist peaksin sind mäletama?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Kohanda {$_CONF['site_name']} sisu ja välimust",
     71 => "{$_CONF['site_name']} lehe üks headest omadustest on see, et sa võid määrata, millist sisu sulle näidatakse ja sa saad muuta lehe üldist välimust. Selle kasutamiseks pead sa kõigepealt <a href=\"{$_CONF['site_url']}/users.php?mode=new\">registreeruma</a> {$_CONF['site_name']} lehel.   Kui sa oled juba registreerinud, siis logi palun sisse.",
     72 => 'Teema',

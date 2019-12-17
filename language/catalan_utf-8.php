@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ###############################################################################
 # This is the Spanish language page for Geeklog!
@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
+﻿
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'ca';
@@ -341,6 +341,7 @@ $LANG04 = array(
     67 => 'Membre desde',
     68 => 'Recorda\'m durant',
     69 => '¿Quanta estona hem de mantenir el teu nom d\'usuari/a en actiu després de conectar?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Personalitza l\'aparença i el contingut de {$_CONF['site_name']}",
     71 => "Una de les grans virtuts de {$_CONF['site_name']} es que pots personalitzar el contingut que reps i l\'aparença del lloc. Per poder fer-ho, primer has d\'<a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">inscriure\'t</a> a {$_CONF['site_name']}. Si ja ets membre, utilitza el formulari de l\'esquerra per conectar-te.",
     72 => 'Tema',

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ###############################################################################
 # english.php
@@ -23,7 +23,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
+﻿
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'bg';
@@ -343,6 +343,7 @@ $LANG04 = array(
     67 => 'Member Since',
     68 => 'Запомни ме за',
     69 => 'Колко дълго след като излезете, желаете да бъдете запомнени от сървъра ?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Промени съдържанието и външният вид на {$_CONF['site_name']}",
     71 => "Една от най-хубавите благинки на {$_CONF['site_name']} е това, че можете да правите каквото си щете с външния вид на сайта. За целта трябва да се <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">регистрирате</a> в {$_CONF['site_name']}.  Имате регистрация ? Тогава се логнете чрез log-in формата отляво !",
     72 => 'Тема',

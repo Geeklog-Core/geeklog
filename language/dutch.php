@@ -349,6 +349,7 @@ $LANG04 = array(
     67 => 'Aangemeld sinds',
     68 => 'Mijn gegevens onthouden',
     69 => 'Hoe lang mogen we u onthouden nadat u bent ingelogd?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Pas de layout en inhoud aan van {$_CONF['site_name']}",
     71 => "Een mogelijkheid van {$_CONF['site_name']} is dat u de inhoud en de layout van wat u ontvangt kan aanpassen. Om van deze voorzieningen gebruik te maken dient u zich eerst te <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">registeren</a> bij {$_CONF['site_name']}. Bent u al geregistreerd? Gebruik dan het login formulier, links om in te loggen!",
     72 => 'Skin',

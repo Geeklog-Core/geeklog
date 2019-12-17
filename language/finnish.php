@@ -344,6 +344,7 @@ $LANG04 = array(
     67 => 'Liittynyt',
     68 => 'Säilytä tiedot',
     69 => 'Kuinka kauan sivuston tulee muistaa tietosi kirjautumisen jälkeen?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Muokkaa ulkoasua ja asetuksia sivustolle {$_CONF['site_name']}",
     71 => "Yksi tämän sivuston ({$_CONF['site_name']}) parhaista ominaisuuksista on muokattavuus - voit muokata haluamasi ulkoasun ja sisällön sivustolle. Hyödyntääksesi ominaisuuksia sinun tulee ensiksi <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">rekisteröityä</a> sivustolle {$_CONF['site_name']}.  Oletko jo rekisteröitynyt? Kirjaudu sisään käyttäen vasemmalla olevaa lomaketta!",
     72 => 'Teema',

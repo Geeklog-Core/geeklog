@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ###############################################################################
 # farsi.php
@@ -10,7 +10,7 @@
 # Converted to Unicode (UTF-8) by Hesam.H   <info1@4shir.com>
 # ahwaz-Iran
 ###############################################################################
-
+﻿
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'fa';
@@ -331,6 +331,7 @@ $LANG04 = array(
     67 => 'عضو بعد از',
     68 => 'به ياد داشته باش مرا از',
     69 => 'چه مدت ما شما را به ياد داشته باشيم (عمر كوكي )چقدر باشد',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "سفارشي كن صفحه آرايي ولايه هاو محتويات سايت {$_CONF['site_name']}",
     71 => "يكي از بزرگترين و بهترين ويژگي هاي سايت {$_CONF['site_name']}  اين است كه شما ميتوانيد صفحه ها و لا يه ها و.. و روي هم رفته طرح بندي سايت را تغيير دهيد  شما براي اين كار بايد در ابتدا در سايت <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">ثبت نام كنيد</a> with {$_CONF['site_name']} . آيا پيش از اين عضو ما نبوده ايد ؟  پس ثبت نام كنيد ؟",
     72 => 'پوسته',

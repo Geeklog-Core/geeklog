@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ###############################################################################
 # ukrainian.php
@@ -27,7 +27,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
+﻿
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'uk';
@@ -347,6 +347,7 @@ $LANG04 = array(
     67 => 'Зареєстровано',
     68 => 'Запам\'ятати мене на',
     69 => 'Як довго ми повинні пам\'ятати вас після вашого входу в систему?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Налаштуйте під себе вигляд і зміст {$_CONF['site_name']}",
     71 => "На нашому сайті Ви можете налаштувати зміст інформації, яку Ви отримуєте, а також вигляд цієї інформації. Щоб скористатися цими можливостями, Ви повинні спочатку <a href=\"{$_CONF['site_url']}/users.phpіmode=new\" rel=\"nofollow\">зареєструватися</a> на {$_CONF['site_name']}.  Ви зареєстровані?  Тоді використовуйте форму ліворуч для входу в систему!",
     72 => 'Тема дизайну',

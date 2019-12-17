@@ -345,6 +345,7 @@ $LANG04 = array(
     67 => 'Membro Dal',
     68 => 'Ricordami Per',
     69 => 'Per quanto tempo vuoi essere ricordato dopo l\'ingresso nel sito?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Personalizza lo stile e il contenuto di {$_CONF['site_name']}",
     71 => "Una delle funzionalitá di {$_CONF['site_name']} é che puoi personalizzarne il contenuto e lo stile.  Per utilizzare questa funzione devi prima <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">registrarti</a> a {$_CONF['site_name']}. Sei giá un membro? Allora usa il form di accesso che trovi alla tua sinistra per entrare!",
     72 => 'Stile',

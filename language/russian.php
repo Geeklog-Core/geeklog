@@ -359,6 +359,7 @@ $LANG04 = array(
     67 => 'Зарегистрирован',
     68 => 'Помнить обо мне до',
     69 => 'Как долго мы должны помнить о Вас входа в систему?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Настроить структуру и содержание {$_CONF['site_name']}",
     71 => "На нашем сайте Вы можете настроить содержание информации, которую Вы получите, а так же структуру расположения информации. Для этого Вы должны <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">зарегистрироваться</a> на {$_CONF['site_name']}.  Вы уже зарегистрировались? Используйте форму для входа в систему!",
     72 => 'Тема',

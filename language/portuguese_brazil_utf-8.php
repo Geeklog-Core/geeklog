@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ###############################################################################
 # portuguese_brazil.php
@@ -27,7 +27,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
+﻿
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'pt';
@@ -347,6 +347,7 @@ $LANG04 = array(
     67 => 'Membro Desde',
     68 => 'Lembrar de mim por',
     69 => 'Por quanto tempo você deseja ser lembrado após efetuar o login?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Personalize o layout e o conteúdo do {$_CONF['site_name']}",
     71 => "Uma das características do {$_CONF['site_name']} é a possibilidade poder personalizar todo o seu conteúdo e alterar o layout do site. Para poder usufruir destas vantagens você precisa<a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">registrar-se</a> no {$_CONF['site_name']}.  Você já é um membro? Efetue o login!",
     72 => 'Tema',

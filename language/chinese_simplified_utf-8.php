@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ###############################################################################
 # chinese_simplified_utf-8.php
@@ -26,7 +26,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
+﻿
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'zh-Hans';
@@ -346,6 +346,7 @@ $LANG04 = array(
     67 => '成员自',
     68 => '记住我为',
     69 => '在登入以後，我们应该记住你多久？',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "定做 {$_CONF['site_name']} 的布局和内容",
     71 => "一个 {$_CONF['site_name']} 的主要特点是你可以定做自己的布局和内容，但是你必须是本站的会员。<a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">在此登记</a>。如果你已经是登记，请使用左边的区域登入。",
     72 => '题材',

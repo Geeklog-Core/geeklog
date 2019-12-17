@@ -347,6 +347,7 @@ $LANG04 = array(
     67 => 'Заре╓стровано',
     68 => 'Запам\'ятати мене на',
     69 => 'Як довго ми повинн╕ пам\'ятати вас п╕сля вашого входу в систему?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Налаштуйте п╕д себе вигляд ╕ зм╕ст {$_CONF['site_name']}",
     71 => "На нашому сайт╕ Ви можете налаштувати зм╕ст ╕нформац╕╖, яку Ви отриму╓те, а також вигляд ц╕╓╖ ╕нформац╕╖. Щоб скористатися цими можливостями, Ви повинн╕ спочатку <a href=\"{$_CONF['site_url']}/users.php╕mode=new\" rel=\"nofollow\">заре╓струватися</a> на {$_CONF['site_name']}.  Ви заре╓строван╕?  Тод╕ використовуйте форму л╕воруч для входу в систему!",
     72 => 'Тема дизайну',

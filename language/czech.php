@@ -342,6 +342,7 @@ $LANG04 = array(
     67 => 'U¾ivatelem od',
     68 => 'Pamatovat si mne',
     69 => 'Jak dlouho si Vás systém bude pamatovat.',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Pøizpùsobení vzhledu a obsahu {$_CONF['site_name']}",
     71 => "Pøizpùsobení vzhledu na {$_CONF['site_name']} vám umo¾ní nastavit si vlastní vzhled a øazení polo¾ek nezávisle na nastavení pro hosty.  Pro tato nastavení se musíte <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">pøihlásit</a> na {$_CONF['site_name']}. <br" . XHTML . "> Jste u¾ivatelem?  Pak pou¾ijte pøihla¹ovací formuláø vlevo!",
     72 => 'Grafické téma',

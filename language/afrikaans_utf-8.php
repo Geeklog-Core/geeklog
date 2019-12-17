@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ###############################################################################
 # afrikaans.php
@@ -23,7 +23,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
+﻿
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'af';
@@ -343,6 +343,7 @@ $LANG04 = array(
     67 => 'Lid Sedert',
     68 => 'Onthou My vir',
     69 => 'Hoe lank moet ons jou onthou na jy ingeteken het? Tydsverloop waarop jy kan terugkom sonder om weer in te teken',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Verander die uitleg en inhoud van {$_CONF['site_name']} na jou sin",
     71 => "Een van die beste kenmerke van {$_CONF['site_name']} is dat jy die inhoud wat jy ontvang en die uitleg van die werf kan maak pas by jou eie sin.  Om van hierdie kenmerke gebruik te kan maak moet jy eers <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">registreer</a> by {$_CONF['site_name']}.  Is jy reeds 'n lid?  Gebruik dan die intekenvorm aan die linkerkant om in te teken!",
     72 => 'Tema',

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ###############################################################################
 # german_utf-8.php
@@ -27,7 +27,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
+﻿
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'de';
@@ -347,6 +347,7 @@ $LANG04 = array(
     67 => 'Mitglied seit',
     68 => 'Angemeldet für',
     69 => 'Wie lange soll das System Dich nach dem Anmelden erkennen?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Aussehen und Inhalt von {$_CONF['site_name']} konfigurieren",
     71 => "Zu den Features von {$_CONF['site_name']} gehört, dass Du selbst festlegen kannst, welche Artikel Du angezeigt bekommst. Darüber hinaus kannst Du auch das Aussehen der Website verändern. Um in den Genuss dieser Features zu kommen, musst Du Dich jedoch zuerst bei {$_CONF['site_name']} <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">anmelden</a>. Oder bist Du schon angemeldet? Dann benutze bitte das Anmeldeformular auf der linken Seite.",
     72 => 'Erscheinungsbild',

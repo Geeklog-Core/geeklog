@@ -351,6 +351,7 @@ $LANG04 = array(
     67 => 'Μέλος από',
     68 => 'Παραμονή στο σύστημα για',
     69 => 'Η χρονική διάρκεια που το σύστημα θα θεωρεί ενεργή την παραμονή σας μετά από την σύνδεση σας',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Επιλέξτε τη δική σας διάταξη κειμένου και περιεχομένου για την ιστοσελίδα {$_CONF['site_name']}",
     71 => "Ένα από τα χαρακτηριστικά του {$_CONF['site_name']} είναι η δυνατότητα των χρηστών να διαμορφώνουν κατά βούληση το περιεχόμενο και το παρουσιαστικό της ιστοσελίδας. Για να επωφεληθείτε από αυτές τις δυνατότητες πρέπει πρώτα να <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">εγγραφείτε</a> στο {$_CONF['site_name']}.  Αν είστε ήδη μέλος, μπορείτε να πληκτρολογήσετε τα στοιχεία σας στην φόρμα αριστερά",
     72 => 'Θέμα',

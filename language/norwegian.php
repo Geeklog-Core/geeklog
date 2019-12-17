@@ -356,6 +356,7 @@ $LANG04 = array(
     67 => 'Medlem Siden',
     68 => 'Husk meg i',
     69 => 'Hvor lenge skal vi huske deg etter at du er logget inn?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Tilpass utseendet og innholdet på {$_CONF['site_name']}",
     71 => "En av mulighetene på {$_CONF['site_name']} er at du kan tilpasse innhold, utseeende og layout slik at det passer deg. for å kunne bruke disse funksjonene må du først registrere deg som  <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">bruker</a> på {$_CONF['site_name']}. Er du allerede registrert? Da bruker du loginskjemaet til venstre for å logge inn!",
     72 => 'Tema',

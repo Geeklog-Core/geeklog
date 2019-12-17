@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ###############################################################################
 # french_france_utf-8.php
@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
+﻿
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'fr';
@@ -344,6 +344,7 @@ $LANG04 = array(
     67 => 'Membre depuis',
     68 => 'Auto login',
     69 => 'Combien de temps devrions-nous garder votre connexion active?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Personnaliser l'aspect et le contenu de {$_CONF['site_name']}",
     71 => "Une fonctionnalité intéressante du site {$_CONF['site_name']} est que vous pouvez en personnaliser l'aspect et le contenu. Afin de pouvoir utiliser ces fonctionnalités vous devez vous <a href=\"{$_CONF['site_url']}/users.php?mode=new\">enregistrer</a> au près du site {$_CONF['site_name']}.  Vous êtes déjà membre?  Alors utilisez la passerelle de connexion dans la barre latérale pour vous connecter!",
     72 => 'Thème',

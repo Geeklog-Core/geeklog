@@ -342,6 +342,7 @@ $LANG04 = array(
     67 => 'Oprettet siden',
     68 => 'Husk mig i',
     69 => 'Hvor længe skal dine oplysninger huskes efter at du er logget ind?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Konfigurer udseendet og layoutet på {$_CONF['site_name']}",
     71 => "En af mulighederne på {$_CONF['site_name']} er at du kan konfigurere indhold, udseende og layout på siden. For at bruge disse funktioner, skal du først <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">oprette en konto</a> på {$_CONF['site_name']}. Hvis du allerede er oprettet, kan du anvende loginformen til venstre!",
     72 => 'Tema',

@@ -344,6 +344,7 @@ $LANG04 = array(
     67 => '등록일시',
     68 => '인증의 보존기간',
     69 => '일단 로그인 한 다음, 얼만큼의 정보를 남겨 놓을 수 있습니까?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "{$_CONF['site_name']}의 표시와 내용 설정",
     71 => "{$_CONF['site_name']}의 특징으로, 표시된 글의 화제와 표시를 자유로 바꿀 수 있습니다. 그러기 위해서는 우선, {$_CONF['site_name']}에<a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">사용자 등록</a>할 필요가 있습니다.  이미 등록을 마쳤다면 왼쪽 양식으로 로그인 바랍니다.",
     72 => '화제',

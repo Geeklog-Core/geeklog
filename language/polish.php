@@ -343,6 +343,7 @@ $LANG04 = array(
     67 => 'Cz³onkowstwo Od',
     68 => 'Pamiêtaj Mnie Przez',
     69 => 'Jak d³ugo pamiêtaæ ciê po zalogowaniu?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Dostosuj wygl±d i zawarto¶æ serwisu {$_CONF['site_name']}",
     71 => "Jedn± z extra mo¿liwo¶ci serwisu {$_CONF['site_name']} jest mo¿liwo¶æ dopasowania zawarto¶ci i wygl±du strony.  Aby skorzystaæ z tych udogodnieñ nale¿y siê najpierw <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">zarejestrowaæ</a> w serwisie {$_CONF['site_name']}.  Jeste¶ ju¿ cz³onkiem?  Zaloguj siê!",
     72 => 'Pulpit',

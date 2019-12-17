@@ -342,6 +342,7 @@ $LANG04 = array(
     67 => 'Membro desde',
     68 => 'Lembrar durante',
     69 => 'Durante quanto tempo quer ser lembrado depois de efectuar o login?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Personalize a aparência e contéudo do site {$_CONF['site_name']}",
     71 => "Uma das opções do site {$_CONF['site_name']} é que pode personalizar o contéudo que quer ver e a aparência do site.  Para poder usar esta opção deve-se <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">registar</a> em {$_CONF['site_name']}.  Já é um membro registado?  Então utilize o formulário de login do lado esquerdo!",
     72 => 'Tema',

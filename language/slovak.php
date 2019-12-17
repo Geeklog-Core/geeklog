@@ -343,6 +343,7 @@ $LANG04 = array(
     67 => 'Èlen od',
     68 => 'Pamäta» prihlásenie',
     69 => 'Ako dlho si má stránka pamäta» prihlásenie?',
+    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
     70 => "Customize the layout and content of {$_CONF['site_name']}",
     71 => "One of the great features of {$_CONF['site_name']} is you can customize the content you get and you can change the overall layout of this site.  In order to take advantage of these great features you must first <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">register</a> with {$_CONF['site_name']}.  Are you already a member?  Then use the login form to the left to log in!",
     72 => 'Téma zobrazenia',
