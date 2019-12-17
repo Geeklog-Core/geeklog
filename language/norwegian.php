@@ -2680,7 +2680,7 @@ $LANG_configselects['Core'] = array(
     36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics'),
     37 => array('Disabled' => 0, 'Enabled (with "index.php")' => 1, 'Enabled (without "index.php")' => 2),
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
-    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4),
+    39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsarticle', 'BlogPosting' => 'core-blogposting'),
     40 => array('False' => 0, 'Users and Anonymous' => 1, 'Users Only' => 2),
     41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2),
     42 => array('None' => 0, 'Use individual Article Settings' => 1)

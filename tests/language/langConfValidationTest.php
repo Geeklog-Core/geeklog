@@ -36,6 +36,7 @@ class langConfValidation extends TestCase
         $_CONF['backup_path'] = '/path/to/geeklog/';
         $_CONF['invalidloginattempts'] = 'Invalid login attempts';
         $_CONF['invalidloginmaxtime'] = 'Invalid login max time';
+        $_CONF['theme_site_default'] = 'denim3';
         $_DB_mysqldump_path = '/usr/bin/mysqldump';
 
         $_USER['username'] = 'John Doe';
@@ -126,11 +127,11 @@ class langConfValidation extends TestCase
                                 $ref = $LANG_configselects[$type][$sel];
                                 // should have same number of entries, obviously
                                 $this->assertEquals(count($ref), count($values));
-                                // key/value is flipped in language file
-                                $flipped = array_flip($ref);
                                 foreach ($values as $v) {
-                                    $this->assertTrue(isset($flipped[$v]),
-                                        "$lang: '$key' missing '$v'");
+                                    $this->assertTrue(
+                                        (array_search($v, $ref) !== false),
+                                        "$lang: '$key' missing '$v'"
+                                    );
                                 }
                             }
                         }
@@ -183,7 +184,7 @@ class langConfValidation extends TestCase
      */
     public function testCoreLanguages()
     {
-        global $_CONF, $_CONF_VALIDATE, $_DB_mysqldump_path, $LANG_configselects;
+        global $_CONF, $_CONF_VALIDATE, $LANG32, $_DB_mysqldump_path, $LANG_configselects;
 
         $basePath = Tst::$root . 'language/';
 
@@ -251,7 +252,7 @@ class langConfValidation extends TestCase
 
     public function testStaticPagesPluginLanguages()
     {
-        global $_CONF, $_CONF_VALIDATE, $_DB_mysqldump_path, $LANG_configselects;
+        global $_CONF, $_CONF_VALIDATE, $LANG32, $_DB_mysqldump_path, $LANG_configselects;
 
         $basePath = Tst::$root . 'plugins/staticpages/';
 

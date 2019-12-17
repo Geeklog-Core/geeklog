@@ -2676,7 +2676,7 @@ $LANG_configselects['Core'] = array(
     36 => array('いいえ' => 'false', 'トップページのみ' => 'frontpage', 'トップページと話題ページ' => 'frontpage_topics'),
     37 => array('無効' => 0, '有効(index.phpあり)' => 1, '有効(index.phpなし)' => 2),
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
-    39 => array('なし' => '', 'Webページ' => 'core-webpage', '記事' => 'core-article', 'ニュース記事' => 'core-newsletter', 'ブログ記事' => 'core-blogposting'),
+    39 => array('なし' => '', 'Webページ' => 'core-webpage', '記事' => 'core-article', 'ニュース記事' => 'core-newsarticle', 'ブログ記事' => 'core-blogposting'),
     40 => array('無効' => 0, 'ログインユーザーとゲストユーザー' => 1, 'ログインユーザーのみ' => 2),
     41 => array('無効' => 0, 'LikesとDislikes' => 1, 'Likesのみ' => 2),
     42 => array('なし' => 0, 'この記事の設定に従う' => 1)
