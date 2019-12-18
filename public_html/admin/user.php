@@ -776,7 +776,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             }
 
             if ($userstatus == USER_ACCOUNT_DISABLED) {
-                SESS_endUserSession($uid);
+                SESS_deleteUserSessions($uid);
             }
             $userChanged = true;
         }

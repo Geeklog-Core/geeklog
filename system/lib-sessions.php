@@ -365,28 +365,47 @@ function SESS_updateSessionTime($sessId)
 }
 
 /**
-* This ends a user session
+* This ends the current user session and converts it to an anonymous session
 *
-* Delete the given session from the database. Used by the logout page.
+* Delete the given session from the database. Used to logout the current user (by the logout page).
 *
 * @param   int   $userId  User ID to end session of
 * @return  bool           Always true for some reason
 */
-function SESS_endUserSession($userId)
+function SESS_endCurrentUserSession()
 {
     global $_TABLES;
 
     SESS_deleteAutoLoginKey();
 
-    $userId = (int) $userId;
     $oldSessionId = DB_escapeString(Session::getSessionId());
     $newSessionId = Session::regenerateId();
     $newSessionId = DB_escapeString($newSessionId);
     $sql = "UPDATE {$_TABLES['sessions']} SET uid = " . Session::ANON_USER_ID . ", sess_id = '{$newSessionId}' "
-        . " WHERE (uid = {$userId}) AND (sess_id = '{$oldSessionId}')";
+        . " WHERE sess_id = '{$oldSessionId}'";
     DB_query($sql);
 
     Session::setUid(Session::ANON_USER_ID);
+
+    return 1;
+}
+
+/**
+* This deletes all sessions and auto keys for a user
+*
+* This should not be used by the current user (instead use SESS_endCurrentUserSession).
+*
+* @param   int   $userId  User ID to end session of
+* @return  bool           Always true for some reason
+*/
+function SESS_deleteUserSessions($userId)
+{
+    global $_TABLES;
+
+    SESS_deleteUserAutoLoginKeys($userId);
+
+    $sql = "DELETE FROM {$_TABLES['sessions']} WHERE uid = $userId";
+    DB_query($sql);
 
     return 1;
 }

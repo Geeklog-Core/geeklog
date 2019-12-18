@@ -79,8 +79,8 @@ function USER_deleteAccount($uid)
         return false;
     }
 
-    // log the user out
-    SESS_endUserSession($uid);
+    // log the user out and delete all auto login keys
+    SESS_deleteUserSessions($uid);
 
     // Ok, now delete everything related to this user
 

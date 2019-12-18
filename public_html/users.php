@@ -837,7 +837,7 @@ $display = '';
 switch ($mode) {
     case 'logout':
         if (!empty($_USER['uid']) && ($_USER['uid'] > 1)) {
-            SESS_endUserSession($_USER['uid']);
+            SESS_endCurrentUserSession();
             PLG_logoutUser($_USER['uid']);
         }
 
