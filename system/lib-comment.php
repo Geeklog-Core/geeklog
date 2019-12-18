@@ -959,7 +959,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             // $commentText is what the user entered and goes back into the
             // <textarea> -> don't strip HTML
 
-            $commentText = GLText::remove4byteUtf8Chars($commentText);
+            $commentText = GLText::remove4byteUtf8Chars($comment);
             $commentText = htmlspecialchars($commentText);
 
             // Replace $, {, and } with special HTML equivalents
