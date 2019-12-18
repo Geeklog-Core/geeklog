@@ -381,6 +381,7 @@ public_html/admin/router.php
 public_html/admin/sectest.php
 public_html/admin/syndication.php
 public_html/admin/topic.php
+public_html/admin/trackback.php
 public_html/admin/user.php
 public_html/article.php
 public_html/directory.php
@@ -3148,12 +3149,15 @@ system/classes/CacheInterface.php
 system/classes/ConfigInterface.php
 system/classes/Date/TimeZone.php
 system/classes/IP.php
+system/classes/Input.php
 system/classes/Log.php
 system/classes/Mail.php
 system/classes/Resource.php
 system/classes/Session.php
 system/classes/TwoFactorAuthentication.php
 system/classes/XML/RPC.php
+system/classes/XML/RPC/Dump.php
+system/classes/XML/RPC/Server.php
 system/classes/article.class.php
 system/classes/config.class.php
 system/classes/dbbackup.class.php
@@ -3167,6 +3171,7 @@ system/classes/language.class.php
 system/classes/mobiledetect/Mobile_Detect.php
 system/classes/oauthhelper.class.php
 system/classes/router.class.php
+system/classes/sanitize.class.php
 system/classes/search.class.php
 system/classes/structureddata.class.php
 system/classes/template.class.php
@@ -3183,6 +3188,7 @@ system/lib-block.php
 system/lib-comment.php
 system/lib-database.php
 system/lib-likes.php
+system/lib-pingback.php
 system/lib-plugins.php
 system/lib-security.php
 system/lib-sessions.php
