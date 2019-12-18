@@ -5281,7 +5281,7 @@ function COM_showMessage($msg, $plugin = '')
 
     $retval = '';
 
-    if (is_int($msg)) {
+    if (is_numeric($msg)) {
         $msg = (int) $msg;
 
         if ($msg > 0) {
