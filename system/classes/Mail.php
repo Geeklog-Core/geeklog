@@ -57,7 +57,7 @@ class Mail
      * @param    array        $attachments (optional) attachment files
      * @return   bool                      true if successful,  otherwise false
      */
-    public static function send($to, $subject, $body, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = array())
+    public static function send($to, $subject, $body, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = [])
     {
         global $_CONF;
 
@@ -128,7 +128,7 @@ class Mail
 
         // Set from
         if (empty($from)) {
-            $message->setFrom(array($_CONF['site_mail'] => $_CONF['site_name']));
+            $message->setFrom([$_CONF['site_mail'] => $_CONF['site_name']]);
         } else {
             $message->setFrom($from);
         }
@@ -142,11 +142,11 @@ class Mail
             return false;
         }
 
-        if (($optional != null) && !is_array($optional)) {
+        if (!empty($optional) && !is_array($optional)) {
             $optional = self::stripControlCharacters($optional);
         }
 
-        if (($optional != null) && !is_array($optional) && !empty($optional)) {
+        if (!empty($optional) && !is_array($optional)) {
             // assume old (optional) CC: header
             try {
                 $message->setCc($optional);
@@ -232,15 +232,15 @@ class Mail
         $numSent = 0;
 
         try {
-            $numSent = $mailer->send($message, $failures);
+            $numSent = (int) $mailer->send($message, $failures);
 
-            if ($numSent != 1) {
+            if ($numSent !== 1) {
                 COM_errorLog(__METHOD__ . ': failed to send an email to ' . @$failures[0]);
             }
         } catch (Exception $e) {
             COM_errorLog(__METHOD__ . 'Failed to send an email to ' . $to . '.  Error message: ' . $e->getMessage());
         }
 
-        return ($numSent == 1);
+        return ($numSent === 1);
     }
 }

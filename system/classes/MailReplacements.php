@@ -2,12 +2,14 @@
 
 namespace Geeklog;
 
+use Swift_Plugins_Decorator_Replacements;
+
 /**
  * Class MailReplacements
  *
  * @package Geeklog
  */
-class MailReplacements implements \Swift_Plugins_Decorator_Replacements
+class MailReplacements implements Swift_Plugins_Decorator_Replacements
 {
     /**
      * Return replacements for a given email address
@@ -33,7 +35,7 @@ SQL;
             $A = DB_fetchArray($resultSet, false);
 
             if (is_array($A) && (count($A) > 0)) {
-                $retval = array(
+                $retval = [
                     // From DB
                     '{uid}'           => $A['uid'],
                     '{username}'      => $A['username'],
@@ -54,7 +56,7 @@ SQL;
                     '{copyrightyear}' => (isset($_CONF['copyrightyear']) ? $_CONF['copyrightyear'] : date('Y')),
                     '{site_mail}'     => $_CONF['site_mail'],
                     '{noreply_mail}'  => $_CONF['noreply_mail'],
-                );
+                ];
             }
         }
 
