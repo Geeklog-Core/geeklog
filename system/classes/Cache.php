@@ -2,9 +2,6 @@
 
 namespace Geeklog;
 
-use Geeklog\Cache\APCu;
-use Geeklog\Cache\FileSystem;
-
 /**
  * Class Cache
  *
