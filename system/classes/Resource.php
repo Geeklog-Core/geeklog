@@ -57,7 +57,7 @@ class Resource
     const UIKIT_VERSION = '2.27.5';
     const UIKIT_PRIORITY = -3000;
 
-    const UIKIT3_VERSION = '3.2.4';
+    const UIKIT3_VERSION = '3.2.6';
     const UIKIT3_PRIORITY = -3000;
 
     /**
@@ -118,7 +118,7 @@ class Resource
     /**
      * @var array
      */
-    private $libraryLocations = array(
+    private $libraryLocations = [
         'jquery'                          => '/vendor/jquery/jquery.min.js',
         'jquery-ui'                       => '/vendor/jquery-ui/jquery-ui.min.js',
         'jquery-ui-i18n'                  => '/javascript/jquery_ui/jquery-ui-i18n.min.js',
@@ -175,7 +175,7 @@ class Resource
         'uikit3'                          => '/vendor/uikit3/js/uikit.min.js',
         'uikit3-icons'                    => '/vendor/uikit3/js/uikit-icons.min.js',
         'uikit3_modifier'                  => '/javascript/uikit3_modifier.js',
-    );
+    ];
 
     /**
      * @var array a copy of $_CONF
@@ -187,56 +187,56 @@ class Resource
      *
      * @var array
      */
-    private $cssBlocks = array();
+    private $cssBlocks = [];
 
     /**
      * Array of local CSS files
      *
      * @var array
      */
-    private $localCssFiles = array();
+    private $localCssFiles = [];
 
     /**
      * Array of external CSS URIs
      *
      * @var array
      */
-    private $externalCssFiles = array();
+    private $externalCssFiles = [];
 
     /**
      * Array of JavaScript code to write between <script> and </script> tags
      *
      * @var array
      */
-    private $jsBlocks = array(
-        'header' => array(),
-        'footer' => array(),
-    );
+    private $jsBlocks = [
+        'header' => [],
+        'footer' => [],
+    ];
 
     /**
      * Array of local JavaScript files
      *
      * @var array
      */
-    private $localJsFiles = array(
-        'header' => array(),
-        'footer' => array(),
-    );
+    private $localJsFiles = [
+        'header' => [],
+        'footer' => [],
+    ];
 
     /**
      * Array of external JavaScript URIs
      *
      * @var array
      */
-    private $externalJsFiles = array(
-        'header' => array(),
-        'footer' => array(),
-    );
+    private $externalJsFiles = [
+        'header' => [],
+        'footer' => [],
+    ];
 
     /**
      * @var array
      */
-    private $lang = array();
+    private $lang = [];
 
     /**
      * @var bool
@@ -330,7 +330,7 @@ class Resource
      */
     private function checkCssAttributes(array $attributes)
     {
-        $retval = array();
+        $retval = [];
 
         foreach ($attributes as $key => $value) {
             $key = strtolower($key);
@@ -448,10 +448,10 @@ class Resource
                 break;
 
             default:
-                $this->localJsFiles[$position][] = array(
+                $this->localJsFiles[$position][] = [
                     'file'     => $this->libraryLocations[$name],
                     'priority' => $library_priority,
-                );
+                ];
                 
                 $library_priority = $library_priority + 1;
 
@@ -464,7 +464,7 @@ class Resource
                     list (, $componentName) = explode('.', $name, 2);
                     $dir = (isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl')) ? 'css_rtl' : 'css';
                     $cssPath = '/vendor/uikit/' . $dir . '/components/' . $componentName . '.min.css';
-                    $this->setCssFile($name, $cssPath, true, array());
+                    $this->setCssFile($name, $cssPath, true, []);
                 }
 
                 break;
@@ -509,7 +509,7 @@ class Resource
      * @param  array  $attributes  additional attributes for script tag
      * @return bool
      */
-    public function setJavaScriptFile($name, $file, $isFooter = true, $priority = 100, $isDefer = true, array $attributes = array())
+    public function setJavaScriptFile($name, $file, $isFooter = true, $priority = 100, $isDefer = true, array $attributes = [])
     {
         if ($this->isHeaderSet && !$isFooter) {
             return false;
@@ -518,22 +518,22 @@ class Resource
         $position = $isFooter ? 'footer' : 'header';
     
         if ($this->isExternal($file) && array_search($file, array_column($this->externalJsFiles[$position], 'file')) == 0) {
-            $this->externalJsFiles[$position][] = array(
+            $this->externalJsFiles[$position][] = [
                 'file'       => $file,
                 'priority'   => (int) $priority,
                 'isDefer'    => (bool) $isDefer,
                 'attributes' => $attributes,
-            );
+            ];
 
             return true;
         } else {
             // See if file exists and has not already been added (could happen on multiple calls of the same function by different plugins)
             if ($this->exists($this->config['path_html'] . $file) && array_search($file, array_column($this->localJsFiles[$position], 'file')) == 0) {
-                $this->localJsFiles[$position][] = array(
+                $this->localJsFiles[$position][] = [
                     'file'       => $file,
                     'priority'   => (int) $priority,
                     'attributes' => $attributes,
-                );
+                ];
 
                 return true;
             } else {
@@ -566,7 +566,7 @@ class Resource
      * @param  string $type     (not used)
      * @return bool
      */
-    public function setCssFile($name, $file, $constant = true, $attributes = array(), $priority = 100, $type = '')
+    public function setCssFile($name, $file, $constant = true, $attributes = [], $priority = 100, $type = '')
     {
         if ($this->isHeaderSet) {
             return false;
@@ -575,24 +575,24 @@ class Resource
         $attributes = $this->checkCssAttributes($attributes);
 
         if ($this->isExternal($file) && array_search($file, array_column($this->localJsFiles, 'file')) == 0) {
-            $this->externalCssFiles[] = array(
+            $this->externalCssFiles[] = [
                 'file'       => $file,
                 'attributes' => $attributes,
                 'priority'   => $priority,
                 'type'       => $type,
-            );
+            ];
 
             return true;
         } else {
             if ($this->exists($this->config['path_html'] . $file)) {
                 // enabled overwriting information by using the same name
-                $this->localCssFiles[$name] = array(
+                $this->localCssFiles[$name] = [
                     'name'       => $name,
                     'file'       => $file,
                     'attributes' => $attributes,
                     'priority'   => $priority,
                     'type'       => $type,
-                );
+                ];
 
                 return true;
             } else {
@@ -654,7 +654,7 @@ class Resource
      * @param  array  $attributes
      * @return string
      */
-    private function buildLinkTag($href, array $attributes = array())
+    private function buildLinkTag($href, array $attributes = [])
     {
         if (empty($attributes)) {
             $attributes['rel'] = 'stylesheet';
@@ -715,7 +715,7 @@ class Resource
             $retval = '';
 
             foreach ($files as $file) {
-                $retval .= $this->buildLinkTag($this->config['site_url'] . $file['file'], array()) . PHP_EOL;
+                $retval .= $this->buildLinkTag($this->config['site_url'] . $file['file'], []) . PHP_EOL;
             }
 
             return $retval;
@@ -733,12 +733,12 @@ class Resource
         $data = Cache::get($key, null);
         if ($data !== null) {
             // Such (already minified) data exists
-            return $this->buildLinkTag($this->config['site_url'] . '/r.php?k=' . $key, array());
+            return $this->buildLinkTag($this->config['site_url'] . '/r.php?k=' . $key, []);
         }
 
         $min = new Minify\CSS();
         $contents = '';
-        $relativePaths = array();
+        $relativePaths = [];
 
         // Concatenate all CSS files
         foreach ($files as $file) {
@@ -761,21 +761,21 @@ class Resource
         }
 
         if ($this->isCompatibleWithModernCurveTheme()) {
-            $search  = array('{left}', '{right}', '../images/',  './images/');
-            $replace = array($left,    $right,    './images/',  '../images/');
+            $search  = ['{left}', '{right}', '../images/',  './images/'];
+            $replace = [$left,    $right,    './images/',  '../images/'];
             $contents = str_replace($search, $replace, $contents);
         }
 
         // Unify line ends
-        $contents = str_replace(array("\r\n", "\r"), "\n", $contents);
-        $data = array(
+        $contents = str_replace(["\r\n", "\r"], "\n", $contents);
+        $data = [
             'createdAt' => microtime(true),
             'data'      => $contents,
             'paths'     => $relativePaths,
             'type'      => 'c',
-        );
+        ];
         Cache::set($key, $data);
-        $retval = $this->buildLinkTag($this->config['site_url'] . '/r.php?k=' . $key, array());
+        $retval = $this->buildLinkTag($this->config['site_url'] . '/r.php?k=' . $key, []);
 
         return $retval;
     }
@@ -821,7 +821,7 @@ class Resource
     private function makeFileServerTag(array $files, $isCss = true)
     {
         if ($this->debug) {
-            $temp = array();
+            $temp = [];
             foreach ($files as $file) {
                 $temp[] = $file['file'];
             }
@@ -831,11 +831,11 @@ class Resource
             $this->log($entry);
         }
 
-        usort($files, array('Geeklog\\Resource', 'comparePriority'));
+        usort($files, ['Geeklog\\Resource', 'comparePriority']);
 
         if ($isCss) {
             // Make an item with 'name' property being 'theme' the top of the list to load the theme CSS first
-            $temp = array();
+            $temp = [];
 
             foreach ($files as $file) {
                 if (isset($file['name']) && ($file['name'] === 'theme')) {
@@ -866,7 +866,7 @@ class Resource
             str_replace('\\', '/', $this->config['path_editors'])
         );
         $temp = $files;
-        $files = array();
+        $files = [];
 
         foreach ($temp as $file) {
             if (stripos($file['file'], $editorPath) === 0) {
@@ -877,8 +877,8 @@ class Resource
         }
         // *******************************
 
-        $absolutePaths = array();
-        $relativePaths = array();
+        $absolutePaths = [];
+        $relativePaths = [];
         $success = false;
 
         foreach ($files as $file) {
@@ -897,12 +897,12 @@ class Resource
 
         if (!$success && !$this->debug) {
             // Cached data are missing or stale
-            $data = array(
+            $data = [
                 'createdAt' => microtime(true),
                 'data'      => $this->minifyJS($absolutePaths),
                 'paths'     => $relativePaths,
                 'type'      => 'j',
-            );
+            ];
             $success = Cache::set($key, $data, 0);
         }
 
@@ -1066,7 +1066,7 @@ class Resource
      * @param  array  $attributes
      * @return string
      */
-    private function formatAttributes(array $attributes = array())
+    private function formatAttributes(array $attributes = [])
     {
         $retval = '';
 
@@ -1101,7 +1101,7 @@ class Resource
 
         // 1. External CSS files
         if (count($this->externalCssFiles) > 0) {
-            usort($this->externalCssFiles, array('\\Geeklog\\Resource', 'comparePriority'));
+            usort($this->externalCssFiles, ['\\Geeklog\\Resource', 'comparePriority']);
 
             foreach ($this->externalCssFiles as $cssFile) {
                 $retval .= $this->buildLinkTag($cssFile['file'], $cssFile['attributes']) . PHP_EOL;
@@ -1109,35 +1109,35 @@ class Resource
         }
 
         // 2. System CSS files
-        $cssFiles = array();
+        $cssFiles = [];
 
         if (!empty($this->jQueryUIPosition)) {
-            $cssFiles = array(
-                array(
+            $cssFiles = [
+                [
                     'file'     => '/vendor/jquery-ui/jquery-ui.min.css',
                     'priority' => self::JQUERY_UI_PRIORITY,
-                ),
-                array(
+                ],
+                [
                     'file'     => '/vendor/jquery-ui/jquery-ui.structure.min.css',
                     'priority' => self::JQUERY_UI_PRIORITY + 10,
-                ),
-                array(
+                ],
+                [
                     'file'     => '/vendor/jquery-ui/jquery-ui.theme.min.css',
                     'priority' => self::JQUERY_UI_PRIORITY + 20,
-                ),
-                array(
+                ],
+                [
                     'file'     => '/layout/' . $this->config['theme'] . '/jquery_ui/jquery-ui.geeklog.css',
                     'priority' => self::JQUERY_UI_PRIORITY + 30,
-                ),
-            );
+                ],
+            ];
         } elseif ($this->UIkit3Position && !isset($this->localCssFiles['uikit3'])) {
             $cssFileName = (isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl')) ? 'uikit-rtl' : 'uikit';
-            $cssFiles = array(
-                array(
+            $cssFiles = [
+                [
                     'file'     => '/vendor/uikit3/css/' . $cssFileName . '.min.css',
                     'priority' => self::UIKIT3_PRIORITY,
-                ),
-            );
+                ],
+            ];
         }
 
         // 3. Local CSS files
@@ -1163,7 +1163,7 @@ class Resource
 
         // 6. External JavaScript files
         if (count($this->externalJsFiles['header']) > 0) {
-            usort($this->externalJsFiles['header'], array('\\Geeklog\\Resource', 'comparePriority'));
+            usort($this->externalJsFiles['header'], ['\\Geeklog\\Resource', 'comparePriority']);
 
             foreach ($this->externalJsFiles['header'] as $jsFile) {
                 $defer = isset($jsFile['isDefer']) && $jsFile['isDefer'] ? ' defer' : '';
@@ -1178,7 +1178,7 @@ class Resource
 
         // 7. JavaScript variables
         $iso639Code = COM_getLangIso639Code();
-        $lang = array(
+        $lang = [
             'iso639Code'          => $iso639Code,
             'tooltip_loading'     => $MESSAGE[116],
             'tooltip_not_found'   => $MESSAGE[117],
@@ -1186,25 +1186,25 @@ class Resource
             'tabs_more'           => $MESSAGE[119],
             'confirm_delete'      => $MESSAGE[76],
             'confirm_send'        => $MESSAGE[120],
-        );
+        ];
         if (!empty($this->lang)) {
             $lang = array_merge($lang, $this->lang);
         }
 
         $detect = new Mobile_Detect;
-        $device = array(
+        $device = [
             'isMobile' => $detect->isMobile(),
             'isTablet' => $detect->isTablet(),
-        );
+        ];
 
-        $src = array(
+        $src = [
             'site_url'       => $this->config['site_url'],
             'layout_url'     => $this->config['layout_url'],
             'xhtml'          => XHTML,
             'lang'           => $lang,
             'device'         => $device,
             'theme_options'  => $this->config['theme_options'],
-        );
+        ];
         $str = $this->arrayToJavaScriptObject($src);
 
         // Strip '{' and '}' from both ends of $str
@@ -1244,7 +1244,7 @@ class Resource
 
         // 2. External JavaScript files
         if (count($this->externalJsFiles['footer']) > 0) {
-            usort($this->externalJsFiles['footer'], array('\\Geeklog\\Resource', 'comparePriority'));
+            usort($this->externalJsFiles['footer'], ['\\Geeklog\\Resource', 'comparePriority']);
 
             foreach ($this->externalJsFiles['footer'] as $jsFile) {
                 $defer = isset($jsFile['isDefer']) && $jsFile['isDefer'] ? ' defer' : '';
