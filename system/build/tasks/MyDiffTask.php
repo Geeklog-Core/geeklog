@@ -17,7 +17,7 @@ class MyDiffTask extends Task
     /**
      * @var array
      */
-    private $startsWith = array(
+    private $startsWith = [
         '.git',
         '.idea',
         'build',
@@ -25,17 +25,17 @@ class MyDiffTask extends Task
         'public_html/layout/glnet_curve',
         'system/build',
         'tests',
-    );
+    ];
 
     /**
      * @var array
      */
-    private $includes = array(
+    private $includes = [
         '/node_modules/',
         '/css_src/dest/',
         'buildpackage.php',
         '.php.dist',
-    );
+    ];
 
     /**
      * Initialize the task
@@ -89,7 +89,7 @@ class MyDiffTask extends Task
     }
 
     /**
-     * Create the 'changed-files' file
+     * Create the 'changed-files' and 'removed-files' files
      */
     public function main()
     {
@@ -98,11 +98,19 @@ class MyDiffTask extends Task
 
 		exec('git config diff.renameLimit 999999');
 
+		// Create 'changed-files'
 		exec(sprintf('git diff --name-only %s %s', $this->previousVersionSHA, $this->currentVersionSHA), $lines);
-        $lines = array_filter($lines, array($this, 'shouldInclude'));
-        @file_put_contents('./public_html/docs/changed-files', implode("\n", $lines) . "\n");
+        $changedFiles = array_filter($lines, [$this, 'shouldInclude']);
+        @file_put_contents('./public_html/docs/changed-files', implode("\n", $changedFiles) . "\n");
 
-		exec('git config --unset diff.renameLimit');
+        // Create 'removed-files'
+        unset($lines);
+        exec(sprintf('git diff --name-only --diff-filter=ACMRTUX %s %s', $this->previousVersionSHA, $this->currentVersionSHA), $lines);
+        $otherFiles = array_filter($lines, [$this, 'shouldInclude']);
+        $otherFiles = array_diff($changedFiles, $otherFiles);
+        @file_put_contents('./public_html/docs/removed-files', implode("\n", $otherFiles) . "\n");
+
+        exec('git config --unset diff.renameLimit');
 
         if ($currentDir !== false) {
             chdir($currentDir);

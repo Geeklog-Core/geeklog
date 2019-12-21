@@ -419,6 +419,7 @@ public_html/docs/japanese/theme.html
 public_html/docs/japanese/themevars.html
 public_html/docs/japanese/trackback.html
 public_html/docs/japanese/xmlsitemap.html
+public_html/docs/removed-files
 public_html/editors/ckeditor/CHANGES.md
 public_html/editors/ckeditor/LICENSE.md
 public_html/editors/ckeditor/README.md
@@ -3152,6 +3153,7 @@ system/classes/IP.php
 system/classes/Input.php
 system/classes/Log.php
 system/classes/Mail.php
+system/classes/MailReplacements.php
 system/classes/Resource.php
 system/classes/Session.php
 system/classes/TwoFactorAuthentication.php
