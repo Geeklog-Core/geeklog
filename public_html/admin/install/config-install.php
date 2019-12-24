@@ -366,8 +366,8 @@ function install_config(ConfigInterface $c)
 
     $c->add('tab_articleimg', NULL, 'tab', 5, 24, NULL, 0, TRUE, $me, 24);
     $c->add('fs_articleimg', NULL, 'fieldset', 5, 24, NULL, 0, TRUE, $me, 24);
-    $c->add('max_image_width',160,'text',5,24,NULL,1510,TRUE, $me, 24);
-    $c->add('max_image_height',160,'text',5,24,NULL,1520,TRUE, $me, 24);
+    $c->add('max_image_width',300,'text',5,24,NULL,1510,TRUE, $me, 24);
+    $c->add('max_image_height',225,'text',5,24,NULL,1520,TRUE, $me, 24);
     $c->add('max_image_size',1048576,'text',5,24,NULL,1530,TRUE, $me, 24);
 
     $c->add('tab_topicicon', NULL, 'tab', 5, 25, NULL, 0, TRUE, $me, 25);
@@ -382,7 +382,7 @@ function install_config(ConfigInterface $c)
     $c->add('max_photo_height',128,'text',5,26,NULL,1580,TRUE, $me, 26);
     $c->add('max_photo_size',65536,'text',5,26,NULL,1590,TRUE, $me, 26);
     $c->add('force_photo_width',75,'text',5,26,NULL,1620,FALSE, $me, 26);
-    $c->add('default_photo','http://example.com/images/userphotos/default.png','text',5,26,NULL,1630,FALSE, $me, 26);
+    $c->add('default_photo','https://example.com/images/userphotos/default.png','text',5,26,NULL,1630,FALSE, $me, 26);
     $c->add('generate_user_icon',true,'select',5,26,1,1640,true, $me, 26);
 
     $c->add('tab_gravatar', NULL, 'tab', 5, 27, NULL, 0, TRUE, $me, 27);
