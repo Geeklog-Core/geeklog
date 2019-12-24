@@ -53,6 +53,7 @@ function theme_config_modern_curve()
         'theme_homepage'    => 'https://www.geeklog.net/',
         'theme_copyright'   => '2019',
         'theme_license'     => 'GPL-2.0+',
+        'theme_path_site_logo'     => '', // Used to override path_site_logo config option if needed. Empty or should have absolute path with Logo image filename. See path_site_logo option in config docs for more info
         'image_type'        => 'png',
         'doctype'           => 'xhtml5',
         'etag'              => true,

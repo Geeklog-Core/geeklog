@@ -94,6 +94,7 @@ function theme_config_glnet_curve()
         'theme_homepage'    => 'https://www.geeklog.net/',
         'theme_copyright'   => '2017-2019',
         'theme_license'     => 'GPL-2.0+',
+        'theme_path_site_logo'     => '', // Used to override path_site_logo config option if needed. Empty or should have absolute path with Logo image filename. See path_site_logo option in config docs for more info
         'image_type' => 'png',
         'doctype'    => 'xhtml5',
         'etag'       => false, // never set this true. instead use $options['enable_etag'] above.
@@ -154,14 +155,14 @@ function theme_css_glnet_curve()
         'attributes' => array('media' => 'all'),
         'priority'   => 90
     );
-	
+
     // add additional css of this theme
     $css_items[] = array(
         'name'       => 'additional',
         'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/additional.css',
         'attributes' => array('media' => 'all'),
         'priority'   => 91
-    );	
+    );
 
     // add custom css of this theme
     $css_items[] = array(
@@ -330,7 +331,7 @@ function theme_init_glnet_curve()
     $_BLOCK_TEMPLATE['configmanager_subblock'] = 'blockheader-config.thtml,blockfooter-config.thtml';
     $_BLOCK_TEMPLATE['whats_related_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
     $_BLOCK_TEMPLATE['story_options_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
-    
+
     // GLNET CUSTOM
     $_BLOCK_TEMPLATE['download'] = 'blockheader-notitle-right.thtml,blockfooter.thtml';
 

@@ -433,6 +433,9 @@ if ($_CONF['theme_etag'] && !file_exists($_CONF['path_layout'] . 'style.css.php'
     // See if style.css.php file exists that is required
     $_CONF['theme_etag'] = false;
 }
+if (isset($theme_config['theme_path_site_logo']) && !empty($theme_config['theme_path_site_logo'])) {
+    $_CONF['path_site_logo'] = $theme_config['theme_path_site_logo'];
+}
 if (isset($theme_config['theme_plugins'])) {
     // EXPERIMENTAL for theme_gl_version v2.2.0 and higher (See Geeklog Core theme functions.php and theme_plugins for further explanation or  https://github.com/Geeklog-Core/geeklog/issues/767)
     $_CONF['theme_plugins'] = $theme_config['theme_plugins'];
