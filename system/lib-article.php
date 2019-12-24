@@ -716,38 +716,57 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             }
             $_STRUCT_DATA->add_type('article', $story->getSid(), $story->displayElements('structured_data_type'), $properties, $attributes);
             // Include any images attached to the article (taken in part from renderImageTags function in article class)
+            // If none are attached then take a look at the acutal content in case they are embedded that way
+            // It is important we add images since they are required by Google for article structured data snippets
             $result = DB_query("SELECT ai_filename,ai_img_num FROM {$_TABLES['article_images']} WHERE ai_sid = '{$story->getSid()}' ORDER BY ai_img_num");
             $numRows = DB_numRows($result);
-            $stdImageLoc = true;
-            if (!strstr($_CONF['path_images'], $_CONF['path_html'])) {
-                $stdImageLoc = false;
-            }
-            for ($i = 1; $i <= $numRows; $i++) {
-                $A = DB_fetchArray($result);
-
-                $imgPath = '';
-                if ($stdImageLoc) {
-                    $imgPath = substr($_CONF['path_images'], strlen($_CONF['path_html']));
-                    $imgSrc = $_CONF['site_url'] . '/' . $imgPath . 'articles/' . $A['ai_filename'];
-                } else {
-                    $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
+            if ($numRows > 0) {
+                $stdImageLoc = true;
+                if (!strstr($_CONF['path_images'], $_CONF['path_html'])) {
+                    $stdImageLoc = false;
                 }
 
-                $sizeAttributes = COM_getImgSizeAttributes($_CONF['path_images'] . 'articles/' . $A['ai_filename'], false);
-                if (is_array($sizeAttributes)) {
-                    $_STRUCT_DATA->set_image_item('article', $story->getSid(), $imgSrc, $sizeAttributes['width'], $sizeAttributes['height']);
-                } else {
-                    $_STRUCT_DATA->set_image_item('article', $story->getSid(), $imgSrc);
+                for ($i = 1; $i <= $numRows; $i++) {
+                    $A = DB_fetchArray($result);
+
+                    $imgPath = '';
+                    if ($stdImageLoc) {
+                        $imgPath = substr($_CONF['path_images'], strlen($_CONF['path_html']));
+                        $imgSrc = $_CONF['site_url'] . '/' . $imgPath . 'articles/' . $A['ai_filename'];
+                    } else {
+                        $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
+                    }
+
+                    // Only include images that exist
+                    $sizeAttributes = COM_getImgSizeAttributes($_CONF['path_images'] . 'articles/' . $A['ai_filename'], false);
+                    if (is_array($sizeAttributes)) {
+                        $_STRUCT_DATA->set_image_item('article', $story->getSid(), ($imgSrc . $A['ai_filename']), $sizeAttributes['width'], $sizeAttributes['height']);
+                    }
+                }
+            } else {
+                // Images are required by Google for article structured data rich snippets.
+                // lets look in the actual content of the article for an image and add it that way as long as it is locally stored and meets the min requirements
+                $articleDoc = new DOMDocument();
+                $articleDoc->loadHTML(($introtext .  $bodytext));
+                $images = $articleDoc->getElementsByTagName('img');
+                foreach ($images as $image) {
+                     $src = $image->getAttribute('src');
+                     if (substr($src, 0, 1) == "/" || substr($src, 0, strlen($_CONF['site_url'])) == $_CONF['site_url']) {
+                         // COM_getImgSizeAttributes checks if file exists
+                         $sizeAttributes = COM_getImgSizeAttributes($_CONF['path_html'] . substr($src, 1), false); print_r($sizeAttributes);
+                         // Make sure image meets minimum sizes as we don't want to grab something really small
+                         // Using old Geeklog image width and height defaults
+                         if (is_array($sizeAttributes)
+                                && $sizeAttributes['width'] >= 160 && $sizeAttributes['height'] >= 160) {
+                                //&& $sizeAttributes['width'] <= $_CONF['max_image_width'] && $sizeAttributes['height'] <= $_CONF['max_image_height']) {
+                             $_STRUCT_DATA->set_image_item('article', $story->getSid(), ($_CONF['site_url'] . $src), $sizeAttributes['width'], $sizeAttributes['height']);
+
+                             break;
+                         }
+                     }
                 }
             }
         }
-
-
-
-
-
-
-
     } else {
         PLG_templateSetVars($article_filevar, $article);
         // Used by Custom Block Locations
