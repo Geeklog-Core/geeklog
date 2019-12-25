@@ -746,24 +746,30 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             } else {
                 // Images are required by Google for article structured data rich snippets.
                 // lets look in the actual content of the article for an image and add it that way as long as it is locally stored and meets the min requirements
+                preg_match_all('~<img.*?src=["\']+(.*?)["\']+~', ($introtext .  $bodytext), $result);
+                $srcs = array_pop($result);
+                foreach ($srcs as $src) {
+                /* ALternate way to get image src but believe slower
                 $articleDoc = new DOMDocument();
+                libxml_use_internal_errors(true); // Incase invalid HTML is loaded
                 $articleDoc->loadHTML(($introtext .  $bodytext));
                 $images = $articleDoc->getElementsByTagName('img');
                 foreach ($images as $image) {
-                     $src = $image->getAttribute('src');
-                     if (substr($src, 0, 1) == "/" || substr($src, 0, strlen($_CONF['site_url'])) == $_CONF['site_url']) {
-                         // COM_getImgSizeAttributes checks if file exists
-                         $sizeAttributes = COM_getImgSizeAttributes($_CONF['path_html'] . substr($src, 1), false);
-                         // Make sure image meets minimum sizes as we don't want to grab something really small
-                         // Using old Geeklog image width and height defaults
-                         if (is_array($sizeAttributes)
-                                && $sizeAttributes['width'] >= 160 && $sizeAttributes['height'] >= 160) {
-                                //&& $sizeAttributes['width'] <= $_CONF['max_image_width'] && $sizeAttributes['height'] <= $_CONF['max_image_height']) {
-                             $_STRUCT_DATA->set_image_item('article', $story->getSid(), ($_CONF['site_url'] . $src), $sizeAttributes['width'], $sizeAttributes['height']);
+                    $src = $image->getAttribute('src');
+                */
+                    if (substr($src, 0, 1) == "/" || substr($src, 0, strlen($_CONF['site_url'])) == $_CONF['site_url']) {
+                        // COM_getImgSizeAttributes checks if file exists
+                        $sizeAttributes = COM_getImgSizeAttributes($_CONF['path_html'] . substr($src, 1), false);
+                        // Make sure image meets minimum sizes as we don't want to grab something really small
+                        // Using old Geeklog image width and height defaults
+                        if (is_array($sizeAttributes)
+                            && $sizeAttributes['width'] >= 160 && $sizeAttributes['height'] >= 160) {
+                            //&& $sizeAttributes['width'] <= $_CONF['max_image_width'] && $sizeAttributes['height'] <= $_CONF['max_image_height']) {
+                            $_STRUCT_DATA->set_image_item('article', $story->getSid(), ($_CONF['site_url'] . $src), $sizeAttributes['width'], $sizeAttributes['height']);
 
-                             break;
-                         }
-                     }
+                            break;
+                        }
+                    }
                 }
             }
         }
