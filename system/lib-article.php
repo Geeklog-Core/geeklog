@@ -753,7 +753,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                      $src = $image->getAttribute('src');
                      if (substr($src, 0, 1) == "/" || substr($src, 0, strlen($_CONF['site_url'])) == $_CONF['site_url']) {
                          // COM_getImgSizeAttributes checks if file exists
-                         $sizeAttributes = COM_getImgSizeAttributes($_CONF['path_html'] . substr($src, 1), false); print_r($sizeAttributes);
+                         $sizeAttributes = COM_getImgSizeAttributes($_CONF['path_html'] . substr($src, 1), false);
                          // Make sure image meets minimum sizes as we don't want to grab something really small
                          // Using old Geeklog image width and height defaults
                          if (is_array($sizeAttributes)
