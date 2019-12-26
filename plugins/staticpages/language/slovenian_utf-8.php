@@ -67,6 +67,8 @@ $LANG_STATIC = array(
     'results' => 'Rezultati statiènih strani',
     'author' => 'Avtor',
     'no_title_or_content' => 'Izpolniti moraš vsaj polji <b>Naslov</b> in <b>Vsebina</b>.',
+    'title_error_saving' => 'Error Saving Page',
+    'template_xml_error' => 'You have an <em>error in your XML markup</em>. This page is set to use another page as a template and therefore requires template variables to be defined using XML markup. Please see our <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages" target="_blank">Geeklog Wiki</a> for more information on how to do this as it must be corrected before the page can be saved.',
     'no_such_page_anon' => 'Prosim, prijavi se.',
     'no_page_access_msg' => "To je morda zato, ker nisi prijavljen/a ali pa sploh nisi èlan spletne strani {$_CONF['site_name']}. Za popoln èlanski dostop <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> postani èlan</a> spletne strani {$_CONF['site_name']} .",
     'php_msg' => 'PHP: ',

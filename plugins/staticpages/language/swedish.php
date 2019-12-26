@@ -67,6 +67,8 @@ $LANG_STATIC = array(
     'results' => 'Statiska sidor resultat',
     'author' => 'Författare',
     'no_title_or_content' => 'Du måste åtminstone fylla i <b>titel-</b> och <b>innehålls</b>fälten.',
+    'title_error_saving' => 'Error Saving Page',
+    'template_xml_error' => 'You have an <em>error in your XML markup</em>. This page is set to use another page as a template and therefore requires template variables to be defined using XML markup. Please see our <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages" target="_blank">Geeklog Wiki</a> for more information on how to do this as it must be corrected before the page can be saved.',
     'no_such_page_anon' => 'Du måste logga in..',
     'no_page_access_msg' => "Detta kan bero på att du inte är inloggad, eller att du inte ärmedlem i {$_CONF['site_name']}.  <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Bli medlem</a> i {$_CONF['site_name']} för att få åtkomst till medlemssidorna",
     'php_msg' => 'PHP: ',

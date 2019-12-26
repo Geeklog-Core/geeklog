@@ -65,6 +65,8 @@ $LANG_STATIC = array(
     'results' => 'نتيجه آمار صفحات',
     'author' => 'نويسنده',
     'no_title_or_content' => 'شما بايد حداقل فيلد<b>عنوان</b>و<b>محتوي</b> پر نماييد',
+    'title_error_saving' => 'Error Saving Page',
+    'template_xml_error' => 'You have an <em>error in your XML markup</em>. This page is set to use another page as a template and therefore requires template variables to be defined using XML markup. Please see our <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages" target="_blank">Geeklog Wiki</a> for more information on how to do this as it must be corrected before the page can be saved.',
     'no_such_page_anon' => 'لطفا وارد شويد',
     'no_page_access_msg' => "اين صفحه قابل دسترسي است يا شما وارد نشده ايد يا عضو سايت {$_CONF['site_name']} نيستيد.لطفا <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> عضو ما شويد</a> of {$_CONF['site_name']} براي دسترسي كامل و استفاده از سايت مانند اعضاي ما",
     'php_msg' => 'PHP: ',

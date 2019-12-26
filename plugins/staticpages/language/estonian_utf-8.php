@@ -67,6 +67,8 @@ $LANG_STATIC = array(
     'results' => 'Staatiliste lehtede tulemus',
     'author' => 'Autor',
     'no_title_or_content' => 'Sa pead täitma vähemalt <b>tiitli</b> ja <b>sisu</b> väljad.',
+    'title_error_saving' => 'Error Saving Page',
+    'template_xml_error' => 'You have an <em>error in your XML markup</em>. This page is set to use another page as a template and therefore requires template variables to be defined using XML markup. Please see our <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages" target="_blank">Geeklog Wiki</a> for more information on how to do this as it must be corrected before the page can be saved.',
     'no_such_page_anon' => 'Palun logi sisse...',
     'no_page_access_msg' => "Põhjuseks võib olla, et sa pole veel sisse loginud või pole veel {$_CONF['site_name']} lehe registreerunud kasutaja. Palun <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> registreeru {$_CONF['site_name']} lehe kasutajaks.</a> Registreerumine annab sulle kõik lehe liikme ligipääsuõigused.",
     'php_msg' => 'PHP: ',

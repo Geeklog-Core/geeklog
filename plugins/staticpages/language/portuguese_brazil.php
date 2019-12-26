@@ -68,6 +68,8 @@ $LANG_STATIC = array(
     'results' => 'Resultado da Página Estática',
     'author' => 'Autor',
     'no_title_or_content' => 'Você deve ao menos preencher os campos de <b>Título</b> e <b>Conteúdo</b>.',
+    'title_error_saving' => 'Error Saving Page',
+    'template_xml_error' => 'You have an <em>error in your XML markup</em>. This page is set to use another page as a template and therefore requires template variables to be defined using XML markup. Please see our <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages" target="_blank">Geeklog Wiki</a> for more information on how to do this as it must be corrected before the page can be saved.',
     'no_such_page_anon' => 'Por favor faça o LOGIN...',
     'no_page_access_msg' => "Isto pode ter acontecido porque você não efetuou o LOGIN, ou ainda porque não é membro do {$_CONF['site_name']}. Por favor <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> torne-se um membro usuário do site</a> {$_CONF['site_name']} para ter acesso a todos recursos disponíveis",
     'php_msg' => 'PHP: ',

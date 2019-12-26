@@ -65,6 +65,8 @@ $LANG_STATIC = array(
     'results' => 'Wyniki Dla Stron Statycznych',
     'author' => 'Autor',
     'no_title_or_content' => 'Musisz wypełnić co najmniej pola <b>Tytuł</b> i <b>Zawartość</b>.',
+    'title_error_saving' => 'Error Saving Page',
+    'template_xml_error' => 'You have an <em>error in your XML markup</em>. This page is set to use another page as a template and therefore requires template variables to be defined using XML markup. Please see our <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages" target="_blank">Geeklog Wiki</a> for more information on how to do this as it must be corrected before the page can be saved.',
     'no_such_page_anon' => 'Prosze się zalogować..',
     'no_page_access_msg' => "Może to być spowodowane tym, że nie jesteś zalogowana/-y lub zarejestrowanan/-y w Serwisie {$_CONF['site_name']}. Proszę <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> zarejestrować się</a> of {$_CONF['site_name']} aby otrzymać przywileje użytkowników zarejestrowanych",
     'php_msg' => 'PHP: ',

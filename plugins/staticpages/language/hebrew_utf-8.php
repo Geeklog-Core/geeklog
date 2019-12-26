@@ -66,6 +66,8 @@ $LANG_STATIC = array(
     'results' => 'תוצאות עמודים סטטיים',
     'author' => 'יוצר',
     'no_title_or_content' => 'הנכם חייבם לפחות למלא את שדות <b>הכותרת</b> <b>והתוכן</b>, כמו גם לבצע בחירת <b>נושא</b>.',
+    'title_error_saving' => 'Error Saving Page',
+    'template_xml_error' => 'You have an <em>error in your XML markup</em>. This page is set to use another page as a template and therefore requires template variables to be defined using XML markup. Please see our <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages" target="_blank">Geeklog Wiki</a> for more information on how to do this as it must be corrected before the page can be saved.',
     'no_such_page_anon' => 'אנא הזדהו במערכת..',
     'no_page_access_msg' => "זה עשוי להיות מפני שלא הזדהיתם במערכת, או שאינכם חברים ב-{$_CONF['site_name']}. אנא <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> תירשמו כחברים</a> ב-{$_CONF['site_name']} כדי לקבל גישה מלאה של מנויים",
     'php_msg' => 'PHP: ',

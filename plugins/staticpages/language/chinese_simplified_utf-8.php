@@ -68,6 +68,8 @@ $LANG_STATIC = array(
     'results' => '静态页结果',
     'author' => '作者',
     'no_title_or_content' => '你最少要填入<b>标题</b> 和 <b>内容</b>.',
+    'title_error_saving' => 'Error Saving Page',
+    'template_xml_error' => 'You have an <em>error in your XML markup</em>. This page is set to use another page as a template and therefore requires template variables to be defined using XML markup. Please see our <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages" target="_blank">Geeklog Wiki</a> for more information on how to do this as it must be corrected before the page can be saved.',
     'no_such_page_anon' => '请登入..',
     'no_page_access_msg' => "这也许是你未登入, 或不是此站的用户. 请 <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> 申请成为用户 </a> 来得到登入权",
     'php_msg' => 'PHP: ',
