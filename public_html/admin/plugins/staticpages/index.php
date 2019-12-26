@@ -786,6 +786,39 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         if (empty($A['unixdate'])) {
             $A['unixdate'] = time();
         }
+
+        // If error out in editor and uses checkbox reset to how it is stored in db so function staticpageeditor_form can process it properly
+        if ($A['sp_onmenu'] == 'on') {
+            $A['sp_onmenu'] = 1;
+        }
+        if ($A['sp_onhits'] == 'on') {
+            $A['sp_onhits'] = 1;
+        }
+        if ($A['sp_onlastupdate'] == 'on') {
+            $A['sp_onlastupdate'] = 1;
+        }
+        if ($A['template_flag'] == 'on') {
+            $A['template_flag'] = 1;
+        }
+        if ($A['draft_flag'] == 'on') {
+            $A['draft_flag'] = 1;
+        }
+        if ($A['sp_nf'] == 'on') {
+            $A['sp_nf'] = 1;
+        }
+        if ($A['sp_php'] == 'on') {
+            $A['sp_php'] = 1;
+        }
+        if ($A['sp_where'] == 'on') {
+            $A['sp_where'] = 1;
+        }
+        if ($A['sp_centerblock'] == 'on') {
+            $A['sp_centerblock'] = 1;
+        }
+        if ($A['sp_inblock'] == 'on') {
+            $A['sp_inblock'] = 1;
+        }
+
         $A['sp_content'] = COM_checkHTML(COM_checkWords($A['sp_content']), 'staticpages.edit');
     }
 
@@ -806,7 +839,9 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         $A['editor'] = $editor;
 
         if ($A['template_id'] != '' OR $A['template_flag'] OR $A['sp_php']) {
-            $A['sp_content'] = $A['page_data'];
+            if ($mode != '') { // this can happen if error on save and the staticpage editor is reloaded
+                $A['sp_content'] = $A['page_data'];
+            }
         }
 
         $retval = staticpageeditor_form($A);

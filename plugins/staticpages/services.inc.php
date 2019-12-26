@@ -346,6 +346,27 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
     }
 
+    if ($template_id != '') {
+        // Since this page uses a template it is xml full of template variables
+        // Lets make sure it is formatted correctly
+        // Suppress warnings on loading xml document so we can fail gracefully if need be
+        libxml_use_internal_errors(true);
+        // Load xml staticpage document
+        $xmlObject = simplexml_load_string($sp_content);
+        if ($xmlObject === false) {
+            // Error happened when try to load data so xml not setup correctly
+            $output .= COM_showMessageText($LANG_STATIC['template_xml_error'], $LANG_STATIC['title_error_saving']);
+            if (!$args['gl_svc']) {
+                $output .= staticpageeditor($sp_id);
+            }
+            $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG_STATIC['staticpageeditor']));
+
+            $svc_msg['error_desc'] = 'The staticpage xml is not formatted correctly for template variables';
+
+            return PLG_RET_ERROR;
+        }
+    }
+
     // Check for unique page ID
     $duplicate_id = false;
     $delete_old_page = false;
@@ -360,7 +381,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     }
 
     if ($duplicate_id) {
-        $output .= COM_errorLog($LANG_STATIC['duplicate_id'], 2);
+        $output .= COM_showMessageText($LANG_STATIC['duplicate_id'], $LANG_STATIC['title_error_saving']);
         if (!$args['gl_svc']) {
             $output .= staticpageeditor($sp_id);
         }
@@ -670,7 +691,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
         return PLG_RET_OK;
     } else {
-        $output .= COM_errorLog($LANG_STATIC['no_title_or_content'], 2);
+        $output .= COM_showMessageText($LANG_STATIC['no_title_or_content'], $LANG_STATIC['title_error_saving']);
         if (!$args['gl_svc']) {
             $output .= staticpageeditor($sp_id);
         }

@@ -70,6 +70,8 @@ $LANG_STATIC = array(
     'results' => '静的ページ検索結果',
     'author' => '所有者',
     'no_title_or_content' => 'タイトルとコンテンツを入力し、話題を少なくとも1つ選択してください。',
+    'title_error_saving' => 'Error Saving Page',
+    'template_xml_error' => 'You have an <em>error in your XML markup</em>. This page is set to use another page as a template and therefore requires template variables to be defined using XML markup. Please see our <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages" target="_blank">Geeklog Wiki</a> for more information on how to do this as it must be corrected before the page can be saved.',
     'no_such_page_anon' => 'ログインしてください。',
     'no_page_access_msg' => "この問題は、まだログインしていないか、そもそもこのサイト({$_CONF['site_name']})のメンバーではないためだと考えられます。{$_CONF['site_name']}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか、適切なアクセス権を管理者から取得してください。",
     'php_msg' => 'PHP: ',
