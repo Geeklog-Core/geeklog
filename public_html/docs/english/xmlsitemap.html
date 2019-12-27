@@ -74,7 +74,8 @@
     <th style="width: 50%;">Description</th>
 </tr>
 <tr>
-  <td><a name="desc_frequencies">frequencies</a></td>
+  <!-- Note: Added multiple anchors here as a workaround so tooltip would work in Geeklog configuration for at least the default options. Unfortunately will not work for any additional plugins. -->
+  <td><a name="desc_frequencies">frequencies</a><a name="desc_frequencies_article"></a><a name="desc_frequencies_polls"></a><a name="desc_frequencies_staticpages"></a><a name="desc_frequencies_calendar"></a></td>
   <td>'weekly' for staticpages, 'daily' for others</td>
   <td>The frequency with which some type of contents are likely to be updated.  Valid values include 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', and 'never'.  This value will be used by search engine crawlers just to decide how often they should check the contents.  However, specifying 'always' doesn't mean that search engine crawlers will surely visit your site.  So, specifiying 'daily' or 'weekly' would be better in most cases. Specifiying 'hidden' means no frequency is displayed for the content.</td>
 </tr>
