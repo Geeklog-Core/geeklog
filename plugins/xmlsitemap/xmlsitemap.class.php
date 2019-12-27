@@ -525,23 +525,18 @@ class SitemapXML
                                 . '</changefreq>' . self::LB;
                         }
 
-                        // Time stamp
-                        if (isset($entry['date-modified'])) {
+                        // lastmod Time stamp
+                        if (isset($entry['date-modified']) && in_array($type, $_XMLSMAP_CONF['lastmod'])) {
                             $date = date('Y-m-d', $entry['date-modified']);
 
-                            // Add the time part for frequently changed items
-                            if (in_array($change_freq, array('always', 'hourly', 'daily'))) {
-                                $timezone = $this->getTimezoneStr();
+                            $timezone = $this->getTimezoneStr();
 
-                                if ($timezone !== false) {
-                                    $date .= 'T' . date('H:i:s', $entry['date-modified'])
-                                        . $timezone;
-                                }
+                            if ($timezone !== false) {
+                                $date .= 'T' . date('H:i:s', $entry['date-modified'])
+                                    . $timezone;
                             }
 
-                            if (in_array($type, $_XMLSMAP_CONF['lastmod'])) {
-                                $sitemap .= '    <lastmod>' . $date . '</lastmod>' . self::LB;
-                            }
+                            $sitemap .= '    <lastmod>' . $date . '</lastmod>' . self::LB;
                         }
 
                         // Priority
@@ -628,7 +623,7 @@ class SitemapXML
             // See if timezone is set
             $timezone = $this->getTimezoneStr();
 
-            // Retrieve complete topic list including inherited ones 
+            // Retrieve complete topic list including inherited ones
             $topic_list = '';
             $newstopics = $this->getNewsTopics();
 
@@ -678,7 +673,7 @@ class SitemapXML
                     // Publication
                     $sitemap .= '      <news:publication>' . self::LB;
                     $sitemap .= '        <news:name>' . $_CONF['site_name'] . '</news:name>' . self::LB;
-                    // Language 
+                    // Language
                     if ($multi_lang) {
                         $lang_id = COM_getLanguageIdForObject($entry['id']);
                         if (empty($lang_id)) {
