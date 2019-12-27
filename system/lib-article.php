@@ -1259,9 +1259,13 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
     foreach ($properties as $p) {
         switch ($p) {
             case 'date-created':
-            case 'date-modified': // don't think we should support this since it is not the modified date but not sure if anything asks for it so left it in
-                $fields[] = 'UNIX_TIMESTAMP(date) AS unixdate';
-                $groupby_fields[] = 'unixdate';
+                $fields[] = 'UNIX_TIMESTAMP(date) AS c_unixdate';
+                $groupby_fields[] = 'c_unixdate';
+                break;
+
+            case 'date-modified':
+                $fields[] = 'UNIX_TIMESTAMP(modified) AS m_unixdate';
+                $groupby_fields[] = 'm_unixdate';
                 break;
 
             case 'description':
@@ -1269,7 +1273,6 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
                 $fields[] = 'bodytext';
                 $groupby_fields[] = 'introtext';
                 $groupby_fields[] = 'bodytext';
-
                 break;
 
             case 'excerpt':
@@ -1365,11 +1368,11 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
         foreach ($properties as $p) {
             switch ($p) {
                 case 'date-created':
-                    $props['date-created'] = $A['unixdate'];
+                    $props['date-created'] = $A['c_unixdate'];
                     break;
 
                 case 'date-modified':
-                    $props['date-modified'] = $A['unixdate'];
+                    $props['date-modified'] = $A['m_unixdate'];
                     break;
 
                 case 'description':

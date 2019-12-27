@@ -2333,8 +2333,12 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
     $fields = array();
     foreach ($properties as $p) {
         switch ($p) {
+            case 'date-created':
+                $fields[] = 'UNIX_TIMESTAMP(created) AS c_unixdate';
+                break;
+
             case 'date-modified':
-                $fields[] = 'UNIX_TIMESTAMP(modified) AS unixdate';
+                $fields[] = 'UNIX_TIMESTAMP(modified) AS m_unixdate';
                 break;
 
             case 'description':
@@ -2401,8 +2405,12 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
         $props = array();
         foreach ($properties as $p) {
             switch ($p) {
+                case 'date-created':
+                    $props['date-created'] = $A['c_unixdate'];
+                    break;
+
                 case 'date-modified':
-                    $props['date-modified'] = $A['unixdate'];
+                    $props['date-modified'] = $A['m_unixdate'];
                     break;
 
                 case 'description':
