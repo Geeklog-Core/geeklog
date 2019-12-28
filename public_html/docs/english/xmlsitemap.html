@@ -12,7 +12,7 @@
 
 <h1>XMLSitemap Plugin</h1>
 
-<p>The purpose of the XMLSitemap Plugin is to create <a href="http://www.sitemaps.org/">XML sitemap files</a> as supported by all major search engines.  Such a sitemap file is meant for use by search engines to make it easier to find all the content available on your site.  Basically, a sitemape.xml file is a list of the URLs of all content pages on your website.  For more information, see <a href="http://www.sitemaps.org/">sitemaps.org</a>.</p>
+<p>The purpose of the XMLSitemap Plugin is to create <a href="https://www.sitemaps.org/">XML sitemap files</a> as supported by all major search engines.  Such a sitemap file is meant for use by search engines to make it easier to find all the content available on your site.  Basically, a sitemape.xml file is a list of the URLs of all content pages on your website. For more information, see <a href="https://www.sitemaps.org/">sitemaps.org</a>. For more information on the different tags available for your XML sitemap see the <a href="https://www.sitemaps.org/protocol.html">XML schema for the Sitemap protocol page</a>.</p>
 
 <h2><a name="configuration">Configuration</a></h2>
 
@@ -48,7 +48,7 @@
 <tr>
   <td><a name="desc_lastmod">lastmod</a></td>
   <td>article, calendar, polls, staticpages</td>
-  <td>Content types to include lastmod element (last modification date) in the XML sitemap file(s).</td>
+  <td>Content types to include lastmod element (last modification date) in the XML sitemap file(s). Please note that the timezone should be set for your Geeklog site or the lastmod value will contain just the date and no time. Either way it will still support the W3C Datetime format. You will find the timezone setting in the Geeklog configuration under "Language and Locale", on the Locale tab.</td>
 </tr>
 </table>
 
