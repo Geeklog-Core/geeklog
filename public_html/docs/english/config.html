@@ -223,7 +223,7 @@ the admin panel.</p>
     <td valign="top">Create a feed file for the articles in rdf_file (0=no, 1=yes)</td></tr>
 <tr><td valign="top"><a name="desc_rdf_file">rdf_file</a></td>
     <td valign="top">HTML path with "/backend/geeklog.rss" suffix</td>
-    <td valign="top">File system path for the feed file. This file allows you to share your site's headlines with others</td></tr>
+    <td valign="top">File system path for the feed file. This file allows you to share your site's headlines with others. <em>Important:</em> This path needs to include the path from $_CONF['path_html'] exactly or the path reported in your rss feed may be incorrect.</td></tr>
 <tr><td valign="top"><a name="desc_rdf_limit">rdf_limit</a></td>
     <td valign="top">10</td>
     <td valign="top">Limit the number of articles to export to the news feed. If the value for this setting is a number, the feed will hold this many articles. If the number is followed by a lower-case 'h' (e.g. 24h) it denotes the number of hours from which to chose the articles.</td></tr>

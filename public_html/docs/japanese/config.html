@@ -200,7 +200,7 @@
     <td valign="top">「はい」にすると、記事のRSSフィードをRDFファイルとして作成します。</td></tr>
 <tr><td valign="top"><a name="desc_rdf_file">フィードの出力ファイル(rdf_file)</a></td>
     <td valign="top">公開ディレクトリのパス + "/backend/geeklog.rss"</td>
-    <td valign="top">RSSフィードファイルを置くファイルシステムのパスを指定します。このファイルを通じて、自分のサイトの記事を他人と共有できるようになります。<strong>このファイルはPHPから書込可能でなければなりません。</strong></td></tr>
+    <td valign="top">RSSフィードファイルを置くファイルシステムのパスを指定します。このファイルを通じて、自分のサイトの記事を他人と共有できるようになります。<strong>このファイルはPHPから書込可能でなければなりません。</strong>  <em>Important:</em> This path needs to include the path from $_CONF['path_html'] exactly or the path reported in your rss feed may be incorrect.</td></tr>
 <tr><td valign="top"><a name="desc_rdf_limit">フィードの最大数(rdf_limit)</a></td>
     <td valign="top">10</td>
     <td valign="top">RSSフィードに出力する記事の数を指定します。数字を設定すると、その数だけ記事が出力されます。数字の後に小文字のhをつけると(たとえば、24h)、公開後それだけの時間が経っていない記事しか出力しません(たとえば、24hにすると、公開後25時間経った記事は出力されません。)。</td></tr>
