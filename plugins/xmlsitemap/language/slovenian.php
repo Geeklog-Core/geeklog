@@ -43,8 +43,9 @@ $LANG_configsections['xmlsitemap'] = array(
 $LANG_confignames['xmlsitemap'] = array(
     'sitemap_file' => 'Ime kazala strani',
     'mobile_sitemap_file' => 'Mobilno ime kazala strani',
+    'include_homepage'    => 'Homepage in Sitemap',
     'types' => 'Vsebina kazala strani',
-    'exclude' => 'Vtièniki za ikljuèitev iz kazala strani',
+    'exclude' => 'Vtiï¿½niki za ikljuï¿½itev iz kazala strani',
     'lastmod' => 'Content Types to include lastmod element',
     'priorities' => 'Priority',
     'frequencies' => 'Frequency',
@@ -69,7 +70,7 @@ $LANG_tab['xmlsitemap'] = array(
 
 $LANG_fs['xmlsitemap'] = array(
     'fs_main' => ' Glavne nastavitve XML kazala strani',
-    'fs_pri' => 'Prioriteta (prednastavljena = 0.5, najnija = 0.0, najvišja = 1.0)',
+    'fs_pri' => 'Prioriteta (prednastavljena = 0.5, najniï¿½ja = 0.0, najviï¿½ja = 1.0)',
     'fs_freq' => 'Pogostost posodobitev',
     'fs_ping' => 'Send ping on updating sitemap',
     'fs_news' => 'News Sitemap Settings'
@@ -79,7 +80,7 @@ $LANG_fs['xmlsitemap'] = array(
 $LANG_configselects['xmlsitemap'] = array(
     0 => array('Da' => 1, 'Ne' => 0),
     1 => array('Da' => 'velja', 'Ne' => 'ne velja'),
-    9 => array('Naprej na stran' => 'item', 'Prikai seznam' => 'list', 'Prikai vstopno stran' => 'home', 'Prikai skrbnikovo stran' => 'admin'),
+    9 => array('Naprej na stran' => 'item', 'Prikaï¿½i seznam' => 'list', 'Prikaï¿½i vstopno stran' => 'home', 'Prikaï¿½i skrbnikovo stran' => 'admin'),
     12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
-    20 => array('vedno' => 'always', 'ob uri' => 'hourly', 'dnevno' => 'daily', 'tedensko' => 'weekly', 'meseèno' => 'monthly', 'letno' => 'yearly', 'nikoli' => 'never', 'hidden' => 'hidden')
+    20 => array('vedno' => 'always', 'ob uri' => 'hourly', 'dnevno' => 'daily', 'tedensko' => 'weekly', 'meseï¿½no' => 'monthly', 'letno' => 'yearly', 'nikoli' => 'never', 'hidden' => 'hidden')
 );

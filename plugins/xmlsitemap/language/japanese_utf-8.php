@@ -43,6 +43,7 @@ $LANG_configsections['xmlsitemap'] = array(
 $LANG_confignames['xmlsitemap'] = array(
     'sitemap_file' => 'サイトマップファイル名',
     'mobile_sitemap_file' => 'モバイルサイトマップ名',
+    'include_homepage'    => 'Homepage in Sitemap',
     'types' => 'サイトマップの内容',
     'exclude' => '除外するプラグイン',
     'lastmod' => '最終編集日',

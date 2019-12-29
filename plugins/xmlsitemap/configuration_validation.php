@@ -37,6 +37,7 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 // XML Sitemap Main Settings
 $_CONF_VALIDATE['xmlsitemap']['sitemap_file'] = array('rule' => 'notEmpty');
 $_CONF_VALIDATE['xmlsitemap']['mobile_sitemap_file'] = array('rule' => 'notEmpty');
+$_CONF_VALIDATE['include_homepage']['include_homepage']   = array('rule' => 'boolean');
 
 // Priority
 
@@ -61,4 +62,3 @@ $_CONF_VALIDATE['xmlsitemap']['ping_bing']   = array('rule' => 'boolean');
 // News Sitemap
 $_CONF_VALIDATE['xmlsitemap']['news_sitemap_file'] = array('rule' => 'notEmpty');
 $_CONF_VALIDATE['xmlsitemap']['news_sitemap_age'] = array('rule' => 'numeric');
-

@@ -37,7 +37,7 @@ function xmlsitemap_update_ConfValues_1_0_1()
         3, 1, 110, true, $me, 3);
 }
 
-function xmlsitemap_update_ConfValues_2_0_1()
+function xmlsitemap_update_ConfValues_2_0_2()
 {
     global $_CONF, $_XMLSMAP_DEFAULT;
 
@@ -54,4 +54,8 @@ function xmlsitemap_update_ConfValues_2_0_1()
     $c->add('news_sitemap_topics', $_XMLSMAP_DEFAULT['news_sitemap_topics'], '%text', 0, 4, null, 130,
         true, $me, 4);
     $c->add('news_sitemap_age',$_XMLSMAP_DEFAULT['news_sitemap_age'],'text',0,4,NULL,140,TRUE, $me, 4);
+
+    // Add homepage to sitemap
+    $c->add('include_homepage', $_XMLSMAP_DEFAULT['include_homepage'],
+        'select', 0, 0, 1, 25, true, $me, 0);
 }

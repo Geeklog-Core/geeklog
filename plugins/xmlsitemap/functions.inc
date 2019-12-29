@@ -154,9 +154,9 @@ function plugin_upgrade_xmlsitemap()
                         DB_query($sql);
                     }
                 }
-                xmlsitemap_update_ConfValues_2_0_1();
+                xmlsitemap_update_ConfValues_2_0_2();
 
-                $current_version = '2.0.2';
+                $current_version = '2.0.2'; // Released with Geeklog v2.2.1
                 break;
 
             default:

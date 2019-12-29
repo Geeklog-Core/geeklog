@@ -58,6 +58,9 @@ $_XMLSMAP_DEFAULT['sitemap_file']        = 'sitemap.xml';
 $_XMLSMAP_DEFAULT['mobile_sitemap_file'] = 'mobile_sitemap.xml';
 $_XMLSMAP_DEFAULT['news_sitemap_file']   = 'news_sitemap.xml';
 
+// Include homepage in sitemap (not news sitemap)
+$_XMLSMAP_DEFAULT['include_homepage'] = false;
+
 // Content types
 $_XMLSMAP_DEFAULT['types'] = array('article', 'calendar', 'polls', 'staticpages');
 
@@ -92,7 +95,7 @@ $_XMLSMAP_DEFAULT['ping_bing']   = true;
 // Array of article topics for news. If none then all topics.
 $_XMLSMAP_DEFAULT['news_sitemap_topics'] = array();
 // In seconds (2 days default)
-$_XMLSMAP_DEFAULT['news_sitemap_age'] = 172800; 
+$_XMLSMAP_DEFAULT['news_sitemap_age'] = 172800;
 
 /**
 * Initialize XMLSitemap plugin configuration
@@ -117,6 +120,8 @@ function plugin_initconfig_xmlsitemap()
             0, 0, null, 10, true, $me, 0);
         $c->add('mobile_sitemap_file', $_XMLSMAP_DEFAULT['mobile_sitemap_file'],
             'text', 0, 0, null, 20, false, $me, 0);
+        $c->add('include_homepage', $_XMLSMAP_DEFAULT['include_homepage'],
+            'select', 0, 0, 1, 25, true, $me, 0);
         $c->add('types', $_XMLSMAP_DEFAULT['types'], '%text', 0, 0, null, 30,
             true, $me, 0);
         $c->add('exclude', $_XMLSMAP_DEFAULT['exclude'], '%text', 0, 0, null,
@@ -143,7 +148,7 @@ function plugin_initconfig_xmlsitemap()
             3, 1, 100, true, $me, 3);
         $c->add('ping_bing', $_XMLSMAP_DEFAULT['ping_bing'], 'select', 0,
             3, 1, 110, true, $me, 3);
-            
+
         // News Sitemap
         $c->add('tab_news', null, 'tab', 0, 4, null, 0, true, $me, 4);
         $c->add('fs_news', null, 'fieldset', 0, 4, null, 0, true, $me, 4);

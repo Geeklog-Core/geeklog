@@ -22,6 +22,7 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Feature] [#806] Switch to RichFileManager since original Filemanager is depreciated [Mystralkk]
 - [Feature] [#869] reCaptcha Plugin - API added which plugins must now use to enable support for reCaptcha [Mystralkk]
 - [Feature] [#898] Can now convert any remote account to local account. If email confirmed and account status is active an email will be sent notfiying user of account change and new password [Tom]
+- [Feature] [#901] XML Sitemap Plugin - Can create a News specific XML Sitemap for Google News Publishers [Tom]
 - [Improvement] [#899] The FCKEditor has been removed since support has been dropped for several years [Tom]
 - [Improvement] [#898] The Google+ OAuth authentication method and scope has been changed to the Google OAuth authentication method and scope [Tom]
 - [Improvement] [#871] Better handling of different theme versions including what version of Geeklog it is for [Tom]

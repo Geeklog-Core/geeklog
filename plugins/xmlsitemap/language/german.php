@@ -43,6 +43,7 @@ $LANG_configsections['xmlsitemap'] = array(
 $LANG_confignames['xmlsitemap'] = array(
     'sitemap_file' => 'Dateiname der Sitemap',
     'mobile_sitemap_file' => 'Dateiname der Mobile Sitemap',
+    'include_homepage'    => 'Homepage in Sitemap',
     'types' => 'Inhalt der Sitemap',
     'exclude' => 'Plugins, die nicht in der Sitemap erscheinen sollen',
     'lastmod' => 'Content Types to include lastmod element',
@@ -69,8 +70,8 @@ $LANG_tab['xmlsitemap'] = array(
 
 $LANG_fs['xmlsitemap'] = array(
     'fs_main' => 'XMLSitemap Haupteinstellung',
-    'fs_pri' => 'Vorrang (Grundeinstellung = 0.5, niedrigste = 0.0, höchste = 1.0)',
-    'fs_freq' => 'Updatehäufigkeit',
+    'fs_pri' => 'Vorrang (Grundeinstellung = 0.5, niedrigste = 0.0, hï¿½chste = 1.0)',
+    'fs_freq' => 'Updatehï¿½ufigkeit',
     'fs_ping' => 'Send ping on updating sitemap',
     'fs_news' => 'News Sitemap Settings'
 );
@@ -81,5 +82,5 @@ $LANG_configselects['xmlsitemap'] = array(
     1 => array('Richtig' => true, 'Falsch' => false),
     9 => array('Weiterleiten zu Seite' => 'item', 'Liste anzeigen' => 'list', 'Home anzeigen' => 'home', 'Admin anzeigen' => 'admin'),
     12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-schreiben' => 3),
-    20 => array('immer' => 'always', 'stündlich' => 'hourly', 'täglich' => 'daily', 'wöchentlich' => 'weekly', 'monatlich' => 'monthly', 'jährlich' => 'yearly', 'nie' => 'never', 'hidden' => 'hidden')
+    20 => array('immer' => 'always', 'stï¿½ndlich' => 'hourly', 'tï¿½glich' => 'daily', 'wï¿½chentlich' => 'weekly', 'monatlich' => 'monthly', 'jï¿½hrlich' => 'yearly', 'nie' => 'never', 'hidden' => 'hidden')
 );

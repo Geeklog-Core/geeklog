@@ -39,6 +39,7 @@ $LANG_configsections['xmlsitemap'] = array(
 $LANG_confignames['xmlsitemap'] = array(
     'sitemap_file' => 'Nome del file per Sitemap',
     'mobile_sitemap_file' => 'Nome del file per Sitemap per Dispositivi Mobili',
+    'include_homepage'    => 'Homepage in Sitemap',
     'types' => 'Contenuto di sitemap',
     'exclude' => 'Estensioni da escludere dal Sitemap',
     'lastmod' => 'Content Types to include lastmod element',
@@ -65,7 +66,7 @@ $LANG_tab['xmlsitemap'] = array(
 
 $LANG_fs['xmlsitemap'] = array(
     'fs_main' => 'Impostazioni Principali di XMLSitemap',
-    'fs_pri' => 'Prioritá (predefinita = 0.5, minima = 0.0, massima = 1.0)',
+    'fs_pri' => 'Prioritï¿½ (predefinita = 0.5, minima = 0.0, massima = 1.0)',
     'fs_freq' => 'Aggiornamento',
     'fs_ping' => 'Send ping on updating sitemap',
     'fs_news' => 'News Sitemap Settings'

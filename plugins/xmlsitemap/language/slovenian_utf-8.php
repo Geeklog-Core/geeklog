@@ -43,6 +43,7 @@ $LANG_configsections['xmlsitemap'] = array(
 $LANG_confignames['xmlsitemap'] = array(
     'sitemap_file' => 'Ime kazala strani',
     'mobile_sitemap_file' => 'Mobilno ime kazala strani',
+    'include_homepage'    => 'Homepage in Sitemap',
     'types' => 'Vsebina kazala strani',
     'exclude' => 'Vtièniki za ikljuèitev iz kazala strani',
     'lastmod' => 'Content Types to include lastmod element',

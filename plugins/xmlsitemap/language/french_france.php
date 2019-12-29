@@ -43,8 +43,9 @@ $LANG_configsections['xmlsitemap'] = array(
 $LANG_confignames['xmlsitemap'] = array(
     'sitemap_file' => 'Nom du fichier Sitemap',
     'mobile_sitemap_file' => 'Nom du fichier Sitemap Mobile',
+    'include_homepage'    => 'Homepage in Sitemap',
     'types' => 'Contenu du sitemap',
-    'exclude' => 'Plugins à exclure du sitemap',
+    'exclude' => 'Plugins ï¿½ exclure du sitemap',
     'lastmod' => 'Content Types to include lastmod element',
     'priorities' => 'Priority',
     'frequencies' => 'Frequency',
@@ -56,7 +57,7 @@ $LANG_confignames['xmlsitemap'] = array(
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(
-    'sg_main' => 'Paramètres principaux'
+    'sg_main' => 'Paramï¿½tres principaux'
 );
 
 $LANG_tab['xmlsitemap'] = array(
@@ -68,9 +69,9 @@ $LANG_tab['xmlsitemap'] = array(
 );
 
 $LANG_fs['xmlsitemap'] = array(
-    'fs_main' => 'XMLSitemap paramètres principaux',
-    'fs_pri' => 'Priorité (defaut = 0.5, basse = 0.0, haute = 1.0)',
-    'fs_freq' => 'Fréquence de mise à jour',
+    'fs_main' => 'XMLSitemap paramï¿½tres principaux',
+    'fs_pri' => 'Prioritï¿½ (defaut = 0.5, basse = 0.0, haute = 1.0)',
+    'fs_freq' => 'Frï¿½quence de mise ï¿½ jour',
     'fs_ping' => 'Send ping on updating sitemap',
     'fs_news' => 'News Sitemap Settings'
 );
@@ -79,7 +80,7 @@ $LANG_fs['xmlsitemap'] = array(
 $LANG_configselects['xmlsitemap'] = array(
     0 => array('Vrai' => 1, 'Faux' => 0),
     1 => array('Vrai' => true, 'Faux' => false),
-    9 => array('Tranférer à la page' => 'item', 'Afficher la liste' => 'list', 'Afficher page d\'accueil' => 'home', 'Afficher page d\'administration' => 'admin'),
-    12 => array('Pas d\'accès' => 0, 'Lecture seule' => 2, 'Lecture Ecriture' => 3),
+    9 => array('Tranfï¿½rer ï¿½ la page' => 'item', 'Afficher la liste' => 'list', 'Afficher page d\'accueil' => 'home', 'Afficher page d\'administration' => 'admin'),
+    12 => array('Pas d\'accï¿½s' => 0, 'Lecture seule' => 2, 'Lecture Ecriture' => 3),
     20 => array('toujours' => 'always', 'Toutes les heures' => 'hourly', 'Quotidienne' => 'daily', 'Hebdomadaire' => 'weekly', 'mensuelle' => 'monthly', 'annuelle' => 'yearly', 'jamais' => 'never', 'hidden' => 'hidden')
 );

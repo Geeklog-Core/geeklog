@@ -483,9 +483,11 @@ class SitemapXML
             }
 
             // Prepend the homepage (feature #997)
-            $sitemap .= '  <url>' . self::LB
-                . '    <loc>' . $this->normalizeURL($_CONF['site_url']) . '</loc>' . self::LB
-                . '  </url>' . self::LB;
+            if (isset($_XMLSMAP_CONF['include_homepage']) && $_XMLSMAP_CONF['include_homepage']) {
+                $sitemap .= '  <url>' . self::LB
+                    . '    <loc>' . $this->normalizeURL($_CONF['site_url']) . '</loc>' . self::LB
+                    . '  </url>' . self::LB;
+            }
 
             foreach ($types as $type) {
                 $result = array();

@@ -43,8 +43,9 @@ $LANG_configsections['xmlsitemap'] = array(
 $LANG_confignames['xmlsitemap'] = array(
     'sitemap_file' => 'Saidikaardi faili nimi',
     'mobile_sitemap_file' => 'Mobile Saidikaardi faili nimi',
+    'include_homepage'    => 'Homepage in Sitemap',
     'types' => 'Saidikaardi sisu',
-    'exclude' => 'Saidikaardilt väljajäätavad pluginad',
+    'exclude' => 'Saidikaardilt vï¿½ljajï¿½ï¿½tavad pluginad',
     'lastmod' => 'Content Types to include lastmod element',
     'priorities' => 'Priority',
     'frequencies' => 'Frequency',
@@ -69,7 +70,7 @@ $LANG_tab['xmlsitemap'] = array(
 
 $LANG_fs['xmlsitemap'] = array(
     'fs_main' => 'XMLSitemap peaseaded',
-    'fs_pri' => 'Prioriteet (vaikimisi = 0,5, madalaim = 0,0, kõrgeim= 1,0)',
+    'fs_pri' => 'Prioriteet (vaikimisi = 0,5, madalaim = 0,0, kï¿½rgeim= 1,0)',
     'fs_freq' => 'Uuendamise sagedus',
     'fs_ping' => 'Send ping on updating sitemap',
     'fs_news' => 'News Sitemap Settings'
@@ -79,7 +80,7 @@ $LANG_fs['xmlsitemap'] = array(
 $LANG_configselects['xmlsitemap'] = array(
     0 => array('Jah' => 1, 'Ei' => 0),
     1 => array('Jah' => true, 'Ei' => false),
-    9 => array('Suuna edasi lehele' => 'item', 'Näita loetelu' => 'list', 'Näita avalehte' => 'home', 'Näita admini lehte' => 'admin'),
-    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
-    20 => array('Alati' => 'always', 'Tunni tagant' => 'hourly', 'päeva tagant' => 'daily', 'nädala tagant' => 'weekly', 'kuu tagant' => 'monthly', 'aasta tagant' => 'yearly', 'mitte kunagi' => 'never', 'hidden' => 'hidden')
+    9 => array('Suuna edasi lehele' => 'item', 'Nï¿½ita loetelu' => 'list', 'Nï¿½ita avalehte' => 'home', 'Nï¿½ita admini lehte' => 'admin'),
+    12 => array('Pole ligipï¿½ï¿½su' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
+    20 => array('Alati' => 'always', 'Tunni tagant' => 'hourly', 'pï¿½eva tagant' => 'daily', 'nï¿½dala tagant' => 'weekly', 'kuu tagant' => 'monthly', 'aasta tagant' => 'yearly', 'mitte kunagi' => 'never', 'hidden' => 'hidden')
 );
