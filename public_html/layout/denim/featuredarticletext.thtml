@@ -2,7 +2,7 @@
 
 <article class="storytext featuredstorytext">
   <header>
-    <h2 class="story_title" itemprop="headline">{start_storylink_anchortag}{story_title}{end_storylink_anchortag}</h2>
+    <h2 class="story_title">{start_storylink_anchortag}{story_title}{end_storylink_anchortag}</h2>
 
     <div class="story_icon">
       {!if email_icon}<a title="{lang_email_story}" href="{email_story_url}" class="uk-icon-hover uk-icon-envelope-o" aria-label="{lang_email_story}"></a>{!endif}
@@ -11,13 +11,13 @@
     </div>
 
     <ul class="story_status">
-      <li itemprop="datePublished">{story_date}</li>
-      <li>{lang_contributed_by} {start_contributedby_anchortag}<span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{contributedby_author}</span></span>{end_contributedby_anchortag}</li>
+      <li>{story_date}</li>
+      <li>{lang_contributed_by} {start_contributedby_anchortag}{contributedby_author}{end_contributedby_anchortag}</li>
       <li>{lang_views} {story_hits}</li>
     </ul>
   </header>
 
-  <div class="story_introtext" itemprop="description">
+  <div class="story_introtext">
 {!if story_anchortag_and_image_no_align}
     <span class="story_image">{story_anchortag_and_image_no_align}</span>
 {!endif}
@@ -28,13 +28,13 @@
   <footer>
 
     {related_topics}
-    
+
     {!if likes_control}
         {# story_display_type: n = full display of article, p = preview in editor, y = topic summary display. #}
         {!!if {story_display_type} == 'n' !!}
         <div class="uk-text-center uk-margin-bottom">{likes_control}</div>
         {!endif}
-    {!endif}    
+    {!endif}
 
     {!if related_articles_by_keyword}
       <hr{xhtml}>

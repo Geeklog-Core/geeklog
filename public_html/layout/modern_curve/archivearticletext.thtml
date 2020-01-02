@@ -1,7 +1,7 @@
 {# begin {templatelocation} #}
 
 <div class="archivestorytext">
-  <h2 class="story_title" itemprop="headline">{story_title_link}</h2>
+  <h2 class="story_title">{story_title_link}</h2>
 
   <ul class="icon">
     <li>{email_icon}</li>
@@ -14,11 +14,11 @@
   <span class="story_image">{story_anchortag_and_image}</span>
 
   <ul class="status">
-    <li itemprop="datePublished">{story_date}</li>
+    <li>{story_date}</li>
     <li>
       <dl>
         <dt>{lang_contributed_by}</dt>
-        <dd>{start_contributedby_anchortag}<span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{contributedby_author}</span></span>{end_contributedby_anchortag}</dd>
+        <dd>{start_contributedby_anchortag}{contributedby_author}{end_contributedby_anchortag}</dd>
       </dl>
     </li>
     <li>
@@ -31,18 +31,18 @@
 
   <div style="clear:both"></div>
 
-  <div class="story_introtext" itemprop="description">
+  <div class="story_introtext">
     {story_text_no_br}
   </div>
 
   {related_topics}
-  
+
   {!if likes_control}
     {# story_display_type: n = full display of article, p = preview in editor, y = topic summary display. #}
     {!!if {story_display_type} == 'n' !!}
     <div class="aligncenter">{likes_control}</div>
     {!endif}
-  {!endif}  
+  {!endif}
 
 {!if navi_list}
   <ul class="navi">
