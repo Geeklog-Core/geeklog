@@ -86,21 +86,21 @@ function theme_config_glnet_curve()
     );
 
     return array(
-        'theme_name'        => 'GLNet Curve',
-        'theme_version'     => '1.0.1',
-        'theme_gl_version'  => '2.2.1',
-        'theme_description' => 'Based on Denim Curve theme by dengen. Only slight changes made. When updating use Denim Curve as it\'s base.',
-        'theme_author'      => 'Laugh',
-        'theme_homepage'    => 'https://www.geeklog.net/',
-        'theme_copyright'   => '2017-2019',
-        'theme_license'     => 'GPL-2.0+',
-        'theme_path_site_logo'     => '', // Used to override path_site_logo config option if needed. Empty or should have absolute path with Logo image filename. See path_site_logo option in config docs for more info
-        'image_type' => 'png',
-        'doctype'    => 'xhtml5',
-        'etag'       => false, // never set this true. instead use $options['enable_etag'] above.
-        'theme_plugins' => '', // EXPERIMENTAL - Not required - Is used by all plugins - You can specify a COMPATIBLE theme (not a child theme) to use templates stored with some plugins. Can have problems if plugins include css and js files via their own functions.php
-        'theme_default' => 'denim',
-        'options'    => $options // Not required, some options of this theme
+        'theme_name'            => 'GLNet Curve',
+        'theme_version'         => '1.0.1',
+        'theme_gl_version'      => '2.2.1',
+        'theme_description'     => 'Based on Denim Curve theme by dengen. Only slight changes made. When updating use Denim Curve as it\'s base.',
+        'theme_author'          => 'Laugh',
+        'theme_homepage'        => 'https://www.geeklog.net/',
+        'theme_copyright'       => '2017-2019',
+        'theme_license'         => 'GPL-2.0+',
+        'theme_path_site_logo'  => '/layout/glnet_curve/images/logo2.png', // Used to override path_site_logo config option if needed. Empty or should have absolute path with Logo image filename. See path_site_logo option in config docs for more info
+        'image_type'            => 'png',
+        'doctype'               => 'xhtml5',
+        'etag'                  => false, // never set this true. instead use $options['enable_etag'] above.
+        'theme_plugins'         => '', // EXPERIMENTAL - Not required - Is used by all plugins - You can specify a COMPATIBLE theme (not a child theme) to use templates stored with some plugins. Can have problems if plugins include css and js files via their own functions.php
+        'theme_default'         => 'denim',
+        'options'               => $options // Not required, some options of this theme
     );
 }
 

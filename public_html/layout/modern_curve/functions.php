@@ -45,18 +45,18 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.php') !== false) {
 function theme_config_modern_curve()
 {
     return array(
-        'theme_name'        => 'Modern Curve',
-        'theme_version'     => '1.0.0',
-        'theme_gl_version'  => '2.2.1',
-        'theme_description' => '',
-        'theme_author'      => '',
-        'theme_homepage'    => 'https://www.geeklog.net/',
-        'theme_copyright'   => '2019',
-        'theme_license'     => 'GPL-2.0+',
-        'theme_path_site_logo'     => '', // Used to override path_site_logo config option if needed. Empty or should have absolute path with Logo image filename. See path_site_logo option in config docs for more info
-        'image_type'        => 'png',
-        'doctype'           => 'xhtml5',
-        'etag'              => true,
+        'theme_name'            => 'Modern Curve',
+        'theme_version'         => '1.0.0',
+        'theme_gl_version'      => '2.2.1',
+        'theme_description'     => '',
+        'theme_author'          => '',
+        'theme_homepage'        => 'https://www.geeklog.net/',
+        'theme_copyright'       => '2019',
+        'theme_license'         => 'GPL-2.0+',
+        'theme_path_site_logo'  => '/layout/modern_curve/images/logo.png', // Used to override path_site_logo config option if needed. Empty or should have absolute path with Logo image filename. See path_site_logo option in config docs for more info
+        'image_type'            => 'png',
+        'doctype'               => 'xhtml5',
+        'etag'                  => true,
     );
 }
 
