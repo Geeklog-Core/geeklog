@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-November ?? 2019 (2.2.1)
+January ?? 2020 (2.2.1)
 ------------
 
 Explanation of list item:
@@ -21,7 +21,7 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Feature] [#876] In Batch Admin, you now can delete users who have not contributed any content. Plugins can support this feature as well [Tom]
 - [Feature] [#806] Switch to RichFileManager since original Filemanager is depreciated [Mystralkk]
 - [Feature] [#869] reCaptcha Plugin - API added which plugins must now use to enable support for reCaptcha [Mystralkk]
-- [Feature] [#898] Can now convert any remote account to local account. If email confirmed and account status is active an email will be sent notfiying user of account change and new password [Tom]
+- [Feature] [#898] Can now convert any remote account to local account. If email confirmed and account status is active an email will be sent notifying user of account change and new password [Tom]
 - [Feature] [#901] XML Sitemap Plugin - Can create a News specific XML Sitemap for Google News Publishers [Tom]
 - [Improvement] [#899] The FCKEditor has been removed since support has been dropped for several years [Tom]
 - [Improvement] [#898] The Google+ OAuth authentication method and scope has been changed to the Google OAuth authentication method and scope [Tom]
@@ -71,7 +71,7 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 
 The following items are Libraries that have been updated that are not handled by Composer.
 
-- [Update] UIkit 3 framework to version 3.2.2 [Mystralkk] [Tom]
+- [Update] UIkit 3 framework to version 3.2.6 [Mystralkk] [Tom]
 - [Update] jQuery to version 3.4.1 (jQuery UI is still at latest version 1.12.1) [Mystralkk]
 - [Update] CKEditor to version 4.12.1 [Mystralkk]
 - [Update] Mobile_Detect class to version 2.8.34 [Tom]
