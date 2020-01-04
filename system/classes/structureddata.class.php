@@ -359,6 +359,13 @@ class StructuredData
 	 */
 	public function set_image_item($type, $id, $url, $width = '', $height = '')
     {
+		global $_CONF;
+		
+		// Check if url local then add site_url if needed...
+		if (substr($url, 0, 1) == "/") {
+			$url = $_CONF['site_url'] . $url;
+		}
+		
         $sd_name = $this->create_name($type, $id);
         $image_item = array(
                 "@type"   => "ImageObject",

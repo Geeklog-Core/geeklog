@@ -440,11 +440,11 @@ the admin panel.</p>
 
     Additional Structured Data properties can be added (or some current ones changed) by using the [structureddata: ] autotag in the actual article, static page, and other supported plugins items. For example:<br /><br />
 
-    <code>[structureddata:image height:60 width:200]{site_url}/images/example.jpg[/structureddata]</code><br /><br />
+    <code>[structureddata:image height:60 width:200]/images/example.jpg[/structureddata]</code><br /><br />
 
     would add the image property to the sturctured data of the page. You could do this multiple times to add more than one image to the Structured Data. Alternately you could also include the id of the page and the type of item it is (plugin name) as well in the autotag. This has been added since some plugins which support Structured Data may not support the ability of the autotag to know what object it is embedded in.<br /><br />
 
-    <code>[structureddata:image type:staticpages id:page_id height:60 width:200]{site_url}/images/example.jpg[/structureddata]</code><br /><br />
+    <code>[structureddata:image type:staticpages id:page_id height:60 width:200]/images/example.jpg[/structureddata]</code><br /><br />
 
     For articles and static pages, the meta description is used for the structured data description property. If you wanted to change this without changing the meta description you could include an autotag like so within your content:<br /><br />
 
