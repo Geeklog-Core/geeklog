@@ -407,11 +407,11 @@
       <br />
       Geeklog will add Structured Data markup (JSON-LD code) to your pages (either in the head of the page or near the actual content as it depends on caching) which increases the understanding of the page by search engines and can enhance your appearance in search results. This does not require any additional changes to your theme (unless your theme contains hard coded conflicting structured data markup). Currently Geeklog supports Structured Data for Breadcrumbs, Articles, and Staticpages. Based on the page (i.e. Article or Staticpage) and structured data type selected, Geeklog will map the data fields to the appropriate Structured Data properties.<br /><br />
 
-      Additional Structured Data properties can be added (or some current ones changed) by using the [structureddata: ] autotag in the actual article, static page, and other supported plugins items. For example:<br /><br />
+      Additional Structured Data properties can be added (or some current ones changed) by using the [structureddata: ] autotag in the actual article, static page, and other supported plugins items. To use the autotag in your content remember to add the security right <code>structureddata.autotag</code> to the appropriate Security Group which gives the user [structureddata: ] autotag usage permissions (this is done by default already for article and static page admins). Here are some examples of using this autotag:<br /><br />
 
       <code>[structureddata:image height:60 width:200]/images/example.jpg[/structureddata]</code><br /><br />
 
-      would add the image property to the sturctured data of the page. You could do this multiple times to add more than one image to the Structured Data. Alternately you could also include the id of the page and the type of item it is (plugin name) as well in the autotag. This has been added since some plugins which support Structured Data may not support the ability of the autotag to know what object it is embedded in.<br /><br />
+      This would add the image property to the sturctured data of the page. You could do this multiple times to add more than one image to the Structured Data. Alternately you could also include the id of the page and the type of item it is (plugin name) as well in the autotag. This has been added since some plugins which support Structured Data may not support the ability of the autotag to know what object it is embedded in.<br /><br />
 
       <code>[structureddata:image type:staticpages id:page_id height:60 width:200]/images/example.jpg[/structureddata]</code><br /><br />
 
