@@ -6227,7 +6227,7 @@ function COM_getRate($occurrences, $timeSpan)
  * @param        int $owner_id     ID of the owner of object
  * @param        int $group_id     ID of group object belongs to
  * @param        int $perm_owner   Permissions the owner has
- * @param        int $perm_group   Permissions the gorup has
+ * @param        int $perm_group   Permissions the group has
  * @param        int $perm_members Permissions logged in members have
  * @param        int $perm_anon    Permissions anonymous users have
  * @param        int $u_id         User ID to get information for. If empty current user.

@@ -123,6 +123,9 @@ function update_ConfValuesFor221()
     // Add switch to enable setting of language id for item if Geeklog Multi Language is setup
     $c->add('new_item_set_current_lang',0,'select',6,28,0,380,TRUE, $me, 28);
 
+    // Add Structured Data Autotag usuage permissions
+    $c->add('autotag_permissions_structureddata', array(2, 2, 0, 0), '@select', 7, 41, 28, 1930, TRUE, $me, 37);
+
     // Add Likes System Tab and config options
     $sg  =  4;      // subgroup
     $fs  = 51;      // fieldset
@@ -274,12 +277,34 @@ function fixDuplicateUsernames221()
         }
     }
 
-
     // Remove old username index and add unique index on username
     $sql = "ALTER TABLE {$_TABLES['users']} DROP INDEX users_username;";
     DB_query($sql);
     $sql = "ALTER TABLE {$_TABLES['users']} ADD UNIQUE KEY users_username (username);";
     DB_query($sql);
+
+    return true;
+}
+
+function addStructuredDataSecurityRight221()
+{
+    global $_TABLES;
+
+    // Add `structureddata.autotag` feature
+    $sql = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES ((SELECT nextval('{$_TABLES['features']}_ft_id_seq')), 'structureddata.autotag', 'Can use the Structured Data Autota', 1)";
+    DB_query($sql, 1);
+    $ftId = DB_insertId(null, $_TABLES['features'] . '_ft_id_seq');
+
+    // Get `Story Admin` group id
+    if (isset($_GROUPS['Story Admin'])) {
+        $grpId = $_GROUPS['Story Admin'];
+    } else {
+        $grpId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Story Admin'");
+    }
+
+    // Give `structureddata.autotag` feature to `Story Admin` group
+    $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$ftId}, {$grpId}) ";
+    DB_query($sql, 1);
 
     return true;
 }

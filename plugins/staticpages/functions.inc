@@ -1673,6 +1673,8 @@ function plugin_upgrade_staticpages()
 
                 staticpages_update_search_cache_1_7_1();
 
+                staticpages_addStructuredDataSecurityRight_1_7_1();
+
                 $current_version = '1.7.1';
                 break;
 

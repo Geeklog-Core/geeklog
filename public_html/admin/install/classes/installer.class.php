@@ -2951,6 +2951,7 @@ class Installer
                         $this->updateDB($_SQL, $progress);
                         update_ConfValuesFor221();
                         fixDuplicateUsernames221();
+                        addStructuredDataSecurityRight221();
                     }
                     $currentGlVersion = '2.2.1';
                     break;

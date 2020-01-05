@@ -40,7 +40,7 @@ $_STRUCTUREDDATA_DEBUG = COM_isEnableDeveloperModeLog('structureddata');
  * Implements the [structureddata:] autotag.
  *
  * @param    string $op      operation to perform
- * @param    string $content item (e.g. topic text), including the autotag
+ * @param    string $content item (e.g. structured data info), including the autotag
  * @param    array  $autotag parameters used in the autotag
  * @param           mixed               tag names (for $op='tagname') or formatted content
  */
@@ -59,18 +59,22 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
         }
         $tagnames = array();
 
-        /*
-        if (isset($_GROUPS['Topic Admin'])) {
-            $group_id = $_GROUPS['Topic Admin'];
-        } else {
-            $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Topic Admin'");
-        }
-        $owner_id = SEC_getDefaultRootUser();
-
-        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_structureddata'][0], $_CONF['autotag_permissions_structureddata'][1], $_CONF['autotag_permissions_structureddata'][2], $_CONF['autotag_permissions_structureddata'][3]) == $flag) {
+        // See if user has access to Structured Data usuage autotag feature
+        if (SEC_hasRights('structureddata.autotag')) {
             $tagnames[] = 'structureddata';
+        } else {
+            // Root Group always has access but COM_getPermTag requires a group id so need to set this to something
+            if (isset($_GROUPS['Root'])) {
+                $group_id = $_GROUPS['Root'];
+            } else {
+                $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
+            }
+            $owner_id = SEC_getDefaultRootUser();
+
+            if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_structureddata'][0], $_CONF['autotag_permissions_structureddata'][1], $_CONF['autotag_permissions_structureddata'][2], $_CONF['autotag_permissions_structureddata'][3]) == $flag) {
+                $tagnames[] = 'structureddata';
+            }
         }
-        */
 
         if (count($tagnames) > 0) {
             return $tagnames;

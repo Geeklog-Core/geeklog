@@ -165,3 +165,15 @@ function staticpages_update_search_cache_1_7_1()
 
     return true;
 }
+
+function staticpages_addStructuredDataSecurityRight_1_7_1()
+{
+    global $_TABLES;
+
+    // Give "structureddata.autotag" feature to Static Page Admin
+    if (DB_count($_TABLES['features'], 'ft_name', 'structureddata.autotag') == 1) {
+        $featureId = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'structureddata.autotag' ");
+        $staticPageAdminId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin' ");
+        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureId}, {$staticPageAdminId}) ");
+    }
+}

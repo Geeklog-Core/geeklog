@@ -54,9 +54,14 @@ require_once '../../lib-common.php';
 
 // For Root users only
 if (!SEC_inGroup('Root')) {
-    $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+    $display = COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
-    COM_errorLog("Someone has tried to access the Geeklog Development Database Upgrade Routine without proper permissions.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . $_SERVER['REMOTE_ADDR'],1);
+    if (isset($_USER['username'])) {
+        $username = $_USER['username'];
+    } else {
+        $username = '';
+    }
+    COM_errorLog("Someone has tried to access the Geeklog Development Database Upgrade Routine without proper permissions.  User id: {$_USER['uid']}, Username: $username, IP: " . $_SERVER['REMOTE_ADDR'],1);
     COM_output($display);
     exit;
 }
@@ -87,6 +92,15 @@ function update_DatabaseFor221()
     // Add structured data type to article table and modified date
     $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `structured_data_type` varchar(40) NOT NULL DEFAULT '' AFTER `commentcode`";
     $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `modified` DATETIME NULL DEFAULT NULL AFTER `date`";
+
+    if (DB_count($_TABLES['features'], 'ft_name', 'structureddata.autotag') == 0) {
+        // Add `structureddata.autotag` feature
+        $sql = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('structureddata.autotag', 'Can use the Structured Data Autotag', 1)";
+        DB_query($sql, 1);
+        $featureId = DB_insertId();
+        $storyAdminId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Story Admin' ");
+        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureId}, {$storyAdminId}) ");
+    }
 
     // New Likes System table
     $_SQL[] = "
@@ -147,6 +161,12 @@ function update_DatabaseFor221()
     // Staticpages
     // Add column for structured data
     $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `structured_data_type` varchar(40) NOT NULL DEFAULT '' AFTER `commentcode`";
+    // Give "structureddata.autotag" feature to Static Page Admin
+    $featureId = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'structureddata.autotag' ");
+    $staticPageAdminId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin' ");
+    if (DB_count($_TABLES['access'], array('acc_ft_id', 'acc_grp_id'), array($featureId, $staticPageAdminId)) == 0) {
+        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureId}, {$staticPageAdminId}) ");
+    }
     $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD page_data TEXT NOT NULL DEFAULT '' AFTER sp_content";
     $plugin_install_updates_file = $_CONF['path'] . 'plugins/staticpages/install_updates.php';
     if (file_exists($plugin_install_updates_file)) {
