@@ -411,7 +411,25 @@ function readCredits($langfile)
     return ($credits);
 }
 
+/**
+ * Strip UTF-8 BOM that lang files could accidentally contain
+ *
+ * @param  string  $langfile
+ */
+function stripUtf8Bom($langfile)
+{
+    if (preg_match('/_utf-8\.php$/i', $langfile)) {
+        $content = @file_get_contents($langfile);
+
+        if ($content !== false) {
+            $content = str_replace("\xEF\xBB\xBF", '', $content);
+            @file_put_contents($langfile, $content);
+        }
+    }
+}
+
 // MAIN
+stripUtf8Bom($langfile);
 $credits = readCredits($langfile);
 
 // output starts here ...
