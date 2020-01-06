@@ -10,7 +10,7 @@
 # Converted to Unicode (UTF-8) by Hesam.H   <info1@4shir.com>
 # ahwaz-Iran
 ###############################################################################
-﻿
+
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'fa';
@@ -2471,6 +2471,7 @@ $LANG_confignames['Core'] = array(
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
     'autotag_permissions_related_items' => '[related_items: ] Permissions',
     'autotag_permissions_block' => '[block: ] Permissions',
+    'autotag_permissions_structureddata' => '[structureddata: ] Permissions',
     'multiple_breadcrumbs' => 'Multiple Breadcrumbs',
     'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
     'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',

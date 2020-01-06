@@ -31,7 +31,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-﻿
+
 $LANG_CHARSET = 'utf-8';
 
 $LANG_ISO639_1 = 'el';
@@ -2491,6 +2491,7 @@ $LANG_confignames['Core'] = array(
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
     'autotag_permissions_related_items' => '[related_items: ] Permissions',
     'autotag_permissions_block' => '[block: ] Permissions',
+    'autotag_permissions_structureddata' => '[structureddata: ] Permissions',
     'multiple_breadcrumbs' => 'Multiple Breadcrumbs',
     'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
     'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',
