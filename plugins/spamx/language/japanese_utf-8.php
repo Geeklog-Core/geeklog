@@ -9,7 +9,7 @@
  * Translated by Ivy (Geeklog Japanese)
  * Copyright (C) 2008 Takahiro Kambe
  * Additional translation to Japanese by taca AT back-street DOT net
- * Copyright (C) 2006-2019 Geeklog.jp group
+ * Copyright (C) 2006-2020 Geeklog.jp group
  * Additional translation to Japanese by Geeklog.jp group info AT geeklog DOT jp
  * 
  * Licensed under GNU General Public License
@@ -41,7 +41,7 @@ $LANG_SX00 = array(
     'clicki' => 'クリックしてブラックリストをインポート',
     'ok' => 'OK',
     'rsscreated' => 'RSSフィードを作成しました',
-    'add1' => 'Added ',
+    'add1' => '',
     'add2' => ' 個のエントリを ',
     'add3' => 'さんのブラックリストから追加しました。',
     'adminc' => '管理者コマンド:',
