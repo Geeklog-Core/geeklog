@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/logo.gif"
+<p><a href="https://www.geeklog.jp" style="background:transparent"><img src="../images/logo.gif"
                                                                        alt="Geeklog Documentation" width="243"
                                                                        height="90"/></a></p>
 <div class="menu"><a href="index.html">Geeklogドキュメント</a> - 変更履歴</div>
@@ -21,41 +21,41 @@
 
 <h2><a name="changes221">Geeklog v2.2.1</a></h2>
 
-<p>Geeklog v2.2.1 includes a number of new features and many bug fixes.</p>
+<p>Geeklog v2.2.1には多数の新機能追加とバグ修正を行っています。</p>
 
-<p>The Geeklog minimum requirements have also changed. Geeklog now supports PHP v7.3. The minimum requirements are:</p>
+<p>Geeklogのインストール要件も変わりました。GeeklogはPHP v7.3をサポートしています。インストール要件は次の通りです:</p>
 
 <ul>
-    <li>PHP v5.6.4 or higher</li>
-    <li>MySQL v4.1.2 or higher (MySQL 5 recommended)</li>
-    <li>PostgreSQL v9.1.7 or later</li>
+    <li>PHP v5.6.4以降</li>
+    <li>MySQL v4.1.2以降(MySQL 5を推奨)</li>
+    <li>PostgreSQL v9.1.7以降</li>
 </ul>
 
-<h3>New Features and Improvements</h3>
+<h3>新機能と改善点</h3>
 
 <ul>
-    <li>Uses PHP built in Session Handling.</li>
-    <li>A new built in configurable Likes and Dislikes system for articles and comments. Plugins can also support this feature.</li>
-    <li>A Cookie Consent feature.</li>
-    <li>Replaced the deprecated Filemanager with Rich Filemanager. This also supports drag and drop.</li>
-    <li>reCaptcha API added which allows any plugin to support it.</li>
-    <li>Geeklog log files can now be limited to a certain size (must be run as a scheduled task).</li>
-    <li>Structured Data directly integrated into Geeklog (with plugin support). Includes initial support for Breadcrumbs, Articles, and Static Pages.</li>
-    <li>For users without a photo you can now automatically generate user image/icon from Username using PHP Dynamically</li>
-    <li>FCKEditor removed since support dropped.</li>
-    <li>Update CKEditor to v4.13.0</li>
-    <li>Update to User Groups editor to better show groups that are inherited and ones that would create a user group security loop.</li>
-    <li>Can now convert any remote account to local account.</li>
-    <li>All 3rd party libraries have been updated to their latest version that support Geeklogs minimum requirements. This includes jQuery, RichFileManager, UiKit (2 and 3), CKEditor, Mobile Detect, etc...</li>
+    <li>PHP組み込みのセッション管理を行うようになりました。</li>
+    <li>記事とコメントに対して、新たに設定可能なLikes(気に入った!)システムが導入されました。プラグインもこの機能をサポートしています。</li>
+    <li>Cookie Consent(クッキー使用通知)を追加しました。</li>
+    <li>非推奨になっていたFilemanagerをRich Filemanagerに置き換えました。ドラッグアンドドロップもサポートしています。</li>
+    <li>どのプラグインでもサポートできるように、reCaptcha APIを追加しました。</li>
+    <li>Geeklogのログファイルを一定サイズに抑えることができるようになりました(スケジュールされたタスクとして実行する必要があります)。</li>
+    <li>構造化データをGeeklogに直接統合しました(プラグインもサポートしています)。パンくずリスト、記事、静的ページを最初からサポートしています。</li>
+    <li>アバター用画像を持たないユーザーに対して、ユーザー名から自動的にユーザー画像/アイコンを生成するようになりました。</li>
+    <li>サポートされなくなったため、FCKEditorを削除しました。</li>
+    <li>CKEditorをv4.13.0に更新しました。</li>
+    <li>他のグループから継承され、セキュリティグループの無限ループを生じるようなグループをより良く表示するために、ユーザーグループエディターを更新しました。</li>
+    <li>リモートアカウントをローカルアカウントに変換できるようになりました。</li>
+    <li>すべてのサードパーティーのライブラリーをGeeklogのインストール要件を満たす最新バージョンに更新しました。これには、jQuery, RichFileManager, UiKit (2と3), CKEditor, Mobile Detectなどを含みます。</li>
 </ul>
 
-<h3>Bug Fixes</h3>
+<h3>バグ修正</h3>
 
-<p>Over 20 major bugs have also been fixed. For Geeklog upgrades, some of these bugs require extra changes to the database (more information is included before performing the upgrade with the Geeklog Install). This includes the list below:</p>
+<p>20以上の大きなバグを修正しました。Geeklogをアップグレードする際に、このうちいくつかのバグではデータベースを特別に修正する必要があります。(詳しくは、インストーラーでアップグレードの際に表示される情報をご覧ください) 以下に一覧があります:</p>
 
 <ul>
-    <li>Incorrect user security group assignments for groups "Root" and "All Users". These will be fixed along with the security group assignments for the "Admin" (2) user.</li>
-    <li>Possible duplicate Usernames and Usernames with trailing spaces. Duplicates will be renamed but local account users may need to use the "Forget Your Password" to retrieve their new username.</li>
+    <li>"Root"と"All Users"グループに対して、不適切なセキュリティグループの割り当てが行われていました。"Admin"ユーザー(ユーザーID: 2)へのセキュリティグループの割り当てとともに修正されます。</li>
+    <li>末尾にスペースを含むユーザー名とそうでないユーザー名で重複が生じていました。重複したユーザー名はリネームされますが、ローカルアカウントのユーザーは新しいユーザー名を得るために「パスワード再設定」リンクを使用する必要があるでしょう。</li>
 </ul>
 
 <h2><a name="changes220">Geeklog 2.2.0</a></h2>
@@ -353,7 +353,7 @@
         により開発されました。
     </li>
     <li>セキュリティートークン (CSRFプロテクション) が期限切れになったとき、ユーザーは<a
-            href="http://wiki.geeklog.net/index.php/Re-Authentication_for_expired_Tokens">再認証</a>できます。
+            href="https://wiki.geeklog.net/index.php/Re-Authentication_for_expired_Tokens">再認証</a>できます。
         再認証で成功すれば、編集内容を失うことなく操作を継続できます。
     </li>
     <li>Rootユーザーにだけ選択が許可されていたHTML フィルターのスキップは、アクセス権として独立しました。</li>
@@ -402,7 +402,7 @@
     <li>記事の中など<a href="polls.html#autotags">自動タグ</a>が使用できるところならどこにでもアンケートを埋め込めるようになりました。</li>
     <li>インストールスクリプトの移行オプションを既存のデータベースにも適用できるようになりました(つまり、URLやパスを設定し直すためにダンプしたデータベースを読み込む必要はありません。)。</li>
     <li>データベースバックアップの管理者パネルで、データベースを最適化し、テーブルをInnoDBに変換するオプションがサポートされました(MySQLのみ)。</li>
-    <li><a href="http://wiki.geeklog.net/index.php/Timezone_Support">タイムゾーンのサポート</a>を改善して、ユーザーは独自のタイムゾーンを実際に設定できるようになりました。
+    <li><a href="https://wiki.geeklog.net/index.php/Timezone_Support">タイムゾーンのサポート</a>を改善して、ユーザーは独自のタイムゾーンを実際に設定できるようになりました。
     </li>
     <li>小規模なセキュリティの強化:
         <ul>
@@ -487,11 +487,11 @@
         5へのアップグレードを検討してください。
     </li>
     <li><a href="http://www.fckeditor.net/">FCKeditor</a>を2.6.4.1を同梱しました。</li>
-    <li>新しいプラグイン「<a href="http://wiki.geeklog.net/index.php/XMLSitemap_Plugin">XMLSitemap</a>」を同梱しました。このプラグインは、すべての主要な検索エンジンがサポートしている<a
+    <li>新しいプラグイン「<a href="https://wiki.geeklog.net/index.php/XMLSitemap_Plugin">XMLSitemap</a>」を同梱しました。このプラグインは、すべての主要な検索エンジンがサポートしている<a
             href="http://www.sitemaps.org/">XMLのサイトマップ・ファイル</a>を自動生成します。プラグインはmystral-kk氏※により開発されました。<br/>
         (※訳者註：Geeklog Japanコア開発者です。)
     </li>
-    <li>いくつかの<a href="http://wiki.geeklog.net/index.php/New_Plugin_API_Functions_in_Geeklog_1.6.0">新しいプラグインAPIの機能</a>が追加されて、既存のプラグインAPIも拡張されてました。
+    <li>いくつかの<a href="https://wiki.geeklog.net/index.php/New_Plugin_API_Functions_in_Geeklog_1.6.0">新しいプラグインAPIの機能</a>が追加されて、既存のプラグインAPIも拡張されてました。
     </li>
     <li>他の言語に翻訳できるように、含めているドキュメントの場所を<span class="tt">docs/english</span>に移動しました。Geeklogの中のドキュメントへのリンクは自動的に、そのときに利用している言語に応じたリンクとなります。(適切な翻訳がみつからなければ、英語のドキュメントを表示します。)
     </li>
@@ -681,7 +681,7 @@
     <li><a href="calendar.html">カレンダープラグイン</a>: 以前は本体に組み込まれていたカレンダーとイベント機能は今回からプラグインとして分離されました。Geeklog 1.4.0で実施された<a
             href="polls.html">アンケート</a>と<a href="links.html">リンク</a>機能に始まるプラグイン化の流れはこれで終了し、Geeklogのモジュール化が進みました。サイトに不要な機能を無効にしたり差し替えることが容易になっています。
     </li>
-    <li><a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">多言語サポート(Multi-language support)</a>：
+    <li><a href="https://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">多言語サポート(Multi-language support)</a>：
         Geeklogを用いて真の多言語サイトの構築が可能になりました。ナビゲーションだけでなくサイトのコンテンツもまた、言語を切り替えれば追随します。
     </li>
     <li><a href="http://www.fckeditor.net/">FCKeditor</a> 2.3.1を同梱しました。画像をアップロードするファイルマネージャを再び同梱するようにしました。</li>
@@ -1286,7 +1286,7 @@
 <p>寄稿者: Gene Wood、 Blaine Lang、 Tom Willet、及び Roger Websterが本リリースに寄稿いたしました。</p>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br/>
+    <a href="https://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="https://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br/>
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 
