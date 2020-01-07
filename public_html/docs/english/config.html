@@ -429,11 +429,11 @@ the admin panel.</p>
   <td valign="top">'core-article'</td>
   <td valign="top">Default Structured Data Type for new articles. Structured Data markup will only be included when viewing the full article. Some plugins may also use this as the default. Supported types include:<br /><br />
     <ul>
-    <li>'none' => None</li>
-    <li>'core-webpage' => WebPage</li>
-    <li>'core-article' => Article</li>
-    <li>'core-newsarticle' => NewsArticle</li>
-    <li>'core-blogposting' => BlogPosting</li>
+    <li>'none' =&gt; None</li>
+    <li>'core-webpage' =&gt; WebPage</li>
+    <li>'core-article' =&gt; Article</li>
+    <li>'core-newsarticle' =&gt; NewsArticle</li>
+    <li>'core-blogposting' =&gt; BlogPosting</li>
     </ul>
     <br />
     Geeklog will add Structured Data markup (JSON-LD code) to your pages (either in the head of the page or near the actual content as it depends on caching) which increases the understanding of the page by search engines and can enhance your appearance in search results. This does not require any additional changes to your theme (unless your theme contains hard coded conflicting structured data markup). Currently Geeklog supports Structured Data for Breadcrumbs, Articles, and Staticpages. Based on the page (i.e. Article or Staticpage) and structured data type selected, Geeklog will map the data fields to the appropriate Structured Data properties.<br /><br />
@@ -442,7 +442,7 @@ the admin panel.</p>
 
     <code>[structureddata:image height:60 width:200]/images/example.jpg[/structureddata]</code><br /><br />
 
-    This would add the image property to the sturctured data of the page. You could do this multiple times to add more than one image to the Structured Data. Alternately you could also include the id of the page and the type of item it is (plugin name) as well in the autotag. This has been added since some plugins which support Structured Data may not support the ability of the autotag to know what object it is embedded in.<br /><br />
+    This would add the image property to the structured data of the page. You could do this multiple times to add more than one image to the Structured Data. Alternately you could also include the id of the page and the type of item it is (plugin name) as well in the autotag. This has been added since some plugins which support Structured Data may not support the ability of the autotag to know what object it is embedded in.<br /><br />
 
     <code>[structureddata:image type:staticpages id:page_id height:60 width:200]/images/example.jpg[/structureddata]</code><br /><br />
 
@@ -2195,7 +2195,7 @@ the admin panel.</p>
 
 <h2><a name="filemanager">File Manager</a></h2>
 
-<p>Geeklog-2.1.0 integrated the <a href="https://github.com/simogeo/Filemanager">Filemanager</a>, an open-source file manager release under MIT license by Simon Georget.</p>
+<p>Geeklog-2.2.1 integrated the <a href="https://github.com/servocoder/RichFilemanager">Rich Filemanager</a>, an open-source file manager release under MIT license by Pavel Solomienko.</p>
 <p>Only Root Admins, Story Admins and Static Page Admins can use the Filemanager on a fresh install.</p>
 
 <h3><a name="filemanager_general">File Manager: General Settings</a></h3>

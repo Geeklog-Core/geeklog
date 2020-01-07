@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/logo.gif" alt="Geeklog Documentation" width="243" height="90" /></a></p>
+<p><a href="https://www.geeklog.jp" style="background:transparent"><img src="../images/logo.gif" alt="Geeklog Documentation" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklogドキュメント</a> - コンフィギュレーション</div>
 
 <h1>Geeklogのコンフィギュレーション</h1>
@@ -24,7 +24,7 @@
 <li><a href="#db-config.php">db-config.php</a></li>
 <li><a href="#siteconfig.php">siteconfig.php</a></li>
 </ul>
-<p>この2つのファイルはGeeklogをインストールするときに更新されるだけなので、ふつう、手動で編集する必要はありません。</p>
+<p>この2つのファイルは、Geeklogをインストールするときに更新されるだけなので、手動で編集する必要はありません。</p>
 
 <h1>コンフィギュレーションオプション</h1>
 
@@ -67,14 +67,14 @@
   <td valign="top">Another Nifty Geeklog Site</td>
   <td valign="top">サイトのスローガンを指定します。HTMLの&lt;title&gt;フィールドに追加されます。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_path_site_logo">path_site_logo</a></td>
-  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
-  <td valign="top">Logo image filename and absolute path. For example if you use the Denim Three theme this would be <code>/layout/denim_three/images/logo2.png</code>. This information is used along with the site name
-  by the Publisher property with Structured Data. This option is not dependent on what theme is selected and will be used for all themes (unless a theme has an override for this option).  For more information also see the section on <a href="#desc_structured_data_type_default">Structured Data</a> below.</td></tr>
+  <td valign="top"><a name="desc_path_site_logo">サイトロゴのパス(path_site_logo)</a></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
+  <td valign="top">ロゴ画像のファイル名と絶対パス。たとえば、Denim Threeテーマを使う場合、この値は <code>/layout/denim_three/images/logo2.png</code> になるでしょう。この情報は、サイト名とともに
+  構造化データのPublisherプロパティで使用されます。このオプションは、現在選択されているテーマだけでなく、他のすべてのテーマでも使用されます(テーマがこのオプションを上書きしない限り)。詳しくは、下記の<a href="#desc_structured_data_type_default">構造化データ</a>をご覧ください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_site_disabled_msg">サイト停止のメッセージまたはURL(site_disabled_msg)</a></td>
   <td valign="top">'Geeklog Site is down. Please come back soon.'</td>
-  <td valign="top">Geeklogのサイトを一時的に閉鎖するときに表示するメッセージを指定します。メッセージが"http:"で始まる場合、サイトの訪問者はそのURLへリダイレクトされます。<br />
+  <td valign="top">Geeklogのサイトを一時的に閉鎖するときに表示するメッセージを指定します。メッセージが"https:"ないし"http:"で始まる場合、サイトの訪問者はそのURLへリダイレクトされます。<br />
     <strong>注:</strong>実際にサイトを閉鎖するかどうかを決める設定は、<span class="tt">siteconfig.php</span>ファイルの中にあります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_owner_name">管理者名(owner_name)</a></td>
@@ -115,23 +115,19 @@
 <tr>
     <td valign="top"><a name="desc_cookie_consent">クッキー使用通知を有効にする(cookie_consent)</a></td>
     <td valign="top">はい</td>
-    <td valign="top">クッキー使用通知を有効にします。 Themes that support it will use the About Cookies Link (if it is not empty) for the "Learn More" button of the consent. See the <a href="#desc_about_cookies_link">About Cookies Link</a> below for more information.</td></tr>
+    <td valign="top">クッキー使用通知を有効にします。クッキー使用通知をサポートするテーマは、「クッキーについて」のリンクが空白ではない場合、「もっと詳しく」のボタンに使用します。詳しくは、下記の<a href="#desc_about_cookies_link">「クッキーについて」のリンク</a>をご覧ください。</td></tr>
 <tr>
-    <td valign="top"><a name="desc_about_cookies_link">about_cookies_link</a></td>
-    <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
-    <td valign="top">An external or internal link to the About Cookies page. If linking to an internal page please do not include the domain of your site. For example to link to an article, you would add: <code>/article.php?story=some_article_id</code>. If <a href="#desc_cookie_consent">Cookie Consent</a> is enabled above, Themes that support it will use this link (if it is not empty) for the "Learn More" button of the consent.</td></tr>
+    <td valign="top"><a name="desc_about_cookies_link">「クッキーについて」のリンク(about_cookies_link)</a></td>
+    <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
+    <td valign="top">「クッキーについて」のページへの外部リンクないし内部リンクを指定します。内部リンクを指定する場合は、サイトのドメイン名を含めないでください。たとえば、記事へリンクする場合には <code>/article.php?story=記事ID</code> のように指定します。<a href="#desc_cookie_consent">クッキー使用通知</a> が有効な場合、サポートするテーマは(空白でなければ)このリンクを「もっと詳しく」ボタンのリンクとして使用します。</td></tr>
 <tr>
-    <td valign="top"><a name="desc_about_cookies_link">about_cookies_link</a></td>
-    <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
-    <td valign="top">An external or internal link to the About Cookies page. If linking to an internal page please do not include the domain of your site. For example to link to an article, you would add: <code>/article.php?story=some_article_id</code></td></tr>
+    <td valign="top"><a name="desc_terms_of_use_link">「使用条件」のリンク(terms_of_use_link)</a></td>
+    <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
+    <td valign="top">「使用条件」のページへの外部リンクないし内部リンクを指定します。内部リンクを指定する場合は、サイトのドメイン名を含めないでください。たとえば、静的ページへリンクする場合には <code>/staticpages/index.php?page=静的ページのID</code> のように指定します。</td></tr>
 <tr>
-    <td valign="top"><a name="desc_terms_of_use_link">terms_of_use_link</a></td>
-    <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
-    <td valign="top">An external or internal link to the Terms of Use or Terms of Service page. If linking to an internal page please do not include the domain of your site. For example to link to a page, you would add: <code>/staticpages/index.php?page=some_page_id</code></td></tr>
-<tr>
-    <td valign="top"><a name="desc_privacy_policy_link">privacy_policy_link</a></td>
-    <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
-    <td valign="top">An external or internal link to the Privacy Policy page. If linking to an internal page please do not include the domain of your site. For example to link to a page, you would add: <code>/staticpages/index.php?page=some_page_id</code></td></tr>
+    <td valign="top"><a name="desc_privacy_policy_link">「プライバシーポリシー」のリンク(privacy_policy_link)</a></td>
+    <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
+    <td valign="top">「プライバシーポリシー」のページへの外部リンクないし内部リンクを指定します。内部リンクを指定する場合は、サイトのドメイン名を含めないでください。たとえば、静的ページへリンクする場合には <code>/staticpages/index.php?page=静的ページのID</code> のように指定します。</td></tr>
 </table>
 
 <h3><a name="site_mail">サイト: メール</a></h3>
@@ -394,20 +390,20 @@
   <td valign="top">はい</td>
   <td valign="top">「はい」にすると、新規記事とユーザーによる投稿の際にデフォルトで話題アイコンを表示するようになります。</td></tr>
 <tr>
-    <td valign="top"><a name="desc_structured_data_type_default">structured_data_type_default</a></td>
+    <td valign="top"><a name="desc_structured_data_type_default">構造化データタイプの既定値(structured_data_type_default)</a></td>
     <td valign="top">'core-article'</td>
-    <td valign="top">Default Structured Data Type for new articles. Structured Data markup will only be included when viewing the full article. Some plugins may also use this as the default. Supported types include:<br /><br />
+    <td valign="top">新規記事に対する構造化データタイプの既定値。記事全体を閲覧するときに限り、構造化データのマークアップが追加されます。プラグインの中にはこの設定値を既定値として使うものがあるでしょう。サポートされるタイプは:<br /><br />
       <ul>
-      <li>'none' => None</li>
-      <li>'core-webpage' => WebPage</li>
-      <li>'core-article' => Article</li>
-      <li>'core-newsarticle' => NewsArticle</li>
-      <li>'core-blogposting' => BlogPosting</li>
+      <li>'none' =&gt; なし</li>
+      <li>'core-webpage' =&gt; Webページ</li>
+      <li>'core-article' =&gt; 記事</li>
+      <li>'core-newsarticle' =&gt; ニュース記事</li>
+      <li>'core-blogposting' =&gt; ブログ記事</li>
       </ul>
       <br />
-      Geeklog will add Structured Data markup (JSON-LD code) to your pages (either in the head of the page or near the actual content as it depends on caching) which increases the understanding of the page by search engines and can enhance your appearance in search results. This does not require any additional changes to your theme (unless your theme contains hard coded conflicting structured data markup). Currently Geeklog supports Structured Data for Breadcrumbs, Articles, and Staticpages. Based on the page (i.e. Article or Staticpage) and structured data type selected, Geeklog will map the data fields to the appropriate Structured Data properties.<br /><br />
+      Geeklogは構造化データマークアップ(JSON-LDコード)をページに追加します(キャッシュの設定に応じて、ページの先頭か実際のコンテンツの近くかのいずれか)。これにより、検索エンジンがページをより良く理解できるようになり、検索結果に表示されやすくなります。テーマの変更は不要です(テーマに互換性のない構造化データをハードコードしていなければ、ですが)。現時点では、Geeklogはパンくずリスト、記事、静的ページで構造化データをサポートしています。ページの種類(記事か静的ページか)と選択した構造化データタイプに基づいて、Geeklogはデータフィールドを適切な構造化データのプロパティに割り当てます。<br /><br />
 
-      Additional Structured Data properties can be added (or some current ones changed) by using the [structureddata: ] autotag in the actual article, static page, and other supported plugins items. To use the autotag in your content remember to add the security right <code>structureddata.autotag</code> to the appropriate Security Group which gives the user [structureddata: ] autotag usage permissions (this is done by default already for article and static page admins). Here are some examples of using this autotag:<br /><br />
+        [structureddata: ] 自動タグを使用することで、記事や静的ページ、サポートしているプラグインでは、構造化データのプロパティをさらに追加したり、現在値を変えることもできます。コンテンツで自動タグを使用するには、ユーザーに [structureddata: ] 自動タグの使用権を与える <code>structureddata.autotag</code>権限を忘れずに適切なセキュリティグループに追加してください。(記事と静的ページの管理者には既に与えられています) 以下はこの自動タグの使用例です:<br /><br />
 
       <code>[structureddata:image height:60 width:200]/images/example.jpg[/structureddata]</code><br /><br />
 
@@ -829,7 +825,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a href="http://oauth.net/">OAuth</a>によるログインを許可するかどうかを設定します。「はい」にすると、通常のログインフォームの下にOAuthログインが表示されます。<br />
     <strong>注:</strong>現在はOAuth 1.0, 2.0をサポートしています。現在サポートしているのは、Facebook、Twitter、LinkedIn, Google, Microsoft, Yahooです。<br />特定のログイン方法を有効にするには、<span class="tt">system/classes/oauth</span>に認証のクラスが必要です。あなたがもしFacebookのみで、Twitterだけにしたければ(逆もまた同様)、単に
     欲しくないクラスのファイルを削除するか、以下のオプションを使用してください。また、以下のオプションで正しいConsumer KeyとConsumer Secretも設定しなければなりません。PHPのOpenSSL拡張を有効にする必要があります。<br />
-    さらに詳しい情報は<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
+    さらに詳しい情報は<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_google_login">GoogleのOAuthをを有効にする(google_login)</a></td>
   <td valign="top">いいえ</td>
@@ -839,12 +835,12 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_google_consumer_key">Google OAuth Consumer Key(google_consumer_key)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Google OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="https://code.google.com/apis/console">Google Developers Console</a>を参照してください。<br />
-  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
+  さらに詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_google_consumer_secret">Google OAuth Consumer Secret(google_consumer_secret)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Google OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="https://code.google.com/apis/console">Google Developers Console</a>を参照してください。<br />
-  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
+  さらに詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_login">FacebookのOAuthを有効にする(facebook_login)</a></td>
   <td valign="top">いいえ</td>
@@ -853,12 +849,12 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_facebook_consumer_key">Facebook OAuth Application ID(facebook_consumer_key)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Facebook OAuthログインを有効にする場合に入力してください。アプリケーションを作成してkeyとsecretを取得するには、<a href="http://developers.facebook.com/setup/">Facebook Developers page</a>を参照してください。<br />
-  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
+  さらに詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_consumer_secret">Facebook OAuth Application Secret(facebook_consumer_secret)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Facebook OAuthログインを有効にする場合に入力してください。アプリケーションを作成してkeyとsecretを取得するには、<a href="http://developers.facebook.com/setup/">Facebook Developers page</a>を参照してください。<br />
-  より詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
+  より詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_login">LinkedInのOAuthを有効にする(linkedin_login)</a></td>
   <td valign="top">いいえ</td>
@@ -867,12 +863,12 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_linkedin_consumer_key">LinkedIn OAuth API Key(linkedin_consumer_key)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">LinkedIn OAuthログインを有効にする場合に入力してください。アプリケーションを作成してAPI KeyとSecret Keyを取得するには、<a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a>を参照してください。<br />
-  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
+  さらに詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_consumer_secret">LinkedIn OAuth Secret Key(linkedin_consumer_secret)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">LinkedIn OAuthログインを有効にする場合に入力してください。アプリケーションを作成してAPI KeyとSecret Keyを取得するには、<a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a>を参照してください。<br />
-  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
+  さらに詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_login">TwitterのOAuthを有効にする(twitter_login)</a></td>
   <td valign="top">いいえ</td>
@@ -881,27 +877,27 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_twitter_consumer_key">Twitter OAuth Consumer Key(twitter_consumer_key)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Twitter OAuthログインを有効にする場合に入力してください。アプリケーションを作成してconsumer Keyとsecretを取得するには、<a href="https://twitter.com/apps">Twitter Application page</a>を参照してください。<br />
-  より詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
+  より詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_consumer_secret">Twitter OAuth Consumer Secret(twitter_consumer_secret)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Twitter OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="https://twitter.com/apps">Twitter Application page</a>を参照してください。<br />
-  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
+  さらに詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_microsoft_login">MicrosoftのOAuthを有効にする(microsoft_login)</a></td>
   <td valign="top">いいえ</td>
-  <td valign="top">「はい」にすると、Microsoftのアカウントを用いてGeeklogにOAuthdeでログインできるようになります。
+  <td valign="top">「はい」にすると、Microsoftのアカウントを用いてGeeklogにOAuthでログインできるようになります。
 管理者はMicrosoftのConsumer KeyとConsumer Secretを取得して設定しなければなりません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_microsoft_consumer_key">Microsoft OAuth Consumer Key(microsoft_consumer_key)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Microsoft OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a>を参照してください。<br />
-  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
+  さらに詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_microsoft_consumer_secret">Microsoft OAuth Consumer Secret(microsoft_consumer_secret)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Microsoft OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a>を参照してください。<br />
-  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
+  さらに詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_yahoo_login">YahooのOAuthを有効にする(yahoo_login)</a></td>
   <td valign="top">いいえ</td>
@@ -911,12 +907,12 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_yahoo_consumer_key">Yahoo OAuth Consumer Key(yahoo_consumer_key)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Yahoo OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="http://developer.yahoo.com">Yahoo Developer page</a>を参照してください。<br />
-  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
+  さらに詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_yahoo_consumer_secret">Yahoo OAuth Consumer Secret(yahoo_consumer_secret)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Yahoo OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="http://developer.yahoo.com">Yahoo Developer page</a>を参照してください。<br />
-  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
+  さらに詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_github_login">GitHubのOAuthを有効にする(github_login)</a></td>
   <td valign="top">いいえ</td>
@@ -926,12 +922,12 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_github_consumer_key">GitHub OAuth Consumer Key(github_consumer_key)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">GitHub OAuthログインを有効にする場合に入力してください。アプリケーションを作成してClient IDとClient Secretを取得するには、<a href="https://developer.github.com/v3/oauth/">GitHub Developer page</a>を参照してください。<br />
-  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
+  さらに詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_github_consumer_secret">GitHub OAuth Consumer Secret(github_consumer_secret)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">GitHub OAuthログインを有効にする場合に入力してください。アプリケーションを作成してClient IDとClient Secretを取得するには、<a href="https://developer.github.com/v3/oauth/">GitHub Developer page</a>を参照してください。<br />
-  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
+  さらに詳しい情報は、<a href="https://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_aftersave_user">ユーザー保存後の画面遷移(aftersave_user)</a></td>
   <td valign="top">作成したページを表示する</td>
@@ -1390,7 +1386,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 
     多言語をサポートするコンテンツ(話題、記事、ブロック、静的ページなど)を作成するときには、
     そのコンテンツのIDがここで指定したショートカットになるようにします('storyid_en'や'storyid2_de'など)。こうすることで、そのコンテンツが指定した言語と結びつけられます。
-    多言語コンテンツの詳しい情報については、<a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">Wiki</a>をごらんください。<br /><br />
+    多言語コンテンツの詳しい情報については、<a href="https://wiki.geeklog.net/index.php/Multi-Language_Support">Wiki</a>をごらんください。<br /><br />
 
     多言語サポートを有効にすると、hreflangリンク要素がその記事、静的ページ、話題(と、サポートしている場合は、サードパーティーのプラグイン)に対して出力されます。
     この要素が出力されるのは、記事のcanonicalなリンクと話題の最初のページだけです。<br /><br />
@@ -1405,7 +1401,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     両方の設定を同時に有効にする(多言語コンテンツ)か無効にする(単一言語コンテンツ)必要があります。</td></tr>
 </table>
 
-<p>Geeklog Wikiの<a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">多言語サポート(Multi-Language Support)</a>も参照してください。</p>
+<p>Geeklog Wikiの<a href="https://wiki.geeklog.net/index.php/Multi-Language_Support">多言語サポート(Multi-Language Support)</a>も参照してください。</p>
 
 <h3><a name="languages_locale">言語とロケール: ロケール</a></h3>
 
@@ -1537,7 +1533,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_notification">通知(notification)</a></td>
   <td valign="top"><em>(空リスト)</em></td>
-  <td valign="top">新規の記事・コメントが投稿された場合、トラックバック・ピングバックを受信した場合、新規ユーザーが登録された場合（とユーザーがアカウント情報を更新した場合)に、サイトのメールアドレス<span class="tt">$_CONF['site_email']</span>に通知メールを送信するリストを指定します。この<span class="tt">リスト</span>に登録できるのは、
+  <td valign="top">新規の記事・コメントが投稿された場合、トラックバック・ピングバックを受信した場合、新規ユーザーが登録された場合(とユーザーがアカウント情報を更新した場合)に、サイトのメールアドレス<span class="tt">$_CONF['site_email']</span>に通知メールを送信するリストを指定します。この<span class="tt">リスト</span>に登録できるのは、
         <ul>
             <li><span class="tt">story</span></li>
             <li><span class="tt">comment</span></li>
@@ -1895,7 +1891,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">WebサービスAPIでAtomフィードをリクエストする場合の記事の最大数を指定します。</td></tr>
 </table>
 
-<p>Geeklog Wikiの<a href="http://wiki.geeklog.net/index.php/Using_the_Webservices">Webサービスを使用する(Using the Webservices)</a>も参照してください。</p>
+<p>Geeklog Wikiの<a href="https://wiki.geeklog.net/index.php/Using_the_Webservices">Webサービスを使用する(Using the Webservices)</a>も参照してください。</p>
 
 <h3><a name="misc_topics">その他: パンくずリスト</a></h3>
 
@@ -1927,7 +1923,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 
 <h2><a name="filemanager">ファイルマネージャー(File Manager)</a></h2>
 
-<p>Geeklog-2.1.0では、MITライセンスでSimon Georgetが公開しているオープンソースのファイルブラウザー <a href="https://github.com/simogeo/Filemanager">Filemanager</a> を組み込みました。</p>
+<p>Geeklog-2.2.1では、MITライセンスでPavel Solomienkoが公開しているオープンソースのファイルブラウザー <a href="https://github.com/servocoder/RichFilemanager">Rich Filemanager</a> を組み込みました。</p>
 <p>新規インストール時には、Root管理者、記事管理者(Story Admins)、静的ページ管理者(Static Page Admins)だけがファイルマネージャーを使用できます。</p>
 
 <h3><a name="filemanager_general">ファイルマネージャー: 全般</a></h3>
@@ -2107,7 +2103,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_default_charset">default_charset</a></td>
   <td valign="top">iso-8859-1</td>
   <td valign="top">HTMLページを表示したり、Eメールを送信するときにGeeklogが使用する文字セットのエンコーディングを指定します。言語ファイルによってエンコーディングが設定されていない場合にのみ、この設定値が使用されます。<br />
-    <a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">多言語サポート(multi-language)</a>を行うサイトの場合、 <code>utf-8</code> をデフォルトとして使用することが推奨されています。</td></tr>
+    <a href="https://wiki.geeklog.net/index.php/Multi-Language_Support">多言語サポート(multi-language)</a>を行うサイトの場合、 <code>utf-8</code> をデフォルトとして使用することが推奨されています。</td></tr>
 <tr>
   <td valign="top"><a name="desc_rootdebug_siteconfig">rootdebug</a></td>
   <td valign="top"><em>(無効)</em></td>
@@ -2334,7 +2330,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <code>localdef</code> コマンドに関する詳細は、<a href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a><br />を参照してください。</p>
 
 <h3>日時のフォーマット</h3>
-<p>(訳注：以下の表現は、<a href="http://jp.php.net/manual/ja/function.strftime.php">PHPマニュアル</a>の表現を参考に、一部を修正しています。)</p>
+<p>(訳注: 以下の表現は、<a href="https://www.php.net/manual/ja/function.strftime.php">PHPマニュアル</a>の表現を参考に、一部を修正しています。)</p>
 
 <ul>
   <li><span class="tt">%a - 短縮された曜日の現在のロケールに基づいた名前</span></li>
@@ -2373,7 +2369,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 </ul>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
+    <a href="https://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="https://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 
