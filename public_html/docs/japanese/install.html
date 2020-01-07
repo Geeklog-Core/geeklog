@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/logo.gif" alt="Geeklog Documentation" width="243" height="90" /></a></p>
+<p><a href="https://www.geeklog.jp" style="background:transparent"><img src="../images/logo.gif" alt="Geeklog Documentation" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklogドキュメント</a> - インストール方法</div>
 
 <h1>Geeklogのインストール</h1>
@@ -67,8 +67,8 @@
 
     <p>はじめてGeeklogをインストールするなら、次のことを確認しましょう。</p>
     <ul>
-        <li>Webディレクトリのルート（ドキュメントルート）のパス(<a href="#glossary">パスとは?</a>)を見つけ出す方法を理解している。</li>
-        <li>ダウンロードしたGeeklogのターボール（圧縮ファイル）を展開（解凍）できる。</li>
+        <li>Webディレクトリのルート(ドキュメントルート)のパス(<a href="#glossary">パスとは?</a>)を見つけ出す方法を理解している。</li>
+        <li>ダウンロードしたGeeklogのターボール(圧縮ファイル)を展開(解凍)できる。</li>
         <li>データベースを新規作成するか、既存のデータベースにアクセスできる。</li>
         <li>データベースを変更できるユーザーアカウントを持っている。MySQLの場合、これにはデータベースのすべての特権が付与されたユーザーを含む(加えて、権限を付与するときにALL権限に含まれていないLOCK権限)。</li>
         <li>WebサーバーにSSHやFTPでアクセスして、いくつかのファイルとディレクトリのパーミッションを変更できる。</li>
@@ -79,10 +79,10 @@
 
     <ol>
         <li>
-            <p>Geeklogの現バージョンのターボール（圧縮ファイル）を<a href="https://www.geeklog.net/">Geeklog.net</a>や<a href="http://www.geeklog.jp/">Geeklog.jp</a>からダウンロードします。</p>
+            <p>Geeklogの現バージョンのターボール(圧縮ファイル)を<a href="https://www.geeklog.net/">Geeklog.net</a>や<a href="https://www.geeklog.jp/">Geeklog.jp</a>からダウンロードします。</p>
         </li>
         <li>
-            <p>次のコマンドを実行して、ダウンロードしたターボールを展開（解凍）します。</p>
+            <p>次のコマンドを実行して、ダウンロードしたターボールを展開(解凍)します。</p>
             <p><code>tar -zxvf geeklog-2.0.0.tar.gz</code> </p>
 
             <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザーがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。(訳註: ExpLZH)</p>
@@ -93,7 +93,7 @@
         <li>
             <p><code>geeklog-2.0.0/public_html/</code> ディレクトリの中身をWebサーバーのドキュメントルートに転送します。ドキュメントルートには、"public_html"や"htdocs"、"www"などの名前がつけられていることが多いです。</p>
 
-            <p>次に、<code>geeklog-2.0.0/</code> ディレクトリの中身の残りをドキュメントルートの親ディレクトリ（お勧め!）かWebからアクセスできないディレクトリに転送します。インストールウィザードはこれらの場所を自動的に検出しようとします。検出できない場合は、インストールの過程でパスを入力するよう要求されます。インターネットからのアクセスを防ぐセキュリティ対策としてこのような仕様になっています。</p>
+            <p>次に、<code>geeklog-2.0.0/</code> ディレクトリの中身の残りをドキュメントルートの親ディレクトリ(お勧め!)かWebからアクセスできないディレクトリに転送します。インストールウィザードはこれらの場所を自動的に検出しようとします。検出できない場合は、インストールの過程でパスを入力するよう要求されます。インターネットからのアクセスを防ぐセキュリティ対策としてこのような仕様になっています。</p>
 
             <p><strong>注意:</strong> ホスティング会社がドキュメントツリーの外にファイルを置くことを許可していない場合は、</p>
             <ul>
@@ -103,7 +103,7 @@
             </ul>
         </li>
         <li>
-            <p>Webブラウザーを起動し、Geeklogのインストールウィザードを実行します（<code>http://サイトのURL/admin/install/index.php</code> をアドレス欄に入力します）。Geeklogのファイルをサブドメインに置いた場合は、<code>http://サイトのURL/サブドメイン名/admin/install/index.php</code> などとなります。</p>
+            <p>Webブラウザーを起動し、Geeklogのインストールウィザードを実行します(<code>http://サイトのURL/admin/install/index.php</code> をアドレス欄に入力します)。Geeklogのファイルをサブドメインに置いた場合は、<code>http://サイトのURL/サブドメイン名/admin/install/index.php</code> などとなります。</p>
 
             <p>Geeklogのインストールウィザードは自動的にインストールを行うので、表示される手順に従ってください。</p>
         </li>
@@ -118,17 +118,17 @@
 
     <p>データベースが既に存在していて更新する必要があるということを除けば、アップグレードは新規インストールと全く同じです。</p>
 
-    <p>現在インストールしているGeeklogの中で自分で変更したカスタムコードがあれば（特に <code>lib-custom.php</code>。カスタマイズしたコードはすべてこのファイルの中に入れることをお勧めします）、必ずバックアップを取っておいてください。修正したテーマ、画像、静的ページのバックアップを必ず取っておいてください。</p>
+    <p>現在インストールしているGeeklogの中で自分で変更したカスタムコードがあれば(特に <code>lib-custom.php</code>。カスタマイズしたコードはすべてこのファイルの中に入れることをお勧めします)、必ずバックアップを取っておいてください。修正したテーマ、画像、静的ページのバックアップを必ず取っておいてください。</p>
 
     <p>また、データベースのバックアップも必ず取っておいてください。ファイル類とデータベースをバックアップする重要性はいくら強調してもし足りないくらいです。</p>
 
     <p><strong>警告しましたよ!</strong></p>
     <ol>
         <li>
-            <p>Geeklogの現バージョンのターボール（圧縮ファイル）を<a href="https://www.geeklog.net/">Geeklog.net</a>や<a href="http://www.geeklog.jp/">Geeklog.jp</a>からダウンロードします。</p>
+            <p>Geeklogの現バージョンのターボール(圧縮ファイル)を<a href="https://www.geeklog.net/">Geeklog.net</a>や<a href="https://www.geeklog.jp/">Geeklog.jp</a>からダウンロードします。</p>
         </li>
         <li>
-            <p>次のコマンドを実行して、ダウンロードしたターボールを展開（解凍）します。</p>
+            <p>次のコマンドを実行して、ダウンロードしたターボールを展開(解凍)します。</p>
             <p><code>tar -zxvf geeklog-2.0.0.tar.gz</code> </p>
 
             <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザーがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。</p>
@@ -138,12 +138,12 @@
         </li>
         <li>旧バージョンからのアップグレード：
             <ul>
-                <li><p><strong>Geeklog 1.4.1及びそれ以前のバージョンからのアップグレード</strong>：<span class="tt">config.php</span> ファイル（メインの <code>config.php</code> と各プラグインの <code>config.php</code>）をバックアップしておき、新しいバージョンを転送した後で、コピーをそれぞれの場所に戻してください。インストールウィザードはアップグレードの最中にこれらの設定ファイルからデータを読み取り、新しいコンフィギュレーション用に値を設定します。このステップを省くと、Geeklogとインストール済みプラグインのデフォルトに戻されてしまいます。</p></li>
+                <li><p><strong>Geeklog 1.4.1及びそれ以前のバージョンからのアップグレード</strong>：<span class="tt">config.php</span> ファイル(メインの <code>config.php</code> と各プラグインの <code>config.php</code>)をバックアップしておき、新しいバージョンを転送した後で、コピーをそれぞれの場所に戻してください。インストールウィザードはアップグレードの最中にこれらの設定ファイルからデータを読み取り、新しいコンフィギュレーション用に値を設定します。このステップを省くと、Geeklogとインストール済みプラグインのデフォルトに戻されてしまいます。</p></li>
                 <li><p><strong>Geeklog 1.5.0及びそれ以降のバージョンからのアップグレード</strong>：<span class="tt">db-config.php</span> と <span class="tt">siteconfig.php</span> をバックアップしておき、新しいバージョンを転送した後で、コピーをそれぞれの場所に戻してください。さもないと、アップグレードの過程でデータベース情報などを再入力することになります。</p></li>
             </ul>
         </li>
         <li>
-            <p>Webブラウザーを起動し、Geeklogのインストールウィザードを実行します（<code>http://サイトのURL/admin/install/index.php</code> をアドレス欄に入力します）。Geeklogのファイルをサブドメインに置いた場合は、<code>http://サイトのURL/サブドメイン名/admin/install/index.php</code> などとなります。</p>
+            <p>Webブラウザーを起動し、Geeklogのインストールウィザードを実行します(<code>http://サイトのURL/admin/install/index.php</code> をアドレス欄に入力します)。Geeklogのファイルをサブドメインに置いた場合は、<code>http://サイトのURL/サブドメイン名/admin/install/index.php</code> などとなります。</p>
 
             <p>Geeklogのインストールウィザードは自動的にインストールを行うので、表示される手順に従ってください。</p>
         </li>
@@ -176,7 +176,7 @@
     <h3>よくあるエラー(以下の例で行番号は状況に応じ、違うものになりえます):</h3>
         <ul>
             <li><p><strong>エラー:</strong> <code>Parse error: parse error in /path/to/your/siteconfig.php on line 20</code></p>
-                <p><strong>答え:</strong> Parse errorは、自分のtypo（綴り間違い）が原因で起こることが多いです。表示された行やその直前の行をチェックしてください。</p>
+                <p><strong>答え:</strong> Parse errorは、自分のtypo(綴り間違い)が原因で起こることが多いです。表示された行やその直前の行をチェックしてください。</p>
                 <p>よくある間違いは:</p>
                 <ul>
                     <li>パスをシングルクォート(')できちんと閉じていない</li>
@@ -187,11 +187,11 @@
             <li>
                 <p><strong>エラー:</strong> <code>Warning: main(some/path/to/system/databases/mysql.class.php): failed to open stream: No such file or directory in /path/to/your/system/lib-database.php on line 100</code></p>
                 <p><code>Fatal error: main(): Failed opening required 'some/path/to/system/databases/mysql.class.php' (include_path='.:/some/other/path/') in /some/path/to/system/lib-database.php on line 100</code></p>
-                <p><strong>答え:</strong> <code>siteconfig.php</code> 中の <code>$_CONF['path']</code> (Geeklogのシステムファイルのパス）の値が正しくありません。また、 <em>絶対</em> パス、つまり、ファイルシステムのルートから始まるパスを指定しているか確認してください（Unix/Linux系のOSなら / 、Windowsならドライブ文字から始まります)。</p>
+                <p><strong>答え:</strong> <code>siteconfig.php</code> 中の <code>$_CONF['path']</code> (Geeklogのシステムファイルのパス)の値が正しくありません。また、 <em>絶対</em> パス、つまり、ファイルシステムのルートから始まるパスを指定しているか確認してください(Unix/Linux系のOSなら / 、Windowsならドライブ文字から始まります)。</p>
             </li>
             <li>
                 <p><strong>エラー:</strong> <code>1050: Table 'gl_access' already exists</code></p>
-                <p><strong>答え:</strong> 以前インストールを実行したことがあります（たぶん、失敗しているはずです）。念のために、既存のデータベースを削除してから新しく空のデータベースを作り直し、インストールし直した方がよいです。</p>
+                <p><strong>答え:</strong> 以前インストールを実行したことがあります(たぶん、失敗しているはずです)。念のために、既存のデータベースを削除してから新しく空のデータベースを作り直し、インストールし直した方がよいです。</p>
             </li>
             <li>
                 <p><strong>エラー:</strong> <code>Parse error: parse error in ../../lib-common.php on line 2231 </code></p>
@@ -236,7 +236,7 @@ Cannnot connect to DB server</code></p>
                 <p><strong>誰かがログイン・ログアウトするたびに、次のエラーが発生する:</strong></p>
                 <p><code>Cannot add header information - headers already sent by (output started at /usr###/home/&lt;userid&gt;/public_html/geeklog/siteconfig.php:589) in /usr###/home/&lt;userid&gt;/public_html/geeklog/system/lib-sessions.php on line 133</code></p>
 
-                <p><strong>答え:</strong> <code>siteconfig.php</code> 末尾の <code>?&gt;</code> の後に余分なホワイトスペース（スペース、タブ、改行コードなど）が含まれていないか確認してください。（訳注：ファイル末尾の <code>?&gt;</code> がなくてもPHPの動作に支障はないので、取り除くとよいでしょう。）</p>
+                <p><strong>答え:</strong> <code>siteconfig.php</code> 末尾の <code>?&gt;</code> の後に余分なホワイトスペース(スペース、タブ、改行コードなど)が含まれていないか確認してください。(訳注：ファイル末尾の <code>?&gt;</code> がなくてもPHPの動作に支障はないので、取り除くとよいでしょう。)</p>
 
             </li>
         </ul>
@@ -244,10 +244,10 @@ Cannnot connect to DB server</code></p>
         <p>これでも問題が生じるなら、次のことを試してみましょう。</p>
         <ol>
             <li>
-                <p><a href="https://www.geeklog.net">https://www.geeklog.net</a> を訪問して、「サポート(Support)」のセクションを調べてみましょう。サポートセクションには、 <a href="https://www.geeklog.net/faqman/">よくある質問(FAQ)</a> と <a href="https://www.geeklog.net/search.php">検索(Search)システム</a>があります。表示されたエラーメッセージを（行番号を除いて）検索してみるとよいでしょう。</p>
+                <p><a href="https://www.geeklog.net">https://www.geeklog.net</a> を訪問して、「サポート(Support)」のセクションを調べてみましょう。サポートセクションには、 <a href="https://www.geeklog.net/faqman/">よくある質問(FAQ)</a> と <a href="https://www.geeklog.net/search.php">検索(Search)システム</a>があります。表示されたエラーメッセージを(行番号を除いて)検索してみるとよいでしょう。</p>
             </li>
             <li>
-                <p><a href="http://eight.pairlist.net/pipermail/geeklog-users/">http://eight.pairlist.net/pipermail/geeklog-users/</a> に保存されているメーリングリストの過去ログを読みましょう。<a href="http://lists.geeklog.net/listinfo/geeklog-users">このメーリングリストを購読</a>し、Geeklogコミュニティに（英語で）質問を投稿してもよいでしょう。</p>
+                <p><a href="http://eight.pairlist.net/pipermail/geeklog-users/">http://eight.pairlist.net/pipermail/geeklog-users/</a> に保存されているメーリングリストの過去ログを読みましょう。<a href="http://lists.geeklog.net/listinfo/geeklog-users">このメーリングリストを購読</a>し、Geeklogコミュニティに(英語で)質問を投稿してもよいでしょう。</p>
             </li>
             <li>
                 <p><code>irc.freenode.net, channel #geeklog</code> のIRCを試しましょう。siteconfig.phpとdb-config.phpに含まれるパス情報とデータベースの情報を手元に用意しておいてください。</p>
@@ -261,7 +261,7 @@ Cannnot connect to DB server</code></p>
         </ol>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
+    <a href="https://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="https://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 

@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | japanese_utf-8.php                                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2019 by the following authors:                         |
+// | Copyright (C) 2009-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO         - geeklog AT mystral-kk DOT net                |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -43,7 +43,7 @@ $LANG_configsections['xmlsitemap'] = array(
 $LANG_confignames['xmlsitemap'] = array(
     'sitemap_file' => 'サイトマップファイル名',
     'mobile_sitemap_file' => 'モバイルサイトマップ名',
-    'include_homepage' => 'Homepage in Sitemap',
+    'include_homepage' => 'トップページをサイトマップに含める',
     'types' => 'サイトマップの内容',
     'exclude' => '除外するプラグイン',
     'lastmod' => '最終編集日',

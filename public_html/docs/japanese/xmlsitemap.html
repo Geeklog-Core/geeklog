@@ -31,14 +31,14 @@
   <td><em>普通の</em>XMLサイトマップのファイル名を指定します。このファイルは<strong>公開ディレクトリ</strong>(lib-common.phpのあるディレクトリ)に置き、Webサーバーが書き込むことができる必要があります。</td>
 </tr>
 <tr>
-  <td><a name="desc_mobile_sitemap_file">モバイルサイトマップ名(mobile_sitemap_file)</a></td>
+  <td><a name="desc_mobile_sitemap_file">モバイル用サイトマップ名(mobile_sitemap_file)</a></td>
   <td>(空白)</td>
-    <td>When enabled this is the file name of an XML sitemap file for contents optimized for mobile users. This file has to be located in the <strong>public_html</strong> directory (where lib-common.php resides) and be writable from the Web server. Note: This should only be used if you should have a separate mobile site. For example, when you have a feature-phone (WAP/WML, etc) version of your site. For an ordinary mobile-friendly web site a mobile sitemap is not needed and may actually cause confusion for the search engines.</td>
+    <td>この項目に入力すると、モバイルユーザー向けに最適化されたコンテンツ用のXMLサイトマップ名になります。このファイルは、(lib-common.phpがある) <strong>public_html</strong> ディレクトリに置き、Webサーバーから書き込める必要があります。注: このオプションを指定するのは、モバイル用のコンテンツがある場合に限ります。たとえば、フィーチャーフォン(いわゆる、ガラケー)版のコンテンツがある場合です。モバイルユーザーにも配慮したサイトの場合は、モバイル用のサイトマップは必要ではなく、それどころか、検索エンジンを混乱させることになりかねません。</td>
 </tr>
 <tr>
-  <td><a name="desc_include_homepage">include_homepage</a></td>
-  <td>False</td>
-  <td>If you set this to true, the XMLSitemap plugin will automatically include the homepage into the XML sitemap file (including the mobile sitemap but not the news sitemap file).</td>
+  <td><a name="desc_include_homepage">トップページを含める(include_homepage)</a></td>
+  <td>いいえ</td>
+  <td>「はい」にすると、XMLSitemapプラグインは自動的にトップページをサイトマップの中に含めます。(モバイル用サイトマップもトップページを含めますが、ニュースサイトマップは含めません)。</td>
 </tr>
 <tr>
   <td><a name="desc_types">サイトマップの内容(types)</a></td>
@@ -53,7 +53,7 @@
 <tr>
   <td><a name="desc_lastmod">最終変更(lastmod)</a></td>
   <td>article, calendar, polls, staticpages</td>
-  <td>コンテンツタイプは最後に変更されたエレメントを含みます。 XML sitemapファイルに(編集日)が入ります。 Please note that the timezone should be set for your Geeklog site or the lastmod value will contain just the date and no time. Either way it will still support the W3C Datetime format. You will find the timezone setting in the Geeklog configuration under "Language and Locale", on the Locale tab.</td>
+  <td>コンテンツタイプは最後に変更されたエレメントを含みます。 XML sitemapファイルに(編集日)が入ります。サイト用にタイムゾーンを設定してください。さもなければ、最終更新日時に含まれるのは日付だけで時刻を含まないことになります。どちらにせよ、W3Cの日付時刻フォーマットをサポートします。タイムゾーンの設定は、コンフィギュレーションの「言語とロケール」の「ロケール」タブにあります。</td>
 </tr>
 </table>
 
@@ -113,24 +113,24 @@
     <th style="width: 50%;">説明</th>
 </tr>
 <tr>
-  <td><a name="desc_news_sitemap_file">news_sitemap_file</a></td>
+  <td><a name="desc_news_sitemap_file">ニュースサイトマップのファイル名(news_sitemap_file)</a></td>
   <td>news_sitemap.xml</td>
-  <td>When enabled this is the file name of an XML sitemap file for Google News. A Google News sitemap lets you control which content you submit to Google News. This file has to be located in the <strong>public_html</strong> directory (where lib-common.php resides) and be writable from the Web server.</td>
+  <td>この項目に入力すると、Google NewsのXMLサイトマップ名になります。Google Newsのサイトマップを用いると、どのコンテンツをGoogle Newsに投稿するかを制御できます。このファイルは、(lib-common.phpがある) <strong>public_html</strong> ディレクトリに置き、Webサーバーから書き込める必要があります。</td>
 </tr>
 <tr>
-  <td><a name="desc_news_sitemap_topics">news_sitemap_topics</a></td>
-  <td>(empty)</td>
-  <td>A list of topic ids. Only articles that belong to 1 or more of these topics (either directly or inherited) will be included in the news sitemap. If no topics ids are included then all topics are included.</td>
+  <td><a name="desc_news_sitemap_topics">ニュースサイトマップの話題(news_sitemap_topics)</a></td>
+  <td>(空白)</td>
+  <td>話題IDのリスト。ここで指定した話題に(直接ないし継承を通して)属する記事だけがニュースサイトマップに含まれます。話題IDを指定しないと、すべての話題が対象になります。</td>
 </tr>
 <tr>
-  <td><a name="desc_news_sitemap_age">news_sitemap_age</a></td>
+  <td><a name="desc_news_sitemap_age">ニュースサイトマップの有効期間(news_sitemap_age)</a></td>
   <td>172800</td>
-  <td>The maximum age in seconds of the articles to include in the news sitemap. If 0, then age is not a factor. Currently Google News recommends articles with a max age of 2 days (or 172800 seconds).</td>
+  <td>ニュースサイトマップに記事を含める最大の秒数。0 にすると、この設定は無視されます。現時点では、Google Newsは記事に対して最大で2日(= 172,800秒)の有効期間を推奨しています。</td>
 </tr>
 </table>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
+    <a href="https://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="https://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 

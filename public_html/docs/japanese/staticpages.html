@@ -9,14 +9,14 @@
 </head>
 
 <body>
-<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/logo.gif" alt="Geeklog Documentation" width="243" height="90" /></a></p>
+<p><a href="https://www.geeklog.jp" style="background:transparent"><img src="../images/logo.gif" alt="Geeklog Documentation" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklogドキュメント</a> - 静的ページプラグイン</div>
 
 <h1>静的ページプラグイン</h1>
 
 <h2><a name="about">概要</a></h2>
 
-<p>静的ページプラグインは、本来、（Geeklogが作成する動的ページとは対照的に）静的コンテンツを持ったページを作成するためのものでした。そういうわけで「静的」という名前になっています。「このサイトについて」や「目標宣言」などのページが思い浮かぶでしょう。</p>
+<p>静的ページプラグインは、本来、(Geeklogが作成する動的ページとは対照的に)静的コンテンツを持ったページを作成するためのものでした。そういうわけで「静的」という名前になっています。「このサイトについて」や「目標宣言」などのページが思い浮かぶでしょう。</p>
 
 <p>その時以来、人々は様々な目的で静的ページを使用しています。静的ページにPHPのコードを含めることができるようになっていますので、静的ページという名前はもはやだいぶ不適切なものになっています。</p>
 
@@ -38,7 +38,7 @@
 
 <h3><a name="activation">PHPを使えるようにする</a></h3>
 
-<p><strong>重要:</strong> セキュリティ上の理由で、静的ページでのPHP使用はデフォルトでは無効になっています。有効にするには、Static Page Adminグループに、<code>staticpages.PHP</code>権限を与える必要があります。そのためには、管理者としてログインし、管理者用メニューから「グループ」を選択します。Static Page Adminを見つけて、グループ名の左側にある編集アイコン（ペンの形）をクリックします。ページの下の方に「権限(Rights)」のリストがあり、<code>staticpages.delete</code>と<code>staticpages.edit</code>には既にチェックが入っています。Static Page Adminグループに属する人が静的ページでPHPを使えるようにするには、<code>staticpages.PHP</code>にチェックを入れてから保存をクリックします。</p>
+<p><strong>重要:</strong> セキュリティ上の理由で、静的ページでのPHP使用はデフォルトでは無効になっています。有効にするには、Static Page Adminグループに、<code>staticpages.PHP</code>権限を与える必要があります。そのためには、管理者としてログインし、管理者用メニューから「グループ」を選択します。Static Page Adminを見つけて、グループ名の左側にある編集アイコン(ペンの形)をクリックします。ページの下の方に「権限(Rights)」のリストがあり、<code>staticpages.delete</code>と<code>staticpages.edit</code>には既にチェックが入っています。Static Page Adminグループに属する人が静的ページでPHPを使えるようにするには、<code>staticpages.PHP</code>にチェックを入れてから保存をクリックします。</p>
 
 <p>上述の <code>staticpages.PHP</code> 権限に加えて、静的ページ全体でPHPの使用を無効にするグローバルなオプションもあります。このオプションは「管理者用メニュー - コンフィギュレーション - 静的ページ」の中にある「PHPを許可する」です。「いいえ」にすると、<code>staticpages.PHP</code>よりも優先され、静的ページの中でPHPを使えなくなります。</p>
 
@@ -51,21 +51,21 @@
 <li>PHPを実行しない<br />
 静的ページの中にPHPのコードが含まれていても、<em>実行されず</em>、コードがそのまま表示されます。</li>
 <li>PHPを実行する(return)<br />
-静的ページに含まれるPHPのコードが<em>実行されます</em>。'return'とは、このページが表示する内容をPHPのコードで（<code>echo</code> 文や <code>print</code> 文を使って）直接出力する代わりに <code>return</code> 文で返すことを意味します。これは静的ページプラグイン ver 1.3から導入されたオプションです。</li>
+静的ページに含まれるPHPのコードが<em>実行されます</em>。'return'とは、このページが表示する内容をPHPのコードで(<code>echo</code> 文や <code>print</code> 文を使って)直接出力する代わりに <code>return</code> 文で返すことを意味します。これは静的ページプラグイン ver 1.3から導入されたオプションです。</li>
 <li>PHPを実行する<br />
 静的ページに含まれるPHPのコードが<em>実行されます</em>。このオプションを使うと、ページレイアウトに干渉することなくPHPの<code>echo</code>文や<code>print</code>文を使ってページの内容を出力できます。</li>
 </ul>
 
 <p>静的ページにPHPのコードを埋め込むときに、PHPの<code>&lt;?php</code>タグと<code>?&gt;</code>タグを<em>記述してはいけません</em>。静的ページに含まれるPHPのコードは、Geeklog側でこれらのタグを付加されて実行されるからです。</p>
 
-<p>上述の「PHPを実行する」（returnなしの方）を選択する場合は、コードの中でPHPとHTMLを次のように行き来することができます。</p>
+<p>上述の「PHPを実行する」(returnなしの方)を選択する場合は、コードの中でPHPとHTMLを次のように行き来することができます。</p>
 <pre style="padding-left: 2em"><code>echo "Hello"; ?&gt;, &lt;b&gt;world&lt;/b&gt;, &lt;?php echo "how are you?";</code></pre>
 <p>この例では、"Hello, <strong>world</strong>, how are you?"と表示されます。</p>
 
 
 <h2><a name="id">ページID</a></h2>
 
-<p>静的ページを新規作成すると、ページIDが自動的に割り当てられます。このIDは日付・時刻と最大3桁のランダムな数字で構成されています。このページのURLを頻繁に使用するつもりなら（Eメールで引用する場合など）、もっと読みやすいページIDにするのは意味のあることでしょう。</p>
+<p>静的ページを新規作成すると、ページIDが自動的に割り当てられます。このIDは日付・時刻と最大3桁のランダムな数字で構成されています。このページのURLを頻繁に使用するつもりなら(Eメールで引用する場合など)、もっと読みやすいページIDにするのは意味のあることでしょう。</p>
 
 <p>「静的ページの編集」では、ページIDを変えることもできます。たとえば、「当サイトに関して」のページのIDを"20030313100131123"から"about"に変えて、次のURLにできます。</p>
 
@@ -73,37 +73,37 @@
 
 <p>こちらの方が遙かに引用しやすいし、覚えやすいです。Geeklogの<a href="#url">URLリライト機能</a>を活用してさらに改善することもできるでしょう。</p>
 
-<p>ページIDで安全に使える文字はアルファベットと数字だけです。各国固有の文字（ひらがな、カタカナ、漢字など）やほとんどの句読点(とはいえ、'-' と '.' は使えるはずです)、スペースは使用しないでください。「静的ページの編集」は一部の不正な文字を検出しますが、全部というわけではありません。</p>
+<p>ページIDで安全に使える文字はアルファベットと数字だけです。各国固有の文字(ひらがな、カタカナ、漢字など)やほとんどの句読点(とはいえ、'-' と '.' は使えるはずです)、スペースは使用しないでください。「静的ページの編集」は一部の不正な文字を検出しますが、全部というわけではありません。</p>
 
 
 <h2><a name="frontpage">静的ページをインデックスページで使用する</a></h2>
 
-<p>Geeklogのセンターブロックの概念では、プラグインがサイトのセンターエリア（つまり、記事と記事の間）にブロックを出力することを許可しています。</p>
+<p>Geeklogのセンターブロックの概念では、プラグインがサイトのセンターエリア(つまり、記事と記事の間)にブロックを出力することを許可しています。</p>
 
-<p>「静的ページの編集」で「センターエリア」にチェックを入れると、静的ページを表示する場所を選択するために、「表示エリア」と「話題」というドロップダウンリストが使えるようになります。「表示エリア」で選べるのは、「ページの最上部」、「注目記事の下」、「ページの下」（この3つは説明不要でしょう）と「ページ全体」です。最後の「ページ全体」とは、この静的ページがインデックスページとして表示される、つまり、通常の記事が一切表示されなくなるということです。サイトの「スプラッシュ画面」や「ようこそ」ページを作成するのに役に立つでしょう。</p>
+<p>「静的ページの編集」で「センターエリア」にチェックを入れると、静的ページを表示する場所を選択するために、「表示エリア」と「話題」というドロップダウンリストが使えるようになります。「表示エリア」で選べるのは、「ページの最上部」、「注目記事の下」、「ページの下」(この3つは説明不要でしょう)と「ページ全体」です。最後の「ページ全体」とは、この静的ページがインデックスページとして表示される、つまり、通常の記事が一切表示されなくなるということです。サイトの「スプラッシュ画面」や「ようこそ」ページを作成するのに役に立つでしょう。</p>
 
 <p><strong>ヒント:</strong> 静的ページをスプラッシュ画面として使用する場合、訪問者を普通のインデックスページへ誘導するリンクが必要になることもあるでしょう。この場合は、静的ページの中に<code>index.php?display=all</code>というリンクを作成すればよいでしょう。</p>
 
-<p>2番目の「話題」ドロップダウンリストを使うと、静的ページの表示を特定の話題、ホームページ（トップページ）のみ、全ページ（つまり、すべての話題 + ホームページ）に限定できます。これはブロックを表示するオプションと全く同じです。</p>
+<p>2番目の「話題」ドロップダウンリストを使うと、静的ページの表示を特定の話題、ホームページ(トップページ)のみ、全ページ(つまり、すべての話題 + ホームページ)に限定できます。これはブロックを表示するオプションと全く同じです。</p>
 
 <p><strong>ヒント:</strong> これらのオプションをパーミッションと組み合わせることもできます。たとえば、ゲストユーザーにしか表示されない「ようこそ」ページを作成することも可能です。</p>
 
 <h3><a name="sort">並べ替え</a></h3>
 
-<p><strong>センターブロックでの並べ替え項目:</strong> センターエリアの同一セクション内（たとえば、インデックスページのトップに静的ページを2つ表示する場合）に複数の静的ページを表示させる場合、「管理者用メニュー - コンフィギュレーション - 静的ページ」で表示順を選ぶことができます。選択肢は、次の通りです。</p>
+<p><strong>センターブロックでの並べ替え項目:</strong> センターエリアの同一セクション内(たとえば、インデックスページのトップに静的ページを2つ表示する場合)に複数の静的ページを表示させる場合、「管理者用メニュー - コンフィギュレーション - 静的ページ」で表示順を選ぶことができます。選択肢は、次の通りです。</p>
 <ul>
-<li>日付（更新日時の新しい順に並べ換え）</li>
-<li>ページID（ページIDで並べ換え：デフォルト）</li>
-<li>タイトル（ページのタイトルで並べ換え）</li>
+<li>日付(更新日時の新しい順に並べ換え)</li>
+<li>ページID(ページIDで並べ換え：デフォルト)</li>
+<li>タイトル(ページのタイトルで並べ換え)</li>
 </ul>
 <p>この順序が適用されるのは、センターブロック内の静的ページだけです。センターブロックを出力する他のプラグインはこの順序には含まれません。また、センターブロックは普通のGeeklogのブロックのような外見をしているとは限りません。この目的のためには、下にある「ページをブロックで囲む」を「はい」にします。</p>
 
 <p><strong>メニューでの並べ替え項目:</strong> サイトのメニューに表示される静的ページを並べ換えることもできます(<span class="tt">index.thtml</span> テンプレートファイル内で、 <code>{plg_menu_elements}</code> 変数を使用している場合)。この項目も「管理者用メニュー - コンフィギュレーション - 静的ページ」で表示順を選ぶことができます。選択肢は、次の通りです。</p>
 <ul>
-<li>日付（更新日時の新しい順に並べ換え）</li>
-<li>ラベル（メニューに表示される文字列：デフォルト）</li>
-<li>ページID（ページIDで並べ換え：デフォルト）</li>
-<li>タイトル（ページのタイトルで並べ換え）</li>
+<li>日付(更新日時の新しい順に並べ換え)</li>
+<li>ラベル(メニューに表示される文字列：デフォルト)</li>
+<li>ページID(ページIDで並べ換え：デフォルト)</li>
+<li>タイトル(ページのタイトルで並べ換え)</li>
 </ul>
 
 
@@ -131,7 +131,7 @@
 
 <p style="margin-left:4em;"><span class="tt">http://yoursite/staticpages/index.php/20030313100131123</span></p>
 
-<p>検索エンジンの中には、URLに '?' や '=' などの文字が含まれていると、そのページをインデックスに登録しないものがあるということが知られています。これをさらに推し進めて、<a href="#id">数字で構成されたページID</a>を（できれば、ページの内容と関連する）単語や表現に置き換えることで、検索エンジンにさらに登録されやすくすることもできるでしょう。</p>
+<p>検索エンジンの中には、URLに '?' や '=' などの文字が含まれていると、そのページをインデックスに登録しないものがあるということが知られています。これをさらに推し進めて、<a href="#id">数字で構成されたページID</a>を(できれば、ページの内容と関連する)単語や表現に置き換えることで、検索エンジンにさらに登録されやすくすることもできるでしょう。</p>
 
 <p style="margin-left:4em;"><span class="tt">http://yoursite/staticpages/index.php/about</span></p>
 
@@ -139,9 +139,9 @@
 
 <h2><a name="delete">所有者の削除と共に削除する</a></h2>
 
-<p>Geeklogのすべてのオブジェクト同様、静的ページには所有者（そのページの作成者）がいます。そのユーザーのアカウントが何らかの理由で削除された場合、そのユーザーが所有していた静的ページも削除するか、GeeklogのRootグループに属する人に引き継がせることができます。</p>
+<p>Geeklogのすべてのオブジェクト同様、静的ページには所有者(そのページの作成者)がいます。そのユーザーのアカウントが何らかの理由で削除された場合、そのユーザーが所有していた静的ページも削除するか、GeeklogのRootグループに属する人に引き継がせることができます。</p>
 
-<p>「管理者用メニュー - コンフィギュレーション - 静的ページ」で「<a href="#desc_delete_pages">所有者の削除と共に削除する</a>」を「いいえ」（デフォルト）にすると、所有者が削除されても作成した静的ページは削除されず、Rootグループのメンバ（ユーザーIDが最も若い人、つまり、たいていはサイトの管理者）に引き継がれます。「はい」にすると、所有者のアカウントが削除されたとき、作成した静的ページも削除されます。</p>
+<p>「管理者用メニュー - コンフィギュレーション - 静的ページ」で「<a href="#desc_delete_pages">所有者の削除と共に削除する</a>」を「いいえ」(デフォルト)にすると、所有者が削除されても作成した静的ページは削除されず、Rootグループのメンバ(ユーザーIDが最も若い人、つまり、たいていはサイトの管理者)に引き継がれます。「はい」にすると、所有者のアカウントが削除されたとき、作成した静的ページも削除されます。</p>
 
 <h2><a name="config.php">コンフィギュレーション</a></h2>
 
@@ -178,7 +178,7 @@
 <tr>
   <td><a name="desc_delete_pages">所有者の削除と共に削除する(delete_pages)</a></td>
   <td><span class="tt">いいえ</span></td>
-  <td>ページの所有者のアカウントが削除された場合、つまりその静的ページを最初に作成したユーザーが居なくなった場合、そのページを'True'なら削除、'False'なら"Root"グループのユーザー(通常は最も小さい値のIDのRootユーザー)に変更します。</td>
+  <td>ページの所有者のアカウントが削除された場合、つまりその静的ページを最初に作成したユーザーが居なくなった場合、「はい」ならそのページを削除し、「いいえ」なら"Root"グループのユーザー(通常は最も小さい値のIDのRootユーザー)に変更します。</td>
 </tr>
 <tr>
   <td><a name="desc_in_block">ページをブロックで囲む(in_block)</a></td>
@@ -213,7 +213,7 @@
     <ul>
     <li>編集した静的ページを表示します。</li>
     <li>静的ページ管理を表示します(デフォルト)。</li>
-    <li>Home（サイトのトップページ）を表示します。</li>
+    <li>Home(サイトのトップページ)を表示します。</li>
     <li>管理画面トップを表示します。</li>
     </ul></td>
 </tr>
@@ -224,7 +224,7 @@
 </tr>
 <tr>
   <td><a name="desc_meta_tags">メタタグを有効にする(meta_tags)</a></td>
-  <td>false</td>
+  <td>いいえ</td>
   <td>静的ページが表示されたときメタタグをセットするかどうかを指定します。</td>
 </tr>
 <tr>
@@ -236,7 +236,7 @@
 <tr>
   <td><a name="desc_structured_data_type_default">structured_data_type_default</a></td>
   <td>'core-webpage'</td>
-  <td>Default Structured Data Type for new pages. To find out more about Structured Data and its integration into Geeklog see <a href="config.html#desc_structured_data_type_default">this page</a>.
+  <td>ページを新規作成する場合に適用される構造化データタイプの既定値。構造化データとGeeklogへの統合についての詳しい情報は、<a href="config.html#desc_structured_data_type_default">このページ</a>をご覧ください。
 </tr>
 <tr>
   <td><a name="desc_draft_flag">ドラフトモードをデフォルトにする(draft_flag)</a></td>
@@ -300,22 +300,22 @@
 </tr>
 <tr>
   <td valign="top"><a name="desc_includesearch">静的ページを検索する(includesearch)</a></td>
-  <td valign="top">true</td>
+  <td valign="top">はい</td>
   <td valign="top">検索結果に静的ページを含ませるかどうかを指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_includesearchcenterblocks">センターブロックの静的ページを含む(includesearchcenterblocks)</a></td>
-  <td valign="top">false</td>
+  <td valign="top">いいえ</td>
   <td valign="top">検索結果にセンターブロックの静的ページを含ませるかどうかを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_includesearchphp">includesearchphp</a></td>
-  <td valign="top">false</td>
-  <td valign="top">Set to true to include static pages that execute PHP in the search results.<br><br>Please note since php static pages have to be executed a search cached version of the page is used.  This cached page is generated on the save of the page in the editor and (if cache enabled) when a new cached file of the page is made. This means that all users that have access to the page will use the same search cache.
-  If autotags or PHP is used by the page this may generate different contents depending on the user. Since the search cache is only one view of the page it will be the one searched. Therefore what the search result returns may be slighyly different than what the user will see when they visit the page. Please take this short coming into consideration when using php pages and having this config option set to true.</td></tr>
+  <td valign="top"><a name="desc_includesearchphp">検索結果にPHPを実行する静的ページを含める(includesearchphp)</a></td>
+  <td valign="top">いいえ</td>
+  <td valign="top">「はい」に設定すると、検索結果にPHPを実行する静的ページを含めます。<br><br>PHPを実行する静的ページで検索を行う必要があるため、そのページのキャッシュを用いることに注意してください。エディターでページを保存する際と(キャッシュが有効な場合に)そのページのキャッシュが更新される際に、キャッシュされたページが作成されます。つまり、そのページにアクセスできるすべてのユーザーが同一の検索結果のキャッシュを持つことになります。
+  そのページで自動タグやPHPを使用すると、ユーザーによって[自動タグやPHPへのアクセス権が異なるため]異なるコンテンツ(情報内容)が生成されるかもしれません。検索結果のキャッシュはそのページのビューの一つにすぎないため、それが検索されることになります。このため、検索結果がユーザーがそのページを訪問したときに目にしたものとわずかに異なるかもしれません。静的ページでPHPを実行し、かつ、このオプションを「はい」に設定する場合には、このような欠点があることを考慮してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_includesearchtemplate">includesearchtemplate</a></td>
-  <td valign="top">false</td>
-  <td valign="top">Set to true to include template static pages in the search results.<br><br>Please note since template pages have to be executed a search cached version of the template page is used. This cached page is generated on the save of the page in the editor and (if cache enabled) when a new cached file of the page is made. This means that all users that have access to the page will use the same search cache.
-  If autotags, PHP, or the is device_mobile template variable is used by the page this may generate different contents depending on the user. Since the search cache is only one view of the page it will be the one searched. Therefore what the search result returns may be slighyly different than what the user will see when they visit the page. Please take this short coming into consideration when using template pages and having this config option set to true.</td></tr>
+  <td valign="top"><a name="desc_includesearchtemplate">検索結果にテンプレートとして使用されている静的ページを含める(includesearchtemplate)</a></td>
+  <td valign="top">いいえ</td>
+  <td valign="top">「はい」に設定すると、検索結果にテンプレートとして使用されている静的ページ(以下、「テンプレートページ」と表記)を含めます。<br><br>テンプレートページで検索を行う必要があるため、そのページのキャッシュを用いることに注意してください。エディターでページを保存する際と(キャッシュが有効な場合に)そのページのキャッシュが更新される際に、キャッシュされたページが作成されます。つまり、そのページにアクセスできるすべてのユーザーが同一の検索結果のキャッシュを持つことになります。
+    そのページで自動タグやPHPを使用すると、ユーザーによって[自動タグやPHPへのアクセス権が異なるため]異なるコンテンツ(情報内容)が生成されるかもしれません。検索結果のキャッシュはそのテンプレートページのビューの一つにすぎないため、それが検索されることになります。このため、検索結果がユーザーがそのページを訪問したときに目にしたものとわずかに異なるかもしれません。静的ページでPHPを実行し、かつ、このオプションを「はい」に設定する場合には、このような欠点があることを考慮してください。</td></tr>
 </table>
 
 <h3><a name="search">パーミッションのデフォルト</a></h3>
@@ -392,12 +392,12 @@
 <p>静的ページプラグインは、<code>[staticpage:]</code> と <code>[staticpage_content:]</code> という2つの<a href="https://www.geeklog.net/article.php/autolinks" title="geeklog.net: About Autolinks and Autotags">自動タグ</a>を提供します。</p>
 
 <ul>
-<li><code>[staticpage:]</code> 自動タグは静的ページへのリンクに置き換えられます。コロンの後に静的ページのIDを記述してください。既定では、そのページのタイトルがリンクテキストとして使用されます。静的ページIDの後に半角スペースに続けて独自のリンクテキストを指定することもできます（閉じカッコの前でなければなりません）。</li>
+<li><code>[staticpage:]</code> 自動タグは静的ページへのリンクに置き換えられます。コロンの後に静的ページのIDを記述してください。既定では、そのページのタイトルがリンクテキストとして使用されます。静的ページIDの後に半角スペースに続けて独自のリンクテキストを指定することもできます(閉じカッコの前でなければなりません)。</li>
 <li><code>[staticpage_content:]</code> 自動タグは、静的ページの内容に置き換えられます。複数の箇所で同一テキストを使用する際に役に立つでしょう。</li>
 </ul>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
+    <a href="https://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="https://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 
