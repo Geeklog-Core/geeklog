@@ -167,7 +167,7 @@ if ($A['count'] > 0) {
             'professional' => 'layout/' . $theme . '/print.css',
             'other'        => 'layout/' . $theme . '/css/print.css',
         );
-        
+
         global $_SCRIPTS;
         foreach ($paths as $path) {
             if (file_exists($_CONF['path_html'] . $path)) {
@@ -309,13 +309,13 @@ if ($A['count'] > 0) {
                     )
                 );
         }
-        
+
         // Add hreflang link element if Multi Language Content is setup
         // Only allow hreflang link element to be visible when on canonical url
         // ie no second pages which can happen with comments, or if [page_break] is used or with extra trailing variables like from a search query
         if (strtolower(COM_getCurrentURL()) == strtolower($permalink)) {
             $headercode .= COM_createHREFLang('story', $article->getSid());
-        }        
+        }
 
         if ($article->DisplayElements('trackbackcode') == 0) {
             if ($_CONF['trackback_enabled']) {
@@ -449,8 +449,9 @@ if ($A['count'] > 0) {
         $articleTemplate->set_var('formatted_article',
             STORY_renderArticle($article, 'n', $tmpl, $query));
 
-        // display comments or not?
-        if ($_CONF['allow_page_breaks'] == 1) {
+        // display comments or not on this page of the article?
+        $page_break_count = $article->displayElements('numpages');
+        if ($_CONF['allow_page_breaks'] == 1 && $page_break_count > 1) {
             if (!is_numeric($mode)) {
                 $story_page = 1;
             } else {
@@ -462,8 +463,6 @@ if ($A['count'] > 0) {
                 $story_page = 1;
             }
 
-            $article_arr = explode('[page_break]', $article->displayElements('bodytext'));
-            $page_break_count = count($article_arr);
             if ($page_break_count > 1) {
                 $conf = $_CONF['page_break_comments'];
                 if (

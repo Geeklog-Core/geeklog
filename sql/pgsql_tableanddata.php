@@ -291,6 +291,7 @@ CREATE TABLE {$_TABLES['stories']} (
   bodytext text,
   text_version smallint NOT NULL default '1',
   hits smallint NOT NULL default '0',
+  numpages smallint NOT NULL DEFAULT '1',
   numemails smallint NOT NULL default '0',
   comments smallint NOT NULL default '0',
   comment_expire timestamp default NULL,

@@ -18,6 +18,8 @@ $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'geeklog'";
 // Add structured data type to article table and modified date
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `structured_data_type` varchar(40) NOT NULL DEFAULT '' AFTER `commentcode`";
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `modified` timestamp default NULL AFTER `date`";
+// For number of pages in an article. Needed for when article is cached and we need to figure out what page to put the comments on
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `numpages` tinyint(1) NOT NULL DEFAULT '1' AFTER `hits`";
 
 // Language Override value can now be longer than 255 characters
 $_SQL[] = "ALTER TABLE {$_TABLES['language_items']} CHANGE `value` `value` TEXT";
@@ -305,6 +307,26 @@ function addStructuredDataSecurityRight221()
     // Give `structureddata.autotag` feature to `Story Admin` group
     $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$ftId}, {$grpId}) ";
     DB_query($sql, 1);
+
+    return true;
+}
+
+function calculateNumPagesArticles221()
+{
+    global $_TABLES;
+
+    // Calculate number of pages for articles (that have [page_break] in body text)
+    $sql = "SELECT sid, bodytext FROM {$_TABLES['stories']} WHERE bodytext != ''";
+    $result = DB_query($sql);
+    $numRows = DB_numRows($result);
+    for ($i = 0; $i < $numRows; $i++) {
+        $A = DB_fetchArray($result);
+
+        $numpages = (count(explode('[page_break]', $A['bodytext'])));
+
+        // Save new name
+        DB_query("UPDATE {$_TABLES['stories']} SET numpages = $numpages WHERE sid = '" . DB_escapeString($A['sid']) . "'");
+    }
 
     return true;
 }

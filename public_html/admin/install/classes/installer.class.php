@@ -2952,6 +2952,7 @@ class Installer
                         update_ConfValuesFor221();
                         fixDuplicateUsernames221();
                         addStructuredDataSecurityRight221();
+                        calculateNumPagesArticles221();
                     }
                     $currentGlVersion = '2.2.1';
                     break;

@@ -118,6 +118,7 @@ class Article
     var $_date;
     var $_modified;
     var $_hits;
+    var $_numpages;
     var $_numemails;
     var $_comment_expire;
     var $_comments;
@@ -190,6 +191,7 @@ class Article
         'bodytext'             => 1,
         'text_version'         => 1,
         'hits'                 => 1,
+        'numpages'             => 1,
         'numemails'            => 1,
         'comments'             => 1,
         'trackbacks'           => 1,
@@ -455,7 +457,7 @@ class Article
             $sql['pgsql'] = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.modified) AS unixmodified, UNIX_TIMESTAMP(s.expire) as expireunix, UNIX_TIMESTAMP(s.comment_expire) as cmt_expire_unix, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl
                 FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta
                 WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND (s.uid = u.uid) AND (ta.tid = t.tid) AND (sid = '$sid')
-                GROUP BY s.sid, s.uid, s.title, s.page_title, s.draft_flag, s.introtext, s.bodytext, s.date, s.numemails, s.comments, s.modified, s.featured, s.comment_expire, s.commentcode, s.trackbacks, s.trackbackcode, s.related, s.hits, s.show_topic_icon, s.frontpage, s.statuscode, s.postmode, s.expire, s.advanced_editor_mode, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.meta_description, s.meta_keywords, s.text_version, s.cache_time, s.structured_data_type,
+                GROUP BY s.sid, s.uid, s.title, s.page_title, s.draft_flag, s.introtext, s.bodytext, s.date, s.numemails, s.comments, s.modified, s.featured, s.comment_expire, s.commentcode, s.trackbacks, s.trackbackcode, s.related, s.hits, s.numpages, s.show_topic_icon, s.frontpage, s.statuscode, s.postmode, s.expire, s.advanced_editor_mode, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.meta_description, s.meta_keywords, s.text_version, s.cache_time, s.structured_data_type,
                 u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl ";
         } elseif (!empty($sid) && ($mode === 'editsubmission')) {
             /* Original
@@ -525,6 +527,7 @@ class Article
 
             $this->_text_version = GLTEXT_LATEST_VERSION;
             $this->_hits = 0;
+            $this->_numpages = 1;
             $this->_comments = 0;
             $this->_trackbacks = 0;
             $this->_numemails = 0;
@@ -693,6 +696,7 @@ class Article
 
             // reset counters
             $this->_hits = 0;
+            $this->_numpages = 1;
             $this->_comments = 0;
             $this->_trackbacks = 0;
             $this->_numemails = 0;
@@ -810,6 +814,9 @@ class Article
         $fields = '';
         $values = '';
         reset($this->_dbFields);
+
+        // Count number of pages so we can figure out which page to put the comments on
+        $this->_numpages = (count(explode('[page_break]', $this->displayElements('bodytext'))));
 
         $this->_text_version = GLTEXT_LATEST_VERSION;
 
@@ -1902,6 +1909,11 @@ class Article
 
                 break;
 
+            case 'numpages':
+                $return = $this->_numpages;
+
+                break;
+
             case 'topic':
                 $return = htmlspecialchars($this->_topic);
 
@@ -2337,7 +2349,7 @@ class Article
     }
 
     /**
-     * Perform some basic cleanups of data, dealing with empty required, defaultable fields.
+     * Perform some basic cleanups of data, dealing with empty required, default table fields.
      */
     public function sanitizeData()
     {

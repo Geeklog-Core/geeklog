@@ -293,6 +293,7 @@ CREATE TABLE {$_TABLES['stories']} (
   bodytext text,
   text_version tinyint(2) NOT NULL default '1',
   hits mediumint(8) unsigned NOT NULL default '0',
+  numpages tinyint(1) NOT NULL DEFAULT '1',
   numemails mediumint(8) unsigned NOT NULL default '0',
   comments mediumint(8) unsigned NOT NULL default '0',
   comment_expire datetime default NULL,
