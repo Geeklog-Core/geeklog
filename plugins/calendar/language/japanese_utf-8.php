@@ -174,7 +174,7 @@ $LANG_CAL_ADMIN = array(
     34 => 'イベント ID',
     35 => '削除できませんでした。',
     36 => '削除したイベント',
-    'num_events' => '%s Event(s)'
+    'num_events' => '%s 件のイベント'
 );
 
 $LANG_CAL_MESSAGE = array(

@@ -14,7 +14,7 @@
 # taca AT back-street DOT net
 # Copyright (C) 2006,2007,2008 Tetsuko Komma
 # ivy AT geeklog DOT jp
-# Copyright (C) 2006-2019 Geeklog.jp group
+# Copyright (C) 2006-2020 Geeklog.jp group
 # info AT geeklog DOT jp
 #
 # This program is free software; you can redistribute it and/or
@@ -300,9 +300,9 @@ $LANG04 = array(
     'email_convert_remote' => "{$_CONF['site_name']} さんのリモートアカウントは通常アカウントに変換されました。このアカウントを続けて使用するには、以下の情報を用いてログインする必要があります。このメールは保存してください。",
     16 => 'ユーザー情報',
     17 => 'アカウントがありません',
-    18 => 'The email address provided does not appear to be a valid email address.',
+    18 => '入力したメールアドレスは有効なものではないようです。',
     19 => 'ユーザー名かメールアドレスは既に使用しています。',
-    20 => 'The email address is either already in use or it\'s domain has been banned.<br' . XHTML . '><br' . XHTML . '>If you have an account already, please <a href="/users.php">login here</a>.',
+    20 => 'このメールアドレスは既に使用されているか、所属ドメインが禁止処分になっています。<br' . XHTML . '><br' . XHTML . '>アカウントをお持ちなら、<a href="/users.php">ここからログイン</a>してください。',
     21 => 'エラー',
     22 => "{$_CONF['site_name']}に新規登録",
     23 => "{$_CONF['site_name']}にユーザーアカウントを登録すると、コメントや記事の投稿をあなたの名前で投稿できます。そうでなければゲストユーザーとしてしか投稿できません。なお、サイト上でメールアドレスを表示することはありません。",
@@ -352,7 +352,7 @@ $LANG04 = array(
     67 => '登録日時',
     68 => '認証の保存期間',
     69 => 'いったんログインした後、どのくらいの間認証情報を残しますか?',
-    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
+    'cookietimeout_tooltip' => 'このサイトでは、一定期間アクセスがなかったため自動的にログアウトしたかどうかにかかわらず、使用中のデバイスからログインしたことを記録します。%s 秒間アクセスがないと自動的にログアウトします(これを「ユーザーセッションのタイムアウト」と呼びます)。マイアカウントの「認証の保存期間」を設定すると、その期間にはここで選択した時間に加えて「ユーザーセッションのタイムアウト」を含むことになります。',
     70 => "{$_CONF['site_name']}の表示と内容を設定",
     71 => "{$_CONF['site_name']}では、レイアウトを自由に変えることができます。そのためには、{$_CONF['site_name']}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">登録</a>する必要があります。もし、既に登録済みなら左のフォームを利用してログインしてください。",
     72 => 'テーマ',
