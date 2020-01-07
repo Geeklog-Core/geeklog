@@ -333,6 +333,24 @@ class StructuredData
 	}
 
     /**
+	 * Get a property of the structured data item
+	 *
+     * @param   string  $type       Plugin of the content used to create the structured data
+     * @param   string  $id         Id of content
+	 * @param   string $name        Name of property
+	 */
+	public function get_param_item($type, $id, $name)
+    {
+        $retval = '';
+        $sd_name = $this->create_name($type, $id);
+        if (isset($this->items[$sd_name][$name])) {
+            $retval = $this->items[$sd_name][$name];
+        }
+
+        return $retval;
+	}
+
+    /**
 	 * Set a author
 	 *
      * @param   string  $type   Plugin of the content used to create the structured data
@@ -360,12 +378,12 @@ class StructuredData
 	public function set_image_item($type, $id, $url, $width = '', $height = '')
     {
 		global $_CONF;
-		
+
 		// Check if url local then add site_url if needed...
 		if (substr($url, 0, 1) == "/") {
 			$url = $_CONF['site_url'] . $url;
 		}
-		
+
         $sd_name = $this->create_name($type, $id);
         $image_item = array(
                 "@type"   => "ImageObject",

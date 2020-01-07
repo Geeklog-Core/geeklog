@@ -42,6 +42,7 @@ $_STRUCTUREDDATA_DEBUG = COM_isEnableDeveloperModeLog('structureddata');
  * @param    string $op      operation to perform
  * @param    string $content item (e.g. structured data info), including the autotag
  * @param    array  $autotag parameters used in the autotag
+ * @param    array  $parameters contains the type (plugin) and id of item calling the plugin (if supported by plugin)
  * @param           mixed               tag names (for $op='tagname') or formatted content
  */
 
@@ -127,8 +128,8 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
                 }
 
                 // Figure out content type and id (depends on how autotag is used)
-
                 // If type or id is missing then assume type and id are passed via function. p1 then would be the property
+                // Note these items structured data itmes are set whether or not if  the main structured data type is already set or
                 $property = $p1;
                 if (empty($type) || empty($id)) {
                     if (isset($parameters['type']) && isset($parameters['id'])) {
