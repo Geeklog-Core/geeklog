@@ -51,12 +51,16 @@ abstract class Log
     /**
      * Magic method for those plugins that want to output their own log files
      *
-     * @param  string  $name  log file name  e.g., 'ban', 'gus'
-     * @param  array   $arguments
+     * @param  string  $name       log file name  e.g., 'ban', 'gus'
+     * @param  array   $arguments  the first element (string) is an log entry, the second element
+     *                             (string) is flags to add optional information.  'r' for remote IP address,
+     *                             'i' for user ID, 'n' for user name respectively
      * @return bool
      */
     public static function __callStatic($name, $arguments)
     {
+        global $_USER;
+
         $fileName = strtolower(basename($name));
         if (substr($fileName, -4) !== '.log') {
             $fileName .= '.log';
@@ -87,7 +91,42 @@ abstract class Log
             return false;
         }
 
-        return self::common($arguments[0], $fileName);
+        // Prepend a timestamp
+        $entry = self::formatTimeStamp() . ' - ';
+
+        // Prepend optional fields
+        $flags = (isset($arguments[1]) && is_string($arguments[1]))
+            ? strtolower($arguments[1])
+            : 'rin';
+        $addedFields = false;
+
+        if (strpos($flags, 'r') !== false) {    // Remote IP address
+            $entry .= 'IP: ' . Input::server('REMOTE_ADDR') . ', ';
+            $addedFields = true;
+        }
+
+        if (strpos($flags, 'i') !== false) {    // User ID
+            $entry .= 'User ID: ' . Session::getUid() . ', ';
+            $addedFields = true;
+        }
+
+        if (strpos($flags, 'n') !== false) {    // User name
+            $entry .= 'User: ' . $_USER['username'] . ', ';
+            $addedFields = true;
+        }
+
+        if ($addedFields) {
+            $entry = substr($entry, 0, -2);
+        }
+
+        // Append a line end
+        if ($addedFields) {
+            $entry .= ' - ';
+        }
+
+        $entry .= trim($arguments[0]) . PHP_EOL;
+
+        return self::common($entry, $fileName);
     }
 
     /**
@@ -187,7 +226,7 @@ abstract class Log
         $logFileName = strtolower(basename($logFileName));
         $path = self::checkPath($logFileName);
 
-        if (@file_put_contents($path, $entry, FILE_APPEND || LOCK_EX) !== false) {
+        if (@file_put_contents($path, $entry, FILE_APPEND | LOCK_EX) !== false) {
             return true;
         } elseif ($logFileName !== 'error.log') {
             self::error('Error, could not write to the log file "' . $logFileName . '"');
