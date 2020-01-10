@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog Environment Check.                                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2019 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Mark R. Evans      - mark AT glfusion DOT org                    |
 // |          Tom Homer          - tomhomer AT gmail DOT com                   |
@@ -688,8 +688,10 @@ function _phpOutOfDate()
 
 function _isWritable($path)
 {
-    if ($path{strlen($path)-1} == '/')
+    $ch = substr($path, -1);
+    if (($ch === '/') || ($ch === '\\')) {
         return _isWritable($path . uniqid(mt_rand()) . '.tmp');
+    }
 
     if (@file_exists($path)) {
         if (!($f = @fopen($path, 'r+')))
