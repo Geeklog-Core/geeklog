@@ -1686,7 +1686,9 @@ function CMT_deleteComment($cid, $sid, $type)
         DB_change($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
         DB_delete($_TABLES['comments'], 'cid', $cid);
 
+        DB_lockTable($_TABLES['likes']);
         LIKES_deleteActions('comment', '', $cid);
+        DB_unlockTable($_TABLES['likes']);
 
         DB_query("UPDATE {$_TABLES['comments']} SET indent = indent - 1 "
             . "WHERE sid = '$sid' AND type = '$type' AND lft BETWEEN $lft AND $rht");
@@ -1694,6 +1696,7 @@ function CMT_deleteComment($cid, $sid, $type)
             . "WHERE sid = '$sid' AND type = '$type'  AND lft >= $rht");
         DB_query("UPDATE {$_TABLES['comments']} SET rht = rht - 2 "
             . "WHERE sid = '$sid' AND type = '$type'  AND rht >= $rht");
+
         DB_unlockTable($_TABLES['comments']);
 
         // Update Comment Feeds
