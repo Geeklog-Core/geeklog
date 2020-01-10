@@ -221,5 +221,5 @@ $LANG_configselects['staticpages'] = array(
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
     13 => array('אין גישה' => 0, 'מותר לשימוש' => 2),
     17 => array('איפשור תגובות' => 0, 'ניטרול תגובות' => -1),
-    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4)
+    39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsarticle', 'BlogPosting' => 'core-blogposting')
 );

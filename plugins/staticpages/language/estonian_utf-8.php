@@ -222,5 +222,5 @@ $LANG_configselects['staticpages'] = array(
     12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
     13 => array('No access' => 0, 'Use' => 2),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
-    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4)
+    39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsarticle', 'BlogPosting' => 'core-blogposting')
 );

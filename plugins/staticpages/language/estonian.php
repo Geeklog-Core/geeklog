@@ -137,7 +137,7 @@ $LANG_STATIC = array(
     'prev_page' => 'Previous page',
     'next_page' => 'Next page',
     'parent_page' => 'Parent page',
-    'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel=”next” and rel=”prev” to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
+    'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel="next" and rel="prev" to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
     'num_pages' => '%s Page(s)'
 );
 
@@ -222,5 +222,5 @@ $LANG_configselects['staticpages'] = array(
     12 => array('Pole ligip��su' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
     13 => array('No access' => 0, 'Use' => 2),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
-    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4)
+    39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsarticle', 'BlogPosting' => 'core-blogposting')
 );

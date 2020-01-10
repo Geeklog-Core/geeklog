@@ -40,7 +40,7 @@ $LANG_STATIC = array(
     'writtenby' => 'Écrit par',
     'date' => 'Dernière mise à jour',
     'title' => 'Titre',
-    'page_title' => 'Titre de la page',
+    'page_title' => 'Titre de la page (optionnel)',
     'content' => 'Contenu',
     'hits' => 'Clicks',
     'staticpagelist' => 'Liste des pages statiques',
@@ -78,11 +78,11 @@ $LANG_STATIC = array(
     'stats_page_title' => 'Titre des pages',
     'stats_hits' => 'Clics',
     'stats_no_hits' => 'Il serait possible qu\'il n\'y ait aucune page statique sur ce site, ou alors personne ne les a encore consultées.',
-    'id' => 'Identification',
-    'duplicate_id' => 'L\'identification choisie pour cette page est déjà utilisée par une autre page. Veuillez en choisir une autre.',
-    'instructions' => 'Pour modifier une page statique, cliquez sur son numéro ci-dessous. Pour voir une page statique, cliquez sur le titre de la page. Pour créer une page statique, cliquez sur Ajouter. Cliquez sur [C] pour créer une copie de page existante.',
-    'centerblock' => 'Block central: ',
-    'centerblock_msg' => 'Si vous sélectionnez cette option, cette page sera affichée comme un block central.',
+    'id' => 'Identifiant',
+    'duplicate_id' => 'L\'identifiant choisi pour cette page est déjà utilisée par une autre page. Veuillez en choisir une autre.',
+    'instructions' => 'Pour modifier une page statique, cliquez sur l\'icone "Editer". Pour voir une page statique, cliquez sur le titre de la page. Pour créer une nouvelle page, cliquez sur Ajouter ci-dessus. Cliquez sur l\'icone "Copier" pour créer une copie de la page existante.',
+    'centerblock' => 'Bloc central: ',
+    'centerblock_msg' => 'Si vous sélectionnez cette option, cette page sera affichée comme un bloc central.',
     'topic' => 'Catégorie: ',
     'position' => 'Position: ',
     'all_topics' => 'Toutes',
@@ -97,15 +97,15 @@ $LANG_STATIC = array(
     'centerblock_feat' => 'Article principal',
     'centerblock_bottom' => 'Bas',
     'centerblock_entire' => 'Bloc entier',
-    'inblock_msg' => 'Dans un block: ',
-    'inblock_info' => 'Si vous sélectionnez cette option, votre page sera présentée dans un block avec le titre de la page comme nom du block. Sinon, elle sera présentée normalement.',
+    'inblock_msg' => 'Dans un bloc: ',
+    'inblock_info' => 'Si vous sélectionnez cette option, votre page sera présentée dans un bloc avec le titre de la page comme nom du bloc. Sinon, seul son contenu sera affiché.',
     'title_edit' => 'Edit page',
     'title_copy' => 'Make a copy of this page',
     'title_display' => 'Display page',
     'select_php_none' => 'do not execute PHP',
     'select_php_return' => 'execute PHP (return)',
     'select_php_free' => 'execute PHP',
-    'php_not_activated' => "The use of PHP in static pages is not activated. Please see the <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">documentation</a> for details.",
+    'php_not_activated' => "L'utilisation du php dans les pages statiques n'est pas activée. Reportez-vous à la <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">documentation</a> (en anglais) pour plus de détails.",
     'printable_format' => 'Printable Format',
     'copy' => 'Copy',
     'limit_results' => 'Limit Results',
@@ -115,10 +115,10 @@ $LANG_STATIC = array(
     'pages' => 'Pages',
     'comments' => 'Commentaires',
     'template' => 'Template',
-    'use_template' => 'Use Template',
-    'template_msg' => 'When checked, this Static Page will be marked as a template.',
-    'none' => 'None',
-    'use_template_msg' => 'If this Static Page is not a template, you can assign it to use a template. If a selection is made then remember that the content of this page must follow the proper XML format.',
+    'use_template' => 'Utiliser le Template',
+    'template_msg' => 'Lorsque coché, cette page statique sera déclarée comme template.',
+    'none' => 'Aucun',
+    'use_template_msg' => 'Si cette page statique n\'est pas un template, vous pouvez lui assigner d\'utiliser un template. Si une sélection est faite, vous devez fournir le contenu au format XML adapté. Reportez vous à la documentation si besoin.',
     'draft' => 'Brouillon',
     'draft_yes' => 'Oui',
     'draft_no' => 'Non',
@@ -126,8 +126,8 @@ $LANG_STATIC = array(
     'show_on_page_disabled' => 'Note: This is currently disabled for all pages in the Staticpage Configuration.',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This staticpage content will be cached for no longer than this many seconds. If 0 caching is disabled (3600 = 1 hour,  86400 = 1 day). Staticpages with PHP enabled or are a template will not be cached.',
-    'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
-    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - Displays the contents of a staticpage.',
+    'autotag_desc_staticpage' => '[staticpage: id titre alternatif] - Affiche un lien vers une page statique en utilisant le titre la page. Un titre alternatif peut être spécifié mais n\'est pas nécessaire.',
+    'autotag_desc_staticpage_content' => '[staticpage_content: id] - Affiche le contenu d\'une page statique.',
     'autotag_desc_page' => '[page: id alternate title] - Displays a link to a page (from the Static Page plugin) using the page title as the title. An alternate title may be specified but is not required.',
     'autotag_desc_page_content' => '[page_content: id] - Displays the contents of a page. (from Static Page plugin)',
     'yes' => 'Yes',
@@ -135,7 +135,7 @@ $LANG_STATIC = array(
     'prev_page' => 'Previous page',
     'next_page' => 'Next page',
     'parent_page' => 'Parent page',
-    'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel=â€nextâ€ and rel=â€prevâ€ to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
+    'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel="next" and rel="prev" to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
     'num_pages' => '%s Page(s)'
 );
 
@@ -157,11 +157,11 @@ $LANG_configsections['staticpages'] = array(
 
 $LANG_confignames['staticpages'] = array(
     'allow_php' => 'Permettre le PHP',
-    'sort_by' => 'Trier les blocks du centre par',
+    'sort_by' => 'Trier les blocs du centre par',
     'sort_menu_by' => 'Trier les entrées de la navigation par',
     'sort_list_by' => 'Trier la liste Admin par',
     'delete_pages' => 'Supprimer la page avec le propriétaire',
-    'in_block' => 'Emballer les pages dans un block',
+    'in_block' => 'Emballer les pages dans un bloc',
     'show_hits' => 'Montrer le nombre de Hits?',
     'show_date' => 'Montrer la date de modification',
     'filter_html' => 'Filtrer le HTML',
@@ -180,10 +180,10 @@ $LANG_confignames['staticpages'] = array(
     'newstaticpagesinterval' => 'Interval des nouvelles pages statiques',
     'hidenewstaticpages' => 'Cacher les nouvelles pages statiques',
     'title_trim_length' => 'Couper la longueur des titres',
-    'includecenterblocks' => 'Inclure les pages statiques block central',
+    'includecenterblocks' => 'Inclure les pages statiques bloc central',
     'includephp' => 'Inclure les pages statiques avec du PHP',
     'includesearch' => 'Activer les pages statiques dans la recherche',
-    'includesearchcenterblocks' => 'Inclure les pages statiques block central dans la recherche',
+    'includesearchcenterblocks' => 'Inclure les pages statiques bloc central dans la recherche',
     'includesearchphp' => 'Inclure les pages statiques avec du PHP dans la recherche',
     'includesearchtemplate' => 'Include Template Static Pages'
 );
@@ -193,19 +193,19 @@ $LANG_configsubgroups['staticpages'] = array(
 );
 
 $LANG_tab['staticpages'] = array(
-    'tab_main' => 'Static Pages Main Settings',
-    'tab_whatsnew' => 'What\'s New Block',
-    'tab_search' => 'Search Results',
-    'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+    'tab_main' => 'Paramètres principaux des pages statiques',
+    'tab_whatsnew' => 'Bloc Quoi de neuf',
+    'tab_search' => 'Résultats des recherches',
+    'tab_permissions' => 'Permissions par défaut',
+    'tab_autotag_permissions' => 'Permission d\'usage des autotags'
 );
 
 $LANG_fs['staticpages'] = array(
     'fs_main' => 'Pages statiques paramètres principaux',
-    'fs_whatsnew' => 'Block Quoi de neuf',
+    'fs_whatsnew' => 'Bloc Quoi de neuf',
     'fs_search' => 'Résultats de la recherche',
     'fs_permissions' => 'Default Permissions',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_autotag_permissions' => 'Permission d\'usage des autotags'
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
@@ -218,7 +218,7 @@ $LANG_configselects['staticpages'] = array(
     5 => array('Cacher' => 'hide', 'Montrer - Utiliser la date de modification' => 'modified', 'Montrer - Utiliser la date de création' => 'created'),
     9 => array('Aller à la page' => 'item', 'Afficher la liste des pages' => 'list', 'Page d\'accueil' => 'home', 'Panneau d\'administration' => 'admin'),
     12 => array('Pas d\'acces' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
-    13 => array('No access' => 0, 'Use' => 2),
+    13 => array('Pas d\'accès' => 0, 'Utiliser' => 2),
     17 => array('Commentaires activés' => 0, 'Commentaires désactivés' => -1),
-    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4)
+    39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsarticle', 'BlogPosting' => 'core-blogposting')
 );

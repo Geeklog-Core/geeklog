@@ -221,5 +221,5 @@ $LANG_configselects['staticpages'] = array(
     12 => array('Nessun Accesso' => 0, 'Solo Lettura' => 2, 'Lettura e Scrittura' => 3),
     13 => array('No access' => 0, 'Use' => 2),
     17 => array('Commenti Abilitati' => 0, 'Commenti Disabilitati' => -1),
-    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4)
+    39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsarticle', 'BlogPosting' => 'core-blogposting')
 );

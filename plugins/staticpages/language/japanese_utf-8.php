@@ -225,5 +225,5 @@ $LANG_configselects['staticpages'] = array(
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
     13 => array('アクセス不可' => 0, '利用する' => 2),
     17 => array('コメント有効' => 0, 'コメント無効' => -1),
-    39 => array('なし' => 0, 'Webページ' => 1, '記事' => 2, 'ニュース記事' => 3, 'ブログ記事' => 4)
+    39 => array('なし' => '', 'Webページ' => 'core-webpage', '記事' => 'core-article', 'ニュース記事' => 'core-newsarticle', 'ブログ記事' => 'core-blogposting')
 );
