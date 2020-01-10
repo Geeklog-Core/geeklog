@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog database library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2011 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -266,12 +266,14 @@ function DB_delete($table, $id, $value, $return_page = '')
 /**
  * Gets a single item from the database
  *
- * @param        string $table     Table to get item from
- * @param        string $what      field name to get
- * @param        string $selection Where clause to use in SQL
- * @return       mixed       Returns value sought
+ * @param        string $table        Table to get item from
+ * @param        string $what         field name to get
+ * @param        string $selection    Where clause to use in SQL
+ * @param        mixed  $defaultValue will be returned when there is no row in the dataset
+ * @return       mixed                Returns value sought
+ * @note         $defaultValue argument since Geeklog 2,2,1
  */
-function DB_getItem($table, $what, $selection = '')
+function DB_getItem($table, $what, $selection = '', $defaultValue = false)
 {
     if (!empty($selection)) {
         $result = DB_query("SELECT {$what} FROM {$table} WHERE {$selection}");
@@ -280,7 +282,7 @@ function DB_getItem($table, $what, $selection = '')
     }
     $ITEM = DB_fetchArray($result, true);
 
-    return $ITEM[0];
+    return (is_array($ITEM) && (count($ITEM) > 0)) ? $ITEM[0] : $defaultValue;
 }
 
 /**
