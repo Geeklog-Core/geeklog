@@ -2,10 +2,13 @@
 
 {formatted_article}
 
-{whats_related}
-{story_options}
+{# page_number: current page number - page_total: total page count - comments_on_page: if comments will appear on page #}
+{!if comments_on_page}
+    {whats_related}
+    {story_options}
 
-{trackback}
-{commentbar}
+    {trackback}
+    {commentbar}
+{!endif}
 
 {# end {templatelocation} #}

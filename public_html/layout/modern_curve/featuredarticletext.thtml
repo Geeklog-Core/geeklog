@@ -35,35 +35,39 @@
     {story_text_no_br}
   </div>
 
-  {related_topics}
+  {# story_display_type: n = full display of article, p = preview in editor, y = topic summary display. #}
+  {# page_number: current page number - page_total: total page count - comments_on_page: if comments will appear on page #}
+  {!if story_footer}
+      {!if comments_on_page}
+          {related_topics}
 
-  {!if likes_control}
-    {# story_display_type: n = full display of article, p = preview in editor, y = topic summary display. #}
-    {!!if {story_display_type} == 'n' !!}
-    <div class="aligncenter">{likes_control}</div>
-    {!endif}
+          {!if likes_control}
+            {!!if {story_display_type} == 'n' !!}
+            <div class="aligncenter">{likes_control}</div>
+            {!endif}
+          {!endif}
+
+          {!if related_articles_by_keyword}
+            <hr{xhtml}>
+            {related_articles_by_keyword}
+          {!endif}
+      {!endif}
+      {!if navi_list}
+          <ul class="navi">
+            {!if page_selector}<li>{page_selector}</li>{!endif}
+            {!if readmore_link}<li>{readmore_link}</li>{!endif}
+            {!if post_comment_link}<li>{post_comment_link}</li>{!endif}
+          </ul>
+      {!endif}
+
+      {!if feedback_list}
+          <ul class="feedback">
+            {!if plugin_itemdisplay}<li>{plugin_itemdisplay}</li>{!endif}
+            {!if comments_with_count}<li>{comments_with_count}</li>{!endif}
+            {!if trackbacks_with_count}<li>{trackbacks_with_count}</li>{!endif}
+          </ul>
+      {!endif}
   {!endif}
-
-  {!if related_articles_by_keyword}
-    <hr{xhtml}>
-    {related_articles_by_keyword}
-  {!endif}
-
-{!if navi_list}
-  <ul class="navi">
-    {!if page_selector}<li>{page_selector}</li>{!endif}
-    {!if readmore_link}<li>{readmore_link}</li>{!endif}
-    {!if post_comment_link}<li>{post_comment_link}</li>{!endif}
-  </ul>
-{!endif}
-
-{!if feedback_list}
-  <ul class="feedback">
-    {!if plugin_itemdisplay}<li>{plugin_itemdisplay}</li>{!endif}
-    {!if comments_with_count}<li>{comments_with_count}</li>{!endif}
-    {!if trackbacks_with_count}<li>{trackbacks_with_count}</li>{!endif}
-  </ul>
-{!endif}
 </div>
 
 <!-- BEGIN image_noalign -->

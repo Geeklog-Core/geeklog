@@ -367,13 +367,14 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         $trackbacks_with_count = '';
 
         if (($index == 'n') || ($index == 'p')) {
+            $story_page = 1;
+            $show_comments = true;
+
             if (empty($bodytext)) {
                 $article->set_var('story_introtext', $introtext);
                 $article->set_var('story_text_no_br', $introtext);
             } else {
                 if (($_CONF['allow_page_breaks'] == 1) && ($index == 'n')) {
-                    $story_page = 1;
-
                     // page selector
                     if (is_numeric($mode)) {
                         $story_page = $mode;
@@ -415,6 +416,11 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             }
             $article->set_var('story_introtext_only', $introtext);
             $article->set_var('story_bodytext_only', $bodytext);
+
+            // Pass Page and Comment Display info to template in case it wants to display anything else with comments
+            $article->set_var('page_number', $story_page);
+            $article->set_var('page_total', $story->DisplayElements('numpages'));
+            $article->set_var('comments_on_page', $show_comments);
 
             if (($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) &&
                 SEC_hasRights('story.ping')

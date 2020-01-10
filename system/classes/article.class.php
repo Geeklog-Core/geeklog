@@ -1910,7 +1910,11 @@ class Article
                 break;
 
             case 'numpages':
-                $return = $this->_numpages;
+                if (empty($this->_numpages)) {
+                    $return = 1; // If not calculated (like for article preview in editor) assume 1
+                } else {
+                    $return = $this->_numpages;
+                }
 
                 break;
 

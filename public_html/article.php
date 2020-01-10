@@ -342,8 +342,54 @@ if ($A['count'] > 0) {
             DB_query("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE (sid = '" . DB_escapeString($article->getSid()) . "') AND (date <= NOW()) AND (draft_flag = 0)");
         }
 
-        // Display whats related
         $articleTemplate = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'article'));
+
+        // Render article near top so it can use mode if set (ie to figure out page break)
+        // Another option here could be to figure out if story is first on page
+        $tmpl = $_CONF['showfirstasfeatured'] ? 'featuredarticletext.thtml' : '';
+        $articleTemplate->set_var('formatted_article',
+            STORY_renderArticle($article, 'n', $tmpl, $query));
+
+        // Figure out to display comments or not on this page of the article
+        $story_page = 1;
+        $show_comments = true;
+        $page_break_count = $article->displayElements('numpages');
+        if ($_CONF['allow_page_breaks'] == 1 && $page_break_count > 1) {
+            if (!is_numeric($mode)) {
+                $story_page = 1;
+            } else {
+                $story_page = $mode;
+                $mode = ''; // need to clear it since mode post variable is used by comment as well to determine how to display comments
+            }
+
+            if ($story_page <= 0) {
+                $story_page = 1;
+            }
+
+            if ($page_break_count > 1) {
+                $conf = $_CONF['page_break_comments'];
+                if (
+                    ($conf === 'all') ||
+                    (($conf === 'first') && ($story_page == 1)) ||
+                    (($conf === 'last') && ($page_break_count == $story_page))
+                ) {
+                    $show_comments = true;
+                } else {
+                    $show_comments = false;
+                }
+            } else {
+                $show_comments = true;
+            }
+        } else {
+            $show_comments = true;
+        }
+
+        // Pass Page and Comment Display info to template in case it wants to display anything else with comments
+        $articleTemplate->set_var('page_number', $story_page);
+        $articleTemplate->set_var('page_total', $page_break_count);
+        $articleTemplate->set_var('comments_on_page', $show_comments);
+
+        // Display whats related
         $articleTemplate->set_file('article', 'article.thtml');
 
         $articleTemplate->set_var('story_id', $article->getSid());
@@ -443,43 +489,6 @@ if ($A['count'] > 0) {
         $articleTemplate->set_var('story_options', $optionsblock);
         $articleTemplate->set_var('whats_related_story_options',
             $related . $optionsblock);
-
-        // Another option here could be to figure out if story is first on page
-        $tmpl = $_CONF['showfirstasfeatured'] ? 'featuredarticletext.thtml' : '';
-        $articleTemplate->set_var('formatted_article',
-            STORY_renderArticle($article, 'n', $tmpl, $query));
-
-        // display comments or not on this page of the article?
-        $page_break_count = $article->displayElements('numpages');
-        if ($_CONF['allow_page_breaks'] == 1 && $page_break_count > 1) {
-            if (!is_numeric($mode)) {
-                $story_page = 1;
-            } else {
-                $story_page = $mode;
-                $mode = '';
-            }
-
-            if ($story_page <= 0) {
-                $story_page = 1;
-            }
-
-            if ($page_break_count > 1) {
-                $conf = $_CONF['page_break_comments'];
-                if (
-                    ($conf === 'all') ||
-                    (($conf === 'first') && ($story_page == 1)) ||
-                    (($conf === 'last') && ($page_break_count == $story_page))
-                ) {
-                    $show_comments = true;
-                } else {
-                    $show_comments = false;
-                }
-            } else {
-                $show_comments = true;
-            }
-        } else {
-            $show_comments = true;
-        }
 
         // Display the comments, if there are any ..
         if (($article->displayElements('commentcode') >= 0) && $show_comments) {

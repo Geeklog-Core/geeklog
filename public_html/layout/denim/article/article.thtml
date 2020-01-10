@@ -4,20 +4,23 @@
 {formatted_article}
 </div>
 
-<div class="uk-grid uk-grid-margin" data-uk-grid-margin data-uk-grid-match>
-<div class="uk-width-medium-1-2">
-{whats_related}
-</div>
+{# page_number: current page number - page_total: total page count - comments_on_page: if comments will appear on page #}
+{!if comments_on_page}
+    <div class="uk-grid uk-grid-margin" data-uk-grid-margin data-uk-grid-match>
+    <div class="uk-width-medium-1-2">
+    {whats_related}
+    </div>
 
-<div class="uk-width-medium-1-2">
-{story_options}
-</div>
+    <div class="uk-width-medium-1-2">
+    {story_options}
+    </div>
 
-<div class="uk-width-1-1">
-{trackback}
-</div>
-</div>
+    <div class="uk-width-1-1">
+    {trackback}
+    </div>
+    </div>
 
-{commentbar}
+    {commentbar}
+{!endif}
 
 {# end {templatelocation} #}
