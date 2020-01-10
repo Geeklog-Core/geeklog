@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog class to include javascript, javascript files and css files.      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2019 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer, tomhomer AT gmail DOT com                             |
 // |          Kenji ITO, mystralkk AT gmail DOT com                            |
@@ -36,6 +36,11 @@ use JSMin\JSMin;
 use MatthiasMullie\Minify;
 use Mobile_Detect;
 
+/**
+ * Class Resource
+ *
+ * @package Geeklog
+ */
 class Resource
 {
     const DEFAULT_CACHE_LIFESPAN = 604800; // 1 week

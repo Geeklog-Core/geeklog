@@ -114,6 +114,13 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
                 0 => __DIR__ . '/..' . '/pear/net_dns2',
             ),
         ),
+        'J' => 
+        array (
+            'JSMin\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/mrclay/jsmin-php/src',
+            ),
+        ),
         'H' => 
         array (
             'HTTP_Request2' => 
@@ -126,6 +133,10 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
             'Doctrine\\Common\\Inflector\\' => 
             array (
                 0 => __DIR__ . '/..' . '/doctrine/inflector/lib',
+            ),
+            'Detection' => 
+            array (
+                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
             ),
         ),
         'C' => 
@@ -146,6 +157,7 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
         'AssertionError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/AssertionError.php',
         'DivisionByZeroError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/DivisionByZeroError.php',
         'Error' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/Error.php',
+        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'Net_URL2' => __DIR__ . '/..' . '/pear/net_url2/Net/URL2.php',
         'PEAR_Exception' => __DIR__ . '/..' . '/pear/pear_exception/PEAR/Exception.php',
         'ParseError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/ParseError.php',
