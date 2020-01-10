@@ -5,7 +5,7 @@
 {items_list}
 <p>{lang_msg_add}</p>
 <form method="post" class="uk-form" action="{site_admin_url}/plugins/spamx/index.php?command={spamx_command}">
-    <table style="border: 0px; width: 100%;">
+    <table style="border: 0; width: 100%;">
         <tr>
             <td class="uk-text-right uk-text-bold">Header:</td>
             <td><input type="text" maxlength="191" class="uk-form-width-large" name="header-name"{xhtml}> e.g. <tt>User-Agent</tt></td>
