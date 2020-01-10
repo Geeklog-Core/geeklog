@@ -42,31 +42,6 @@ class Autoload
                 /** @noinspection PhpIncludeInspection */
                 include $path;
             }
-        } elseif (stripos($className, 'MatthiasMullie\\') === 0) {
-            if (stripos($className, 'MatthiasMullie\\Minify\\') === 0) {
-                $path = __DIR__ . self::DS . 'MatthiasMullie' . self::DS . 'minify'
-                    . self::DS . 'src' . self::DS
-                    . str_ireplace('MatthiasMullie\\Minify\\', '', $className) . '.php';
-            } elseif (stripos($className, 'MatthiasMullie\\PathConverter\\') === 0) {
-                $path = __DIR__ . self::DS . 'MatthiasMullie' . self::DS . 'path-converter'
-                    . self::DS . 'src' . self::DS
-                    . str_ireplace('MatthiasMullie\\PathConverter\\', '', $className) . '.php';
-            } else {
-                $path = '';
-            }
-
-            if (file_exists($path)) {
-                /** @noinspection PhpIncludeInspection */
-                include $path;
-            }
-        } elseif (stripos($className, 'JSMin\\') === 0){
-            $path = __DIR__ . self::DS . 'JSMin' . self::DS
-                . str_ireplace('JSMin\\', '', $className) . '.php';
-
-            if (file_exists($path)) {
-                /** @noinspection PhpIncludeInspection */
-                include $path;
-            }
         } else {
             // Legacy Geeklog classes
             $path = __DIR__ . DIRECTORY_SEPARATOR . strtolower($className) . '.class.php';
@@ -81,8 +56,6 @@ class Autoload
                     include __DIR__ . '/XML/RPC/Server.php';
                 } elseif (stripos($className, 'XML_RPC_') === 0) {
                     include __DIR__ . '/XML/RPC.php';
-                } elseif (stripos($className, 'Mobile_Detect') === 0) {
-                    include __DIR__ . '/mobiledetect/Mobile_Detect.php';
                 }
             }
         }

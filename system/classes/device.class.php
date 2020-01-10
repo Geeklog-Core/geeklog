@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog class to detect device type of visitor.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2011 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer, tomhomer AT gmail DOT com                             |
 // +---------------------------------------------------------------------------+
@@ -65,7 +65,6 @@ class Device
     public function __construct()
     {
         // Include and instantiate the class.
-        require_once __DIR__ . '/mobiledetect/Mobile_Detect.php';
         $detect = new Mobile_Detect;
 
         // Any mobile device (phones or tablets).
