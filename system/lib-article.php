@@ -466,8 +466,14 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             }
 
             if (($story->DisplayElements('commentcode') >= 0) && ($show_comments)) {
+                if ($_CONF['allow_page_breaks'] == 1 && $_CONF['page_break_comments'] == 'last' && $story->DisplayElements('numpages') > 1) {
+                    $articlePageNumURLPart = "'&amp;mode=" . $story->DisplayElements('numpages');
+                } else {
+                    $articlePageNumURLPart = "";
+                }
+
                 $commentsUrl = COM_buildUrl($_CONF['site_url']
-                        . '/article.php?story=' . $story->getSid()) . '#comments';
+                        . '/article.php?story=' . $story->getSid()) . $articlePageNumURLPart . '#comments';
                 $article->set_var('comments_url', $commentsUrl);
                 $article->set_var('comments_text',
                     COM_numberFormat($story->DisplayElements('comments')) . ' ' . $LANG01[3]);
@@ -484,7 +490,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
 
                 if ($_CONF['comment_on_same_page'] == true) {
                     $postCommentUrl = $_CONF['site_url'] . '/article.php?story='
-                        . $story->getSid() . '#commenteditform';
+                        . $story->getSid() . $articlePageNumURLPart . '#commenteditform';
                 } else {
                     $postCommentUrl = $_CONF['site_url'] . '/comment.php?sid='
                         . $story->getSid() . '&amp;pid=0&amp;type=article';
@@ -509,9 +515,6 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
 
                     $recent_comment_anchortag = COM_createLink($comments_with_count, $postCommentUrl, $attr);
 
-                    // Not really used anymore but left in for old themes
-                    $article->set_var('start_comments_anchortag', '<a href="' . $commentsUrl . '">');
-                    $article->set_var('end_comments_anchortag', '</a>');
                 } else {
                     $article->set_var('comments_with_count', $comments_with_count);
 
@@ -1813,9 +1816,18 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
+    $numpages = DB_getItem($_TABLES['stories'], 'numpages',
+        "(sid = '$id') AND (draft_flag = 0) AND (date <= NOW())"
+        . COM_getPermSQL('AND'));
+    if ($_CONF['allow_page_breaks'] == 1 && $_CONF['page_break_comments'] == 'last' && $numpages > 1) {
+        $articlePageNumURLPart = "'&amp;mode=" . $numpages;
+    } else {
+        $articlePageNumURLPart = "";
+    }
+
     $ret = CMT_saveComment($title, $comment, $id, $pid, 'article', $postmode);
     if ($ret == -1) {
-        $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $id);
+        $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $id . $articlePageNumURLPart);
         $url .= (strpos($url, '?') ? '&' : '?') . 'msg=15';
         COM_redirect($url);
     } elseif (($ret > 0) || is_string($ret)) { // failure
@@ -1837,7 +1849,8 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
         // Comment count in Older Stories block may have changed so delete cache
         $cacheInstance = 'olderarticles__'; // remove all olderarticles instances
         CACHE_remove_instance($cacheInstance);
-        COM_redirect(COM_buildUrl($_CONF['site_url'] . "/article.php?story=$id"));
+
+        COM_redirect(COM_buildUrl($_CONF['site_url'] . "/article.php?story=" . $id . $articlePageNumURLPart . "#comments"));
     }
 
     return $retval;
