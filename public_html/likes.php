@@ -51,13 +51,14 @@ $ajax_call = Geeklog\Input::fGetOrPost('a', '');
 if ($ajax_call == "1") {
     $ajax_call = true;
 } else {
-    $ajax_call = false;    
+    $ajax_call = false;
 }
 if ($ajax_call) {
     header("Cache-Control: no-cache");
     header("Pragma: nocache");
 }
 
+$error_data = false;
 $status = 0;
 $type  = Geeklog\Input::fGetOrPost('type', '');
 $sub_type  = Geeklog\Input::fGetOrPost('subtype', '');
@@ -67,31 +68,51 @@ $ip         = $_SERVER['REMOTE_ADDR'];
 $ratingdate = time();
 $uid        = isset($_USER['uid']) ? $_USER['uid'] : 1;
 
+if ($_LIKES_DEBUG) {
+    $log = "Likes Action Call from likes.php:
+            ajax_call = $ajax_call
+            type = $type
+            sub_type = $sub_type
+            id = $id
+            action = $action
+            ip = $ip
+            ratingdate = $ratingdate
+            uid = $uid";
+
+    COM_errorLog($log, 1);
+}
+
 if (!$ajax_call) {
-    // validate the referer here - just to be safe....
-    $referer = isset($_SERVER['HTTP_REFERER']) ? COM_sanitizeUrl($_SERVER['HTTP_REFERER']) : $_CONF['site_url'];
-    if ( $referer == '' ) {
-        $referer = $_CONF['site_url'];
+    // validate the referrer here - just to be safe....
+    $referrer = isset($_SERVER['HTTP_REFERER']) ? COM_sanitizeUrl($_SERVER['HTTP_REFERER']) : $_CONF['site_url'];
+    if ($referrer == '') {
+        $referrer = $_CONF['site_url'];
     } else {
         // jump down to like user clicked
-        $referer .= '#likes-' . $type . '-' . $sub_type . '-' . $id;
+        $referrer .= '#likes-' . $type . '-' . $sub_type . '-' . $id;
     }
 
     $sLength = strlen($_CONF['site_url']);
-    if ( substr($referer,0,$sLength) != $_CONF['site_url'] ) {
-        $referer = $_CONF['site_url'];
+    if (substr($referrer,0,$sLength) != $_CONF['site_url']) {
+        $referrer = $_CONF['site_url'];
     }
 }
 
 // Confirm a proper type (plugin) is sent (not if you can like it though)
 $all_plugins = array_merge($_PLUGINS, array('article', 'comment'));
 if (!in_array($type, $all_plugins)) {
-    die('no type specified');
+    $error_data = true;
+	if ($_LIKES_DEBUG) {
+        COM_errorLog("Likes System Error: No type specified", 1);
+	}
 }
 
 $likes_setting = PLG_typeLikesEnabled($type, $sub_type);
 if (!($likes_setting == 1 OR $likes_setting == 2)) {
-    die('likes system not enabled for type');
+    $error_data = true;
+	if ($_LIKES_DEBUG) {
+        COM_errorLog("Likes System Error: Likes System not enabled for this type", 1);
+	}
 }
 
 // Confirm a proper action sent
@@ -105,7 +126,30 @@ switch ($action) {
             break;
         }
     default:
-        die("Sorry, likes system action appears to be invalid or disabled."); // kill the script because normal users will never see this.
+        $error_data = true;
+		if ($_LIKES_DEBUG) {
+			COM_errorLog("Likes System Error: Likes system action appears to be invalid or disabled", 1);
+		}
+}
+
+// Likes Item ID Field is only 128 characters long so check this now
+$maxIDLength = 128;
+if (strlen($id) > $maxIDLength) {
+    $error_data = true;
+	if ($_LIKES_DEBUG) {
+        COM_errorLog("Likes System Error: Item Id is greater than $maxIDLength characters. It appears '$type' item ids may be to large.", 1);
+	}
+}
+
+// Check for error flag
+if ($error_data) {
+    if ($ajax_call) {
+        // Return nothing so ajax code knows to error out
+        echo json_encode();
+        exit(0);
+    } else {
+        die('Error detected.');
+    }
 }
 
 $action_enabled = PLG_canUserLike($type, $sub_type, $id, $uid, $ip);
@@ -115,7 +159,7 @@ if ($action_enabled) {
 
     // Find out if user has voted and what that is (like or dislike)
     $prev_action = LIKES_hasAction($type, $sub_type, $id, $uid, $ip);
-    
+
     // Figure out valid actions
     if (($prev_action == LIKES_ACTION_NONE) AND ($action == LIKES_ACTION_LIKE OR $action == LIKES_ACTION_DISLIKE)) {
         // If user no vote then action like or dislike
@@ -135,7 +179,7 @@ if ($action_enabled) {
     } else {
         $speedlimiterror = 0;
     }
-  
+
     if ($status == 0) { // if everything looks good then perform action
         list($num_likes, $num_dislikes) = LIKES_addAction($type, $sub_type, $id, $action, $prev_action, $uid, $ip);
         COM_updateSpeedlimit ('likes');
@@ -143,7 +187,7 @@ if ($action_enabled) {
 } else {
     if ($ajax_call) {
         list($num_likes, $num_dislikes) = LIKES_getLikes($type, $sub_type, $id);
-        
+
         $status = 3;
     }
 }
@@ -161,7 +205,7 @@ if ($ajax_call) {
         }
     } elseif ( $status == 2 ) {
         $data_type = 1;
-        $data = sprintf($LANG_LIKES['likes_speedlimit'], $last, $_CONF['likes_speedlimit']); 
+        $data = sprintf($LANG_LIKES['likes_speedlimit'], $last, $_CONF['likes_speedlimit']);
     } elseif ( $status == 3 ) {
         // no permission for action or you already own the item
         $data_type = 1;
@@ -170,8 +214,8 @@ if ($ajax_call) {
         $message = '';
         if ($action == LIKES_ACTION_LIKE OR $action == LIKES_ACTION_DISLIKE) {
             $message = $LANG_LIKES['thanks_for_action'];
-        }    
-        
+        }
+
         $data = LIKES_control($type, $sub_type, $id, $likes_setting, $message);
     }
 
@@ -182,7 +226,7 @@ if ($ajax_call) {
     echo json_encode($retval);
     exit(0);
 } else {
-    header("Location: " . $referer); // go back to the page we came from
+    header("Location: " . $referrer); // go back to the page we came from
     exit;
 }
 

@@ -50,6 +50,9 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
+// set to true to enable debug output in error.log
+$_LIKES_DEBUG = COM_isEnableDeveloperModeLog('like');
+
 /**
  * Related Plugin Library functions
  */
@@ -70,7 +73,7 @@ define('LIKES_ACTION_UNDISLIKE', 4);
 *
 * @param        string      $type               plugin name
 * @param        string      $sub_type           Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
-* @param        string      $id                 item id
+* @param        string      $id                 item id WARNING must be no larger that 128 characters
 * @param        int         $likes_setting      if 2 dislikes will not be displayed
 * @param        string      $message            language string of message to pass to user
 * @return       string      html of the likes control
@@ -216,7 +219,7 @@ function LIKES_getLikes($type, $sub_type = '', $item_id)
 */
 function LIKES_hasAction($type, $sub_type = '', $item_id, $uid, $ip)
 {
-    global $_TABLES;
+    global $_TABLES, $_LIKES_DEBUG;
 
     $prev_action = LIKES_ACTION_NONE;
 
@@ -233,6 +236,10 @@ function LIKES_hasAction($type, $sub_type = '', $item_id, $uid, $ip)
         $A = DB_fetchArray($result);
         $prev_action = $A['action'];
     }
+
+	if ($_LIKES_DEBUG) {
+		COM_errorLog("Likes Previous Action Detected = $prev_action for type '$type' with id '$item_id' for user id $uid", 1);
+	}
 
     return $prev_action;
 }

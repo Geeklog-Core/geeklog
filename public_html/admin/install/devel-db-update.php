@@ -93,7 +93,7 @@ function update_DatabaseFor221()
     $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `structured_data_type` varchar(40) NOT NULL DEFAULT '' AFTER `commentcode`";
     $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `modified` DATETIME NULL DEFAULT NULL AFTER `date`";
     // For number of pages in an article. Needed for when article is cached and we need to figure out what page to put the comments on
-    $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `numpages` tinyint(1) NOT NULL DEFAULT '1' AFTER `hits`";    
+    $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `numpages` tinyint(1) NOT NULL DEFAULT '1' AFTER `hits`";
 
     if (DB_count($_TABLES['features'], 'ft_name', 'structureddata.autotag') == 0) {
         // Add `structureddata.autotag` feature
@@ -110,7 +110,7 @@ function update_DatabaseFor221()
       lid INT(11) NOT NULL AUTO_INCREMENT,
       type varchar(30) NOT NULL,
       subtype varchar(30) NOT NULL DEFAULT '',
-      id varchar(30) NOT NULL,
+      id varchar(128) NOT NULL,
       uid MEDIUMINT NOT NULL,
       ipaddress VARCHAR(39) NOT NULL,
       action TINYINT NOT NULL,

@@ -196,7 +196,7 @@ CREATE TABLE {$_TABLES['likes']} (
   lid SERIAL NOT NULL,
   type varchar(30) NOT NULL,
   subtype varchar(30) NOT NULL DEFAULT '',
-  id varchar(30) NOT NULL,
+  id varchar(128) NOT NULL,
   uid smallint NOT NULL,
   ipaddress VARCHAR(39) NOT NULL,
   action smallint NOT NULL,
