@@ -148,9 +148,16 @@ if (empty($pid)) {
     $display .= polllist();
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_POLLS['pollstitle']));
 } elseif ((isset($_POST['aid']) && is_array($_POST['aid']) && (count($_POST['aid']) == $nquestions)) && !isset($_COOKIE['poll-' . $pid])) {
-    setcookie('poll-' . $pid, implode('-', $_POST['aid']), time() + $_PO_CONF['pollcookietime'],
-        $_CONF['cookie_path'], $_CONF['cookiedomain'],
-        $_CONF['cookiesecure']);
+    $aids = '';
+    foreach ($aid as $answer) {
+        $aids .= $answer[0] . '-';
+    }
+    $aids = substr($aids, 0, -1);
+
+    setcookie(
+        'poll-' . $pid, $aids, time() + $_PO_CONF['pollcookietime'], $_CONF['cookie_path'],
+        $_CONF['cookiedomain'], $_CONF['cookiesecure']
+    );
     $display .= POLLS_pollsave($pid, $aid);
     $display = COM_createHTMLDocument($display);
 } elseif (!empty($pid)) {
