@@ -474,7 +474,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
 
             if (($story->DisplayElements('commentcode') >= 0) && ($show_comments)) {
                 if ($_CONF['allow_page_breaks'] == 1 && $_CONF['page_break_comments'] == 'last' && $story->DisplayElements('numpages') > 1) {
-                    $articlePageNumURLPart = "'&amp;mode=" . $story->DisplayElements('numpages');
+                    $articlePageNumURLPart = "&amp;mode=" . $story->DisplayElements('numpages');
                 } else {
                     $articlePageNumURLPart = "";
                 }
@@ -1827,7 +1827,7 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
         "(sid = '$id') AND (draft_flag = 0) AND (date <= NOW())"
         . COM_getPermSQL('AND'));
     if ($_CONF['allow_page_breaks'] == 1 && $_CONF['page_break_comments'] == 'last' && $numpages > 1) {
-        $articlePageNumURLPart = "'&amp;mode=" . $numpages;
+        $articlePageNumURLPart = "&amp;mode=" . $numpages;
     } else {
         $articlePageNumURLPart = "";
     }
