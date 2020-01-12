@@ -375,7 +375,23 @@ class ValidatorClassTest extends TestCase
      */
     public function testPhone()
     {
-        $this->markTestIncomplete();
+        $validator = Validator::getInstance();
+
+        // USA
+        $data = [
+            [true, '234-235-5678'],
+//            [false, '234-911-5678'],
+            [false, '314-159-2653'],
+            [false, '123-234-5678'],
+            [true, '1-213-555-0123'],
+        ];
+
+        foreach ($data as $items) {
+            $this->assertEquals(
+                $items[0],
+                $validator->phone($items[1]),
+                'Expected ' . $items[1] . ' is ' . ($items[0] ? '' : 'not') . ' the right phone number given, but such is not the case.');
+        }
     }
 
     /**

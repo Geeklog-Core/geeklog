@@ -30,7 +30,7 @@ class templateClass extends TestCase
         $_CONF['layout_url'] = $_CONF['site_url'] . '/layout';
         $_CONF['cache_templates'] = false;
 
-        require_once $_CONF['path_system'] . 'classes/mobiledetect/Mobile_Detect.php';
+        require_once $_CONF['path_system'] . 'vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php';
         $_DEVICE = new Mobile_Detect();
 
         // Reset Template Options so they do not include default vars

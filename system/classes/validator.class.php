@@ -671,8 +671,8 @@ class Validator
         }
 
         if (is_null($_this->regex)) {
-            // includes all NANPA members. see http://en.wikipedia.org/wiki/North_American_Numbering_Plan#List_of_NANPA_countries_and_territories
-            $_this->regex = '/^(?:\+?1)?[-. ]?\\(?[2-9][0-8][0-9]\\)?[-. ]?[2-9][0-9]{2}[-. ]?[0-9]{4}$/';
+            // includes all NANPA members. see https://en.wikipedia.org/wiki/North_American_Numbering_Plan#List_of_NANPA_countries_and_territories
+            $_this->regex = '/^(?:\+?1)?[-. ]?\\(?[2-9][0-9][0-9]\\)?[-. ]?[2-9][0-9][0-9][-. ]?[0-9]{4}$/';
         }
 
         return $_this->_check();
