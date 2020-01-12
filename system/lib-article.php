@@ -375,21 +375,28 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                 $article->set_var('story_text_no_br', $introtext);
             } else {
                 if (($_CONF['allow_page_breaks'] == 1) && ($index == 'n')) {
+                    $article_array = explode('[page_break]', $bodytext);
+                    $page_break_count = count($article_array);
+
                     // page selector
                     if (is_numeric($mode)) {
                         $story_page = $mode;
                         if ($story_page <= 0) {
                             $story_page = 1;
-                            $mode = 0;
+                            $mode = 1;
                         } elseif ($story_page > 1) {
                             $introtext = '';
                         }
-                    }
-                    $article_array = explode('[page_break]', $bodytext);
-                    $page_break_count = count($article_array);
-                    if ($story_page > $page_break_count) { // Can't have page count greater than actual number of pages
+
+                        if ($story_page > $page_break_count) { // Can't have page count greater than actual number of pages
+                            $story_page = $page_break_count;
+                        }
+                    } elseif (!empty($mode) && $_CONF['page_break_comments'] == 'last' && $page_break_count > 1) {
+                        // So if not numeric and if not empty then assume mode is used for comment display so check if page should be last or not
+                        // See github issue #1019 for bug regarding $_CONF['page_break_comments'] ='all' and not being able to figure out what article page we are on if comment display is changed since mode is being used by article for page number and comments to change display
                         $story_page = $page_break_count;
                     }
+
                     $page_selector = COM_printPageNavigation(
                         $articleUrl, $story_page, $page_break_count,
                         'mode=', $_CONF['url_rewrite'], $LANG01[118]);
@@ -467,7 +474,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
 
             if (($story->DisplayElements('commentcode') >= 0) && ($show_comments)) {
                 if ($_CONF['allow_page_breaks'] == 1 && $_CONF['page_break_comments'] == 'last' && $story->DisplayElements('numpages') > 1) {
-                    $articlePageNumURLPart = "'&amp;mode=" . $story->DisplayElements('numpages');
+                    $articlePageNumURLPart = "&amp;mode=" . $story->DisplayElements('numpages');
                 } else {
                     $articlePageNumURLPart = "";
                 }
@@ -1820,7 +1827,7 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
         "(sid = '$id') AND (draft_flag = 0) AND (date <= NOW())"
         . COM_getPermSQL('AND'));
     if ($_CONF['allow_page_breaks'] == 1 && $_CONF['page_break_comments'] == 'last' && $numpages > 1) {
-        $articlePageNumURLPart = "'&amp;mode=" . $numpages;
+        $articlePageNumURLPart = "&amp;mode=" . $numpages;
     } else {
         $articlePageNumURLPart = "";
     }

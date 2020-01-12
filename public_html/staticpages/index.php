@@ -66,6 +66,8 @@ if (isset($_REQUEST['order'])) {
     $comment_mode = Geeklog\Input::fRequest('mode');
     if (isset($_REQUEST['cpage'])) {
         $comment_page = Geeklog\Input::fRequest('cpage');
+    } else {
+        $comment_page = 1;
     }
     if ((strcasecmp($comment_order, 'ASC') != 0) &&
         (strcasecmp($comment_order, 'DESC') != 0)

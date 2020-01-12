@@ -355,15 +355,26 @@ if ($A['count'] > 0) {
         $show_comments = true;
         $page_break_count = $article->displayElements('numpages');
         if ($_CONF['allow_page_breaks'] == 1 && $page_break_count > 1) {
+            // if not numeric then mode is used by comments to determine how to display them
             if (!is_numeric($mode)) {
-                $story_page = 1;
+                // if not empty then assume mode is being used by comments to change display and check if need to be on last page
+                if (!empty($mode) && $_CONF['allow_page_breaks'] == 1 && $_CONF['page_break_comments'] == 'last' && $page_break_count > 1) {
+                    // See github issue #1019 for bug regarding $_CONF['page_break_comments'] ='all' and not being able to figure out what article page we are on if comment display is changed since mode is being used by article for page number and comments to change display
+                    $story_page = $page_break_count;
+                } else {
+                    $story_page = 1;
+                }
             } else {
                 $story_page = $mode;
                 $mode = ''; // need to clear it since mode post variable is used by comment as well to determine how to display comments
-            }
 
-            if ($story_page <= 0) {
-                $story_page = 1;
+                if ($story_page <= 0) {
+                    $story_page = 1;
+                }
+
+                if ($story_page > $page_break_count) { // Can't have page count greater than actual number of pages
+                    $story_page = $page_break_count;
+                }
             }
 
             if ($page_break_count > 1) {
