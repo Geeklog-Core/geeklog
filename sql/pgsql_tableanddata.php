@@ -200,7 +200,7 @@ CREATE TABLE {$_TABLES['likes']} (
   uid smallint NOT NULL,
   ipaddress VARCHAR(39) NOT NULL,
   action smallint NOT NULL,
-  created DATETIME NOT NULL,
+  created timestamp NOT NULL,
   PRIMARY KEY (lid)
 )
 ";
