@@ -1944,6 +1944,29 @@ function plugin_displaycomment_article($id, $cid, $title, $order, $format, $page
 }
 
 /**
+ * Provide URL for the link to a comment's parent item.
+ * NOTE: The Plugin API does not support $_CONF['url_rewrite'] here,
+ *       so we'll end up with a non-rewritten URL ...
+ *
+ * @return   string   string of URL
+ */
+function plugin_getcommenturlid_article($id)
+{
+    global $_CONF, $_TABLES;
+
+    // Cannot use COM_buildURL as comment stuff does not support URL Rewrite - $retval = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $id);
+    $retval = $_CONF['site_url'] . '/article.php?story=' . $id;
+
+    // See if multi page article as we will have to see which page comments appear on
+    $numpages = DB_getItem($_TABLES['stories'], 'numpages', "sid = '$id'");
+    if ($_CONF['allow_page_breaks'] == 1 && $_CONF['page_break_comments'] == 'last' && $numpages > 1) {
+        $retval .= "&amp;mode=" . $numpages;
+    }
+
+    return $retval;
+}
+
+/**
  * Do we support article feeds? (use plugin api)
  *
  * @return   array   id/name pairs of all supported feeds
@@ -2113,7 +2136,6 @@ function plugin_canuserlike_article($sub_type, $id, $uid, $ip)
 
     return $retval;
 }
-
 
 /*
  * START SERVICES SECTION

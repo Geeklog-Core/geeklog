@@ -107,9 +107,7 @@ function CMT_commentBar($sid, $title, $type, $order, $mode, $ccode = 0)
     $commentBar->set_var('comment_title', $cmt_title);
 
     // Link to plugin defined link or lacking that a generic link
-    // that the plugin should support (hopefully)
-    list($plgurl, $plgid) = CMT_getCommentUrlId($type);
-    $articleUrl = "$plgurl?$plgid=$sid";
+    $articleUrl = CMT_getCommentUrlId($type, $sid);
 
     $commentBar->set_var('article_url', $articleUrl);
     if ($is_comment_page) {
@@ -179,7 +177,7 @@ function CMT_commentBar($sid, $title, $type, $order, $mode, $ccode = 0)
             $commentBar->set_var('editor_url', $comment_url . '#commenteditform');
             $commentBar->set_var('nprefix', '');
         }
-        $hidden = '<input type="hidden" name="' . $plgid . '" value="' . $sid . '"' . XHTML . '>';
+        $hidden = '<input type="hidden" name="' . $type . '" value="' . $sid . '"' . XHTML . '>';
         $commentBar->set_var('hidden_field', $hidden);
         $commentBar->set_var('hidden_field_reply', $hidden);
     }
@@ -305,13 +303,6 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             if ($indent > 400) {
                 $indent = 400;
             }
-        }
-
-        // Filemgmt plugin is doing special processing.
-        // Therefore, I support specially, against my better judgment.
-        // May should delete this code part.
-        if ($type === 'filemgmt') {
-            $A['sid'] = str_replace('fileid_', '', $A['sid']);
         }
 
         // comment variables
@@ -440,15 +431,15 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         }
 
         if (COMMENT_ON_SAME_PAGE) {
-            list($pluginUrl, $pluginId) = CMT_getCommentUrlId($type);
+            $pluginUrl = CMT_getCommentUrlId($type, $A['sid']);
         }
 
         // edit link
         $edit = '';
         if ($edit_option) {
             if (COMMENT_ON_SAME_PAGE) {
-                $editLink = $pluginUrl . '?' . CMT_MODE . '=edit&amp;' . CMT_CID . '='
-                    . $A['cid'] . "&amp;$pluginId=" . $A['sid'] . '&amp;' . CMT_TYPE . '=' . $type
+                $editLink = $pluginUrl . '&amp;' . CMT_MODE . '=edit&amp;' . CMT_CID . '='
+                    . $A['cid'] . '&amp;' . CMT_TYPE . '=' . $type
                     . '&amp;mode=' . $mode
                     . '&amp;order=' . $order
                     . '&amp;cpage=' . $commentPage
@@ -470,8 +461,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
                 "cid = {$A['cid']} AND uid = {$_USER['uid']}");
             if (!empty($hash)) {
                 if (COMMENT_ON_SAME_PAGE) {
-                    $unsubLink = $pluginUrl . '?' . CMT_MODE . "=unsubscribe&amp;$pluginId="
-                        . $A['sid'] . '&amp;key=' . $hash;
+                    $unsubLink = $pluginUrl . '&amp;' . CMT_MODE . "=unsubscribe&amp;" . '&amp;key=' . $hash;
                 } else {
                     $unsubLink = $_CONF['site_url']
                         . '/comment.php?mode=unsubscribe&amp;key=' . $hash;
@@ -492,8 +482,8 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
 
             // actual delete option
             if (COMMENT_ON_SAME_PAGE) {
-                $delLink = $pluginUrl . '?' . CMT_MODE . '=delete&amp;' . CMT_CID . '='
-                    . $A['cid'] . "&amp;$pluginId=" . $A['sid'] . '&amp;' . CMT_TYPE . '=' . $type
+                $delLink = $pluginUrl . '&amp;' . CMT_MODE . '=delete&amp;' . CMT_CID . '='
+                    . $A['cid'] . '&amp;' . CMT_TYPE . '=' . $type
                     . '&amp;' . CSRF_TOKEN . '=' . $token;
             } else {
                 $delLink = $_CONF['site_url'] . '/comment.php?mode=delete&amp;cid='
@@ -523,7 +513,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             $reportThis = '';
             if ($A['uid'] != $_USER['uid']) {
                 if (COMMENT_ON_SAME_PAGE) {
-                    $reportThisLink = $pluginUrl . '?' . CMT_MODE . '=report&amp;' . CMT_CID . '=' . $A['cid']
+                    $reportThisLink = $pluginUrl . '&amp;' . CMT_MODE . '=report&amp;' . CMT_CID . '=' . $A['cid']
                         . '&amp;' . CMT_TYPE . '=' . $type;
                 } else {
                     $reportThisLink = $_CONF['site_url']
@@ -560,7 +550,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         $reply_link = '';
         if ($commentCode == 0) {
             if (COMMENT_ON_SAME_PAGE) {
-                $reply_link = $pluginUrl . "?$pluginId=" . $A['sid']
+                $reply_link = $pluginUrl
                     . '&amp;' . CMT_PID . '=' . $A['cid']
                     . '&amp;' . CMT_TYPE . '=' . $A['type']
                     . '&amp;mode=' . $mode
@@ -681,11 +671,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
     }
 
     // Retrieve base url in case needed for 404 error
-    list($pluginUrl, $pluginId) = CMT_getCommentUrlId($type);
-    $pluginLink = '';
-    if (!empty($pluginUrl)) {
-        $pluginLink = "$pluginUrl?$pluginId=$sid";
-    }
+    $pluginLink = CMT_getCommentUrlId($type, $sid);
 
     if ($page == '') {
         // Assume first page if none given
@@ -811,8 +797,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
             $pLink[0] = "comment.php?sid=$sid";
             $pLink[0] .= "&amp;" . CMT_TYPE . "=$type&amp;order=$order&amp;format=$mode";
         } else {
-            list($pluginUrl, $pluginId) = CMT_getCommentUrlId($type);
-            $pLink[0] = "$pluginUrl?$pluginId=$sid";
+            $pLink[0] = $pluginLink;
             $pLink[0] .= "&amp;" . CMT_TYPE . "=$type&amp;order=$order&amp;mode=$mode";
         }
         $pLink[1] = "#comments";
@@ -1125,16 +1110,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             }
 
             if (COMMENT_ON_SAME_PAGE) {
-                list($plgurl, $plgid) = CMT_getCommentUrlId($type);
-
-                // Filemgmt plugin is doing special processing.
-                // Therefore, I support specially, against my better judgment.
-                // May should delete this code part.
-                if ($type == 'filemgmt') {
-                    $sid = str_replace('fileid_', '', $sid);
-                }
-
-                $formUrl = "$plgurl?$plgid=$sid#commentpreview";
+                $formUrl = CMT_getCommentUrlId($type, $sid) . "#commentpreview";
             } else {
                 $formUrl = $_CONF['site_url'] . '/comment.php#commentpreview'; // commentpreview needed for when showing replies on the same page
             }
@@ -1980,8 +1956,7 @@ function CMT_handleEditSubmit($mode = null)
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
-    list($plgurl, $plgid) = CMT_getCommentUrlId($type);
-    $formUrl = "$plgurl?$plgid=$sid";
+    $formUrl = CMT_getCommentUrlId($type, $sid);
     COM_redirect($formUrl);
 }
 
@@ -2202,26 +2177,19 @@ function CMT_handleCancel()
 {
     global $_CONF;
 
-    $display = '';
-
     $type = Geeklog\Input::fPost(CMT_TYPE, '');
-    if (empty($type)) {
+    $sid = Geeklog\Input::fPost(CMT_SID, '');
+
+    if (empty($type) || empty($sid)) {
         COM_handle404($_CONF['site_url'] . '/index.php');
     } else {
-        list($plgurl, $plgid) = CMT_getCommentUrlId($type);
-        if (empty($plgurl) || empty($plgid)) {
+        $formUrl = CMT_getCommentUrlId($type, $sid);
+        if (empty($formUrl)) {
             COM_handle404($_CONF['site_url'] . '/index.php');
         } else {
-            $sid = Geeklog\Input::fPost(CMT_SID, '');
-            if (empty($sid)) {
-                COM_handle404($_CONF['site_url'] . '/index.php');
-            } else {
-                COM_redirect("$plgurl?$plgid=$sid");
-            }
+            COM_redirect($formUrl);
         }
     }
-    echo $display;
-    exit;
 }
 
 /**
@@ -2353,50 +2321,20 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
-    $type = '';
-    $sid = '';
     if ($mode === 'editsubmission') {
         $table = $_TABLES['commentsubmissions'];
-        $result = DB_query("SELECT type, sid FROM {$_TABLES['commentsubmissions']} WHERE cid = $cid");
-        list($type, $sid) = DB_fetchArray($result);
     } else {
         $table = $_TABLES['comments'];
-        if (isset($_REQUEST[CMT_TYPE])) {
-            $type = Geeklog\Input::fRequest(CMT_TYPE);
-        }
-
-        if (COMMENT_ON_SAME_PAGE) {
-            list($pluginUrl, $pluginId) = CMT_getCommentUrlId($type);
-            if (isset($_REQUEST[$pluginId])) {
-                $sid = Geeklog\Input::fRequest($pluginId);
-            }
-        } else {
-            if (isset($_REQUEST['sid'])) {
-                $sid = Geeklog\Input::fRequest('sid');
-            }
-        }
     }
 
-    //check for bad data
-    if (empty($sid) || empty($type)) {
-        COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
-            . 'to edit a comment with one or more missing/bad values.');
-        COM_handle404($_CONF['site_url'] . '/index.php');
-    }
-
-    // Filemgmt plugin is doing special processing.
-    // Therefore, I support specially, against my better judgment.
-    // May should delete this code part.
-    if ($type === 'filemgmt' && $mode !== 'editsubmission') {
-        $sid = 'fileid_' . $sid;
-    }
-
-    $result = DB_query("SELECT title,comment FROM {$table} "
-        . "WHERE cid = {$cid} AND sid = '{$sid}' AND type = '{$type}'");
+    $result = DB_query("SELECT title,comment, type, sid FROM {$table} "
+        . "WHERE cid = {$cid}");
 
     if (DB_numRows($result) == 1) {
         $A = DB_fetchArray($result);
         $title = $A['title'];
+        $type = $A['type'];
+        $sid = $A['sid'];
         $commentText = COM_undoSpecialChars($A['comment']);
 
         // Comments really should a postmode that is saved with the comment (ie store either 'html' or 'plaintext') but they don't so lets figure out if comment is html by searching for html tags
@@ -2709,21 +2647,44 @@ function CMT_isCommentPage()
 }
 
 /**
- * Get view URL and name of unique identifier
+ * Get URL of location where comment is displayed for item.
+ * Plugins that supports comments must support PLG_getItemInfo
  *
- * @param   string $type Plugin to delete comment
- * @return  array    string of URL of view page, name of unique identifier
- * @see     function PLG_getCommentUrlId
+ * @param   string $type Plugin
+ * @param   string $id Id of plugin item
+ * @return  array    URL to plugin item where comment is found
+ * @see     function PLG_getItemInfo
  */
-function CMT_getCommentUrlId($type)
+function CMT_getCommentUrlId($type, $id)
 {
-    global $_CONF;
+    global $_CONF, $_TABLES;
 
-    if ($type == 'article') {
-        $retval[0] = COM_buildURL($_CONF['site_url'] . '/article.php');
-        $retval[1] = 'story';
-    } else {
-        $retval = PLG_getCommentUrlId($type);
+    // #Issue #1022 to fix articles with multiple pages and where comments are located
+    // Need to add extra field to this function but still support old function until Geeklog v3.0.0
+    // When Geeklog v3.0.0 remember to remove extra code in PLG_getCommentUrlId
+    $function = 'plugin_getcommenturlid_' . $type;
+    if (function_exists($function)) {
+        $fct = new ReflectionFunction($function);
+        if ($fct->getNumberOfRequiredParameters() == 0) {
+            COM_deprecatedLog(__FUNCTION__, '2.2.1', '3.0.0', 'plugin_getcommenturlid_' . $type . " will require a id field passed to it");
+
+            if ($type == 'article') {
+                $retval[0] = COM_buildURL($_CONF['site_url'] . '/article.php');
+                $retval[1] = 'story';
+            } else {
+                $retval = PLG_getCommentUrlId($type, '');
+            }
+
+            list($plgurl, $plgid) = $retval;
+            $retval = "$plgurl?$plgid=$id";
+        } else {
+            $retval = PLG_getCommentUrlId($type, $id);
+
+            // Backup support if plugin doesn't have plugin_getcommenturlid_foo function as in most cases this would work
+            if (empty($retval)) {
+                $retval = PLG_getItemInfo($type, $id, 'url');
+            }
+        }
     }
 
     return $retval;

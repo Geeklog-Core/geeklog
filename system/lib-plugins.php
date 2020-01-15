@@ -456,25 +456,40 @@ function PLG_getMenuItems()
 }
 
 /**
- * Get view URL and name of unique identifier
+ * Get URL where comments are viewed from for id
+ * This also works for items (like articles) that are multipaged and the comments do not appear on the first page
+ * NOTE: The Plugin API does not support $_CONF['url_rewrite'] here,
  *
  * @author  Vincent Furia, vinny01 AT users DOT sourceforge DOT net
- * @param   string $type Plugin to delete comment
- * @return  array   string of URL of view page, name of unique identifier
+ * @param   string $type Plugin of comment
+ * @return  string string of URL of page with comments on it
  */
-function PLG_getCommentUrlId($type)
+function PLG_getCommentUrlId($type, $id = '')
 {
     global $_CONF;
 
-    $ret = PLG_callFunctionForOnePlugin('plugin_getcommenturlid_' . $type);
-    if (empty($ret[0])) {
-        $ret[0] = $_CONF['site_url'] . "/$type/index.php";
-    }
-    if (empty($ret[1])) {
-        $ret[1] = 'id';
-    }
+    if (empty($id)) {
+        // #Issue #1022 to fix articles with multiple pages and where comments are located
+        // Need to add extra field to this function but still support old function until Geeklog v3.0.0. As of then $id will be required
+        COM_deprecatedLog(__FUNCTION__, '2.2.1', '3.0.0', 'plugin_getcommenturlid_' . $type . " will require a id field passed to it");
 
-    return $ret;
+        $ret = PLG_callFunctionForOnePlugin('plugin_getcommenturlid_' . $type);
+        if (empty($ret[0])) {
+            $ret[0] = $_CONF['site_url'] . "/$type/index.php";
+        }
+        if (empty($ret[1])) {
+            $ret[1] = 'id';
+        }
+
+        // @return  array   string of URL of view page, name of unique identifier
+        return $ret;
+    } else {
+        $args = array(
+            1 => $id,
+        );
+
+        return PLG_callFunctionForOnePlugin('plugin_getcommenturlid_' . $type, $args);
+    }
 }
 
 /**

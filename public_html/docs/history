@@ -81,6 +81,7 @@ The following items are all current Geeklog API, functions, and/or global variab
 Since Geeklog v2.2.1
 - [Depreciated] [#872] By Geeklog 3.0.0 - Global $topic variable. Please use function TOPIC_getTopic or TOPIC_setTopic instead to determine Geeklog topic
 - [Depreciated] [#871] By Geeklog 3.0.0 - Theme variable $theme_config['supported_version_theme']. Please use theme_gl_version' instead
+- [Depreciated] [#1022] By Geeklog 3.0.0 - Number of variables passed to PLG_getCommentUrlId function. It now requires an Id field passed to it which means the plugin functions it calls (plugin_getcommenturlid_foo) requires the same thing.
 Since Geeklog v2.2.0
 - [Depreciated] [NA] By Geeklog 3.0.0 - Com_refresh. Use COM_redirect instead
 Since Geeklog v2.1.2

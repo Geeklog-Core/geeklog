@@ -2528,22 +2528,18 @@ function plugin_getconfigtooltip_staticpages($id)
 }
 
 /**
- * Provide URL and ID for the link to a comment's parent
+ * Provide URL for the link to a comment's parent item.
  * NOTE: The Plugin API does not support $_CONF['url_rewrite'] here,
  *       so we'll end up with a non-rewritten URL ...
  *
- * @return   array   array consisting of the base URL and the ID name
+ * @return   string   string of URL
  */
-function plugin_getcommenturlid_staticpages()
+function plugin_getcommenturlid_staticpages($id)
 {
     global $_CONF;
 
-    $tmp = array(
-        $_CONF['site_url'] . '/staticpages/index.php',
-        'page',
-    );
-
-    return $tmp;
+    // Cannot use COM_buildURL as comment stuff does not support URL Rewrite
+    return $_CONF['site_url'] . '/staticpages/index.php?page=' . $id;
 }
 
 /**
