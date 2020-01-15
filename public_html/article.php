@@ -207,6 +207,12 @@ if ($A['count'] > 0) {
 
         $introtext = $article->DisplayElements('introtext');
         $bodytext = $article->DisplayElements('bodytext');
+
+        if ($_CONF['allow_page_breaks'] == 1 && $article->displayElements('numpages') > 1) {
+            // Remove page breaks for print view
+            $bodytext = str_replace('[page_break]', '', $bodytext);
+        }
+
         if (empty($bodytext)) {
             $fulltext = $introtext;
             $fulltext_no_br = $introtext;
