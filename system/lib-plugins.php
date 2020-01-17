@@ -1615,7 +1615,7 @@ function PLG_collectTags($type = 'tagname')
          */
         $_PLUGINS = array();
     }
-    $all_plugins = array_merge($_PLUGINS, array('story', 'user', 'topic', 'block', 'structureddata'));
+    $all_plugins = array_merge($_PLUGINS, array('article', 'user', 'topic', 'block', 'structureddata'));
 
     $autolinkModules = array();
 
