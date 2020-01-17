@@ -87,19 +87,30 @@ $mode = Geeklog\Input::fPost('mode', Geeklog\Input::fPost('format', ''));
 
 if (!empty($mode)) {
     $sid = Geeklog\Input::fPost('story', '');
-    $order = Geeklog\Input::fPost('order', '');
-    $query = Geeklog\Input::post('query', '');
-    $reply = Geeklog\Input::fPost('reply', '');
-    $page = (int) Geeklog\Input::fPost('cpage', 0);
 } else {
+    // URL Rewrite
     COM_setArgNames(array('story', 'mode'));
     $sid = COM_applyFilter(COM_getArgument('story'));
     $mode = COM_applyFilter(COM_getArgument('mode'));
-    $order = Geeklog\Input::fGet('order', '');
-    $query = Geeklog\Input::get('query', '');
-    $reply = Geeklog\Input::fGet('reply', '');
-    $page = (int) Geeklog\Input::fGet('cpage', 0);
 }
+$query = Geeklog\Input::get('query', '');
+$articlePage = (int) Geeklog\Input::fGet('page', 0);
+
+if ($_CONF['allow_page_breaks'] == 1 && $articlePage == 0) {
+    // $mode was used to store page ids before Geeklog v2.2.1 See Issue #1022
+    // Lets do a bit of backwards compatibility here for any external links coming in
+    // if not numeric then mode is used by comments to determine how to display them
+    if (is_numeric($mode)) {
+        $articlePage = $mode;
+        $mode = ''; // need to clear it since mode post variable is used by comment as well to determine how to display comments
+    }
+}
+if ($articlePage == 0) {
+    $articlePage = 1;
+}
+
+$commentOrder = Geeklog\Input::fGet('order', '');
+$commentPage = (int) Geeklog\Input::fGet('cpage', 0);
 
 if (!empty($_REQUEST['sid'])) {
     $sid = Geeklog\Input::fRequest('sid');
@@ -114,11 +125,13 @@ if (empty($sid)) {
 // Get topic
 TOPIC_getTopic('article', $sid);
 
-if ((strcasecmp($order, 'ASC') !== 0) && (strcasecmp($order, 'DESC') !== 0)) {
-    $order = '';
+// Comment variable checks
+if ((strcasecmp($commentOrder, 'ASC') !== 0) && (strcasecmp($commentOrder, 'DESC') !== 0)) {
+    $commentOrder = '';
 }
 
-$result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE sid = '$sid'" . COM_getPermSql('AND'));
+// Check article permissions
+$result = DB_query("SELECT COUNT(sid) AS count FROM {$_TABLES['stories']} WHERE sid = '$sid'" . COM_getPermSql('AND'));
 $A = DB_fetchArray($result);
 if ($A['count'] > 0) {
     $article = new Article();
@@ -348,19 +361,15 @@ if ($A['count'] > 0) {
             DB_query("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE (sid = '" . DB_escapeString($article->getSid()) . "') AND (date <= NOW()) AND (draft_flag = 0)");
         }
 
-        $articleTemplate = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'article'));
-
-        // Render article near top so it can use mode if set (ie to figure out page break)
-        // Another option here could be to figure out if story is first on page
-        $tmpl = $_CONF['showfirstasfeatured'] ? 'featuredarticletext.thtml' : '';
-        $articleTemplate->set_var('formatted_article',
-            STORY_renderArticle($article, 'n', $tmpl, $query));
-
-        // Figure out to display comments or not on this page of the article
-        $story_page = 1;
+        // Figure out further what page we are on for the article to display comments or not on this page of the article
         $show_comments = true;
         $page_break_count = $article->displayElements('numpages');
         if ($_CONF['allow_page_breaks'] == 1 && $page_break_count > 1) {
+            if ($articlePage > $page_break_count) { // Can't have page count greater than actual number of pages
+                COM_handle404();
+            }
+
+            /*
             // if not numeric then mode is used by comments to determine how to display them
             if (!is_numeric($mode)) {
                 // if not empty then assume mode is being used by comments to change display and check if need to be on last page
@@ -382,13 +391,14 @@ if ($A['count'] > 0) {
                     $story_page = $page_break_count;
                 }
             }
+            */
 
             if ($page_break_count > 1) {
                 $conf = $_CONF['page_break_comments'];
                 if (
                     ($conf === 'all') ||
-                    (($conf === 'first') && ($story_page == 1)) ||
-                    (($conf === 'last') && ($page_break_count == $story_page))
+                    (($conf === 'first') && ($articlePage == 1)) ||
+                    (($conf === 'last') && ($page_break_count == $articlePage))
                 ) {
                     $show_comments = true;
                 } else {
@@ -401,8 +411,16 @@ if ($A['count'] > 0) {
             $show_comments = true;
         }
 
+        $articleTemplate = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'article'));
+
+        // Render article near top so it can use mode if set (ie to figure out page break)
+        // Another option here could be to figure out if story is first on page
+        $tmpl = $_CONF['showfirstasfeatured'] ? 'featuredarticletext.thtml' : '';
+        $articleTemplate->set_var('formatted_article',
+            STORY_renderArticle($article, 'n', $tmpl, $query, $articlePage));
+
         // Pass Page and Comment Display info to template in case it wants to display anything else with comments
-        $articleTemplate->set_var('page_number', $story_page);
+        $articleTemplate->set_var('page_number', $articlePage);
         $articleTemplate->set_var('page_total', $page_break_count);
         $articleTemplate->set_var('comments_on_page', $show_comments);
 
@@ -512,7 +530,7 @@ if ($A['count'] > 0) {
             $delete_option = (SEC_hasRights('story.edit') && ($article->getAccess() == 3));
             $articleTemplate->set_var('commentbar',
                 CMT_userComments($article->getSid(), $article->displayElements('title'), 'article',
-                    $order, $mode, 0, $page, false, $delete_option, $article->displayElements('commentcode')));
+                    $commentOrder, $mode, 0, $commentPage, false, $delete_option, $article->displayElements('commentcode')));
         }
         if ($_CONF['trackback_enabled'] && ($article->displayElements('trackbackcode') >= 0) &&
             $show_comments

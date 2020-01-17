@@ -60,13 +60,15 @@ if (!defined('STORY_ARCHIVE_ON_EXPIRE')) {
  * @param   string  $index    n = Full display of article. p = 'Preview' mode. Else y = introtext only.
  * @param   string  $storyTpl The template to use to render the story.
  * @param   string  $query    A search query, if one was specified.
- * @return  string           Article as formatted HTML.
+ * @param   string  $articlePage            Current page being displayed for articles. Used only with $index of 'n' and if page breaks enabled (else always assume 1)
+ * @param   string  $articleCountOnPage     Current article count being displayed on page. Used for topics to display blocks between articles
+  * @return  string           Article as formatted HTML.
  *                            Note: Formerly named COM_Article, and re-written totally since then.
  */
-function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml', $query = '', $articlecount = 1)
+function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml', $query = '', $articlePage = 1, $articleCountOnPage = 1)
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG_TRB,
-           $_IMAGE_TYPE, $mode, $_STRUCT_DATA;
+           $_IMAGE_TYPE, $_STRUCT_DATA;
 
     static $storyCounter = 0;
 
@@ -108,7 +110,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
     // Check cache time or if search query do not use cache as need to add highlight
     if (($cache_time > 0 || $cache_time == -1) && empty($query)) {
         $hash = CACHE_security_hash();
-        $cacheInstance = 'article__' . $story->getSid() . '_' . $index . $mode . '_' . $article_filevar . '_' . $current_article_tid . '_' . $hash . '_' . $_CONF['theme'];
+        $cacheInstance = 'article__' . $story->getSid() . '_' . $index . $articlePage . '_' . $article_filevar . '_' . $current_article_tid . '_' . $hash . '_' . $_CONF['theme'];
 
         if ($_CONF['cache_templates']) {
             $retval = $article->check_instance($cacheInstance, $article_filevar);
@@ -367,54 +369,32 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         $trackbacks_with_count = '';
 
         if (($index == 'n') || ($index == 'p')) {
-            $story_page = 1;
             $show_comments = true;
 
             if (empty($bodytext)) {
                 $article->set_var('story_introtext', $introtext);
                 $article->set_var('story_text_no_br', $introtext);
             } else {
-                if (($_CONF['allow_page_breaks'] == 1) && ($index == 'n')) {
+                if (($_CONF['allow_page_breaks'] == 1) && ($index == 'n') && $story->DisplayElements('numpages') > 1) {
                     $article_array = explode('[page_break]', $bodytext);
                     $page_break_count = count($article_array);
 
-                    // page selector
-                    if (is_numeric($mode)) {
-                        $story_page = $mode;
-                        if ($story_page <= 0) {
-                            $story_page = 1;
-                            $mode = 1;
-                        } elseif ($story_page > 1) {
-                            $introtext = '';
-                        }
-
-                        if ($story_page > $page_break_count) { // Can't have page count greater than actual number of pages
-                            $story_page = $page_break_count;
-                        }
-                    } elseif (!empty($mode) && $_CONF['page_break_comments'] == 'last' && $page_break_count > 1) {
-                        // So if not numeric and if not empty then assume mode is used for comment display so check if page should be last or not
-                        // See github issue #1019 for bug regarding $_CONF['page_break_comments'] ='all' and not being able to figure out what article page we are on if comment display is changed since mode is being used by article for page number and comments to change display
-                        $story_page = $page_break_count;
+                    if ($articlePage > 1) {
+                        $introtext = '';
+                    }
+                    if (count($article_array) > 1) {
+                        $bodytext = $article_array[$articlePage - 1];
                     }
 
                     $page_selector = COM_printPageNavigation(
-                        $articleUrl, $story_page, $page_break_count,
-                        'mode=', $_CONF['url_rewrite'], $LANG01[118]);
-                    if (count($article_array) > 1) {
-                        $bodytext = $article_array[$story_page - 1];
-                    }
+                        $articleUrl, $articlePage, $page_break_count,
+                        'page=', $_CONF['url_rewrite'], $LANG01[118]);
                     $article->set_var('page_selector', $page_selector);
 
-                    if (
-                        (($_CONF['page_break_comments'] == 'last') &&
-                            ($story_page < count($article_array)))
-                        ||
-                        (($_CONF['page_break_comments'] == 'first') &&
-                            ($story_page != 1))
-                    ) {
+                    if ((($_CONF['page_break_comments'] == 'last') && ($articlePage < count($article_array))) ||
+                        (($_CONF['page_break_comments'] == 'first') && ($articlePage != 1))) {
                         $show_comments = false;
                     }
-                    $article->set_var('story_page', $story_page);
                 }
 
                 $article->set_var('story_introtext', $introtext
@@ -425,7 +405,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $article->set_var('story_bodytext_only', $bodytext);
 
             // Pass Page and Comment Display info to template in case it wants to display anything else with comments
-            $article->set_var('page_number', $story_page);
+            $article->set_var('page_number', $articlePage);
             $article->set_var('page_total', $story->DisplayElements('numpages'));
             $article->set_var('comments_on_page', $show_comments);
 
@@ -693,7 +673,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         if ($index == 'n') { // p = preview, n = full article, y = intro only (displayed in topics)
             PLG_templateSetVars($article_filevar . '_full', $article);
         } elseif ($_CONF['blocks_article_topic_list_repeat_after'] > 0) {
-            if ($index == 'y' && ($articlecount %$_CONF['blocks_article_topic_list_repeat_after'] == 0)) {
+            if ($index == 'y' && ($articleCountOnPage %$_CONF['blocks_article_topic_list_repeat_after'] == 0)) {
                 PLG_templateSetVars($article_filevar . '_topic_list', $article);
             }
         }
@@ -799,7 +779,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         if ($index == 'n') { // p = preview, n = full article, y = intro only (displayed in topics)
             PLG_templateSetVars($article_filevar . '_full', $article);
         } elseif ($_CONF['blocks_article_topic_list_repeat_after'] > 0) {
-            if ($index == 'y' && ($articlecount %$_CONF['blocks_article_topic_list_repeat_after'] == 0)) {
+            if ($index == 'y' && ($articleCountOnPage %$_CONF['blocks_article_topic_list_repeat_after'] == 0)) {
                 PLG_templateSetVars($article_filevar . '_topic_list', $article);
             }
         }
@@ -1827,7 +1807,7 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
         "(sid = '$id') AND (draft_flag = 0) AND (date <= NOW())"
         . COM_getPermSQL('AND'));
     if ($_CONF['allow_page_breaks'] == 1 && $_CONF['page_break_comments'] == 'last' && $numpages > 1) {
-        $articlePageNumURLPart = "&amp;mode=" . $numpages;
+        $articlePageNumURLPart = "&amp;page=" . $numpages;
     } else {
         $articlePageNumURLPart = "";
     }
@@ -1960,7 +1940,7 @@ function plugin_getcommenturlid_article($id)
     // See if multi page article as we will have to see which page comments appear on
     $numpages = DB_getItem($_TABLES['stories'], 'numpages', "sid = '$id'");
     if ($_CONF['allow_page_breaks'] == 1 && $_CONF['page_break_comments'] == 'last' && $numpages > 1) {
-        $retval .= "&amp;mode=" . $numpages;
+        $retval .= "&amp;page=" . $numpages;
     }
 
     return $retval;
