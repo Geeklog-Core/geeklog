@@ -415,7 +415,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_page_break_comments">page_break_comments</a></td>
   <td valign="top">last</td>
-  <td valign="top">When the <code>[page_break]</code> tag is allowed in articles (see above), where should the article's comments be displayed: <code>'last'</code> = on the article's last page only, <code>'first'</code> = on the first page only, <code>'all'</code> = on every page.<br /><br />Please note that if comments are displayed on every page, any comment navigating or posting done by the user will result in the user to be taken back to the first page of the article. This is a limitation of the Geeklog comment library as the page of the article being displayed is not tracked.</td></tr>
+  <td valign="top">When the <code>[page_break]</code> tag is allowed in articles (see above), where should the article's comments be displayed: <code>'last'</code> = on the article's last page only, <code>'first'</code> = on the first page only, <code>'all'</code> = on every page.<br /><br />Please note that if comments are displayed on every page of articles with multiple pages, if <code>$_CONF['comment_on_same_page'] = false</code> any comment posting done by the user will result in the user to be taken back to the first page of the article. This is a limitation of the Geeklog comment library as the page of the article being displayed is not tracked.</td></tr>
 <tr>
   <td valign="top"><a name="desc_article_image_align">article_image_align</a></td>
   <td valign="top">right</td>

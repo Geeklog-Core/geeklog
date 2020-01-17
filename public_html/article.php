@@ -83,23 +83,26 @@ function extractExternalLinks($text) {
 CMT_updateCommentcodes();
 $display = '';
 
+// *********************************
+// Figure out mode and article page
+// Same code as in beginning of article.php and plugin_getcommenturlid_article function in lib-article.php
 $mode = Geeklog\Input::fPost('mode', Geeklog\Input::fPost('format', ''));
 
 if (!empty($mode)) {
     $sid = Geeklog\Input::fPost('story', '');
 } else {
-    // URL Rewrite
+    // This supports URL Rewrite
     COM_setArgNames(array('story', 'mode'));
     $sid = COM_applyFilter(COM_getArgument('story'));
-    $mode = COM_applyFilter(COM_getArgument('mode'));
+    $mode = COM_applyFilter(COM_getArgument('mode')); // Could be mode or page if numeric
 }
-$query = Geeklog\Input::get('query', '');
 $articlePage = (int) Geeklog\Input::fGet('page', 0);
 
 if ($_CONF['allow_page_breaks'] == 1 && $articlePage == 0) {
     // $mode was used to store page ids before Geeklog v2.2.1 See Issue #1022
     // Lets do a bit of backwards compatibility here for any external links coming in
     // if not numeric then mode is used by comments to determine how to display them
+    // REALLY should do a 301 redirect so search engines know that there is a new url for same content
     if (is_numeric($mode)) {
         $articlePage = $mode;
         $mode = ''; // need to clear it since mode post variable is used by comment as well to determine how to display comments
@@ -108,6 +111,9 @@ if ($_CONF['allow_page_breaks'] == 1 && $articlePage == 0) {
 if ($articlePage == 0) {
     $articlePage = 1;
 }
+// *********************************
+
+$query = Geeklog\Input::get('query', '');
 
 $commentOrder = Geeklog\Input::fGet('order', '');
 $commentPage = (int) Geeklog\Input::fGet('cpage', 0);

@@ -1937,10 +1937,50 @@ function plugin_getcommenturlid_article($id)
     // Cannot use COM_buildURL as comment stuff does not support URL Rewrite - $retval = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $id);
     $retval = $_CONF['site_url'] . '/article.php?story=' . $id;
 
+    //  If article.php is the calling file we can figure out article page
+    if (strpos($_SERVER['PHP_SELF'], '/article.php') !== false) {
+        // *********************************
+        // Figure out mode and article page
+        // Same code as in beginning of article.php and plugin_getcommenturlid_article function in lib-article.php
+            $mode = Geeklog\Input::fPost('mode', Geeklog\Input::fPost('format', ''));
+
+        if (!empty($mode)) {
+            $sid = Geeklog\Input::fPost('story', '');
+        } else {
+            // This supports URL Rewrite
+            COM_setArgNames(array('story', 'mode'));
+            $sid = COM_applyFilter(COM_getArgument('story'));
+            $mode = COM_applyFilter(COM_getArgument('mode')); // Could be mode or page if numeric
+        }
+        $articlePage = (int) Geeklog\Input::fGet('page', 0);
+
+        if ($_CONF['allow_page_breaks'] == 1 && $articlePage == 0) {
+            // $mode was used to store page ids before Geeklog v2.2.1 See Issue #1022
+            // Lets do a bit of backwards compatibility here for any external links coming in
+            // if not numeric then mode is used by comments to determine how to display them
+            // REALLY should do a 301 redirect so search engines know that there is a new url for same content
+            if (is_numeric($mode)) {
+                $articlePage = $mode;
+                $mode = ''; // need to clear it since mode post variable is used by comment as well to determine how to display comments
+            }
+        }
+        if ($articlePage == 0) {
+            $articlePage = 1;
+        }
+        // *********************************
+    } else {
+        // something else (most likely comment.php) is the calling file so...
+        $articlePage = 1;
+    }
+
     // See if multi page article as we will have to see which page comments appear on
     $numpages = DB_getItem($_TABLES['stories'], 'numpages', "sid = '$id'");
-    if ($_CONF['allow_page_breaks'] == 1 && $_CONF['page_break_comments'] == 'last' && $numpages > 1) {
-        $retval .= "&amp;page=" . $numpages;
+    if ($_CONF['allow_page_breaks'] == 1 && $numpages > 1) {
+        if ($_CONF['page_break_comments'] == 'last' or $articlePage > $numpages) {
+            $retval .= "&amp;page=" . $numpages;
+        } elseif ($articlePage > 1) {
+            $retval .= "&amp;page=" . $articlePage;
+        }
     }
 
     return $retval;
