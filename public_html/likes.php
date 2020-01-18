@@ -62,6 +62,8 @@ $error_data = false;
 $status = 0;
 $type  = Geeklog\Input::fGetOrPost('type', '');
 $sub_type  = Geeklog\Input::fGetOrPost('subtype', '');
+// Plugins may need to do additional checks on $id in the function plugin_canuserlike_foo if for example they need a numeric id value
+// They cannot filter the id further since that could change the value which doesn't get passed back here
 $id  = Geeklog\Input::fGetOrPost('id', '');
 $action  = Geeklog\Input::fGetOrPost('action', '');
 $ip         = $_SERVER['REMOTE_ADDR'];

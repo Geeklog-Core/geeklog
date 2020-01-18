@@ -2959,6 +2959,9 @@ function plugin_likesenabled_comment($sub_type)
 
 /**
  * Can user perform a like action on item
+ * Note: $Id is filtered as a string by likes.php.
+ *       If needed do additional checks here (like if you need a numeric value)
+ *       but you cannot change the value of id since it will not change in the original calling function
  *
  * @return   bool
  */
@@ -2968,16 +2971,20 @@ function plugin_canuserlike_comment($sub_type, $id, $uid, $ip)
 
     $retval = false;
 
-    $sql = "SELECT uid, ipaddress FROM {$_TABLES['comments']} WHERE cid = ".$id;
-    $result = DB_query($sql);
-    if (DB_numRows($result) > 0) {
-        list ($owner_id, $owner_ip) = DB_fetchArray($result);
-        if ($owner_id != $uid) {
-            $retval = true;
-        } elseif ($uid == 1 AND $owner_id == 1 AND $ip != $owner_ip) {
-            $retval = true;
-        }
+	// Make sure $id is just a number as comment id is numeric
+    // Cannot change id in this function, since the id from the calling function is used else where
+	if (strval((int) $id) == $id) {
+        $sql = "SELECT uid, ipaddress FROM {$_TABLES['comments']} WHERE cid = " . $id;
+        $result = DB_query($sql);
+        if (DB_numRows($result) > 0) {
+            list ($owner_id, $owner_ip) = DB_fetchArray($result);
+            if ($owner_id != $uid) {
+                $retval = true;
+            } elseif ($uid == 1 AND $owner_id == 1 AND $ip != $owner_ip) {
+                $retval = true;
+            }
 
+        }
     }
 
     return $retval;

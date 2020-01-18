@@ -2070,6 +2070,9 @@ function plugin_likesenabled_article($sub_type)
 
 /**
  * Can user perform a like action on item
+ * Note: $Id is filtered as a string by likes.php.
+ *       If needed do additional checks here (like if you need a numeric value)
+ *       but you cannot change the value of id since it will not change in the original calling function
  *
  * @return   bool
  */
