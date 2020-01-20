@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file deals with input variables.                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2015-2019 by the following authors:                         |
+// | Copyright (C) 2015-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO        - mystralkk AT gmail DOT com                    |
 // +---------------------------------------------------------------------------+
@@ -49,19 +49,45 @@ class Input
 
     /**
      * Initialize the Input class
+     *
+     * @param  string  $internalEncoding
      */
-    public static function init()
+    public static function init($internalEncoding)
     {
-        if (!self::$initialized) {
-            self::$initialized = true;
+        if (self::$initialized) {
+            return;
         }
+
+        // Check for invalid request data
+        $targets = [$_GET, $_POST, $_COOKIE];
+        $vars = '';
+
+        // Concat all request data as one string
+        array_walk_recursive(
+            $targets,
+            function ($value, $key) use (&$vars) {
+                $vars .= "{$key}({$value})";
+            }
+        );
+
+        if (strlen($vars) > 0) {
+            // Except Slovenian
+            if (strcasecmp($internalEncoding, 'Windows-1250') !== 0) {
+                // Check encoding
+                if (!mb_check_encoding($vars, $internalEncoding)) {
+                    die('Invalid encoding detected!');
+                }
+            }
+        }
+
+        self::$initialized = true;
     }
 
     /**
      * Apply a basic filter
      *
-     * @param  string|array $var
-     * @param  bool         $isNumeric
+     * @param  string|array  $var
+     * @param  bool          $isNumeric
      * @return string|array
      */
     public static function applyFilter($var, $isNumeric = false)
@@ -106,8 +132,8 @@ class Input
     /**
      * Return the value of $_GET variable
      *
-     * @param    string       $name an index of $_GET
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_GET
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function get($name, $defaultValue = null)
@@ -118,8 +144,8 @@ class Input
     /**
      * Return the value of $_POST variable
      *
-     * @param    string       $name an index of $_POST
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_POST
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function post($name, $defaultValue = null)
@@ -130,8 +156,8 @@ class Input
     /**
      * Return the value of $_COOKIE variable
      *
-     * @param    string       $name an index of $_COOKIE
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_COOKIE
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function cookie($name, $defaultValue = null)
@@ -142,8 +168,8 @@ class Input
     /**
      * Return the value of $_SERVER variable
      *
-     * @param    string       $name an index of $_SERVER
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_SERVER
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function server($name, $defaultValue = null)
@@ -154,8 +180,8 @@ class Input
     /**
      * Return the value of $_FILES variable
      *
-     * @param    string       $name an index of $_FILES
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_FILES
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function files($name, $defaultValue = null)
@@ -166,8 +192,8 @@ class Input
     /**
      * Return the value of $_ENV variable
      *
-     * @param    string       $name an index of $_ENV
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_ENV
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function env($name, $defaultValue = null)
@@ -178,8 +204,8 @@ class Input
     /**
      * Return the value of $_REQUEST variable
      *
-     * @param    string       $name an index of $_REQUEST
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_REQUEST
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function request($name, $defaultValue = null)
@@ -190,8 +216,8 @@ class Input
     /**
      * Return the value of $_SESSION variable
      *
-     * @param    string       $name an index of $_SESSION
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_SESSION
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      * @throws   Exception
      */
@@ -207,8 +233,8 @@ class Input
     /**
      * Return the value of $_GET or $_POST variable depending on the current request method
      *
-     * @param    string       $name an index of $_GET or $_POST
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_GET or $_POST
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function req($name, $defaultValue = null)
@@ -221,8 +247,8 @@ class Input
     /**
      * Return the value of $_GET[$name] if it is set.  Otherwise return the value of $_POST[$name]
      *
-     * @param    string       $name an index of $_GET or $_POST
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_GET or $_POST
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function getOrPost($name, $defaultValue = null)
@@ -239,8 +265,8 @@ class Input
     /**
      * Return the value of $_POST[$name] if it is set.  Otherwise return the value of $_GET[$name]
      *
-     * @param    string       $name an index of $_GET or $_POST
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_GET or $_POST
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function postOrGet($name, $defaultValue = null)
@@ -257,8 +283,8 @@ class Input
     /**
      * Return the value of $_GET variable
      *
-     * @param    string       $name an index of $_GET
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_GET
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function fGet($name, $defaultValue = null)
@@ -269,8 +295,8 @@ class Input
     /**
      * Return the value of $_POST variable
      *
-     * @param    string       $name an index of $_POST
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_POST
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function fPost($name, $defaultValue = null)
@@ -281,8 +307,8 @@ class Input
     /**
      * Return the value of $_COOKIE variable
      *
-     * @param    string       $name an index of $_COOKIE
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_COOKIE
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function fCookie($name, $defaultValue = null)
@@ -293,8 +319,8 @@ class Input
     /**
      * Return the value of $_SERVER variable
      *
-     * @param    string       $name an index of $_SERVER
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_SERVER
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function fServer($name, $defaultValue = null)
@@ -305,8 +331,8 @@ class Input
     /**
      * Return the value of $_FILES variable
      *
-     * @param    string       $name an index of $_FILES
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_FILES
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function fFiles($name, $defaultValue = null)
@@ -317,8 +343,8 @@ class Input
     /**
      * Return the value of $_ENV variable
      *
-     * @param    string       $name an index of $_ENV
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_ENV
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function fEnv($name, $defaultValue = null)
@@ -329,8 +355,8 @@ class Input
     /**
      * Return the value of $_REQUEST variable
      *
-     * @param    string       $name an index of $_REQUEST
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_REQUEST
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function fRequest($name, $defaultValue = null)
@@ -341,8 +367,8 @@ class Input
     /**
      * Return the value of $_SESSION variable
      *
-     * @param    string       $name an index of $_SESSION
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_SESSION
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      * @throws   Exception
      */
@@ -358,8 +384,8 @@ class Input
     /**
      * Return the value of $_GET or $_POST variable depending on the current request method
      *
-     * @param    string       $name an index of $_GET or $_POST
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_GET or $_POST
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function fReq($name, $defaultValue = null)
@@ -372,8 +398,8 @@ class Input
     /**
      * Return the value of $_GET[$name] if it is set.  Otherwise return the value of $_POST[$name]
      *
-     * @param    string       $name an index of $_GET or $_POST
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_GET or $_POST
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function fGetOrPost($name, $defaultValue = null)
@@ -390,8 +416,8 @@ class Input
     /**
      * Return the value of $_POST[$name] if it is set.  Otherwise return the value of $_GET[$name]
      *
-     * @param    string       $name an index of $_GET or $_POST
-     * @param    string|array $defaultValue
+     * @param  string        $name  an index of $_GET or $_POST
+     * @param  string|array  $defaultValue
      * @return   array|null|string
      */
     public static function fPostOrGet($name, $defaultValue = null)

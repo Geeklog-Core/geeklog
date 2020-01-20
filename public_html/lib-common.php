@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2019 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -106,7 +106,9 @@ require_once $_CONF['path_system'] . 'classes/Autoload.php';
 Autoload::initialize();
 
 // Initialize system classes
-Input::init();
+
+// Check for request data first of all
+Input::init($_CONF['default_charset']);
 
 if (defined('GL_INSTALL_ACTIVE')) {
     // *********************************************************
