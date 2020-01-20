@@ -43,6 +43,7 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Improvement] [fd7bf1668a5afd9a2ce4085cd2e590a776da00be] - User Group Editor shows difference between a group that is inherited and a group that cannot be checked because it would create a security group loop [Tom]
 - [Improvement] [NA] PLG_getThemeItem and theme_getThemeItem_foo api functions so themes can specify certain css classes, styles, and other info for certain items in Geeklog [Tom]
 - [Improvement] [NA] The Denim, and Denim_Three themes now display user photos with comments [Tom]
+- [Improvement] [#1026] Geeklog now checks for the correct characterset encoding on any passed variables [Mystralkk]
 
 - [Bug] [d8792f2f5f3354ff01045955f43cb6277ef32bf7] Fixed saving of permissions for users when you have security groups within security groups [Tom]
 - [Bug] [#931] Fix for Duplicate Usernames & Usernames with Trailing Spaces [Tom]
