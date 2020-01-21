@@ -363,7 +363,7 @@ $LANG_HELP = array(
     0 => 'תמיכה בהתקנת Geeklog',
     'site_name' => 'שם האתר שלכם.',
     'site_slogan' => 'תיאור פשוט של האתר שלכם.',
-    'db_type' => 'Geeklog יכול להיות מותקן בעזרת שימוש במאגר מידע של MySQL, של PostgreSQL או של Microsoft SQL. אם אינכם בטוחים איזו אופצייה לבחור עליכם ליצור קשר עם מארחי השרת שלכם.</p><p class="indent"><strong>שימו לב:</strong> טבלאות InnoDB עשויות לשפר את הביצועים באתרים (מאוד) גדולים, אך גם להפוך את גיבויי מאגר המידע ליותר מסובכים.',
+    'db_type' => 'Geeklog can be installed using either a MySQL or PostgreSQL database. If you are not sure which option to select contact your hosting provider.<br><br><strong>Note</strong> InnoDB Tables may improve performance on (very) large sites, but they also make database backups more complicated.',
     'db_host' => 'שם הרשת (או כתובת ה-IP) של שרת מאגר המידע שלכם. בדרך כלל זהו "localhost". אם אינכם בטוחים צרו קשר אם מארחי השרת שלכם.',
     'db_name' => 'שם מאגר המידע שלכם. אם אינכם בטוחים מהו צרו קשר עם מארחי השרת שלכם.',
     'db_user' => 'שם המשתמש של מאגר המידע שלכם. אם אינכם בטוחים מהו צרו קשר עם מארחי השרת שלכם.',
@@ -373,7 +373,7 @@ $LANG_HELP = array(
     'site_admin_url' => 'לחלק ממארחי השרתים יש ספריית ניהול מוגדרת מראש. במקרה זה, תצטרכו לשנות את שם ספריית ה-admin של Geeklog למשהו כמו "myadmin" ולשנות את הכתובת שלהלן בהתאם. אל תעשו זאת אלא אם תיתקלו בבעיות כשתנסו לגשת לתפריט הניהול של Geeklog.',
     'site_mail' => 'זוהי הכתובת החוזרת בכל הודעות האימייל שישלחו מ-Geeklog ובמידע צרו קשר שמוצג בהזנות סינדיקציה.',
     'noreply_mail' => 'זוהי כתובת השולח של הודעות אימייל שנשלחות על ידי המערכת כשמשתמשים נרשמים וכדומה. היא צריכה להיות זהה לכתובת האימייל של האתר או להיות כתובת שלא מקבלת הודעות כדי למנוע מספאמרים להשיג את כתובת האימייל שלכם על ידי הרשמה לאתר. אם היא לא זהה לכתובת הרגילה, תהיה הודעה בהודעות שישלחו שלא מומלץ לענות להן.',
-    'utf8' => 'ציינו האם להשתמש ב-UTF-8 בתור קידוד ברירת המחדל של האתר שלכם. מומלץ בעיקר להתקנות רב לשוניות.',
+    'utf8' => 'Indicate whether to use UTF-8 as the default character set for your site. Recommended especially for multi-lingual setups.<br><br>This will set the database character set to UTF-8. If you have <strong>checked</strong> this setting, make sure your database collation is compatible with the character set (usually this is either <strong>utf8_general_ci</strong> or, if you wish to support emojis <strong>utf8mb4_general_ci</strong>). <em>Checking this will not change the collation of your database, this must be done manually before you proceed with the install.</em><br><br>The Geeklog site default character set is \'iso-8859-1\' (Latin-1) which is compatible with the database character set of \'latin1\' (latin1_swedish_ci). These are older legacy encoding standard that supports a limited number of languages. If you leave \'Use UTF-8\' unchecked these will be used unless you have already modified manually the site default character set (found in siteconfig.php) and the database character set (found in dbconfig.php).',
     'migrate_file' => 'ביחרו את קובץ הגיבוי שברצונכם שינדוד. הוא יכול להיות קובץ קיים בספריית "backups" שלכם או שתוכלו להעלות קובץ מהמחשב שלכם. לחילופין, הנכם יכולים גם לנייד את התכנים הנוכחיים של מאגר המידע.',
     'plugin_upload' => 'ביחרו ארכיון plugin (בצורת zip, tar.gz או tgz) בשביל להעלות ולהתקין.'
 );

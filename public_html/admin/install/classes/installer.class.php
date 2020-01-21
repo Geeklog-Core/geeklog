@@ -1870,12 +1870,25 @@ class Installer
                 } else {
                     $driver = Geeklog\Db::connect(Geeklog\Db::DB_MYSQL, $db);
                 }
-
                 $db['charset'] = ($driver->getVersion() >= 50503) ? 'utf8mb4' : 'utf8';
             }
 
             $dbConfigData = str_replace("\$_DB_charset = '" . $_DB_charset . "';", "\$_DB_charset = '" . $db['charset'] . "';", $dbConfigData); // Charset
+        } elseif (($db['type'] === 'mysql') && empty($_DB_charset) && version_compare(self::GL_VERSION, '2.1.2', '>=')) {
+            // $_DB_charset is empty and needs to be something for upgrade or migration so figure out what
+
+
+
+        } elseif (($db['type'] === 'pgsql') && version_compare(self::GL_VERSION, '2.1.2', '>=')) {
+            // How about pgsql and $_DB_charset????
+
+
+
         }
+
+
+        // make sure global variable gets updated
+        $_DB_charset = $db['charset'];
 
         // Write our changes to db-config.php
         $result = (@file_put_contents($dbConfigFilePath, $dbConfigData, LOCK_EX) !== false);

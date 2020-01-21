@@ -370,7 +370,7 @@ $LANG_HELP = array(
     0 => 'インストールヘルプ',
     'site_name' => 'サイト名を入力します。後から変更することもできます。',
     'site_slogan' => 'サイトのスローガンを入力します。後から変更することもできます。',
-    'db_type' => 'データベースの種類を入力します。MySQL, MySQL(InnoDB), PostgreSQLの中から選びます。</p><p class="indent"><strong>注意:</strong> 大規模なサイトでは、InnoDBテーブルを使用することによりパフォーマンスが改善されるかもしれませんが、バックアップを行うのが難しくなります。',
+    'db_type' => 'Geeklog can be installed using either a MySQL or PostgreSQL database. If you are not sure which option to select contact your hosting provider.<br><br><strong>Note</strong> InnoDB Tables may improve performance on (very) large sites, but they also make database backups more complicated.',
     'db_host' => 'ホスト名を入力します。',
     'db_name' => 'データベース名を入力します。',
     'db_user' => 'データベースのユーザ名（アカウント）を入力します。',
@@ -380,7 +380,7 @@ $LANG_HELP = array(
     'site_admin_url' => 'AdminディレクトリのURLを入力します。',
     'site_mail' => 'サイト管理者のEmailアドレスを入力します。',
     'noreply_mail' => 'サイト管理者の No-Reply Email (返信を受け付けないEmailアドレス)を入力します。',
-    'utf8' => 'サイトのデフォルト言語としてUTF-8を使用するかどうかを指示します。多言語サイトを作成するなら、チェックを入れることをお勧めします。',
+    'utf8' => 'Indicate whether to use UTF-8 as the default character set for your site. Recommended especially for multi-lingual setups.<br><br>This will set the database character set to UTF-8. If you have <strong>checked</strong> this setting, make sure your database collation is compatible with the character set (usually this is either <strong>utf8_general_ci</strong> or, if you wish to support emojis <strong>utf8mb4_general_ci</strong>). <em>Checking this will not change the collation of your database, this must be done manually before you proceed with the install.</em><br><br>The Geeklog site default character set is \'iso-8859-1\' (Latin-1) which is compatible with the database character set of \'latin1\' (latin1_swedish_ci). These are older legacy encoding standard that supports a limited number of languages. If you leave \'Use UTF-8\' unchecked these will be used unless you have already modified manually the site default character set (found in siteconfig.php) and the database character set (found in dbconfig.php).',
     'migrate_file' => '移行するバックアップファイル(*.sql)を選択します。"backups"ディレクトリ内のファイルから、あるいはあなたのコンピュータからファイルをアップロードできます。または、データベースの現在の内容を移行することもできます。',
     'plugin_upload' => 'アップロードするプラグインの圧縮ファイル(.zip, .tar.gz, .tgzファーマット)を選んでインストールしてください。'
 );
