@@ -383,6 +383,8 @@ CREATE TABLE {$_TABLES['tokens']} (
 ) ENGINE=MyISAM
 ";
 
+// Note: Primary Key should be (tid,type,subtype,id) but max key length is over 1000 bytes
+// which is an issue for our minimum MySQL server requirements. See Github issue #1027
 $_SQL[] = "
 CREATE TABLE `{$_TABLES['topic_assignments']}` (
   `tid` varchar(75) NOT NULL,

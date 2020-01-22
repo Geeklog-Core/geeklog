@@ -40,6 +40,8 @@ CREATE TABLE {$_TABLES['likes']} (
 ";
 
 // Add subtype column to topic assignments table to allow plugins to have topics specified for types of objects
+// Note: Primary Key should be (tid,type,subtype,id) but max key length is over 1000 bytes
+// which is an issue for our minimum MySQL server requirements. See Github issue #1027
 $_SQL[] = "ALTER TABLE {$_TABLES['topic_assignments']} ADD `subtype` VARCHAR(30) NOT NULL DEFAULT '' AFTER `type`";
 $_SQL[] = "
 ALTER TABLE {$_TABLES['topic_assignments']}
@@ -47,7 +49,6 @@ ALTER TABLE {$_TABLES['topic_assignments']}
    ADD PRIMARY KEY(
      `tid`,
      `type`,
-     `subtype`,
      `id`);
 ";
 
