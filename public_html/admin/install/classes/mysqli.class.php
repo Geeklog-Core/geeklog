@@ -2,6 +2,9 @@
 
 namespace Geeklog;
 
+use Exception;
+use mysqli;
+
 /**
  * Class Db_Mysqli
  *
@@ -10,7 +13,7 @@ namespace Geeklog;
 class Db_Mysqli extends Db
 {
     /**
-     * @var \mysqli
+     * @var mysqli
      */
     private $conn;
 
@@ -22,8 +25,8 @@ class Db_Mysqli extends Db
     /**
      * Db_Mysqli constructor.
      *
-     * @param  array $args
-     * @throws \Exception
+     * @param  array  $args
+     * @throws Exception
      */
     public function __construct(array $args)
     {
@@ -34,13 +37,13 @@ class Db_Mysqli extends Db
         $this->args = $args;
 
         if (!is_callable('mysqli_connect')) {
-            throw new \Exception(__METHOD__ . ': mysqli_connect is not supported.');
+            throw new Exception(__METHOD__ . ': mysqli_connect is not supported.');
         }
 
-        $this->conn = new \mysqli($args['host'], $args['user'], $args['pass'], $args['name']);
+        $this->conn = new mysqli($args['host'], $args['user'], $args['pass'], $args['name']);
 
         if ($this->conn->connect_error) {
-            throw new \Exception(__METHOD__ . ': failed to connect to MySQL server.');
+            throw new Exception(__METHOD__ . ': failed to connect to MySQL server.');
         }
 
         $this->serverVersion = $this->conn->server_version;
@@ -66,14 +69,12 @@ class Db_Mysqli extends Db
     /**
      * Perform a query
      *
-     * @param  string $sql
+     * @param  string  $sql
      * @return mixed
      */
     public function query($sql)
     {
-        $result = $this->conn->query($sql);
-
-        return $result;
+        return $this->conn->query($sql);
     }
 
     /**

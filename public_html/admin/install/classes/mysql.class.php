@@ -2,6 +2,8 @@
 
 namespace Geeklog;
 
+use Exception;
+
 /**
  * Class Db_Mysql
  *
@@ -23,7 +25,7 @@ class Db_Mysql extends Db
      * Db_Mysql constructor.
      *
      * @param  array $args
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(array $args)
     {
@@ -34,20 +36,20 @@ class Db_Mysql extends Db
         $this->args = $args;
 
         if (!is_callable('mysql_connect')) {
-            throw new \Exception(__METHOD__ . ': mysql_connect is not supported.');
+            throw new Exception(__METHOD__ . ': mysql_connect is not supported.');
         }
 
         $this->conn = mysql_connect($args['host'], $args['user'], $args['pass']);
 
         if ($this->conn === false) {
-            throw new \Exception(__METHOD__ . ': failed to connect to MySQL server.');
+            throw new Exception(__METHOD__ . ': failed to connect to MySQL server.');
         }
 
         if (!mysql_select_db($args['name'], $this->conn)) {
-            throw new \Exception(__METHOD__ . ': could not select database.');
+            throw new Exception(__METHOD__ . ': could not select database.');
         }
 
-        $this->serverVersion = @mysqli_get_server_version($this->conn);
+        $this->serverVersion = @mysql_get_server_info($this->conn);
 
         if (!empty($args['charset'])) {
             if (!mysql_set_charset($args['charset'], $this->conn)) {
@@ -75,9 +77,7 @@ class Db_Mysql extends Db
      */
     public function query($sql)
     {
-        $result = mysql_query($sql, $this->conn);
-
-        return $result;
+        return mysql_query($sql, $this->conn);
     }
 
     /**

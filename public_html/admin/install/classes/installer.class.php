@@ -11,6 +11,7 @@ class Installer
     // System requirements
     const SUPPORTED_PHP_VER = '5.6.4';
     const SUPPORTED_MYSQL_VER = '4.1.3';
+    const SUPPORTED_PGSQL_VER = '9.1.7';
 
     // Default UI language
     const DEFAULT_LANGUAGE = 'english';
@@ -31,29 +32,49 @@ class Installer
     /**
      * @var array
      */
-    private $env = array();
+    private $env = [];
 
     /**
      * @var array
      */
-    private $LANG = array();
+    private $LANG = [];
 
     /**
      * @var array
      */
-    private $upgradeMessages = array();
+    private $upgradeMessages = [];
+
+    /**
+     * @var array
+     */
+    private $databaseCharsets = [
+        'mysql' => [
+            // $LANG_CHARSET => $_DB_charset
+            'iso-8859-1'  => 'latin1',
+            'iso-8859-2'  => 'latin2',
+            'iso-8859-15' => 'latin1',
+            'utf-8'       => 'utf-8',
+        ],
+        'pgsql' => [
+            // $LANG_CHARSET => $_DB_charset
+            'iso-8859-1'  => 'LATIN1',
+            'iso-8859-2'  => 'LATIN2',
+            'iso-8859-15' => 'LATIN1',
+            'utf-8'       => 'UTF8',
+        ],
+    ];
 
     /**
      * Replaces all newlines in a string with <br> or <br />,
      * depending on the detected setting.  Ported from "lib-common.php"
      *
-     * @param   string $string The string to modify
+     * @param  string  $string  The string to modify
      * @return  string         The modified string
      */
     public static function nl2br($string)
     {
         $replace = '<br>';
-        $find = array("\r\n", "\n\r", "\r", "\n");
+        $find = ["\r\n", "\n\r", "\r", "\n"];
 
         return str_replace($find, $replace, $string);
     }
@@ -64,6 +85,28 @@ class Installer
     public function getLanguage()
     {
         return $this->env['language'];
+    }
+
+    /**
+     * Return the database character set
+     *
+     * @param  string  $driver  either 'mysql' or 'pgsql'
+     * @param  string  $charset
+     * @return string
+     * @throws InvalidArgumentException
+     */
+    public function convertLangCharsetToDatabaseCharset($driver, $charset)
+    {
+        $driver = strtolower($driver);
+        if (!in_array($driver, ['mysql', 'pgsql'])) {
+            throw new InvalidArgumentException(sprintf('Unknown database driver "%s" was given', $driver));
+        }
+
+        $charset = strtolower($charset);
+
+        return array_key_exists($charset, $this->databaseCharsets[$driver])
+            ? $this->databaseCharsets[$driver][$charset]
+            : 'latin1';
     }
 
     /**
@@ -78,7 +121,9 @@ class Installer
         date_default_timezone_set(@date_default_timezone_get());
 
         $langInfo = @include_once __DIR__ . '/../language/_list.php';
-        uasort($langInfo, function ($a, $b) { return strcasecmp($a['langName'], $b['langName']); });
+        uasort($langInfo, function ($a, $b) {
+            return strcasecmp($a['langName'], $b['langName']);
+        });
         $this->languages = $langInfo;
 
         $this->env['mode'] = $this->get('mode', $this->post('mode', ''));
@@ -90,7 +135,6 @@ class Installer
         $this->env['upgrade_check'] = $this->get('upgrade_check', $this->post('upgrade_check', ''));
 
         // Include language file
-
         if (!file_exists(PATH_INSTALL . 'language/' . $language . '.php')) {
             $language = self::DEFAULT_LANGUAGE;
         }
@@ -101,7 +145,7 @@ class Installer
         if (!isset($LANG_DIRECTION)) {
             $LANG_DIRECTION = 'ltr';
         }
-        $this->env['rtl'] = $LANG_DIRECTION ==='rtl' ? '-rtl' : '';
+        $this->env['rtl'] = $LANG_DIRECTION === 'rtl' ? '-rtl' : '';
         if ($LANG_DIRECTION === 'rtl') {
             $this->env['icon_arrow_next'] = '<span uk-icon="icon: chevron-double-left"></span>';
             $this->env['icon_arrow_prev'] = '<span uk-icon="icon: chevron-double-right"></span>';
@@ -110,8 +154,7 @@ class Installer
             $this->env['icon_arrow_prev'] = '<span uk-icon="icon: chevron-double-left"></span>';
         }
 
-        /** @noinspection PhpUndefinedVariableInspection */
-        $this->env['LANG'] = $this->LANG = array(
+        $this->env['LANG'] = $this->LANG = [
             'BIGDUMP'   => $LANG_BIGDUMP,
             'CHARSET'   => $LANG_CHARSET,
             'DIRECTION' => $LANG_DIRECTION,
@@ -123,7 +166,7 @@ class Installer
             'PLUGINS'   => $LANG_PLUGINS,
             'RESCUE'    => $LANG_RESCUE,
             'SUCCESS'   => $LANG_SUCCESS,
-        );
+        ];
 
         // Check PHP version and exit the installer if the environment is too old
         $this->checkPhpVersion();
@@ -135,7 +178,7 @@ class Installer
     /**
      * Convert a string like '2m' to bytes
      *
-     * @param  string $val
+     * @param  string  $val
      * @return int
      */
     private function toBytes($val)
@@ -158,8 +201,9 @@ class Installer
     /**
      * Nicely formats the alert messages
      *
-     * @param    string $message Message string
-     * @param    string $type    'error', 'warning', 'success', or 'notice'
+     * @param  string  $message  Message string
+     * @param  string  $type     'error', 'warning', 'success', or 'notice'
+     * @param  string  $title
      * @return   string          HTML formatted dialog message
      */
     public function getAlertMessage($message, $type = 'notice', $title = '')
@@ -222,7 +266,7 @@ class Installer
     /**
      * Check if any message for upgrades,  exit the installer
      *
-     * @param  string $currentVersion
+     * @param  string  $currentVersion
      * @return string
      */
     private function checkUpgradeMessage($currentVersion)
@@ -281,8 +325,8 @@ class Installer
     /**
      * Return a $_GET variable
      *
-     * @param  string       $name
-     * @param  array|string $defaultValue
+     * @param  string        $name
+     * @param  array|string  $defaultValue
      * @return array|null|string
      */
     public function get($name, $defaultValue = null)
@@ -293,8 +337,8 @@ class Installer
     /**
      * Return a $_POST variable
      *
-     * @param  string       $name
-     * @param  array|string $defaultValue
+     * @param  string        $name
+     * @param  array|string  $defaultValue
      * @return array|null|string
      */
     public function post($name, $defaultValue = null)
@@ -305,8 +349,8 @@ class Installer
     /**
      * Return a $_REQUEST variable
      *
-     * @param  string       $name
-     * @param  array|string $defaultValue
+     * @param  string        $name
+     * @param  array|string  $defaultValue
      * @return array|null|string
      */
     public function request($name, $defaultValue = null)
@@ -317,8 +361,8 @@ class Installer
     /**
      * Return a $_SERVER variable
      *
-     * @param  string       $name
-     * @param  array|string $defaultValue
+     * @param  string        $name
+     * @param  array|string  $defaultValue
      * @return array|null|string
      */
     private function server($name, $defaultValue = null)
@@ -385,12 +429,14 @@ class Installer
                     }
 
                     $retval[] = [
-                        'name' => trim($langName),
-                        'quality' => (float) trim($quality)
+                        'name'    => trim($langName),
+                        'quality' => (float) trim($quality),
                     ];
                 }
 
-                uasort($retval, function ($a, $b) { return -($a['quality'] - $b['quality']); });
+                uasort($retval, function ($a, $b) {
+                    return -($a['quality'] - $b['quality']);
+                });
                 $temp = [];
 
                 foreach ($retval as $r) {
@@ -412,35 +458,35 @@ class Installer
     private function getLanguageSelector()
     {
         $env = $this->env;
-        $env['hidden_items'] = array();
-        $env['languages'] = array();
+        $env['hidden_items'] = [];
+        $env['languages'] = [];
 
         if (!empty($this->env['mode'])) {
-            $env['hidden_items'][] = array('name' => 'mode', 'value' => $this->env['mode']);
+            $env['hidden_items'][] = ['name' => 'mode', 'value' => $this->env['mode']];
         }
 
-        $paths = array('dbconfig', 'public_html');
+        $paths = ['dbconfig', 'public_html'];
         foreach ($paths as $path) {
             $name = $path . '_path';
             $value = $this->get($name, $this->post($name));
 
             if (!empty($value)) {
                 $value = $this->sanitizePath($value);
-                $env['hidden_items'][] = array(
+                $env['hidden_items'][] = [
                     'name'  => $name,
                     'value' => $value,
-                );
+                ];
             }
         }
 
         foreach ($this->languages as $languageName => $data) {
             $languageName = strtolower($languageName);
             $languageName = str_replace('.php', '', $languageName);
-            $env['languages'][] = array(
+            $env['languages'][] = [
                 'value'    => $languageName,
                 'selected' => (($languageName === $this->env['language']) ? ' selected="selected"' : ''),
                 'text'     => $data['langName'] . ' (' . $data['english'] . ')',
-            );
+            ];
         }
 
         return MicroTemplate::quick(PATH_LAYOUT, 'language_selector', $env);
@@ -487,13 +533,13 @@ class Installer
     /**
      * Filter path value for junk and injections
      *
-     * @param   string $path a path on the file system
+     * @param  string  $path  a path on the file system
      * @return  string          filtered path value
      */
     public function sanitizePath($path)
     {
         $path = strip_tags($path);
-        $path = str_replace(array('"', "'"), '', $path);
+        $path = str_replace(['"', "'"], '', $path);
         $path = str_replace('..', '', $path);
 
         return $path;
@@ -518,10 +564,10 @@ class Installer
                 : $this->env['gl_path'] . 'public_html/' . self::DB_CONFIG_FILE;
 
             // If the script was able to locate all the system files/directories move onto the next step
-            $args = array(
+            $args = [
                 'mode'          => 'check_permissions',
                 'dbconfig_path' => $this->env['dbconfig_path'],
-            );
+            ];
 
             if (!empty($this->env['language'])) {
                 $args['language'] = $this->env['language'];
@@ -551,10 +597,10 @@ class Installer
         $retval = '';
 
         // Get the paths from the previous page
-        $paths = array(
+        $paths = [
             'db-config.php' => $this->sanitizePath(urldecode($_REQUEST['dbconfig_path'])),
             'public_html/'  => $this->sanitizePath(urldecode($_REQUEST['public_html_path'])),
-        );
+        ];
         $this->env['dbconfig_path'] = str_replace(self::DB_CONFIG_FILE, '', $paths['db-config.php']);
 
         // Edit siteconfig.php and enter the correct GL path and system directory path
@@ -563,7 +609,7 @@ class Installer
         $siteConfigData = @file_get_contents($this->env['siteconfig_path']);
 
         // $_CONF['path']
-        $_CONF = array();
+        $_CONF = [];
         require $this->env['siteconfig_path']; // must aquire CONF again for compare so use require and not require_once as file could have been called before
         $siteConfigData = str_replace(
             "\$_CONF['path'] = '{$_CONF['path']}';",
@@ -610,10 +656,10 @@ class Installer
         $retval = '';
 
         // Get the paths from the previous page
-        $paths = array(
+        $paths = [
             'db-config.php' => $this->sanitizePath(urldecode($this->get('dbconfig_path', $this->post('dbconfig_path', '')))),
             'public_html/'  => $this->getHtmlPath(),
-        );
+        ];
 
         // Be fault-tolerant with the path the user enters
         if (strpos($paths['db-config.php'], self::DB_CONFIG_FILE) === false) {
@@ -651,7 +697,7 @@ class Installer
         $chmodString = 'chmod -R 777 ';
 
         // Files to check if writable
-        $fileList = array(
+        $fileList = [
             $paths['db-config.php'],
             $this->env['gl_path'] . 'data/',
             $this->env['gl_path'] . 'data/cache/',
@@ -675,7 +721,7 @@ class Installer
             $paths['public_html/'] . 'images/_thumbs/',                 // Used by File Manager when launched from Geeklog Control Panel
             $paths['public_html/'] . 'images/_thumbs/articles/',        // Used by File Manager when launched from Geeklog Control Panel. Article Editor also stores article thumbnail images here
             $paths['public_html/'] . 'images/_thumbs/userphotos/',      // Used by File Manager when launched from Geeklog Control Panel
-        );
+        ];
 
         if ($_DB_dbms === 'mysql') {
             array_splice($fileList, 1, 0, $this->env['gl_path'] . 'backups/');
@@ -773,14 +819,14 @@ class Installer
 
                 // Go to the 'write_paths' step
                 $url = 'index.php?'
-                    . http_build_query(array(
+                    . http_build_query([
                             'mode'             => 'write_paths',
                             'dbconfig_path'    => $paths['db-config.php'],
                             'public_html_path' => $paths['public_html/'],
                             'language'         => $this->env['language'],
                             'op'               => $install_type,
                             'display_step'     => $retval_step + 1,
-                        )
+                        ]
                     );
                 header('Location: ' . $url);
             }
@@ -868,7 +914,7 @@ class Installer
     /**
      * Provide a link to the help page for an option
      *
-     * @param   string $var key of the label, used as an anchor on the help page
+     * @param  string  $var  key of the label, used as an anchor on the help page
      * @return  string          HTML for the link
      */
     public function getHelpLink($var)
@@ -888,10 +934,10 @@ class Installer
      * If support for a database has not been compiled into PHP, the option will be
      * listed as disabled.
      *
-     * @param  string $gl_path         base Geeklog install path
-     * @param  string $selected_dbtype currently selected db type
-     * @param  bool   $list_innodb     whether to list InnoDB option
-     * @param  bool   $isInstall       whether to install or update
+     * @param  string  $gl_path          base Geeklog install path
+     * @param  string  $selected_dbtype  currently selected db type
+     * @param  bool    $list_innodb      whether to list InnoDB option
+     * @param  bool    $isInstall        whether to install or update
      * @return string
      * @throws Exception
      */
@@ -903,20 +949,20 @@ class Installer
             $gl_path = dirname($gl_path);
         }
 
-        $dbs = array(
-            'mysql'        => array(
+        $dbs = [
+            'mysql'        => [
                 'file'  => 'mysql',
                 'label' => $this->LANG['INSTALL'][35],
-            ),
-            'mysql-innodb' => array(
+            ],
+            'mysql-innodb' => [
                 'file'  => 'mysql',
                 'label' => $this->LANG['INSTALL'][36],
-            ),
-            'pgsql'        => array(
+            ],
+            'pgsql'        => [
                 'file'  => 'pgsql',
                 'label' => $this->LANG['INSTALL'][106],
-            ),
-        );
+            ],
+        ];
 
         // may not be needed as a separate option, e.g. for upgrades
         if (!$list_innodb) {
@@ -992,13 +1038,13 @@ class Installer
      * NOTE: Needs a fully working Geeklog, so can only be done late in the upgrade
      *       process!
      *
-     * @param  boolean $migration whether the upgrade is part of a site migration
-     * @param  array   $old_conf  old $_CONF values before the migration
+     * @param  boolean  $migration  whether the upgrade is part of a site migration
+     * @param  array    $old_conf   old $_CONF values before the migration
      * @return int     number of failed plugin updates (0 = everything's fine)
      * @see     PLG_upgrade
      * @see     PLG_migrate
      */
-    private function upgradePlugins($migration = false, array $old_conf = array())
+    private function upgradePlugins($migration = false, array $old_conf = [])
     {
         global $_TABLES;
 
@@ -1037,9 +1083,9 @@ class Installer
     /**
      * Do the actual plugin auto install
      *
-     * @param   string $plugin      Plugin name
-     * @param   array  $inst_params Installation parameters for the plugin
-     * @param   bool   $verbose     true: enable verbose logging
+     * @param  string  $plugin       Plugin name
+     * @param  array   $inst_params  Installation parameters for the plugin
+     * @param  bool    $verbose      true: enable verbose logging
      * @return  bool             true on success, false otherwise
      */
     private function autoInstallPlugin($plugin, array $inst_params, $verbose = true)
@@ -1087,7 +1133,7 @@ class Installer
         }
 
         // Create the plugin's group(s), if any
-        $groups = array();
+        $groups = [];
         $adminGroupId = 0;
 
         if (!empty($inst_params['groups'])) {
@@ -1124,8 +1170,8 @@ class Installer
         }
 
         // Create the plugin's table(s)
-        $_SQL = array();
-        $DEFVALUES = array();
+        $_SQL = [];
+        $DEFVALUES = [];
 
         if (file_exists($basePath . 'sql/' . $_DB_dbms . '_install.php')) {
             require_once $basePath . 'sql/' . $_DB_dbms . '_install.php';
@@ -1163,7 +1209,7 @@ class Installer
             COM_errorLog("Attempting to add '$plugin' features", 1);
         }
 
-        $mappings = array();
+        $mappings = [];
 
         if (!empty($inst_params['features'])) {
             $features = $inst_params['features'];
@@ -1313,9 +1359,9 @@ class Installer
     /**
      * Do the actual plugin auto install
      *
-     * @param    string  $plugin      Plugin name
-     * @param    array   $inst_params Installation parameters for the plugin
-     * @param    boolean $verbose     true: enable verbose logging
+     * @param  string   $plugin       Plugin name
+     * @param  array    $inst_params  Installation parameters for the plugin
+     * @param  boolean  $verbose      true: enable verbose logging
      * @return   boolean              true on success, false otherwise
      */
     public function pluginAutoInstall($plugin, $inst_params, $verbose = true)
@@ -1358,7 +1404,7 @@ class Installer
         }
 
         // Create the plugin's group(s), if any
-        $groups = array();
+        $groups = [];
         $admin_group_id = 0;
         if (!empty($inst_params['groups'])) {
             $groups = $inst_params['groups'];
@@ -1388,8 +1434,8 @@ class Installer
         }
 
         // Create the plugin's table(s)
-        $_SQL = array();
-        $DEFVALUES = array();
+        $_SQL = [];
+        $DEFVALUES = [];
         if (file_exists($base_path . 'sql/' . $_DB_dbms . '_install.php')) {
             require_once $base_path . 'sql/' . $_DB_dbms . '_install.php';
         }
@@ -1422,8 +1468,8 @@ class Installer
             COM_errorLog("Attempting to add '$plugin' features", 1);
         }
 
-        $features = array();
-        $mappings = array();
+        $features = [];
+        $mappings = [];
         if (!empty($inst_params['features'])) {
             $features = $inst_params['features'];
             if (!empty($inst_params['mappings'])) {
@@ -1563,7 +1609,7 @@ class Installer
     {
         global $_CONF, $_TABLES, $_DB_dbms, $_DB_table_prefix;
 
-        $newPlugins = array();
+        $newPlugins = [];
         clearstatcache();
 
         foreach (glob($_CONF['path'] . 'plugins/*') as $path) {
@@ -1612,7 +1658,7 @@ class Installer
      * Check if URL exists
      * NOTE:    This code is a modified copy from marufit at gmail dot com
      *
-     * @param   string $url URL
+     * @param  string  $url  URL
      * @return  bool         True if URL exists, false if not
      */
     private function urlExists($url)
@@ -1637,7 +1683,7 @@ class Installer
      * Returns the HTML form to return the user's inputted data to the
      * previous page.
      *
-     * @param  array $postData
+     * @param  array  $postData
      * @return string  HTML form code.
      */
     private function showReturnFormData(array $postData)
@@ -1652,8 +1698,8 @@ class Installer
     /**
      * Check for blank database password in production environment
      *
-     * @param   string $site_url The site's URL
-     * @param   array  $db       Database    information
+     * @param  string  $site_url  The site's URL
+     * @param  array   $db        Database    information
      * @return  bool                 True if password is set or it is a local server
      */
     private function checkDbPassword($site_url, array $db)
@@ -1670,7 +1716,7 @@ class Installer
     /**
      * Can the install script connect to the database?
      *
-     * @param   array $db Database information
+     * @param  array  $db  Database information
      * @return  mixed     Returns the DB handle if true, false if not
      */
     private function dbConnect($db)
@@ -1704,9 +1750,9 @@ class Installer
     /**
      * Return the MySQL version
      *
-     * @param  string $host
-     * @param  string $user
-     * @param  string $pass
+     * @param  string  $host
+     * @param  string  $user
+     * @param  string  $pass
      * @return array|false   array[0..2] of the parts of the version number or false
      */
     private function getMysqlVersion($host, $user, $pass)
@@ -1738,16 +1784,16 @@ class Installer
         }
 
         if (preg_match('/^([0-9]+).([0-9]+).([0-9]+)/', $version, $match)) {
-            return array($match[1], $match[2], $match[3]);
+            return [$match[1], $match[2], $match[3]];
         } else {
-            return array(0, 0, 0);
+            return [0, 0, 0];
         }
     }
 
     /**
      * Check if the user's MySQL version is supported by Geeklog
      *
-     * @param   array $db Database information
+     * @param  array  $db  Database information
      * @return  bool True if supported, false if not supported
      */
     private function isMysqlOutOfDate(array $db)
@@ -1770,7 +1816,7 @@ class Installer
     /**
      * Check if a Geeklog database exists
      *
-     * @param   array $db Array containing connection info
+     * @param  array  $db  Array containing connection info
      * @return  bool      True if a database exists, false if not
      */
     private function dbExists(array $db)
@@ -1810,8 +1856,8 @@ class Installer
     /**
      * Modify db-config.php
      *
-     * @param   string $dbConfigFilePath Full path to db-config.php
-     * @param   array  $db               Database information to save
+     * @param  string  $dbConfigFilePath  Full path to db-config.php
+     * @param  array   $db                Database information to save
      * @return  bool True if successful, false if not
      */
     private function writeConfig($dbConfigFilePath, array $db)
@@ -1819,34 +1865,45 @@ class Installer
         // We may have included db-config.php elsewhere already, in which case
         // all of these variables need to be imported from the global namespace
         global $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
-               $_DB_dbms, $_DB_charset;
+               $_DB_dbms, $_DB_charset, $LANG_CHARSET;
 
-        require_once $dbConfigFilePath; // Grab the current DB values
+        // Grab the current DB values
+        require $dbConfigFilePath;
 
         $isUtf8 = false;
 
-        if (!empty($_DB_charset)) {
-            $isUtf8 = ($_DB_charset === 'utf8') || ($_DB_charset === 'utf8mb4');
-        } elseif (isset($db['utf8'])) {
+        if (empty($_DB_charset) ||
+            (($this->env['mode'] === 'install') && ($_DB_charset === 'latin1'))) {
             $isUtf8 = $db['utf8'];
+        } elseif (isset($db['utf8'])) {
+            $isUtf8 = in_array(strtolower($_DB_charset), ['utf8', 'utf8mb4', 'utf-8']);
         }
 
-        $db = array(
+        $db = [
             'host'         => (isset($db['host']) ? $db['host'] : $_DB_host),
             'name'         => (isset($db['name']) ? $db['name'] : $_DB_name),
             'user'         => (isset($db['user']) ? $db['user'] : $_DB_user),
             'pass'         => (isset($db['pass']) ? $db['pass'] : $_DB_pass),
             'table_prefix' => (isset($db['table_prefix']) ? $db['table_prefix'] : $_DB_table_prefix),
             'type'         => (isset($db['type']) ? $db['type'] : $_DB_dbms),
-        );
+        ];
 
         if ($db['type'] === 'mysql-innodb') {
             $db['type'] = 'mysql';
         }
 
+        // Set database charset based on $LANG_CHARSET (this will be overwritten later)
+        $db['charset'] = $this->convertLangCharsetToDatabaseCharset(
+            $db['type'],
+            ($isUtf8 ? 'utf-8' : $LANG_CHARSET)
+        );
+
         // Read in db-config.php so we can insert the DB information
         clearstatcache();
         $dbConfigData = @file_get_contents($dbConfigFilePath);
+        if ($dbConfigData === false) {
+            die('Could not read "db-config.php"');
+        }
 
         // Replace the values with the new ones
         $dbConfigData = str_replace("\$_DB_host = '" . $_DB_host . "';", "\$_DB_host = '" . $db['host'] . "';", $dbConfigData); // Host
@@ -1856,44 +1913,58 @@ class Installer
         $dbConfigData = str_replace("\$_DB_table_prefix = '" . $_DB_table_prefix . "';", "\$_DB_table_prefix = '" . $db['table_prefix'] . "';", $dbConfigData); // Table prefix
         $dbConfigData = str_replace("\$_DB_dbms = '" . $_DB_dbms . "';", "\$_DB_dbms = '" . $db['type'] . "';", $dbConfigData); // Database type ('mysql' or 'pgsql')
 
-        if (($db['type'] === 'mysql') && $isUtf8 && version_compare(self::GL_VERSION, '2.1.2', '>=') &&
-            (!empty($_DB_charset) || ($this->env['mode'] === 'install'))
-        ) {
-            if (!empty($_DB_charset)) {
-                $db['charset'] = $_DB_charset;
-            } else {
-                require_once __DIR__ . '/db.class.php';
-                $dbTypes = Geeklog\Db::getDrivers();
+        // Since Geeklog 2.1.2, $_DB_charset was introduced
+        if (version_compare(self::GL_VERSION, '2.1.2', '>=')) {
+            switch ($db['type']) {
+                case 'mysql':
+                case 'mysql-innodb':
+                    if (($this->env['mode'] !== 'install') && isset($_DB_charset) && ($_DB_charset !== '')) {
+                        $db['charset'] = $_DB_charset;
+                    }
 
-                if (in_array(Geeklog\Db::DB_MYSQLI, $dbTypes)) {
-                    $driver = Geeklog\Db::connect(Geeklog\Db::DB_MYSQLI, $db);
-                } else {
-                    $driver = Geeklog\Db::connect(Geeklog\Db::DB_MYSQL, $db);
-                }
-                $db['charset'] = ($driver->getVersion() >= 50503) ? 'utf8mb4' : 'utf8';
+                    if ($isUtf8) {
+                        require_once __DIR__ . '/db.class.php';
+                        $dbTypes = Geeklog\Db::getDrivers();
+
+                        if (in_array(Geeklog\Db::DB_MYSQLI, $dbTypes)) {
+                            $driver = Geeklog\Db::connect(Geeklog\Db::DB_MYSQLI, $db);
+                        } else {
+                            $driver = Geeklog\Db::connect(Geeklog\Db::DB_MYSQL, $db);
+                        }
+
+                        $db['charset'] = ($driver->getVersion() >= 50503) ? 'utf8mb4' : 'utf8';
+                    }
+
+                    break;
+
+                case 'pgsql':
+                    break;
+
+                default:
+                    throw new InvalidArgumentException(sprintf('Unknown database driver "%s" was given', $db['type']));
+                    break;
             }
 
-            $dbConfigData = str_replace("\$_DB_charset = '" . $_DB_charset . "';", "\$_DB_charset = '" . $db['charset'] . "';", $dbConfigData); // Charset
-        } elseif (($db['type'] === 'mysql') && empty($_DB_charset) && version_compare(self::GL_VERSION, '2.1.2', '>=')) {
-            // $_DB_charset is empty and needs to be something for upgrade or migration so figure out what
-
-
-
-        } elseif (($db['type'] === 'pgsql') && version_compare(self::GL_VERSION, '2.1.2', '>=')) {
-            // How about pgsql and $_DB_charset????
-
-
-
+            // Update $_DB_charset in the "db-config.php"
+            if (isset($_DB_charset)) {
+                $dbConfigData = str_replace(
+                    "\$_DB_charset = '" . $_DB_charset . "';",
+                    "\$_DB_charset = '" . $db['charset'] . "';",
+                    $dbConfigData
+                );
+            } else {
+                // Update or migrate from Geeklog 2.1.1 or older
+                $dbConfigData = str_replace('?>', '', $db);
+                $dbConfigData .= PHP_EOL
+                    . "\$_DB_charset = '" . $db['charset'] . "';" . PHP_EOL;
+            }
         }
-
 
         // make sure global variable gets updated
         $_DB_charset = $db['charset'];
 
         // Write our changes to db-config.php
-        $result = (@file_put_contents($dbConfigFilePath, $dbConfigData, LOCK_EX) !== false);
-
-        return $result;
+        return (@file_put_contents($dbConfigFilePath, $dbConfigData, LOCK_EX) !== false);
     }
 
     /**
@@ -1905,7 +1976,7 @@ class Installer
      * occurs on installation because it is different from the DB information.
      * This method is to make sure to read the value changed by the writeConfig method.
      *
-     * @param string $dbConfigFilePath Full path to db-config.php
+     * @param  string  $dbConfigFilePath  Full path to db-config.php
      */
     private function includeConfig($dbConfigFilePath)
     {
@@ -1921,8 +1992,8 @@ class Installer
      * Change default character set to UTF-8
      * NOTE:    Yes, this means that we need to patch siteconfig.php a second time.
      *
-     * @param   string $siteConfigFilePath complete path to siteconfig.php
-     * @param   string $charset            default character set to use
+     * @param  string  $siteConfigFilePath  complete path to siteconfig.php
+     * @param  string  $charset             default character set to use
      * @return  bool                       true: success; false: an error occurred
      */
     private function setDefaultCharset($siteConfigFilePath, $charset)
@@ -2012,18 +2083,18 @@ class Installer
 
         switch ($_DB_dbms) {
             case 'mysql':
-                $tests = array(
+                $tests = [
                     // as of 1.5.1, we should have the 'database_version' entry
-                    '1.5.0'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext", ''),
-                    '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit'),
-                    '1.4.0'  => array("DESCRIBE {$_TABLES['users']} remoteusername", ''),
-                    '1.3.11' => array("DESCRIBE {$_TABLES['comments']} sid", 'sid,varchar(40)'),
-                    '1.3.10' => array("DESCRIBE {$_TABLES['comments']} lft", ''),
-                    '1.3.9'  => array("DESCRIBE {$_TABLES['syndication']} fid", ''),
-                    '1.3.8'  => array("DESCRIBE {$_TABLES['userprefs']} showonline", '')
+                    '1.5.0'  => ["DESCRIBE {$_TABLES['storysubmission']} bodytext", ''],
+                    '1.4.1'  => ["SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit'],
+                    '1.4.0'  => ["DESCRIBE {$_TABLES['users']} remoteusername", ''],
+                    '1.3.11' => ["DESCRIBE {$_TABLES['comments']} sid", 'sid,varchar(40)'],
+                    '1.3.10' => ["DESCRIBE {$_TABLES['comments']} lft", ''],
+                    '1.3.9'  => ["DESCRIBE {$_TABLES['syndication']} fid", ''],
+                    '1.3.8'  => ["DESCRIBE {$_TABLES['userprefs']} showonline", '']
                     // It's hard to (reliably) test for 1.3.7 - let's just hope
                     // nobody uses such an old version any more ...
-                );
+                ];
                 $firstCheck = "DESCRIBE {$_TABLES['access']} acc_ft_id";
                 $result = DB_query($firstCheck, 1);
 
@@ -2037,7 +2108,7 @@ class Installer
 
             default:
                 // @TODO not implemented for pgsql
-                $tests = array();
+                $tests = [];
                 break;
         }
 
@@ -2079,7 +2150,7 @@ class Installer
     /**
      * Check if a table exists
      *
-     * @param   string $table Table name
+     * @param  string  $table  Table name
      * @return  bool         True if table exists, false if it does not
      * @see     DB_checkTableExists
      */
@@ -2091,8 +2162,8 @@ class Installer
     /**
      * Run all the database queries from the update file.
      *
-     * @param  array  $_SQL Array of queries to perform
-     * @param  string $progress
+     * @param  array   $_SQL  Array of queries to perform
+     * @param  string  $progress
      */
     private function updateDB(array $_SQL, &$progress)
     {
@@ -2118,8 +2189,8 @@ class Installer
         // postgresql.class.php, etc)
 
         // Get DBMS-specific create table array and data array
-        $_SQL = array();
-        $_DATA = array();
+        $_SQL = [];
+        $_DATA = [];
         $dbTableAndDataPath = $_CONF['path'] . 'sql/' . $_DB_dbms . '_tableanddata.php';
 
         $progress = '';
@@ -2171,8 +2242,8 @@ class Installer
     /**
      * On a fresh install, set the Admin's account email and homepage
      *
-     * @param   string $site_mail email address, e.g. the site email
-     * @param   string $site_url  the site's URL
+     * @param  string  $site_mail  email address, e.g. the site email
+     * @param  string  $site_url   the site's URL
      */
     private function personalizeAdminAccount($site_mail, $site_url)
     {
@@ -2197,7 +2268,7 @@ class Installer
     /**
      * Returns a cleaned string
      *
-     * @param  string $str
+     * @param  string  $str
      * @return string
      */
     private function cleanString($str)
@@ -2211,7 +2282,7 @@ class Installer
     /**
      * Returns a cookie path for a site URL
      *
-     * @param   string $site_url site URL
+     * @param  string  $site_url  site URL
      * @return  string               a cookie path
      */
     private function guessCookiePath($site_url)
@@ -2256,7 +2327,7 @@ class Installer
                     }
 
                     if (strpos($languageFromUserAgent, '-')) {
-                        list ($country, ) = explode('-', $languageFromUserAgent, 2);
+                        list ($country,) = explode('-', $languageFromUserAgent, 2);
 
                         if (strcasecmp($data['langCode'], $country) === 0) {
                             return $languageFileName;
@@ -2272,7 +2343,7 @@ class Installer
     /**
      * Set Geeklog version number in siteconfig.php and in the database
      *
-     * @param   string $siteConfigFilePath path to siteconfig.php
+     * @param  string  $siteConfigFilePath  path to siteconfig.php
      */
     private function setVersion($siteConfigFilePath)
     {
@@ -2324,7 +2395,7 @@ class Installer
      * Get information about a plugin
      * Only works for plugins that have a autoinstall.php file
      *
-     * @param  string $plugin plugin's directory name
+     * @param  string  $plugin  plugin's directory name
      * @return array|false         array of plugin info or false: error
      */
     public function getPluginInfo($plugin)
@@ -2402,11 +2473,11 @@ class Installer
         global $_TABLES;
 
         // list of optional config options
-        $optionalConfig = array(
+        $optionalConfig = [
             'copyrightyear', 'debug_image_upload', 'default_photo',
             'force_photo_width', 'gravatar_rating', 'ip_lookup', 'language_files',
             'languages', 'path_to_mogrify', 'path_to_netpbm',
-        );
+        ];
 
         foreach ($optionalConfig as $name) {
             $result = DB_query("SELECT value, default_value FROM {$_TABLES['conf_values']} WHERE name = '$name'");
@@ -2425,8 +2496,8 @@ class Installer
     /**
      * Perform database upgrades
      *
-     * @param  string $currentGlVersion Current Geeklog version
-     * @param  bool   $checkForMessage
+     * @param  string  $currentGlVersion  Current Geeklog version
+     * @param  bool    $checkForMessage
      * @return bool                     True if successful
      */
     private function doDatabaseUpgrades($currentGlVersion, $checkForMessage = false)
@@ -2448,7 +2519,7 @@ class Installer
         $done = false;
         $progress = '';
         DB_setMysqlSqlMode(Database::MYSQL_SQL_MODE_NONE);
-        $_SQL = array();
+        $_SQL = [];
 
         while (!$done) {
             switch ($currentGlVersion) {
@@ -2482,21 +2553,21 @@ class Installer
                     }
 
                     $currentGlVersion = '1.3';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.3':
                     require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3_to_1.3.1.php';
                     $this->updateDB($_SQL, $progress);
                     $currentGlVersion = '1.3.1';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.3.1':
                     require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.1_to_1.3.2.php';
                     $this->updateDB($_SQL, $progress);
                     $currentGlVersion = '1.3.2-1';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.3.2':
@@ -2535,14 +2606,14 @@ class Installer
 
                     }
                     $currentGlVersion = '1.3.3';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.3.3':
                     require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.3_to_1.3.4.php';
                     $this->updateDB($_SQL, $progress);
                     $currentGlVersion = '1.3.4';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.3.4':
@@ -2556,7 +2627,7 @@ class Installer
                     $group_id = $row['grp_id'];
                     DB_query("INSERT INTO {$_TABLES['access']} (acc_grp_id, acc_ft_id) VALUES ($group_id, $mail_ft)");
                     $currentGlVersion = '1.3.5';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.3.5':
@@ -2568,7 +2639,7 @@ class Installer
                     }
 
                     $currentGlVersion = '1.3.6';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.3.6':
@@ -2587,7 +2658,7 @@ class Installer
                     DB_query("ALTER TABLE {$_TABLES['personal_events']} DROP PRIMARY KEY, ADD PRIMARY KEY (eid,uid)");
 
                     $currentGlVersion = '1.3.7';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.3.7':
@@ -2660,7 +2731,7 @@ class Installer
                     }
 
                     $currentGlVersion = '1.3.8';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.3.8':
@@ -2714,7 +2785,7 @@ class Installer
                     // remove unused entries left over from deleted groups
                     $result = DB_query("SELECT grp_id FROM {$_TABLES['groups']}");
                     $num = DB_numRows($result);
-                    $groups = array();
+                    $groups = [];
 
                     for ($i = 0; $i < $num; $i++) {
                         $A = DB_fetchArray($result);
@@ -2724,7 +2795,7 @@ class Installer
                     $groupList = '(' . implode(',', $groups) . ')';
                     DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE (ug_main_grp_id NOT IN $groupList) OR (ug_grp_id NOT IN $groupList)");
                     $currentGlVersion = '1.3.9';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.3.9':
@@ -2756,14 +2827,14 @@ class Installer
                     // (also handles updates from version 1.0)
                     install_spamx_plugin();
                     $currentGlVersion = '1.3.10';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.3.10':
                     require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.10_to_1.3.11.php';
                     $this->updateDB($_SQL, $progress);
                     $currentGlVersion = '1.3.11';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.3.11':
@@ -2772,7 +2843,7 @@ class Installer
                     upgrade_addFeature();
                     upgrade_uniqueGroupNames();
                     $currentGlVersion = '1.4.0';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.4.0':
@@ -2782,7 +2853,7 @@ class Installer
                     upgrade_ensureLastScheduledRunFlag();
                     upgrade_plugins_141();
                     $currentGlVersion = '1.4.1';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.4.1':
@@ -2828,20 +2899,20 @@ class Installer
 
                     // core plugin updates are done in the plugins themselves
                     $currentGlVersion = '1.5.0';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.5.0':
                     require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.5.0_to_1.5.1.php';
                     $this->updateDB($_SQL, $progress);
                     $currentGlVersion = '1.5.1';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.5.1':
                     // there were no core database changes in 1.5.2
                     $currentGlVersion = '1.5.2';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.5.2':
@@ -2852,7 +2923,7 @@ class Installer
                     upgrade_addIsoFormat();
                     $this->fixOptionalConfig();
                     $currentGlVersion = '1.6.0';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.6.0':
@@ -2860,7 +2931,7 @@ class Installer
                     $this->updateDB($_SQL, $progress);
                     update_ConfValuesFor161();
                     $currentGlVersion = '1.6.1';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.6.1':
@@ -2868,12 +2939,12 @@ class Installer
                     $this->updateDB($_SQL, $progress);
                     update_ConfValuesFor170();
                     $currentGlVersion = '1.7.0';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.7.0':
                     $currentGlVersion = '1.7.2'; // skip ahead
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.7.1':
@@ -2885,7 +2956,7 @@ class Installer
                     update_ConfigSecurityFor180();
                     update_UsersFor180();
                     $currentGlVersion = '1.8.0';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '1.8.0':
@@ -2898,7 +2969,7 @@ class Installer
                     update_BlockTopicAssignmentsFor200();
                     update_StoryTopicAssignmentsFor200();
                     $currentGlVersion = '2.0.0';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '2.0.0':
@@ -2907,7 +2978,7 @@ class Installer
                     update_addFilemanager();
                     update_ConfValuesFor210();
                     $currentGlVersion = '2.1.0';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '2.1.0':
@@ -2928,7 +2999,7 @@ class Installer
                         update_ConfValuesFor212();
                     }
                     $currentGlVersion = '2.1.2';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
                 case '2.1.2':
                     // there were no database changes in 2.1.2
@@ -2950,7 +3021,7 @@ class Installer
                         addThemeAdminFor220();
                     }
                     $currentGlVersion = '2.2.0';
-                    $_SQL = array();
+                    $_SQL = [];
                     break;
 
                 case '2.2.0':
@@ -2993,10 +3064,10 @@ class Installer
      * This is somewhat speculative but should provide the user with a working
      * site even if, for example, a site backup was installed elsewhere.
      *
-     * @param    string $path           proper /path/to/Geeklog
-     * @param    string $path_html      path to public_html
-     * @param    string $site_url       The site's URL
-     * @param    string $site_admin_url URL to the admin directory
+     * @param  string  $path            proper /path/to/Geeklog
+     * @param  string  $path_html       path to public_html
+     * @param  string  $site_url        The site's URL
+     * @param  string  $site_admin_url  URL to the admin directory
      */
     private function fixPathsAndUrls($path, $path_html, $site_url, $site_admin_url)
     {
@@ -3132,7 +3203,7 @@ class Installer
     /**
      * Clear cache files
      *
-     * @param string $plugin
+     * @param  string  $plugin
      */
     private function clearCache($plugin = '')
     {
@@ -3152,8 +3223,8 @@ class Installer
      * DB credentials, skip the forms and upgrade directly.
      * NOTE:    Will not return if upgrading from 1.5.0 or later.
      *
-     * @param   string $dbConfigFilePath   path to db-config.php
-     * @param   string $siteConfigFilePath path to siteconfig.php
+     * @param  string  $dbConfigFilePath    path to db-config.php
+     * @param  string  $siteConfigFilePath  path to siteconfig.php
      * @return  string                      database version, if possible
      */
     private function checkPost150Upgrade($dbConfigFilePath, $siteConfigFilePath)
@@ -3224,13 +3295,13 @@ class Installer
      * Written to aid in install script development
      * NOTE:    This code is a modified copy from PHP.net
      *
-     * @param   int $size       file size
-     * @param   int $dec_places Number of decimal places
+     * @param  int  $size        file size
+     * @param  int  $dec_places  Number of decimal places
      * @return  string             file size string
      */
     private function formatSize($size, $dec_places = 0)
     {
-        $sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+        $sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
         for ($i = 0; ($size > 1024 && isset($sizes[$i + 1])); $i++) {
             $size /= 1024;
         }
@@ -3241,7 +3312,7 @@ class Installer
     /**
      * Check if an error occurred while uploading a file
      *
-     * @param   array $mFile    $_FILE['uploaded_file']
+     * @param  array  $mFile    $_FILE['uploaded_file']
      * @return  mixed           Returns the error string if an error occurred,
      *                          returns false if no error occurred
      */
@@ -3249,7 +3320,7 @@ class Installer
     {
         global $LANG_ERROR;
 
-        $mErrors = array(
+        $mErrors = [
             UPLOAD_ERR_INI_SIZE   => $LANG_ERROR[0],
             UPLOAD_ERR_FORM_SIZE  => $LANG_ERROR[1],
             UPLOAD_ERR_PARTIAL    => $LANG_ERROR[2],
@@ -3257,7 +3328,7 @@ class Installer
             UPLOAD_ERR_NO_TMP_DIR => $LANG_ERROR[4],
             UPLOAD_ERR_CANT_WRITE => $LANG_ERROR[5],
             UPLOAD_ERR_EXTENSION  => $LANG_ERROR[6],
-        );
+        ];
 
         if ($mFile['error'] != UPLOAD_ERR_OK) { // If an error occurred while uploading the file.
             if ($mFile['error'] > count($mErrors)) { // If the error code isn't listed in $mErrors
@@ -3275,8 +3346,8 @@ class Installer
     /**
      * Nicely formats the alert messages
      *
-     * @param  string $mMessage Message string
-     * @param  string $mType    'error', 'warning', 'success', or 'notice'
+     * @param  string  $mMessage  Message string
+     * @param  string  $mType     'error', 'warning', 'success', or 'notice'
      * @return string           HTML formatted dialog message
      */
     public function getAlertMsg($mMessage, $mType = 'notice')
@@ -3334,7 +3405,7 @@ class Installer
             return false;
         }
 
-        $destFile = substr($backupFile, 0, - strlen('.gz'));
+        $destFile = substr($backupFile, 0, -strlen('.gz'));
         $out = @fopen($backupPath . $destFile, 'wb');
         if (!$out) {
             $display .= $this->getAlertMsg($LANG_MIGRATE[41], 'error');
@@ -3364,9 +3435,9 @@ class Installer
      *       way to set the PEAR include path. But if that doesn't work on your
      *       setup, then chances are you won't get Geeklog up and running anyway ...
      *
-     * @param    string $backupPath path to the "backups" directory
-     * @param    string $backupFile backup file name
-     * @param    string $display    reference to HTML string (for error msg)
+     * @param  string  $backupPath  path to the "backups" directory
+     * @param  string  $backupFile  backup file name
+     * @param  string  $display     reference to HTML string (for error msg)
      * @return   mixed              file name of unpacked file or false: error
      */
     private function unpackFile($backupPath, $backupFile, &$display)
@@ -3470,13 +3541,13 @@ class Installer
      * NOTE: Needs a fully working Geeklog, so can only be done late in the upgrade
      *       process!
      *
-     * @param    boolean $migration whether the upgrade is part of a site migration
-     * @param    array   $old_conf  old $_CONF values before the migration
+     * @param  boolean  $migration  whether the upgrade is part of a site migration
+     * @param  array    $old_conf   old $_CONF values before the migration
      * @return   int     number of failed plugin updates (0 = everything's fine)
      * @see      PLG_upgrade
      * @see      PLG_migrate
      */
-    private function pluginUpgrades($migration = false, $old_conf = array())
+    private function pluginUpgrades($migration = false, $old_conf = [])
     {
         global $_CONF, $_PLUGINS, $_TABLES;
 
@@ -3524,27 +3595,27 @@ class Installer
      * If the site's URL changed due to the migration, this function will replace
      * the old URL with the new one in text content of the given tables.
      *
-     * @param    string $oldUrl    the site's previous URL
-     * @param    string $newUrl    the site's new URL after the migration
-     * @param    array  $tableSpec (optional) list of tables to patch
+     * @param  string  $oldUrl     the site's previous URL
+     * @param  string  $newUrl     the site's new URL after the migration
+     * @param  array   $tableSpec  (optional) list of tables to patch
      *                             The $tablespec is an array of tablename => fieldlist pairs, where the field
      *                             list contains the text fields to be searched and the table's index field
      *                             as the first(!) entry.
      *                             NOTE: This function may be used by plugins during PLG_migrate. Changes should
      *                             ensure backward compatibility.
      */
-    public static function updateSiteUrl($oldUrl, $newUrl, array $tableSpec = array())
+    public static function updateSiteUrl($oldUrl, $newUrl, array $tableSpec = [])
     {
         global $_TABLES;
 
         // standard tables to update if no $tablespec given
-        $tables = array(
+        $tables = [
             'stories'         => 'sid, introtext, bodytext, related',
             'storysubmission' => 'sid, introtext, bodytext',
             'comments'        => 'cid, comment',
             'trackback'       => 'cid, excerpt, url',
             'blocks'          => 'bid, content',
-        );
+        ];
 
         if (count($tableSpec) === 0) {
             $tableSpec = $tables;
@@ -3608,13 +3679,13 @@ class Installer
         $this->env['alert_message1'] = $this->getAlertMessage($LANG_MIGRATE[0]);
 
         // Default form values
-        $_FORM = array(
+        $_FORM = [
             'host'   => 'localhost',
             'name'   => 'geeklog',
             'user'   => 'username',
             'pass'   => '',
             'prefix' => 'gl_',
-        );
+        ];
 
         if (file_exists($this->env['dbconfig_path'])) {
             require_once $this->env['dbconfig_path'];
@@ -3656,9 +3727,9 @@ class Installer
         // Identify the backup files in backups/ and order them newest to oldest
         $gl_path = str_replace(self::DB_CONFIG_FILE, '', $this->env['dbconfig_path']);
         $backup_dir = $gl_path . 'backups/';
-        $backupFiles = array();
+        $backupFiles = [];
 
-        foreach (array('*.sql', '*.gz', '*.tar.gz', '*.tgz', '*.zip') as $pattern) {
+        foreach (['*.sql', '*.gz', '*.tar.gz', '*.tgz', '*.zip'] as $pattern) {
             $files = glob($backup_dir . $pattern);
 
             if (is_array($files)) {
@@ -3734,7 +3805,7 @@ class Installer
         switch ($_REQUEST['migration_type']) {
             case 'select': // Select a backup file from the backups directory
                 if (isset($_REQUEST['backup_file']) && !empty($_REQUEST['backup_file'])) {
-                    $backupFile = array('name' => $_REQUEST['backup_file']);
+                    $backupFile = ['name' => $_REQUEST['backup_file']];
                 } else { // No backup file was selected
                     $display .= $this->getAlertMessage($LANG_MIGRATE[18], 'warning');
                     $backupFile = false;
@@ -3850,7 +3921,7 @@ class Installer
                     break;
 
                 case 'dbcontent':
-		            require_once $_CONF['path_system'] . 'lib-database.php';
+                    require_once $_CONF['path_system'] . 'lib-database.php';
 
                     // we need the following information
                     $has_config = false;
@@ -4025,10 +4096,10 @@ class Installer
         } else {
             // No SQL file found
             $backLink = 'index.php?'
-                . http_build_query(array(
-                    'mode'           => 'migrate',
-                    'language'       => $this->getLanguage(),
-                ));
+                . http_build_query([
+                    'mode'     => 'migrate',
+                    'language' => $this->getLanguage(),
+                ]);
             exit($this->getAlertMsg(sprintf($LANG_MIGRATE[40], $backupFile, $backLink)));
         }
     }
@@ -4202,7 +4273,7 @@ HTML;
         // have been disabled. So we keep track of missing plugins in the
         // $_MISSING_PLUGINS array then call lib-common.php and log them after
         // they've been disabled.
-        $_MISSING_PLUGINS = array();
+        $_MISSING_PLUGINS = [];
 
         // Query {$_TABLES['plugins']} to get a list of installed plugins
         $missing_plugins = 0;
@@ -4277,7 +4348,7 @@ HTML;
         for ($i = 0; $i < $num_topic_images; $i++) {
             $topic_image = DB_fetchArray($result, false);
 
-			// Topic image stores part of the path
+            // Topic image stores part of the path
             if (!file_exists($html_path . $topic_image['imageurl'])) { // If topic image does not exist
                 // Log the error
                 COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[29] . $topic_image['imageurl'] . $LANG_MIGRATE[30] . $_TABLES['topics'] . $LANG_MIGRATE[31] . $html_path . 'images/topics/');
@@ -4548,7 +4619,7 @@ HTML;
                 $noreply_mail = $this->post('noreply_mail');
                 $utf8 = ($this->post('utf8') === 'on');
                 $installPlugins = ($this->post('install_plugins') !== null);
-                $DB = array(
+                $DB = [
                     'type'         => $this->post('db_type'),
                     'host'         => $this->post('db_host'),
                     'name'         => $this->post('db_name'),
@@ -4556,7 +4627,7 @@ HTML;
                     'pass'         => $this->post('db_pass'),
                     'table_prefix' => $this->post('db_prefix'),
                     'utf8'         => $utf8,
-                );
+                ];
 
                 // Check if $site_admin_url is correct
                 if (!$this->urlExists($site_admin_url)) {
@@ -4607,7 +4678,7 @@ HTML;
                     $_CONF['path_system'] = $this->env['gl_path'] . '/system/';
                     require_once $_CONF['path_system'] . 'lib-database.php';
 
-                    $params = array(
+                    $params = [
                         'mode'            => $installType,
                         'step'            => 3,
                         'dbconfig_path'   => $this->env['dbconfig_path'],
@@ -4620,7 +4691,7 @@ HTML;
                         'site_mail'       => $site_mail,
                         'noreply_mail'    => $noreply_mail,
                         //'upgrade_check'   => $this->post('upgrade_check', 'confirmed'),
-                    );
+                    ];
 
                     if ($utf8) {
                         $params['utf8'] = 'true';
@@ -4668,21 +4739,21 @@ HTML;
 
                                 // If we were unable to determine the current GL
                                 // version is then ask the user what it is
-                                $this->env['old_versions'] = array();
-                                $old_versions = array(
+                                $this->env['old_versions'] = [];
+                                $old_versions = [
                                     '1.2.5-1', '1.3', '1.3.1', '1.3.2', '1.3.2-1', '1.3.3', '1.3.4',
                                     '1.3.5', '1.3.6', '1.3.7', '1.3.8', '1.3.9', '1.3.10', '1.3.11',
                                     '1.4.0', '1.4.1', '1.5.0', '1.5.1', '1.5.2', '1.6.0', '1.6.1',
                                     '1.7.0', '1.7.1', '1.7.2', '1.8.0', '1.8.1', '1.8.2', '2.0.0',
                                     '2.1.0', '2.1.1', '2.2.0',
-                                );
+                                ];
                                 $tempCounter = 0;
 
                                 foreach ($old_versions as $version) {
-                                    $this->env['old_versions'][] = array(
+                                    $this->env['old_versions'][] = [
                                         'selected' => (($tempCounter === count($old_versions) - 1) ? ' selected="selected"' : ''),
                                         'value'    => $version,
-                                    );
+                                    ];
                                     $tempCounter++;
                                 }
 
@@ -4965,11 +5036,11 @@ HTML;
      */
     public function display($content)
     {
-		// Need to do this for install-plugins.php when called for a new install but want to select plugins
-		if (!isset($this->env['language_selector_menu'])) {
-			$this->env['language_selector'] = '';
-			$this->env['language_selector_menu'] = 'uk-hidden';
-		}
+        // Need to do this for install-plugins.php when called for a new install but want to select plugins
+        if (!isset($this->env['language_selector_menu'])) {
+            $this->env['language_selector'] = '';
+            $this->env['language_selector_menu'] = 'uk-hidden';
+        }
 
         $this->env['content'] = $content;
         $T = $this->getTemplateObject();
@@ -5006,7 +5077,7 @@ HTML;
 
         // Need conf php error reporting settings
         // Use Geeklog settings since they get overwritten anyways when lib-common is included
-		// Need conf settings for migration as well
+        // Need conf settings for migration as well
         require_once $this->env['siteconfig_path'];
         if ((isset($_CONF['developer_mode']) && ($_CONF['developer_mode'] === true)) &&
             isset($_CONF['developer_mode_php'], $_CONF['developer_mode_php']['error_reporting'])) {

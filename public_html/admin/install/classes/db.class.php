@@ -2,6 +2,8 @@
 
 namespace Geeklog;
 
+use Exception;
+
 /**
  * Class Db
  *
@@ -92,12 +94,12 @@ abstract class Db
                     break;
 
                 default:
-                    throw new \Exception(__METHOD__ . ': unknown database type "' . $type . '" was given.');
+                    throw new Exception(__METHOD__ . ': unknown database type "' . $type . '" was given.');
                     break;
             }
 
             $retval = self::$engine;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $retval = null;
         }
 
