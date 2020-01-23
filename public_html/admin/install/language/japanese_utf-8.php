@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Japanese language file for the Geeklog installation script                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2019 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -18,6 +18,7 @@
 // |          Matt West         - matt AT mattdanger DOT net                   |
 // |          Geeklog.jp group  - info AT geeklog DOT jp                       |
 // |          mystral-kk        - geeklog AT mystral-kk DOT net                |
+// |          Tom Homer         - tomhomer AT gmail DOT com                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -171,10 +172,10 @@ $LANG_INSTALL = array(
     117 => 'Cancel',
     118 => '言語を選択する',
     119 => 'Copyright © 2020 <a href="https://www.geeklog.net/">Geeklog</a>',
-    120 => '(Make sure your current database collation supports UTF-8. See <a href="help.php#charactersets">Help for more information</a>.)',
-    121 => 'Home',
-    122 => 'Help',
-    123 => 'Character Sets and Database Collations'
+    120 => '(データベースが照合順序がUTF-8をサポートしていることを確認してください。<a href="help.php#charactersets">詳しくはこちら</a>をご覧ください。)',
+    121 => 'ホーム',
+    122 => 'ヘルプ',
+    123 => '文字セットとデータベースの照合順序'
 );
 
 // +---------------------------------------------------------------------------+
@@ -385,36 +386,36 @@ $LANG_HELP = array(
     'site_admin_url' => 'AdminディレクトリのURLを入力します。',
     'site_mail' => 'サイト管理者のEmailアドレスを入力します。',
     'noreply_mail' => 'サイト管理者の No-Reply Email (返信を受け付けないEmailアドレス)を入力します。',
-    'utf8' => 'Indicate whether to use UTF-8 as the default character set for your site (unless your database collation is already UTF-8 then the UTF-8 character sets will be used automatically). Recommended for multi-lingual setups and required for emoji support.<br><br>This will set the database character set to UTF-8. If you have <strong>checked</strong> this setting, make sure your database collation is compatible with the character set (usually this is either <strong>utf8_general_ci</strong> or, if you wish to support emojis <strong>utf8mb4_general_ci</strong>). <em>Checking this will not change the collation of your database, this must be done manually before you proceed with the install.</em><br><br>The Geeklog site English Language default character set is \'iso-8859-1\' (Latin-1) which is compatible with the database character set of \'latin1\' (latin1_swedish_ci). Changing the language of the install may change the character sets used. Some of these are older legacy encoding standards that supports a limited number of languages. If you leave \'Use UTF-8\' unchecked your installs default language selection character set will be used.',
-    'charactersets' => 'Here are the Language character sets supported by the Geeklog Install along with their corresponding database character sets and recommended database collations:
+    'utf8' => 'サイトの文字セットの既定値としてUTF-8を用いるかどうかを指定します(データベースでUTF-8が使用可能な場合は、自動的にUTF-8を使用します)。多言語サイトを構築する場合にUTF-8を推奨します。絵文字をサポートする場合はUTF-8は必須です。<br><br>チェックするとデータベースの文字セットをUTF-8に設定します。<strong>チェックする場合は</strong>、データベースの照合順序が文字セットと互換性があることを確認してください(普通、照合順序は<strong>utf8_general_ci</strong>か、絵文字をサポートしたい場合は<strong>utf8mb4_general_ci</strong>)です。<em>ここをチェックしてもデータベースの照合順序が変わるわけではありません。インストールを行う前に手動で行う必要があります。</em><br><br>Geeklogのサイトの文字セットの既定値は \'iso-8859-1\' (Latin-1) で、データベースの文字セット \'latin1\' (latin1_swedish_ci) と互換性があります。インストールに使用する言語を変更すると、使用する文字セットも変わります。中には限られた数の言語しかサポートしていない伝統的な古い文字セットもあります。\'UTF-8を使用する\' のチェックをはずすと言語ごとの既定の文字セットを使用します。',
+    'charactersets' => '以下に示すのは、Geeklogがインストール時にサポートする言語の文字セットと対応するデータベースの文字セット、推奨するデータベースの照合順序です:
     <div class="uk-overflow-auto">
     <table class="uk-table uk-table-striped">
         <thead>
             <tr>
-                <th>Language</th><th>Site Language Character Set</th><th>MySQL DB Character Set</th><th>MySQL DB Collation</th><th>PostgreSQL DB Character Set</th><th>PostgreSQL DB Collation</th>
+                <th>言語</th><th>サイトの文字セット</th><th>MySQLの文字セット</th><th>MySQLの照合順序</th><th>PostgreSQLの文字セット</th><th>PostgreSQLの照合順序</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>English</td><td>iso-8859-1</td><td>latin1</td><td>latin1_swedish_ci</td><td>LATIN1</td><td></td>
+                <td>英語</td><td>iso-8859-1</td><td>latin1</td><td>latin1_swedish_ci</td><td>LATIN1</td><td>?</td>
             </tr>
             <tr>
-                <td>Japanese</td><td>utf-8</td><td>utf-8</td><td>utf8_general_ci</td><td>UTF8</td><td>en_US.UTF-8</td>
+                <td>日本語</td><td>utf-8</td><td>utf8/utf8mb4</td><td>utf8_general_ci/utf8mb4_general_ci</td><td>UTF8</td><td>ja_JP.UTF-8</td>
             </tr>
             <tr>
-                <td>German</td><td>iso-8859-15</td><td>latin1</td><td>latin1_swedish_ci</td><td>LATIN1</td><td></td>
+                <td>ドイツ語</td><td>iso-8859-15</td><td>latin1</td><td>latin1_swedish_ci</td><td>LATIN9</td><td>?</td>
             </tr>
             <tr>
-                <td>Hebrew</td><td>utf-8</td><td>utf-8</td><td>utf8_general_ci</td><td>UTF8</td><td>en_US.UTF-8</td>
+                <td>ヘブライ語</td><td>utf-8</td><td>utf8/utf8mb4</td><td>utf8_general_ci/utf8mb4_general_ci</td><td>UTF8</td><td>he_IL.UTF-8</td>
             </tr>
             <tr>
-                <td>Polish</td><td>iso-8859-2</td><td>latin2</td><td>latin2_general_ci</td><td>LATIN2</td><td></td>
+                <td>ポーランド語</td><td>iso-8859-2</td><td>latin2</td><td>latin2_general_ci</td><td>LATIN2</td><td>?</td>
             </tr>
             <tr>
-                <td>Simplified Chinese</td><td>utf-8</td><td>utf-8</td><td>utf8_general_ci</td><td>UTF8</td><td>en_US.UTF-8</td>
+                <td>中国語(簡体字)</td><td>utf-8</td><td>utf8/utf8mb4</td><td>utf8_general_ci/utf8mb4_general_ci</td><td>UTF8</td><td>zh_CN.UTF-8</td>
             </tr>
             <tr>
-                <td>Traditional Chinese</td><td>utf-8</td><td>utf-8</td><td>utf8_general_ci</td><td>UTF8</td><td>en_US.UTF-8</td>
+                <td>中国語(繁体字)</td><td>utf-8</td><td>utf8/utf8mb4</td><td>utf8_general_ci/utf8mb4_general_ci</td><td>UTF8</td><td>zh_TW.UTF-8</td>
             </tr>
         </tbody>
     </table>

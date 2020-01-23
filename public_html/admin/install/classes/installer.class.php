@@ -53,13 +53,13 @@ class Installer
             'iso-8859-1'  => 'latin1',
             'iso-8859-2'  => 'latin2',
             'iso-8859-15' => 'latin1',
-            'utf-8'       => 'utf-8',
+            'utf-8'       => 'utf8',
         ],
         'pgsql' => [
             // $LANG_CHARSET => $_DB_charset
             'iso-8859-1'  => 'LATIN1',
             'iso-8859-2'  => 'LATIN2',
-            'iso-8859-15' => 'LATIN1',
+            'iso-8859-15' => 'LATIN9',
             'utf-8'       => 'UTF8',
         ],
     ];

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Chinese language file for the Geeklog installation script                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2019 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users DOT sourceforge DOT net   |
@@ -17,6 +17,7 @@
 // |          Randy Kolenko      - randy AT nextide DOT ca                     |
 // |          Matt West          - matt AT mattdanger DOT net                  |
 // |          Samuel Maung Stone - sam AT stonemicro DOT com                   |
+// |          Tom Homer          - tomhomer AT gmail DOT com                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -395,30 +396,30 @@ $LANG_HELP = array(
         </thead>
         <tbody>
             <tr>
-                <td>English</td><td>iso-8859-1</td><td>latin1</td><td>latin1_swedish_ci</td><td>LATIN1</td><td></td>
+                <td>English</td><td>iso-8859-1</td><td>latin1</td><td>latin1_swedish_ci</td><td>LATIN1</td><td>?</td>
             </tr>
             <tr>
-                <td>Japanese</td><td>utf-8</td><td>utf-8</td><td>utf8_general_ci</td><td>UTF8</td><td>en_US.UTF-8</td>
+                <td>Japanese</td><td>utf-8</td><td>utf8</td><td>utf8_general_ci/utf8mb4_general_ci</td><td>UTF8</td><td>ja_JP.UTF-8</td>
             </tr>
             <tr>
-                <td>German</td><td>iso-8859-15</td><td>latin1</td><td>latin1_swedish_ci</td><td>LATIN1</td><td></td>
+                <td>German</td><td>iso-8859-15</td><td>latin1</td><td>latin1_swedish_ci</td><td>LATIN9</td><td>?</td>
             </tr>
             <tr>
-                <td>Hebrew</td><td>utf-8</td><td>utf-8</td><td>utf8_general_ci</td><td>UTF8</td><td>en_US.UTF-8</td>
+                <td>Hebrew</td><td>utf-8</td><td>utf8</td><td>utf8_general_ci/utf8mb4_general_ci</td><td>UTF8</td><td>he_IL.UTF-8</td>
             </tr>
             <tr>
-                <td>Polish</td><td>iso-8859-2</td><td>latin2</td><td>latin2_general_ci</td><td>LATIN2</td><td></td>
+                <td>Polish</td><td>iso-8859-2</td><td>latin2</td><td>latin2_general_ci</td><td>LATIN2</td><td>?</td>
             </tr>
             <tr>
-                <td>Simplified Chinese</td><td>utf-8</td><td>utf-8</td><td>utf8_general_ci</td><td>UTF8</td><td>en_US.UTF-8</td>
+                <td>Simplified Chinese</td><td>utf-8</td><td>utf8</td><td>utf8_general_ci/utf8mb4_general_ci</td><td>UTF8</td><td>zh_CN.UTF-8</td>
             </tr>
             <tr>
-                <td>Traditional Chinese</td><td>utf-8</td><td>utf-8</td><td>utf8_general_ci</td><td>UTF8</td><td>en_US.UTF-8</td>
+                <td>Traditional Chinese</td><td>utf-8</td><td>utf8</td><td>utf8_general_ci/utf8mb4_general_ci</td><td>UTF8</td><td>zh_TW.UTF-8</td>
             </tr>
         </tbody>
     </table>
     </div>',
-    'migrate_file' => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer. Alternatively, you can also migrate the current contents of the database.',
+    'migrate_file' => 'Choose the backup file you want to migrate. This can either be an existing file in your "backups" directory or you can upload a file from your computer. Alternatively, you can also migrate the current contents of the database.',
     'plugin_upload' => 'Choose a plugin archive (in .zip, .tar.gz, or .tgz format) to upload and install.'
 );
 
