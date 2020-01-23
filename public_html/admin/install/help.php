@@ -66,6 +66,8 @@ if (isset($_GET['label'])) {
 
 $content = '<h1>' . $LANG_HELP[0] . '</h1>' . PHP_EOL;
 
+$content .= $LANG_HELP['description'] . PHP_EOL;
+
 foreach ($LANG_LABEL as $key => $labeltext) {
     $content .= '
             <div' . ($label == $key

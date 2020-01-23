@@ -57,11 +57,11 @@
         <p>また、データベースとして、<a href="http://dev.mysql.com/downloads/">MySQL</a> 4.1.3以降か、(<a href="http://mariadb.org/">MariaDB</a> 5.1以降も可), <a href="http://www.postgresql.org/download/">PostgreSQL</a> 9.1.7以降が必要です。</p>
 
         <p><strong>PostgreSQLユーザーのための注意:</strong> 現在、GeeklogではPostgresオプション <span class="tt">standard_conforming_strings</span> を <span class="tt">off</span> に設定する必要があります(PostgreSQL 9.1以降はデフォルトで <span class="tt">on</span> になっています)。</p>
-        
+
         <p><strong>MySQLユーザーのための注意:</strong> 多言語サイトでは、通常、データベースの照合順序に utf8_general_ci を使用します。
 この照合順序では異なる言語の文字セットを処理できます。MySQLのバージョン5.5.3では4バイト文字をサポートしています。
 例えば4バイトの絵文字アイコンの文字をサポートしたい場合は、utf8mb4_general_ci などの、それをサポートする照合順序を使用する必要があります。
-異なる照合順序を使用している既存のGeeklogのデータベースでは、phpMyAdminなどのツールを使用して、データベースのデフォルトやすべての照合順序を変更できます。当初の照合順序によっては、テーブルのデータを更新する必要があります。</p>        
+異なる照合順序を使用している既存のGeeklogのデータベースでは、phpMyAdminなどのツールを使用して、データベースのデフォルトやすべての照合順序を変更できます。当初の照合順序によっては、テーブルのデータを更新する必要があります。</p>
 
     <h3><a name="things_you_should_know">必要な技術力</a></h3>
 
@@ -88,7 +88,7 @@
             <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザーがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。(訳註: ExpLZH)</p>
         </li>
         <li>
-            <p>MySQLや、PostgreSQL、Microsoft SQLを使用し、空のデータベースと変更権限のあるユーザーを作成します。ホスティング会社がデータベースを作成してアカウントを作成している場合もあるので、必要ならホスティング会社に尋ねてみてください。</p>
+            <p>MySQLや、PostgreSQLを使用し、空のデータベースと変更権限のあるユーザーを作成します。ホスティング会社がデータベースを作成してアカウントを作成している場合もあるので、必要ならホスティング会社に尋ねてみてください。</p>
         </li>
         <li>
             <p><code>geeklog-2.0.0/public_html/</code> ディレクトリの中身をWebサーバーのドキュメントルートに転送します。ドキュメントルートには、"public_html"や"htdocs"、"www"などの名前がつけられていることが多いです。</p>

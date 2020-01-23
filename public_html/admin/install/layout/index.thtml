@@ -21,29 +21,33 @@
                     <a class="uk-navbar-item uk-logo" href="https://www.geeklog.net/"><img data-src="layout/logo.png" width="180" height="63.7" alt="Geeklog" style="background-color: #426f9c;" uk-img></a>
                     <span class="uk-visible@m">{{ LANG.INSTALL.2 }}</span>
                 </div>
-                
+
                 <div class="uk-navbar-right">
                     <ul class="uk-navbar-nav uk-visible@s">
+                        <li><a href="index.php">{{ LANG.INSTALL.121 }}</a></li>
                         <li><a href="rescue.php">{{ LANG.INSTALL.109 }}</a></li>
                         <li><a href="{{ LANG.INSTALL.87 }}">{{ LANG.INSTALL.1 }}</a></li>
+                        <li><a href="help.php">{{ LANG.INSTALL.122 }}</a></li>
                         <li class="{{ language_selector_menu }}"><a href="#modal-language" uk-toggle>{{ LANG.INSTALL.118 }}</a></li>
                     </ul>
                     <ul class="uk-navbar-nav uk-hidden@s">
-                        <li><a class="uk-navbar-toggle" data-uk-toggle data-uk-navbar-toggle-icon href="#offcanvas-nav"></a></li>                
+                        <li><a class="uk-navbar-toggle" data-uk-toggle data-uk-navbar-toggle-icon href="#offcanvas-nav"></a></li>
                     </ul>
                 </div>
 
             </nav>
         </div>
     </header>
-    
+
     <!-- OFFCANVAS -->
     <div id="offcanvas-nav" data-uk-offcanvas="flip: true; overlay: true">
         <div class="uk-offcanvas-bar uk-offcanvas-bar-animation uk-offcanvas-slide">
             <button class="uk-offcanvas-close uk-close uk-icon" type="button" data-uk-close></button>
             <ul class="uk-nav uk-nav-default">
+                <li><a href="index.php">{{ LANG.INSTALL.121 }}</a></li>
                 <li><a href="rescue.php">{{ LANG.INSTALL.109 }}</a></li>
                 <li><a href="{{ LANG.INSTALL.87 }}">{{ LANG.INSTALL.1 }}</a></li>
+                <li><a href="help.php">{{ LANG.INSTALL.122 }}</a></li>
                 <li class="{{ language_selector_menu }}"><a href="#modal-language" uk-toggle>{{ LANG.INSTALL.118 }}</a></li>
             </ul>
         </div>
@@ -67,7 +71,7 @@
         </div>
     </footer>
     <!--/FOOTER-->
-    
+
 <script>
     function INST_selectMigrationType() {
         var myType = document.migrate.migration_type.value;

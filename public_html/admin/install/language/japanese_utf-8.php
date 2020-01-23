@@ -170,7 +170,11 @@ $LANG_INSTALL = array(
     116 => '「アップグレード」ボタンをクリックすると、Geeklogを最新バージョンにアップグレードします。このとき必要ならコアプラグインもアップグレードします。',
     117 => 'Cancel',
     118 => '言語を選択する',
-    119 => 'Copyright © 2019 <a href="https://www.geeklog.net/">Geeklog</a>'
+    119 => 'Copyright © 2020 <a href="https://www.geeklog.net/">Geeklog</a>',
+    120 => '(Make sure your current database collation supports UTF-8. See <a href="help.php#charactersets">Help for more information</a>.)',
+    121 => 'Home',
+    122 => 'Help',
+    123 => 'Character Sets and Database Collations'
 );
 
 // +---------------------------------------------------------------------------+
@@ -367,7 +371,8 @@ $LANG_ERROR = array(
 // help.php
 
 $LANG_HELP = array(
-    0 => 'インストールヘルプ',
+    0 => 'Geeklog Installation Help',
+    'description' => '<p>This help page explains what each field means that you may be asked to input for new Geeklog installs and mirgating your Geeklog site to a new domain.</p><p>If you run into problems with installing, upgrading, or migrating your Geeklog site please visit the <a href="https://www.geeklog.net/forum/index.php?forum=1">Geeklog Install Support Forum</a>.</p>',
     'site_name' => 'サイト名を入力します。後から変更することもできます。',
     'site_slogan' => 'サイトのスローガンを入力します。後から変更することもできます。',
     'db_type' => 'Geeklog can be installed using either a MySQL or PostgreSQL database. If you are not sure which option to select contact your hosting provider.<br><br><strong>Note</strong> InnoDB Tables may improve performance on (very) large sites, but they also make database backups more complicated.',
@@ -380,7 +385,40 @@ $LANG_HELP = array(
     'site_admin_url' => 'AdminディレクトリのURLを入力します。',
     'site_mail' => 'サイト管理者のEmailアドレスを入力します。',
     'noreply_mail' => 'サイト管理者の No-Reply Email (返信を受け付けないEmailアドレス)を入力します。',
-    'utf8' => 'Indicate whether to use UTF-8 as the default character set for your site. Recommended especially for multi-lingual setups.<br><br>This will set the database character set to UTF-8. If you have <strong>checked</strong> this setting, make sure your database collation is compatible with the character set (usually this is either <strong>utf8_general_ci</strong> or, if you wish to support emojis <strong>utf8mb4_general_ci</strong>). <em>Checking this will not change the collation of your database, this must be done manually before you proceed with the install.</em><br><br>The Geeklog site default character set is \'iso-8859-1\' (Latin-1) which is compatible with the database character set of \'latin1\' (latin1_swedish_ci). These are older legacy encoding standard that supports a limited number of languages. If you leave \'Use UTF-8\' unchecked these will be used unless you have already modified manually the site default character set (found in siteconfig.php) and the database character set (found in dbconfig.php).',
+    'utf8' => 'Indicate whether to use UTF-8 as the default character set for your site (unless your database collation is already UTF-8 then the UTF-8 character sets will be used automatically). Recommended for multi-lingual setups and required for emoji support.<br><br>This will set the database character set to UTF-8. If you have <strong>checked</strong> this setting, make sure your database collation is compatible with the character set (usually this is either <strong>utf8_general_ci</strong> or, if you wish to support emojis <strong>utf8mb4_general_ci</strong>). <em>Checking this will not change the collation of your database, this must be done manually before you proceed with the install.</em><br><br>The Geeklog site English Language default character set is \'iso-8859-1\' (Latin-1) which is compatible with the database character set of \'latin1\' (latin1_swedish_ci). Changing the language of the install may change the character sets used. Some of these are older legacy encoding standards that supports a limited number of languages. If you leave \'Use UTF-8\' unchecked your installs default language selection character set will be used.',
+    'charactersets' => 'Here are the Language character sets supported by the Geeklog Install along with their corresponding database character sets and recommended database collations:
+    <div class="uk-overflow-auto">
+    <table class="uk-table uk-table-striped">
+        <thead>
+            <tr>
+                <th>Language</th><th>Site Language Character Set</th><th>MySQL DB Character Set</th><th>MySQL DB Collation</th><th>PostgreSQL DB Character Set</th><th>PostgreSQL DB Collation</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>English</td><td>iso-8859-1</td><td>latin1</td><td>latin1_swedish_ci</td><td>LATIN1</td><td></td>
+            </tr>
+            <tr>
+                <td>Japanese</td><td>utf-8</td><td>utf-8</td><td>utf8_general_ci</td><td>UTF8</td><td>en_US.UTF-8</td>
+            </tr>
+            <tr>
+                <td>German</td><td>iso-8859-15</td><td>latin1</td><td>latin1_swedish_ci</td><td>LATIN1</td><td></td>
+            </tr>
+            <tr>
+                <td>Hebrew</td><td>utf-8</td><td>utf-8</td><td>utf8_general_ci</td><td>UTF8</td><td>en_US.UTF-8</td>
+            </tr>
+            <tr>
+                <td>Polish</td><td>iso-8859-2</td><td>latin2</td><td>latin2_general_ci</td><td>LATIN2</td><td></td>
+            </tr>
+            <tr>
+                <td>Simplified Chinese</td><td>utf-8</td><td>utf-8</td><td>utf8_general_ci</td><td>UTF8</td><td>en_US.UTF-8</td>
+            </tr>
+            <tr>
+                <td>Traditional Chinese</td><td>utf-8</td><td>utf-8</td><td>utf8_general_ci</td><td>UTF8</td><td>en_US.UTF-8</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>',
     'migrate_file' => '移行するバックアップファイル(*.sql)を選択します。"backups"ディレクトリ内のファイルから、あるいはあなたのコンピュータからファイルをアップロードできます。または、データベースの現在の内容を移行することもできます。',
     'plugin_upload' => 'アップロードするプラグインの圧縮ファイル(.zip, .tar.gz, .tgzファーマット)を選んでインストールしてください。'
 );
@@ -452,6 +490,7 @@ $LANG_LABEL = array(
     'site_mail'      => $LANG_INSTALL[48],
     'noreply_mail'   => $LANG_INSTALL[49],
     'utf8'           => $LANG_INSTALL[92],
+    'charactersets'  => $LANG_INSTALL[123],
     'migrate_file'   => $LANG_MIGRATE[6],
     'plugin_upload'  => $LANG_PLUGINS[10]
 );

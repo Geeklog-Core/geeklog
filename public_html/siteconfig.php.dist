@@ -81,11 +81,12 @@ $_CONF['site_enabled'] = true;
 $_CONF['path'] = '/path/to/Geeklog/';
 $_CONF['path_system'] = $_CONF['path'] . 'system/';
 
-// Please note: If you change $_CONF['default_charset'], you need to make sure your database is using a compatible character set as well (also see dbconfig.php and $_DB_charset setting).
+// Please note: If you change $_CONF['default_charset'], you need to make sure your site is using a compativle langague and that the database is using a compatible character set as well (also see dbconfig.php and $_DB_charset setting).
 // Changing the default character set setting to one that is not backwards compatible on an established site may result in content not displaying correctly.
-// Geeklogs default character set is 'iso-8859-1' (Latin-1) which is compatible with the database character set of 'latin1' (latin1_swedish_ci).
+// Geeklogs English language default character set is 'iso-8859-1' (Latin-1) which is compatible with the database character set of 'latin1' (latin1_swedish_ci).
 // It is an older legacy encoding standard that supports a limited number of languages.
 // For multi-language sites and those who wish to use emojis then 'UTF-8' should be the setting for the sites default character set.
+// For more information on character sets and database collations see the Geeklog install documentation
 $_CONF['default_charset'] = 'iso-8859-1';
 
 // For the File Manager

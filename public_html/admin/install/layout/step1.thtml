@@ -54,7 +54,7 @@
                 <input type="text" id="db_prefix" name="db_prefix" value="{! db_prefix !}" class="uk-input uk-width-small">
             </div>
         </div>
-		
+
         <div class="uk-margin">
             <label class="uk-form-label" for="site_url">{{ LANG.INSTALL.45 }} {{ help_site_url }}</label>
             <div class="uk-form-controls">
@@ -84,7 +84,7 @@
         <div class="uk-margin">
             <label class="uk-form-label" for="utf8">{{ LANG.INSTALL.92 }} {{ help_utf8 }}</label>
             <div class="uk-form-controls uk-form-controls-text">
-                <input type="checkbox" id="utf8" name="utf8" {% if utf8 %} checked="checked" {% endif %} class="uk-checkbox">
+                <input type="checkbox" id="utf8" name="utf8" {% if utf8 %} checked="checked" {% endif %} class="uk-checkbox"> <span>{{ LANG.INSTALL.120 }}</span>
             </div>
         </div>
         {% else %}
