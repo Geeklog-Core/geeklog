@@ -195,7 +195,7 @@ $_SQL[] ="
 CREATE TABLE {$_TABLES['likes']} (
   lid SERIAL NOT NULL,
   type varchar(30) NOT NULL,
-  subtype varchar(30) NOT NULL DEFAULT '',
+  subtype varchar(15) NOT NULL DEFAULT '',
   id varchar(128) NOT NULL,
   uid smallint NOT NULL,
   ipaddress VARCHAR(39) NOT NULL,
@@ -381,17 +381,16 @@ CREATE TABLE {$_TABLES['tokens']} (
 )
 ";
 
-// Note: Primary Key should be (tid,type,subtype,id) but max key length is over 1000 bytes
-// which is an issue for our minimum MySQL server requirements. See Github issue #1027
+// Note: Subtype kept at 15 chars as max key length is approaching 1000 bytes for the primary key (for our minimum MySQL server requirements)
 $_SQL[] = "
 CREATE TABLE {$_TABLES['topic_assignments']} (
   tid varchar(75) NOT NULL,
   type varchar(30) NOT NULL,
-  subtype varchar(30) NOT NULL DEFAULT '',
+  subtype varchar(15) NOT NULL DEFAULT '',
   id varchar(128) NOT NULL,
   inherit smallint NOT NULL default '1',
   tdefault smallint NOT NULL default '0',
-  PRIMARY KEY  (tid,type,id)
+  PRIMARY KEY (tid,type,subtype,id)
 )
 ";
 
