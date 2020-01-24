@@ -25,5 +25,6 @@ $_DB_dbms = 'mysql';
 // Geeklogs default MySQL database character set is 'latin1' (latin1_swedish_ci) which is compatible with the sites English language default characters set of 'iso-8859-1' (Latin-1).
 // It is an older legacy encoding standard that supports a limited number of languages.
 // For multi-language sites you should choose 'utf8' as the database character set. For those who wish to use emojis then 'utf8mb4' should be the setting.
+// If $_DB_charset is empty, then the default charset for the database server is used by Geeklog (which could be incorrect for your database collation and data could get corrupted)
 // For more information on different languages, character sets, and database collations see the Geeklog install documentation
 $_DB_charset = 'latin1';
