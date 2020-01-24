@@ -114,10 +114,12 @@ function langSelector() {
 
     if ($files !== FALSE) {
         foreach ($files as $file) {
-            $file = str_replace('.php', '', basename($file));
-            $selected = ($file === $lang) ? ' selected="selected"' : '';
-            $retval .= '<option value="' . $file . '"' . $selected . '>'
-                    .  $file . '</option>' . LB;
+            if (basename($file) != '_list.php') {
+                $file = str_replace('.php', '', basename($file));
+                $selected = ($file === $lang) ? ' selected="selected"' : '';
+                $retval .= '<option value="' . $file . '"' . $selected . '>'
+                        .  $file . '</option>' . LB;
+            }
         }
     }
 
@@ -164,7 +166,7 @@ function render($renderType, $args = array()) {
         <div class="main center">
         <div class="header-navigation-container">
             <div class="header-navigation-line">
-                <a href="index.php" class="header-navigation"><?php e(2); ?></a>&nbsp;&nbsp;&nbsp;<?php echo langSelector(); ?>&nbsp;&nbsp;
+                <a href="index.php?language=<?php echo $lang; ?>" class="header-navigation"><?php e(2); ?></a>&nbsp;&nbsp;&nbsp;<?php echo langSelector(); ?>&nbsp;&nbsp;
             </div>
         </div>
         <h1><?php e(3); ?></h1>
@@ -280,7 +282,7 @@ function render($renderType, $args = array()) {
 
             $error = error_get_last();
             //check if it's a core/fatal error, otherwise it's a normal shutdown
-            if ($error !== NULL) {            
+            if ($error !== NULL) {
             ?>
             <div class="box error">
                 <p><?php e(45); ?></p>
@@ -291,7 +293,7 @@ function render($renderType, $args = array()) {
             <?php
                 die;
             }
-        }        
+        }
         register_shutdown_function( "fatal_handler" );
 
         // Check if `conf_values` table exists
@@ -307,8 +309,8 @@ function render($renderType, $args = array()) {
         }
         // ********************************************************
         ?>
-        
-        
+
+
         <h2><?php e(29); ?></h2>
         <p style="margin-left:5px;"><?php e(30); ?></p>
         <ul class="option">
