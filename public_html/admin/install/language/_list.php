@@ -17,6 +17,12 @@ return [
     ],
     'english_utf-8.php'             => [
         'langCode' => 'en',
+        'langName' => 'English (utf-8)',
+        'english'  => 'English (utf-8)',
+        'charset'  => 'utf-8',
+    ],
+    'english.php'             => [
+        'langCode' => 'en',
         'langName' => 'English',
         'english'  => 'English',
         'charset'  => 'iso-8859-1',
