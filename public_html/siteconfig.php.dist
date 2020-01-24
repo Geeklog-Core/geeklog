@@ -86,7 +86,7 @@ $_CONF['path_system'] = $_CONF['path'] . 'system/';
 // Geeklogs English language default character set is 'iso-8859-1' (Latin-1) which is compatible with the database character set of 'latin1' (latin1_swedish_ci).
 // It is an older legacy encoding standard that supports a limited number of languages.
 // For multi-language sites and those who wish to use emojis then 'UTF-8' should be the setting for the sites default character set.
-// For more information on character sets and database collations see the Geeklog install documentation
+// For more information on different languages, character sets, and database collations see the Geeklog install documentation
 $_CONF['default_charset'] = 'iso-8859-1';
 
 // For the File Manager
