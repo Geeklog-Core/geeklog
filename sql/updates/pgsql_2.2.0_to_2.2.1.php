@@ -79,6 +79,8 @@ CREATE TABLE {$_TABLES['userautologin']} (
  */
 function upgrade_message220()
 {
+    global $_DB_charset;
+    
     // 3 upgrade message types exist 'information', 'warning', 'error'
     // error type means the user cannot continue upgrade until fixed
 
@@ -92,6 +94,10 @@ function upgrade_message220()
         5 => array('warning', 30, 31),   // Warning of Submitted Articles may have incorrect group and permissions saved
         6 => array('warning', 32, 33)   // Warning of Static pages that are templates or use PHP must evalute successful or upgrade will fail
     );
+
+    if (empty($_DB_charset)) {
+        $upgradeMessages['2.2.0'][7] = array('error', 34, 35); // Error out if $_DB_charset is empty
+    }
 
     return $upgradeMessages;
 }

@@ -365,7 +365,9 @@ $LANG_ERROR = array(
     30 => '不適切な権限で投稿された記事',
     31 => 'Geeklog 2.0.0以降、ユーザーが投稿した記事を承認したり、記事エディターで編集する際に、デフォルトの記事の権限と記事管理者グループが使用されていませんでした。代わりに、その記事に対するデフォルトの話題の権限と話題管理者が使用されていました。この問題は現在では修正されていますが、以前に投稿された記事の権限をすべて調べ、必要なら更新する必要があります。<br><br>すべての記事の所有者と権限をデフォルトに変更する場合は、<a href="https://www.geeklog.net/forum/viewtopic.php?showtopic=97115" target="_blank">Geeklog Support Forum(英語)</a>をご覧ください。',
     32 => '静的ページの検索結果の修正',
-    33 => '静的ページをPHPを有効にしたり、テンプレートともに使用している場合、Geeklogの検索結果がページに埋め込まれているコードを表示していた可能性があります。このような機能を使用していたページでは最終的に実行したページのキャッシュを保存しないようにしたため、この問題は現在では修正されています。ページを新規作成し、エディターでページを保存する際にキャッシュされたページは生成されていました(ページキャッシュが有効な場合)。つまり、ページへアクセスできるユーザー全員が同じ検索結果のキャッシュを見ていることになります。自動タグやPHPコード、モバイル用のテンプレート変数がページで使用されている場合、ユーザーによっては違うコンテンツが生成されるかもしれません。検索結果のキャッシュはそのページのビューの一つに過ぎないため、それがずっと検索されることになります。そのため、ユーザーがページを訪問して閲覧するものと検索結果がわずかに違うものになるかもしれません。静的ページでテンプレートやPHPコードを使用し、コンフィギュレーションで「静的ページPHPを含む」や「テンプレートページを含む」を「はい」に設定している場合には、このようなマイナス面を考慮してください。<br><br>残念ながら、実行時エラーが発生してインストールが中断する可能性があるため(そのページでインストーラーがアクセスできないものを使用している場合など)、アップグレードの際にこの検索結果のキャッシュを更新することはできません。<em>それゆえ、アップグレード終了後にこれらのページの検索結果のキャッシュが作られる前に、キャッシュされていないページをもう一度保存し直す必要があります。キャッシュを使用しているページはもう一度訪問したり、保存し直したりする必要があります。<strong>これを行わないと、検索結果にこれらのページが表示されません。</strong></em> For an automated script to perform this process automatically after the upgrade is complete, please check out the <a href="https://www.geeklog.net/forum/viewtopic.php?showtopic=97222" target="_blank">Geeklog Support Forum</a> for more information.'
+    33 => '静的ページをPHPを有効にしたり、テンプレートともに使用している場合、Geeklogの検索結果がページに埋め込まれているコードを表示していた可能性があります。このような機能を使用していたページでは最終的に実行したページのキャッシュを保存しないようにしたため、この問題は現在では修正されています。ページを新規作成し、エディターでページを保存する際にキャッシュされたページは生成されていました(ページキャッシュが有効な場合)。つまり、ページへアクセスできるユーザー全員が同じ検索結果のキャッシュを見ていることになります。自動タグやPHPコード、モバイル用のテンプレート変数がページで使用されている場合、ユーザーによっては違うコンテンツが生成されるかもしれません。検索結果のキャッシュはそのページのビューの一つに過ぎないため、それがずっと検索されることになります。そのため、ユーザーがページを訪問して閲覧するものと検索結果がわずかに違うものになるかもしれません。静的ページでテンプレートやPHPコードを使用し、コンフィギュレーションで「静的ページPHPを含む」や「テンプレートページを含む」を「はい」に設定している場合には、このようなマイナス面を考慮してください。<br><br>残念ながら、実行時エラーが発生してインストールが中断する可能性があるため(そのページでインストーラーがアクセスできないものを使用している場合など)、アップグレードの際にこの検索結果のキャッシュを更新することはできません。<em>それゆえ、アップグレード終了後にこれらのページの検索結果のキャッシュが作られる前に、キャッシュされていないページをもう一度保存し直す必要があります。キャッシュを使用しているページはもう一度訪問したり、保存し直したりする必要があります。<strong>これを行わないと、検索結果にこれらのページが表示されません。</strong></em> For an automated script to perform this process automatically after the upgrade is complete, please check out the <a href="https://www.geeklog.net/forum/viewtopic.php?showtopic=97222" target="_blank">Geeklog Support Forum</a> for more information.',
+    34 => 'Database Character Set Required',
+    35 => 'Your Database Character Set has not been defined for your MySQL or PostgreSQL database. Please edit the dbconfig.php file and update the $_DB_charset variable with the appropriate database character set for your database collation and server.<br><br>Remember your Database Character Set must also be compatible with your Sites Default Character Set (which is defined in the siteconfig.php file located in the public_html directory). For more information on the different languages, character sets, and database collations for MySQL and PostgreSQL (including a table with what each should be based on your sites language), see the <a href="/docs/japanese/install.html" target="_blank">Geeklog install documentation</a>.'
 );
 
 // +---------------------------------------------------------------------------+
@@ -398,6 +400,9 @@ $LANG_HELP = array(
         <tbody>
             <tr>
                 <td>英語</td><td>iso-8859-1</td><td>latin1</td><td>latin1_swedish_ci</td><td>LATIN1</td><td>?</td>
+            </tr>
+            <tr>
+                <td>英語 (UTF-8)</td><td>utf-8</td><td>utf8/utf8mb4</td><td>utf8_general_ci/utf8mb4_general_ci</td><td>UTF8</td><td>en_US.UTF-8</td>
             </tr>
             <tr>
                 <td>日本語</td><td>utf-8</td><td>utf8/utf8mb4</td><td>utf8_general_ci/utf8mb4_general_ci</td><td>UTF8</td><td>ja_JP.UTF-8</td>
