@@ -169,10 +169,10 @@ $LANG_INSTALL = array(
     114 => '自動インストールに対応しているプラグインだけをインストールします(コアプラグインは対応しています)。対応していないプラグインは管理画面の「プラグイン」からインストールできます。',
     115 => 'アップグレード',
     116 => '「アップグレード」ボタンをクリックすると、Geeklogを最新バージョンにアップグレードします。このとき必要ならコアプラグインもアップグレードします。',
-    117 => 'Cancel',
+    117 => 'キャンセル',
     118 => '言語を選択する',
     119 => 'Copyright © 2020 <a href="https://www.geeklog.net/">Geeklog</a>',
-    120 => '(データベースが照合順序がUTF-8をサポートしていることを確認してください。<a href="help.php#charactersets">詳しくはこちら</a>をご覧ください。)',
+    120 => '(データベースがUTF-8の照合順序をサポートしていることを確認してください。<a href="help.php#charactersets">詳しくはこちら</a>をご覧ください。)',
     121 => 'ホーム',
     122 => 'ヘルプ',
     123 => '文字セットとデータベースの照合順序'
@@ -372,11 +372,11 @@ $LANG_ERROR = array(
 // help.php
 
 $LANG_HELP = array(
-    0 => 'Geeklog Installation Help',
-    'description' => '<p>This help page explains what each field means that you may be asked to input for new Geeklog installs and mirgating your Geeklog site to a new domain.</p><p>If you run into problems with installing, upgrading, or migrating your Geeklog site, please review the <a href="/docs/japanese/install.html">Geeklog Installation Docs</a>. For any addtional questions or problems you may have, please visit the <a href="https://www.geeklog.net/forum/index.php?forum=1">Geeklog Install Support Forum</a> to read up on similar issues and post your own topic.</p>',
+    0 => 'Geeklogインストールヘルプ',
+    'description' => '<p>このヘルプページでは、Geeklogの新規インストールとマイグレーション(サイト移行)の際に入力を要求される各項目の意味を説明します。</p><p>インストール・アップグレード・マイグレーションで問題が生じた場合は、<a href="/docs/japanese/install.html">Geeklogインストール用ドキュメント</a>をご覧ください。他の疑問や問題点については、<a href="https://www.geeklog.net/forum/index.php?forum=1">Geeklog Install Support Forum(英語)</a>で同様の問題について調べたり、投稿してください。</p>',
     'site_name' => 'サイト名を入力します。後から変更することもできます。',
     'site_slogan' => 'サイトのスローガンを入力します。後から変更することもできます。',
-    'db_type' => 'Geeklog can be installed using either a MySQL or PostgreSQL database. If you are not sure which option to select contact your hosting provider.<br><br><strong>Note</strong> InnoDB Tables may improve performance on (very) large sites, but they also make database backups more complicated.',
+    'db_type' => 'Geeklogは、MySQLかPostgreSQLをデータベースとして使用してインスト－ルすることができます。どちらを選ぶべきかよくわからなければ、ホスティング会社に連絡してください。<br><br><strong>注意</strong> InnoDBテーブルは(非常に)大規模なサイトではパフォーマンスが向上しますが、バックアップを取るのが複雑になります。',
     'db_host' => 'ホスト名を入力します。',
     'db_name' => 'データベース名を入力します。',
     'db_user' => 'データベースのユーザ名（アカウント）を入力します。',
