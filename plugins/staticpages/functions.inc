@@ -1922,7 +1922,7 @@ function SP_render_content($A)
     $template_id = $A['template_id'];
 
     // Retrieve non php staticpage from cache
-    if ($cache_time > -1 AND !$draft_flag) {
+    if (($cache_time > 0 || $cache_time == -1) AND !$draft_flag) {
         $cache_found = false;
 
         // Don't need to cache per theme since not rendered in a block yet
