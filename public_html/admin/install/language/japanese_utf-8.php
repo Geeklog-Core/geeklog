@@ -346,6 +346,7 @@ $LANG_ERROR = array(
     10 => 'データベースの設定をチェックしてください。',
     11 => '警告',
     12 => '情報',
+    13 => '<p>The Geeklog install has detected that you are upgrading from <strong>Geeklog v%s to v%s</strong>.</p><p>Listed here are notices, warnings and/or any errors detected by the Geeklog Install. These messages are listed by the Geeklog version incase your site is several versions behind.</p><p><strong>Please read all of these important messages carefully</strong> as they pertain to your upgrade and may have additional instructions for your to follow after the upgrade or, may suggest you perform some action before the upgrade. If an <em>Error message</em> exists then you will not be able to proceed until you fix the problem.</p><p>You will find a prompt at the bottom of this page to either continue (if there are no errors) or bo back to the home install page.</p>',    
     14 => 'アップグレードの注意点',
     15 => '話題IDと話題の最大長が128文字から75文字へ変更されました。このため、アップグレードの際に話題IDが強制的に切り詰められ、問題が発生するかもしれません(話題IDが75文字を超える場合)。75文字を超える話題IDを75文字に切り詰めたものが他の話題IDと重複しないか確認してください。',
     16 => '話題IDと話題の最大長が128文字から75文字へ変更されました。アップグレードを進める前に修正する必要のある話題IDを検出しました。',

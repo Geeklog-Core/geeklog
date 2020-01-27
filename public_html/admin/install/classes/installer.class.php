@@ -276,6 +276,7 @@ class Installer
         if ($this->doDatabaseUpgrades($currentVersion, true) && !empty($this->upgradeMessages)) {
             $prompt = 'information';
             $retval = '<h1>' . $this->LANG['ERROR'][14] . '</h1>' . PHP_EOL; // Upgrade Notice
+            $retval .= sprintf($this->LANG['ERROR'][13], $currentVersion, self::GL_VERSION); // Upgrade Instructions
             $this->env['site_url'] = $this->get('site_url', $this->post('site_url', $this->getSiteUrl()));
             $this->env['site_admin_url'] = $this->get('site_admin_url', $this->post('site_admin_url', $this->getSiteAdminUrl()));
 
