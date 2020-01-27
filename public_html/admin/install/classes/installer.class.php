@@ -253,11 +253,10 @@ class Installer
 
             if ($postMaxSize && ($contentLength > $postMaxSize)) {
                 // If size exceeds, display an error message
-                $template = $this->getTemplateObject();
                 $content = '<h1>' . $this->LANG['ERROR'][8] . '</h1>' . PHP_EOL
                     . $this->getAlertMessage($this->LANG['ERROR'][7]);
-                $template->set('content', $content);
-                $template->display('index');
+
+                $this->display($content);
                 die(1);
             }
         }
@@ -393,12 +392,14 @@ class Installer
             return;
         }
 
-        $content = '<h1>' . $this->LANG['INSTALL'][3] . '</h1>' . PHP_EOL
-            . '<p>' . sprintf($this->LANG['INSTALL'][5], '<strong>' . self::SUPPORTED_PHP_VER . '</strong>')
+        $msg = '<p>' . sprintf($this->LANG['INSTALL'][5], '<strong>' . self::SUPPORTED_PHP_VER . '</strong>')
             . '<strong>' . PHP_VERSION . '</strong>' . $this->LANG['INSTALL'][6] . '</p>' . PHP_EOL;
-        $template = $this->getTemplateObject();
-        $template->set('content', $content);
-        $template->display('index');
+        $msg = $this->getAlertMessage($msg, 'error');
+
+        $content = '<h1>' . $this->LANG['INSTALL'][3] . '</h1>' . PHP_EOL
+            . $msg . PHP_EOL;
+
+        $this->display($content);
         die(1);
     }
 
@@ -1866,15 +1867,16 @@ class Installer
         // We may have included db-config.php elsewhere already, in which case
         // all of these variables need to be imported from the global namespace
         global $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
-               $_DB_dbms, $_DB_charset, $LANG_CHARSET;
+               $_DB_dbms, $_DB_charset, $LANG_CHARSET, $_CONF;
 
         // Grab the current DB values
         require $dbConfigFilePath;
 
         $isUtf8 = false;
 
-        if (empty($_DB_charset) ||
-            (($this->env['mode'] === 'install') && ($_DB_charset === 'latin1'))) {
+        if (isset($db['utf8']) &&
+            (empty($_DB_charset) ||
+            (($this->env['mode'] === 'install') && ($_DB_charset === 'latin1')))) {
             $isUtf8 = $db['utf8'];
         } elseif (isset($db['utf8'])) {
             $isUtf8 = in_array(strtolower($_DB_charset), ['utf8', 'utf8mb4', 'utf-8']);
@@ -1893,10 +1895,17 @@ class Installer
             $db['type'] = 'mysql';
         }
 
-        // Set database charset based on $LANG_CHARSET (this will be overwritten later)
+        if ($this->env['mode'] == 'install') {
+            // Set database charset based on $LANG_CHARSET (this will be overwritten later)
+            $langCharSet = $LANG_CHARSET;
+        } else {
+            // If migrate then use current settings
+            $langCharSet = $_CONF['default_charset'];
+        }
+
         $db['charset'] = $this->convertLangCharsetToDatabaseCharset(
             $db['type'],
-            ($isUtf8 ? 'utf-8' : $LANG_CHARSET)
+            ($isUtf8 ? 'utf-8' : $langCharSet)
         );
 
         // Read in db-config.php so we can insert the DB information
@@ -3674,7 +3683,7 @@ class Installer
      */
     private function migrateStep1()
     {
-        global $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
+        global $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, $_DB_charset,
                $LANG_INSTALL, $LANG_MIGRATE;
 
         $this->env['alert_message1'] = $this->getAlertMessage($LANG_MIGRATE[0]);
@@ -3705,6 +3714,16 @@ class Installer
             $_FORM['name'] = ($_DB_name !== 'geeklog') ? '' : $_DB_name;
             $_FORM['user'] = ($_DB_user !== 'username)') ? '' : $_DB_user;
             $_FORM['prefix'] = $_DB_table_prefix;
+        }
+
+        // Since Geeklog 2.1.2, $_DB_charset was introduced
+        if (empty($_DB_charset)) {
+           // If database character set missing, display an error message
+           $content = '<h1>' . $this->LANG['ERROR'][34] . '</h1>' . PHP_EOL
+               . $this->getAlertMessage($this->LANG['ERROR'][35], 'error');
+
+           $this->display($content);
+           die(1);
         }
 
         $this->env['host'] = $_FORM['host'];
@@ -4163,7 +4182,6 @@ class Installer
                     return $retval;
                 }
             }
-
 
             if (!$this->doDatabaseUpgrades($version)) {
                 $display .= $this->getAlertMsg(sprintf($LANG_MIGRATE[47], $version, self::GL_VERSION));
