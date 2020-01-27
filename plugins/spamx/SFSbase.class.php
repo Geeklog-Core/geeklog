@@ -119,9 +119,11 @@ class SFSbase
                         VALUES ('IP', '$db_ip', '$timestamp')";
                 DB_query($sql);
             }
-        } elseif ($this->_verbose) {
+        } else {
             $retval = PLG_SPAM_NOT_FOUND;
-            SPAMX_log("SFS: spammer IP not detected: " . $ip);
+            if ($this->_verbose) {
+                SPAMX_log("SFS: spammer IP not detected: " . $ip);
+            }
         }
 
         return $retval;
