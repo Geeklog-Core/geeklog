@@ -254,7 +254,7 @@ class Installer
             if ($postMaxSize && ($contentLength > $postMaxSize)) {
                 // If size exceeds, display an error message
                 $content = '<h1>' . $this->LANG['ERROR'][8] . '</h1>' . PHP_EOL
-                    . $this->getAlertMessage($this->LANG['ERROR'][7]);
+                    . $this->getAlertMessage($this->LANG['ERROR'][7], 'error');
 
                 $this->display($content);
                 die(1);
@@ -401,6 +401,26 @@ class Installer
 
         $this->display($content);
         die(1);
+    }
+
+    /**
+     * Check if Database Character Set has been set. Required for Upgrades and Migrations
+     * Needs to be done after dbconfig.php is loaded
+     */
+    private function checkDatabaseCharacterSet()
+    {
+        global $_DB_charset;
+
+        // Since Geeklog 2.1.2, $_DB_charset was introduced
+        if (empty($_DB_charset)) {
+           // If database character set missing, display an error message
+           $content = '<h1>' . $this->LANG['ERROR'][34] . '</h1>' . PHP_EOL
+               . $this->getAlertMessage($this->LANG['ERROR'][35], 'error');
+
+           $this->display($content);
+           die(1);
+        }
+
     }
 
     /**
@@ -3716,15 +3736,7 @@ class Installer
             $_FORM['prefix'] = $_DB_table_prefix;
         }
 
-        // Since Geeklog 2.1.2, $_DB_charset was introduced
-        if (empty($_DB_charset)) {
-           // If database character set missing, display an error message
-           $content = '<h1>' . $this->LANG['ERROR'][34] . '</h1>' . PHP_EOL
-               . $this->getAlertMessage($this->LANG['ERROR'][35], 'error');
-
-           $this->display($content);
-           die(1);
-        }
+        $this->checkDatabaseCharacterSet();
 
         $this->env['host'] = $_FORM['host'];
         $this->env['name'] = $_FORM['name'];
@@ -4474,6 +4486,8 @@ HTML;
                 if ($installType === 'upgrade') {
                     $v = $this->checkPost150Upgrade($this->env['dbconfig_path'], $this->env['siteconfig_path']);
                     // will skip to step 3 if possible, otherwise return here
+
+                    $this->checkDatabaseCharacterSet();
 
                     if ($v == self::GL_VERSION) {
                         // looks like we're already up to date
