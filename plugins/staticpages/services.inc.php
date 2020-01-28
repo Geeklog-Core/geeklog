@@ -181,8 +181,16 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
     // Only Core Structured Data Types supported
     if (!isset($LANG_structureddatatypes[$args['structured_data_type']])) {
-        $args['structured_data_type'] = $_SP_CONF['structured_data_type_default'];
-    }
+		if ($_SP_CONF['structured_data_type_default'] != 'none') {
+			$args['structured_data_type'] = $_SP_CONF['structured_data_type_default'];
+		} else {
+			// If default 'none' then store as a empty string in db
+			$args['structured_data_type'] = '';
+		}
+	} elseif ($args['structured_data_type'] == 'none') {
+		// If select passes 'none' then store as a empty string in db
+		$args['structured_data_type'] = '';
+	}
 
     // This will never be set by the page editor
     if (!isset($args['page_data'])) {
@@ -514,7 +522,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $sp_hits = 0;
             $meta_description = "";
             $meta_keywords = "";
-            $structured_data_type = 0;
+            $structured_data_type = "";
 
             // Switch sp_content to page_data since template
             $page_data = $sp_content;

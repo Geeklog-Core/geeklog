@@ -1922,7 +1922,7 @@ function SP_render_content($A)
     $template_id = $A['template_id'];
 
     // Retrieve non php staticpage from cache
-    if (($cache_time > 0 || $cache_time == -1) AND !$draft_flag) {
+	if (($cache_time > 0 || $cache_time == -1) AND !$draft_flag) {
         $cache_found = false;
 
         // Don't need to cache per theme since not rendered in a block yet
@@ -1942,7 +1942,7 @@ function SP_render_content($A)
 
         // Now find structured data cache if required
         // Structured Data is cached by itself. Need to cache in case structured data autotags exist in page.
-        // Since autotags are executed when the page is rendered therefore we have to cache structred data if page is cached.
+        // Since autotags are executed when the page is rendered therefore we have to cache structured data if page is cached.
         if (!empty($structured_data_type) && $cache_found) {
             if (!$_STRUCT_DATA->get_cachedScript('staticpages', $sp_id, $cache_time)) {
                 // Structured Data missing for some reason even though page cache found. Render all again

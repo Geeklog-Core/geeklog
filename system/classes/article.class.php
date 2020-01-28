@@ -2357,6 +2357,8 @@ class Article
      */
     public function sanitizeData()
     {
+		global $_CONF, $LANG_structureddatatypes;
+		
         if (empty($this->_hits)) {
             $this->_hits = 0;
         }
@@ -2384,6 +2386,19 @@ class Article
         } elseif ($this->_show_topic_icon != 1) {
             $this->_show_topic_icon = 0;
         }
+		
+		// Only Core Structured Data Types supported
+		if (!empty($this->_structured_data_type) && !isset($LANG_structureddatatypes[$this->_structured_data_type])) {
+			if ($_CONF['structured_data_type_default'] != 'none') {
+				$this->_structured_data_type = $_CONF['structured_data_type_default'];
+			} else {
+				// If default 'none' then store as a empty string in db
+				$this->_structured_data_type = '';
+			}
+		} elseif ($this->_structured_data_type == 'none') {
+			// If select passes 'none' then store as a empty string in db
+			$this->_structured_data_type = '';
+		}
     }
 
     /**
