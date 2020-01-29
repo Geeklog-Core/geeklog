@@ -523,7 +523,7 @@ class Search
             $sort_date = empty($this->_dateStart) || empty($this->_dateEnd) || $this->_dateStart != $this->_dateEnd ? true : false;
             $sort_type = $this->_type == 'all' ? true : false;
             $obj->setStyle('inline');
-            $obj->setField('', LF_ROW_NUMBER, $show_num, false, '<b>%d.</b>');
+            $obj->setField('', LF_ROW_NUMBER, $show_num, false, '<b>%d.</b> ');
             $obj->setField($LANG09[16], 'title', true, true, '%s<br' . XHTML . '>');
             $obj->setField('', 'description', true, false, '%s<br' . XHTML . '>');
             $obj->setField('', '_html', true, false, '<span class="searchresult-byline">');
