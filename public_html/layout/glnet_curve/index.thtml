@@ -27,7 +27,7 @@
 
   <!-- #container { -->
   <div id="container">
-    <header id="header" role="banner" class="brand-text" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="brand-text" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div id="header-content">
         <a class="tm-toggle uk-navbar-toggle uk-visible-small" href="#offcanvas" data-uk-offcanvas="{mode:'reveal'}"></a>
         <div class="nameplate">
@@ -39,7 +39,7 @@
 
     <hr class="separator"{xhtml}>
 
-    <nav id="navigation" role="navigation" class="uk-hidden-small" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+    <nav id="navigation" class="uk-hidden-small" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
       <div class="navigation_content uk-navbar uk-navbar-attached gl-navbar-small">
         <ul id="navigation_ul" class="uk-navbar-nav">
           {menu_elements}
@@ -75,7 +75,7 @@
 
       <!-- Center Block Container -->
       <div id="centerblocks">
-        <main id="main-content" role="main" itemscope="itemscope" itemprop="mainContentOfPage" itemtype="http://schema.org/WebPageElement">
+        <main id="main-content" itemscope="itemscope" itemprop="mainContentOfPage" itemtype="http://schema.org/WebPageElement">
           <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
           {breadcrumb_trail}
 
@@ -95,7 +95,7 @@
 
     <hr class="separator"{xhtml}>
 
-    <footer id="footer" role="contentinfo" class="clearfix" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+    <footer id="footer" class="clearfix" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
       {# GLNET CUSTOM - Replace entire footer-content div #}
       <div id="footer-content">
         <div class="uk-grid">

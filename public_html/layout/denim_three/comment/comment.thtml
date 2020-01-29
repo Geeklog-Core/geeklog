@@ -18,7 +18,7 @@
         {comment_signature}
     </div>
     {comment_edit}
-    <footer role="navigation" {hide_if_preview}>
+    <footer {hide_if_preview}>
     [
      <span>{reply_option} {parent_link} {likes_control} {delete_option} <a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="bookmark" title="{lang_permlink}">#</a></span>
     ]

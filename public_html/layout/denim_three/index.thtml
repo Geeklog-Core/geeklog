@@ -27,7 +27,7 @@
   <!-- #container { -->
   <div id="container" class="uk-offcanvas-content">
 
-    <header id="header" role="banner" class="brand-text" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="brand-text" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div id="header-content">
         <a class="header-toggle uk-hidden@m" uk-navbar-toggle-icon uk-toggle="target: #offcanvas" href="#"></a>
         <a class="header-toggle-right uk-hidden@m" uk-search-icon uk-toggle="target: #navsearch" href="#"></a>
@@ -65,7 +65,7 @@
 
     <div id="navigation">
 
-      <nav role="navigation" class="uk-navbar-container uk-visible@m uk-navbar-transparent gl-navbar-small navigation_content" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" uk-navbar>
+      <nav class="uk-navbar-container uk-visible@m uk-navbar-transparent gl-navbar-small navigation_content" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" uk-navbar>
 
         <div class="uk-navbar-left">
           <ul id="navigation_ul" class="uk-navbar-nav">
@@ -96,7 +96,7 @@
 
       <!-- Center Block Container -->
       <div id="centerblocks">
-        <main id="main-content" role="main" itemscope="itemscope" itemprop="mainContentOfPage" itemtype="http://schema.org/WebPageElement">
+        <main id="main-content" itemscope="itemscope" itemprop="mainContentOfPage" itemtype="http://schema.org/WebPageElement">
           <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
           {breadcrumb_trail}
 
@@ -116,7 +116,7 @@
 
     <hr class="separator"{xhtml}>
 
-    <footer id="footer" role="contentinfo" class="clearfix" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+    <footer id="footer" class="clearfix" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
       <div id="footer-content">
         <div id="copyright" itemprop="copyrightHolder" itemscope="itemscope" itemtype="http://schema.org/Organization"><span itemprop="name">{copyright_msg}</span></div>
         <div id="trademark">{trademark_msg}</div>
