@@ -309,6 +309,31 @@ function LIKES_addAction($type, $sub_type = '', $item_id, $action, $prev_action,
 }
 
 /**
+* Move like actions from an old to a new item id
+*
+* @param        string      $type     plugin name
+* @param        string      $sub_type Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
+* @param        string      $old_item_id  Original item id
+* @param        string      $new_item_id  New item id
+* @return       none
+*
+*/
+function LIKES_moveActions($type, $sub_type = '', $old_item_id, $new_item_id)
+{
+    global $_TABLES;
+
+    if (empty($sub_type)) {
+        DB_change($_TABLES['likes'], 'id', DB_escapeString($new_item_id),
+            array('id', 'type'),
+            array(DB_escapeString($old_item_id), $type));
+    } else {
+        DB_change($_TABLES['likes'], 'id', DB_escapeString($new_item_id),
+            array('id', 'type', 'sub_type'),
+            array(DB_escapeString($old_item_id), $type, $sub_type));
+    }
+}
+
+/**
 * Return number of likes or dislikes for a type, sub type, and id(s)
 *
 * @param        int         $action   like or dislike action

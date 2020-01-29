@@ -784,6 +784,9 @@ class Article
                 // Move trackbacks
                 $sql = "UPDATE {$_TABLES['trackback']} SET sid='{$newSid}' WHERE sid='{$checkSid}' AND type='article'";
                 DB_query($sql);
+
+                // Move any Likes
+                LIKES_moveActions('article', '', $checkSid, $newSid);
             }
         }
 
@@ -2358,7 +2361,7 @@ class Article
     public function sanitizeData()
     {
 		global $_CONF, $LANG_structureddatatypes;
-		
+
         if (empty($this->_hits)) {
             $this->_hits = 0;
         }
@@ -2386,7 +2389,7 @@ class Article
         } elseif ($this->_show_topic_icon != 1) {
             $this->_show_topic_icon = 0;
         }
-		
+
 		// Only Core Structured Data Types supported
 		if (!empty($this->_structured_data_type) && !isset($LANG_structureddatatypes[$this->_structured_data_type])) {
 			if ($_CONF['structured_data_type_default'] != 'none') {
