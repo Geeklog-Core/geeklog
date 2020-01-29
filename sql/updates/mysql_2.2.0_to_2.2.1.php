@@ -35,7 +35,9 @@ CREATE TABLE {$_TABLES['likes']} (
   ipaddress VARCHAR(39) NOT NULL,
   action TINYINT NOT NULL,
   created DATETIME NOT NULL,
-  PRIMARY KEY (lid)
+  PRIMARY KEY (lid),
+  KEY type (type,subtype,id),
+  KEY type_2 (type,id)
 ) ENGINE=MyISAM
 ";
 
@@ -49,8 +51,12 @@ ALTER TABLE {$_TABLES['topic_assignments']}
      `tid`,
      `type`,
      `subtype`,
-     `id`);
+     `id`)
 ";
+// Other Keys needed to speed up SQL for items that do not use subtype
+$_SQL[] = "ALTER TABLE `gl_topic_assignments` ADD INDEX( `tid`, `type`, `id`)";
+$_SQL[] = "ALTER TABLE `gl_topic_assignments` ADD INDEX( `type`, `subtype`, `id`)";
+$_SQL[] = "ALTER TABLE `gl_topic_assignments` ADD INDEX( `type`, `id`)";
 
 // Modify `sessions` table
 $_SQL[] = "DELETE FROM {$_TABLES['sessions']}";

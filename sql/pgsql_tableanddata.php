@@ -201,7 +201,9 @@ CREATE TABLE {$_TABLES['likes']} (
   ipaddress VARCHAR(39) NOT NULL,
   action smallint NOT NULL,
   created timestamp NOT NULL,
-  PRIMARY KEY (lid)
+  PRIMARY KEY (lid),
+  KEY type (type,subtype,id),
+  KEY type_2 (type,id)
 )
 ";
 
@@ -382,6 +384,7 @@ CREATE TABLE {$_TABLES['tokens']} (
 ";
 
 // Note: Subtype kept at 15 chars as max key length is approaching 1000 bytes for the primary key (for our minimum MySQL server requirements)
+// Other Keys needed to speed up SQL for items that do not use subtype
 $_SQL[] = "
 CREATE TABLE {$_TABLES['topic_assignments']} (
   tid varchar(75) NOT NULL,
@@ -390,7 +393,10 @@ CREATE TABLE {$_TABLES['topic_assignments']} (
   id varchar(128) NOT NULL,
   inherit smallint NOT NULL default '1',
   tdefault smallint NOT NULL default '0',
-  PRIMARY KEY (tid,type,subtype,id)
+  PRIMARY KEY (tid,type,subtype,id),
+  KEY tid (tid,type,id),
+  KEY type (type,subtype,id),
+  KEY type_2 (type`,id)
 )
 ";
 
