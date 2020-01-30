@@ -65,7 +65,7 @@ $sub_type  = Geeklog\Input::fGetOrPost('subtype', '');
 // Plugins may need to do additional checks on $id in the function plugin_canuserlike_foo if for example they need a numeric id value
 // They cannot filter the id further since that could change the value which doesn't get passed back here
 $id  = Geeklog\Input::fGetOrPost('id', '');
-$action  = Geeklog\Input::fGetOrPost('action', '');
+$action = (int) Geeklog\Input::fGetOrPost('action', 0);
 $ip         = $_SERVER['REMOTE_ADDR'];
 $ratingdate = time();
 $uid        = isset($_USER['uid']) ? $_USER['uid'] : 1;
@@ -84,22 +84,6 @@ if ($_LIKES_DEBUG) {
     COM_errorLog($log, 1);
 }
 
-if (!$ajax_call) {
-    // validate the referrer here - just to be safe....
-    $referrer = isset($_SERVER['HTTP_REFERER']) ? COM_sanitizeUrl($_SERVER['HTTP_REFERER']) : $_CONF['site_url'];
-    if ($referrer == '') {
-        $referrer = $_CONF['site_url'];
-    } else {
-        // jump down to like user clicked
-        $referrer .= '#likes-' . $type . '-' . $sub_type . '-' . $id;
-    }
-
-    $sLength = strlen($_CONF['site_url']);
-    if (substr($referrer,0,$sLength) != $_CONF['site_url']) {
-        $referrer = $_CONF['site_url'];
-    }
-}
-
 // Confirm a proper type (plugin) is sent (not if you can like it though)
 $all_plugins = array_merge($_PLUGINS, array('article', 'comment'));
 if (!in_array($type, $all_plugins)) {
@@ -109,38 +93,44 @@ if (!in_array($type, $all_plugins)) {
 	}
 }
 
-$likes_setting = PLG_typeLikesEnabled($type, $sub_type);
-if (!($likes_setting == 1 OR $likes_setting == 2)) {
-    $error_data = true;
-	if ($_LIKES_DEBUG) {
-        COM_errorLog("Likes System Error: Likes System not enabled for this type", 1);
-	}
-}
-
-// Confirm a proper action sent
-switch ($action) {
-    case LIKES_ACTION_LIKE:
-    case LIKES_ACTION_UNLIKE:
-        break;
-    case LIKES_ACTION_DISLIKE:
-    case LIKES_ACTION_UNDISLIKE:
-        if ($likes_setting == 1) {
-            break;
-        }
-    default:
+if (!$error_data) {
+    $likes_setting = PLG_typeLikesEnabled($type, $sub_type);
+    if (!($likes_setting == 1 OR $likes_setting == 2)) {
         $error_data = true;
-		if ($_LIKES_DEBUG) {
-			COM_errorLog("Likes System Error: Likes system action appears to be invalid or disabled", 1);
-		}
+    	if ($_LIKES_DEBUG) {
+            COM_errorLog("Likes System Error: Likes System not enabled for this type", 1);
+    	}
+    }
 }
 
-// Likes Item ID Field is only 128 characters long so check this now
-$maxIDLength = 128;
-if (strlen($id) > $maxIDLength) {
-    $error_data = true;
-	if ($_LIKES_DEBUG) {
-        COM_errorLog("Likes System Error: Item Id is greater than $maxIDLength characters. It appears '$type' item ids may be to large.", 1);
-	}
+if (!$error_data) {
+    // Confirm a proper action sent
+    switch ($action) {
+        case LIKES_ACTION_LIKE:
+        case LIKES_ACTION_UNLIKE:
+            break;
+        case LIKES_ACTION_DISLIKE:
+        case LIKES_ACTION_UNDISLIKE:
+            if ($likes_setting == 1) {
+                break;
+            }
+        default:
+            $error_data = true;
+    		if ($_LIKES_DEBUG) {
+    			COM_errorLog("Likes System Error: Likes system action appears to be invalid or disabled", 1);
+    		}
+    }
+}
+
+if (!$error_data) {
+    // Likes Item ID Field is only 128 characters long so check this now
+    $maxIDLength = 128;
+    if (strlen($id) > $maxIDLength) {
+        $error_data = true;
+    	if ($_LIKES_DEBUG) {
+            COM_errorLog("Likes System Error: Item Id is greater than $maxIDLength characters. It appears '$type' item ids may be to large.", 1);
+    	}
+    }
 }
 
 // Check for error flag
@@ -174,7 +164,7 @@ if ($action_enabled) {
     }
 
     COM_clearSpeedlimit($_CONF['likes_speedlimit'],'likes');
-    $last = COM_checkSpeedlimit ('likes');
+    $last = COM_checkSpeedlimit('likes');
     if ( $last > 0 ) {
         $speedlimiterror = 1;
         $status = 2;
@@ -184,7 +174,7 @@ if ($action_enabled) {
 
     if ($status == 0) { // if everything looks good then perform action
         list($num_likes, $num_dislikes) = LIKES_addAction($type, $sub_type, $id, $action, $prev_action, $uid, $ip);
-        COM_updateSpeedlimit ('likes');
+        COM_updateSpeedlimit('likes');
     }
 } else {
     if ($ajax_call) {
@@ -194,33 +184,34 @@ if ($action_enabled) {
     }
 }
 
-if ($ajax_call) {
-    $data_type = 0; // 0 = returns likes control, 1 = launches a javascript alert with a passed message
-    $data = '';
-    if ( $status == 1 ) {
-        // current likes action is either already recorded or is not possible (ie user trying to undislike and item that has been liked by the user)
-        $data_type = 1;
-        if ($uid == 1) {
-            $data = $LANG_LIKES['likes_ip_error'];
-        } else {
-            $data = $LANG_LIKES['likes_uid_error'];
-        }
-    } elseif ( $status == 2 ) {
-        $data_type = 1;
-        $data = sprintf($LANG_LIKES['likes_speedlimit'], $last, $_CONF['likes_speedlimit']);
-    } elseif ( $status == 3 ) {
-        // no permission for action or you already own the item
-        $data_type = 1;
-        $data = $LANG_LIKES['own_item_error'];
+// Figure out and messages to display to the user based on the status
+$data_type = 0; // 0 = returns likes control, 1 = launches a javascript alert with a passed message
+$data = '';
+if ($status == 1) {
+    // current likes action is either already recorded or is not possible (ie user trying to undislike and item that has been liked by the user)
+    $data_type = 1;
+    if ($uid == 1) {
+        $data = $LANG_LIKES['likes_ip_error'];
     } else {
-        $message = '';
-        if ($action == LIKES_ACTION_LIKE OR $action == LIKES_ACTION_DISLIKE) {
-            $message = $LANG_LIKES['thanks_for_action'];
-        }
-
-        $data = LIKES_control($type, $sub_type, $id, $likes_setting, $message);
+        $data = $LANG_LIKES['likes_uid_error'];
+    }
+} elseif ($status == 2) {
+    $data_type = 1;
+    $data = sprintf($LANG_LIKES['likes_speedlimit'], $last, $_CONF['likes_speedlimit']);
+} elseif ($status == 3) {
+    // no permission for action or you already own the item
+    $data_type = 1;
+    $data = $LANG_LIKES['own_item_error'];
+} else {
+    $message = '';
+    if ($action == LIKES_ACTION_LIKE OR $action == LIKES_ACTION_DISLIKE) {
+        $message = $LANG_LIKES['thanks_for_action'];
     }
 
+    $data = LIKES_control($type, $sub_type, $id, $likes_setting, $message);
+}
+
+if ($ajax_call) {
     $retval = array(
         'data_type' => $data_type,
         'data'      => $data
@@ -228,8 +219,27 @@ if ($ajax_call) {
     echo json_encode($retval);
     exit(0);
 } else {
+    // validate the referrer here - just to be safe....
+    $referrer = isset($_SERVER['HTTP_REFERER']) ? COM_sanitizeUrl($_SERVER['HTTP_REFERER']) : $_CONF['site_url'];
+    if ($referrer == '') {
+        $referrer = $_CONF['site_url'];
+    } elseif (!$error_data) {
+        // jump down to like user clicked
+        $referrer .= '#likes-' . $type . '-' . $sub_type . '-' . $id;
+    }
+
+    $sLength = strlen($_CONF['site_url']);
+    if (substr($referrer,0,$sLength) != $_CONF['site_url']) {
+        $referrer = $_CONF['site_url'];
+    }
+
+    if ($data_type == 1) {
+        // Some sort of error message
+        COM_setSystemMessage($data);
+    } else {
+        COM_setSystemMessage($message);
+    }
+
     header("Location: " . $referrer); // go back to the page we came from
     exit;
 }
-
-?>
