@@ -60,7 +60,7 @@ if ($ajax_call) {
 
 $error_data = false;
 
-// Figure out if likes system actually enabled
+// Figure out if likes system actually enabled for user (anonoymous or regular user)
 if (!$_CONF['likes_enabled'] || (COM_isAnonUser() && $_CONF['likes_enabled'] == 2)) {
     $error_data = true;
 }
