@@ -1716,7 +1716,7 @@ $LANG_ACCESS = array(
     'edit' => 'Edit',
     'none' => 'None',
     'accessdenied' => 'Access Denied',
-    'storydenialmsg' => "You do not have access to view this article.  This could be because you aren't a member of {$_CONF['site_name']}.  Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">become a member</a> of {$_CONF['site_name']} to receive full membership access!",
+    'storydenialmsg' => "You do not have access to view this article.  This could be because you aren't a member of {$_CONF['site_name']}.  Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">become a member</a> to receive access.",
     'nogroupsforcoregroup' => 'This group doesn\'t belong to any of the other groups',
     'grouphasnorights' => 'This group doesn\'t have access to any of the administrative features of this site',
     'newgroup' => 'New Group',

@@ -154,7 +154,7 @@ function update_ConfValuesFor221()
     $so += 10;
     $c->add('likes_comments',1,'select',$sg,$fs,41,$so,TRUE, $me, $tab);
     $so += 10;
-    $c->add('likes_speedlimit',20,'text',$sg,$fs,NULL,$so,TRUE, $me, $tab);
+    $c->add('likes_speedlimit',45,'text',$sg,$fs,NULL,$so,TRUE, $me, $tab);
     $so += 10;
 
     // Delete some cookie-related settings

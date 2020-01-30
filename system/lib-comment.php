@@ -2950,7 +2950,7 @@ function plugin_likesenabled_comment($sub_type)
 
     $retval = false;
 
-    if ($_CONF['likes_enabled'] AND $_CONF['likes_comments'] > 0) {
+    if ($_CONF['likes_comments'] > 0) {
         $retval = $_CONF['likes_comments'];
     }
 
@@ -2959,6 +2959,7 @@ function plugin_likesenabled_comment($sub_type)
 
 /**
  * Can user perform a like action on item
+ * Need to check not only likes enabled for item but same owner and read permissions to item
  * Note: $Id is filtered as a string by likes.php.
  *       If needed do additional checks here (like if you need a numeric value)
  *       but you cannot change the value of id since it will not change in the original calling function
@@ -2967,23 +2968,62 @@ function plugin_likesenabled_comment($sub_type)
  */
 function plugin_canuserlike_comment($sub_type, $id, $uid, $ip)
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES;
 
     $retval = false;
 
-	// Make sure $id is just a number as comment id is numeric
-    // Cannot change id in this function, since the id from the calling function is used else where
-	if (strval((int) $id) == $id) {
-        $sql = "SELECT uid, ipaddress FROM {$_TABLES['comments']} WHERE cid = " . $id;
-        $result = DB_query($sql);
-        if (DB_numRows($result) > 0) {
-            list ($owner_id, $owner_ip) = DB_fetchArray($result);
-            if ($owner_id != $uid) {
-                $retval = true;
-            } elseif ($uid == 1 AND $owner_id == 1 AND $ip != $owner_ip) {
-                $retval = true;
+    if ($_CONF['likes_comments'] > 0) {
+    	// Make sure $id is just a number as comment id is numeric
+        // Cannot change id in this function, since the id from the calling function is used else where
+    	if (strval((int) $id) == $id) {
+            $sql = "SELECT type, sid, uid, ipaddress FROM {$_TABLES['comments']} WHERE cid = " . $id;
+            $result = DB_query($sql);
+            if (DB_numRows($result) > 0) {
+                list ($type, $sid, $owner_id, $owner_ip) = DB_fetchArray($result);
+                // Figure out if user has access to view comment (depends on item premissions)
+                // Ask for url of item as PLG_getItemInfo will only return if user has read access
+                if (!empty(PLG_getItemInfo($type, $sid, 'url'))) {
+                    // Make sure owner of comment and user not the same
+                    if ($owner_id != $uid) {
+                        $retval = true;
+                    } elseif ($uid == 1 AND $owner_id == 1 AND $ip != $owner_ip) {
+                        $retval = true;
+                    }
+                }
             }
+        }
+    }
 
+    return $retval;
+}
+
+/**
+ * Get URL for item like is for
+ * Note: $Id is filtered as a string by likes.php.
+ *       If needed do additional checks here (like if you need a numeric value)
+ *       but you cannot change the value of id since it will not change in the original calling function
+ *
+ * @return   string    URL of item like is for
+ */
+function plugin_getItemLikeURL_comment($sub_type, $id)
+{
+    global $_CONF, $_TABLES;
+
+    $retval = '';
+
+    if ($_CONF['likes_comments'] > 0) {
+        // Make sure commment id is good
+        if (strval((int) $id) == $id) {
+            $sql = "SELECT type, sid, uid, ipaddress FROM {$_TABLES['comments']} WHERE cid = " . $id;
+            $result = DB_query($sql);
+            if (DB_numRows($result) > 0) {
+                list ($type, $sid) = DB_fetchArray($result);
+                // Figure out if user has access to view comment (depends on item premissions)
+                // Ask for url of item as PLG_getItemInfo will only return if user has read access
+                if (!empty(PLG_getItemInfo($type, $sid, 'url'))) {
+                    $retval = CMT_getCommentUrlId($type, $sid);
+                }
+            }
         }
     }
 

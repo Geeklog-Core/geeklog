@@ -56,7 +56,9 @@ $_LIKES_DEBUG = COM_isEnableDeveloperModeLog('like');
 /**
  * Related Plugin Library functions
  */
-// PLG_typeLikesEnabled, PLG_canUserLike, PLG_itemLike
+// PLG_typeLikesEnabled, PLG_canUserLike, PLG_itemLike, PLG_getItemLikeURL
+
+// Plugins that support this must also support PLG_getItemInfo and returning url (based on permissions)
 
 /**
  * Constants used for storing Likes actions

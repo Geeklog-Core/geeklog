@@ -2061,7 +2061,7 @@ function plugin_likesenabled_article($sub_type)
 
     $retval = false;
 
-    if ($_CONF['likes_enabled'] AND $_CONF['likes_articles'] > 0) {
+    if ( $_CONF['likes_articles'] > 0) {
         $retval = $_CONF['likes_articles'];
     }
 
@@ -2069,7 +2069,32 @@ function plugin_likesenabled_article($sub_type)
 }
 
 /**
+ * Get URL for item like is for
+ * Note: $Id is filtered as a string by likes.php.
+ *       If needed do additional checks here (like if you need a numeric value)
+ *       but you cannot change the value of id since it will not change in the original calling function
+ *
+ * @return   string    URL of item like is for
+ */
+function plugin_getItemLikeURL_article($sub_type, $id)
+{
+    global $_CONF;
+
+    $retval = '';
+
+    if ($_CONF['likes_articles'] > 0) {
+        // No sense rebuilding stuff here so use PLG_getItemInfo
+        // PLG_getItemInfo will only return url if user has permissions
+        $options['sub_type'] = $sub_type;
+        $retval = PLG_getItemInfo('article', $id, 'url', 0, $options);
+    }
+
+    return $retval;
+}
+
+/**
  * Can user perform a like action on item
+ * Need to check not only likes enabled for item but same owner and read permissions to item
  * Note: $Id is filtered as a string by likes.php.
  *       If needed do additional checks here (like if you need a numeric value)
  *       but you cannot change the value of id since it will not change in the original calling function
@@ -2078,17 +2103,19 @@ function plugin_likesenabled_article($sub_type)
  */
 function plugin_canuserlike_article($sub_type, $id, $uid, $ip)
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES;
 
     $retval = false;
 
-    $perm_sql = COM_getPermSQL( 'AND', $uid, 2);
-    $sql = "SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid='".$id."' " . $perm_sql;
-    $result = DB_query($sql);
-    if (DB_numRows($result) > 0) {
-        list ($owner_id, $group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) = DB_fetchArray($result);
-        if ($owner_id != $uid) {
-            $retval = true;
+    if ($_CONF['likes_articles'] > 0) {
+        $perm_sql = COM_getPermSQL( 'AND', $uid, 2);
+        $sql = "SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid='".$id."' " . $perm_sql;
+        $result = DB_query($sql);
+        if (DB_numRows($result) > 0) {
+            list ($owner_id, $group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) = DB_fetchArray($result);
+            if ($owner_id != $uid) {
+                $retval = true;
+            }
         }
     }
 

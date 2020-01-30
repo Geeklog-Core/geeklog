@@ -39,7 +39,7 @@
 require_once 'lib-common.php';
 
 if ( !isset($_CONF['likes_speedlimit']) ) {
-    $_CONF['likes_speedlimit'] = 20;
+    $_CONF['likes_speedlimit'] = 45;
 }
 
 // Figure out if ajax call using likes_control.js or call directly from a page
@@ -59,38 +59,48 @@ if ($ajax_call) {
 }
 
 $error_data = false;
-$status = 0;
-$type  = Geeklog\Input::fGetOrPost('type', '');
-$sub_type  = Geeklog\Input::fGetOrPost('subtype', '');
-// Plugins may need to do additional checks on $id in the function plugin_canuserlike_foo if for example they need a numeric id value
-// They cannot filter the id further since that could change the value which doesn't get passed back here
-$id  = Geeklog\Input::fGetOrPost('id', '');
-$action = (int) Geeklog\Input::fGetOrPost('action', 0);
-$ip         = $_SERVER['REMOTE_ADDR'];
-$ratingdate = time();
-$uid        = isset($_USER['uid']) ? $_USER['uid'] : 1;
 
-if ($_LIKES_DEBUG) {
-    $log = "Likes Action Call from likes.php:
-            ajax_call = $ajax_call
-            type = $type
-            sub_type = $sub_type
-            id = $id
-            action = $action
-            ip = $ip
-            ratingdate = $ratingdate
-            uid = $uid";
-
-    COM_errorLog($log, 1);
+// Figure out if likes system actually enabled
+if (!$_CONF['likes_enabled'] || (COM_isAnonUser() && $_CONF['likes_enabled'] == 2)) {
+    $error_data = true;
 }
 
-// Confirm a proper type (plugin) is sent (not if you can like it though)
-$all_plugins = array_merge($_PLUGINS, array('article', 'comment'));
-if (!in_array($type, $all_plugins)) {
-    $error_data = true;
-	if ($_LIKES_DEBUG) {
-        COM_errorLog("Likes System Error: No type specified", 1);
-	}
+if (!$error_data) {
+    $status = 0;
+    $type  = Geeklog\Input::fGetOrPost('type', '');
+    $sub_type  = Geeklog\Input::fGetOrPost('subtype', '');
+    // Plugins may need to do additional checks on $id in the function plugin_canuserlike_foo if for example they need a numeric id value
+    // They cannot filter the id further since that could change the value which doesn't get passed back here
+    $id  = Geeklog\Input::fGetOrPost('id', '');
+    $action = (int) Geeklog\Input::fGetOrPost('action', 0);
+    $ip         = $_SERVER['REMOTE_ADDR'];
+    $ratingdate = time();
+    $uid        = isset($_USER['uid']) ? $_USER['uid'] : 1;
+
+    if ($_LIKES_DEBUG) {
+        $log = "Likes Action Call from likes.php:
+                ajax_call = $ajax_call
+                type = $type
+                sub_type = $sub_type
+                id = $id
+                action = $action
+                ip = $ip
+                ratingdate = $ratingdate
+                uid = $uid";
+
+        COM_errorLog($log, 1);
+    }
+}
+
+if (!$error_data) {
+    // Confirm a proper type (plugin) is sent (not if you can like it though)
+    $all_plugins = array_merge($_PLUGINS, array('article', 'comment'));
+    if (!in_array($type, $all_plugins)) {
+        $error_data = true;
+    	if ($_LIKES_DEBUG) {
+            COM_errorLog("Likes System Error: No type specified", 1);
+    	}
+    }
 }
 
 if (!$error_data) {
@@ -145,12 +155,18 @@ if ($error_data) {
 }
 
 $action_enabled = PLG_canUserLike($type, $sub_type, $id, $uid, $ip);
+if ($_LIKES_DEBUG) {
+    COM_errorLog("Likes Action Enabled for user with Item: " . ((int) $action_enabled), 1);
+}
 if ($action_enabled) {
     // look up the item in our database....
     list($num_likes, $num_dislikes) = LIKES_getLikes($type, $sub_type, $id);
 
     // Find out if user has voted and what that is (like or dislike)
     $prev_action = LIKES_hasAction($type, $sub_type, $id, $uid, $ip);
+    if ($_LIKES_DEBUG) {
+        COM_errorLog("Likes Previous Action for User with Item: $action_enabled", 1);
+    }
 
     // Figure out valid actions
     if (($prev_action == LIKES_ACTION_NONE) AND ($action == LIKES_ACTION_LIKE OR $action == LIKES_ACTION_DISLIKE)) {
@@ -179,9 +195,8 @@ if ($action_enabled) {
 } else {
     if ($ajax_call) {
         list($num_likes, $num_dislikes) = LIKES_getLikes($type, $sub_type, $id);
-
-        $status = 3;
     }
+    $status = 3;
 }
 
 // Figure out and messages to display to the user based on the status
@@ -219,27 +234,20 @@ if ($ajax_call) {
     echo json_encode($retval);
     exit(0);
 } else {
-    // validate the referrer here - just to be safe....
-    $referrer = isset($_SERVER['HTTP_REFERER']) ? COM_sanitizeUrl($_SERVER['HTTP_REFERER']) : $_CONF['site_url'];
-    if ($referrer == '') {
-        $referrer = $_CONF['site_url'];
-    } elseif (!$error_data) {
-        // jump down to like user clicked
-        $referrer .= '#likes-' . $type . '-' . $sub_type . '-' . $id;
-    }
+    // Build url for item like action is for
+    $url = PLG_getItemLikeURL($type, $sub_type, $id);
 
-    $sLength = strlen($_CONF['site_url']);
-    if (substr($referrer,0,$sLength) != $_CONF['site_url']) {
-        $referrer = $_CONF['site_url'];
-    }
+    if (!empty($url)) {
+        if ($data_type == 1) {
+            // Some sort of error message
+            COM_setSystemMessage($data);
+        } else {
+            COM_setSystemMessage($message);
+        }
 
-    if ($data_type == 1) {
-        // Some sort of error message
-        COM_setSystemMessage($data);
+        header("Location: " . $url); // go back to the item of the like (hopefully the page we came from)
+        exit;
     } else {
-        COM_setSystemMessage($message);
+        COM_handle404();
     }
-
-    header("Location: " . $referrer); // go back to the page we came from
-    exit;
 }

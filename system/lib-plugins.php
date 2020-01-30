@@ -2379,6 +2379,7 @@ function PLG_spamAction($content, $action = -1)
  * @param    string $what    comma-separated list of item properties
  * @param    int    $uid     user ID or 0 = current user
  * @param    array  $options not required and may not be supported.
+ *           string $options['sub_type']               A sub type of type for when plugins have more than one item type. Added Geeklog v2.2.1
  *           string $options['filter']                 Filters work only for returning multiple items (using *). Allows filtering based on different supported properties. Unsupported filters are ignored
  *           string $options['filter']['topic-ids']    Comma separated list of topic ids in single quotes to be used in a sql statement ie: 'topicid1','topicid2'
  *           string $options['filter']['date-created'] Returns items created from this Unix timestamp till current date
@@ -3915,6 +3916,30 @@ function PLG_itemLike($type, $sub_type, $item_id, $action)
     $args[2] = $item_id;
     $args[3] = $action;
     $function = 'plugin_itemlikesaction_' . $type;
+
+    $retval = PLG_callFunctionForOnePlugin($function,$args);
+
+    return $retval;
+}
+
+/**
+* Return URL of item Like is for
+*
+* @param    string  $type       plugin name
+* @param    string  $sub_type   Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
+* @param    string  $item_id    the id of the item with the like action
+*
+* @return   void
+* @since    Geeklog 2.2.1
+*
+*/
+function PLG_getItemLikeURL($type, $sub_type, $item_id)
+{
+    $retval = true;
+
+    $args[1] = $sub_type;
+    $args[2] = $item_id;
+    $function = 'plugin_getItemLikeURL_' . $type;
 
     $retval = PLG_callFunctionForOnePlugin($function,$args);
 
