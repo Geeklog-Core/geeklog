@@ -3012,13 +3012,14 @@ function plugin_getItemLikeURL_comment($sub_type, $id)
     $retval = '';
 
     if ($_CONF['likes_comments'] > 0) {
-        // Make sure commment id is good
+        // Make sure $id is just a number as comment id is numeric
+        // Cannot change id in this function, since the id from the calling function is used else where
         if (strval((int) $id) == $id) {
-            $sql = "SELECT type, sid, uid, ipaddress FROM {$_TABLES['comments']} WHERE cid = " . $id;
+            $sql = "SELECT type, sid FROM {$_TABLES['comments']} WHERE cid = " . $id;
             $result = DB_query($sql);
             if (DB_numRows($result) > 0) {
                 list ($type, $sid) = DB_fetchArray($result);
-                // Figure out if user has access to view comment (depends on item premissions)
+                // Figure out if user has access to view comment (depends on item permissions)
                 // Ask for url of item as PLG_getItemInfo will only return if user has read access
                 if (!empty(PLG_getItemInfo($type, $sid, 'url'))) {
                     $retval = CMT_getCommentUrlId($type, $sid);
