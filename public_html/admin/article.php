@@ -220,12 +220,11 @@ function liststories($current_topic = '', $editaccessonly = '')
         'has_extras' => true,
         'form_url'   => $_CONF['site_admin_url'] . '/article.php',
     );
-
-    $sql = "SELECT {$_TABLES['stories']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname, "
-        . "UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} "
-        . "LEFT JOIN {$_TABLES['users']} ON {$_TABLES['stories']}.uid={$_TABLES['users']}.uid "
-        . "LEFT JOIN {$_TABLES['topic_assignments']} ta ON ta.type = 'article' AND ta.id = sid ";
-    $sql .= COM_getPermSQL('WHERE', 0, $access);
+	
+    $sql = "SELECT {$_TABLES['stories']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname, UNIX_TIMESTAMP(date) AS unixdate "
+		. "FROM {$_TABLES['stories']},{$_TABLES['topic_assignments']} ta, {$_TABLES['users']} "
+        . "WHERE {$_TABLES['stories']}.uid={$_TABLES['users']}.uid AND ta.type = 'article' AND ta.id = sid ";
+    $sql .= COM_getPermSQL('AND', 0, $access);	
 
     if (!empty($excludetopics)) {
         $excludetopics = 'AND ' . $excludetopics;
@@ -250,7 +249,7 @@ function liststories($current_topic = '', $editaccessonly = '')
     );
 
     // Add in topic filter so it is remembered with paging
-    $pagenavurl = '&amp;tid=' . $current_topic;
+    $pagenavurl = "&amp;tid=$current_topic&amp;editaccessonly=$editaccessonly";
 
     $retval .= ADMIN_list('story', 'ADMIN_getListField_stories', $header_arr,
         $text_arr, $query_arr, $defsort_arr, $filter, '', '', $form_arr, true, $pagenavurl);
