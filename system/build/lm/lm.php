@@ -34,8 +34,8 @@ $VERSION = $GLOBALS['argv'][1];
 define('ROOT', dirname(dirname(dirname(__DIR__))) . '/');
 
 // Prevent PHP from reporting uninitialized variables
-//error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
-error_reporting(-1);
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
+//error_reporting(-1);
 
 // name of the language file should be passed on the command line
 $langfile = $GLOBALS['argv'][2];
@@ -138,6 +138,8 @@ function my_str_replace($s1, $s2, $s3)
 {
     global $mb;
 
+    return str_replace($s1, $s2, $s3);
+
     if ($mb) {
         return mb_ereg_replace($s1, $s2, $s3);
     } else {
@@ -187,7 +189,7 @@ function makeXHTML($txt)
 
 function prepareText($newText)
 {
-    global $mb;
+    global $mb, $module;
 
     if (my_strpos($newText, '{$') === false) {
         if (my_strpos($newText, '\n') === false) {
@@ -199,6 +201,13 @@ function prepareText($newText)
             // text contains line feeds - enclose in double quotes so
             // they can be interpreted
             $newText = my_str_replace('"', '\"', $newText);
+
+            if ($module === 'install') {
+                $newText = my_str_replace('\n', "\n", $newText);
+            } else {
+                $newText = my_str_replace('\n', "\\n", $newText);
+            }
+
             $quotedText = '"' . $newText . '"';
         }
     } else {
