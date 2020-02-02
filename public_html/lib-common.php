@@ -3162,7 +3162,7 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
                     ),
                     array(
                         'condition' => (SEC_inGroup('Root') && ($_CONF['link_versionchecker'] == 1)),
-                        'url'       => 'https://www.geeklog.net/versionchecker.php?version=' . VERSION,
+                        'url'       => 'https://www.geeklog.net/versionchecker.php?version=' . VERSION . '&amp;language=' . COM_getLanguage(),
                         'lang'      => $LANG01[107],
                         'num'       => VERSION,
                         'image'     => $_CONF['layout_url'] . '/images/icons/versioncheck.' . $_IMAGE_TYPE,
