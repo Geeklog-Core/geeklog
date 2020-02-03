@@ -307,7 +307,7 @@ function savestory(array $A)
             $authorurl = $_USER['homepage'];
         }
     }
-    
+
     $result = PLG_checkForSpam(
         $story->getSpamCheckFormat(), $_CONF['spamx'], $permanentlink, Geeklog\Akismet::COMMENT_TYPE_BLOG_POST, $authorname, $authoremail, $authorurl
     );
