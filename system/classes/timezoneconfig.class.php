@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Helper class for time zone handling                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2019 by the following authors:                         |
+// | Copyright (C) 2009-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun             - dirk AT haun-online DOT de               |
 // | based on earlier work by Oliver Spiesshofer, Yew Loong, and others        |
@@ -135,9 +135,8 @@ class TimeZoneConfig
             $items .= ">{$tzDisplay}</option>" . LB;
         }
         $vars = array_merge($attributes, array('select_items' => $items));
-        $selection = COM_createControl('type-select', $vars);
 
-        return $selection;
+        return COM_createControl('type-select', $vars);
     }
 
     /**

@@ -134,13 +134,7 @@ class Mail
         }
 
         // Set to
-        try {
-            $message->setTo($to);
-        } catch (Swift_RfcComplianceException $e) {
-            COM_errorLog(__METHOD__ . ': bad "to" ' . $to);
-
-            return false;
-        }
+        $message->setTo($to);
 
         if (!empty($optional) && !is_array($optional)) {
             $optional = self::stripControlCharacters($optional);
@@ -148,13 +142,7 @@ class Mail
 
         if (!empty($optional) && !is_array($optional)) {
             // assume old (optional) CC: header
-            try {
-                $message->setCc($optional);
-            } catch (Swift_RfcComplianceException $e) {
-                COM_errorLog(__METHOD__ . ': bad "Cc" ' . $optional);
-
-                return false;
-            }
+            $message->setCc($optional);
         }
 
         // Set body
@@ -200,21 +188,9 @@ class Mail
         if (is_array($optional) && (count($optional) > 0)) {
             foreach ($optional as $h => $v) {
                 if (strcasecmp($h, 'Cc') === 0) {
-                    try {
-                        $message->setCc($v);
-                    } catch (Swift_RfcComplianceException $e) {
-                        COM_errorLog(__METHOD__ . ': bad "Cc" ' . $v);
-
-                        return false;
-                    }
+                    $message->setCc($v);
                 } elseif (strcasecmp($h, 'Bcc') === 0) {
-                    try {
-                        $message->setBcc($v);
-                    } catch (Swift_RfcComplianceException $e) {
-                        COM_errorLog(__METHOD__ . ': bad "Bcc" ' . $v);
-
-                        return false;
-                    }
+                    $message->setBcc($v);
                 } else {
                     $headers->addTextHeader($h, $v);
                 }

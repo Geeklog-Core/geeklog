@@ -2,6 +2,8 @@
 
 namespace Geeklog;
 
+use InvalidArgumentException;
+
 /**
  * Class Autoload
  *
@@ -44,7 +46,7 @@ class Autoload
             }
         } else {
             // Legacy Geeklog classes
-            $path = __DIR__ . DIRECTORY_SEPARATOR . strtolower($className) . '.class.php';
+            $path = __DIR__ . self::DS . strtolower($className) . '.class.php';
 
             if (file_exists($path)) {
                 /** @noinspection PhpIncludeInspection */
@@ -79,7 +81,7 @@ class Autoload
      * @param  callable $autoLoader
      * @param  bool     $throw
      * @param  bool     $prepend
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public static function register($autoLoader, $throw = true, $prepend = false)
     {
@@ -88,11 +90,11 @@ class Autoload
         }
 
         if (!is_callable($autoLoader)) {
-            throw new \InvalidArgumentException(__METHOD__ . ': $autoLoader must be callable');
+            throw new InvalidArgumentException(__METHOD__ . ': $autoLoader must be callable');
         }
 
         if (!spl_autoload_register($autoLoader, $throw, $prepend)) {
-            throw new \InvalidArgumentException(__METHOD__ . ': could not register the autoloader function');
+            throw new InvalidArgumentException(__METHOD__ . ': could not register the autoloader function');
         }
     }
 }

@@ -320,7 +320,7 @@ abstract class Session
             return true;
         }
 
-        // just had session_write_close before. Apparantly need all 3 to be compatible with all browsers
+        // just had session_write_close before. Apparently need all 3 to be compatible with all browsers
         session_unset(); // Free all session variables
         session_destroy(); // Destroys all data registered to a session
         session_write_close(); // Write session data and end session
