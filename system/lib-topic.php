@@ -1523,9 +1523,6 @@ function TOPIC_breadcrumbs($type, $id, $sub_type = '')
         $breadcrumb_t->set_block('breadcrumbs_list', 'breadcrumb_item');
         $breadcrumb_t->set_block('breadcrumbs_list', 'breadcrumb_item_nolink');
 
-        if (in_array($_CONF['doctype'], array('html5', 'xhtml5'))) {
-            $breadcrumb_t->set_var('microdata', true);
-        }
         $rootname = $_CONF['breadcrumb_root_site_name'] ?
             $_CONF['site_name'] : $LANG27['breadcrumb_root'];
         $separator = htmlspecialchars($LANG27['breadcrumb_separator']);
