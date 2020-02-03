@@ -792,6 +792,8 @@ function plugin_supportsRecaptcha_recaptcha()
             'type'    => 'story',
             'version' => $_RECAPTCHA_CONF['enable_story'],
             'form_id' => 'submitstory',
+            'js_onsubmit' 	=> '',
+			'js_onsubmit_advanced_editor' 	=> 'set_postcontent();',            
         ],
     ];
 }

@@ -2,7 +2,7 @@
 
 {noscript}
 <div id="advanced_editor" style="display:none;">
-    <form action="{site_url}/submit.php" method="post" onsubmit="set_postcontent();" id="submitstory" class="compact uk-form">
+    <form action="{site_url}/submit.php" method="post" onsubmit="set_postcontent();" id="submitstory_advanced" class="compact uk-form">
 
       <div class="user_basic">
         <dl class="form_block">
