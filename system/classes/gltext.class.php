@@ -330,7 +330,7 @@ class GLText
             'hexdec_entity'      => 1, // Allow hexadecimal numeric entities
             'hook'               => 0, // No hook function
             'hook_tag'           => 0, // No hook function
-            'keep_bad'           => 1, // Neutralize both tags and element content
+            'keep_bad'           => 4, // Remove tags but neutralize element content if text (pcdata) is invalid in parent element
             'lc_std_val'         => 1, // Yes
             'make_tag_strict'    => 0, // No
             'named_entity'       => 1, // Allow non-universal named HTML entities
