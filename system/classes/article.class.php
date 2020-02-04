@@ -1139,18 +1139,33 @@ class Article
             $this->_uid = $_USER['uid'];
         }
 
-        // Remove any autotags the user doesn't have permission to use
-        $introText = PLG_replaceTags($this->_introtext, '', true);
-        $bodyText = PLG_replaceTags($this->_bodytext, '', true);
-        $metaDescription = PLG_replaceTags($this->_meta_description, '', true);
-        $metaKeyWords = PLG_replaceTags($this->_meta_keywords, '', true);
-
         if (!TOPIC_hasMultiTopicAccess('topic')) {
             // user doesn't have access to one or more topics - bail
             return STORY_NO_ACCESS_TOPIC;
         }
 
         if (($_CONF['storysubmission'] == 1) && !SEC_hasRights('story.submit')) {
+            // Apply HTML filter to the text just before save
+            // with the permissions of current editor
+            $this->_introtext = GLText::applyHTMLFilter(
+                $this->_introtext,
+                $this->_postmode,
+                'story.edit',
+                $this->_text_version
+            );
+            $this->_bodytext = GLText::applyHTMLFilter(
+                $this->_bodytext,
+                $this->_postmode,
+                'story.edit',
+                $this->_text_version
+            );
+
+            // Remove any autotags the user doesn't have permission to use
+            $introText = PLG_replaceTags($this->_introtext, '', true);
+            $bodyText = PLG_replaceTags($this->_bodytext, '', true);
+            $metaDescription = PLG_replaceTags($this->_meta_description, '', true);
+            $metaKeyWords = PLG_replaceTags($this->_meta_keywords, '', true);
+
             $sid = DB_escapeString($this->_sid);
             $title = DB_escapeString($this->_title);
 
@@ -1177,17 +1192,7 @@ class Article
             if (!isset($_CONF['show_topic_icon'])) {
                 $_CONF['show_topic_icon'] = 1;
             }
-            /*
-                        if (DB_getItem($_TABLES['topics'], 'archive_flag', "tid = '{$tmptid}'") == 1) { // A bug using undefined variable $tmptid
-                            $this->_frontpage = 0;
-                        } elseif (isset($_CONF['frontpage'])) {
-                            $this->_frontpage = $_CONF['frontpage'];
-                        } else {
-                            $this->_frontpage = 1;
-                        }
 
-                        $this->_oldsid = $this->_sid; // dead code
-            */
             $this->_date = mktime();
             $this->_featured = 0;
             $this->_commentcode = $_CONF['comment_code'];
