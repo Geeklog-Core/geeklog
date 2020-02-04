@@ -62,11 +62,11 @@
 {!endif}
       <button type="submit" name="{nprefix}mode" value="{lang_preview}" class="uk-button uk-button-default">{lang_preview}</button>
 {!if allow_delete}
-      <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger g-recaptcha" onclick="return confirm('{confirm_message}');"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_delete}</button>
+      <button type="submit" name="{nprefix}mode" value="{lang_delete}" class="uk-button uk-button-danger g-recaptcha" onclick="return confirm('{confirm_message}');"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_delete}</button>
 {!endif}
       <button type="submit" name="{nprefix}mode" value="{lang_cancel}" class="uk-button uk-button-default">{lang_cancel}</button>
       <input type="hidden" name="formtype" value="{formtype}"{xhtml}>
-{!if allow_notify}          
+{!if allow_notify}
       <div class="uk-margin-top"><input type="checkbox" name="notify"{notify_checked}>{lang_notify}</div>
 {!endif}
     </div>
