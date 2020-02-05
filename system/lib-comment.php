@@ -220,7 +220,7 @@ function CMT_commentBar($sid, $title, $type, $order, $mode, $ccode = 0)
 function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false, $preview = false, $commentCode = 0,
                         $commentPage = 1)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG03, $MESSAGE, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG03, $LANG_ADMIN, $MESSAGE, $_IMAGE_TYPE;
 
     $indent = 0;  // begin with 0 indent
     $retval = ''; // initialize return value
@@ -286,7 +286,9 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
     }
 
     $commentMode = Geeklog\Input::fRequest(CMT_MODE, '');
-    $submit = (($commentMode == $LANG03[29]) || ($commentMode == $LANG03[35]));
+    // Do not create a new token if the following, as these items are handled later and need to compare the old token
+    // 'Submit Changes' || 'Save Changes to Queue' || 'Delete'
+    $submit = (($commentMode == $LANG03[29]) || ($commentMode == $LANG03[35]) || ($commentMode == $LANG_ADMIN['delete']));
     $token = '';
     if ($delete_option && !$preview && !$submit) {
         $token = SEC_createToken();
