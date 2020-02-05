@@ -344,7 +344,8 @@ $LANG_ERROR = array(
     16 => 'Topic IDs and Names have changed from 128 to 75. It has been detected you need to modify 1 or more topic ids before this upgrade can proceed.',
     17 => 'Professional Theme support has been dropped from Geeklog. If you are currently using the Professional theme or Professional_css theme from Geeklog 2.1.1 or older your website may not function properly.',
     18 => 'Comment Signatures',
-    19 => "Comment Signatures before Geeklog 2.2.0 where stored with the comment. Now they are added when the comment is viewed. For backwards compatibility the upgrade will remove all comment signatures stored directly\n    with the comment  (so comment signatures will not display twice).",
+    19 => "Comment Signatures before Geeklog 2.2.0 where stored with the comment. Now they are added when the comment is viewed. For backwards compatibility the upgrade will remove all comment signatures stored directly
+    with the comment  (so comment signatures will not display twice).",
     20 => 'Plugin Compatibility',
     21 => 'Geeklog internally has undergone some changes which may affect compatibility of some older plugins which have not been updated in a while. Please make sure all the plugins you have installed have been updated to the latest version before upgrading Geeklog to v2.2.0.<br><br>If you still wish to upgrade Geeklog to v2.2.0 and you are not sure about a plugin please post a question about it on our <a href="https://www.geeklog.net/forum/index.php?forum=2" target="_blank">Geeklog Forum</a>. Else, you can also disable or uninstall the plugin and then perform the Geeklog upgrade.<br><br>If you do perform the upgrade and run into problems you can then use the <a href="/admin/install/rescue.php">Geeklog Emergency Rescue Tool</a> to disable the plugin with the issue.',
     22 => 'Default Security Group Assignments',
@@ -382,9 +383,9 @@ $LANG_HELP = array(
     'site_mail' => 'זוהי הכתובת החוזרת בכל הודעות האימייל שישלחו מ-Geeklog ובמידע צרו קשר שמוצג בהזנות סינדיקציה.',
     'noreply_mail' => 'זוהי כתובת השולח של הודעות אימייל שנשלחות על ידי המערכת כשמשתמשים נרשמים וכדומה. היא צריכה להיות זהה לכתובת האימייל של האתר או להיות כתובת שלא מקבלת הודעות כדי למנוע מספאמרים להשיג את כתובת האימייל שלכם על ידי הרשמה לאתר. אם היא לא זהה לכתובת הרגילה, תהיה הודעה בהודעות שישלחו שלא מומלץ לענות להן.',
     'utf8' => 'Indicate whether to use UTF-8 as the default character set for your site (unless your database collation is already UTF-8 then the UTF-8 character sets will be used automatically). Recommended for multi-lingual setups and required for emoji support.<br><br>This will set the database character set to UTF-8. If you have <strong>checked</strong> this setting, make sure your database collation is compatible with the character set (for MySQL usually this is either <strong>utf8_general_ci</strong> or, if you wish to support emojis <strong>utf8mb4_general_ci</strong>). <em>Checking this will not change the collation of your database, this must be done manually before you proceed with the install.</em><br><br>The Geeklog site English Language default character set is \'iso-8859-1\' (Latin-1) which is compatible with the database character set of \'latin1\' (latin1_swedish_ci) for MySQL. For new installs changing the language of the install may change the character sets used. Some of these are older legacy encoding standards that supports a limited number of languages. If you leave \'Use UTF-8\' unchecked your installs default language selection character set will be used.',
-    'charactersets' => 'Here are the Language character sets supported by the Geeklog Install along with their corresponding database character sets and recommended database collations. More information on character sets and database collations can be found in the <a href="/docs/english/install.html">Geeklog Installation Docs</a>.
-    <div class="uk-overflow-auto">
-    <table class="uk-table uk-table-striped">
+    'charactersets' => "Here are the Language character sets supported by the Geeklog Install along with their corresponding database character sets and recommended database collations. More information on character sets and database collations can be found in the <a href=\"/docs/english/install.html\">Geeklog Installation Docs</a>.
+    <div class=\"uk-overflow-auto\">
+    <table class=\"uk-table uk-table-striped\">
         <thead>
             <tr>
                 <th>Language</th><th>Site Language Character Set</th><th>MySQL DB Character Set</th><th>MySQL DB Collation</th><th>PostgreSQL DB Character Set</th><th>PostgreSQL DB Collation</th>
@@ -417,7 +418,7 @@ $LANG_HELP = array(
             </tr>
         </tbody>
     </table>
-    </div>',
+    </div>",
     'migrate_file' => 'ביחרו את קובץ הגיבוי שברצונכם שינדוד. הוא יכול להיות קובץ קיים בספריית "backups" שלכם או שתוכלו להעלות קובץ מהמחשב שלכם. לחילופין, הנכם יכולים גם לנייד את התכנים הנוכחיים של מאגר המידע.',
     'plugin_upload' => 'ביחרו ארכיון plugin (בצורת zip, tar.gz או tgz) בשביל להעלות ולהתקין.'
 );
@@ -489,7 +490,7 @@ $LANG_LABEL = array(
     'site_mail'      => $LANG_INSTALL[48],
     'noreply_mail'   => $LANG_INSTALL[49],
     'utf8'           => $LANG_INSTALL[92],
-    'charactersets'  => $LANG_INSTALL[123],
+	'charactersets'  => $LANG_INSTALL[123],
     'migrate_file'   => $LANG_MIGRATE[6],
     'plugin_upload'  => $LANG_PLUGINS[10]
 );

@@ -352,7 +352,8 @@ $LANG_ERROR = array(
     16 => '話題IDと話題の最大長が128文字から75文字へ変更されました。アップグレードを進める前に修正する必要のある話題IDを検出しました。',
     17 => 'Professionalテーマはサポートされなくなりました。Geeklog 2.1.1以前からProfessionalテーマやProfessional_cssテーマを使っている場合はサイトが正常に機能しなくなる可能性があります。',
     18 => 'コメントの署名',
-    19 => "Geeklog 2.2.0より前のバージョンでは、コメントの署名はコメントともに保存されていました。現在のバージョンではコメントが表示されるときに署名が追加されます。後方互換性のためにアップグレードの際に保存されている署名をすべて削除します。\n(これにより署名が二重に表示されることがなくなります。)",
+    19 => "Geeklog 2.2.0より前のバージョンでは、コメントの署名はコメントともに保存されていました。現在のバージョンではコメントが表示されるときに署名が追加されます。後方互換性のためにアップグレードの際に保存されている署名をすべて削除します。
+(これにより署名が二重に表示されることがなくなります。)",
     20 => 'プラグインの互換性',
     21 => 'Geeklogの内部構造の変更によりしばらく更新されていない一部の古いプラグインと互換性がなくなっている可能性があります。Geeklog 2.2.0へアップグレードする前に、インストール済みのすべてのプラグインを最新のものにしてください。<br><br>Geeklog 2.2.0へアップグレードしたいが、プラグインに関して自信を持てない場合は <a href="https://www.geeklog.net/forum/index.php?forum=2" target="_blank">Geeklog Forum</a> で質問してください。または、該当プラグインを無効化ないしアンインストールしてからGeeklog本体のアップグレードを行ってください。<br><br>アップグレードの際に問題が生じる場合は、<a href="/admin/install/rescue.php">緊急レスキューツール</a>を使用して、該当プラグインを無効にすることができます。',
     22 => 'デフォルトのセキュリティグループの割り当て',
@@ -390,9 +391,9 @@ $LANG_HELP = array(
     'site_mail' => 'サイト管理者のEmailアドレスを入力します。',
     'noreply_mail' => 'サイト管理者の No-Reply Email (返信を受け付けないEmailアドレス)を入力します。',
     'utf8' => 'サイトの文字セットの既定値としてUTF-8を用いるかどうかを指定します(データベースでUTF-8が使用可能な場合は、自動的にUTF-8を使用します)。多言語サイトを構築する場合にUTF-8を推奨します。絵文字をサポートする場合はUTF-8は必須です。<br><br>チェックするとデータベースの文字セットをUTF-8に設定します。<strong>チェックする場合は</strong>、データベースの照合順序が文字セットと互換性があることを確認してください(普通、照合順序は<strong>utf8_general_ci</strong>か、絵文字をサポートしたい場合は<strong>utf8mb4_general_ci</strong>)です。<em>ここをチェックしてもデータベースの照合順序が変わるわけではありません。インストールを行う前に手動で行う必要があります。</em><br><br>Geeklogのサイトの文字セットの既定値は \'iso-8859-1\' (Latin-1) で、MySQLの文字セット \'latin1\' (latin1_swedish_ci) と互換性があります。インストールに使用する言語を変更すると、使用する文字セットも変わります。中には限られた数の言語しかサポートしていない伝統的な古い文字セットもあります。\'UTF-8を使用する\' のチェックをはずすと、言語ごとの既定の文字セットを使用します。',
-    'charactersets' => '以下に示すのは、Geeklogがインストール時にサポートする言語の文字セットと対応するデータベースの文字セット、推奨するデータベースの照合順序です。文字セットとデータベースの文字セット/照合順序に関する詳しい情報は、<a href="/docs/english/install.html">Geeklogインストールドキュメント</a>をご覧ください。
-    <div class="uk-overflow-auto">
-    <table class="uk-table uk-table-striped">
+    'charactersets' => "以下に示すのは、Geeklogがインストール時にサポートする言語の文字セットと対応するデータベースの文字セット、推奨するデータベースの照合順序です。文字セットとデータベースの文字セット/照合順序に関する詳しい情報は、<a href=\"/docs/english/install.html\">Geeklogインストールドキュメント</a>をご覧ください。
+    <div class=\"uk-overflow-auto\">
+    <table class=\"uk-table uk-table-striped\">
         <thead>
             <tr>
                 <th>言語</th><th>サイトの文字セット</th><th>MySQLの文字セット</th><th>MySQLの照合順序</th><th>PostgreSQLの文字セット</th><th>PostgreSQLの照合順序</th>
@@ -425,7 +426,7 @@ $LANG_HELP = array(
             </tr>
         </tbody>
     </table>
-    </div>',
+    </div>",
     'migrate_file' => '移行するバックアップファイル(*.sql)を選択します。"backups"ディレクトリ内のファイルから、あるいはあなたのコンピュータからファイルをアップロードできます。または、データベースの現在の内容を移行することもできます。',
     'plugin_upload' => 'アップロードするプラグインの圧縮ファイル(.zip, .tar.gz, .tgzファーマット)を選んでインストールしてください。'
 );
@@ -497,7 +498,7 @@ $LANG_LABEL = array(
     'site_mail'      => $LANG_INSTALL[48],
     'noreply_mail'   => $LANG_INSTALL[49],
     'utf8'           => $LANG_INSTALL[92],
-    'charactersets'  => $LANG_INSTALL[123],
+	'charactersets'  => $LANG_INSTALL[123],
     'migrate_file'   => $LANG_MIGRATE[6],
     'plugin_upload'  => $LANG_PLUGINS[10]
 );
