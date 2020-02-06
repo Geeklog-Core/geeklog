@@ -63,7 +63,8 @@ TOPIC_getTopic('staticpages', $page);
 // from comments display refresh:
 if (isset($_REQUEST['order'])) {
     $comment_order = Geeklog\Input::fRequest('order');
-    $comment_mode = Geeklog\Input::fRequest('mode');
+    //$comment_mode = Geeklog\Input::fRequest('mode');
+    $comment_mode = Geeklog\Input::fRequest('mode', Geeklog\Input::fRequest('format', ''));
     if (isset($_REQUEST['cpage'])) {
         $comment_page = Geeklog\Input::fRequest('cpage');
     } else {

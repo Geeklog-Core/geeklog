@@ -1458,7 +1458,7 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
                 case 'date-created':
                     $props['date-created'] = $A['c_unixdate'];
                     break;
-                                    
+
                 case 'date-modified':
                     $props['date-modified'] = $A['m_unixdate'];
                     break;
@@ -1568,21 +1568,27 @@ function plugin_getconfigtooltip_polls($id)
     return;
 }
 
+
 /**
- * Provide URL and ID for the link to a comment's parent
+ * Provide URL for the link to a comment's parent item.
+ * NOTE: The Plugin API does not support $_CONF['url_rewrite'] here,
+ *       so we'll end up with a non-rewritten URL ...
  *
- * @return   array   array consisting of the base URL and the ID name
+ * @return   string   string of URL
  */
-function plugin_getcommenturlid_polls()
+function plugin_getcommenturlid_polls($id)
 {
     global $_CONF;
 
-    $tmp = array(
-        $_CONF['site_url'] . '/polls/index.php',
-        'pid',
-    );
+    // Cannot use COM_buildURL as comment stuff does not support URL Rewrite - $retval = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $id);
+    $retval = $_CONF['site_url'] . '/polls/index.php?pid=' . $id;
 
-    return $tmp;
+    //  If polls.php is the calling file we can figure out if results of the poll are showing or the actual poll form
+    if (strpos($_SERVER['PHP_SELF'], '/polls/index.php') !== false && -1 == ((int) Geeklog\Input::fGet('aid', 0))) {
+        $retval .= '&amp;aid=-1';
+    }
+
+    return $retval;
 }
 
 /**

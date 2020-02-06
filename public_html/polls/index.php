@@ -131,7 +131,8 @@ if (isset($_REQUEST['pid'])) {
 }
 
 $order = Geeklog\Input::fRequest('order', '');
-$mode = Geeklog\Input::fRequest('mode', '');
+//$mode = Geeklog\Input::fRequest('mode', '');
+$mode = Geeklog\Input::fRequest('mode', Geeklog\Input::fRequest('format', ''));
 $page = (int) Geeklog\Input::fRequest('cpage', 1);
 $msg = (int) Geeklog\Input::fRequest('msg', 0);
 

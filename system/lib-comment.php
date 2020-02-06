@@ -46,6 +46,7 @@ if ($_CONF['allow_user_photo']) {
 }
 
 define('COMMENT_ON_SAME_PAGE', ($_CONF['comment_on_same_page'] && !CMT_isCommentPage()));
+global $CMT_formVariablePrefix; // Need to do this as lib-comment is not always required where we think
 $CMT_formVariablePrefix = COMMENT_ON_SAME_PAGE ? 'cmt_' : ''; // this prefix is used in functions as a global variable in this library only
 define('CMT_CID', $CMT_formVariablePrefix . 'cid');
 define('CMT_SID', $CMT_formVariablePrefix . 'sid');
