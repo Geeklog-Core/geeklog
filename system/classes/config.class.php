@@ -31,6 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\Cache;
 use Geeklog\ConfigInterface;
 
 require_once __DIR__ . '/ConfigInterface.php';
@@ -581,6 +582,8 @@ class config implements ConfigInterface
         if ($set) {
             $this->config_array[$group][$param_name] = $default_value;
         }
+
+        Cache::delete('configuration.autocomplete_data');
     }
 
     /**
@@ -641,6 +644,7 @@ class config implements ConfigInterface
             " WHERE group_name='{$Qargs[4]}' AND name='{$Qargs[0]}'";
 
         $this->_DB_escapedQuery($sql, 1);
+        Cache::delete('configuration.autocomplete_data');
     }
 
     /**
@@ -656,6 +660,7 @@ class config implements ConfigInterface
             array(DB_escapeString($param_name), DB_escapeString($group))
         );
         unset($this->config_array[$group][$param_name]);
+        Cache::delete('configuration.autocomplete_data');
     }
 
     /**
@@ -1924,6 +1929,11 @@ class config implements ConfigInterface
     {
         global $LANG_configsections, $LANG_confignames, $LANG_fs, $LANG_tab, $LANG_CONFIG;
 
+        $data = Cache::get('configuration.autocomplete_data', null);
+        if (is_string($data)) {
+            return $data;
+        }
+
         $permitted_groups = $this->_get_groups();
         $retval = array();
 
@@ -1993,7 +2003,10 @@ class config implements ConfigInterface
         }
         $retval = implode(',', $retval);
 
-        return "var autocomplete_data = [{$retval}];";
+        $data = "var autocomplete_data = [{$retval}];";
+        Cache::set('configuration.autocomplete_data', $data, 0);
+
+        return $data;
     }
 
     /**

@@ -1271,7 +1271,7 @@ class Resource
         if (count($this->jsBlocks['footer']) > 0) {
             $code = implode(PHP_EOL, $this->jsBlocks['footer']);
 
-            if (!$this->debug) {
+            if (!$this->debug && (stripos(COM_getCurrentURL(), 'configuration.php') === false)) {
                 $code = JSMin::minify($code);
             }
 
