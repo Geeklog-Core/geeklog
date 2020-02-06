@@ -417,11 +417,19 @@ function SEC_hasAccess($owner_id, $group_id, $perm_owner, $perm_group, $perm_mem
  *
  * @param        string|array $features Features to check
  * @param        string       $operator Either 'and' or 'or'. Default is 'and'.  Used if checking more than one feature.
+ * @param    int    $uid     (optional) user ID else current user
  * @return       boolean     Return true if current user has access to feature(s), otherwise false.
  */
-function SEC_hasRights($features, $operator = 'AND')
+function SEC_hasRights($features, $operator = 'AND', $uid = 0)
 {
-    global $_RIGHTS, $_SEC_VERBOSE;
+    global $_RIGHTS, $_SEC_VERBOSE, $_USER;
+
+    if (empty($uid)) {
+		// Then use current user rights
+		$userRights = $_RIGHTS;
+    } else {
+		$userRights = explode(',', SEC_getUserPermissions(0, $uid));
+	}
 
     if (is_string($features) && strstr($features, ',')) {
         $features = explode(',', $features);
@@ -432,18 +440,18 @@ function SEC_hasRights($features, $operator = 'AND')
         for ($i = 0; $i < count($features); $i++) {
             if ($operator == 'OR') {
                 // OR operator, return as soon as we find a true one
-                if (in_array($features[$i], $_RIGHTS)) {
+                if (in_array($features[$i], $userRights)) {
                     if ($_SEC_VERBOSE) {
-                        COM_errorLog('SECURITY: user has access to ' . $features[$i], 1);
+                        COM_errorLog("SECURITY: user $uid has access to " . $features[$i], 1);
                     }
 
                     return true;
                 }
             } else {
                 // this is an "AND" operator, bail if we find a false one
-                if (!in_array($features[$i], $_RIGHTS)) {
+                if (!in_array($features[$i], $userRights)) {
                     if ($_SEC_VERBOSE) {
-                        COM_errorLog('SECURITY: user does not have access to ' . $features[$i], 1);
+                        COM_errorLog("SECURITY: user $uid does not have access to " . $features[$i], 1);
                     }
 
                     return false;
@@ -453,13 +461,13 @@ function SEC_hasRights($features, $operator = 'AND')
 
         if ($operator == 'OR') {
             if ($_SEC_VERBOSE) {
-                COM_errorLog('SECURITY: user does not have access to ' . $features[$i], 1);
+                COM_errorLog("SECURITY: user $uid does not have access to " . $features[$i], 1);
             }
 
             return false;
         } else {
             if ($_SEC_VERBOSE) {
-                COM_errorLog('SECURITY: user has access to ' . $features[$i], 1);
+                COM_errorLog("SECURITY: user $uid has access to " . $features[$i], 1);
             }
 
             return true;
@@ -467,14 +475,14 @@ function SEC_hasRights($features, $operator = 'AND')
     } else {
         // Check the one value
         if ($_SEC_VERBOSE) {
-            if (in_array($features, $_RIGHTS)) {
-                COM_errorLog('SECURITY: user has access to ' . $features, 1);
+            if (in_array($features, $userRights)) {
+                COM_errorLog("SECURITY: user $uid has access to " . $features, 1);
             } else {
-                COM_errorLog('SECURITY: user does not have access to ' . $features, 1);
+                COM_errorLog("SECURITY: user $uid does not have access to " . $features, 1);
             }
         }
 
-        return in_array($features, $_RIGHTS);
+        return in_array($features, $userRights);
     }
 }
 
