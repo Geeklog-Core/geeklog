@@ -2158,10 +2158,10 @@ function CMT_sendReplyNotification($A, $send_self = false)
 
         $mailBody = sprintf($LANG03[41], $name) . LB . LB;
         $mailBody .= sprintf($LANG03[38], $title) . LB . LB;
-        $mailBody .= $LANG03[39] . LB . '<' . $commentUrl . '?mode=view&cid='
-            . $A['cid'] . '&format=nested' . '>' . LB . LB;
-        $mailBody .= $LANG03[40] . LB . '<' . $commentUrl
-            . '?mode=unsubscribe&key=' . $A['deletehash'] . '>' . LB;
+        $mailBody .= $LANG03[39] . LB . $commentUrl . '?mode=view&cid='
+            . $A['cid'] . '&format=nested' . LB . LB;
+        $mailBody .= $LANG03[40] . LB . $commentUrl
+            . '?mode=unsubscribe&key=' . $A['deletehash'] . LB;
 
         $email = DB_getItem($_TABLES['users'], 'email', "uid = {$A['uid']}");
         if (!empty($email)) {

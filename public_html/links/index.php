@@ -441,8 +441,8 @@ if (($mode === 'report') && !COM_isAnonUser()) {
 
         $editurl = $_CONF['site_admin_url']
             . '/plugins/links/index.php?mode=edit&lid=' . $lid;
-        $msg = $LANG_LINKS[119] . LB . LB . "$title, <$url>" . LB . LB
-            . $LANG_LINKS[120] . LB . '<' . $editurl . '>' . LB . LB
+	$msg = $LANG_LINKS[119] . LB . LB . "{$title}, {$url}" . LB . LB
+            . $LANG_LINKS[120] . LB . $editurl . LB . LB
             . $LANG_LINKS[121] . $_USER['username'] . ', IP: '
             . $_SERVER['REMOTE_ADDR'];
         COM_mail($_CONF['site_mail'], $LANG_LINKS[118], $msg);
