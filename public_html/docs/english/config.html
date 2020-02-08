@@ -1280,20 +1280,21 @@ the admin panel.</p>
   <td valign="top">0</td>
   <td valign="top">Default value for new articles: Comments enabled (0) or disabled (-1)</td></tr>
 <tr>
+    <td valign="top"><a name="desc_commentsubmission">commentsubmission</a></td>
+    <td valign="top">0</td>
+    <td valign="top">Enable (1) or disable (0) comment submission queue.</td></tr>
+<tr>
   <td valign="top"><a name="desc_comment_edit">comment_edit</a></td>
   <td valign="top">0</td>
-  <td valign="top">Whether to allow users and admins (i.e. those with
-    comment.edit permission) to edit comments.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_commentsubmission">commentsubmission</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Enable (1) or disable (0) comment submission queue.</td></tr>
+  <td valign="top">Allows users to edit a comment within a certain time period (see <a href="#desc_comment_edittime">below</a>).
+      Anonymous users (those that did not register an account) can never edit their comments while admins can always edit comments (i.e. those with
+    comment.edit permission). If Comment Submissions are Queued, then in most cases this setting should be set to false (0) as once a comment is submitted,
+    a user does not have access to it until it has been approved.</td></tr>
 <tr>
   <td valign="top"><a name="desc_comment_edittime">comment_edittime</a></td>
   <td valign="top">1800</td>
   <td valign="top">How long (in seconds) a comment is editable for the user who
-    submitted it. Requires that comments are editable (see <a href="#desc_comment_edit">above</a>). Anonymous users (those that did not register an account) can
-    never edit their comments while admins can always edit comments.</td></tr>
+    submitted it. Requires that comments are editable (see <a href="#desc_comment_edit">above</a>).</td></tr>
 <tr>
   <td valign="top"><a name="desc_article_comment_close_enabled">article_comment_close_enabled</a></td>
   <td valign="top">0</td>

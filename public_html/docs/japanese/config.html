@@ -1140,17 +1140,21 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">コメント機能を有効にする</td>
   <td valign="top">新規記事に対するコメント機能の有効・無効の初期値を指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_comment_edit">コメントの編集を許可する(comment_edit)</a></td>
-  <td valign="top">いいえ</td>
-  <td valign="top">「はい」にすると、コメント編集権限を持つユーザーあるいは管理者がコメントを編集できるようになります。</td></tr>
+  <td valign="top"><a name="desc_commentsubmission">commentsubmission</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Enable (1) or disable (0) comment submission queue.</td></tr>
 <tr>
-  <td valign="top"><a name="desc_commentsubmission">承認待ちリストに入れる(commentsubmission) </a></td>
-  <td valign="top">いいえ</td>
-  <td valign="top">「はい」にすると、コメントを承認待ちリストに入れます。</td></tr>
+  <td valign="top"><a name="desc_comment_edit">comment_edit</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Allows users to edit a comment within a certain time period (see <a href="#desc_comment_edittime">below</a>).
+    Anonymous users (those that did not register an account) can never edit their comments while admins can always edit comments (i.e. those with
+  comment.edit permission). If Comment Submissions are Queued, then in most cases this setting should be set to false (0) as once a comment is submitted,
+  a user does not have access to it until it has been approved.</td></tr>
 <tr>
-  <td valign="top"><a name="desc_comment_edittime">コメントの編集時間(秒) (comment_edittime)</a></td>
+  <td valign="top"><a name="desc_comment_edittime">comment_edittime</a></td>
   <td valign="top">1800</td>
-  <td valign="top">コメント編集権限を持ったユーザーが、コメント投稿後、コメントを編集できる期間を秒単位で指定します。ゲストユーザーは編集できません。</td></tr>
+  <td valign="top">How long (in seconds) a comment is editable for the user who
+  submitted it. Requires that comments are editable (see <a href="#desc_comment_edit">above</a>).</td></tr>
 <tr>
   <td valign="top"><a name="desc_article_comment_close_enabled">自動的にコメントの受付を停止(既定値)(article_comment_close_enabled</a>)</td>
   <td valign="top">はい</td>
