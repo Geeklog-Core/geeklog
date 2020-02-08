@@ -796,7 +796,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
         $tot_pages = ceil($count / $limit);
         $is_comment_page = CMT_isCommentPage();
         if ($is_comment_page) {
-            $pLink[0] = "comment.php?sid=$sid";
+            $pLink[0] = "comment.php?sid=$sid&amp;type=$type"; // need type here as on comment.php and need to figure out where sid is from
             $pLink[0] .= "&amp;order=$order&amp;format=$mode";
         } else {
             $pLink[0] = $pluginLink;
