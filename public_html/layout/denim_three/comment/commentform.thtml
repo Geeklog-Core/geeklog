@@ -82,7 +82,7 @@
 <!-- END record_edit -->
 
 <!-- BEGIN username_anon -->
-<input type="text" name="username" size="16" value="{username_value}" maxlength="32" class="uk-input"{xhtml}> ({lang_anonymous})
+<input type="text" name="{nprefix}username" size="16" value="{username_value}" maxlength="32" class="uk-input"{xhtml}> ({lang_anonymous})
 <!-- END username_anon -->
 
 {# end {templatelocation} #}
