@@ -1531,7 +1531,6 @@ function TOPIC_breadcrumbs($type, $id, $sub_type = '')
             // Setup structured data for breadcrumb list
             $_STRUCT_DATA->add_BreadcrumbList('core-breadcrumb', $A['tid']);
 
-            $breadcrumb_a = array();
             $breadcrumb_a[] = $A;
             $parent_id = $A['parent_id'];
             while ($parent_id != TOPIC_ROOT) {
@@ -1551,7 +1550,6 @@ function TOPIC_breadcrumbs($type, $id, $sub_type = '')
             // Now flip array so it is printed out in proper order (top to bottom)
             $breadcrumb_a = array_reverse($breadcrumb_a);
 
-            $retval = '';
             $count = 0;
             foreach ($breadcrumb_a as $value) {
                 $count++;
