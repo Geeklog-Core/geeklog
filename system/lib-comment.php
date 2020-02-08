@@ -559,6 +559,9 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             } else {
                 $reply_link = $_CONF['site_url'] . '/comment.php?sid=' . $A['sid']
                     . '&amp;pid=' . $A['cid'] . '&amp;type=' . $A['type'];
+                if ($_CONF['show_comments_at_replying'] == true) {
+                    $reply_link .= '#commenteditform';
+                }
             }
             $reply_option = COM_createLink($LANG01[43], $reply_link, array('rel' => 'nofollow')) . ' | ';
             $template->set_var('reply_option', $reply_option);
