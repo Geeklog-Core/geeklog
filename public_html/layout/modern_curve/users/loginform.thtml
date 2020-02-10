@@ -25,8 +25,8 @@
           <div style="clear:both"></div>
 
         <ul class="navi">
-          <li>{lang_newreglink}</li>
-          <li><a href="{site_url}/users.php?mode=getpassword" rel="nofollow">{lang_forgetpassword}</a></li>
+          {!if lang_newreglink}<li>{lang_newreglink}</li>{!endif}
+          {!if lang_forgetpassword}<li><a href="{site_url}/users.php?mode=getpassword" rel="nofollow">{lang_forgetpassword}</a></li>{!endif}
         </ul>
      </fieldset>
     </form>
