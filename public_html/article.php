@@ -115,7 +115,7 @@ if ($articlePage == 0) {
 
 $query = Geeklog\Input::get('query', '');
 
-$commentOrder = Geeklog\Input::fGet('order', '');
+$commentOrder = Geeklog\Input::fRequest('order', '');
 $commentPage = (int) Geeklog\Input::fGet('cpage', 0);
 
 if (!empty($_REQUEST['sid'])) {
