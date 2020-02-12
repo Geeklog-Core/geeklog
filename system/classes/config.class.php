@@ -583,7 +583,9 @@ class config implements ConfigInterface
             $this->config_array[$group][$param_name] = $default_value;
         }
 
-        Cache::delete('configuration.autocomplete_data');
+        if (!defined('GL_INSTALL_ACTIVE')) {
+            Cache::delete('configuration.autocomplete_data');
+        }
     }
 
     /**
@@ -644,7 +646,10 @@ class config implements ConfigInterface
             " WHERE group_name='{$Qargs[4]}' AND name='{$Qargs[0]}'";
 
         $this->_DB_escapedQuery($sql, 1);
-        Cache::delete('configuration.autocomplete_data');
+
+        if (!defined('GL_INSTALL_ACTIVE')) {
+            Cache::delete('configuration.autocomplete_data');
+        }
     }
 
     /**
@@ -660,7 +665,10 @@ class config implements ConfigInterface
             array(DB_escapeString($param_name), DB_escapeString($group))
         );
         unset($this->config_array[$group][$param_name]);
-        Cache::delete('configuration.autocomplete_data');
+
+        if (!defined('GL_INSTALL_ACTIVE')) {
+            Cache::delete('configuration.autocomplete_data');
+        }
     }
 
     /**
@@ -1929,9 +1937,11 @@ class config implements ConfigInterface
     {
         global $LANG_configsections, $LANG_confignames, $LANG_fs, $LANG_tab, $LANG_CONFIG;
 
-        $data = Cache::get('configuration.autocomplete_data', null);
-        if (is_string($data)) {
-            return $data;
+        if (!defined('GL_INSTALL_ACTIVE')) {
+            $data = Cache::get('configuration.autocomplete_data', null);
+            if (is_string($data)) {
+                return $data;
+            }
         }
 
         $permitted_groups = $this->_get_groups();
@@ -2004,7 +2014,10 @@ class config implements ConfigInterface
         $retval = implode(',', $retval);
 
         $data = "var autocomplete_data = [{$retval}];";
-        Cache::set('configuration.autocomplete_data', $data, 0);
+
+        if (!defined('GL_INSTALL_ACTIVE')) {
+            Cache::set('configuration.autocomplete_data', $data, 0);
+        }
 
         return $data;
     }
