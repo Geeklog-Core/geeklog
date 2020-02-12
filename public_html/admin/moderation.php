@@ -121,7 +121,7 @@ function usersubmissions($token, $approved = 0, $deleted = 0)
 
     // Get lists from plugins that support submissions
     $retval .= PLG_showModerationList($token);
-    
+
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
@@ -158,7 +158,7 @@ function itemlist($type, $token)
     if ($page < 1) {
         $page = 1;
     }
-    
+
     if ($type === 'comment') {
         $sql = "SELECT cid AS id,title,comment,date,uid,type,sid FROM {$_TABLES['commentsubmissions']} "
             . "ORDER BY date DESC";
@@ -291,9 +291,9 @@ function itemlist($type, $token)
     $form_arr = array('bottom' => '', 'top' => '');
     if ($numRows > 0) {
         // Anchor for paging
-        $page_anchor = "gl-moderation-" . $type; 
+        $page_anchor = "gl-moderation-" . $type;
         $form_arr['top'] .= '<span id="' . $page_anchor . '"></span>';;
-        
+
         $form_arr['bottom'] .= '<input type="hidden" name="type" value="' . $type . '"' . XHTML . '>' . LB
             . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"' . XHTML . '>' . LB
             . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
@@ -412,8 +412,6 @@ function moderation($mid, $action, $type, $count)
 
     $retval = '';
 
-    $sidArray = array();
-
     if (empty($type)) {
         // something is terribly wrong, bail
         $retval .= COM_errorLog("Submission type not set in moderation.php");
@@ -473,7 +471,7 @@ function moderation($mid, $action, $type, $count)
                     $A['title'] = DB_escapeString($A['title']);
                     $A['introtext'] = DB_escapeString($A['introtext']);
                     $A['bodytext'] = DB_escapeString($A['bodytext']);
-                    
+
                     $result = DB_query("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon,archive_flag FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
                     $T = DB_fetchArray($result);
                     if ($T['archive_flag'] == 1) {
@@ -490,23 +488,19 @@ function moderation($mid, $action, $type, $count)
                     } else {
                         $group_id = SEC_getFeatureGroup('story.edit');
                     }
-                    
+
                     DB_save($_TABLES['stories'], 'sid,uid,title,introtext,bodytext,related,date,show_topic_icon,commentcode,trackbackcode,postmode,frontpage,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
                         "'{$A['sid']}',{$A['uid']},'{$A['title']}','{$A['introtext']}','{$A['bodytext']}','{$A['related']}','{$A['date']}','{$_CONF['show_topic_icon']}','{$_CONF['comment_code']}','{$_CONF['trackback_code']}','{$A['postmode']}',$frontPage,{$A['owner_id']},$group_id,{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
-                    
+
                     DB_delete($_TABLES['storysubmission'], "$id", $mid[$i]);
-                    
+
                     $approved++;
 
                     PLG_itemSaved($A['sid'], 'article');
                     COM_rdfUpToDateCheck();
                 } elseif ($type === 'comment') {
-                    $sid = CMT_approveModeration($mid[$i]);
+                    CMT_approveModeration($mid[$i]);
                     $approved++;
-
-                    if (!in_array($sid, $sidArray)) {
-                        $sidArray[$i] = $sid;
-                    }
                 } else {
                     /**
                      * This is called in case this is a plugin. There may be some
@@ -521,16 +515,6 @@ function moderation($mid, $action, $type, $count)
                     $approved++;
                 }
                 break;
-        }
-    }
-
-    // after loop update comment tree and count for each story
-    if (count($sidArray) > 0) {
-        foreach ($sidArray as $sid) {
-            CMT_rebuildTree($sid);
-            // update comment count of stories;
-            $comments = DB_count($_TABLES['comments'], 'sid', $sid);
-            DB_change($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
         }
     }
 

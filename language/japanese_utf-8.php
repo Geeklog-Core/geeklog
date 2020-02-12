@@ -224,7 +224,7 @@ $LANG03 = array(
     3 => 'ログアウト',
     4 => 'アカウントを作成',
     5 => 'ユーザー名',
-    6 => 'コメントの投稿の前にログインしてください。アカウントを登録していなければ、下のフォームで登録してください。',
+    6 => 'This site requires you to be logged in to post a comment.If you have an account already (or need to create one), please <a href="/users.php">login here</a>.',
     7 => 'あなたは',
     8 => " 秒前にコメントしています。投稿と投稿の間は {$_CONF['commentspeedlimit']} 秒以上あけてください。",
     9 => 'コメント',
@@ -1986,7 +1986,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
+#
 # This here determines the order of the sentence "No new articles in 2 hrs"
 # order it so it makes sense in your language:
 # %i    item, "Articles"
@@ -2044,7 +2044,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-# 
+#
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2734,4 +2734,3 @@ $LANG_VALIDATION = array(
     'config_setting_lang_array' => 'それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください',
     'config_setting_lang_array_element_req' => '少なくとも1つキーを指定してください。それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください'
 );
-

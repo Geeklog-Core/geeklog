@@ -244,12 +244,14 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
  *
  * @param   int    $cid Comment to be deleted
  * @param   string $id  Item id to which $cid belongs
+ * @param   boolean $returnOption  Either return a boolean on success or not, or redirect
+ * @return  mixed        Based on $returnOption. false for failure or true for success, else a redirect for success or failure
  */
-function plugin_deletecomment_staticpages($cid, $id)
+function plugin_deletecomment_staticpages($cid, $id, $returnBoolean)
 {
     global $_CONF, $_TABLES, $_USER;
 
-    $retval = '';
+    $retval = false;
 
     $has_editPermissions = SEC_hasRights('staticpages.edit');
     $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['staticpage']} WHERE sp_id = '{$id}'");
@@ -260,14 +262,26 @@ function plugin_deletecomment_staticpages($cid, $id)
             $A['perm_members'], $A['perm_anon']) == 3
     ) {
         CMT_deleteComment($cid, $id, 'staticpages');
-        $url = COM_buildUrl($_CONF['site_url'] . '/staticpages/index.php?page='
-            . $id);
-        COM_redirect($url);
+
+        if ($returnBoolean) {
+            $retval = true;
+        } else {
+            $url = COM_buildUrl($_CONF['site_url'] . '/staticpages/index.php?page='
+                . $id);
+            COM_redirect($url);
+        }
     } else {
         COM_errorLog("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
             . "tried to illegally delete comment $cid from staticpage $id");
-        COM_redirect($_CONF['site_url'] . '/index.php');
+
+        if ($returnBoolean) {
+            $retval = false;
+        } else {
+            COM_redirect($_CONF['site_url'] . '/index.php');
+        }
     }
+
+    return $retval;
 }
 
 /**

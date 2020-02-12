@@ -1,0 +1,11 @@
+{# start {templatelocation} #}
+
+{start_block_postacomment}
+<div id="commenteditform">
+
+<p>{lang_comment_post_login_required}</p>
+
+</div>
+{end_block}
+
+{# end {templatelocation} #}

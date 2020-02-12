@@ -287,8 +287,8 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
     }
 
     $commentMode = Geeklog\Input::fRequest(CMT_MODE, '');
-    // Do not create a new token if the following, as these items are handled later and need to compare the old token
-    // 'Submit Changes' || 'Save Changes to Queue' || 'Delete'
+    // Do not create a new token if the following, as these items are handled later and need to compare the old token (this is currently checked in 2 spots in lib-comment)
+    // $submit can equal 'Submit Changes' || 'Save Changes to Queue' || 'Delete'
     $submit = (($commentMode == $LANG03[29]) || ($commentMode == $LANG03[35]) || ($commentMode == $LANG_ADMIN['delete']));
     $token = '';
     if ($delete_option && !$preview && !$submit) {
@@ -420,6 +420,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         // COMMENT edit rights
         $edit_option = false;
         if (isset($A['uid']) && isset($_USER['uid'])
+            && !COM_isAnonUser()
             && ($_USER['uid'] == $A['uid']) && ($_CONF['comment_edit'] == 1)
             && ((time() - $A['nice_date']) < $_CONF['comment_edittime'])
             && (DB_getItem($_TABLES['comments'], 'COUNT(*)',
@@ -903,7 +904,16 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
     if (COM_isAnonUser() &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))
     ) {
-        $retval .= SEC_loginRequiredForm();
+        if (COMMENT_ON_SAME_PAGE) {
+            $commentlogin = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'comment'));
+            $commentlogin->set_file(array('comment' => 'commentlogin.thtml'));
+            $commentlogin->set_var('start_block_postacomment', COM_startBlock($LANG03[1]));
+            $commentlogin->set_var('lang_comment_post_login_required', $LANG03[6]);
+            $commentlogin->set_var('end_block', COM_endBlock());
+            $retval .= $commentlogin->finish($commentlogin->parse('output', 'comment'));
+        } else {
+            $retval .= SEC_loginRequiredForm();
+        }
 
         return $retval;
     } else {
@@ -973,8 +983,10 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
 
             $_POST['comment'] = $newComment;
 
+            $errorComment = false;
             // Preview mode:
-            if (($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34]) && !empty($title) && !empty($comment)) {
+            if (($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34])) {
+            //if (($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34]) && !empty($title) && !empty($comment)) {
                 $start = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'comment'));
                 $start->set_file(array('comment' => 'startcomment.thtml'));
                 $start->set_var('hide_if_preview', 'style="display:none"');
@@ -1025,16 +1037,20 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                     $A['username'] = $A[CMT_USERNAME];
                 }
 
-                $thecomments = CMT_getComment($A, 'flat', $type, 'ASC', false,
-                    true);
+                $thecomments = CMT_getComment($A, 'flat', $type, 'ASC', false, true);
 
                 $start->set_var('comments', $thecomments);
+
                 $retval .= COM_startBlock($LANG03[14])
                     . $start->finish($start->parse('output', 'comment'))
                     . COM_endBlock();
-            } elseif ($mode == $LANG03[14]) {
-                $retval .= COM_showMessageText($LANG03[12], $LANG03[17]);
-                $mode = 'error';
+
+                // Add in error check for missing content during preview
+                //if ($mode == $LANG03[14] && (empty($title) || empty($comment))) {
+                if (empty($title) || empty($comment)) {
+                    $retval .= COM_showMessageText($LANG03[12], $LANG03[17]);
+                    $errorComment = true;
+                }
             }
 
             $permission = ($type == 'article') ? 'story.edit' : "$type.edit";
@@ -1200,9 +1216,11 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             $comment_template->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 
             if ($mode == 'editsubmission' OR $mode == 'edit' OR $mode == $LANG03[34] OR $mode == $LANG03[28]) {
-                $comment_template->set_var('allow_delete', true);
-                $comment_template->set_var('lang_delete', $LANG_ADMIN['delete']);
-                $comment_template->set_var('confirm_message', $MESSAGE[76]);
+                if (SEC_hasRights('comment.moderate')) {
+                    $comment_template->set_var('allow_delete', true);
+                    $comment_template->set_var('lang_delete', $LANG_ADMIN['delete']);
+                    $comment_template->set_var('confirm_message', $MESSAGE[76]);
+                }
             }
             if ($mode == 'editsubmission' OR $mode == $LANG03[34]) { // Preview Submission changes (for edit)
                 $comment_template->set_var('formtype', 'editsubmission');
@@ -1268,7 +1286,8 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 $comment_template->set_var('lang_save', $LANG03[11]);
             }
 
-            if (($_CONF['allow_reply_notifications'] == 1 && $uid != 1) && ($mode == '' || $mode == $LANG03[14] || $mode === 'error')) {
+            if (($_CONF['allow_reply_notifications'] == 1 && $uid != 1) && ($mode == '' || $mode == $LANG03[14] || $errorComment)) {
+            //if (($_CONF['allow_reply_notifications'] == 1 && $uid != 1) && ($mode == '' || $mode == $LANG03[14] || $mode === 'error')) {
                 $comment_template->set_var('allow_notify', true);
                 $comment_template->set_var('lang_notify', $LANG03[36]);
                 $checked = isset($_POST['notify']) ? ' checked="checked"' : '';
@@ -1285,7 +1304,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
 }
 
 /**
- * Save a comment
+ * Save a new comment
  *
  * @author   Vincent Furia, vinny01 AT users DOT sourceforge DOT net
  * @param    string $title    Title of comment
@@ -1455,7 +1474,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         if ($ret != 4) {
             // Update Comment Feeds
             COM_rdfUpToDateCheck('comment');
-            
+
             // Delete What's New block cache so it can get updated again
             if ($_CONF['whatsnew_cache_time'] > 0 AND !$_CONF['hidenewcomments']) {
                 $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
@@ -1847,7 +1866,7 @@ function CMT_sendReport($cid, $type)
 }
 
 /**
- * Handles a comment edit submission
+ * Handles a comment edit (saves it)
  *
  * @copyright Jared Wenerd 2008
  * @author    Jared Wenerd, wenerd87 AT gmail DOT com
@@ -1858,6 +1877,14 @@ function CMT_handleEditSubmit($mode = null)
 {
     global $_CONF, $_TABLES, $_USER, $LANG03;
 
+    // Befor displaying the comment edit form lets do some checks to see if user has appropriate permissions and we have good content for a save
+    if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
+        COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+            . 'to edit a comment without proper permission.');
+        COM_handle404($_CONF['site_url'] . '/index.php');
+    }
+
+    // get required data for checks
     $cid = (int) Geeklog\Input::fPost(CMT_CID, 0);
     $postmode = Geeklog\Input::fPost('postmode', '');
     if (SEC_hasRights('comment.moderate')) {
@@ -1881,28 +1908,52 @@ function CMT_handleEditSubmit($mode = null)
     $result = DB_query("SELECT cid, type, sid, uid FROM $table WHERE cid = $cid");
     list($cid, $type, $sid, $commentuid) = DB_fetchArray($result);
     if (empty($cid)) {
-        COM_errorLog("CMT_handleEditSubmit(): {{$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+        COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to edit a comment that does not exist.');
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
-    // check for bad input
-    if (empty($_POST['title']) || empty($_POST['comment']) || ($cid <= 0)) {
-        COM_errorLog("CMT_handleEditSubmit(): {{$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
-            . 'to edit a comment with one or more missing values.');
+    // check item for read permissions at least
+    if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
+        COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+            . "to edit a comment without proper permission for the {$type} with id {$sid}.");
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
-    $commentuid = DB_getItem($table, 'uid', "cid = '$cid'");
     $uid = 1;
     if (!empty($_USER['uid'])) {
         $uid = $_USER['uid'];
     }
 
-    //check permissions
+    // check comment permissions
     if ($uid != $commentuid && !SEC_hasRights('comment.moderate')) {
-        COM_errorLog("CMT_handleEditSubmit(): {{$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+        COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to edit a comment without proper permission.');
+        COM_handle404($_CONF['site_url'] . '/index.php');
+    }
+
+    // if own comment edit allowed for user then make sure within time limit
+    if ($table == $_TABLES['comments'] && $_CONF['comment_edit'] == 1 && !COM_isAnonUser() && $uid == $commentuid && !SEC_hasRights('comment.moderate')) {
+        if (!COM_isAnonUser()) {
+            $nice_date = DB_getItem($table, 'UNIX_TIMESTAMP(date)', "cid = $cid");
+            if ((time() - $nice_date) < $_CONF['comment_edittime']) {
+                // ALl is good continue on
+            } else {
+                COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                    . "to edit his own comment $cid after the comment edit time limit had expired.");
+                COM_handle404($_CONF['site_url'] . '/index.php');
+            }
+        } else {
+            COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                . "to edit his own comment $cid which is not allowed for anonymous users.");
+            COM_handle404($_CONF['site_url'] . '/index.php');
+        }
+    }
+
+    // check for bad input
+    if (empty($_POST['title']) || empty($_POST['comment']) || ($cid <= 0)) {
+        COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+            . 'to edit a comment with one or more missing values.');
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
@@ -2047,20 +2098,21 @@ function CMT_updateCommentcodes()
  *
  * @copyright Jared Wenerd 2008
  * @author    Jared Wenerd, wenerd87 AT gmail DOT com
+ * @param  string type  type of object comment belongs to
  * @param  string $sid  id of object comment belongs to
  * @param  int    $pid  id of parent comment
  * @param  int    $left id of left-hand successor
  * @return int          id of right-hand successor
  * @see       CMT_deleteComment
  */
-function CMT_rebuildTree($sid, $pid = 0, $left = 0)
+function CMT_rebuildTree($type, $sid, $pid = 0, $left = 0)
 {
     global $_TABLES;
 
     $right = $left + 1;
-    $result = DB_query("SELECT cid FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = $pid ORDER BY date ASC");
+    $result = DB_query("SELECT cid FROM {$_TABLES['comments']} WHERE type = '$type' AND sid = '$sid' AND pid = $pid ORDER BY date ASC");
     while (DB_numRows($result) != 0 && $A = DB_fetchArray($result)) {
-        $right = CMT_rebuildTree($sid, $A['cid'], $right);
+        $right = CMT_rebuildTree($type, $sid, $A['cid'], $right);
 
     }
     if ($pid != 0) {
@@ -2114,7 +2166,8 @@ function CMT_approveModeration($cid)
     $newCid = DB_insertId('', 'comments_cid_seq');
 
     DB_delete($_TABLES['commentsubmissions'], 'cid', $cid);
-    DB_change($_TABLES['commentnotifications'], 'cid', $newCid, 'mid', $cid);
+    // Update notification with new id and remove comment submission id
+    DB_query("UPDATE {$_TABLES['commentnotifications']} SET cid = {$newCid}, `mid` = NULL WHERE `mid` = {$cid}");
 
     // notify of new published comment
     if ($_CONF['allow_reply_notifications'] == 1 && $A['pid'] > 0) {
@@ -2140,7 +2193,14 @@ function CMT_approveModeration($cid)
         CACHE_remove_instance($cacheInstance);
     }
 
-    return $A['sid'];
+    // update comment tree
+    CMT_rebuildTree($A['type'], $A['sid']);
+
+    // Call plugins in case they want to update something
+    PLG_approveCommentSubmission($A['type'], $A['sid'], $newCid);
+
+    return array('type' => $A['type'],
+                 'sid' => $A['sid']);
 }
 
 /**
@@ -2219,6 +2279,8 @@ function CMT_handleSubmit($title, $sid, $pid, $type, $postMode, $uid)
 {
     global $_CONF;
 
+    // Calls plugin to check if user has permissions to submit comment for items
+    // Then Plugin will call CMT_saveComment for actual save of comment
     $display = PLG_commentSave($type, $title, Geeklog\Input::post('comment'), $sid, $pid, $postMode);
     if (!$display) {
         COM_handle404($_CONF['site_url'] . '/index.php');
@@ -2240,6 +2302,13 @@ function CMT_handleDelete($formType)
     global $_CONF, $_TABLES, $_USER;
 
     $display = '';
+
+    // check comment permissions for delete
+    if (!SEC_hasRights('comment.moderate')) {
+        COM_errorLog("CMT_handleDelete(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+            . 'to delete a comment without proper permission.');
+        COM_handle404($_CONF['site_url'] . '/index.php');
+    }
 
     $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
 
@@ -2266,7 +2335,7 @@ function CMT_handleDelete($formType)
         DB_delete($_TABLES['commentsubmissions'], 'cid', $cid);
         COM_redirect($_CONF['site_admin_url'] . '/moderation.php');
     } else {
-        $display = PLG_commentDelete($type, $cid, $sid);
+        $display = PLG_commentDelete($type, $cid, $sid, false);
         if (!$display) {
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -2323,7 +2392,93 @@ function CMT_handleView($format, $order, $page, $view = true)
 }
 
 /**
- * Handles a comment edit submission
+ * Handles a comment preview form
+ *
+ * @param  string $mode   'edit' or 'editsubmission'
+ * @param  string $format 'threaded', 'nested', or 'flat'
+ * @param  string $order  'ASC' or 'DESC' or blank
+ * @param  int    $page   Page number of comments to display
+ * @return string HTML (possibly a refresh)
+ */
+function CMT_handlePreview($title, $comment, $sid, $pid, $type, $mode, $postMode, $format, $order, $page)
+{
+    global $_TABLES, $LANG03, $_CONF, $_USER;
+
+    // Befor previewing the comment edit form lets do some checks to see if user has appropriate permissions
+    if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
+        COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+            . 'to preview a comment without proper permission.');
+        COM_handle404($_CONF['site_url'] . '/index.php');
+    }
+
+    // get required data for checks
+    $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
+    if ($cid > 0) {
+        if ($mode === $LANG03[34]) { // Preview Submission changes (for edit)) {
+            $table = $_TABLES['commentsubmissions'];
+        } else {
+            $table = $_TABLES['comments'];
+        }
+
+        // Check comment exist
+        $result = DB_query("SELECT cid, type, sid, uid FROM $table WHERE cid = $cid");
+        list($cid, $db_type, $db_sid, $commentuid) = DB_fetchArray($result);
+        if (empty($cid) || ($type != $db_type) || ($sid != $db_sid)) {
+            COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                . 'to preview a comment that does not exist.');
+            COM_handle404($_CONF['site_url'] . '/index.php');
+        } else{
+            $type = $db_type;
+            $sid = $db_sid;
+        }
+
+        $uid = 1;
+        if (!empty($_USER['uid'])) {
+            $uid = $_USER['uid'];
+        }
+
+        // check comment permissions
+        if (COM_isAnonUser()) {
+            COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                . "to preview an existing comment $cid which is not allowed for anonymous users.");
+            COM_handle404($_CONF['site_url'] . '/index.php');
+        }
+
+        if ($uid != $commentuid && !SEC_hasRights('comment.moderate')) {
+            COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                . 'to preview a comment without proper permission.');
+            COM_handle404($_CONF['site_url'] . '/index.php');
+        }
+
+        // if own comment edit allowed for user then make sure within time limit
+        if ($table == $_TABLES['comments'] && $_CONF['comment_edit'] == 1 && !COM_isAnonUser() && $uid == $commentuid && !SEC_hasRights('comment.moderate')) {
+            $nice_date = DB_getItem($table, 'UNIX_TIMESTAMP(date)', "cid = $cid");
+            if ((time() - $nice_date) < $_CONF['comment_edittime']) {
+                // ALl is good continue on
+            } else {
+                COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                    . "to preview his own comment $cid after the comment edit time limit had expired.");
+                COM_handle404($_CONF['site_url'] . '/index.php');
+            }
+        }
+    }
+
+    // check item for read permissions at least
+    if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
+        COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+            . "to preview a comment without proper permission for the {$type} with id {$sid}.");
+        COM_handle404($_CONF['site_url'] . '/index.php');
+    }
+
+    return CMT_commentForm(
+        $title, $comment,
+        $sid, $pid, $type, $mode, $postMode,
+        $format, $order, $page
+    );
+}
+
+/**
+ * Handles a comment edit form
  *
  * @copyright Jared Wenerd 2008
  * @author    Jared Wenerd, wenerd87 AT gmail DOT com
@@ -2337,7 +2492,14 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
 {
     global $_TABLES, $LANG03, $_CONF, $_USER;
 
-    // get needed data
+    // Befor displaying the comment edit form lets do some checks to see if user has appropriate permissions
+    if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
+        COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+            . 'to edit a comment without proper permission.');
+        COM_handle404($_CONF['site_url'] . '/index.php');
+    }
+
+    // get required data for checks
     $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
     if ($cid <= 0) {
         COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
@@ -2351,29 +2513,62 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
         $table = $_TABLES['comments'];
     }
 
-    $result = DB_query("SELECT title,comment, type, sid FROM {$table} "
-        . "WHERE cid = {$cid}");
-
-    if (DB_numRows($result) == 1) {
-        $A = DB_fetchArray($result);
-        $title = $A['title'];
-        $type = $A['type'];
-        $sid = $A['sid'];
-        $commentText = COM_undoSpecialChars($A['comment']);
-
-        // Comments really should a postmode that is saved with the comment (ie store either 'html' or 'plaintext') but they don't so lets figure out if comment is html by searching for html tags
-        if (preg_match('/<.*>/', $commentText) != 0) {
-            $postMode = 'html';
-        } else {
-            $postMode = 'plaintext';
-        }
-    } else {
+    // Check comment exist
+    $result = DB_query("SELECT cid, title, comment, type, sid, uid FROM $table WHERE cid = $cid");
+    list($cid, $title, $comment, $type, $sid, $commentuid) = DB_fetchArray($result);
+    if (empty($cid)) {
         COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
-            . 'to edit a comment that doesn\'t exist as described.');
+            . 'to edit a comment that does not exist.');
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
-    return CMT_commentForm($title, $commentText, $sid, $cid, $type, $mode, $postMode,
+    // check item for read permissions at least
+    if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
+        COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+            . "to edit a comment without proper permission for the {$type} with id {$sid}.");
+        COM_handle404($_CONF['site_url'] . '/index.php');
+    }
+
+    $uid = 1;
+    if (!empty($_USER['uid'])) {
+        $uid = $_USER['uid'];
+    }
+
+    // check comment permissions
+    if ($uid != $commentuid && !SEC_hasRights('comment.moderate')) {
+        COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+            . 'to edit a comment without proper permission.');
+        COM_handle404($_CONF['site_url'] . '/index.php');
+    }
+
+    // if own comment edit allowed for user then make sure within time limit
+    if ($table == $_TABLES['comments'] && $_CONF['comment_edit'] == 1 && $uid == $commentuid && !SEC_hasRights('comment.moderate')) {
+        if (!COM_isAnonUser()) {
+            $nice_date = DB_getItem($table, 'UNIX_TIMESTAMP(date)', "cid = $cid");
+            if ((time() - $nice_date) < $_CONF['comment_edittime']) {
+                // ALl is good continue on
+            } else {
+                COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                    . "to edit his own comment $cid after the comment edit time limit had expired.");
+                COM_handle404($_CONF['site_url'] . '/index.php');
+            }
+        } else {
+            COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                . "to edit his own comment $cid which is not allowed for anonymous users.");
+            COM_handle404($_CONF['site_url'] . '/index.php');
+        }
+    }
+
+    // Comments really should use a postmode that is saved with the comment (ie store either 'html' or 'plaintext')
+    // but they don't so lets figure out if comment is html by searching for html tags
+    $comment = COM_undoSpecialChars($comment);
+    if (preg_match('/<.*>/', $comment) != 0) {
+        $postMode = 'html';
+    } else {
+        $postMode = 'plaintext';
+    }
+
+    return CMT_commentForm($title, $comment, $sid, $cid, $type, $mode, $postMode,
         $format, $order, $page);
 }
 
@@ -2408,8 +2603,6 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
         $sid = Geeklog\Input::fRequest(CMT_SID);
     }
 
-    $pid = (int) Geeklog\Input::fRequest(CMT_PID, 0);
-
     if (empty($type) && !empty($_REQUEST[CMT_TYPE])) {
         $type = Geeklog\Input::fRequest(CMT_TYPE);
     }
@@ -2429,6 +2622,8 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
 
     $postMode = Geeklog\Input::fRequest('postmode', $_CONF['postmode']);
     $formType = Geeklog\Input::fRequest('formtype', '');
+
+    $pid = (int) Geeklog\Input::fRequest(CMT_PID, 0);
 
     // Get comment id, may not be there...will handle in function
     $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
@@ -2484,6 +2679,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             $title = str_replace('&lt;', '<', $title);
             $title = str_replace('&gt;', '>', $title);
         }
+
         $retval .= CMT_userComments($sid, $title, $type, $order, $format, $pid, $cPage, ($pid > 0), false, 0);
     }
 
@@ -2491,11 +2687,9 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
         case $LANG03[28]: // Preview Changes (for edit)
         case $LANG03[34]: // Preview Submission changes (for edit)
         case $LANG03[14]: // Preview
-            $retval .= CMT_commentForm(
+            $retval .= CMT_handlePreview(
                 $title, Geeklog\Input::post('comment'),
-                $sid, $pid, $type, $commentMode, $postMode,
-                $format, $order, $cPage
-            );
+                $sid, $pid, $type, $commentMode, $postMode, $format, $order, $cPage);
             if ($is_comment_page) {
                 $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[14]));
             }
@@ -2510,7 +2704,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             }
             break;
 
-        case $LANG03[11]: // Submit comment
+        case $LANG03[11]: // Submit new comment
             $retval .= CMT_handleSubmit($title, $sid, $pid, $type, $postMode, $uid);
             break;
 
@@ -2621,7 +2815,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
                 if (empty($title)) {
                     $title = PLG_getItemInfo($type, $sid, 'title');
 
-                    // Check title, if for some reason blank assume no access allowed to plugin item (therefore cannot add comment) so error404
+                    // Check title, if for some reason blank assume no access allowed to plugin item (therefore cannot add comment) so error 404
                     if (is_array($title) || empty($title) || ($title == false)) {
                         COM_handle404($_CONF['site_url'] . '/index.php');
                     }

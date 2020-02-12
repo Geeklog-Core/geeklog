@@ -1779,17 +1779,34 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
 }
 
 /**
+ * article: Comment Submission approved
+ *
+ * @param   string $id       Item id to which $cid belongs
+ * @param   int     $cid    Approved Comment id
+ */
+function plugin_moderationcommentapprove_article($id, $cid)
+{
+    global $_TABLES;
+
+    $comments = DB_count($_TABLES['comments'], array('type', 'sid'), array('article', $id));
+    DB_change($_TABLES['stories'], 'comments', $comments, 'sid', $id);
+
+    return true;
+}
+
+/**
  * article: delete a comment
  *
  * @param   int    $cid Comment to be deleted
  * @param   string $id  Item id to which $cid belongs
- * @return  mixed   false for failure, HTML string (redirect?) for success
+ * @param   boolean $returnOption  Either return a boolean on success or not, or redirect
+ * @return  mixed        Based on $returnOption. false for failure or true for success, else a redirect for success or failure
  */
-function plugin_deletecomment_article($cid, $id)
+function plugin_deletecomment_article($cid, $id, $returnBoolean)
 {
     global $_CONF, $_TABLES, $_USER;
 
-    $retval = '';
+    $retval = false;
 
     $has_editPermissions = SEC_hasRights('story.edit');
     $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon "
@@ -1807,11 +1824,21 @@ function plugin_deletecomment_article($cid, $id)
         // Comment count in Older Stories block may have changed so delete cache
         $cacheInstance = 'olderstories__'; // remove all olderstories instances
         CACHE_remove_instance($cacheInstance);
-        COM_redirect(COM_buildUrl($_CONF['site_url'] . "/article.php?story=$id") . '#comments');
+
+        if ($returnBoolean) {
+            $retval = true;
+        } else {
+            COM_redirect(COM_buildUrl($_CONF['site_url'] . "/article.php?story=$id") . '#comments');
+        }
     } else {
         COM_errorLog("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
             . "tried to illegally delete comment $cid from $id");
-        COM_redirect($_CONF['site_url'] . '/index.php');
+
+        if ($returnBoolean) {
+            $retval = false;
+        } else {
+            COM_redirect($_CONF['site_url'] . '/index.php');
+        }
     }
 
     return $retval;

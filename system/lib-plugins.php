@@ -471,7 +471,7 @@ function PLG_getCommentUrlId($type, $id = '')
     if (empty($id)) {
         // #Issue #1022 to fix articles with multiple pages and where comments are located
         // Need to add extra field to this function but still support old function until Geeklog v3.0.0. As of then $id will be required
-        COM_deprecatedLog(__FUNCTION__, '2.2.1', '3.0.0', 'plugin_getcommenturlid_' . $type . " will require a id field passed to it");
+        COM_deprecatedLog(__FUNCTION__, '2.2.1', '3.0.0', 'plugin_getcommenturlid_' . $type . " will require an id field passed to it");
 
         $ret = PLG_callFunctionForOnePlugin('plugin_getcommenturlid_' . $type);
         if (empty($ret[0])) {
@@ -499,22 +499,48 @@ function PLG_getCommentUrlId($type, $id = '')
  * @param   string $type Plugin to delete comment
  * @param   int    $cid  Comment to be deleted
  * @param   string $id   Item id to which $cid belongs
- * @return  mixed        false for failure, HTML string (redirect?) for success
+ * @param   boolean $returnOption  Either return a boolean on success or not, or redirect
+ * @return  mixed        Based on $returnOption. false for failure or true for success, else a redirect for success or failure
  */
-function PLG_commentDelete($type, $cid, $id)
+function PLG_commentDelete($type, $cid, $id, $returnBoolean = false)
 {
     global $_CONF;
-
-    $args = array(
-        1 => $cid,
-        2 => $id,
-    );
 
     if ($type === 'article') {
         require_once $_CONF['path_system'] . 'lib-article.php';
     }
 
-    return PLG_callFunctionForOnePlugin('plugin_deletecomment_' . $type, $args);
+    $function = 'plugin_deletecomment_' . $type;
+    $numParameters = 2;
+    if (function_exists($function) && $redirect == false) {
+        try {
+            $info = new ReflectionFunction($function);
+            $numParameters = $info->getNumberOfParameters();
+        } catch (ReflectionException $e) {
+            $numParameters = 0;
+        }
+
+        if ($numParameters == 3) {
+            $args = array(
+                1 => $cid,
+                2 => $id,
+                3 => $returnBoolean
+            );
+        }
+    }
+
+    if ($numParameters == 2) {
+        // Issue #1035
+        // Need to add extra field to this function but still support old function until Geeklog v3.0.0. As of then $redirect will be required
+        COM_deprecatedLog(__FUNCTION__, '2.2.1', '3.0.0', 'plugin_deletecomment_' . $type . " will require a redirect field passed to it");
+
+        $args = array(
+            1 => $cid,
+            2 => $id,
+        );
+    }
+
+    return PLG_callFunctionForOnePlugin($function, $args);
 }
 
 /**
@@ -1046,6 +1072,32 @@ function PLG_approveSubmission($type, $id)
     $args = array(1 => $id);
 
     return PLG_callFunctionForOnePlugin('plugin_moderationapprove_' . $type, $args);
+}
+
+
+/**
+ * This function is responsible for calling
+ * plugin_moderationcommentapprove_<pluginname> which allows plugins to update
+ * the item related to the comment
+ *
+ * @param        string $type Plugin name related to the comment submission approval
+ * @param        string $id   used to identify the record to approve
+ * @return       boolean     Returns true on success otherwise false
+ * @since    Geeklog v2.2.1
+ */
+function PLG_approveCommentSubmission($type, $id, $cid)
+{
+    global $_CONF;
+
+    if ($type === 'article') {
+        require_once $_CONF['path_system'] . 'lib-article.php';
+    }
+
+    $args = array(
+        1 => $id,
+        2 => $cid);
+
+    return PLG_callFunctionForOnePlugin('plugin_moderationcommentapprove_' . $type, $args);
 }
 
 /**

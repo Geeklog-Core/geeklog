@@ -147,7 +147,7 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
             } else {
                 $fieldValue = '';
             }
-            
+
             break;
 
         case 'title':
@@ -170,7 +170,7 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
                 // Check if user disabled
                 if (DB_getItem($_TABLES['users'], 'status', "uid = $userId") == USER_ACCOUNT_DISABLED) {
                     $fieldValue = '<a href="' . $_CONF['site_url']
-                        . '/users.php?mode=profile&amp;uid=' . $userId . '">' . COM_createControl('display-text-warning', array('text' => $fieldValue)) . '</a>';                    
+                        . '/users.php?mode=profile&amp;uid=' . $userId . '">' . COM_createControl('display-text-warning', array('text' => $fieldValue)) . '</a>';
                 } else {
                     $fieldValue = '<a href="' . $_CONF['site_url']
                         . '/users.php?mode=profile&amp;uid=' . $userId . '">' . $fieldValue . '</a>';
@@ -216,7 +216,7 @@ function getTypeSelector($itemType)
 
     $selected = ($itemType === 'article') ? ' selected="selected"' : '';
     $retval .= '<option value="article"' . $selected . '>' . $LANG09[6] . '</option>' . LB;
-    
+
     // Add enabled plugins that use comments
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_displaycomment_' . $pi_name;
@@ -225,7 +225,7 @@ function getTypeSelector($itemType)
             $selected = ($itemType === $pi_name) ? ' selected="selected"' : '';
             $retval .= '<option value="' . $pi_name . '"' . $selected . '>' . ucfirst($pi_name) . '</option>' . LB;
         }
-    }    
+    }
 
     $selector = COM_createControl('type-select-width-small', array(
         'name' => 'item_type',
@@ -365,7 +365,7 @@ function ADMIN_buildCommentList($suffix, $tableName, $securityToken)
 
     $securityTokenTag = '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
         . $securityToken . '"' . XHTML . '>' . LB;
-        
+
     $formArray = array(
         'top'    => '',
         'bottom' => $actionSelector . $securityTokenTag,
@@ -430,18 +430,38 @@ function deleteComments($suffix)
                     COM_errorLog("Attempted to delete a nonexistent comment (cid = {$commentId})");
                 } else {
                     if ($suffix === SUFFIX_COMMENTS) {
-                        $sql = "SELECT sid, type FROM {$_TABLES['comments']} WHERE cid = " . DB_escapeString($commentId);
+                        $sql = "SELECT cid, sid, type FROM {$_TABLES['comments']} WHERE cid = " . DB_escapeString($commentId);
                         $result = DB_query($sql);
 
                         if (!DB_error()) {
                             $A = DB_fetchArray($result, false);
 
                             if (is_array($A) && (count($A) > 0)) {
+                                $cid = $A['cid'];
                                 $sid = $A['sid'];
                                 $type = $A['type'];
 
-                                if (CMT_deleteComment($commentId, $sid, $type) > 0) {
-                                    COM_errorLog("Attempted to delete a nonexistent comment (cid = {$commentId})");
+                                // Make sure delete comment via plugin since plugins may have to do other Stuff
+                                // Note this is a HACK to ensure function plugin_deletecomment_foo is fully supported else will skip delete as a redirect may happen during this process
+                                // See github issue #1035
+                                // Once we reach Geeklog v3.0.0 we can delete this check and just call PLG_commentDelete($type, $cid, $sid, true);
+                                $function = 'plugin_deletecomment_' . $type;
+                                $numParameters = 2;
+                                if (function_exists($function)) {
+                                    try {
+                                        $info = new ReflectionFunction($function);
+                                        $numParameters = $info->getNumberOfParameters();
+                                    } catch (ReflectionException $e) {
+                                        $numParameters = 0;
+                                    }
+
+                                    if ($numParameters == 3) {
+                                        // Plugins will also check permissions and return false if fail. Plugins may not support this so comment delete will be bypassed, see github issue #1035
+                                        PLG_commentDelete($type, $cid, $sid, true);
+                                    } else {
+                                        COM_deprecatedLog(__FUNCTION__, '2.2.1', '3.0.0', 'plugin_deletecomment_' . $type . " will require a redirect field passed to it");
+                                        COM_errorLog("Could not delete comment {$cid} as plugin $type does not support the new new Comment Delete Process");
+                                    }
                                 }
                             }
                         }
@@ -537,16 +557,16 @@ function banIpAddresses_spamx($suffix)
             COM_errorLog(__FUNCTION__ . ': Spam-X plugin is not installed or disabled.');
             COM_redirect($_CONF['site_admin_url'] . '/index.php');
         }
-        
+
         $getCommentIds = getCommentIds($suffix);
-        
+
         if (count($getCommentIds) > 0) {
             if ($suffix === SUFFIX_COMMENTS) {
                 $table = $_TABLES['comments'];
             } else {
                 $table = $_TABLES['commentsubmissions'];
-            }        
-            
+            }
+
             $sql = "SELECT DISTINCT ipaddress FROM $table "
                 . "WHERE (ipaddress NOT LIKE '192.168.%') AND (ipaddress <> '::1') AND "
                 . " (cid IN (" . implode(',', $getCommentIds) . "))";
@@ -584,26 +604,26 @@ function banIpAddresses_ban($suffix)
         if (!in_array('ban', $_PLUGINS)) {
             COM_errorLog(__FUNCTION__ . ': Ban plugin is not installed or disabled.');
             COM_redirect($_CONF['site_admin_url'] . '/index.php');
-        }        
-        
+        }
+
         if (!(function_exists('BAN_for_plugins_check_access') AND BAN_for_plugins_check_access())) {
             COM_errorLog(__FUNCTION__ . ': This version of the Ban plugin doesn\'t support this function or the user doesn\'t have Ban Admin access.');
             COM_redirect($_CONF['site_admin_url'] . '/index.php');
-        }         
+        }
 
         $getCommentIds = getCommentIds($suffix);
-        
+
         if (count($getCommentIds) > 0) {
             if ($suffix === SUFFIX_COMMENTS) {
                 $table = $_TABLES['comments'];
             } else {
                 $table = $_TABLES['commentsubmissions'];
-            }        
-            
+            }
+
             $sql = "SELECT DISTINCT ipaddress FROM $table "
                 . "WHERE (ipaddress NOT LIKE '192.168.%') AND (ipaddress <> '::1') AND "
                 . " (cid IN (" . implode(',', $getCommentIds) . "))";
-                
+
             $result = DB_query($sql);
 
             if (!DB_error()) {
@@ -653,7 +673,7 @@ switch ($action) {
     case 'bulk_spamx_ban_ip_address':
         banIpAddresses_spamx($suffix);
         break;
-        
+
     case 'bulk_ban_ip_address':
         banIpAddresses_ban($suffix);
         break;

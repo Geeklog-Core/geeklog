@@ -131,7 +131,14 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
             }
         }
     } else { // success
-        COM_redirect($_CONF['site_url'] . "/polls/index.php?pid=$id");
+        // if the comment ends up in the submission queue, say so
+        $url = $_CONF['site_url'] . "/polls/index.php?pid=$id";
+        if (($_CONF['commentsubmission'] == 1) &&
+            !SEC_hasRights('comment.submit')
+        ) {
+            $url .= '&msg=15';
+        }
+        COM_redirect($url);
     }
 
     return $retval;
@@ -142,13 +149,14 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
  *
  * @param   int    $cid Comment to be deleted
  * @param   string $id  Item id to which $cid belongs
- * @return  mixed   false for failure, HTML string (redirect?) for success
+ * @param   boolean $returnOption  Either return a boolean on success or not, or redirect
+ * @return  mixed        Based on $returnOption. false for failure or true for success, else a redirect for success or failure
  */
-function plugin_deletecomment_polls($cid, $id)
+function plugin_deletecomment_polls($cid, $id, $returnBoolean)
 {
     global $_CONF, $_TABLES, $_USER;
 
-    $retval = '';
+    $retval = false;
 
     $has_editPermissions = SEC_hasRights('polls.edit');
     $result = DB_query(
@@ -162,11 +170,21 @@ function plugin_deletecomment_polls($cid, $id)
             $A['perm_members'], $A['perm_anon']) == 3
     ) {
         CMT_deleteComment($cid, $id, 'polls');
-        COM_redirect($_CONF['site_url'] . "/polls/index.php?pid=$id&amp;aid=-1");
+
+        if ($returnBoolean) {
+            $retval = true;
+        } else {
+            COM_redirect($_CONF['site_url'] . "/polls/index.php?pid=$id&amp;aid=-1");
+        }
     } else {
         COM_errorLog("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
             . "tried to illegally delete comment $cid from poll $id");
-        COM_redirect($_CONF['site_url'] . '/index.php');
+
+        if ($returnBoolean) {
+            $retval = false;
+        } else {
+            COM_redirect($_CONF['site_url'] . '/index.php');
+        }
     }
 
     return $retval;
