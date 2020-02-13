@@ -1317,26 +1317,28 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
     }
 
     // prepare SQL request
-    $where = '';
+    $where = ' WHERE 1=1';
     $permSql = '';
     $groupbySQL = '';
     $filter_flag = false;
     if ($sid == '*') {
-        $where = ' WHERE';
-
         // Check options to see if filters enabled
         if (isset($options['filter']['date-created'])) {
             $filter_flag = true;
-            $where .= " (date >= '" . date('c', $options['filter']['date-created']) . "') AND";
+            $where .= " AND (date >= '" . date('c', $options['filter']['date-created']) . "')";
         }
         if (isset($options['filter']['topic-ids']) && !empty($options['filter']['topic-ids'])) {
             $filter_flag = true;
-            $where .= " (ta.tid IN (" . $options['filter']['topic-ids'] . ")) AND";
+            $where .= " AND (ta.tid IN (" . $options['filter']['topic-ids'] . "))";
         }
     } else {
-        $where = " WHERE (sid = '" . DB_escapeString($sid) . "') AND";
+        $where .= " AND (sid = '" . DB_escapeString($sid) . "')";
     }
-    $where .= ' (draft_flag = 0) AND (date <= NOW())';
+
+    if (!SEC_hasRights('story.edit', 'AND', $uid)) {
+        $where .= ' AND (draft_flag = 0) AND (date <= NOW())';
+    }
+
     if ($uid > 0) {
         if ($filter_flag) {
             // Need to group by as duplicates may be returned since we need to return articles that may belong in 1 or more topics (and the default may not be one of them)

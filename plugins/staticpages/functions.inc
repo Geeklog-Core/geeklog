@@ -2396,7 +2396,12 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
     }
 
     // prepare SQL request
-    $where = ' WHERE (draft_flag = 0) AND (template_flag = 0) ';
+    if (!SEC_hasRights('staticpages.edit', 'AND', $uid)) {
+        $where = ' WHERE (draft_flag = 0) AND (template_flag = 0) ';
+    } else{
+        $where = ' WHERE 1=1 ';
+    }
+
     if ($sp_id != '*') {
         $where .= " AND (sp_id = '" . DB_escapeString($sp_id) . "')";
     }
