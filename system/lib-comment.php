@@ -2789,58 +2789,35 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             break;
 
         default: // New Comment or Reply Comment
-            $abort = false;
-            // Check to make sure comment type exists
-            if (($type !== 'article') && !in_array($type, $_PLUGINS)) {
-                $abort = true;
+            // Figure out title of new comment
+            if (($pid > 0) && empty($title)) {
+                $atype = DB_escapeString($type);
+                $title = DB_getItem($_TABLES['comments'], 'title', "(cid = $pid) AND (type = '{$atype}')");
             }
+            if (empty($title)) {
+                $title = PLG_getItemInfo($type, $sid, 'title');
 
-            // Check article permissions
-            if (!$abort && ($type === 'article') && !empty($sid)) {
-                $dbTitle = DB_getItem($_TABLES['stories'], 'title',
-                    "(sid = '$sid') AND (draft_flag = 0) AND (date <= NOW()) AND (commentcode = 0)"
-                    . COM_getPermSQL('AND'));
-
-                if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid, TOPIC_currentTopic()) < 2) { // Make sure have at least read access (2 or greater) to current topic of article to post comment
-                    // no permissions, or no story of that title
-                    $abort = true;
-                }
-            }
-
-            if (!$abort && !empty($sid) && !empty($type)) {
-                if (($pid > 0) && empty($title)) {
-                    $atype = DB_escapeString($type);
-                    $title = DB_getItem($_TABLES['comments'], 'title', "(cid = $pid) AND (type = '{$atype}')");
-                }
-                if (empty($title)) {
-                    $title = PLG_getItemInfo($type, $sid, 'title');
-
-                    // Check title, if for some reason blank assume no access allowed to plugin item (therefore cannot add comment) so error 404
-                    if (is_array($title) || empty($title) || ($title == false)) {
-                        COM_handle404($_CONF['site_url'] . '/index.php');
-                    }
-                    $title = str_replace('$', '&#36;', $title);
-                    // CMT_commentForm expects non-htmlspecial chars for title...
-                    $title = str_replace('&amp;', '&', $title);
-                    $title = str_replace('&quot;', '"', $title);
-                    $title = str_replace('&lt;', '<', $title);
-                    $title = str_replace('&gt;', '>', $title);
-                }
-                $retval .= CMT_commentForm($title, '', $sid, $pid, $type, $commentMode,
-                    $postMode, $format, $order, $cPage);
-            } else {
-                if (COMMENT_ON_SAME_PAGE) {
-                    // Do nothing and do not show comment form (happens most likely when admin viewing draft article)
-                } else {
-                    // For comments not displayed on same page (probably owner pushed the post comment button on a draft article)
+                // Check title, if for some reason blank assume no access allowed to plugin item (therefore cannot add comment) so error 404
+                if (is_array($title) || empty($title) || ($title == false)) {
                     COM_handle404($_CONF['site_url'] . '/index.php');
                 }
+                $title = str_replace('$', '&#36;', $title);
+                // CMT_commentForm expects non-htmlspecial chars for title...
+                $title = str_replace('&amp;', '&', $title);
+                $title = str_replace('&quot;', '"', $title);
+                $title = str_replace('&lt;', '<', $title);
+                $title = str_replace('&gt;', '>', $title);
             }
+
+            $retval .= CMT_handlePreview(
+                $title, '',
+                $sid, $pid, $type, $commentMode, $postMode, $format, $order, $cPage);
             if ($is_comment_page) {
                 $noIndex = '<meta name="robots" content="noindex"' . XHTML . '>';
                 $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1], 'headercode' => $noIndex));
             }
             break;
+            
     }
 
     return $retval;
