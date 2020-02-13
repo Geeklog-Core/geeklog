@@ -541,19 +541,27 @@ function USER_resendRequest()
         } else {
             $data = unserialize($getData);
 
+            // Copy over existing query with new values
+            list($file, $query) = explode('?', $returnUrl);
+        	mb_parse_str($query, $urlVars);
+
             foreach ($data as $key => &$value) {
                 if ($key == CSRF_TOKEN) {
                     $value = SEC_createToken();
                 }
+
+                // Replace values
+                $urlVars[$key] = $value;
             }
             unset($value);
 
-            $returnUrl = $returnUrl . '?' . http_build_query($data);
+			$returnUrl = $file . '?' . http_build_query($urlVars);
         }
 
         $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
         // need to fake the referrer so the new token matches
         $req->setHeader('Referer', COM_getCurrentUrl());
+
         foreach ($_COOKIE as $name => $value) {
             $cookie = $name . '=' . $value;
 
@@ -653,7 +661,10 @@ function USER_doLogin()
             COM_redirect($_CONF['site_url'] . '/index.php');
         } else {
             // If user is trying to login - force redirect to index.php
-            if (strstr($_SERVER['HTTP_REFERER'], 'mode=login') === false) {
+            // Some pages will not work though for this so filter out
+            if (strstr($_SERVER['HTTP_REFERER'], 'mode=login') === false &&
+                strstr($_SERVER['HTTP_REFERER'], '/comment.php') === false // Happens if Comment Editor on own page. Missing info so will 404
+                ) {
                 COM_redirect($_SERVER['HTTP_REFERER']);
             } else {
                 COM_redirect($_CONF['site_url'] . '/index.php');
