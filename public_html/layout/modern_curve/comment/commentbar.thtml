@@ -26,12 +26,12 @@
   <div class="user_basic">
     <ul class="submit">
       <li>
-        {hidden_field_reply}
+        {postcomment_action}
         <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
         <input type="hidden" name="{nprefix}pid" value="0"{xhtml}>
         <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
         <input type="hidden" name="title" value="{comment_title}"{xhtml}>
-        <input type="{reply_hidden_or_submit}" name="reply" value="{lang_reply}" class="submit" rel="nofollow"{xhtml}>
+        {hidden_field_reply}
       </li>
     </ul>
     {jump_link_for_commenteditform}
@@ -39,13 +39,19 @@
 </form>
 
 <p class="disclaimer">{lang_disclaimer}</p>
+{!if lang_comments_closed}
+<p>{lang_comments_closed}</p>
+{!endif}
+{!if lang_comment_post_login_required}
+<p>{lang_comment_post_login_required}</p>
+{!endif}
 
-<!-- BEGIN commenteditform_jumplink -->
-    <div>
-        [
-        <a class="button" href="#commenteditform">{lang_reply}</a>
-        ]
-    </div>
-<!-- END commenteditform_jumplink -->
+<!-- BEGIN postcomment_jumplink -->
+    <a class="button" href="#commenteditform">{lang_reply}</a>
+<!-- END postcomment_jumplink -->
+
+<!-- BEGIN postcomment_button -->
+    <input type="submit" name="reply" value="{lang_reply}" class="submit" rel="nofollow"{xhtml}>
+<!-- END postcomment_button -->
 
 {# end {templatelocation} #}

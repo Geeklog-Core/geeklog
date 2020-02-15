@@ -275,7 +275,8 @@ $LANG03 = array(
     'record_edit' => '編集者と編集時刻を記録する',
     'ban_plugin_ban_ip' => 'BanプラグインでこのIPアドレスを禁止する',
     'num_comments' => '%s件のコメント',
-    'anon_user_name' => '%s (ゲストユーザー)'
+    'anon_user_name' => '%s (ゲストユーザー)',
+    'comments_closed_msg' => 'Comments are closed and no new posts are allowed.'
 );
 
 ###############################################################################

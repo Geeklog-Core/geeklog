@@ -187,6 +187,40 @@ function plugin_displaycomment_staticpages($id, $cid, $title, $order, $format, $
 }
 
 /**
+ * Does the user have at least read access to this plugin item and are comments enabled for the item
+ *
+ * @param   string $id   Item id to which $cid belongs
+ * @return  boolean      True if access granted or false
+ */
+function plugin_commentenabled_staticpages($id)
+{
+    global $_CONF, $_TABLES;
+
+    $retval = false;
+
+    $sql = "SELECT sp_id, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon FROM {$_TABLES['staticpage']}";
+    $sql .= " WHERE (template_flag = 0) AND sp_id = '" . DB_escapeString($id) . "' " . COM_getPermSQL('AND');
+    if (!SEC_hasRights('staticpages.edit')) {
+        $sql .= ' AND (draft_flag = 0)';
+    }
+    $result = DB_query($sql);
+    $A = DB_fetchArray($result);
+    if (DB_numRows($result) == 1) {
+        // CommentCode: Enabled = 0, Disabled = -1. Closed = 1
+        if ($A['commentcode'] == 0) { // Enabled
+            $retval = true;
+        } elseif ($A['commentcode'] == 1) { // Closed but still visible so give admins access
+            $retval = (SEC_hasRights('staticpages.edit') &&
+                (SEC_hasAccess($A['owner_id'], $A['group_id'],
+                        $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                        $A['perm_anon']) == 3));
+        }
+    }
+
+    return $retval;
+}
+
+/**
  * Static Page saves a comment
  *
  * @param   string $title    comment title
@@ -202,9 +236,7 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
 
     $retval = '';
 
-    $commentcode = DB_getItem($_TABLES['staticpage'], 'commentcode',
-        "(sp_id = '$id') AND (draft_flag = 0) AND (template_flag = 0)");
-    if ($commentcode != 0) {
+    if (!plugin_commentenabled_staticpages($id)) {
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
@@ -2396,10 +2428,9 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
     }
 
     // prepare SQL request
+    $where = ' WHERE (template_flag = 0)';
     if (!SEC_hasRights('staticpages.edit', 'AND', $uid)) {
-        $where = ' WHERE (draft_flag = 0) AND (template_flag = 0) ';
-    } else{
-        $where = ' WHERE 1=1 ';
+        $where .= ' AND (draft_flag = 0)';
     }
 
     if ($sp_id != '*') {

@@ -267,7 +267,8 @@ $LANG03 = array(
     'record_edit' => 'Record user and time of edit?',
     'ban_plugin_ban_ip' => 'Ban this IP address with the Ban plugin',
     'num_comments' => '%s Comment(s)',
-    'anon_user_name' => '%s (Anonymous User)'
+    'anon_user_name' => '%s (Anonymous User)',
+    'comments_closed_msg' => 'Comments are closed and no new posts are allowed.'
 );
 
 ###############################################################################

@@ -493,6 +493,29 @@ function PLG_getCommentUrlId($type, $id = '')
 }
 
 /**
+ * Does the user have at least read access to this plugin item and are comments enabled for the item
+ *
+ * @param   string $type Plugin of comment
+ * @param   string $id   Item id to which $cid belongs
+ * @return  boolean      True if access granted or false
+ * @since    Geeklog v2.2.1
+ */
+function PLG_commentEnabled($type, $id)
+{
+    global $_CONF;
+
+    $args = array(
+        1 => $id,
+    );
+
+    if ($type === 'article') {
+        require_once $_CONF['path_system'] . 'lib-article.php';
+    }
+
+    return PLG_callFunctionForOnePlugin('plugin_commentenabled_' . $type, $args);
+}
+
+/**
  * Plugin should delete a comment
  *
  * @author  Vincent Furia, vinny01 AT users DOT sourceforge DOT net
@@ -512,7 +535,7 @@ function PLG_commentDelete($type, $cid, $id, $returnBoolean = false)
 
     $function = 'plugin_deletecomment_' . $type;
     $numParameters = 2;
-    if (function_exists($function) && $redirect == false) {
+    if (function_exists($function)) {
         try {
             $info = new ReflectionFunction($function);
             $numParameters = $info->getNumberOfParameters();
@@ -531,8 +554,8 @@ function PLG_commentDelete($type, $cid, $id, $returnBoolean = false)
 
     if ($numParameters == 2) {
         // Issue #1035
-        // Need to add extra field to this function but still support old function until Geeklog v3.0.0. As of then $redirect will be required
-        COM_deprecatedLog(__FUNCTION__, '2.2.1', '3.0.0', 'plugin_deletecomment_' . $type . " will require a redirect field passed to it");
+        // Need to add extra field to this function but still support old function until Geeklog v3.0.0. As of then $returnBoolean will be required
+        COM_deprecatedLog(__FUNCTION__, '2.2.1', '3.0.0', 'plugin_deletecomment_' . $type . " will require a returnBoolean field passed to it");
 
         $args = array(
             1 => $cid,

@@ -1718,6 +1718,41 @@ function plugin_autotags_article($op, $content = '', $autotag = array())
 }
 
 /**
+ * Does the user have at least read access to this plugin item and are comments enabled for the item
+ *
+ * @param   string $id   Item id to which $cid belongs
+ * @return  boolean      True if access granted or false
+ */
+function plugin_commentenabled_article($id)
+{
+    global $_CONF, $_TABLES;
+
+    $retval = false;
+
+    $sql = "SELECT sid, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon FROM {$_TABLES['stories']}";
+    $sql .= " WHERE sid = '" . DB_escapeString($id) . "' " . COM_getPermSQL('AND');
+    if (!SEC_hasRights('story.edit')) {
+        $sql .= "AND (draft_flag = 0) AND (date <= NOW())";
+    }
+    $result = DB_query($sql);
+    $A = DB_fetchArray($result);
+    if (DB_numRows($result) == 1 && TOPIC_hasMultiTopicAccess('article', $id) > 0) { // Need read access of topics to post comment
+    //if (TOPIC_hasMultiTopicAccess('article', $id) > 0)) { // Need read access of topics to post comment
+        // CommentCode: Enabled = 0, Disabled = -1. Closed = 1
+        if ($A['commentcode'] == 0) { // Enabled
+            $retval = true;
+        } elseif ($A['commentcode'] == 1) { // Closed but still visible so give admins access
+            $retval = (SEC_hasRights('story.edit') &&
+                (SEC_hasAccess($A['owner_id'], $A['group_id'],
+                        $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                        $A['perm_anon']) == 3));
+        }
+    }
+
+    return $retval;
+}
+
+/**
  * article: saves a comment
  *
  * @param   string $title    comment title
@@ -1733,10 +1768,15 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
 
     $retval = '';
 
+    /*
     $commentcode = DB_getItem($_TABLES['stories'], 'commentcode',
         "(sid = '$id') AND (draft_flag = 0) AND (date <= NOW())"
         . COM_getPermSQL('AND'));
     if (!isset($commentcode) || ($commentcode != 0 || TOPIC_hasMultiTopicAccess('article', $id) < 2)) { // Need read access of topics to post comment
+        COM_redirect($_CONF['site_url'] . '/index.php');
+    }
+    */
+    if (!plugin_commentenabled_article($id)) {
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
@@ -1767,8 +1807,8 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
             }
         }
     } else { // success
-        $comments = DB_count($_TABLES['comments'], array('type', 'sid'), array('article', $id));
-        DB_change($_TABLES['stories'], 'comments', $comments, 'sid', $id);
+        // Updated comment counts on article
+        plugin_moderationcommentapprove_article($id, 0); // Don't need new comment id so just pass 0
 
         // Comment count in Older Stories block may have changed so delete cache
         $cacheInstance = 'olderarticles__'; // remove all olderarticles instances
@@ -1795,6 +1835,8 @@ function plugin_moderationcommentapprove_article($id, $cid)
 
     return true;
 }
+
+
 
 /**
  * article: delete a comment

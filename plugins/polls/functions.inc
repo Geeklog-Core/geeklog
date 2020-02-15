@@ -92,6 +92,38 @@ function plugin_getmenuitems_polls()
     return $menuitems;
 }
 
+
+/**
+ * Does the user have at least read access to this plugin item and are comments enabled for the item
+ *
+ * @param   string $id   Item id to which $cid belongs
+ * @return  boolean      True if access granted or false
+ */
+function plugin_commentenabled_polls($id)
+{
+    global $_TABLES;
+
+    $retval = false;
+
+    $sql = "SELECT pid, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon FROM {$_TABLES['polltopics']}";
+    $sql .= " WHERE pid = '" . DB_escapeString($id) . "' " . COM_getPermSQL('AND');
+    $result = DB_query($sql);
+    $A = DB_fetchArray($result);
+    if (DB_numRows($result) == 1) {
+        // CommentCode: Enabled = 0, Disabled = -1. Closed = 1
+        if ($A['commentcode'] == 0) { // Enabled
+            $retval = true;
+        } elseif ($A['commentcode'] == 1) { // Closed but still visible so give admins access
+            $retval = (SEC_hasRights('polls.edit') &&
+                (SEC_hasAccess($A['owner_id'], $A['group_id'],
+                        $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                        $A['perm_anon']) == 3));
+        }
+    }
+
+    return $retval;
+}
+
 /**
  * Poll saves a comment
  *
@@ -108,9 +140,7 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
 
     $retval = '';
 
-    $commentcode = DB_getItem($_TABLES['polltopics'], 'commentcode',
-        "pid = '$id'");
-    if ($commentcode != 0) {
+    if (!plugin_commentenabled_polls($id)) {
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
 

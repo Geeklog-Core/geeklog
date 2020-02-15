@@ -80,20 +80,57 @@ function CMT_commentBar($sid, $title, $type, $order, $mode, $ccode = 0)
 
     $commentBar = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'comment'));
     $commentBar->set_file(array('commentbar' => 'commentbar.thtml'));
-    $commentBar->set_block('commentbar', 'commenteditform_jumplink');
+    $commentBar->set_block('commentbar', 'postcomment_jumplink');
+    $commentBar->set_block('commentbar', 'postcomment_button');
 
     $commentBar->set_var('lang_comments', $LANG01[3]);
     $commentBar->set_var('lang_refresh', $LANG01[39]);
     $commentBar->set_var('lang_reply', $LANG01[60]);
     $commentBar->set_var('lang_disclaimer', $LANG01[26]);
 
-    if ($ccode == 0 && !COMMENT_ON_SAME_PAGE) {
-        $commentBar->set_var('reply_hidden_or_submit', 'submit');
-        // $commentbar->set_var( 'show_link_to_commenteditform', 'display:none;' );
-        $commentBar->set_var('jump_link_for_commenteditform', '');
+    // hide stuff from anonymous users if they can't post
+    $hideFromAnon = false;
+    if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
+        $hideFromAnon = true;
+    }
+
+    // CommentCode: Enabled = 0, Disabled = -1. Closed = 1
+    // check item for read permissions and comments enabled for it
+    $function = 'plugin_commentenabled_' . $type;
+    $commentEnabled = true;
+    if (function_exists($function)) {
+        if (!PLG_commentEnabled($type, $sid)) {
+            $commentEnabled = false;
+        }
     } else {
-        $commentBar->set_var('reply_hidden_or_submit', 'hidden');
-        $commentBar->parse('jump_link_for_commenteditform', 'commenteditform_jumplink');
+        COM_deprecatedLog('plugin_getiteminfo_' . $type, '2.2.1', '3.0.0', 'plugin_commentenabled_' . $type . " is now required to check if comments are enabled for a plugin item.");
+        // This way will be depreciated as of Geeklog v3.0.0
+        // check item for read permissions at least
+        if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
+            $commentEnabled = false;
+        }
+    }
+
+    // Misc Comment Messages
+    if ($ccode == 1) {
+        $commentBar->set_var('lang_comments_closed', $LANG03['comments_closed_msg']);
+    }
+    if ($ccode == 0 && $hideFromAnon) {
+        if (COMMENT_ON_SAME_PAGE) {
+            // lang_comment_post_login_required is posted on the editor itself
+        } else {
+            $commentBar->set_var('lang_comment_post_login_required', $LANG03[6]);
+        }
+    }
+
+    if ($ccode == 1 && !$commentEnabled) {
+        $commentBar->set_var('postcomment_action', '');
+    } else {
+        if (COMMENT_ON_SAME_PAGE) {
+            $commentBar->parse('postcomment_action', 'postcomment_jumplink');
+        } else {
+            $commentBar->parse('postcomment_action', 'postcomment_button');
+        }
     }
     $commentBar->set_var('num_comments', COM_numberFormat($nrows));
     $commentBar->set_var('comment_type', $type);
@@ -108,18 +145,18 @@ function CMT_commentBar($sid, $title, $type, $order, $mode, $ccode = 0)
     $commentBar->set_var('comment_title', $cmt_title);
 
     // Link to plugin defined link or lacking that a generic link
-    $articleUrl = CMT_getCommentUrlId($type, $sid);
+    $pluginItemUrl = CMT_getCommentUrlId($type, $sid);
 
-    $commentBar->set_var('article_url', $articleUrl);
+    $commentBar->set_var('article_url', $pluginItemUrl);
     if ($is_comment_page) {
-        $link = COM_createLink($cmt_title, $articleUrl,
+        $link = COM_createLink($cmt_title, $pluginItemUrl,
             array('class' => 'non-ul b'));
         $commentBar->set_var('story_link', $link);
         $commentBar->set_var('start_storylink_anchortag',
-            '<a href="' . $articleUrl . '" class="non-ul">');
+            '<a href="' . $pluginItemUrl . '" class="non-ul">');
         $commentBar->set_var('end_storylink_anchortag', '</a>');
     } else {
-        $commentBar->set_var('story_link', $articleUrl);
+        $commentBar->set_var('story_link', $pluginItemUrl);
     }
 
     if (!COM_isAnonUser()) {
@@ -170,9 +207,9 @@ function CMT_commentBar($sid, $title, $type, $order, $mode, $ccode = 0)
         $commentBar->set_var('hidden_field_reply', '');
         $commentBar->set_var('nprefix', '');
     } else { // article and plugin
-        $commentBar->set_var('parent_url', $articleUrl . '#comments');
+        $commentBar->set_var('parent_url', $pluginItemUrl . '#comments');
         if (COMMENT_ON_SAME_PAGE) {
-            $commentBar->set_var('editor_url', $articleUrl . '#commenteditform');
+            $commentBar->set_var('editor_url', $pluginItemUrl . '#commenteditform');
             $commentBar->set_var('nprefix', $CMT_formVariablePrefix);
         } else {
             $commentBar->set_var('editor_url', $comment_url . '#commenteditform');
@@ -378,9 +415,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
 
         // hide reply link from anonymous users if they can't post replies
         $hideFromAnon = false;
-        if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) ||
-                ($_CONF['commentsloginrequired'] == 1))
-        ) {
+        if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
             $hideFromAnon = true;
         }
 
@@ -547,8 +582,22 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         $A['comment'] = PLG_replaceTags($A['comment'], '', false, 'comment', $A['cid']);
 
         // create a reply to link
+        $function = 'plugin_commentenabled_' . $type;
+        $commentEnabled = true;
+        if (function_exists($function)) {
+            if (!PLG_commentEnabled($type, $A['sid'])) {
+                $commentEnabled = false;
+            }
+        } else {
+            COM_deprecatedLog('plugin_getiteminfo_' . $type, '2.2.1', '3.0.0', 'plugin_commentenabled_' . $type . " is now required to check if comments are enabled for a plugin item.");
+            // This way will be depreciated as of Geeklog v3.0.0
+            // check item for read permissions at least
+            if (empty(PLG_getItemInfo($type, $A['sid'], 'url'))) {
+                $commentEnabled = false;
+            }
+        }
         $reply_link = '';
-        if ($commentCode == 0) {
+        if ($commentCode == 0 || ($commentCode == 1 && $commentEnabled)) {
             if (COMMENT_ON_SAME_PAGE) {
                 $reply_link = $pluginUrl
                     . '&amp;' . CMT_PID . '=' . $A['cid']
@@ -790,8 +839,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
             }
         }
 
-        $theComments .= CMT_getComment($result, $mode, $type, $order,
-            $delete_option, false, $commentCode, $page);
+        $theComments .= CMT_getComment($result, $mode, $type, $order, $delete_option, false, $commentCode, $page);
 
         // Pagination
         $tot_pages = ceil($count / $limit);
@@ -811,7 +859,23 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
         $template->set_var('comments', $theComments);
 
         if (COMMENT_ON_SAME_PAGE) {
-            if ($commentCode == 0) {
+            // CommentCode: Enabled = 0, Disabled = -1. Closed = 1
+            // check item for read permissions and comments enabled for it
+            $function = 'plugin_commentenabled_' . $type;
+            $commentEnabled = true;
+            if (function_exists($function)) {
+                if (!PLG_commentEnabled($type, $sid)) {
+                    $commentEnabled = false;
+                }
+            } else {
+                COM_deprecatedLog('plugin_getiteminfo_' . $type, '2.2.1', '3.0.0', 'plugin_commentenabled_' . $type . " is now required to check if comments are enabled for a plugin item.");
+                // This way will be depreciated as of Geeklog v3.0.0
+                // check item for read permissions at least
+                if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
+                    $commentEnabled = false;
+                }
+            }
+            if ($commentCode == 0 || ($commentCode == 1 && $commentEnabled)) {
                 $cMode = COM_applyFilter(COM_getArgument(CMT_MODE));
                 $html = CMT_handleComment($cMode, $type, $title, $sid, $mode);
                 $template->set_var('commenteditor', $html);
@@ -1030,10 +1094,11 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                     if (isset($A[CMT_CID])) {
                         $A['cid'] = $A[CMT_CID];
                     }
-                    $A['sid'] = $A[CMT_SID];
-                    $A['pid'] = $A[CMT_PID];
-                    $A['uid'] = $A[CMT_UID];
-                    $A['type'] = $A[CMT_TYPE];
+
+                    $A['type'] = $type;
+                    $A['sid'] = $sid;
+                    $A['pid'] = $pid;
+                    $A['uid'] = $commentUid;
                     $A['username'] = $A[CMT_USERNAME];
                 }
 
@@ -1913,11 +1978,23 @@ function CMT_handleEditSubmit($mode = null)
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
-    // check item for read permissions at least
-    if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
-        COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
-            . "to edit a comment without proper permission for the {$type} with id {$sid}.");
-        COM_handle404($_CONF['site_url'] . '/index.php');
+    // check item for read permissions and comments enabled for it
+    $function = 'plugin_commentenabled_' . $type;
+    if (function_exists($function)) {
+        if (!PLG_commentEnabled($type, $sid)) {
+            COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                . "to preview a comment without proper permission or comments have been disabled for the {$type} with id {$sid}.");
+            COM_handle404($_CONF['site_url'] . '/index.php');
+        }
+    } else {
+        COM_deprecatedLog('plugin_getiteminfo_' . $type, '2.2.1', '3.0.0', 'plugin_commentenabled_' . $type . " is now required to check if comments are enabled for a plugin item.");
+        // This way will be depreciated as of Geeklog v3.0.0
+        // check item for read permissions at least
+        if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
+            COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                . "to preview a comment without proper permission for the {$type} with id {$sid}.");
+            COM_handle404($_CONF['site_url'] . '/index.php');
+        }
     }
 
     $uid = 1;
@@ -2404,16 +2481,16 @@ function CMT_handlePreview($title, $comment, $sid, $pid, $type, $mode, $postMode
 {
     global $_TABLES, $LANG03, $_CONF, $_USER;
 
-    // Befor previewing the comment edit form lets do some checks to see if user has appropriate permissions
-    if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
-        COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
-            . 'to preview a comment without proper permission.');
-        COM_handle404($_CONF['site_url'] . '/index.php');
-    }
-
     // get required data for checks
     $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
     if ($cid > 0) {
+        // Befor previewing the comment edit form lets do some checks to see if user has appropriate permissions
+        if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
+            COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                . 'to preview a comment without proper permission.');
+            COM_handle404($_CONF['site_url'] . '/index.php');
+        }
+
         if ($mode === $LANG03[34]) { // Preview Submission changes (for edit)) {
             $table = $_TABLES['commentsubmissions'];
         } else {
@@ -2463,11 +2540,23 @@ function CMT_handlePreview($title, $comment, $sid, $pid, $type, $mode, $postMode
         }
     }
 
-    // check item for read permissions at least
-    if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
-        COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
-            . "to preview a comment without proper permission for the {$type} with id {$sid}.");
-        COM_handle404($_CONF['site_url'] . '/index.php');
+    // check item for read permissions and comments enabled for it
+    $function = 'plugin_commentenabled_' . $type;
+    if (function_exists($function)) {
+        if (!PLG_commentEnabled($type, $sid)) {
+            COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                . "to preview a comment without proper permission or comments have been disabled for the {$type} with id {$sid}.");
+            COM_handle404($_CONF['site_url'] . '/index.php');
+        }
+    } else {
+        COM_deprecatedLog('plugin_getiteminfo_' . $type, '2.2.1', '3.0.0', 'plugin_commentenabled_' . $type . " is now required to check if comments are enabled for a plugin item.");
+        // This way will be depreciated as of Geeklog v3.0.0
+        // check item for read permissions at least
+        if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
+            COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                . "to preview a comment without proper permission for the {$type} with id {$sid}.");
+            COM_handle404($_CONF['site_url'] . '/index.php');
+        }
     }
 
     return CMT_commentForm(
@@ -2522,11 +2611,23 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
-    // check item for read permissions at least
-    if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
-        COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
-            . "to edit a comment without proper permission for the {$type} with id {$sid}.");
-        COM_handle404($_CONF['site_url'] . '/index.php');
+    // check item for read permissions and comments enabled for it
+    $function = 'plugin_commentenabled_' . $type;
+    if (function_exists($function)) {
+        if (!PLG_commentEnabled($type, $sid)) {
+            COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                . "to preview a comment without proper permission or comments have been disabled for the {$type} with id {$sid}.");
+            COM_handle404($_CONF['site_url'] . '/index.php');
+        }
+    } else {
+        COM_deprecatedLog('plugin_getiteminfo_' . $type, '2.2.1', '3.0.0', 'plugin_commentenabled_' . $type . " is now required to check if comments are enabled for a plugin item.");
+        // This way will be depreciated as of Geeklog v3.0.0
+        // check item for read permissions at least
+        if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
+            COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                . "to preview a comment without proper permission for the {$type} with id {$sid}.");
+            COM_handle404($_CONF['site_url'] . '/index.php');
+        }
     }
 
     $uid = 1;
@@ -2799,6 +2900,8 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
 
                 // Check title, if for some reason blank assume no access allowed to plugin item (therefore cannot add comment) so error 404
                 if (is_array($title) || empty($title) || ($title == false)) {
+                    COM_errorLog("CMT_handleComment(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                        . "to create a new comment (or new reply) without proper permission for the {$type} with id {$sid}.");
                     COM_handle404($_CONF['site_url'] . '/index.php');
                 }
                 $title = str_replace('$', '&#36;', $title);
@@ -2817,7 +2920,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
                 $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1], 'headercode' => $noIndex));
             }
             break;
-            
+
     }
 
     return $retval;
@@ -3160,9 +3263,21 @@ function plugin_canuserlike_comment($sub_type, $id, $uid, $ip)
             $result = DB_query($sql);
             if (DB_numRows($result) > 0) {
                 list ($type, $sid, $owner_id, $owner_ip) = DB_fetchArray($result);
-                // Figure out if user has access to view comment (depends on item premissions)
-                // Ask for url of item as PLG_getItemInfo will only return if user has read access
-                if (!empty(PLG_getItemInfo($type, $sid, 'url'))) {
+                // check item for read permissions and comments enabled for it
+                $commentAccess = false;
+                $function = 'plugin_commentenabled_' . $type;
+                if (function_exists($function)) {
+                    $commentAccess = PLG_commentEnabled($type, $sid);
+                } else {
+                    COM_deprecatedLog('plugin_getiteminfo_' . $type, '2.2.1', '3.0.0', 'plugin_commentenabled_' . $type . " is now required to check if comments are enabled for a plugin item.");
+                    // This way will be depreciated as of Geeklog v3.0.0
+                    // check item for read permissions at least
+                    if (!empty(PLG_getItemInfo($type, $sid, 'url'))) {
+                        $commentAccess = true;
+                    }
+                }
+
+                if ($commentAccess) {
                     // Make sure owner of comment and user not the same
                     if ($owner_id != $uid) {
                         $retval = true;
@@ -3199,9 +3314,21 @@ function plugin_getItemLikeURL_comment($sub_type, $id)
             $result = DB_query($sql);
             if (DB_numRows($result) > 0) {
                 list ($type, $sid) = DB_fetchArray($result);
-                // Figure out if user has access to view comment (depends on item permissions)
-                // Ask for url of item as PLG_getItemInfo will only return if user has read access
-                if (!empty(PLG_getItemInfo($type, $sid, 'url'))) {
+                // check item for read permissions and comments enabled for it
+                $commentAccess = false;
+                $function = 'plugin_commentenabled_' . $type;
+                if (function_exists($function)) {
+                    $commentAccess = PLG_commentEnabled($type, $sid);
+                } else {
+                    COM_deprecatedLog('plugin_getiteminfo_' . $type, '2.2.1', '3.0.0', 'plugin_commentenabled_' . $type . " is now required to check if comments are enabled for a plugin item.");
+                    // This way will be depreciated as of Geeklog v3.0.0
+                    // check item for read permissions at least
+                    if (!empty(PLG_getItemInfo($type, $sid, 'url'))) {
+                        $commentAccess = true;
+                    }
+                }
+
+                if ($commentAccess) {
                     $retval = CMT_getCommentUrlId($type, $sid);
                 }
             }

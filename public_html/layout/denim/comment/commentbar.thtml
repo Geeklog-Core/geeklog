@@ -11,11 +11,7 @@
 <div id="commentbar">
   <form action="{editor_url}" method="post" id="commentbar-comment" class="uk-form">
     <div class="submit">
-{!if jump_link_for_commenteditform}
-      {jump_link_for_commenteditform}
-{!else}
-      <button type="submit" name="reply" value="{lang_reply}" class="uk-button" rel="nofollow">{lang_reply}</button>
-{!endif}
+      {postcomment_action}
       <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
       <input type="hidden" name="{nprefix}pid" value="0"{xhtml}>
       <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
@@ -36,9 +32,19 @@
 </div>
 
 <p class="disclaimer">{lang_disclaimer}</p>
+{!if lang_comments_closed}
+<p>{lang_comments_closed}</p>
+{!endif}
+{!if lang_comment_post_login_required}
+<p>{lang_comment_post_login_required}</p>
+{!endif}
 
-<!-- BEGIN commenteditform_jumplink -->
+<!-- BEGIN postcomment_jumplink -->
       <a class="uk-button" href="#commenteditform">{lang_reply}</a>
-<!-- END commenteditform_jumplink -->
+<!-- END postcomment_jumplink -->
+
+<!-- BEGIN postcomment_button -->
+      <button type="submit" name="reply" value="{lang_reply}" class="uk-button" rel="nofollow">{lang_reply}</button>
+<!-- END postcomment_button -->
 
 {# end {templatelocation} #}
