@@ -1737,7 +1737,6 @@ function plugin_commentenabled_article($id)
     $result = DB_query($sql);
     $A = DB_fetchArray($result);
     if (DB_numRows($result) == 1 && TOPIC_hasMultiTopicAccess('article', $id) > 0) { // Need read access of topics to post comment
-    //if (TOPIC_hasMultiTopicAccess('article', $id) > 0)) { // Need read access of topics to post comment
         // CommentCode: Enabled = 0, Disabled = -1. Closed = 1
         if ($A['commentcode'] == 0) { // Enabled
             $retval = true;
@@ -1768,14 +1767,6 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
 
     $retval = '';
 
-    /*
-    $commentcode = DB_getItem($_TABLES['stories'], 'commentcode',
-        "(sid = '$id') AND (draft_flag = 0) AND (date <= NOW())"
-        . COM_getPermSQL('AND'));
-    if (!isset($commentcode) || ($commentcode != 0 || TOPIC_hasMultiTopicAccess('article', $id) < 2)) { // Need read access of topics to post comment
-        COM_redirect($_CONF['site_url'] . '/index.php');
-    }
-    */
     if (!plugin_commentenabled_article($id)) {
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
