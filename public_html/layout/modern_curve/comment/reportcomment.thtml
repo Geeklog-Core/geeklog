@@ -9,10 +9,9 @@
 
     <ul class="submit">
       <li>
+        <input type="submit" name="mode" value="sendreport" class="submit"{xhtml}>
+        <input type="submit" name="mode" value="{lang_cancel}"{xhtml}>
         <input type="hidden" name="cid" value="{cid}"{xhtml}>
-        <input type="hidden" name="type" value="{type}"{xhtml}>
-        <input type="hidden" name="mode" value="sendreport"{xhtml}>
-        <input type="submit" name="sendit" value="{lang_send_report}" class="submit"{xhtml}>
         <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
       </li>
     </ul>

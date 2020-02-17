@@ -238,7 +238,7 @@ $LANG03 = array(
     24 => 'Anonymous User',
     25 => 'Are you sure you want to report this post to the site admin?',
     26 => '%s reported the following abusive comment post:',
-    27 => 'Abuse report',
+    27 => 'Abuse Report',
     28 => 'Preview Changes',
     29 => 'Submit Changes',
     30 => 'Edited on',
@@ -268,7 +268,9 @@ $LANG03 = array(
     'ban_plugin_ban_ip' => 'Ban this IP address with the Ban plugin',
     'num_comments' => '%s Comment(s)',
     'anon_user_name' => '%s (Anonymous User)',
-    'comments_closed_msg' => 'Comments are closed and no new posts are allowed.'
+    'comments_closed_msg' => 'Comments are closed and no new posts are allowed.',
+    'read_comment' => 'Read the full comment at',
+    'comment_for' => 'The above comment is for the following item'
 );
 
 ###############################################################################

@@ -1718,16 +1718,17 @@ function plugin_autotags_article($op, $content = '', $autotag = array())
 }
 
 /**
- * Does the user have at least read access to this plugin item and are comments enabled for the item
+ * Return the comment code to this plugin item. This is based not only the code of the actual plugin item but the access the user has to the item
  *
  * @param   string $id   Item id to which $cid belongs
- * @return  boolean      True if access granted or false
+ * @return  int    Return a CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
  */
 function plugin_commentenabled_article($id)
 {
     global $_CONF, $_TABLES;
 
-    $retval = false;
+    // CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
+    $commentCode = COMMENT_CODE_DISABLED;
 
     $sql = "SELECT sid, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon FROM {$_TABLES['stories']}";
     $sql .= " WHERE sid = '" . DB_escapeString($id) . "' " . COM_getPermSQL('AND');
@@ -1738,17 +1739,21 @@ function plugin_commentenabled_article($id)
     $A = DB_fetchArray($result);
     if (DB_numRows($result) == 1 && TOPIC_hasMultiTopicAccess('article', $id) > 0) { // Need read access of topics to post comment
         // CommentCode: Enabled = 0, Disabled = -1. Closed = 1
-        if ($A['commentcode'] == 0) { // Enabled
-            $retval = true;
-        } elseif ($A['commentcode'] == 1) { // Closed but still visible so give admins access
-            $retval = (SEC_hasRights('story.edit') &&
+        if ($A['commentcode'] == COMMENT_CODE_ENABLED) {
+            $commentCode = COMMENT_CODE_ENABLED;
+        } elseif ($A['commentcode'] == COMMENT_CODE_CLOSED) { // Closed but still visible so give admins access
+            if (SEC_hasRights('story.edit') &&
                 (SEC_hasAccess($A['owner_id'], $A['group_id'],
                         $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                        $A['perm_anon']) == 3));
+                        $A['perm_anon']) == 3)) {
+                $commentCode = COMMENT_CODE_ENABLED; // If Admin then treat comment like enabled
+            } else {
+                $commentCode = COMMENT_CODE_CLOSED;
+            }
         }
     }
 
-    return $retval;
+    return $commentCode;
 }
 
 /**
@@ -1767,8 +1772,10 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
 
     $retval = '';
 
-    if (!plugin_commentenabled_article($id)) {
-        COM_redirect($_CONF['site_url'] . '/index.php');
+    // Use plugin_commentenabled_foo permission check to determine if user has permissions to save a comment for this item
+    // CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
+    if (plugin_commentenabled_article($id) != COMMENT_CODE_ENABLED) {
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     $numpages = DB_getItem($_TABLES['stories'], 'numpages',

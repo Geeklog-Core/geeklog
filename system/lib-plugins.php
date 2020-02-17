@@ -493,11 +493,11 @@ function PLG_getCommentUrlId($type, $id = '')
 }
 
 /**
- * Does the user have at least read access to this plugin item and are comments enabled for the item
+ * Return the comment code to this plugin item. This is based not only the code of the actual plugin item but the access the user has to the item
  *
  * @param   string $type Plugin of comment
  * @param   string $id   Item id to which $cid belongs
- * @return  boolean      True if access granted or false
+ * @return  int    Return a CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
  * @since    Geeklog v2.2.1
  */
 function PLG_commentEnabled($type, $id)

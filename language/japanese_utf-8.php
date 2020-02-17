@@ -276,7 +276,9 @@ $LANG03 = array(
     'ban_plugin_ban_ip' => 'BanプラグインでこのIPアドレスを禁止する',
     'num_comments' => '%s件のコメント',
     'anon_user_name' => '%s (ゲストユーザー)',
-    'comments_closed_msg' => 'Comments are closed and no new posts are allowed.'
+    'comments_closed_msg' => 'Comments are closed and no new posts are allowed.',
+    'read_comment' => 'Read the full comment at',
+    'comment_for' => 'The above comment is for the following item'
 );
 
 ###############################################################################
