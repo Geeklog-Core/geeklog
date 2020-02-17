@@ -481,8 +481,8 @@ function USER_resendRequest()
 {
     global $_CONF;
 
-    $method = Geeklog\Input::fPost('token_requestmethod', '');
-    $returnUrl = Geeklog\Input::post('token_returnurl', '');
+    $method = Geeklog\Input::fRequest('token_requestmethod', '');
+    $returnUrl = Geeklog\Input::fRequest('token_returnurl', '');
     if (!empty($returnUrl)) {
         $returnUrl = urldecode($returnUrl);
         if (substr($returnUrl, 0, strlen($_CONF['site_url'])) !== $_CONF['site_url']) {
@@ -491,17 +491,17 @@ function USER_resendRequest()
         }
     }
 
-    $postData = Geeklog\Input::post('token_postdata', '');
+    $postData = Geeklog\Input::fRequest('token_postdata', '');
     if (!empty($postData)) {
         $postData = urldecode($postData);
     }
 
-    $getData = Geeklog\Input::post('token_getdata', '');
+    $getData = Geeklog\Input::fRequest('token_getdata', '');
     if (!empty($getData)) {
         $getData = urldecode($getData);
     }
 
-    $files = Geeklog\Input::post('token_files', '');
+    $files = Geeklog\Input::fRequest('token_files', '');
     if (!empty($files)) {
         $files = urldecode($files);
     }
@@ -510,17 +510,11 @@ function USER_resendRequest()
         ((($method === 'POST') && !empty($postData)) ||
             (($method === 'GET') && !empty($getData)))
     ) {
-        $req = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_POST);
-        $req->setConfig(array(
-            'adapter' => 'HTTP_Request2_Adapter_Curl',
-            'connect_timeout' => 15,
-            'timeout' => 30,
-            'follow_redirects' => TRUE,
-            'max_redirects' => 1,
-        ));
-
         if ($method === 'POST') {
+            $req = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_POST);
+
             $data = unserialize($postData);
+
             foreach ($data as $key => $value) {
                 if ($key == CSRF_TOKEN) {
                     $req->addPostParameter($key, SEC_createToken());
@@ -537,7 +531,6 @@ function USER_resendRequest()
                     $req->addPostParameter('_files_' . $key, $value);
                 }
             }
-
         } else {
             $data = unserialize($getData);
 
@@ -556,7 +549,17 @@ function USER_resendRequest()
             unset($value);
 
 			$returnUrl = $file . '?' . http_build_query($urlVars);
+
+            $req = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_POST);
         }
+
+        $req->setConfig(array(
+            'adapter' => 'HTTP_Request2_Adapter_Curl',
+            'connect_timeout' => 15,
+            'timeout' => 30,
+            'follow_redirects' => TRUE,
+            'max_redirects' => 1,
+        ));
 
         $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
         // need to fake the referrer so the new token matches
