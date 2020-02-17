@@ -64,7 +64,7 @@
 {!endif}
         <input type="submit" value="{lang_cancel}" name="{nprefix}mode"{xhtml}>
 {!if allow_delete}
-        <button type="submit" name="{nprefix}mode" value="{lang_delete}" class="uk-button uk-button-danger g-recaptcha" onclick="return confirm('{confirm_message}');"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_delete}</button>
+        <button type="submit" name="{nprefix}mode" value="{lang_delete}" class="g-recaptcha" onclick="return confirm('{confirm_message}');"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_delete}</button>
 {!endif}
 {!if allow_notify}
         <p><input type="checkbox" name="notify"{notify_checked}>{lang_notify}</p>
