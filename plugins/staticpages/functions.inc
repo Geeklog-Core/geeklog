@@ -278,6 +278,19 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
 }
 
 /**
+ * Comment Submission approved
+ *
+ * @param   string $id       Item id to which $cid belongs
+ * @param   int     $cid    Approved Comment id
+ */
+function plugin_moderationcommentapprove_staticpages($id, $cid)
+{
+    // Nothing needed to do on approval of comment to plugin item
+
+    return true;
+}
+
+/**
  * staticpages: delete a comment
  *
  * @param   int    $cid Comment to be deleted
