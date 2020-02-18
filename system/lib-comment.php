@@ -1619,9 +1619,9 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             $cid = 0; // comment went into the submission queue
         }
         if (($uid == 1) && isset($username)) {
-            CMT_sendNotification($title0, $comment0, $uid, $username, $_SERVER['REMOTE_ADDR'], $type, $cid);
+            CMT_sendNotification($title0, $comment0, $uid, $username, $_SERVER['REMOTE_ADDR'], $type, $sid, $cid);
         } else {
-            CMT_sendNotification($title0, $comment0, $uid, '', $_SERVER['REMOTE_ADDR'], $type, $cid);
+            CMT_sendNotification($title0, $comment0, $uid, '', $_SERVER['REMOTE_ADDR'], $type, $sid, $cid);
         }
     }
 
@@ -1637,10 +1637,11 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
  * @param    $username   string      optional name of anonymous user
  * @param    $ipaddress  string      poster's IP address
  * @param    $type       string      type of comment ('article', 'polls', ...)
+ * @param    $sid        string      id of type
  * @param    $cid        int         comment id (or 0 when in submission queue)
  * @return               boolean     true if successfully sent, otherwise false
  */
-function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $type, $cid)
+function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $type, $sid, $cid)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG03, $LANG08, $LANG09, $LANG29;
 
@@ -1679,9 +1680,7 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
     $mailbody = "$LANG03[16]: $title\n"
         . "$LANG03[5]: $author\n";
 
-    if ($type != 'article') {
-        $mailbody .= "$LANG09[5]: $type\n";
-    }
+    $mailbody .= "$LANG09[5]: $type\n";
 
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {
@@ -1701,6 +1700,9 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
         $mailbody .= $LANG03[39] . ': ' . $_CONF['site_url']
             . '/comment.php?mode=view&cid=' . $cid . "\n\n";
     }
+
+    $pluginItemUrl = CMT_getCommentUrlId($type, $sid);
+    $mailBody .= $LANG03['comment_for'] . ': ' . $pluginItemUrl . "\n\n";    
 
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";
@@ -1957,9 +1959,9 @@ function CMT_sendReport($cid)
 
     $mailBody = sprintf($LANG03[26], $username);
     $mailBody .= "\n\n"
-        . "$LANG09[5]: {$A['type']}\n"
         . "$LANG03[16]: $title\n"
-        . "$LANG03[5]: $author\n";
+        . "$LANG03[5]: $author\n"
+        . "$LANG09[5]: {$A['type']}\n";
 
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {
