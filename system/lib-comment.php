@@ -1702,7 +1702,7 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
     }
 
     $pluginItemUrl = CMT_getCommentUrlId($type, $sid);
-    $mailBody .= $LANG03['comment_for'] . ': ' . $pluginItemUrl . "\n\n";    
+    $mailbody .= $LANG03['comment_for'] . ': ' . $pluginItemUrl . "\n\n";
 
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";
