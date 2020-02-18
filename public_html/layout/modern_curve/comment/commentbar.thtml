@@ -40,7 +40,7 @@
 
 <p class="disclaimer">{lang_disclaimer}</p>
 {!if lang_comments_closed}
-<p>{lang_comments_closed}</p>
+<p><strong>{lang_comments_closed}</strong></p>
 {!endif}
 {!if lang_comment_post_login_required}
 <p>{lang_comment_post_login_required}</p>
