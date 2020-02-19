@@ -216,7 +216,7 @@ $LANG03 = array(
     3 => 'Logout',
     4 => 'Create Account',
     5 => 'Username',
-    6 => 'This site requires you to be logged in to post a comment.If you have an account already (or need to create one), please <a href="/users.php">login here</a>.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Your last comment was ',
     8 => " seconds ago.  This site requires at least {$_CONF['commentspeedlimit']} seconds between comments",
     9 => 'Comment',

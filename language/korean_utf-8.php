@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # korean_utf-8.php
@@ -216,7 +216,7 @@ $LANG03 = array(
     3 => '로그아웃',
     4 => '어카운트 작성',
     5 => '이름',
-    6 => '덧글쓰기는 로그인이 필요합니다.  어카운트가 없을 경우, 아래 양식으로 새 어카운트를 작성할 수 있습니다.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => '당신은',
     8 => "초 전에 덧글을 쓰셨습니다. 덧글과 덧글  사이는{$_CONF['commentspeedlimit']}초 이상의 간격이 필요합니다.",
     9 => 'Comment',

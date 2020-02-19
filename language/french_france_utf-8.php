@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # french_france_utf-8.php
@@ -216,7 +216,7 @@ $LANG03 = array(
     3 => 'Se déconnecter',
     4 => 'Créez un compte',
     5 => 'Nom',
-    6 => 'L\'envoi d\'un commentaire requiers que vous soyez enregistré et connecté. Si vous n\'avez pas encore de compte, vous pouvez vous inscrire à l\'aide du formulaire ci-dessous.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Votre dernier commentaire était il y a ',
     8 => " secondes. Vous devez attendre {$_CONF['commentspeedlimit']} secondes entre chaque commentaire.",
     9 => 'Commentaire',

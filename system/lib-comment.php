@@ -124,7 +124,10 @@ function CMT_commentBar($sid, $title, $type, $order, $mode, $commentCode = 0)
         if (COMMENT_ON_SAME_PAGE) {
             // lang_comment_post_login_required is posted on the editor itself
         } else {
-            $commentBar->set_var('lang_comment_post_login_required', $LANG03[6]);
+            $commentBar->set_var(
+                'lang_comment_post_login_required',
+                sprintf($LANG03[6], $_CONF['site_url'] . '/users.php')
+            );
         }
     }
 
@@ -971,7 +974,10 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             $commentlogin = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'comment'));
             $commentlogin->set_file(array('comment' => 'commentlogin.thtml'));
             $commentlogin->set_var('start_block_postacomment', COM_startBlock($LANG03[1]));
-            $commentlogin->set_var('lang_comment_post_login_required', $LANG03[6]);
+            $commentlogin->set_var(
+                'lang_comment_post_login_required',
+                sprintf($LANG03[6], $_CONF['site_url'] . '/users.php')
+            );
             $commentlogin->set_var('end_block', COM_endBlock());
             $retval .= $commentlogin->finish($commentlogin->parse('output', 'comment'));
         } else {

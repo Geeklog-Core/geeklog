@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # 
@@ -214,7 +214,7 @@ $LANG03 = array(
     3 => 'Odhlásit',
     4 => 'Vytvořit účet',
     5 => 'Uživatel',
-    6 => 'Tato stránka vyžaduje přihlášení pro vložení komentáře, prosím přihlašte se.  Pokud nemáte účet - můžete si ho vytvořit.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Váš poslední komentář vložen před ',
     8 => " sekundami.  Tato stránka vyžaduje prodlevu {$_CONF['commentspeedlimit']} sekund mezi komentáři.",
     9 => 'Komentář',

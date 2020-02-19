@@ -219,7 +219,7 @@ $LANG03 = array(
     3 => 'Logga ut',
     4 => 'Skapa ett konto',
     5 => 'Användarnamn',
-    6 => 'För att skriva en kommentar på denna sajt måste man ha ett konto.  Om du inte har ett konto så kan du använda formuläret nedan för att skapa ett.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Din senaste kommentar var ',
     8 => " sekunder sedan.  På denna sajt måste man vänta minst {$_CONF['commentspeedlimit']} sekunder mellan kommentarer",
     9 => 'Kommentar',

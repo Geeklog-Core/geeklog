@@ -215,7 +215,7 @@ $LANG03 = array(
     3 => 'Wyloguj',
     4 => 'Za³ó¿ Konto',
     5 => 'Login',
-    6 => 'Aby zamie¶ciæ komentarz nale¿y siê zalogowaæ.  Je¶li nie masz jeszcze konta, za³ó¿ sobie u¿ywaj±c poni¿szego formularza.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Ostatni komentarz zamie¶ci³e¶ ',
     8 => " sekund temu.  Wymagana jest przerwa równa {$_CONF['commentspeedlimit']} sekund pomiêdzy komentarzami",
     9 => 'Komentarz',

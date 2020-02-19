@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # finnish.php
@@ -218,7 +218,7 @@ $LANG03 = array(
     3 => 'Kirjaudu ulos',
     4 => 'Luo käyttäjätili',
     5 => 'Käyttäjänimi',
-    6 => 'Sivustolle voi lähettää kommentteja vain rekisteröityneet käyttäjät. Jos sinulla ei ole käyttäjätiliä sivustolla, voit tehdä tilin käyttämällä alla olevaa lomaketta.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Viimeisin kommenttisi kirjoitettiin ',
     8 => " sekuntia sitten. Sivusto vaatii vähintään {$_CONF['commentspeedlimit']} sekuntia kommenttien välillä",
     9 => 'Kommentti',

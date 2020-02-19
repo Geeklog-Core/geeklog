@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # italian_utf-8.php
@@ -217,7 +217,7 @@ $LANG03 = array(
     3 => 'Esci',
     4 => 'Crea un Account',
     5 => 'Nome Utente',
-    6 => 'Per poter inserire un commento su questo sito é necessario loggarsi. Se non hai ancora un account puoi usare il form sottostante per crearne uno.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Il tuo ultimo commento risale a ',
     8 => " secondi fá  Questo sito richiede che attendi {$_CONF['commentspeedlimit']} secondi tra gli inserimenti dei commenti.",
     9 => 'Commento',

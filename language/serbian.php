@@ -220,7 +220,7 @@ $LANG03 = array(
     3 => 'Odjava',
     4 => 'Kreirajte korisnicki nalog',
     5 => 'Korisnicko ime',
-    6 => 'Da bi poslali komentar, morate biti prijavljeni. Molimo prijavite se. Ako nemate korisnicki nalog mozete ga besplatno kreirati.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Vas poslednji komentar je bio pre ',
     8 => " sekundi.  Stranica zahteva da prodje najmanje {$_CONF['commentspeedlimit']} sekundi izmedju komentara",
     9 => 'Komentar',

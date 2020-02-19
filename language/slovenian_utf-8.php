@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # slovenian_utf-8.php
@@ -218,7 +218,7 @@ $LANG03 = array(
     3 => 'Odjava',
     4 => 'Registriraj se',
     5 => 'Uporabniško ime',
-    6 => 'Za objavo komentarjev na tej spletni strani je treba biti registriran. Če še nimaš svojega uporabniškega imena in gesla, klikni spodaj.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Tvoj zadnji komentar je bil objavljen pred ',
     8 => " sekundami. Med posameznimi komentarji istega uporabnika mora preteči vsaj {$_CONF['commentspeedlimit']} sekund.",
     9 => 'Komentar',

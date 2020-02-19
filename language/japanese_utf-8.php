@@ -224,7 +224,7 @@ $LANG03 = array(
     3 => 'ログアウト',
     4 => 'アカウントを作成',
     5 => 'ユーザー名',
-    6 => 'This site requires you to be logged in to post a comment.If you have an account already (or need to create one), please <a href="/users.php">login here</a>.',
+    6 => 'コメントの投稿にはログインが必要です。<a href="%s">ここからログイン(アカウントをお持ちでない場合はアカウントを新規作成)</a>してください。',
     7 => 'あなたは',
     8 => " 秒前にコメントしています。投稿と投稿の間は {$_CONF['commentspeedlimit']} 秒以上あけてください。",
     9 => 'コメント',
@@ -276,9 +276,9 @@ $LANG03 = array(
     'ban_plugin_ban_ip' => 'BanプラグインでこのIPアドレスを禁止する',
     'num_comments' => '%s件のコメント',
     'anon_user_name' => '%s (ゲストユーザー)',
-    'comments_closed_msg' => 'Comments are closed and no new posts are allowed.',
-    'read_comment' => 'Read the full comment at',
-    'comment_for' => 'The above comment is for the following item'
+    'comments_closed_msg' => 'コメントの新規受付は終了しています。',
+    'read_comment' => 'すべてのコメントを読む',
+    'comment_for' => '上記のコメントは次のアイテムのものです'
 );
 
 ###############################################################################

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # turkish.php
@@ -215,7 +215,7 @@ $LANG03 = array(
     3 => 'Sistemden Çýk',
     4 => 'Sisteme Üye ol',
     5 => 'Kullanýcý Adý',
-    6 => 'Yorum koyabilmeniz için sisteme giriþ yapmanýz gerekiyor. Eðer bir kullanýcý adýnýz yoksa aþaðýdaki formu kullanarak kendinize bir tane yaratýn.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Son yorumunuz ',
     8 => " saniye önceydi.  Bu sitede iki yorum arasýnda minimum {$_CONF['commentspeedlimit']} saniye olmalýdýr.",
     9 => 'Yorum',

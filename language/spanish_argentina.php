@@ -213,7 +213,7 @@ $LANG03 = array(
     3 => 'Salir',
     4 => 'Crear una Cuenta',
     5 => 'Nombre del Usuario',
-    6 => 'Este sitio requiere que tenga una cuenta para enviar un comentario. Si ya la tiene ingrese el usuario y el password. Si no tiene una cuenta puede crear una nueva en el formulario de abajo.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Su último comentario fue hace ',
     8 => " segundos. Este sitio requiere al menos {$_CONF['commentspeedlimit']} segundos entre comentarios",
     9 => 'Comentario',

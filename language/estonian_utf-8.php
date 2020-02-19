@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # estonian_utf-8.php
@@ -216,7 +216,7 @@ $LANG03 = array(
     3 => 'Logi välja',
     4 => 'Tee konto',
     5 => 'Kasutajanimi',
-    6 => 'Sellel lehel pead kommentaaride postitamiseks eelnevalt sisse logima. Kui sul ei ole veel kasutajakontot, võid alloleva vormi abiga endale konto luua.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Sinu viimane kommentaar oli ',
     8 => " sekundit tagasi.  Sellel lehel  peab kommentaaride vahe olema vähemalt {$_CONF['commentspeedlimit']} sekundit",
     9 => 'kommentaar',

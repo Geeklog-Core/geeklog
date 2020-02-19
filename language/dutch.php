@@ -221,7 +221,7 @@ $LANG03 = array(
     3 => 'Uitloggen',
     4 => 'Aanmelden account',
     5 => 'Gebruikersnaam',
-    6 => 'Het portaal vereist dat u bent ingelogd om een reactie te versturen: log a.u.b. in. Indien u geen account heeft, kunt u het onderstaande formulier gebruiken om u aan te melden.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Uw laatste reactie was ',
     8 => " seconden geleden. Een beveiliging vereist tenminste {$_CONF['commentspeedlimit']} seconden tussen reacties",
     9 => 'Reactie',

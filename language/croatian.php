@@ -215,7 +215,7 @@ $LANG03 = array(
     3 => 'Odjava',
     4 => 'Kreirajte korisnièki raèun',
     5 => 'Korisnièko ime',
-    6 => 'Stranica zahtjeva, da bi poslali komentar, da budete prijavljeni. Molimo prijavite se.  Ako nemate korisnièki raèun mo¾ete ga napraviti besplatno.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Va¹ posljedni komentar je ',
     8 => " sekundi.  Stranice zahtjevaju da proðe vi¹e od {$_CONF['commentspeedlimit']} sekundi meðu slanjem komentara",
     9 => 'Komentar',

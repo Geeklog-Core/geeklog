@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # slovak_utf-8.php
@@ -215,7 +215,7 @@ $LANG03 = array(
     3 => 'Odhlásiť',
     4 => 'Vytvoriť konto',
     5 => 'Užívateľ',
-    6 => 'Tento portál vyžaduje prihlásenie pre vloženie komentára. Ak nemáte konto, použite formulár nižšie na jeho vytvorenie.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Váš posledný komentár bol pred ',
     8 => " sekundami.  Tento portál vyžaduje aspoň {$_CONF['commentspeedlimit']} sekúnd medzi komentármi",
     9 => 'Komentár',

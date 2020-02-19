@@ -218,7 +218,7 @@ $LANG03 = array(
     3 => 'Se d&eacute;connecter',
     4 => 'Cr&eacute;ez un compte',
     5 => 'Nom d\'utilisateur',
-    6 => 'L\'envoi d\'un commentaire requiers que vous soyez enregistr&eacute; et connect&eacute;. Si vous n\'avez pas encore de compte, vous pouvez vous inscrire &agrave; l\'aide du formulaire ci-dessous.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Votre dernier commentaire &eacute;tait il y a ',
     8 => " secondes. Vous devez attendre au moins {$_CONF['commentspeedlimit']} secondes entre chaque commentaire.",
     9 => 'Commenter',
