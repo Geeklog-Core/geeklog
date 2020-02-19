@@ -81,7 +81,7 @@ function _checkEnvironment()
         $LANG_ENVCHECK['php_warning'],
         $_CONF['layout_url'] . '/images/icons/envcheck.png'
     );
-    
+
     // ***********************************************
     // Database Settings Section
     $dbms_error = false;
@@ -109,15 +109,15 @@ function _checkEnvironment()
                 'current'     => $current,
                 'recommended' => $recommended . '+',
                 'notes'       => $LANG_ENVCHECK['database_' . $_DB_dbms . '_req_version']
-            );    
+            );
         } else {
             $dbms_error = true;
         }
     } else {
         $dbms_error = true;
     }
-    
-    if ($dbms_error) {   
+
+    if ($dbms_error) {
         $header_arr = array(      // display 'text' and use table field 'field'
             array('text' => $LANG_ENVCHECK['item'],   'field' => 'item'),
             array('text' => $LANG_ENVCHECK['status'], 'field' => 'status'),
@@ -134,12 +134,12 @@ function _checkEnvironment()
             'item'   => $LANG_ENVCHECK['database_dms'],
             'status' => _getStatusTags($T, 'notok', $LANG_ENVCHECK['not_found']),
             'notes'  => $LANG_ENVCHECK['database_dms_notes']
-        );                              
+        );
     }
 
     $admin_list = ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
     $T->set_var('database_settings_list', $admin_list);
-                          
+
     // ***********************************************
     // PHP Settings Section - First we will validate the general environment.
     $header_arr = array(      // display 'text' and use table field 'field'
@@ -250,7 +250,7 @@ function _checkEnvironment()
 
     $admin_list = ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
     $T->set_var('php_settings_list', $admin_list);
-    
+
 
     // ***********************************************
     // Libraries
@@ -279,7 +279,7 @@ function _checkEnvironment()
             'notes'  => $LANG_ENVCHECK['fileinfo_not_found']
         );
     }
-    
+
     if (extension_loaded('openssl')) {
         $data_arr[] = array(
             'item'   => $LANG_ENVCHECK['openssl_library'],
@@ -624,15 +624,16 @@ function _checkEnvironment()
 
     // ***********************************************
     // Current PHP Settings
-    $T->set_var(array(
-        'lang_current_php_settings' => $LANG_ENVCHECK['current_php_settings'],
-        'lang_showhide_phpinfo'     => $LANG_ENVCHECK['showhide_phpinfo'],
-    ));
-    
-   if (!COM_isDemoMode()) {
+    if (!COM_isDemoMode()) {
+        $T->set_var(array(
+            'lang_current_php_settings' => $LANG_ENVCHECK['current_php_settings'],
+            'lang_showhide_phpinfo'     => $LANG_ENVCHECK['showhide_phpinfo'],
+        ));
+
+
         _phpinfo($T);
     }
-    
+
     $T->parse('output', 'page');
     $retval .= $T->finish($T->get_var('output'));
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
@@ -677,7 +678,7 @@ function php_v()
 function _phpOutOfDate()
 {
     // Min PHP Version 5.6.4
-    
+
     $phpv = php_v();
     if (($phpv[0] < 5) || (($phpv[0] == 6) && ($phpv[1] < 4))) {
         return true;
