@@ -511,15 +511,15 @@ function USER_resendRequest()
             (($method === 'GET') && !empty($getData)))
     ) {
         if ($method === 'POST') {
-            $req = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_POST);
+            $request = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_POST);
 
             $data = unserialize($postData);
-
-            foreach ($data as $key => $value) {
+            foreach ($data as $key => &$value) {
                 if ($key == CSRF_TOKEN) {
-                    $req->addPostParameter($key, SEC_createToken());
+                    $request->addPostParameter($key, SEC_createToken());
+                    $value = SEC_createToken();
                 } else {
-                    $req->addPostParameter($key, $value);
+                    $request->addPostParameter($key, $value);
                 }
             }
 
@@ -528,42 +528,35 @@ function USER_resendRequest()
             }
             if (!empty($files)) {
                 foreach ($files as $key => $value) {
-                    $req->addPostParameter('_files_' . $key, $value);
+                    $request->addPostParameter('_files_' . $key, $value);
                 }
             }
-        } else {
+        } else { // $method === 'GET'
+            // Note: $returnUrl will contain query string as well but setQueryVariables function will overwrite them
             $data = unserialize($getData);
-
-            // Copy over existing query with new values
-            list($file, $query) = explode('?', $returnUrl);
-        	mb_parse_str($query, $urlVars);
 
             foreach ($data as $key => &$value) {
                 if ($key == CSRF_TOKEN) {
                     $value = SEC_createToken();
                 }
-
-                // Replace values
-                $urlVars[$key] = $value;
             }
-            unset($value);
 
-			$returnUrl = $file . '?' . http_build_query($urlVars);
-
-            $req = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_POST);
+            $request = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_GET);
+            $url = $request->getUrl();
+            $url->setQueryVariables($data);
         }
 
-        $req->setConfig(array(
-            'adapter' => 'HTTP_Request2_Adapter_Curl',
+        $request->setConfig(array(
+            'adapter' => 'curl',
             'connect_timeout' => 15,
             'timeout' => 30,
             'follow_redirects' => TRUE,
             'max_redirects' => 1,
         ));
 
-        $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
+        $request->setHeader('User-Agent', 'Geeklog/' . VERSION);
         // need to fake the referrer so the new token matches
-        $req->setHeader('Referer', COM_getCurrentUrl());
+        $request->setHeader('Referer', COM_getCurrentUrl());
 
         foreach ($_COOKIE as $name => $value) {
             $cookie = $name . '=' . $value;
@@ -571,12 +564,12 @@ function USER_resendRequest()
             if (preg_match(HTTP_Request2::REGEXP_INVALID_COOKIE, $cookie)) {
                 COM_errorLog(__FUNCTION__ . " detected invalid cookie: {$cookie}", 1);
             } else {
-                $req->addCookie($name, $value);
+                $request->addCookie($name, $value);
             }
         }
 
         try {
-            $response = $req->send();
+            $response = $request->send();
             $status = $response->getStatus();
 
             if ($status == 200) {
