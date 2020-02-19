@@ -479,7 +479,7 @@ function USER_displayLoginErrorAndAbort($msg, $message_title, $message_text)
  */
 function USER_resendRequest()
 {
-    global $_CONF;
+    global $_CONF, $LANG_ADMIN;
 
     $method = Geeklog\Input::fRequest('token_requestmethod', '');
     $returnUrl = Geeklog\Input::fRequest('token_returnurl', '');
@@ -511,15 +511,15 @@ function USER_resendRequest()
             (($method === 'GET') && !empty($getData)))
     ) {
         if ($method === 'POST') {
-            $request = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_POST);
+            $req = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_POST);
 
             $data = unserialize($postData);
             foreach ($data as $key => &$value) {
                 if ($key == CSRF_TOKEN) {
-                    $request->addPostParameter($key, SEC_createToken());
+                    $req->addPostParameter($key, SEC_createToken());
                     $value = SEC_createToken();
                 } else {
-                    $request->addPostParameter($key, $value);
+                    $req->addPostParameter($key, $value);
                 }
             }
 
@@ -528,7 +528,7 @@ function USER_resendRequest()
             }
             if (!empty($files)) {
                 foreach ($files as $key => $value) {
-                    $request->addPostParameter('_files_' . $key, $value);
+                    $req->addPostParameter('_files_' . $key, $value);
                 }
             }
         } else { // $method === 'GET'
@@ -541,22 +541,33 @@ function USER_resendRequest()
                 }
             }
 
-            $request = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_GET);
-            $url = $request->getUrl();
+            $req = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_GET);
+            $url = $req->getUrl();
             $url->setQueryVariables($data);
         }
 
-        $request->setConfig(array(
+        $options = array(
             'adapter' => 'curl',
             'connect_timeout' => 15,
             'timeout' => 30,
             'follow_redirects' => TRUE,
             'max_redirects' => 1,
-        ));
+        );
+        if (stripos($returnUrl, 'https:') === 0) {
+            $options['ssl_verify_peer'] = true;
 
-        $request->setHeader('User-Agent', 'Geeklog/' . VERSION);
+            $hasCaFile = is_readable(@ini_get('openssl.cafile')) ||
+                is_dir(@ini_get('openssl.capath'));
+
+            if ($hasCaFile !== true) {
+                $options['ssl_cafile'] = $_CONF['path_data'] . 'cacert.pem';
+            }
+        }
+        $req->setConfig($options);
+
+        $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
         // need to fake the referrer so the new token matches
-        $request->setHeader('Referer', COM_getCurrentUrl());
+        $req->setHeader('Referer', COM_getCurrentUrl());
 
         foreach ($_COOKIE as $name => $value) {
             $cookie = $name . '=' . $value;
@@ -564,12 +575,12 @@ function USER_resendRequest()
             if (preg_match(HTTP_Request2::REGEXP_INVALID_COOKIE, $cookie)) {
                 COM_errorLog(__FUNCTION__ . " detected invalid cookie: {$cookie}", 1);
             } else {
-                $request->addCookie($name, $value);
+                $req->addCookie($name, $value);
             }
         }
 
         try {
-            $response = $request->send();
+            $response = $req->send();
             $status = $response->getStatus();
 
             if ($status == 200) {
@@ -582,7 +593,9 @@ function USER_resendRequest()
                 SECINT_cleanupFiles($files);
             }
 
-            trigger_error("Resending $method request failed: " . $e->getMessage());
+            COM_errorLog(__METHOD__ . ': ' . $e->getMessage());
+            COM_setSystemMessage($LANG_ADMIN['token_re_authentication_error']);
+            COM_redirect($_CONF['site_url'] . '/index.php');
         }
     } else {
         if (!empty($files)) {

@@ -1989,7 +1989,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
+#
 # This here determines the order of the sentence "No new articles in 2 hrs"
 # order it so it makes sense in your language:
 # %i    item, "Articles"
@@ -2047,7 +2047,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-# 
+#
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2091,6 +2091,7 @@ $LANG_ADMIN = array(
     'token_expired' => 'この操作のセキュリティトークンは期限切れになりました。続けるには再度認証してください。',
     'reauth_msg' => 'この操作のセキュリティトークンは期限切れになりました。続けるには下の認証を行ってください。そうすれば今回の編集作業を失うことはありません。',
     'token_expired_remote_user' => 'この操作のセキュリティトークンは期限切れになりました。リモートユーザーの再認証はできないため、編集内容は失われました。',
+    'token_re_authentication_error' => 'There was an error after your account was re-authenticated. It is unclear if the operation you were performing was executed or not.',
     'authenticate' => '認証する',
     'approve' => '承認する',
     'device' => 'デバイス',
@@ -2737,4 +2738,3 @@ $LANG_VALIDATION = array(
     'config_setting_lang_array' => 'それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください',
     'config_setting_lang_array_element_req' => '少なくとも1つキーを指定してください。それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください'
 );
-
