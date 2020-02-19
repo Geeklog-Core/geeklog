@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # polish_utf-8.php
@@ -215,7 +215,7 @@ $LANG03 = array(
     3 => 'Wyloguj',
     4 => 'Załóż Konto',
     5 => 'Login',
-    6 => 'Aby zamieścić komentarz należy się zalogować.  Jeśli nie masz jeszcze konta, załóż sobie używając poniższego formularza.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Ostatni komentarz zamieściłeś ',
     8 => " sekund temu.  Wymagana jest przerwa równa {$_CONF['commentspeedlimit']} sekund pomiędzy komentarzami",
     9 => 'Komentarz',

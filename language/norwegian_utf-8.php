@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # norwegian.php, based on
@@ -228,7 +228,7 @@ $LANG03 = array(
     3 => 'Logg ut',
     4 => 'Lag ny Konto',
     5 => 'Brukernavn',
-    6 => 'Dette nettstedet krever at du er logget inn for å kunne skrive kommentarer, vennligst logg inn. Hvis du ikke er registrert fra før, bruk skjemaet under for å registrere deg som ny bruker.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Din siste kommentar var ',
     8 => " sekunder siden. Dette nettstedet krever minst {$_CONF['commentspeedlimit']} sekunder mellom kommentarer",
     9 => 'kommentar',

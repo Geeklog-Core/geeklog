@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # romanian.php 
@@ -214,7 +214,7 @@ $LANG03 = array(
     3 => 'Iesire',
     4 => 'Inregistrare',
     5 => 'Membru',
-    6 => 'Intrati ca membru/utilizator inregistrat pentru a trimite comentarii. Pentru inregistrare completati miniformularul de mai jos.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Ultimul tau comentariu a fost acum',
     8 => " secunde in urma.  Asteptati cel putin {$_CONF['commentspeedlimit']} secunde pentru a introduce un nou comentariu",
     9 => 'Comentariu',

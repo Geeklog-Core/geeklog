@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # portuguese.php
@@ -214,7 +214,7 @@ $LANG03 = array(
     3 => 'Sair',
     4 => 'Registar utilizador',
     5 => 'Nome de utilizador',
-    6 => 'Este site obriga a que tenha efectuado o login para fazer um comentário, Por favor efectue o login.  Se não tiver uma conta criada pode utilizar o formulário seguinte para se registar.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'O seu último comentário foi ',
     8 => " segundos atrás.  Este site a pelo menos {$_CONF['commentspeedlimit']} segundos entre comentários",
     9 => 'Comentário',

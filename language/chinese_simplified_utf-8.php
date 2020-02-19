@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # chinese_simplified_utf-8.php
@@ -218,7 +218,7 @@ $LANG03 = array(
     3 => '退出',
     4 => '新增帐户',
     5 => '用户名',
-    6 => '本站需要登入才可发表评论，请登入。如果你没有帐户，请使用下面的表格登记。',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => '你最後发表的评论是在 ',
     8 => " 秒之前。本站限定至少 {$_CONF['commentspeedlimit']} 秒後才可再发表评论",
     9 => '评论',

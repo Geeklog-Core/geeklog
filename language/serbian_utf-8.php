@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # serbian_utf-8.php
@@ -220,7 +220,7 @@ $LANG03 = array(
     3 => 'Odjava',
     4 => 'Kreirajte korisnički nalog',
     5 => 'Korisničko ime',
-    6 => 'Da bi poslali komentar, morate biti prijavljeni. Molimo prijavite se. Ako nemate korisnički nalog možete ga besplatno kreirati.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Vaš poslednji komentar je bio pre ',
     8 => " sekundi.  Stranica zahteva da prođe najmanje {$_CONF['commentspeedlimit']} sekundi između komentara",
     9 => 'Komentar',

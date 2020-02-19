@@ -219,7 +219,7 @@ $LANG03 = array(
     3 => 'Abmelden',
     4 => 'Account anlegen',
     5 => 'Username',
-    6 => 'Um einen Kommentar abgeben zu können, musst Du angemeldet sein. Wenn Du noch keinen Account hast, benutze bitte das Formular um einen anzulegen.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Dein letzter Kommentar war vor ',
     8 => " Sekunden. Zwischen zwei Kommentaren müssen aber mindestens {$_CONF['commentspeedlimit']} Sekunden vergangen sein.",
     9 => 'Kommentar',

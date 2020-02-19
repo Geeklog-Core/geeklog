@@ -215,7 +215,7 @@ $LANG03 = array(
     3 => 'Teken Uit',
     4 => 'Skep Rekening',
     5 => 'Gebruikernaam',
-    6 => 'Hierdie werf vereis dat jy ingeteken moet wees om kommentaar te kan lewer, teken asseblief in.  As jy nie \'n rekening het nie kan jy die vorm hier onder gebruik om een te skep.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Jou laast kommentaar was ',
     8 => " sekondes gelede.  Hierdie werf vereis dat ten minstne {$_CONF['commentspeedlimit']} sekondes tussen kommentare verstryk.",
     9 => 'Kommentaar',

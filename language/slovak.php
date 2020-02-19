@@ -215,7 +215,7 @@ $LANG03 = array(
     3 => 'Odhlási»',
     4 => 'Vytvori» konto',
     5 => 'U¾ívateµ',
-    6 => 'Tento portál vy¾aduje prihlásenie pre vlo¾enie komentára. Ak nemáte konto, pou¾ite formulár ni¾¹ie na jeho vytvorenie.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Vá¹ posledný komentár bol pred ',
     8 => " sekundami.  Tento portál vy¾aduje aspoò {$_CONF['commentspeedlimit']} sekúnd medzi komentármi",
     9 => 'Komentár',

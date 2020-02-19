@@ -214,7 +214,7 @@ $LANG03 = array(
     3 => 'Odhlásit',
     4 => 'Vytvoøit úèet',
     5 => 'U¾ivatel',
-    6 => 'Tato stránka vy¾aduje pøihlá¹ení pro vlo¾ení komentáøe, prosím pøihla¹te se.  Pokud nemáte úèet - mù¾ete si ho vytvoøit.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Vá¹ poslední komentáø vlo¾en pøed ',
     8 => " sekundami.  Tato stránka vy¾aduje prodlevu {$_CONF['commentspeedlimit']} sekund mezi komentáøi.",
     9 => 'Komentáø',

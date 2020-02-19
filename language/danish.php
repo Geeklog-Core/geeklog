@@ -214,7 +214,7 @@ $LANG03 = array(
     3 => 'Log ud',
     4 => 'Lav en Konto',
     5 => 'Brugernavn',
-    6 => 'Hjemmesiden kræver, at du er logget ind, for at kunne tilføje en kommentar. Log venligst ind! Hvis du endnu ikke har oprettet en konto, kan du anvende nedenstående form til at oprette én.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Din sidste kommentar var ',
     8 => " sekunder siden. Hjemmesiden kræver mindst {$_CONF['commentspeedlimit']} sekunder mellem kommentarer",
     9 => 'Kommentar',

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # This is the Spanish language page for Geeklog!
@@ -216,7 +216,7 @@ $LANG03 = array(
     3 => 'Salida',
     4 => 'Crea una cuenta',
     5 => 'Nombre del(a) usuario(a)',
-    6 => 'Este sitio requiere que tengas una cuenta para enviar un comentario. Si ya la tienes, ingresa el nombre de usuario y la contraseña. Si no tienes una cuenta, puedes crear una nueva en el formulario de abajo',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Tu último comentario fue hace ',
     8 => " segundos. Este sitio requiere al menos {$_CONF['commentspeedlimit']} segundos entre comentarios",
     9 => 'Comentario',

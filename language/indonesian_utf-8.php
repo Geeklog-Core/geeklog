@@ -215,7 +215,7 @@ $LANG03 = array(
     3 => 'Keluar',
     4 => 'Buat Account',
     5 => 'Nama User',
-    6 => 'Anda harus logged untuk dapat mengirim tanggapan, Silahkan Log in.  Jika anda belum punya account gunakan forulir dibawah ini untuk membuat.',
+    6 => 'This site requires you to be logged in to post a comment. If you have an account already (or need to create one), please <a href="%s">login here</a>.',
     7 => 'Tanggapan terakhir anda: ',
     8 => " beberapa detik yg lalu.  Situs ini membutuhkan minimal {$_CONF['commentspeedlimit']} detik tiap tanggapan",
     9 => 'Tanggapan',
