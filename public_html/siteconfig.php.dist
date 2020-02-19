@@ -65,18 +65,19 @@ $_CONF['site_enabled'] = true;
  * @var bool
  * @since v2.2.0
  */
-// $_CONF['developer_mode_log']['trace'] = true;        // Include call trace in log file
-// $_CONF['developer_mode_log']['common'] = true;       // lib-common.php
-// $_CONF['developer_mode_log']['database'] = true;     // lib-database.php
-// $_CONF['developer_mode_log']['deprecated'] = true;   // Deprecated features
-// $_CONF['developer_mode_log']['resource'] = true;     // Resource class
-// $_CONF['developer_mode_log']['security'] = true;     // lib-security.php
-// $_CONF['developer_mode_log']['session'] = true;      // lib-session.php
-// $_CONF['developer_mode_log']['template'] = true;     // Template class
-// $_CONF['developer_mode_log']['topic'] = true;        // lib-topic.php
-// $_CONF['developer_mode_log']['like'] = true;        // lib-like.php, likes.php
-// $_CONF['developer_mode_log']['user'] = true;         // lib-user.php
-// $_CONF['developer_mode_log']['redirect'] = true;     // Redirect function
+ // $_CONF['developer_mode_log']['trace'] = true;        // Include call trace in log file
+ // $_CONF['developer_mode_log']['deprecated'] = true;   // Deprecated features (across all libraries)
+ // $_CONF['developer_mode_log']['common'] = true;       // lib-common.php
+ // $_CONF['developer_mode_log']['comment'] = true;      // lib-comment.php
+ // $_CONF['developer_mode_log']['database'] = true;     // lib-database.php
+ // $_CONF['developer_mode_log']['like'] = true;         // lib-like.php, likes.php
+ // $_CONF['developer_mode_log']['redirect'] = true;     // Redirect function
+ // $_CONF['developer_mode_log']['resource'] = true;     // Resource class
+ // $_CONF['developer_mode_log']['security'] = true;     // lib-security.php
+ // $_CONF['developer_mode_log']['session'] = true;      // lib-session.php
+ // $_CONF['developer_mode_log']['template'] = true;     // Template class
+ // $_CONF['developer_mode_log']['topic'] = true;        // lib-topic.php
+ // $_CONF['developer_mode_log']['user'] = true;         // lib-user.php
 
 $_CONF['path'] = '/path/to/Geeklog/';
 $_CONF['path_system'] = $_CONF['path'] . 'system/';
