@@ -510,6 +510,10 @@ function USER_resendRequest()
         ((($method === 'POST') && !empty($postData)) ||
             (($method === 'GET') && !empty($getData)))
     ) {
+        // Close the current session and write any session variables so session file unlocks
+        // This allows the seperate HTTP_Request2 to access the same session as it is not locked
+        Session::close();
+
         if ($method === 'POST') {
             $req = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_POST);
 
@@ -547,11 +551,12 @@ function USER_resendRequest()
         }
 
         $options = array(
-            'adapter' => 'curl',
-            'connect_timeout' => 15,
-            'timeout' => 30,
-            'follow_redirects' => TRUE,
-            'max_redirects' => 1,
+// Let's use Socks (which is the default for HTTP_Request2) so curl is not a required php extension for Geeklog
+//            'adapter'           => 'curl',
+            'connect_timeout'   => 15,
+            'timeout'           => 15,
+            'follow_redirects'  => true,
+            'max_redirects'     => 1,
         );
         if (stripos($returnUrl, 'https:') === 0) {
             $options['ssl_verify_peer'] = true;

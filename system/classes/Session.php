@@ -298,6 +298,19 @@ abstract class Session
     }
 
     /**
+     * Close the current session. 
+     * Note: No more session variable changes. Used when we need to unlock the session file
+     *      for another process to access (like when a user needs to re authenticate using the same session)
+     *
+     * @return  bool  true on success, false otherwise
+     */
+    public static function close()
+    {
+        return session_write_close(); // Write session data and close session (does not destroy)
+
+
+    }
+    /**
      * End the current session
      *
      * @return  bool  true on success, false otherwise
