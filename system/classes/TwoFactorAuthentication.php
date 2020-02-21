@@ -89,7 +89,9 @@ class TwoFactorAuthentication
     private function getTFAObject()
     {
         if (empty($this->tfa)) {
-            $this->tfa = new TwoFactorAuth('Geeklog', self::NUM_DIGITS);
+            $this->tfa = new TwoFactorAuth(
+                'Geeklog', self::NUM_DIGITS, 30, 'sha1', new QRCodeProvider()
+            );
         }
 
         return $this->tfa;
