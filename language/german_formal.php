@@ -2087,6 +2087,7 @@ $LANG_ADMIN = array(
     'token_expired' => 'Das Security-Token für diese Veränderung ist ausgelaufen. Bitte neu authentifizieren, um weiterzumachen.',
     'reauth_msg' => 'Das Security-Token für diese Veränderung ist ausgelaufen. Wenn Sie weitermachen wollen, dann bitte unten neu authentifizieren. Damit wird sichergestellt, dass die gerade gemachten Änderungen nicht verloren gehen.',
     'token_expired_remote_user' => 'The security token for this operation has expired. Since you are a remote user you cannot re-authenticate, so you have lost your changes.',
+    'token_re_authentication_error' => 'There was an error after your account was re-authenticated. It is unclear if the operation you were performing was executed or not.',
     'authenticate' => 'Authentifizieren',
     'approve' => 'Approve',
     'device' => 'Device',

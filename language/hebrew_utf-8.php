@@ -2084,6 +2084,7 @@ $LANG_ADMIN = array(
     'token_expired' => 'כרטיס הביטחון לפעולה זו פג. נא אמתו מחדש כדי להמשיך.',
     'reauth_msg' => 'כרטיס הביטחון לפעולה זו פג. אם ברצונכם להמשיך בפעולה זו, נא אמתו מחדש להלן. כך יובטח ששינויים שהרגע ביצעתם לא יאבדו.',
     'token_expired_remote_user' => 'The security token for this operation has expired. Since you are a remote user you cannot re-authenticate, so you have lost your changes.',
+    'token_re_authentication_error' => 'There was an error after your account was re-authenticated. It is unclear if the operation you were performing was executed or not.',
     'authenticate' => 'אימות',
     'approve' => 'Approve',
     'device' => 'Device',

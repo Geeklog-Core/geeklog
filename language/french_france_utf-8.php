@@ -2083,6 +2083,7 @@ $LANG_ADMIN = array(
     'token_expired' => 'Le délais de sécurité pour cette opératiton à expiré. Merci de vous identifier à nouveau pour continuer.',
     'reauth_msg' => 'Le délais de sécurité pour cette opératiton à expiré. Si vous souhaitez poursuivre l\'opération, merci de vous identifier à nouveau ci-dessous. Cela permettra de conserver vos dernières modifications.',
     'token_expired_remote_user' => 'The security token for this operation has expired. Since you are a remote user you cannot re-authenticate, so you have lost your changes.',
+    'token_re_authentication_error' => 'There was an error after your account was re-authenticated. It is unclear if the operation you were performing was executed or not.',
     'authenticate' => 'authentication',
     'approve' => 'Approve',
     'device' => 'Device',

@@ -2083,6 +2083,7 @@ $LANG_ADMIN = array(
     'token_expired' => 'Selle tegevuse turvakood on aegunud. Jätkamiseks palun autoriseeri ennast uuesti.',
     'reauth_msg' => 'Selle tegevuse turvakood on aegunud. Kui sa soovid selle tegevusega jätkata, siis autoriseeri allpool ennast uuesti. See tagab, et sinu poolt tehtud muutused ei läheks kaotsi.',
     'token_expired_remote_user' => 'The security token for this operation has expired. Since you are a remote user you cannot re-authenticate, so you have lost your changes.',
+    'token_re_authentication_error' => 'There was an error after your account was re-authenticated. It is unclear if the operation you were performing was executed or not.',
     'authenticate' => 'Autoriseeri',
     'approve' => 'Approve',
     'device' => 'Device',

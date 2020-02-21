@@ -2085,6 +2085,7 @@ $LANG_ADMIN = array(
     'token_expired' => 'Varnostni žeton (token) za ta postopek je potekel. Za nadaljevanje prosim ponovno preveri pristnost (avtentifikacija).',
     'reauth_msg' => 'Varnostni žeton (token) za ta postopek je potekel. Če hočeš nadaljevati, prosim ponovno preveri pristnost (avtentificiraj)spodaj. To bo zagotovilo, da narejene spremembe ne bodo izgubljene.',
     'token_expired_remote_user' => 'The security token for this operation has expired. Since you are a remote user you cannot re-authenticate, so you have lost your changes.',
+    'token_re_authentication_error' => 'There was an error after your account was re-authenticated. It is unclear if the operation you were performing was executed or not.',
     'authenticate' => 'Preveri pristnost',
     'approve' => 'Approve',
     'device' => 'Device',
