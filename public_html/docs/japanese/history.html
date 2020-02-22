@@ -101,14 +101,15 @@
 <li>[Update] Mobile_Detect class to version 2.8.34 [Tom]</li>
 </ul>
 
-<p>The following items are all current Geeklog API, functions, and/or global variables that are planned to be depreciated by a current Geeklog version. Plugin and Theme developers please take note of these changes in case they affect you.</p>
+<p>The following items are all current Geeklog API, functions, and/or global variables that are planned to be either required or depreciated by a current Geeklog version. Plugin and Theme developers please take note of these changes in case they affect you.</p>
 
 <p>Since Geeklog v2.2.1</p>
 
 <ul>
 <li>[Depreciated] [#872] By Geeklog 3.0.0 - Global $topic variable. Please use function TOPIC_getTopic or TOPIC_setTopic instead to determine Geeklog topic</li>
 <li>[Depreciated] [#871] By Geeklog 3.0.0 - Theme variable $theme_config['supported_version_theme']. Please use 'theme_gl_version' instead</li>
-<li>[Depreciated] [#1022] By Geeklog 3.0.0 - Number of variables passed to PLG_getCommentUrlId function. It now requires an Id field passed to it which means the plugin functions it calls (plugin_getcommenturlid_foo) requires the same</li> thing.
+<li>[Depreciated] [#1022] By Geeklog 3.0.0 - Number of variables passed to PLG_getCommentUrlId function. It now requires an Id field passed to it which means the plugin functions it calls (plugin_getcommenturlid_foo) requires the same</li> thing</li>
+<li>[Required] [#1023] By Geeklog 3.0.0 - The Comment Library API has had functions added or modified to address a number of issues. This includes: PLG_commentDelete (new $returnBoolean field added), PLG_getCommentUrlId (new $id field added), PLG_commentEnabled (New Function), PLG_approveCommentSubmission (New Function, only required if have submissions and need to do something after new comment approval)</li>
 </ul>
 
 <p>Since Geeklog v2.2.0</p>
@@ -120,7 +121,7 @@
 <p>Since Geeklog v2.1.2</p>
 
 <ul>
-<li>[Depreciated] [NA] By Geeklog 3.0.0 - CTL_setTemplateRoot. PLugins must use COM_newTemplate and either CTL_core_templatePath or CTL_plugin_templatePath</li>
+<li>[Depreciated] [NA] By Geeklog 3.0.0 - CTL_setTemplateRoot. Plugins must use COM_newTemplate and either CTL_core_templatePath or CTL_plugin_templatePath</li>
 </ul>
 
 <p>Since Geeklog v1.4.0</p>
