@@ -1,6 +1,6 @@
-Geeklog History/Changes:
+supportedGeeklog History/Changes:
 
-January ?? 2020 (2.2.1)
+February 25 2020 (2.2.1)
 ------------
 
 Explanation of list item:
@@ -16,7 +16,7 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Feature] [#866] Added config options for links to Terms of Use and Privacy Policy documents [Tom]
 - [Feature] [#954] For users without a photo you can now automatically generate user image/icon/avatar from Username using ui-avatar.com api [Mystralkk] [Tom]
 - [Feature] [#843] The Geeklog Demo mode now does not send out emails. It displays them right away to the user on the page. This is to prevent spamming [Mystralkk]
-- [Feature] [#940] Added a Likes System for articles, comments, and other plugins to support (like Static Pages). Likes can be enabled for regular users and/or anonymous users. Admin can specify Likes only or Likes and Dislikes [Tom]
+- [Feature] [#940] Added a Likes System for articles, comments, and included a Plugin API (which is supported by the Forum v2.9.4+). Likes can be enabled for regular users and/or anonymous users. Admin can specify Likes only or Likes and Dislikes [Tom]
 - [Feature] [#906] Language Override now supports regular variables. Plugins can add new language variables to support override [Tom]
 - [Feature] [#876] In Batch Admin, you now can delete users who have not contributed any content. Plugins can support this feature as well [Tom]
 - [Feature] [#806] Switch to RichFileManager since original Filemanager is depreciated [Mystralkk]
@@ -44,6 +44,7 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Improvement] [NA] PLG_getThemeItem and theme_getThemeItem_foo api functions so themes can specify certain css classes, styles, and other info for certain items in Geeklog [Tom]
 - [Improvement] [NA] The Denim, and Denim_Three themes now display user photos with comments [Tom]
 - [Improvement] [#1026] Geeklog now checks for the correct characterset encoding on any passed variables [Mystralkk]
+- [Improvement] [#1023] Partial cleanup of Comment Library including better security and permission checks [Tom]
 
 - [Bug] [d8792f2f5f3354ff01045955f43cb6277ef32bf7] Fixed saving of permissions for users when you have security groups within security groups [Tom]
 - [Bug] [#931] Fix for Duplicate Usernames & Usernames with Trailing Spaces [Tom]
@@ -69,6 +70,9 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Bug] [#863, #965] reCaptcha Plugin - Better handling of failure messages for users [Mystralkk]
 - [Bug] [#465] Fix for login issue when site domain is an IP address with the Google Chrome Browser [Tom]
 - [Bug] [#1001] Article Editor will now load even if images are missing [Tom]
+- [Bug] [#1035] Fixed Admin Comments and Admin Moderation forms for Comments Approving and Deleting Issues [Tom]
+- [Bug] [#1023] Fixed Reporting of Comments for abuse [Tom]
+- [Bug] [#1037] Fixed Re authentication of User Accounts dealing with both Get and Post requests [Tom]
 
 The following items are Libraries that have been updated that are not handled by Composer.
 
