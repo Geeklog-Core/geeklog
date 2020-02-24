@@ -55,4 +55,18 @@
   </div>
 </form>
 
+<!-- BEGIN author_form_element -->
+    <dt><label for="advsearchform-author">{lang_authors}</label></dt>
+    <dd>
+      <select name="author" id="advsearchform-author" class="uk-select uk-width-auto">
+        <option selected="selected" value="0">{lang_all}</option>
+        {author_option_list}
+      </select>
+    </dd>
+<!-- END author_form_element -->
+
+<!-- BEGIN author_form_element_disabled -->
+    <input type="hidden" name="author" value="0"{XHTML}>
+<!-- END author_form_element_disabled -->
+
 {# end {templatelocation} #}

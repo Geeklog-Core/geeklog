@@ -104,9 +104,11 @@ class Search
     private $_wordLength;
 
     /**
+     * Debug mode
+     *
      * @var bool
      */
-    private $_verbose = false; // verbose logging
+    private $debug = false;
 
     /**
      * @var bool
@@ -119,9 +121,15 @@ class Search
      *
      * @author Tony Bibbs, tony AT geeklog DOT net
      */
-    public function __construct()
+    public function __construct(array $config)
     {
         global $_CONF, $_TABLES;
+
+        if (isset($config['developer_mode'], $config['developer_mode_log']['search']) &&
+            $config['developer_mode'] &&
+            $config['developer_mode_log']['search']) {
+            $this->setDebug(true);
+        }
 
         // Set search criteria
         if (isset($_GET['query'])) {
@@ -240,10 +248,10 @@ class Search
 
         $retval .= COM_startBlock($LANG09[1], 'advancedsearch.html');
         $searchForm = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'search'));
-        $searchForm->set_file(array(
-            'searchform' => 'searchform.thtml',
-            'authors'    => 'searchauthors.thtml',
-        ));
+        $searchForm->set_file('searchform', 'searchform.thtml');
+        $searchForm->set_block('searchform', 'author_form_element');
+        $searchForm->set_block('searchform', 'author_form_element_disabled');
+
         $searchForm->set_var('search_intro', $LANG09[19]);
         $searchForm->set_var('lang_keywords', $LANG09[2]);
         $searchForm->set_var('lang_keytype', $LANG09[36]);
@@ -341,13 +349,12 @@ class Search
                     $options .= '>' . htmlspecialchars(COM_getDisplayName('', $A['username'], $A['fullname'])) . '</option>';
                 }
                 $searchForm->set_var('author_option_list', $options);
-                $searchForm->parse('author_form_element', 'authors', true);
+                $searchForm->parse('author_form_element', 'author_form_element', true);
             } else {
-                $searchForm->set_var('author_form_element', '<input type="hidden" name="author" value="0"' . XHTML . '>');
+                $searchForm->set_var('author_form_element', 'author_form_element_disabled');
             }
         } else {
-            $searchForm->set_var('author_form_element',
-                '<input type="hidden" name="author" value="0"' . XHTML . '>');
+            $searchForm->set_var('author_form_element', 'author_form_element_disabled');
         }
 
         // Results per page
@@ -406,7 +413,7 @@ class Search
             $sql .= 'AND (s.uid = \'' . $this->_author . '\') ';
         }
 
-        $search_s = new SearchCriteria('stories', $LANG09[65]);
+        $search_s = new SearchCriteria('article', $LANG09[65]);
 
         $columns = array('title' => 'title', 'introtext', 'bodytext');
         $sql .= $search_s->getDateRangeSQL('AND', 'date', $this->_dateStart, $this->_dateEnd);
@@ -441,7 +448,7 @@ class Search
             $sql .= 'AND (c.uid = \'' . $this->_author . '\') ';
         }
 
-        $search_c = new SearchCriteria('comments', $LANG09[66]);
+        $search_c = new SearchCriteria('comment', $LANG09[66]);
 
         $columns = array('title' => 'c.title', 'comment');
         $sql .= $search_c->getDateRangeSQL('AND', 'c.date', $this->_dateStart, $this->_dateEnd);
@@ -454,6 +461,16 @@ class Search
         $search_c->setRank(2);
 
         return array($search_s, $search_c);
+    }
+
+    /**
+     * Set debug mode
+     *
+     * @param  bool $switch
+     */
+    public function setDebug($switch)
+    {
+        $this->debug = (bool) $switch;
     }
 
     /**
@@ -567,7 +584,7 @@ class Search
                 $debug_info = $result->getName() . ' using APIv2';
 
                 if ($this->_type !== 'all' && $this->_type != $result->getName()) {
-                    if ($this->_verbose) {
+                    if ($this->debug) {
                         $new_api++;
                         COM_errorLog($debug_info . '. Skipped as type is not ' . $this->_type);
                     }
@@ -598,13 +615,13 @@ class Search
                 $this->_url_rewrite[$result->getName()] = $result->isURLRewrite();
                 $this->_append_query[$result->getName()] = $result->isAppendQuery();
 
-                if ($this->_verbose) {
+                if ($this->debug) {
                     $new_api++;
                     COM_errorLog($debug_info);
                 }
             } elseif (is_a($result, 'Plugin') && $result->num_searchresults != 0) {
                 // Some backwards compatibility
-                if ($this->_verbose) {
+                if ($this->debug) {
                     $old_api++;
                     $debug_info = $result->plugin_name . ' using APIv1 with backwards compatibility.';
                     $debug_info .= ' Count: ' . $result->num_searchresults;
@@ -657,7 +674,7 @@ class Search
         }
 
         // Find out how many plugins are on the old/new system
-        if ($this->_verbose) {
+        if ($this->debug) {
             COM_errorLog('Search Plugins using APIv1: ' . $old_api . ' APIv2: ' . $new_api);
         }
 

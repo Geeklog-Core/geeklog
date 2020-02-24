@@ -842,7 +842,7 @@ function PLG_getSearchTypes()
 
 /**
  * Allows plugins a chance to format their item in the search results if needed.
- * This is more about removing unneeded code than adding formatting as that could 
+ * This is more about removing unneeded code than adding formatting as that could
  * affect how the search row is displayed
  *
  * @access public
@@ -859,6 +859,8 @@ function PLG_searchFormat($type, $id, $contentType, $content)
 
     if ($type === 'article') {
         require_once $_CONF['path_system'] . 'lib-article.php';
+    } elseif ($type === 'comment') {
+        require_once $_CONF['path_system'] . 'lib-comment.php';
     }
 
     $args = array(
@@ -871,7 +873,7 @@ function PLG_searchFormat($type, $id, $contentType, $content)
 	if (empty($retval)) {
 		$retval = $content;
 	}
-	
+
 	return $retval;
 }
 

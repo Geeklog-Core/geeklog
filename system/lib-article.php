@@ -1834,8 +1834,6 @@ function plugin_moderationcommentapprove_article($id, $cid)
     return true;
 }
 
-
-
 /**
  * article: delete a comment
  *
@@ -2189,6 +2187,40 @@ function plugin_canuserlike_article($sub_type, $id, $uid, $ip)
     }
 
     return $retval;
+}
+
+// Format content to be displayed in the search results
+function plugin_searchformat_article($id, $contentType, $content)
+{
+    global $_TABLES;
+
+	// Remove any [imageX_mode] and [unscaledX_mode] from article text
+	if ($contentType == 'description') {
+        $result = DB_query("SELECT ai_img_num FROM {$_TABLES['article_images']} WHERE " .
+            "ai_sid = '$id' ORDER BY ai_img_num");
+        $numRows = DB_numRows($result);
+
+        for ($i = 1; $i <= $numRows; $i++) {
+            $A = DB_fetchArray($result);
+
+            $n = $A['ai_img_num'];
+            $imageX = '[image' . $n . ']';
+            $imageX_left = '[image' . $n . '_left]';
+            $imageX_right = '[image' . $n . '_right]';
+            $content = str_replace($imageX, '', $content);
+            $content = str_replace($imageX_left, '', $content);
+            $content = str_replace($imageX_right, '', $content);
+
+            $unscaledX = '[unscaled' . $n . ']';
+            $unscaledX_left = '[unscaled' . $n . '_left]';
+            $unscaledX_right = '[unscaled' . $n . '_right]';
+            $content = str_replace($unscaledX, '', $content);
+            $content = str_replace($unscaledX_left, '', $content);
+            $content = str_replace($unscaledX_right, '', $content);
+        }
+
+		return $content;
+	}
 }
 
 /*

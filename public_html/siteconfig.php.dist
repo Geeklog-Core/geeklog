@@ -73,6 +73,7 @@ $_CONF['site_enabled'] = true;
  // $_CONF['developer_mode_log']['like'] = true;         // lib-like.php, likes.php
  // $_CONF['developer_mode_log']['redirect'] = true;     // Redirect function
  // $_CONF['developer_mode_log']['resource'] = true;     // Resource class
+ // $_CONF['developer_mode_log']['search'] = true;       // Search class
  // $_CONF['developer_mode_log']['security'] = true;     // lib-security.php
  // $_CONF['developer_mode_log']['session'] = true;      // lib-session.php
  // $_CONF['developer_mode_log']['template'] = true;     // Template class
