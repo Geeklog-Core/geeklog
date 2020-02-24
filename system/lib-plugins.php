@@ -841,6 +841,41 @@ function PLG_getSearchTypes()
 }
 
 /**
+ * Allows plugins a chance to format their item in the search results if needed.
+ * This is more about removing unneeded code than adding formatting as that could 
+ * affect how the search row is displayed
+ *
+ * @access public
+ * @param string        $type     		Plugin
+ * @param string        $id       		Plugin item id (just in case needed to deal with content)
+ * @param string  		$contentType  	Type of content (either 'title' or 'description')
+ * @param string  		$content  		item specific content
+ * @return string                 		Updated content or content with no changes
+ * @since    Geeklog v2.2.1
+ */
+function PLG_searchFormat($type, $id, $contentType, $content)
+{
+    global $_CONF;
+
+    if ($type === 'article') {
+        require_once $_CONF['path_system'] . 'lib-article.php';
+    }
+
+    $args = array(
+        1 => $id,
+		2 => $contentType,
+        3 => $content);
+
+    $retval = PLG_callFunctionForOnePlugin('plugin_searchformat_' . $type, $args);
+	// If nothing returned whether function doesn't exist or no changes to content then just return same content
+	if (empty($retval)) {
+		$retval = $content;
+	}
+	
+	return $retval;
+}
+
+/**
  * This function gives each plugin the opportunity to do their search
  * and return their results.  Results come back in an array of HTML
  * formatted table rows that can be quickly printed by search.php

@@ -778,6 +778,7 @@ class Search
                 }
             }
 
+			$row['title'] = PLG_searchFormat($row[LF_SOURCE_NAME], $row['id'], 'title', $row['title']);
             $row['title'] = $this->_shortenText($this->_query, $row['title'], 8);
             $row['title'] = stripslashes(str_replace('$', '&#36;', $row['title']));
             $row['title'] = COM_createLink($row['title'], $row['url']);
@@ -785,7 +786,9 @@ class Search
             if ($row['description'] == 'LF_NULL') {
                 $row['description'] = '<i>' . $LANG09[70] . '</i>';
             } elseif ($row['description'] != '<i>' . $LANG09[70] . '</i>') {
-                $row['description'] = stripslashes($this->_shortenText($this->_query, PLG_replaceTags($row['description'], '', false, $row[LF_SOURCE_NAME], $row['id']), $this->_wordLength));
+				// Replace any autotags and see if plugin wants to do anything to the content
+				$row['description'] = PLG_searchFormat($row[LF_SOURCE_NAME], $row['id'], 'description', PLG_replaceTags($row['description'], '', false, $row[LF_SOURCE_NAME], $row['id']));
+                $row['description'] = stripslashes($this->_shortenText($this->_query, $row['description'], $this->_wordLength));
             }
 
             if ($row['date'] != 'LF_NULL') {
