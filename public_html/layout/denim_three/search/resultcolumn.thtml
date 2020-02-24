@@ -1,5 +1,0 @@
-{# begin {templatelocation} #}
-
-<td>{data}</td>
-
-{# end {templatelocation} #}
