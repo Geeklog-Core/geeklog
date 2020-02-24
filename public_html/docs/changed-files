@@ -2999,11 +2999,16 @@ public_html/layout/denim/admin/user/edituser.thtml
 public_html/layout/denim/archivearticletext.thtml
 public_html/layout/denim/article/article.thtml
 public_html/layout/denim/articletext.thtml
+public_html/layout/denim/blockheader-config.thtml
+public_html/layout/denim/blockheader-list.thtml
 public_html/layout/denim/blocks/switchlanguage.thtml
 public_html/layout/denim/breadcrumbs.thtml
 public_html/layout/denim/comment/comment.thtml
+public_html/layout/denim/comment/commentbar.thtml
 public_html/layout/denim/comment/commentform.thtml
 public_html/layout/denim/comment/commentform_advanced.thtml
+public_html/layout/denim/comment/commentlogin.thtml
+public_html/layout/denim/comment/reportcomment.thtml
 public_html/layout/denim/controls/index.html
 public_html/layout/denim/controls/likes.thtml
 public_html/layout/denim/css_ltr/additional.css
@@ -3037,6 +3042,7 @@ public_html/layout/denim/submit/submitarticle.thtml
 public_html/layout/denim/submit/submitarticle_advanced.thtml
 public_html/layout/denim/topic.thtml
 public_html/layout/denim/users/authenticationrequired.thtml
+public_html/layout/denim/users/loginform.thtml
 public_html/layout/denim_curve/css_ltr/additional.css
 public_html/layout/denim_curve/css_ltr/style.gradient.css
 public_html/layout/denim_curve/css_ltr/style.gradient.min.css
@@ -3063,11 +3069,16 @@ public_html/layout/denim_three/article/article.thtml
 public_html/layout/denim_three/articletext.thtml
 public_html/layout/denim_three/blockheader-article_footer.thtml
 public_html/layout/denim_three/blockheader-article_topic_list.thtml
+public_html/layout/denim_three/blockheader-config.thtml
+public_html/layout/denim_three/blockheader-list.thtml
 public_html/layout/denim_three/blocks/switchlanguage.thtml
 public_html/layout/denim_three/breadcrumbs.thtml
 public_html/layout/denim_three/comment/comment.thtml
+public_html/layout/denim_three/comment/commentbar.thtml
 public_html/layout/denim_three/comment/commentform.thtml
 public_html/layout/denim_three/comment/commentform_advanced.thtml
+public_html/layout/denim_three/comment/commentlogin.thtml
+public_html/layout/denim_three/comment/reportcomment.thtml
 public_html/layout/denim_three/controls/index.html
 public_html/layout/denim_three/controls/likes.thtml
 public_html/layout/denim_three/css_ltr/additional.css
@@ -3094,6 +3105,7 @@ public_html/layout/denim_three/submit/submitarticle.thtml
 public_html/layout/denim_three/submit/submitarticle_advanced.thtml
 public_html/layout/denim_three/topic.thtml
 public_html/layout/denim_three/users/authenticationrequired.thtml
+public_html/layout/denim_three/users/loginform.thtml
 public_html/layout/modern_curve/admin/article/articleeditor.thtml
 public_html/layout/modern_curve/admin/article/articleeditor_advanced.thtml
 public_html/layout/modern_curve/admin/common/edit_topics.thtml
@@ -3108,8 +3120,11 @@ public_html/layout/modern_curve/articletext.thtml
 public_html/layout/modern_curve/blocks/switchlanguage.thtml
 public_html/layout/modern_curve/breadcrumbs.thtml
 public_html/layout/modern_curve/comment/comment.thtml
+public_html/layout/modern_curve/comment/commentbar.thtml
 public_html/layout/modern_curve/comment/commentform.thtml
 public_html/layout/modern_curve/comment/commentform_advanced.thtml
+public_html/layout/modern_curve/comment/commentlogin.thtml
+public_html/layout/modern_curve/comment/reportcomment.thtml
 public_html/layout/modern_curve/controls/index.html
 public_html/layout/modern_curve/controls/likes.thtml
 public_html/layout/modern_curve/css/additional.css
@@ -3129,6 +3144,7 @@ public_html/layout/modern_curve/preferences/profile.thtml
 public_html/layout/modern_curve/submit/submitarticle.thtml
 public_html/layout/modern_curve/submit/submitarticle_advanced.thtml
 public_html/layout/modern_curve/topic.thtml
+public_html/layout/modern_curve/users/loginform.thtml
 public_html/lib-common.php
 public_html/likes.php
 public_html/links/index.php
@@ -3170,6 +3186,7 @@ system/classes/Input.php
 system/classes/Log.php
 system/classes/Mail.php
 system/classes/MailReplacements.php
+system/classes/QRCodeProvider.php
 system/classes/Resource.php
 system/classes/Session.php
 system/classes/TwoFactorAuthentication.php
