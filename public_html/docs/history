@@ -45,6 +45,7 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Improvement] [NA] The Denim, and Denim_Three themes now display user photos with comments [Tom]
 - [Improvement] [#1026] Geeklog now checks for the correct characterset encoding on any passed variables [Mystralkk]
 - [Improvement] [#1023] Partial cleanup of Comment Library including better security and permission checks [Tom]
+- [Improvement] [#1040] Removed unused search template files from the themes. SearchForm.thtml file is now the only one required [Tom]
 
 - [Bug] [d8792f2f5f3354ff01045955f43cb6277ef32bf7] Fixed saving of permissions for users when you have security groups within security groups [Tom]
 - [Bug] [#931] Fix for Duplicate Usernames & Usernames with Trailing Spaces [Tom]
@@ -73,6 +74,7 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Bug] [#1035] Fixed Admin Comments and Admin Moderation forms for Comments Approving and Deleting Issues [Tom]
 - [Bug] [#1023] Fixed Reporting of Comments for abuse [Tom]
 - [Bug] [#1037] Fixed Re authentication of User Accounts dealing with both Get and Post requests [Tom]
+- [Bug] [#1041] Added new plugin API PLG_searchFormat to allow plugins to format the search results for title and description if needed. Articles will now remove image tags from showing in the search results [Tom]
 
 The following items are Libraries that have been updated that are not handled by Composer.
 
