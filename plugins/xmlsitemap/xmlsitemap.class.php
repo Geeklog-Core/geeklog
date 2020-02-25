@@ -492,12 +492,14 @@ class SitemapXML
             foreach ($types as $type) {
                 $result = array();
 
-                if (is_callable('PLG_collectSitemapItems')) {   // New API since GL-2.1.1
-                    $result = PLG_collectSitemapItems($type, $uid, $limit);
-                }
+                // New API since GL-2.1.1
+				$result = PLG_collectSitemapItems($type, $uid, $limit);
 
                 if (!is_array($result) || (count($result) === 0)) {
-                    $result = PLG_getItemInfo($type, '*', $what, $uid, $options);
+					// Only call if plugin doesn't have a function for PLG_collectSitemapItems as an empty result from PLG_collectSitemapItems could be possible depending on user permissions for plugin items
+					if (!function_exists('plugin_collectSitemapItems_' . $type)) {
+						$result = PLG_getItemInfo($type, '*', $what, $uid, $options);
+					}
                 }
 
                 if (is_array($result) && (count($result) > 0)) {
