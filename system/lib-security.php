@@ -417,7 +417,7 @@ function SEC_hasAccess($owner_id, $group_id, $perm_owner, $perm_group, $perm_mem
  *
  * @param        string|array $features Features to check
  * @param        string       $operator Either 'and' or 'or'. Default is 'and'.  Used if checking more than one feature.
- * @param    int    $uid     (optional) user ID else current user
+ * @param    int    $uid     (optional) user ID else current user (0)
  * @return       boolean     Return true if current user has access to feature(s), otherwise false.
  */
 function SEC_hasRights($features, $operator = 'AND', $uid = 0)
