@@ -1,5 +1,5 @@
                                 Geeklog Readme
-                                January 25, 2017
+                                February 26, 2020
 
 Table of Contents
 ================
@@ -20,7 +20,7 @@ Table of Contents
     7) Special Thanks
     8) Further Documentation
 
-    
+
 1) What is Geeklog?
 ================
 Geeklog is a PHP/MySQL based application for managing dynamic web content.
@@ -35,12 +35,12 @@ include forums, image galleries, and many more.
 
 Geeklog was originally used to run SecurityGeeks and NewsGeeks, and has since
 been released under the GNU General Public License. It is a bona fide Open
-Source / Free Software project. The original template code Geeklog uses is 
+Source / Free Software project. The original template code Geeklog uses is
 from PHPLib, however, which was under the LGPL.
 
-Geeklog was originally created by Jason Whittenburg in 2001, but like all 
-good open source projects, depends on the community. After Jason, others have 
-stepped up like Tony Bibbs and Dirk Haun, in the role of project 
+Geeklog was originally created by Jason Whittenburg in 2001, but like all
+good open source projects, depends on the community. After Jason, others have
+stepped up like Tony Bibbs and Dirk Haun, in the role of project
 leader for Geeklog.
 
 For Geeklog's current list of contributers please see:
@@ -51,10 +51,10 @@ and
 
 https://github.com/Geeklog-Core/geeklog/graphs/contributors
 
-Thanks for your continued support, and let us know what we can do to make 
+Thanks for your continued support, and let us know what we can do to make
 Geeklog better.
 
-For the installation instructions please see
+For the installation instructions (including PHP and database requirements) please see
 
     public_html/docs/english/install.html
 
@@ -79,6 +79,7 @@ features are as follows:
     - Embed images or other content in articles.
     - Multiple Authors can post.
     - Submissions from users.
+    - The ability to like and dislike items including articles and comments.
     - Support for comments, trackbacks and pingbacks.
     - Export and import in all common syndication formats (RSS/RDF/Atom etc).
     - Spam detection and rejection.
@@ -86,12 +87,12 @@ features are as follows:
     - Advance Poll plugin included which allows you to poll your visitors
     - Support for OAuth, OpenID and other remote authentication methods.
     - Extendible via numerous Open Source plugins.
-    - Includes advance WYSIWYG editor which can be used for submitting 
+    - Includes advance WYSIWYG editor which can be used for submitting
       different types of content.
 
 2.2) Administration Features
 ============================
-    - Easy to install with an automated installer.
+    - Easy to install, upgrade, migrate with an automated installer.
     - Fully support for internationalization and localization.
     - Easy to use admin interface.
     - Admin interface has complete configurability for all Geeklog Functions.
@@ -117,7 +118,7 @@ features are as follows:
     - Thin database abstraction layer allowing Geeklog to be ported to DBMS's
       other than the defaults (MySQL and PostgreSQL supported directly).
 
-      
+
 3) Support
 ==========
 
@@ -135,7 +136,7 @@ Another option for support is visiting the Geeklog Gitter room found at:
 
 https://gitter.im/Geeklog-Core/geeklog
 
-Here you can ask questions of the developers and other people interested in 
+Here you can ask questions of the developers and other people interested in
 Geeklog.
 
 3.3) Mailing Lists
@@ -206,7 +207,7 @@ thatphpware Project - Some of the functions in Geeklog came from them!
 PHPBB Project - Some of the functions in Geeklog came from them!
 PHPLib Project - Thanks for the great template engine!
 
-And of course, all the members of the Geeklog mailing lists and IRC channel.
+And of course, all the members of the Geeklog community.
 
 Further Documentation
 =====================
@@ -218,21 +219,22 @@ See also:
     - Wiki: https://wiki.geeklog.net/
     - Plugin Developers Guide: http://gplugs.sourceforge.net/pluginman/
 
-    
+
 Appendix A - readme history
 ===========================
-2017-01-25 - Updated links (tom)
-2016-10-24 - Added Gitter information. Formatting (tom)
-2016-01-11 - URL changes, minor updates (tom)
-2009-04-18 - docs URL changed (dhaun)
-2007-09-15 - readme re-write (mjervis)
-2007-09-09 - Fixed mailing list URL (dhaun)
-2007-08-05 - GeekLog to Geeklog (dhaun)
-2004-08-13 - Documentation path updates (dhaun)
-2003-12-22 - Minor updates (dhaun)
-2002-12-28 - URL updates (dhaun)
-2002-08-14 - IRC Channel updates (dhaun)
-2002-08-11 - Minor updates (dhaun)
+2020-02-26 - Minor updates [Tom]
+2017-01-25 - Updated links [Tom]
+2016-10-24 - Added Gitter information. Formatting [Tom]
+2016-01-11 - URL changes, minor updates [Tom]
+2009-04-18 - docs URL changed [DHaun]
+2007-09-15 - readme re-write [MJervis]
+2007-09-09 - Fixed mailing list URL [DHaun]
+2007-08-05 - GeekLog to Geeklog [DHaun]
+2004-08-13 - Documentation path updates [DHaun]
+2003-12-22 - Minor updates [DHaun]
+2002-12-28 - URL updates [DHaun]
+2002-08-14 - IRC Channel updates [DHaun]
+2002-08-11 - Minor updates [DHaun]
 [various]
 2001-08-18 - First readme file.
 
