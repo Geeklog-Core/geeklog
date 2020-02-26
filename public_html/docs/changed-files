@@ -3211,6 +3211,7 @@ public_html/vendor/uikit3/js/uikit-icons.js
 public_html/vendor/uikit3/js/uikit-icons.min.js
 public_html/vendor/uikit3/js/uikit.js
 public_html/vendor/uikit3/js/uikit.min.js
+readme
 sql/mysql_tableanddata.php
 sql/pgsql_tableanddata.php
 sql/updates/mysql_2.2.0_to_2.2.1.php
