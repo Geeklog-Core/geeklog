@@ -779,21 +779,34 @@ class Search
             $row[LF_SOURCE_TITLE] = COM_createLink($row[LF_SOURCE_TITLE],
                 $this->_searchURL . '&amp;type=' . $row[LF_SOURCE_NAME] . '&amp;mode=search');
 
+			// '#' deals with list factory class settings
             if ($row['url'] != '#') {
-                $row['url'] = ($row['url'][0] == '/' ? $_CONF['site_url'] : '') . $row['url'];
-                if (isset($this->_url_rewrite[$row[LF_SOURCE_NAME]]) &&
-                    $this->_url_rewrite[$row[LF_SOURCE_NAME]]
-                ) {
-                    $row['url'] = COM_buildUrl($row['url']);
-                }
-                if (isset($this->_append_query[$row[LF_SOURCE_NAME]]) &&
-                    $this->_append_query[$row[LF_SOURCE_NAME]]
-                ) {
-                    if (!empty($this->_query)) {
-                        $row['url'] .= (strpos($row['url'], '?') ? '&amp;' : '?') . 'query=' . urlencode($this->_query);
-                    }
-                }
-            }
+				if ($row['url'] != 'LF_NULL') {
+					$row['url'] = ($row['url'][0] == '/' ? $_CONF['site_url'] : '') . $row['url'];
+					if (isset($this->_url_rewrite[$row[LF_SOURCE_NAME]]) &&
+						$this->_url_rewrite[$row[LF_SOURCE_NAME]]
+					) {
+						$row['url'] = COM_buildUrl($row['url']);
+					}
+				} else {
+					// Returning a '' for the url column in the search sql means it will be created from id using plugin api (plugin_searchformat_foo)
+					$row['url'] = PLG_searchFormat($row[LF_SOURCE_NAME], $row['id'], 'url', $row['id']);
+				}
+				
+				if (isset($this->_append_query[$row[LF_SOURCE_NAME]]) &&
+					$this->_append_query[$row[LF_SOURCE_NAME]]
+				) {
+					if (!empty($this->_query)) {
+						$query = (strpos($row['url'], '?') ? '&amp;' : '?') . 'query=' . urlencode($this->_query);
+						$hashtagPos = strpos($row['url'], '#');
+						if ($hashtagPos > 0) {
+							$row['url'] = mb_substr($row['url'], 0, $hashtagPos) . $query . mb_substr($row['url'], $hashtagPos);
+						} else {
+							$row['url'] .= $query;
+						}
+					}
+				}				
+			}
 
 			$row['title'] = PLG_searchFormat($row[LF_SOURCE_NAME], $row['id'], 'title', $row['title']);
             $row['title'] = $this->_shortenText($this->_query, $row['title'], 8);

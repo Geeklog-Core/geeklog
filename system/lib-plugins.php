@@ -848,7 +848,7 @@ function PLG_getSearchTypes()
  * @access public
  * @param string        $type     		Plugin
  * @param string        $id       		Plugin item id (just in case needed to deal with content)
- * @param string  		$contentType  	Type of content (either 'title' or 'description')
+ * @param string  		$contentType  	Type of content (either 'title' or 'description' or 'url')
  * @param string  		$content  		item specific content
  * @return string                 		Updated content or content with no changes
  * @since    Geeklog v2.2.1
