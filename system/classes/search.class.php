@@ -133,7 +133,7 @@ class Search
 
         // Set search criteria
         if (isset($_GET['query'])) {
-            $query = Geeklog\Input::fGet('query');
+            $query = Geeklog\Input::get('query'); // use get instead of fGet so results are not completely filtered (we want punctuation)
             $query = urldecode($query);
             $query = GLText::remove4byteUtf8Chars($query);
             $this->_query = GLText::stripTags($query);
@@ -792,7 +792,7 @@ class Search
 					// Returning a '' for the url column in the search sql means it will be created from id using plugin api (plugin_searchformat_foo)
 					$row['url'] = PLG_searchFormat($row[LF_SOURCE_NAME], $row['id'], 'url', $row['id']);
 				}
-				
+
 				if (isset($this->_append_query[$row[LF_SOURCE_NAME]]) &&
 					$this->_append_query[$row[LF_SOURCE_NAME]]
 				) {
