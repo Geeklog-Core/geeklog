@@ -813,11 +813,14 @@ function PLG_getPluginStats($showSiteStats)
  */
 function PLG_getSearchTypes()
 {
-    global $_PLUGINS;
+    global $_PLUGINS, $_CONF;
 
     $types = array();
 
-    foreach ($_PLUGINS as $pi_name) {
+	require_once $_CONF['path_system'] . 'lib-article.php';
+	$all_plugins = array_merge($_PLUGINS, array('article'));
+
+    foreach ($all_plugins as $pi_name) {
         $function = 'plugin_searchtypes_' . $pi_name;
         if (function_exists($function)) {
             $currentTypes = $function ();
@@ -895,16 +898,19 @@ function PLG_searchFormat($type, $id, $contentType, $content)
  */
 function PLG_doSearch($query, $dateStart, $dateEnd, $topic, $type, $author, $keyType = 'all', $page = 1, $perPage = 10)
 {
-    global $_PLUGINS;
+    global $_PLUGINS, $_CONF;
 
     /**
      * The API, as of 1.6.0, does not use $page, $perpage
      * $type is now only used in the core and should not be passed to the plugin
      */
+	
+	$search_results = array();	
+	
+	require_once $_CONF['path_system'] . 'lib-article.php';
+	$all_plugins = array_merge($_PLUGINS, array('article'));
 
-    $search_results = array();
-
-    foreach ($_PLUGINS as $pi_name) {
+    foreach ($all_plugins as $pi_name) {
         $function = 'plugin_dopluginsearch_' . $pi_name;
         if (function_exists($function)) {
             $result = $function($query, $dateStart, $dateEnd, $topic, $type, $author, $keyType, $page, $perPage);

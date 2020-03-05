@@ -5096,7 +5096,7 @@ HTML;
 
 		// Before we have db-config path lets guess
 		if (empty($this->env['dbconfig_path'])) {
-			// Prepare some hints about what /path/to/geeklog might be ... 
+			// Prepare some hints about what /path/to/geeklog might be ...
 			$this->env['gl_path'] = BASE_FILE;
 
 			for ($i = 0; $i < 4; $i++) {

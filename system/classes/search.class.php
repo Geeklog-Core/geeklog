@@ -298,7 +298,7 @@ class Search
         $options = '';
         $pluginTypes = array(
             'all' => $LANG09[4],
-            'stories' => $LANG09[6],
+            'article' => $LANG09[6],
             'comments' => $LANG09[7]
         );
         $pluginTypes = array_merge($pluginTypes, PLG_getSearchTypes());
@@ -377,90 +377,6 @@ class Search
         $retval .= COM_endBlock();
 
         return $retval;
-    }
-
-    /**
-     * Performs search on all stories
-     *
-     * @return array of SearchCriteria
-     */
-    private function _searchStories()
-    {
-        global $_TABLES, $LANG09;
-
-        // Make sure the query is SQL safe
-        $query = trim(DB_escapeString($this->_query));
-
-        $sql = 'SELECT s.sid AS id, s.title AS title, s.introtext AS description, ';
-        $sql .= 'UNIX_TIMESTAMP(s.date) AS date, s.uid AS uid, s.hits AS hits, ';
-        $sql .= "CONCAT('/article.php?story=', s.sid) AS url ";
-        $sql .= 'FROM ' . $_TABLES['stories'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topic_assignments'] . ' AS ta ';
-        $sql .= 'WHERE (draft_flag = 0) AND (date <= NOW()) AND (u.uid = s.uid) ';
-        $sql .= 'AND ta.type = \'article\' AND ta.id = sid ';
-        $sql .= COM_getPermSQL('AND') . COM_getTopicSQL('AND', 0, 'ta') . COM_getLangSQL('sid', 'AND') . ' ';
-
-        if (!empty($this->_topic)) {
-            // Retrieve list of inherited topics
-            if ($this->_topic == TOPIC_ALL_OPTION) {
-                // Stories do not have an all option so just return all stories that meet the requirements and permissions
-                //$sql .= "AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$this->_topic."')) ";
-            } else {
-                $tid_list = TOPIC_getChildList($this->_topic);
-                $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '" . $this->_topic . "'))) ";
-            }
-        }
-        if (!empty($this->_author)) {
-            $sql .= 'AND (s.uid = \'' . $this->_author . '\') ';
-        }
-
-        $search_s = new SearchCriteria('article', $LANG09[65]);
-
-        $columns = array('title' => 'title', 'introtext', 'bodytext');
-        $sql .= $search_s->getDateRangeSQL('AND', 'date', $this->_dateStart, $this->_dateEnd);
-        list($sql, $ftSql) = $search_s->buildSearchSQL($this->_keyType, $query, $columns, $sql);
-
-        $sql .= " GROUP BY s.sid, s.title, s.introtext, date, s.uid, s.hits ";
-
-        $search_s->setSQL($sql);
-        $search_s->setFtSQL($ftSql);
-        $search_s->setRank(5);
-        $search_s->setURLRewrite(true);
-
-        // Search Story Comments
-        $sql = 'SELECT c.cid AS id, c.title AS title, c.comment AS description, ';
-        $sql .= 'UNIX_TIMESTAMP(c.date) AS date, c.uid AS uid, \'0\' AS hits, ';
-        $sql .= 'CONCAT(\'/comment.php?mode=view&amp;cid=\',c.cid) AS url ';
-        $sql .= 'FROM ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topic_assignments'] . ' AS ta, ' . $_TABLES['comments'] . ' AS c ';
-        $sql .= 'LEFT JOIN ' . $_TABLES['stories'] . ' AS s ON ((s.sid = c.sid) ';
-        $sql .= COM_getPermSQL('AND', 0, 2, 's') . COM_getLangSQL('sid', 'AND', 's') . ') ';
-        $sql .= 'WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.commentcode >= 0) AND (s.date <= NOW()) ';
-        $sql .= 'AND ta.type = \'article\' AND ta.id = s.sid ' . COM_getTopicSQL('AND', 0, 'ta');
-
-        if (!empty($this->_topic)) {
-            if ($this->_topic == TOPIC_ALL_OPTION) {
-                // Stories do not have an all option so just return all story comments that meet the requirements and permissions
-                //$sql .= "AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$this->_topic."')) ";
-            } else {
-                $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '" . $this->_topic . "'))) ";
-            }
-        }
-        if (!empty($this->_author)) {
-            $sql .= 'AND (c.uid = \'' . $this->_author . '\') ';
-        }
-
-        $search_c = new SearchCriteria('comment', $LANG09[66]);
-
-        $columns = array('title' => 'c.title', 'comment');
-        $sql .= $search_c->getDateRangeSQL('AND', 'c.date', $this->_dateStart, $this->_dateEnd);
-        list($sql, $ftSql) = $search_c->buildSearchSQL($this->_keyType, $query, $columns, $sql);
-
-        $sql .= " GROUP BY c.cid, c.title, c.comment, c.date, c.uid ";
-
-        $search_c->setSQL($sql);
-        $search_c->setFtSQL($ftSql);
-        $search_c->setRank(2);
-
-        return array($search_s, $search_c);
     }
 
     /**
@@ -570,9 +486,6 @@ class Search
             $this->_dateEnd, $this->_topic, $this->_type,
             $this->_author, $this->_keyType, $page, 5
         );
-
-        // Add core searches
-        $result_plugins = array_merge($result_plugins, $this->_searchStories());
 
         // Loop through all plugins separating the new API from the old
         $new_api = 0;
@@ -805,7 +718,7 @@ class Search
 							$row['url'] .= $query;
 						}
 					}
-				}				
+				}
 			}
 
 			$row['title'] = PLG_searchFormat($row[LF_SOURCE_NAME], $row['id'], 'title', $row['title']);

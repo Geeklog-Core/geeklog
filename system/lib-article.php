@@ -2223,6 +2223,116 @@ function plugin_searchformat_article($id, $contentType, $content)
 	}
 }
 
+/**
+ * Geeklog is asking us to provide any items that show up in the type
+ * drop-down on search.php.  Let's users search for events.
+ *
+ * @return   array   (plugin name/entry title) pair for the dropdown
+ */
+function plugin_searchtypes_article()
+{
+    global $LANG09;
+
+    $tmp['article'] = $LANG09[65];
+
+    return $tmp;
+}
+
+/**
+ * This searches for events matching the user query and returns an array for the
+ * header and table rows back to search.php where it will be formated and printed
+ *
+ * @param    string $query     Keywords user is looking for
+ * @param    date   $datestart Start date to get results for
+ * @param    date   $dateend   End date to get results for
+ * @param    string $topic     The topic they were searching in
+ * @param    string $type      Type of items they are searching, or 'all' (deprecated)
+ * @param    int    $author    Get all results by this author
+ * @param    string $keyType   search key type: 'all', 'phrase', 'any'
+ * @param    int    $page      page number of current search (deprecated)
+ * @param    int    $perpage   number of results per page (deprecated)
+ * @return   object|array              search result object
+ */
+function plugin_dopluginsearch_article($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
+{
+    global $_TABLES, $LANG09;
+
+    // Make sure the query is SQL safe
+    $query = trim(DB_escapeString($query));
+
+    $sql = 'SELECT s.sid AS id, s.title AS title, s.introtext AS description, ';
+    $sql .= 'UNIX_TIMESTAMP(s.date) AS date, s.uid AS uid, s.hits AS hits, ';
+    $sql .= "CONCAT('/article.php?story=', s.sid) AS url ";
+    $sql .= 'FROM ' . $_TABLES['stories'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topic_assignments'] . ' AS ta ';
+    $sql .= 'WHERE (draft_flag = 0) AND (date <= NOW()) AND (u.uid = s.uid) ';
+    $sql .= 'AND ta.type = \'article\' AND ta.id = sid ';
+    $sql .= COM_getPermSQL('AND') . COM_getTopicSQL('AND', 0, 'ta') . COM_getLangSQL('sid', 'AND') . ' ';
+
+    if (!empty($topic)) {
+        // Retrieve list of inherited topics
+        if ($topic == TOPIC_ALL_OPTION) {
+            // Stories do not have an all option so just return all stories that meet the requirements and permissions
+            //$sql .= "AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$topic."')) ";
+        } else {
+            $tid_list = TOPIC_getChildList($topic);
+            $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '" . $topic . "'))) ";
+        }
+    }
+    if (!empty($author)) {
+        $sql .= 'AND (s.uid = \'' . $author . '\') ';
+    }
+
+    $search_s = new SearchCriteria('article', $LANG09[65]);
+
+    $columns = array('title' => 'title', 'introtext', 'bodytext');
+    $sql .= $search_s->getDateRangeSQL('AND', 'date', $datestart, $dateend);
+    list($sql, $ftSql) = $search_s->buildSearchSQL($keyType, $query, $columns, $sql);
+
+    $sql .= " GROUP BY s.sid, s.title, s.introtext, date, s.uid, s.hits ";
+
+    $search_s->setSQL($sql);
+    $search_s->setFtSQL($ftSql);
+    $search_s->setRank(5);
+    $search_s->setURLRewrite(true);
+
+    // Search Story Comments
+    $sql = 'SELECT c.cid AS id, c.title AS title, c.comment AS description, ';
+    $sql .= 'UNIX_TIMESTAMP(c.date) AS date, c.uid AS uid, \'0\' AS hits, ';
+    $sql .= 'CONCAT(\'/comment.php?mode=view&amp;cid=\',c.cid) AS url ';
+    $sql .= 'FROM ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topic_assignments'] . ' AS ta, ' . $_TABLES['comments'] . ' AS c ';
+    $sql .= 'LEFT JOIN ' . $_TABLES['stories'] . ' AS s ON ((s.sid = c.sid) ';
+    $sql .= COM_getPermSQL('AND', 0, 2, 's') . COM_getLangSQL('sid', 'AND', 's') . ') ';
+    $sql .= 'WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.commentcode >= 0) AND (s.date <= NOW()) ';
+    $sql .= 'AND ta.type = \'article\' AND ta.id = s.sid ' . COM_getTopicSQL('AND', 0, 'ta');
+
+    if (!empty($topic)) {
+        if ($topic == TOPIC_ALL_OPTION) {
+            // Stories do not have an all option so just return all story comments that meet the requirements and permissions
+            //$sql .= "AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$topic."')) ";
+        } else {
+            $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '" . $topic . "'))) ";
+        }
+    }
+    if (!empty($author)) {
+        $sql .= 'AND (c.uid = \'' . $author . '\') ';
+    }
+
+    $search_c = new SearchCriteria('comments', array($LANG09[65], $LANG09[66]));
+
+    $columns = array('title' => 'c.title', 'comment');
+    $sql .= $search_c->getDateRangeSQL('AND', 'c.date', $datestart, $dateend);
+    list($sql, $ftSql) = $search_c->buildSearchSQL($keyType, $query, $columns, $sql);
+
+    $sql .= " GROUP BY c.cid, c.title, c.comment, c.date, c.uid ";
+
+    $search_c->setSQL($sql);
+    $search_c->setFtSQL($ftSql);
+    $search_c->setRank(2);
+
+    return array($search_s, $search_c);
+
+}
+
 /*
  * START SERVICES SECTION
  * This section implements the various services offered by the story module
