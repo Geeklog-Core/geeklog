@@ -581,8 +581,8 @@ function update_DatabaseFor212()
 
 $display = '<h2>Development Database Update</h2>';
 
-$gl_prev_version = "2.2.0";
-$gl_devel_version = "2.2.1";
+$gl_prev_version = "2.2.1";
+$gl_devel_version = "2.2.2";
 
 $display .= "<p>This update is for Geeklog Core and Core Plugins. Can include changes to database structure and data, along with configuration options. All Core plugins must be installed when you run this script.</p>
              <p>Update works for Geeklog $gl_prev_version up to latest Geeklog development version for $gl_devel_version.</p>";
@@ -601,7 +601,7 @@ if (file_exists ($geeklog_sqlfile_upgrade)) {
 $short_version = str_replace(".","", $gl_devel_version);
 $function = 'update_ConfValuesFor' . $short_version;
 if (function_exists($function)) {
-    if ($function()) {;
+    if ($function()) {
         $display .= 'Configuration settings updated successfully.';
     } else {
         $display .= 'There was problems updating the configuration settings.';
@@ -623,32 +623,32 @@ foreach ($corePlugins AS $pi_name) {
     $new_plugin_version = false;
     switch ($pi_name) {
         case 'staticpages':
-            $new_plugin_version = true;
-            $plugin_version = '1.7.1';
+            $new_plugin_version = false;
+            $plugin_version = '1.7.1'; // Current Geeklog v2.2.1 for plugin
             break;
         case 'spamx':
-            $new_plugin_version = true;
-            $plugin_version = '1.3.6';
+            $new_plugin_version = false;
+            $plugin_version = '1.3.6'; // Current Geeklog v2.2.1 for plugin
             break;
         case 'links':
-            $new_plugin_version = true;
-            $plugin_version = '2.1.7';
+            $new_plugin_version = false;
+            $plugin_version = '2.1.7'; // Current Geeklog v2.2.1 for plugin
             break;
         case 'polls':
-            $new_plugin_version = true;
-            $plugin_version = '2.2.0';
+            $new_plugin_version = false;
+            $plugin_version = '2.2.0'; // Current Geeklog v2.2.1 for plugin
             break;
         case 'calendar':
-            $new_plugin_version = true;
-            $plugin_version = '1.1.8';
+            $new_plugin_version = false;
+            $plugin_version = '1.1.8'; // Current Geeklog v2.2.1 for plugin
             break;
         case 'xmlsitemap':
-            $new_plugin_version = true;
-            $plugin_version = '2.0.2';
+            $new_plugin_version = false;
+            $plugin_version = '2.0.2'; // Current Geeklog v2.2.1 for plugin
             break;
         case 'recaptcha':
-            $new_plugin_version = true;
-            $plugin_version = '1.2.1';
+            $new_plugin_version = false;
+            $plugin_version = '1.2.1'; // Current Geeklog v2.2.1 for plugin
             break;
     }
 
