@@ -5088,25 +5088,30 @@ HTML;
     {
         global $_CONF, $_TABLES, $_VARS, $_URL, $_DEVICE, $_SCRIPTS, $_IMAGE_TYPE, $TEMPLATE_OPTIONS, $_GROUPS, $_RIGHTS, $_USER, $_DB_dbms, $_DB_table_prefix;
 
-        // Prepare some hints about what /path/to/geeklog might be ...
-        $this->env['gl_path'] = BASE_FILE;
-
-        for ($i = 0; $i < 4; $i++) {
-            $remains = strrchr($this->env['gl_path'], '/');
-
-            if ($remains === false) {
-                break;
-            } else {
-                $this->env['gl_path'] = substr($this->env['gl_path'], 0, -strlen($remains));
-            }
-        }
-
         $this->env['html_path'] = $this->getHtmlPath();
         $this->env['siteconfig_path'] = $this->env['html_path'] . 'siteconfig.php';
         $this->env['dbconfig_path'] = $this->post('dbconfig_path', $this->get('dbconfig_path', ''));
         $this->env['dbconfig_path'] = $this->sanitizePath($this->env['dbconfig_path']);
         $this->env['use_innodb'] = false;
 
+		// Before we have db-config path lets guess
+		if (empty($this->env['dbconfig_path'])) {
+			// Prepare some hints about what /path/to/geeklog might be ... 
+			$this->env['gl_path'] = BASE_FILE;
+
+			for ($i = 0; $i < 4; $i++) {
+				$remains = strrchr($this->env['gl_path'], '/');
+
+				if ($remains === false) {
+					break;
+				} else {
+					$this->env['gl_path'] = substr($this->env['gl_path'], 0, -strlen($remains));
+				}
+			}
+		} else {
+			// Once we know location of dbconfig.php we have gl_path
+			$this->env['gl_path'] = str_replace(self::DB_CONFIG_FILE, '', $this->env['dbconfig_path']);
+		}
 
         // Need conf php error reporting settings
         // Use Geeklog settings since they get overwritten anyways when lib-common is included
