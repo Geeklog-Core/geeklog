@@ -59,7 +59,7 @@ function theme_config_denim_three()
 
     return array(
         'theme_name'            => 'Denim Three',
-        'theme_version'         => '1.0.1',
+        'theme_version'         => '1.0.2',
         'theme_gl_version'      => '2.2.1',
         'theme_description'     => '',
         'theme_author'          => 'dengen',

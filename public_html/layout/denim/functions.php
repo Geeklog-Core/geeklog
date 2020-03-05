@@ -85,7 +85,7 @@ function theme_config_denim()
 
     return array(
         'theme_name'            => 'Denim',
-        'theme_version'         => '1.1.1',
+        'theme_version'         => '1.1.2',
         'theme_gl_version'      => '2.2.1',
         'theme_description'     => '',
         'theme_author'          => 'dengen',

@@ -46,7 +46,7 @@ function theme_config_modern_curve()
 {
     return array(
         'theme_name'            => 'Modern Curve',
-        'theme_version'         => '1.0.0',
+        'theme_version'         => '1.0.1',
         'theme_gl_version'      => '2.2.1',
         'theme_description'     => '',
         'theme_author'          => '',
