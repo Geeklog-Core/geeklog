@@ -1444,8 +1444,14 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $system_messages = COM_getSystemMessages();
     $messages_display = '';
 	foreach ($system_messages as $message){
-		if (!empty($message)) {
-			$messages_display .= COM_showMessage($message, '');
+		if (isset($message['message']) && !empty($message['message'])) {
+			if (isset($message['title']) && !empty($message['title'])) {
+				$title = $message['title'];
+			} else {
+				$title = '';
+			} 
+
+			$messages_display .= COM_showMessageText($message['message'], $title);
 		}
 	}
 	$page->set_var('system_messsages', $messages_display);
@@ -3896,13 +3902,13 @@ function COM_getSystemMessages() {
  *
  * @param    string $message       Message to add to system messages
  */
-function COM_setSystemMessage($message) {
+function COM_setSystemMessage($message, $title = '') {
     if ($message === '') {
         // Clear system messages
         Session::setVar('system-msg', '');
     } else {
         $system_messages = COM_getSystemMessages();
-        $system_messages[] = $message;
+        $system_messages[] = ['message' => $message, 'title' => $title];
         Session::setVar('system-msg', $system_messages);
     }
 }
