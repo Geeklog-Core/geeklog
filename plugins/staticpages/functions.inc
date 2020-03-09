@@ -2099,16 +2099,7 @@ function SP_render_content($A)
     }
 
     if ($_SP_CONF['allow_php'] == 1) {
-        // Check for type (ie html or php)
-        if ($sp_php == 1) {
-            $sp_content = eval($page_data);
-        } elseif ($sp_php == 2) {
-            ob_start();
-            eval($page_data);
-            $sp_content = ob_get_contents();
-            ob_end_clean();
-        }
-
+        COM_handleEval($page_data, $sp_php);
         $sp_content = PLG_replaceTags($sp_content, '', false, 'staticpages', $sp_id);
     } else {
         if ($sp_php != 0) {

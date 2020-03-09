@@ -875,9 +875,7 @@ class Template
                 return '';
             }
 
-            ob_start();
-            eval('?>' . $templateCode . '<?php ');
-            $str = ob_get_clean();
+            $str = COM_handleEval($templateCode, 2);
 
             return $str;
         }

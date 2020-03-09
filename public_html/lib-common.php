@@ -9159,6 +9159,51 @@ function COM_getInstallDir()
     return is_dir($installDir) ? $installDir : '';
 }
 
+/**
+ * PHP's eval() function improved
+ *
+ * @param   string  $code
+ * @param   int     $type  1 = PHP, 2 = HTML
+ * @return  string
+ */
+function COM_handleEval($code, $type = 1)
+{
+    global $LANG01;
+
+    $type = (int) $type;
+    $errorMessage = '';
+    $output = '';
+
+    if (strpos($code, '?>') !== 0) {
+        $code = '?>' . $code;
+    }
+
+    if ($type === 2) {
+        ob_start();
+    }
+
+    if (version_compare(PHP_VERSION, '7.0.0', '<')) {
+        $output = eval($code);
+
+        if ($output === false) {
+            $errorMessage = $LANG01[144];
+        }
+    } else {
+        try {
+            $output = eval($code);
+        } catch (ParseError $e) {
+            COM_errorLog(__FUNCTION__ . ': ' . $e->getMessage());
+            $errorMessage = $LANG01[144];
+        }
+    }
+
+    if ($type === 2) {
+        $output = ob_get_clean();
+    }
+
+    return empty($errorMessage) ? $output : $errorMessage;
+}
+
 // Check and see if any plugins (or custom functions)
 // have scheduled tasks to perform
 if (!isset($_VARS['last_scheduled_run']) || !is_numeric($_VARS['last_scheduled_run'])) {
