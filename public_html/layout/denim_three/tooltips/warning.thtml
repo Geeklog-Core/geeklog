@@ -3,7 +3,7 @@
 {!if link}
 <a style="cursor: {cursor}; " href="{link}">
 {!endif}
-<span class="{class} gl-tooltip-warning" data-uk-tooltip title="{plaintext}">{hoverover}</span>
+<span class="{class} gl-tooltip-warning" uk-tooltip="title: {plaintext}">{hoverover}</span>
 {!if link}
 </a>
 {!endif}
