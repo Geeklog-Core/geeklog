@@ -1,5 +1,11 @@
 {# begin {templatelocation} #}
 
+{!if link}
+<a style="cursor: {cursor}; " href="{link}">
+{!endif}
 <span class="{class} gl-tooltip-info" data-uk-tooltip title="{plaintext}">{hoverover}</span>
+{!if link}
+</a>
+{!endif}
 
 {# end {templatelocation} #}
