@@ -424,7 +424,7 @@ function listplugins($token)
         array('text' => $LANG32[43], 'field' => 'pi_load', 'sort' => true),
         array('text' => $LANG32[16], 'field' => 'pi_name', 'sort' => true),
         array('text' => $LANG32[17], 'field' => 'pi_version', 'sort' => true),
-        array('text' => $LANG32[50], 'field' => 'pi_dependencies', 'sort' => true),
+        array('text' => $LANG32[50], 'field' => 'pi_dependencies', 'sort' => false),    // No corresponding field in "plugins" table
         array('text' => $LANG_ADMIN['enabled'], 'field' => 'pi_enabled', 'sort' => true),
         array('text' => $LANG32[25], 'field' => 'delete', 'sort' => false),
     );
@@ -1333,12 +1333,18 @@ if ($mode === 'delete') {
     SEC_checkToken();
     $pi_name = Geeklog\Input::fGet('pi_name', '');
     changePluginStatus($pi_name);
+
     $sorting = '';
     if (!empty($_GET['order']) && !empty($_GET['direction'])) { // Remember how the list was sorted
-        $ord = trim($_GET['order']);
-        $dir = trim($_GET['direction']);
-        $old = trim($_GET['prevorder']);
-        $sorting = "?order=$ord&amp;direction=$dir&amp;prevorder=$old";
+        $ord = (int) Geeklog\Input::fGet('order', 0);
+        $dir = Geeklog\Input::fGet('direction', '');
+        $old = Geeklog\Input::fGet('prevorder', '');
+
+        if (in_array($ord, [1, 2, 3, 5]) &&
+                in_array($dir, ['ASC', 'DESC']) &&
+                in_array($old, ['pi_load', 'pi_name', 'pi_version', 'pi_enabled'])) {
+            $sorting = "?order=$ord&amp;direction=$dir&amp;prevorder=$old";
+        }
     }
     COM_redirect($_CONF['site_admin_url'] . '/plugins.php' . $sorting);
 } elseif (($mode === 'change_load_order') && SEC_checkToken()) {

@@ -239,6 +239,7 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
     $group_by_sql = '';
     $limit = '';
     $prevOrder = Geeklog\Input::fGet('prevorder', '');  // what was the last sorting?
+    $prevOrder = preg_replace('/[^0-9A-Za-z_]/', '', $prevOrder);
     $query = Geeklog\Input::request('q', '');           // get query (text-search)
     if (!empty($query)) {
         $query = GLText::stripTags($query);
@@ -246,8 +247,8 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
 
     $query_limit = '';
     if (isset($_REQUEST['query_limit'])) { // get query-limit (list-length)
-        $query_limit = (int) Geeklog\Input::fRequest('query_limit');
-        if ($query_limit == 0) {
+        $query_limit = (int) Geeklog\Input::fRequest('query_limit', 0);
+        if ($query_limit <= 0) {
             $query_limit = DEFAULT_ENTRIES_PER_PAGE;
         }
     }
@@ -262,20 +263,20 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
         $currentPage = $page;
     }
     if ($currentPage <= 0) {
-        $currentPage = 1; #current page has to be larger 0
+        $currentPage = 1; // current page has to be larger 0
     }
 
-    $help_url = ''; # do we have a help url for the block-header?
+    $help_url = ''; // do we have a help url for the block-header?
     if (!empty($text_arr['help_url'])) {
         $help_url = $text_arr['help_url'];
     }
 
-    $form_url = ''; # what is the form-url for the search button and list sorters?
+    $form_url = ''; // what is the form-url for the search button and list sorters?
     if (!empty($text_arr['form_url'])) {
         $form_url = $text_arr['form_url'];
     }
 
-    $title = ''; # what is the title of the page?
+    $title = '';    // what is the title of the page?
     if (!empty($text_arr['title'])) {
         $title = $text_arr['title'];
     }
@@ -334,31 +335,36 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
     }
 
     $has_extras = '';
-    if (isset($text_arr['has_extras'])) { # does this one use extras? (search, google paging)
+    if (isset($text_arr['has_extras'])) { // does this one use extras? (search, google paging)
         $has_extras = $text_arr['has_extras'];
     }
     if ($has_extras) { // show search
         $admin_templates->set_var('lang_search', $LANG_ADMIN['search']);
         $admin_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
-        $admin_templates->set_var('lang_limit_results',
-            $LANG_ADMIN['limit_results']);
+        $admin_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
         $admin_templates->set_var('last_query', htmlspecialchars($query));
         $admin_templates->set_var('filter', $filter);
     }
 
     $sql_query = DB_escapeString($query); // replace quotes etc for security
-    $sql = $query_arr['sql']; // get sql from array that builds data
+    $sql = $query_arr['sql'];   // get sql from array that builds data
 
-    $order_var = ''; # number that is displayed in URL
-    $order_var_link = ''; # Variable for google paging.
+    $order_var = '';            // number that is displayed in URL
+    $order_var_link = '';       // Variable for google paging.
 
     // is the order set in the link (when sorting the list)
     if (!isset($_GET['order'])) {
         $order = $defSort_arr['field']; // no, get the default
     } else {
-        $order_var = (int) Geeklog\Input::fGet('order');
-        $order_var_link = "&amp;order=$order_var"; # keep the variable for the google paging
-        $order = $header_arr[$order_var]['field'];  # current order field name
+        $order_var = (int) Geeklog\Input::fGet('order', 0);
+
+        if (isset($header_arr[$order_var])) {
+            $order_var_link = "&amp;order=$order_var";  // keep the variable for the google paging
+            $order = $header_arr[$order_var]['field'];  // current order field name
+        } else {
+            $order_var = '';
+            $order = $defSort_arr['field']; // no, get the default
+        }
     }
 
     if (isset($header_arr[$order_var]['sort_field'])) {
@@ -380,7 +386,7 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
 
     $direction = Geeklog\Input::fGet('direction', $defSort_arr['direction']);   // get direction to sort after
     $direction = strtoupper($direction);
-    if ($order == $prevOrder) { #reverse direction if prev. order was the same
+    if ($order == $prevOrder) { // reverse direction if prev. order was the same
         $direction = ($direction === 'DESC') ? 'ASC' : 'DESC';
     } else {
         $direction = ($direction === 'DESC') ? 'DESC' : 'ASC';
@@ -405,16 +411,17 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
     // HEADER FIELDS array(text, field, sort, class)
     // this part defines the contents & format of the header fields
 
-    for ($i = 0; $i < count($header_arr); $i++) { #iterate through all headers
+    for ($i = 0; $i < count($header_arr); $i++) {     // iterate through all headers
         $header_text = $header_arr[$i]['text'];
         $th_subtags = '';
-        if ($header_arr[$i]['sort'] != false) { # is this sortable?
-            if ($order == $header_arr[$i]['field']) { # is this currently sorted?
+        if ($header_arr[$i]['sort'] != false) {       // is this sortable?
+            if ($order == $header_arr[$i]['field']) { // is this currently sorted?
                 $header_text .= $img_arrow;
             }
-            # make the mouseover effect is sortable
+
+            // make the mouseover effect is sortable
             $th_subtags = " onmouseover=\"this.style.cursor='pointer';\"";
-            $order_var = $i; # assign number to field so we know what to sort
+            $order_var = $i; // assign number to field so we know what to sort
             if (strpos($form_url, '?') > 0) {
                 $separator = '&amp;';
             } else {
@@ -556,7 +563,7 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
             if ($fieldValue !== false) { # return was there, so write line
                 $this_row = true;
             } else {
-                $fieldValue = ''; // dont give emtpy fields
+                $fieldValue = ''; // don't give empty fields
             }
             if (!empty($header_arr[$j]['field_class'])) {
                 $admin_templates->set_var('class', $header_arr[$j]['field_class']);
