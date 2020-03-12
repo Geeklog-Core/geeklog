@@ -54,7 +54,6 @@ $CMT_formVariablePrefix = COMMENT_ON_SAME_PAGE ? 'cmt_' : ''; // this prefix is 
 define('CMT_CID', $CMT_formVariablePrefix . 'cid');
 define('CMT_SID', $CMT_formVariablePrefix . 'sid');
 define('CMT_PID', $CMT_formVariablePrefix . 'pid');
-define('CMT_UID', $CMT_formVariablePrefix . 'uid');
 define('CMT_TYPE', $CMT_formVariablePrefix . 'type');
 define('CMT_USERNAME', $CMT_formVariablePrefix . 'username');
 define('CMT_MODE', $CMT_formVariablePrefix . 'mode');
@@ -304,6 +303,8 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
     }
 
     if ($preview) {
+        // Means array is post variables
+        // These should all have been filtered already
         $A = $comments;
         if (empty($A['nice_date'])) {
             $A['nice_date'] = time();
@@ -1102,13 +1103,15 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                     if (isset($A[CMT_CID])) {
                         $A['cid'] = $A[CMT_CID];
                     }
-
-                    $A['type'] = $type;
-                    $A['sid'] = $sid;
-                    $A['pid'] = $pid;
-                    $A['uid'] = $commentUid;
                     $A['username'] = $A[CMT_USERNAME];
                 }
+
+                // This stuff should always stay the same and has been filtered and checked already by
+                // CMT_handlePreview and CMT_handleEdit which calls the function we are currently in CMT_commentForm
+                $A['type'] = $type;
+                $A['sid'] = $sid;
+                $A['pid'] = $pid;
+                $A['uid'] = $commentUid;
 
                 $thecomments = CMT_getComment($A, 'flat', $type, 'ASC', false, true);
 
@@ -2482,10 +2485,9 @@ function CMT_handleCancel()
  * @param  int    $pid
  * @param  string $type
  * @param  string $postMode
- * @param  int    $uid
  * @return string HTML (possibly a refresh)
  */
-function CMT_handleSubmit($title, $sid, $pid, $type, $postMode, $uid)
+function CMT_handleSubmit($title, $sid, $pid, $type, $postMode)
 {
     global $_CONF;
 
@@ -2865,15 +2867,6 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
         $title = Geeklog\Input::request('title'); // apply filters later in CMT_commentForm or CMT_saveComment
     }
 
-    if (!empty($_REQUEST[CMT_UID])) {
-        $uid = Geeklog\Input::fRequest(CMT_UID);
-    } else {
-        $uid = 1;
-        if (!empty($_USER['uid'])) {
-            $uid = $_USER['uid'];
-        }
-    }
-
     $postMode = Geeklog\Input::fRequest('postmode', $_CONF['postmode']);
     $formType = Geeklog\Input::fRequest('formtype', '');
 
@@ -2960,7 +2953,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             break;
 
         case $LANG03[11]: // Submit new comment
-            $retval .= CMT_handleSubmit($title, $sid, $pid, $type, $postMode, $uid);
+            $retval .= CMT_handleSubmit($title, $sid, $pid, $type, $postMode);
             break;
 
         case $LANG_ADMIN['delete']:

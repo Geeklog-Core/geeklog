@@ -33,7 +33,6 @@
          <input type="hidden" name="{nprefix}pid" value="{pid}"{xhtml}>
          <input type="hidden" name="{nprefix}type" value="{type}"{xhtml}>
          <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-         <input type="hidden" name="{nprefix}uid" value="{uid}"{xhtml}>
          {username}<span{hidewhenediting}>&nbsp;[<a href="{action_url}" rel="nofollow" class="logoutorcreateaccount">{lang_logoutorcreateaccount}</a>]</span>
       </dd>
 
