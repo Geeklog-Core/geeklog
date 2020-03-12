@@ -312,14 +312,14 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         if (!isset($A['cid'])) {
             $A['cid'] = 0;
         }
-        if (!isset($A['photo'])) {
+        if (empty($A['photo'])) {
             if (isset($_USER['photo'])) {
                 $A['photo'] = $_USER['photo'];
             } else {
                 $A['photo'] = '';
             }
         }
-        if (!isset($A['email'])) {
+        if (empty($A['email'])) {
             if (isset($_USER['email'])) {
                 $A['email'] = $_USER['email'];
             } else {
@@ -1081,7 +1081,11 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                         $A[$key] = Geeklog\Input::fPost($key);
                     }
                 }
-
+                // Since these are past in the array below lets make sure if in POST for preview that we make them equal to empty
+                // They have no reason to be in POST but could be injected in
+                $A['nice_date'] = '';
+                $A['photo'] = '';
+                $A['email'] = '';
                 // correct time and username for edit preview
                 if (($mode == $LANG03[28]) || ($mode == $LANG03[34])) {
                     $A['nice_date'] = DB_getItem($table, 'UNIX_TIMESTAMP(date)', "cid = '" . DB_escapeString($cid) . "'");
