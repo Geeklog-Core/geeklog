@@ -1,4 +1,21 @@
-supportedGeeklog History/Changes:
+Geeklog History/Changes:
+
+March ? 2020 (2.2.1sr1)
+------------
+Explanation of list item:
+- [Issue Type] [#Github_Issue_Number OR commit reference OR NA] Description of issue [Person who worked on issue]
+
+For more in-depth explanation of the issues below see: https://github.com/Geeklog-Core/geeklog/milestone/50?closed=1
+
+- [Security] [NA] XSS issue with the Plugin Admin interface. (reported by Netsparker.com) [Mystralkk]
+- [Security] [NA] Issue with the comment library. (reported by Netsparker.com) [Tom]
+
+- [Improvement] [#1038] Staticpages which use PHP, and the template class with a theme that contains PHP, now will error gracefully for sites using PHP 7 or higher [Mystralkk]
+
+- [Bug] [#1043] Fixed hardcoded table names in upgrade for Geeklog v2.2.1 [Tom]
+- [Bug] [#1043] Fixed issue where the install would fail in some cases because it did not know where the system directory was [Tom]
+- [Bug] [#1045] Fixed tooltip links for Denim and Denim_three themes [Tom]
+- [Bug] [#1044] Fixed searching just articles [Tom]
 
 February 26 2020 (2.2.1)
 ------------
@@ -6,7 +23,7 @@ February 26 2020 (2.2.1)
 Explanation of list item:
 - [Issue Type] [#Github_Issue_Number OR commit reference OR NA] Description of issue [Person who worked on issue]
 
-For more in-depth explanation of the issues below see: https://github.com/Geeklog-Core/geeklog/issues/
+For more in-depth explanation of the issues below see: https://github.com/Geeklog-Core/geeklog/milestone/46?closed=1
 
 - [Feature] [#828] Geeklog now uses PHP built in support for sessions [Mystralkk]
 - [Feature] [#902] Structured Data directly integrated into Geeklog (with plugin support). Includes initial support for Breadcrumbs, Articles, and Static Pages [Tom]
