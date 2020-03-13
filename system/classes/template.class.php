@@ -294,7 +294,7 @@ class Template
                     'layout_url'      => $_CONF['layout_url'], // Can be set by lib-common on theme change
                     'anonymous_user'  => true,
                     'device_mobile'   => false,
-                    'front_page'      => false, 
+                    'front_page'      => false,
                     'current_url'     => ''
                 ),
                 'hook'                => array(),
@@ -346,14 +346,14 @@ class Template
                 $root = call_user_func($function, $root);
             }
         }
-        
+
         // Make root now array if not already (hook above runs CTL_setTemplateRoot for plugins that do not use COM_newTemplate and CTL_core_templatePath which will be required as of Geeklog 3.0.0
-        // CTL_setTemplateRoot needs to figure out things based on if the root passed is an array or not 
+        // CTL_setTemplateRoot needs to figure out things based on if the root passed is an array or not
         // As of Geeklog 3.0.0 this arracy check should be moved to right after setting global variables in this function
         // For more info see COM_newTemplate, CTL_setTemplateRoot, CTL_core_templatePath, CTL_plugin_templatePath
         if (!is_array($root)) {
             $root = array($root);
-        }        
+        }
 
         if ($this->debug & 4) {
             echo '<p><b>set_root:</b> root = array(' . (count($root) > 0 ? '"' . implode('","', $root) . '"' : '') . ")</p>\n";
@@ -819,7 +819,7 @@ class Template
      */
     public function subst($varName)
     {
-        global $_CONF;
+        global $_CONF, $LANG01;
 
         // If view always bypass cache
         if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) &&
@@ -875,9 +875,28 @@ class Template
                 return '';
             }
 
-            $str = COM_handleEval($templateCode, 2);
+            // Lets try to error gracefully if we need too when evaluating PHP
+            // Cannot use COM_handleEval as that is an outside function as the code we need to evaluate contains references to the template class ($this->...)
+            $errorMessage = '';
+            $templateCode = '?>' . $templateCode . '<?php ';
+            ob_start();
+            if (version_compare(PHP_VERSION, '7.0.0', '<')) {
+                $str = eval($templateCode);
 
-            return $str;
+                if ($str === false) {
+                    $errorMessage = $LANG01[144];
+                }
+            } else {
+                try {
+                    $str = eval($templateCode);
+                } catch (ParseError $e) {
+                    COM_errorLog(__FUNCTION__ . ': ' . $e->getMessage());
+                    $errorMessage = $LANG01[144];
+                }
+            }
+            $str = ob_get_clean();
+
+            return empty($errorMessage) ? $str : $errorMessage;
         }
     }
 
@@ -1458,10 +1477,10 @@ class Template
                     case 's':
                         $ret = htmlspecialchars($ret);
                         break;
-                        
+
                     case 'h':
                         $ret = strip_tags($ret);
-                        break;                        
+                        break;
 
                     case 't':
                         $ret = substr($ret, 0, intval(substr($mod, 1))); // truncate

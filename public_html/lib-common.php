@@ -1449,7 +1449,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 				$title = $message['title'];
 			} else {
 				$title = '';
-			} 
+			}
 
 			$messages_display .= COM_showMessageText($message['message'], $title);
 		}
@@ -9163,10 +9163,11 @@ function COM_getInstallDir()
  * PHP's eval() function improved
  *
  * @param   string  $code
- * @param   int     $type  1 = PHP, 2 = HTML
- * @return  string
+ * @param   int     $type           1 = PHP, 2 = HTML
+ * @param   string  $code
+ * @return  string  $embeddedPHP    Code is embedded within content (like HTML)
  */
-function COM_handleEval($code, $type = 1)
+function COM_handleEval($code, $type = 1, $embeddedPHP = false)
 {
     global $LANG01;
 
@@ -9174,8 +9175,8 @@ function COM_handleEval($code, $type = 1)
     $errorMessage = '';
     $output = '';
 
-    if (strpos($code, '?>') !== 0) {
-        $code = '?>' . $code;
+    if ($embeddedPHP && strpos($code, '?>') !== 0) {
+         $code = '?>' . $code . '<?php ';
     }
 
     if ($type === 2) {
