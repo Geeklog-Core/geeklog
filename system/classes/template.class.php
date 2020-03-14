@@ -877,6 +877,7 @@ class Template
 
             // Lets try to error gracefully if we need too when evaluating PHP
             // Cannot use COM_handleEval as that is an outside function as the code we need to evaluate contains references to the template class ($this->...)
+            // This code gets executed when the template class function set_view is uses (like in the staticpages plugin when a page is used as a template)
             $errorMessage = '';
             $templateCode = '?>' . $templateCode . '<?php ';
             ob_start();

@@ -255,9 +255,7 @@ class Resource
      */
     public function __construct(array $config)
     {
-        if (isset($config['developer_mode'], $config['developer_mode_log']['resource']) &&
-            $config['developer_mode'] &&
-            $config['developer_mode_log']['resource']) {
+        if (COM_isEnableDeveloperModeLog('resource')) {
             $this->setDebug(true);
         }
 
@@ -381,7 +379,7 @@ class Resource
     public function setJavaScriptLibrary($name, $isFooter = true)
     {
         global $LANG_DIRECTION;
-        
+
         // Sometimes it matters the order the libraries are submitted by Geeklog
         // Example jquery-ui-timepicker-addon must be before jquery-ui-timepicker-addon-i18n
         // Since the sort happens later and libraries which have the same priority may get shuffled within the priority
@@ -457,7 +455,7 @@ class Resource
                     'file'     => $this->libraryLocations[$name],
                     'priority' => $library_priority,
                 ];
-                
+
                 $library_priority = $library_priority + 1;
 
                 // In case of a UIkit component, add a suitable CSS file
@@ -519,9 +517,9 @@ class Resource
         if ($this->isHeaderSet && !$isFooter) {
             return false;
         }
-        
+
         $position = $isFooter ? 'footer' : 'header';
-    
+
         if ($this->isExternal($file) && array_search($file, array_column($this->externalJsFiles[$position], 'file')) == 0) {
             $this->externalJsFiles[$position][] = [
                 'file'       => $file,
@@ -860,7 +858,7 @@ class Resource
         $excludedFiles = '';
 
         // *******************************
-        // Exclude files for advanced editor 
+        // Exclude files for advanced editor
         // Since they wouldn't work in displaced locations (ie in the new resource file and location)
         // Also include them after the resource file
 
@@ -922,8 +920,8 @@ class Resource
                 $retval .= sprintf(self::JS_TAG_TEMPLATE, $this->config['site_url'] . $file['file']) . PHP_EOL;
             }
         }
-        
-        // Add excluded files at the end 
+
+        // Add excluded files at the end
         $retval .= $excludedFiles;
 
         return $retval;
@@ -1019,7 +1017,7 @@ class Resource
 
         // UIkit
         if ((!$isFooter && ($this->UIkitPosition === 'header')) ||
-            ($isFooter && ($this->UIkitPosition === 'footer'))) {        
+            ($isFooter && ($this->UIkitPosition === 'footer'))) {
             if ($this->config['cdn_hosted']) {
                 $retval .= sprintf(
                     self::JS_TAG_TEMPLATE,
@@ -1037,7 +1035,7 @@ class Resource
 
         // UIkit3
         if ((!$isFooter && ($this->UIkit3Position === 'header')) ||
-            ($isFooter && ($this->UIkit3Position === 'footer'))) {          
+            ($isFooter && ($this->UIkit3Position === 'footer'))) {
             if ($this->config['cdn_hosted']) {
                 $retval .= sprintf(
                     self::JS_TAG_TEMPLATE,

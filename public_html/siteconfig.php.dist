@@ -76,7 +76,7 @@ $_CONF['site_enabled'] = true;
  // $_CONF['developer_mode_log']['search'] = true;       // Search class
  // $_CONF['developer_mode_log']['security'] = true;     // lib-security.php
  // $_CONF['developer_mode_log']['session'] = true;      // lib-session.php
- // $_CONF['developer_mode_log']['template'] = true;     // Template class
+ // $_CONF['developer_mode_log']['template'] = true;     // Template class - Note: class also has a debug public variable that echos debug info on page. Must be set manually. See class for more details.
  // $_CONF['developer_mode_log']['topic'] = true;        // lib-topic.php
  // $_CONF['developer_mode_log']['user'] = true;         // lib-user.php
 

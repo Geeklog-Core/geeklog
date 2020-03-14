@@ -90,7 +90,7 @@ function SESS_sessionCheck()
 
     // Flag indicates if session cookie exists on users device and session data exist on server
     $validUserSessionExists = Session::init(array(
-        'debug'           => isset($_CONF['developer_mode_log']['session']) && $_CONF['developer_mode_log']['session'],
+        'debug'           => COM_isEnableDeveloperModeLog('session'),
         'logger'          => 'COM_errorLog',
         'cookie_disabled' => false,
         'cookie_lifetime' => $_CONF['session_cookie_timeout'],

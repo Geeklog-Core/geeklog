@@ -125,9 +125,7 @@ class Search
     {
         global $_CONF, $_TABLES;
 
-        if (isset($config['developer_mode'], $config['developer_mode_log']['search']) &&
-            $config['developer_mode'] &&
-            $config['developer_mode_log']['search']) {
+        if (COM_isEnableDeveloperModeLog('search')) {
             $this->setDebug(true);
         }
 
