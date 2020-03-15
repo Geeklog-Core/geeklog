@@ -9164,8 +9164,8 @@ function COM_getInstallDir()
  *
  * @param   string  $code
  * @param   int     $type           1 = PHP, 2 = HTML
- * @param   string  $code
- * @return  string  $embeddedPHP    Code is embedded within content (like HTML)
+ * @param   string  $embeddedPHP    Code is embedded within content (like HTML)
+ * @return  array
  */
 function COM_handleEval($code, $type = 1, $embeddedPHP = false)
 {
@@ -9173,7 +9173,9 @@ function COM_handleEval($code, $type = 1, $embeddedPHP = false)
 
     $type = (int) $type;
     $errorMessage = '';
+    $phpErrorMsg = '';
     $output = '';
+    $retarray = [];
 
     if ($embeddedPHP && strpos($code, '?>') !== 0) {
          $code = '?>' . $code . '<?php ';
@@ -9193,7 +9195,8 @@ function COM_handleEval($code, $type = 1, $embeddedPHP = false)
         try {
             $output = eval($code);
         } catch (ParseError $e) {
-            COM_errorLog(__FUNCTION__ . ': ' . $e->getMessage());
+            $phpErrorMsg =  $e->getMessage();
+            COM_errorLog(__FUNCTION__ . ': ' . $phpErrorMsg);
             $errorMessage = $LANG01[144];
         }
     }
@@ -9202,7 +9205,16 @@ function COM_handleEval($code, $type = 1, $embeddedPHP = false)
         $output = ob_get_clean();
     }
 
-    return empty($errorMessage) ? $output : $errorMessage;
+    if (empty($errorMessage)) {
+        $retarray = ['success' => true,
+                    'output' => $output];
+    } else {
+        $retarray = ['success' => false,
+                    'output' => $LANG01[144],
+                    'error' => $phpErrorMsg];
+    }
+
+    return $retarray;
 }
 
 // Check and see if any plugins (or custom functions)
