@@ -205,7 +205,8 @@ $LANG01 = array(
     'terms_of_use' => 'Terms of Use',
     'terms_of_service' => 'Terms of Service',
     'privacy_policy' => 'Privacy Policy',
-    'about_cookies' => 'About Cookies'
+    'about_cookies' => 'About Cookies',
+    'parse_php_error' => 'There was an error parsing your PHP code: %s'
 );
 
 ###############################################################################
