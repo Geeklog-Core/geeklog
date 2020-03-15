@@ -59,7 +59,7 @@ define('STATICPAGE_MAX_ID_LENGTH', 128);
  */
 function service_submit_staticpages($args, &$output, &$svc_msg)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG12, $LANG_STATIC,
+    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG01, $LANG12, $LANG_STATIC,
            $_GROUPS, $_SP_CONF, $_STRUCT_DATA, $LANG_structureddatatypes;
 
     if (!$_CONF['disable_webservices']) {
@@ -372,6 +372,27 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $svc_msg['error_desc'] = 'The staticpage xml is not formatted correctly for template variables';
 
             return PLG_RET_ERROR;
+        }
+    }
+
+    // Check PHP Parsing
+    if ($_SP_CONF['allow_php'] == 1 && SEC_hasRights('staticpages.PHP') && $sp_php != 0) {
+        if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
+            // Use $sp_content instead of $page_data since the switch has not been made yet.
+            $retarray = COM_handleEval($sp_content, $sp_php);
+
+            if (!$retarray['success']) {
+                // Error happened when try to load data so xml not setup correctly
+                $output .= COM_showMessageText(sprintf($LANG01['parse_php_error'], $retarray['error']), $LANG_STATIC['title_error_saving']);
+                if (!$args['gl_svc']) {
+                    $output .= staticpageeditor($sp_id);
+                }
+                $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG_STATIC['staticpageeditor']));
+
+                $svc_msg['error_desc'] = 'The PHP in the staticpage has parsing errors';
+
+                return PLG_RET_ERROR;
+            }
         }
     }
 

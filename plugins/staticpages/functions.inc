@@ -1743,6 +1743,10 @@ function plugin_upgrade_staticpages()
                 $current_version = '1.7.1';
                 break;
 
+            case '1.7.1':
+                $current_version = '1.7.2';
+                break;
+
             default:
                 $done = true;
         }
@@ -2101,7 +2105,8 @@ function SP_render_content($A)
     if ($_SP_CONF['allow_php'] == 1) {
         // Check for type (ie html or php)
         if ($sp_php != 0) {
-            $sp_content = COM_handleEval($page_data, $sp_php);
+            $retarray = COM_handleEval($page_data, $sp_php);
+            $sp_content = $retarray['output'];
         }
         $sp_content = PLG_replaceTags($sp_content, '', false, 'staticpages', $sp_id);
     } else {
