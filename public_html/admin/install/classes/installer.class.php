@@ -6,7 +6,7 @@
 class Installer
 {
     // Geeklog version
-    const GL_VERSION = '2.2.2';
+    const GL_VERSION = '2.2.1sr1';
 
     // System requirements
     const SUPPORTED_PHP_VER = '5.6.4';
@@ -3072,19 +3072,7 @@ class Installer
                     break;
 
                 case '2.2.1':
-                    /*
-                    require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.2.1_to_2.2.2.php';
-                    if ($checkForMessage) {
-                        $retval = upgrade_message221();
-                        if (is_array($retval)) {
-                            $this->upgradeMessages = array_merge($this->upgradeMessages, $retval);
-                        }
-                    } else {
-                        $this->updateDB($_SQL, $progress);
-                        update_ConfValuesFor222();
-                    }
-                    */
-                    $currentGlVersion = '2.2.2';
+                    $currentGlVersion = '2.2.1sr1';
                     break;
 
                 default:
