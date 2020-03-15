@@ -2098,13 +2098,16 @@ function SP_render_content($A)
         }
     }
 
-    if ($sp_php != 0 && $_SP_CONF['allow_php'] == 1 && SEC_hasRights('staticpages.PHP')) {
-        $sp_content = COM_handleEval($page_data, $sp_php);
+    if ($_SP_CONF['allow_php'] == 1) {
+        // Check for type (ie html or php)
+        if ($sp_php != 0) {
+            $sp_content = COM_handleEval($page_data, $sp_php);
+        }
         $sp_content = PLG_replaceTags($sp_content, '', false, 'staticpages', $sp_id);
     } else {
         if ($sp_php != 0) {
             COM_errorLog("PHP in static pages is disabled. Can not display page.", 1);
-            $sp_content .= $LANG_STATIC['deny_msg'];
+            $sp_content = $LANG_STATIC['deny_msg'];
         } else {
             $sp_content = PLG_replaceTags($sp_content, '', false, 'staticpages', $sp_id);
         }
