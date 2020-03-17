@@ -214,7 +214,7 @@ $LANG01 = array(
     'terms_of_service' => '利用規約',
     'privacy_policy' => 'プライバシーポリシー',
     'about_cookies' => 'クッキーについて',
-    'parse_php_error' => 'There was an error parsing your PHP code: %s'
+    'parse_php_error' => 'PHPをパース中にエラーが発生しました: %s'
 );
 
 ###############################################################################

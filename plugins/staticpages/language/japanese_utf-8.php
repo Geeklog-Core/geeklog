@@ -9,7 +9,7 @@
 # Tranlated by Geeklog Japanese group SaY and Ivy
 # Copyright (C) 2008 Takahiro Kambe
 # Additional translation to Japanese by taca AT back-street DOT net
-# Copyright (C) 2006,2007,2008, 2019 Geeklog.jp group
+# Copyright (C) 2006-2008, 2019-2020 Geeklog.jp group
 # Additional translation to Japanese by Geeklog.jp group info AT geeklog DOT jp
 #
 # This program is free software; you can redistribute it and/or
@@ -162,7 +162,7 @@ $LANG_configsections['staticpages'] = array(
 
 $LANG_confignames['staticpages'] = array(
     'allow_php' => 'PHPを許可する',
-    'enable_eval_php_save' => 'Parse PHP on Save of Page',
+    'enable_eval_php_save' => 'ページを保存するときにPHPをパースする',
     'sort_by' => 'センターブロックの並べ替え',
     'sort_menu_by' => 'メニューの並べ替え',
     'sort_list_by' => '管理者ページの並べ替え',
