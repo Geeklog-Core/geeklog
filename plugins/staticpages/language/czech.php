@@ -157,6 +157,7 @@ $LANG_configsections['staticpages'] = array(
 
 $LANG_confignames['staticpages'] = array(
     'allow_php' => 'Allow PHP?',
+    'enable_eval_php_save' => 'Parse PHP on Save of Page',
     'sort_by' => 'Sort Centerblocks by',
     'sort_menu_by' => 'Sort Menu Entries by',
     'sort_list_by' => 'Sort Admin List by',

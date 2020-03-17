@@ -158,6 +158,7 @@ $LANG_configsections['staticpages'] = array(
 
 $LANG_confignames['staticpages'] = array(
     'allow_php' => 'איפשור PHP?',
+    'enable_eval_php_save' => 'Parse PHP on Save of Page',
     'sort_by' => 'מיון קוביות מידע מרכזיות לפי',
     'sort_menu_by' => 'מיון פריטים בתפריט לפי',
     'sort_list_by' => 'מיון רשימת ניהול לפי',
