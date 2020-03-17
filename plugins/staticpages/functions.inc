@@ -1744,6 +1744,8 @@ function plugin_upgrade_staticpages()
                 break;
 
             case '1.7.1':
+                staticpages_update_ConfValues_1_7_2();
+
                 $current_version = '1.7.2';
                 break;
 

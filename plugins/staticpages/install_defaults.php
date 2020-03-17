@@ -55,7 +55,7 @@ $_SP_DEFAULT = array();
 
 // If you don't plan on using PHP code in static pages, you should set this
 // to 0, thus disabling the execution of PHP.
-$_SP_DEFAULT['allow_php'] = 1;
+$_SP_DEFAULT['allow_php'] = 0;
 
 // If you have more than one static page that is to be displayed in Geeklog's
 // center area, you can specify how to sort them:
@@ -80,6 +80,9 @@ $_SP_DEFAULT['delete_pages'] = 0;
  * 'admin' -> display the site admin homepage
  */
 $_SP_DEFAULT['aftersave'] = 'list';
+
+// When PHP included in page on save it will be parsed for errors (= 1) (if PHP 7+)
+$_SP_DEFAULT['enable_eval_php_save'] = 0;
 
 // Static pages can optionally be wrapped in a block. This setting defines
 // the default for that option (1 = wrap in a block, 0 = don't).
@@ -178,6 +181,8 @@ function plugin_initconfig_staticpages()
         $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, true, 'staticpages', 0);
         $c->add('allow_php', $_SP_DEFAULT['allow_php'], 'select',
                 0, 0, 0, 10, true, 'staticpages', 0);
+        $c->add('enable_eval_php_save', $_SP_DEFAULT['enable_eval_php_save'], 'select',
+            0, 0, 0, 15, true, 'staticpages', 0);
         $c->add('sort_by', $_SP_DEFAULT['sort_by'], 'select',
                 0, 0, 2, 20, true, 'staticpages', 0);
         $c->add('sort_menu_by', $_SP_DEFAULT['sort_menu_by'], 'select',

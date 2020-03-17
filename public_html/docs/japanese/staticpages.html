@@ -159,6 +159,16 @@
   <td><code>はい</code></td>
   <td>静的ページにおいて、<a href="#php">PHPを許可する</a>。つまり、この設定で、個々のページの設定を上書きします</td>
 </tr>
+<td><a name="desc_enable_eval_php_save">enable_eval_php_save</a></td>
+<td>false</td>
+<td>Allows you to globally allow or disallow the parsing of PHP for errors
+  when a page is saved. This only works if your website is using PHP v7 or higher.<br><br>
+  In most cases if you have <a href="#desc_allow_php">allow_php</a> enabled, you
+  will want this option enabled. <b>In some cases though depending on the PHP code
+  on the page, it may cause problems.</b> For example, if the PHP on a page, redirects
+  the page, you will want this disabled. During the parsing, the save process will
+  stop before it is complete because of the redirect.</td>
+</tr>
 <tr>
   <td><a name="desc_sort_by">センターブロックの並べ替え(sort_by)</a></td>
   <td><span class="tt">ページID</span></td>

@@ -177,3 +177,17 @@ function staticpages_addStructuredDataSecurityRight_1_7_1()
         DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureId}, {$staticPageAdminId}) ");
     }
 }
+
+function staticpages_update_ConfValues_1_7_2()
+{
+    global $_CONF, $_TABLES, $_SP_DEFAULT;
+
+    $c = config::get_instance();
+
+    require_once $_CONF['path'] . 'plugins/staticpages/install_defaults.php';
+
+    // Parse any PHP for errors included in page, on save of page
+    $c->add('enable_eval_php_save', $_SP_DEFAULT['enable_eval_php_save'], 'select', 0, 0, 0, 15, true, 'staticpages', 0);
+
+    return true;
+}

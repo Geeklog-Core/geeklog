@@ -375,8 +375,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
     }
 
-    // Check PHP Parsing
-    if ($_SP_CONF['allow_php'] == 1 && SEC_hasRights('staticpages.PHP') && $sp_php != 0) {
+    // Check PHP Parsing if enabled and correct PHP version
+    if ($_SP_CONF['enable_eval_php_save'] && $_SP_CONF['allow_php'] == 1 && SEC_hasRights('staticpages.PHP') && $sp_php != 0) {
         if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
             // Use $sp_content instead of $page_data since the switch has not been made yet.
             $retarray = COM_handleEval($sp_content, $sp_php);
