@@ -114,7 +114,7 @@ $LANG_STATIC = array(
     'printable_format' => '印刷用フォーマット',
     'copy' => 'コピー',
     'limit_results' => '絞込検索',
-    'search' => 'Search',
+    'search' => '検索',
     'submit' => '登録',
     'no_new_pages' => '-',
     'pages' => 'ページ',
@@ -142,7 +142,7 @@ $LANG_STATIC = array(
     'parent_page' => '親ページ',
     'page_desc' => '「前のページ」や「次のページ」を指定すると、HTMLのヘッダーに rel=”next” と rel=”prev” を追加します。表示用のナビゲーションは別に追加してください。注意: 「親ページ」は現在、使用されていません。',
     'num_pages' => '%s ページ',
-    'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).'
+    'search_desc' => '検索対象にするかどうかを指定します。既定値はコンフィギュレーションの設定とページの種類(センターブロックに表示するか、テンプレートを使用するか、PHPを使用するかどうか)で決まります。'
 );
 
 $PLG_staticpages_MESSAGE15 = 'あなたのコメントは投稿スタッフによる承認待ちとなっていて、承認が済むとサイトに表示します。';
