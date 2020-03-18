@@ -137,7 +137,8 @@ $LANG_STATIC = array(
     'next_page' => 'Next page',
     'parent_page' => 'Parent page',
     'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel=¡±next¡± and rel=¡±prev¡± to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
-    'num_pages' => '%s Page(s)'
+    'num_pages' => '%s Page(s)',
+    'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';

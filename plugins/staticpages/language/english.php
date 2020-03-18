@@ -136,7 +136,6 @@ $LANG_STATIC = array(
     'parent_page' => 'Parent page',
     'page_desc' => 'Setting a previous and/or next page will indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
     'num_pages' => '%s Page(s)',
-    'search' => 'Search',
     'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).'
 );
 
