@@ -217,9 +217,14 @@ function staticpageeditor_form(array $A)
     );
 
     $sp_template->set_var('lang_structured_data_type', $LANG_STRUCT_DATA['lang_structured_data_type']);
-    $sp_template->set_var(
-        'structured_data_options',
+    $sp_template->set_var('structured_data_options',
         COM_optionListFromLangVariables('LANG_structureddatatypes', $A['structured_data_type'])
+    );
+
+    $sp_template->set_var('lang_search', $LANG_STATIC['search']);
+    $sp_template->set_var('lang_search_desc', $LANG_STATIC['search_desc']);
+    $sp_template->set_var('search_options',
+        COM_optionListFromLangVariables('LANG_staticpages_search', $A['search'])
     );
 
     $sp_template->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
@@ -753,6 +758,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         $A['sp_old_id'] = '';
         $A['commentcode'] = $_SP_CONF['comment_code'];
         $A['structured_data_type'] = $_SP_CONF['structured_data_type_default'];
+        $A['search'] = 1; // Use Default config setting
         $A['sp_where'] = 1; // default new pages to "top of page"
         $A['draft_flag'] = $_SP_CONF['draft_flag'];
         $A['cache_time'] = $_SP_CONF['default_cache_time'];
@@ -867,6 +873,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
  * @param  string $sp_label        Menu Entry
  * @param  int    $commentCode     Comment Code
  * @param  int    $structured_data_type     Structured Data Type
+ * @param  int    $search          Search option
  * @param  int    $owner_id        Permission bits
  * @param  int    $group_id
  * @param  int    $perm_owner
@@ -895,7 +902,7 @@ function submitstaticpage($sp_id, $sp_title, $sp_page_title, $sp_content, $sp_hi
                           $perm_members, $perm_anon, $sp_php, $sp_nf,
                           $sp_old_id, $sp_centerblock, $sp_help,
                           $sp_where, $sp_inblock, $postMode, $meta_description,
-                          $meta_keywords, $draft_flag, $template_flag, $template_id, $cache_time,
+                          $meta_keywords, $draft_flag, $search, $template_flag, $template_id, $cache_time,
                           $sp_prev, $sp_next, $sp_parent)
 {
     $retval = '';
@@ -918,6 +925,7 @@ function submitstaticpage($sp_id, $sp_title, $sp_page_title, $sp_content, $sp_hi
         'template_flag'    => $template_flag,
         'template_id'      => $template_id,
         'draft_flag'       => $draft_flag,
+        'search'           => $search,
         'cache_time'       => $cache_time,
         'owner_id'         => $owner_id,
         'group_id'         => $group_id,
@@ -1040,6 +1048,7 @@ if (!empty($LANG_ADMIN['delete']) && ($mode === $LANG_ADMIN['delete']) && SEC_ch
             Geeklog\Input::post('meta_description'),
             Geeklog\Input::post('meta_keywords'),
             Geeklog\Input::post('draft_flag'),
+            (int) Geeklog\Input::fPost('search'),
             Geeklog\Input::post('template_flag'),
             Geeklog\Input::post('template_id'),
             (int) Geeklog\Input::fPost('cache_time'),

@@ -37,11 +37,11 @@
         <dd><select name="commentcode" id="sp-editor-commentcode">
               {comment_options}
             </select></dd>
-            
+
         <dt><label for="sp-editor-structureddata">{lang_structured_data_type}</label></dt>
         <dd><select name="structured_data_type" id="sp-editor-structureddata">
               {structured_data_options}
-            </select></dd>            
+            </select></dd>
 
         <dt{hide_meta}><label for="sp-editor-meta_description">{lang_metadescription}</label></dt>
         <dd{hide_meta}><textarea name="meta_description" cols="45" rows="2" id="sp-editor-meta_description" class="wide">{meta_description}</textarea></dd>
@@ -55,23 +55,29 @@
         <dt><label for="sp-editor-draft_flag">{lang_draft}</label></dt>
         <dd><input type="checkbox" name="draft_flag" id="sp-editor-draft_flag" {draft_flag_checked}{xhtml}></dd>
 
+        <dt><label for="sp-editor-search">{lang_search}</label></dt>
+        <dd><select name="search" id="sp-editor-search">
+              {search_options}
+            </select></dd>
+        <dd class="description">{lang_search_desc}</dd>        
+
         <dt><label for="sp-editor-cache_time">{lang_cache_time}</label></dt>
         <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="sp-editor-cachetime" class="text"{xhtml}></dd>
         <dd class="description">{lang_cache_time_desc}</dd>
 
         <dt><label for="sp-editor-sp_onlastupdate">{lang_lastupdated}</label></dt>
         <dd class="controls_text">
-            {sp_formateddate} 
+            {sp_formateddate}
             (<input type="checkbox" name="sp_onlastupdate" id="sp-editor-sp_onlastupdate" {onlastupdate_checked}{xhtml}> {lang_show_on_page})
             {!if lang_show_on_page_date_disabled}<dd class="description">{lang_show_on_page_date_disabled}</dd>{!endif}
         </dd>
 
         <dt><label for="sp-editor-sp_onhits">{lang_hits}</label></dt>
         <dd class="controls_text">
-            <input type="hidden" name="sp_hits" value="{sp_hits}"{xhtml}>{sp_hits_formatted} 
+            <input type="hidden" name="sp_hits" value="{sp_hits}"{xhtml}>{sp_hits_formatted}
             (<input type="checkbox" name="sp_onhits" id="sp-editor-sp_onhits" {onhits_checked}{xhtml}> {lang_show_on_page})
             {!if lang_show_on_page_hits_disabled}<dd class="description">{lang_show_on_page_hits_disabled}</dd>{!endif}
-        </dd>         
+        </dd>
 
         <dt><label>{lang_comments}</label></dt>
         <dd>{sp_comments}</dd>
@@ -145,7 +151,7 @@
         <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
 {!if allow_delete}
         <input type="submit" value="{lang_delete}" name="mode" class="submit" onclick="return confirm('{confirm_message}');"{xhtml}>
-{!endif}        
+{!endif}
         <input type="hidden" name="sp_old_id" value="{sp_old_id}"{xhtml}>
         <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
       </div>

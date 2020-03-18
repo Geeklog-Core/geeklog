@@ -980,21 +980,21 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
         }
     }
 
-    if ($_SP_CONF['includesearchcenterblocks'] == 0) {
-        $sql .= 'AND sp_centerblock = 0 ';
+    // Search 0 = Excluded, 1 = Default, 2 = Included
+    // SQL Default for regular pages
+    $searchsql = '(search = 1 AND sp_centerblock = 0 AND sp_php = 0 AND template_id = "")';
+    if ($_SP_CONF['includesearchcenterblocks']) {
+        $searchsql .= ' OR (sp_centerblock = 1 AND search = 1)';
     }
 
-    if ($_SP_CONF['includesearchphp'] == 0) {
-        $sql .= 'AND sp_php = 0 ';
+    if ($_SP_CONF['includesearchphp']) {
+        $searchsql .= 'OR (sp_php > 0 AND search = 1)';
     }
 
-    if ($_SP_CONF['includesearchtemplate'] == 0) {
-        if ($_DB_dbms === 'pgsql') {
-            $sql .= 'AND ((CASE coalesce (template_id, \'\') WHEN \'\' THEN 0 ELSE 1 END) <> 0) ';
-        } else {
-            $sql .= 'AND template_id = "" ';
-        }
+    if ($_SP_CONF['includesearchtemplate']) {
+        $searchsql .= 'OR (template_id != "" AND search = 1)';
     }
+    $sql .= " AND (search = 2 OR ($searchsql)) ";
 
     $search_p = new SearchCriteria('staticpages', $LANG_STATIC['pages']);
 
@@ -1744,6 +1744,12 @@ function plugin_upgrade_staticpages()
                 break;
 
             case '1.7.1':
+                if (isset($_UPDATES[$current_version])) {
+                    $_SQL = $_UPDATES[$current_version];
+                    foreach ($_SQL as $sql) {
+                        DB_query($sql);
+                    }
+                }
                 staticpages_update_ConfValues_1_7_2();
 
                 $current_version = '1.7.2';

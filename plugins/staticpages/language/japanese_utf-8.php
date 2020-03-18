@@ -141,7 +141,9 @@ $LANG_STATIC = array(
     'next_page' => '次のページ',
     'parent_page' => '親ページ',
     'page_desc' => '「前のページ」や「次のページ」を指定すると、HTMLのヘッダーに rel=”next” と rel=”prev” を追加します。表示用のナビゲーションは別に追加してください。注意: 「親ページ」は現在、使用されていません。',
-    'num_pages' => '%s ページ'
+    'num_pages' => '%s ページ',
+    'search' => 'Search',
+    'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).'
 );
 
 $PLG_staticpages_MESSAGE15 = 'あなたのコメントは投稿スタッフによる承認待ちとなっていて、承認が済むとサイトに表示します。';
@@ -153,6 +155,13 @@ $PLG_staticpages_MESSAGE22 = '静的ページを削除できませんでした�
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'プラグインはアップグレードをサポートしていません。';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
+
+// Search options for pages
+$LANG_staticpages_search = array(
+    0  => 'Excluded',
+    1  => 'Use Default',
+    2  => 'Included'
+);
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['staticpages'] = array(

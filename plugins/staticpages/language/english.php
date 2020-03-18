@@ -135,7 +135,9 @@ $LANG_STATIC = array(
     'next_page' => 'Next page',
     'parent_page' => 'Parent page',
     'page_desc' => 'Setting a previous and/or next page will indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
-    'num_pages' => '%s Page(s)'
+    'num_pages' => '%s Page(s)',
+    'search' => 'Search',
+    'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
@@ -148,6 +150,12 @@ $PLG_staticpages_MESSAGE22 = 'You could not delete the page. It is a template st
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
 
+// Search options for pages
+$LANG_staticpages_search = array(
+    0  => 'Excluded',
+    1  => 'Use Default',
+    2  => 'Included'
+);
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['staticpages'] = array(

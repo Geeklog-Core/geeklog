@@ -1802,7 +1802,7 @@ function COM_optionListFromLangVariables($langVariableName, $selected = '')
     static $charset = null;
 
     if (!in_array($langVariableName, $langVariableNames)) {
-        throw new InvalidArgumentException('Unknown language variable name: ' . $langVariableName);
+        // throw new InvalidArgumentException('Unknown language variable name: ' . $langVariableName);
     }
 
     if ($charset === null) {

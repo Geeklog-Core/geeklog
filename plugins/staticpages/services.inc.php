@@ -179,6 +179,10 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $args['commentcode'] = $_SP_CONF['comment_code'];
     }
 
+    if (($args['search'] < 0) || ($args['search'] > 2)) {
+        $args['search'] = 1; // Default setting
+    }
+
     // Only Core Structured Data Types supported
     if (!isset($LANG_structureddatatypes[$args['structured_data_type']])) {
 		if ($_SP_CONF['structured_data_type_default'] != 'none') {
@@ -320,6 +324,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $sp_old_id = $args['sp_old_id'];
     $sp_centerblock = $args['sp_centerblock'];
     $draft_flag = $args['draft_flag'];
+    $search = $args['search'];
     $cache_time = $args['cache_time'];
     $template_flag = $args['template_flag'];
     $template_id = $args['template_id'];
@@ -544,6 +549,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $meta_description = "";
             $meta_keywords = "";
             $structured_data_type = "";
+            $search = 0; // Disabled but shouldn't happen anyways
 
             // Switch sp_content to page_data since template
             $page_data = $sp_content;
@@ -624,9 +630,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $dateCreated = date('Y-m-d H:i:s');
         }
 
-        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_onhits,sp_onlastupdate,sp_label,commentcode,structured_data_type,meta_description,meta_keywords,template_flag,template_id,page_data,draft_flag,cache_time'
+        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_onhits,sp_onlastupdate,sp_label,commentcode,structured_data_type,meta_description,meta_keywords,template_flag,template_id,page_data,draft_flag,search,cache_time'
         . ',owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_where,sp_inblock,postmode,sp_prev,sp_next,sp_parent',
-            "'$sp_id','$sp_title','$sp_page_title','$sp_content','$dateCreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,$sp_onhits,$sp_onlastupdate,'$sp_label','$commentcode','$structured_data_type','$meta_description','$meta_keywords',$template_flag,'$template_id','$page_data',$draft_flag,$cache_time,$owner_id,$group_id,"
+            "'$sp_id','$sp_title','$sp_page_title','$sp_content','$dateCreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,$sp_onhits,$sp_onlastupdate,'$sp_label','$commentcode','$structured_data_type','$meta_description','$meta_keywords',$template_flag,'$template_id','$page_data',$draft_flag,$search,$cache_time,$owner_id,$group_id,"
             . "$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help',$sp_where,"
             . "'$sp_inblock','$postmode', '{$sp_prev}', '{$sp_next}', '{$sp_parent}'");
         TOPIC_saveTopicSelectionControl('staticpages', $sp_id);
@@ -693,8 +699,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
         // If uses a template or PHP then save cache copy in DB used for search (needs to be done after save)
         // Currently generating page view based on current user. Should really be saving at lowest viewable user permission but currently not possible
-        if (!$draft_flag) {
-            if ($template_id != '' OR $sp_php) {
+        // Only if search not excluded
+        if (!$draft_flag AND $search > 0) {
+            if ($template_id != '' OR $sp_php > 0) {
                 // Return whatever an autotag would return and cache it in content column
                 $search_sp_content = SP_returnStaticpage($sp_id, 'autotag');
                 $search_sp_content = DB_escapeString($search_sp_content);
@@ -826,6 +833,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         'sp_onlastupdate',
         'sp_format',
         'draft_flag',
+        'search',
         'cache_time',
         'owner_id',
         'group_id',
@@ -904,12 +912,12 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         }
         $topic_perms .= " GROUP BY sp_id, sp_title, sp_page_title, sp_content, sp_onhits, sp_onlastupdate, sp_hits, "
             . "created, modified, sp_format, commentcode, structured_data_type, meta_description, meta_keywords, template_flag, template_id, page_data, "
-            . "draft_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon, sp_help, sp_php, "
+            . "draft_flag, search, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon, sp_help, sp_php, "
             . "sp_inblock,cache_time";
 
         $sql = <<<SQL
 SELECT sp_id, sp_title, sp_page_title, sp_content, sp_onhits, sp_onlastupdate, sp_hits, created, modified, sp_format,
-        commentcode, structured_data_type, meta_description, meta_keywords, template_flag, template_id, page_data, draft_flag,
+        commentcode, structured_data_type, meta_description, meta_keywords, template_flag, template_id, page_data, draft_flag, search,
         owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon,
         sp_help, sp_php, sp_inblock, cache_time, sp_prev, sp_next, sp_parent
   FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta
@@ -1041,10 +1049,10 @@ SQL;
         $limit = " LIMIT $offset, $max_items";
         $order = " ORDER BY modified DESC";
         $sql = array();
-        $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,template_flag,template_id,page_data,draft_flag,owner_id,"
+        $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,template_flag,template_id,page_data,draft_flag,search,owner_id,"
             . "group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock,cache_time,structured_data_type "
             . " FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
-        $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,template_flag,template_id,page_data,draft_flag,owner_id,"
+        $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,template_flag,template_id,page_data,draft_flag,search,owner_id,"
             . "group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock,cache_time,structured_data_type "
             . "FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
         $result = DB_query($sql);
