@@ -1783,27 +1783,19 @@ function COM_endBlock($template = 'blockfooter.thtml', $plugin = '')
 }
 
 /**
- * Creates a <option> list from a database list for use in forms
+ * Creates a <option> list from a seperate language array for use in forms (based on COM_optionList)
  * Creates option list form field using given arguments
  *
- * @param  string $langVariableName one of 'LANG_commentcodes', 'LANG_commentmodes', 'LANG_cookiecodes',
- *                                  'LANG_featurecodes', 'LANG_frontpagecodes', 'LANG_postmodes', 'LANG_sortcodes',
- *                                  'LANG_statuscodes', 'LANG_trackbackcodes'
+ * @param  string $langVariableName See 'LANG_commentcodes' or 'LANG_commentmodes' for an example of how the arrays
+ *                                  should be created (basicly the element key is the value for the option and the
+ *                                  string will be displayed as the option)
  * @param  mixed  $selected         Value (from $selection) to set to SELECTED or default
  * @see function COM_checkList
  * @return   string  Formatted HTML of option values
  */
 function COM_optionListFromLangVariables($langVariableName, $selected = '')
 {
-    static $langVariableNames = array(
-        'LANG_commentcodes', 'LANG_commentmodes', 'LANG_featurecodes', 'LANG_frontpagecodes',
-        'LANG_postmodes', 'LANG_sortcodes', 'LANG_statuscodes', 'LANG_trackbackcodes', 'LANG_structureddatatypes'
-    );
     static $charset = null;
-
-    if (!in_array($langVariableName, $langVariableNames)) {
-        // throw new InvalidArgumentException('Unknown language variable name: ' . $langVariableName);
-    }
 
     if ($charset === null) {
         $charset = COM_getEncodingt();
