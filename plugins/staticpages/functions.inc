@@ -983,18 +983,32 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     // Search 0 = Excluded, 1 = Default, 2 = Included
     // SQL Default for regular pages
     $searchsql = '(search = 1 AND sp_centerblock = 0 AND sp_php = 0 AND template_id = "")';
+	$searchsqlRemove  = '';
     if ($_SP_CONF['includesearchcenterblocks']) {
         $searchsql .= ' OR (sp_centerblock = 1 AND search = 1)';
-    }
+    } else {
+		// Make sure we fully remove center blocks
+		// Since they could be included below since they can also be a template or have PHP
+		$searchsqlRemove .= ' AND NOT (sp_centerblock = 1  AND search = 1)';
+	}
 
     if ($_SP_CONF['includesearchphp']) {
-        $searchsql .= 'OR (sp_php > 0 AND search = 1)';
+        $searchsql .= ' OR (sp_php > 0 AND search = 1)';
+    } else {
+		// Make sure we fully remove php pages
+		// Since they could be included below since they can also be a template or be a center block
+		$searchsqlRemove .= ' AND NOT (sp_php > 0 AND search = 1)';
     }
 
     if ($_SP_CONF['includesearchtemplate']) {
-        $searchsql .= 'OR (template_id != "" AND search = 1)';
+        $searchsql .= ' OR (template_id != "" AND search = 1)';
+    } else {
+		// Make sure we fully remove template pages
+		// Since they could be included above since they can also be a center block or have PHP
+		$searchsqlRemove .= ' AND NOT (template_id != "" AND search = 1)';
     }
-    $sql .= " AND (search = 2 OR ($searchsql)) ";
+	// Include all pages marked include and add rest of search sql
+    $sql .= " AND (search = 2 OR ($searchsql))$searchsqlRemove ";
 
     $search_p = new SearchCriteria('staticpages', $LANG_STATIC['pages']);
 
