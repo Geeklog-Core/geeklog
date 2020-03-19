@@ -70,8 +70,9 @@
 
       {display_fields}
 
-      <dt>{lang_user_status}</dt>
+      <dt><label for="admin-edituser-userstatus">{lang_user_status}</label></dt>
       <dd>{user_status}</dd>
+      <dd class="description">{lang_user_status_desc}</dd>
     </dl>
   </div>
 

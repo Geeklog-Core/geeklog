@@ -1123,7 +1123,8 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
         COM_displayMessageAndAbort(30, '', 403, 'Forbidden');
     }
 
-    if ($A['status'] != USER_ACCOUNT_ACTIVE && !SEC_hasRights('user.edit')) {
+    // Profile still viewable under the following user statuses
+    if (($A['status'] != USER_ACCOUNT_ACTIVE && $A['status'] != USER_ACCOUNT_LOCKED && $A['status'] != USER_ACCOUNT_NEW_EMAIL && $A['status'] != USER_ACCOUNT_NEW_PASSWORD) && !SEC_hasRights('user.edit')) {
         COM_handle404();
     }
 
@@ -1607,6 +1608,6 @@ function USER_isBanned($uid = 0)
         $A = DB_fetchArray($result, false);
         $status = (int) $A['status'];
 
-        return ($status == USER_ACCOUNT_DISABLED) || ($status == USER_ACCOUNT_LOCKED);
+        return ($status == USER_ACCOUNT_DISABLED);
     }
 }

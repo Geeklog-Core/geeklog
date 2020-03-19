@@ -314,9 +314,14 @@ function edituser($uid = 0, $msg = 0)
     $user_templates->set_var('user_about', htmlspecialchars($A['about']));
 
     $statusarray = array(
-        USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],
         USER_ACCOUNT_ACTIVE              => $LANG28[45],
     );
+
+    // Only show Awaiting Activation status if user already this status as this is an automated status and should not be set by Admin
+    // Admin should use USER_ACCOUNT_NEW_EMAIL instead
+    if ($A['status'] == USER_ACCOUNT_AWAITING_ACTIVATION && !empty($uid)) {
+        $statusarray[USER_ACCOUNT_AWAITING_ACTIVATION] = $LANG28[43];
+    }
 
     $allow_other_statuses = true;
     // do not allow to ban yourself or forcing new email or password
@@ -343,7 +348,9 @@ function edituser($uid = 0, $msg = 0)
         }
     }
 
-    if (($_CONF['usersubmission'] == 1) && !empty($uid)) {
+    // If this status then $_CONF['usersubmission'] == 1 better be true
+    // Only show Awaiting Authorization status if user already this status as this is an automated status and should not be set by Admin
+    if (($A['status'] == USER_ACCOUNT_AWAITING_APPROVAL) && !empty($uid)) {
         $statusarray[USER_ACCOUNT_AWAITING_APPROVAL] = $LANG28[44];
     }
     asort($statusarray);
@@ -362,6 +369,7 @@ function edituser($uid = 0, $msg = 0)
     ));
     $user_templates->set_var('user_status', $statusselect);
     $user_templates->set_var('lang_user_status', $LANG28[46]);
+    $user_templates->set_var('lang_user_status_desc', $LANG28['user_status_desc']);
 
     if ($_CONF['custom_registration'] AND function_exists('CUSTOM_userEdit')) {
         if (!empty($uid) && ($uid > 1)) {

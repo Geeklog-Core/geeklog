@@ -1236,6 +1236,16 @@ $LANG28 = array(
     44 => '承認が通るのを待機中',
     45 => '有効',
     46 => 'ユーザーの状態',
+    'user_status_desc' => 'An explanation of all possible user statuses: <ul>
+        <li><strong>Awaiting Activation</strong> - New account awaiting user to login. Email has been sent but not verified. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>
+        <li><strong>Awaiting Authorization</strong> - New account awaiting moderator approval in the User Submission Queue. When User Submission approved, user will be sent email with password. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>
+        <li><strong>Active</strong> - This is an Active account.</li>
+        <li><strong>Banned</strong> -  This Account is banned/disabled. Username is crossed out on the site for any content they have submitted, User cannot login, emails to account is disabled, and profile cannot be viewed by any user except Admins.</li>
+        <li><strong>Locked</strong> - This Account is locked. User cannot login, emails to account is disabled, but profile can still be viewed by all.</li>
+        <li><strong>New Email Required</strong> - Emails to account is disabled. When user logs in again they must submit new email address and verify before access to rest of the website (under this user account). Status stays the same until email is verified. If "Require User Email" config option true then any users who login (includes remote accounts) that do not have an email address will automatically switch to this status.</li>
+        <li><strong>New Password Required</strong> -  When the user logs in they must submit a new password before access to rest of website (under this user account). This is only for regular accounts and not remote accounts.</li>
+        </ul>
+    ',
     47 => '編集',
     48 => '管理者グループを表示',
     49 => '管理者グループ',
@@ -1991,7 +2001,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
+#
 # This here determines the order of the sentence "No new articles in 2 hrs"
 # order it so it makes sense in your language:
 # %i    item, "Articles"
@@ -2049,7 +2059,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-# 
+#
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2740,4 +2750,3 @@ $LANG_VALIDATION = array(
     'config_setting_lang_array' => 'それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください',
     'config_setting_lang_array_element_req' => '少なくとも1つキーを指定してください。それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください'
 );
-

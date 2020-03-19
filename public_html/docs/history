@@ -10,12 +10,15 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Security] [NA] XSS issue with the Plugin Admin interface. (reported by Netsparker.com) [Mystralkk]
 - [Security] [NA] Issue with the comment library. (reported by Netsparker.com) [Tom]
 
+- [Feature] [#1016] Staticpages can now be set individually if they will appear in the search results or not [Tom]
+
 - [Improvement] [#1038] Staticpages which use PHP, and the template class with a theme that contains PHP, now will error gracefully for sites using PHP 7 or higher [Mystralkk]
 
 - [Bug] [#1043] Fixed hardcoded table names in upgrade for Geeklog v2.2.1 [Tom]
 - [Bug] [#1043] Fixed issue where the install would fail in some cases because it did not know where the system directory was [Tom]
 - [Bug] [#1045] Fixed tooltip links for Denim and Denim_three themes [Tom]
 - [Bug] [#1044] Fixed searching just articles [Tom]
+- [Bug] [#1046] Fixed Users can only be set to certain statuses by Admins [Tom]
 
 The following items are all current Geeklog API, functions, and/or global variables that are planned to be either required or depreciated by a current Geeklog version. Plugin and Theme developers please take note of these changes in case they affect you.
 

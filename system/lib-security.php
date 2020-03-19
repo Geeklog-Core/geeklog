@@ -69,12 +69,12 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 }
 
 /* Constants for account status */
-define('USER_ACCOUNT_DISABLED', 0); // Account is banned/disabled
-define('USER_ACCOUNT_AWAITING_ACTIVATION', 1); // Account awaiting user to login. Email has been sent
-define('USER_ACCOUNT_AWAITING_APPROVAL', 2); // Account awaiting moderator approval
+define('USER_ACCOUNT_DISABLED', 0); // Account is banned/disabled. Username is crossed out, User cannot login, emails to account is disabled, profile cannot be viewed
+define('USER_ACCOUNT_AWAITING_ACTIVATION', 1); // New Account awaiting user to login. Email has been sent but not verified. This is only set when a new account
+define('USER_ACCOUNT_AWAITING_APPROVAL', 2); // Account awaiting moderator approval in the User Submission Queue. Not for remote accounts. This is only set when a new account
 define('USER_ACCOUNT_ACTIVE', 3); // Active account
-define('USER_ACCOUNT_LOCKED', 4); // Account is locked. User cannot login, emails to account is disabled
-define('USER_ACCOUNT_NEW_EMAIL', 5); // Emails to account is disabled. User when login must submit new email address and verify before access to rest of website (under the user account)
+define('USER_ACCOUNT_LOCKED', 4); // Account is locked. User cannot login, emails to account is disabled, profile can still be viewed
+define('USER_ACCOUNT_NEW_EMAIL', 5); // Emails to account is disabled. User when login must submit new email address and verify before access to rest of website (under the user account). Status stays this until email verified
 define('USER_ACCOUNT_NEW_PASSWORD', 6); // User when login must submit new password before access to rest of website (under the user account), Only for regular accounts and not remote
 
 /* Constant for Security Token */

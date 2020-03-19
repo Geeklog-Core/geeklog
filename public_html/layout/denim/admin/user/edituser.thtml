@@ -42,7 +42,7 @@
             {enable_tfa_options}
           </select>
         </dd>
-        <dd>{lang_tfa_user_edit_desc}</dd>
+        <dd class="description" id="desc-admin-edituser-enable_tfa">{lang_tfa_user_edit_desc}</dd>
       {!endif}
 
       <dt><label for="admin-edituser-homepage">{lang_homepage}</label></dt>
@@ -66,8 +66,9 @@
 
       {display_fields}
 
-      <dt>{lang_user_status}</dt>
+      <dt><label for="admin-edituser-userstatus">{lang_user_status}</label></dt>
       <dd>{user_status}</dd>
+      <dd class="description" id="desc-admin-edituser-userstatus">{lang_user_status_desc}</dd>
     </dl>
   </div>
 

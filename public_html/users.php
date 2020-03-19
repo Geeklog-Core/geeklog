@@ -1112,6 +1112,9 @@ switch ($mode) {
                 DB_query("UPDATE {$_TABLES['users']} SET emailconfirmid = NULL, emailtoconfirm = NULL WHERE uid = $uid");
 
                 COM_redirect($_CONF['site_url'] . '/users.php?msg=503');
+            } else {
+                // Not valid emailconfirmid
+                COM_handle404();
             }
         } elseif (!empty($_USER['uid']) && ($_USER['uid'] > 1) && ($_USER['status'] == USER_ACCOUNT_NEW_EMAIL)) {
             $msg = (int) Geeklog\Input::fRequest('msg', 0);
