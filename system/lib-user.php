@@ -424,6 +424,12 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0, $cssClass
 
     $userPhoto = '';
 
+    // Older versions of Geeklog and plugins may pass $photo = '(none)'
+    // Lets get away from passing this to indicate no user photo. Use an empty string instead
+    if ($photo === '(none)') {
+        $photo = '';
+    }
+
     if ($_CONF['allow_user_photo'] == 1) {
         if (($width == 0) && !empty($_CONF['force_photo_width'])) {
             $width = $_CONF['force_photo_width'];
@@ -443,14 +449,14 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0, $cssClass
                 if (empty($email)) {
                     $email = $_USER['email'];
                 }
-                if (!empty($_USER['photo']) && (empty($photo) || ($photo === '(none)'))) {
+                if (!empty($_USER['photo']) && (empty($photo))) {
                     $photo = $_USER['photo'];
                 }
             }
-            if ((empty($photo) || ($photo === '(none)')) || (empty($email) && $_CONF['use_gravatar'])) {
+            if ((empty($photo) || (empty($email) && $_CONF['use_gravatar'])) {
                 $result = DB_query("SELECT email,photo FROM {$_TABLES['users']} WHERE uid = '{$uid}'");
                 list($newEmail, $newPhoto) = DB_fetchArray($result);
-                if (empty($photo) || ($photo === '(none)')) {
+                if (empty($photo)) {
                     $photo = $newPhoto;
                 }
                 if (empty($email)) {
@@ -458,7 +464,7 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0, $cssClass
                 }
             }
 
-            if (empty($photo) || ($photo == 'none')) {
+            if (empty($photo)) {
                 // no photo - try gravatar.com, if allowed
                 if ($_CONF['use_gravatar']) {
                     $img = 'https://www.gravatar.com/avatar/' . md5($email);
@@ -1209,9 +1215,6 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
         $user_templates->set_var('user_edit', $edit_link_url);
     }
 
-    if (isset($A['photo']) && empty($A['photo'])) {
-        $A['photo'] = '(none)'; // user does not have a photo
-    }
     $photo = USER_getPhoto($uid, $A['photo'], $A['email'], -1);
     $user_templates->set_var('user_photo', $photo);
 

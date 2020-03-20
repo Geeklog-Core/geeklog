@@ -382,9 +382,6 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             $altText = $fullname;
             $photo = '';
             if ($_CONF['allow_user_photo']) {
-                if (isset($A['photo']) && empty($A['photo'])) {
-                    $A['photo'] = '(none)';
-                }
                 $photo = USER_getPhoto($A['uid'], $A['photo'], $A['email'], PLG_getThemeItem('comment-width-user-avatar', 'comment'), PLG_getThemeItem('comment-css-user-avatar', 'comment'));
             }
             $profile_link = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'];

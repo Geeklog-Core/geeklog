@@ -295,9 +295,6 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $photo = '';
             if ($_CONF['allow_user_photo'] == 1) {
                 $authphoto = $story->DisplayElements('photo');
-                if (empty($authphoto)) {
-                    $authphoto = '(none)'; // user does not have a photo
-                }
                 $photo = USER_getPhoto($story->DisplayElements('uid'), $authphoto,
                     $story->DisplayElements('email'));
             }
