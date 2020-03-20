@@ -449,11 +449,12 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0, $cssClass
                 if (empty($email)) {
                     $email = $_USER['email'];
                 }
-                if (!empty($_USER['photo']) && (empty($photo))) {
+                if (!empty($_USER['photo']) && empty($photo)) {
                     $photo = $_USER['photo'];
                 }
             }
-            if ((empty($photo) || (empty($email) && $_CONF['use_gravatar'])) {
+             
+            if (empty($photo) || (empty($email) && $_CONF['use_gravatar'])) {
                 $result = DB_query("SELECT email,photo FROM {$_TABLES['users']} WHERE uid = '{$uid}'");
                 list($newEmail, $newPhoto) = DB_fetchArray($result);
                 if (empty($photo)) {
