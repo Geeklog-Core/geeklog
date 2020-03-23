@@ -132,6 +132,7 @@ $config->initConfig();
 $_CONF = $config->get_config('Core');
 
 // Some hard coded additional config options
+$_CONF['path_admin'] = $_CONF['path_html'] . substr($_CONF['site_admin_url'], strlen($_CONF['site_url']) + 1) . '/'; // path to admin directory
 $_CONF['theme_geeklog_default'] = 'denim_three'; // Geeklog default theme. If this changes then remember to change default theme in Installer for Install class and config-install.php files
 $_CONF['theme_site_default'] = $_CONF['theme']; // Store original theme set in config
 $_CONF['language_site_default'] = $_CONF['language']; // Store original site default language before it may get changed depending on other settings

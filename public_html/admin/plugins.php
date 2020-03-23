@@ -592,9 +592,6 @@ function plugin_upload_enabled()
 {
     global $_CONF, $LANG32;
 
-    $path_admin = $_CONF['path_html'] . substr($_CONF['site_admin_url'],
-            strlen($_CONF['site_url']) + 1) . '/';
-
     // If 'file_uploads' is enabled in php.ini
     // and the plugin directories are writable by the web server.
     $errors = array();
@@ -611,8 +608,8 @@ function plugin_upload_enabled()
     if (!is_writable($_CONF['path_html'])) {
         $errors[] = sprintf($LANG32[67], $_CONF['path_html']);
     }
-    if (!is_writable($path_admin . 'plugins/')) {
-        $errors[] = sprintf($LANG32[67], $path_admin . 'plugins/');
+    if (!is_writable($_CONF['path_admin'] . 'plugins/')) {
+        $errors[] = sprintf($LANG32[67], $_CONF['path_admin'] . 'plugins/');
     }
     if (!SEC_hasRights('plugin.install')) {
         $errors[] = $LANG32[68];
@@ -674,9 +671,6 @@ function plugin_upload()
 
     $retval = '';
 
-    $path_admin = $_CONF['path_html'] . substr($_CONF['site_admin_url'],
-            strlen($_CONF['site_url']) + 1) . '/';
-
     $upload_success = false;
 
     // If an error occurred while uploading the file.
@@ -736,7 +730,7 @@ function plugin_upload()
                     rename($public_dir, $public_dir . '.previous');
                 }
 
-                $admin_dir = $path_admin . 'plugins/' . $dirName;
+                $admin_dir = $_CONF['path_admin'] . 'plugins/' . $dirName;
                 if (file_exists($admin_dir . '.previous')) {
                     Geeklog\FileSystem::remove($admin_dir . '.previous');
                 }
@@ -791,7 +785,7 @@ function plugin_upload()
                     rename($plg_path . 'public_html', $_CONF['path_html'] . $pi_name);
                 }
                 if (file_exists($plg_path . 'admin')) {
-                    rename($plg_path . 'admin', $path_admin . 'plugins/' . $pi_name);
+                    rename($plg_path . 'admin', $_CONF['path_admin'] . 'plugins/' . $pi_name);
                 }
             }
 
@@ -809,7 +803,7 @@ function plugin_upload()
                     Geeklog\FileSystem::remove($public_dir . '.previous');
                 }
 
-                $admin_dir = $path_admin . 'plugins/' . $dirName;
+                $admin_dir = $_CONF['path_admin'] . 'plugins/' . $dirName;
                 if (file_exists($admin_dir . '.previous')) {
                     Geeklog\FileSystem::remove($admin_dir . '.previous');
                 }
