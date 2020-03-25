@@ -877,9 +877,10 @@ $LANG20 = array(
     3 => 'Invalid password for user',
     4 => 'Username:',
     5 => 'Password:',
-    6 => 'All access to administrative portions of this web site are logged and reviewed.<br' . XHTML . '>This page is for the use of authorized personnel only.',
+    6 => "This page you tried to access is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.<br" . XHTML . "><br" . XHTML . ">The login form displayed here is for regular user accounts only. If you login via a remote method please use our <a href=\"{$_CONF['site_url']}/users.php\">main login form</a>.",
     7 => 'login',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################
@@ -1871,7 +1872,7 @@ $LANG_404 = array(
 
 $LANG_LOGIN = array(
     1 => 'Login required',
-    2 => 'Sorry, to access this area you need to be logged in as a user.',
+    2 => "Sorry, to access this area you need to be <a href=\"{$_CONF['site_url']}/users.php\">logged in as a user</a>.",
     3 => 'Login',
     4 => 'New User'
 );

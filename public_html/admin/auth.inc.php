@@ -91,8 +91,14 @@ if ($status == USER_ACCOUNT_ACTIVE) {
 
     $display .= COM_startBlock($LANG20[1]);
     if (!$_CONF['user_login_method']['standard']) {
+        // If standard User Login not available show generic access required message
+        // Note: Remote Admin users (openid, oauth, 3rd Party) cannot login with this page, only Standard accounts
         $template->set_var('lang_nonstandardlogin', $LANG_LOGIN[2]);
+    } elseif ($_USER['uid'] > 1) {
+        // User already logged in (or just logged in) but does not have access
+        $template->set_var('lang_nonstandardlogin', $LANG20[9]);
     } else {
+        // User not logged in so show login form
         $template->set_var('lang_username', $LANG20[4]);
         $template->set_var('lang_password', $LANG20[5]);
         $template->set_var('lang_warning', $LANG20[6]);

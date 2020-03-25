@@ -896,9 +896,10 @@ $LANG20 = array(
     3 => 'パスワードが違います。ユーザー名:',
     4 => 'ユーザー名:',
     5 => 'パスワード:',
-    6 => '管理ツールの使用はすべて記録しています。<br' . XHTML . '>このページは管理者のみ使用できます。',
+    6 => "This page you tried to access is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.<br" . XHTML . "><br" . XHTML . ">The login form displayed here is for regular user accounts only. If you login via a remote method please use our <a href=\"{$_CONF['site_url']}/users.php\">main login form</a>.",
     7 => 'ログイン',
-    8 => 'ログイン'
+    8 => 'ログイン',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################
@@ -1862,7 +1863,7 @@ $LANG_404 = array(
 
 $LANG_LOGIN = array(
     1 => 'ログインしてください',
-    2 => '先にログインしてください。',
+    2 => "Sorry, to access this area you need to be <a href=\"{$_CONF['site_url']}/users.php\">logged in as a user</a>.",
     3 => 'ログイン',
     4 => '新規登録'
 );
@@ -1992,7 +1993,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
+#
 # This here determines the order of the sentence "No new articles in 2 hrs"
 # order it so it makes sense in your language:
 # %i    item, "Articles"
@@ -2050,7 +2051,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-# 
+#
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2741,4 +2742,3 @@ $LANG_VALIDATION = array(
     'config_setting_lang_array' => 'それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください',
     'config_setting_lang_array_element_req' => '少なくとも1つキーを指定してください。それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください'
 );
-

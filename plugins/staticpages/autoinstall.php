@@ -52,7 +52,7 @@ function plugin_autoinstall_staticpages($pi_name)
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
         'pi_version'      => '1.7.2',
-        'pi_gl_version'   => '2.2.1sr1',
+        'pi_gl_version'   => '2.2.1',
         'pi_homepage'     => 'https://www.geeklog.net/'
     );
 
