@@ -19,6 +19,7 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Bug] [#1045] Fixed tooltip links for Denim and Denim_three themes [Tom]
 - [Bug] [#1044] Fixed searching just articles [Tom]
 - [Bug] [#1046] Fixed Users can only be set to certain statuses by Admins [Tom]
+- [Bug] [#1047] Fixed Admin login form for those who try to access the Geeklog Admin area. Regular Logged in Users get just a message now instead of showing a login form [Tom]
 
 The following items are all current Geeklog API, functions, and/or global variables that are planned to be either required or depreciated by a current Geeklog version. Plugin and Theme developers please take note of these changes in case they affect you.
 
