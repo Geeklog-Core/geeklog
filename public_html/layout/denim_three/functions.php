@@ -272,6 +272,7 @@ function theme_init_denim_three()
     $_BLOCK_TEMPLATE['configmanager_block'] = 'blockheader-config.thtml,blockfooter-config.thtml';
     $_BLOCK_TEMPLATE['configmanager_subblock'] = 'blockheader-config.thtml,blockfooter-config.thtml';
     $_BLOCK_TEMPLATE['whats_related_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
+    $_BLOCK_TEMPLATE['articles_related_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
     $_BLOCK_TEMPLATE['story_options_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
 
     // Define the blocks that are a list of links styled as an unordered list - using class="blocklist"
@@ -325,6 +326,7 @@ function theme_getThemeItem_denim_three($item)
         case 'core-css-list-feed': // Return 1 or more CSS Classes - For RSS Feed Portal Block - replacing "list-feed"
         case 'article-css-list-directory':  // Return 1 or more CSS Classes - For Article Directory page - New item as of GL v2.2.1
         case 'article-css-list-related': // Return 1 or more CSS Classes - For Article Page What's Related List - replacing 'list-whats-related'
+        case 'article-css-list-related-articles': // Return 1 or more CSS Classes - For Article Page You might also like
         case 'article-css-list-older':  // Return 1 or more CSS Classes - For Older Articles Block - replacing "list-older-stories"
         case 'topic-css-list-related': // Return 1 or more CSS Classes - For Autotags Related Topic items list - New item as of GL v2.2.1
 

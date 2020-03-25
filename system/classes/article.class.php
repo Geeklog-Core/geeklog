@@ -2030,10 +2030,10 @@ class Article
         global $_CONF, $LANG24, $_TABLES;
 
         $work = array();
-		
+
 		// Lets search the 50 latest articles that match the keyword
 		// This will return the most related
-		$searchlimit = 50; 
+		$searchlimit = 50;
 
         $articleId = trim($articleId);
         $keywords = explode(',', $keywordList);
@@ -2101,14 +2101,11 @@ class Article
             $retval = array();
 
             foreach ($work as $item) {
-                $retval[] = '<li>'
-                    . '<a href="' . COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $item['sid'])
-                    . '">' . $this->_displayEscape($item['title']). '</a>'
-                    . '</li>' . PHP_EOL;
+                $retval[] = '<a href="' . COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $item['sid'])
+                    . '">' . $this->_displayEscape($item['title']). '</a>';
             }
 
-            $retval = '<h3>' . $LANG24[92] . '</h3>' . PHP_EOL
-                . '<ul>' . PHP_EOL . implode('', $retval) . '</ul>' . PHP_EOL;
+            $retval = COM_makeList($retval, PLG_getThemeItem('article-css-list-related-articles', 'core'));
         }
 
         return $retval;

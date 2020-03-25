@@ -419,12 +419,6 @@ if ($A['count'] > 0) {
 
         $articleTemplate = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'article'));
 
-        // Render article near top so it can use mode if set (ie to figure out page break)
-        // Another option here could be to figure out if story is first on page
-        $tmpl = $_CONF['showfirstasfeatured'] ? 'featuredarticletext.thtml' : '';
-        $articleTemplate->set_var('formatted_article',
-            STORY_renderArticle($article, 'n', $tmpl, $query, $articlePage));
-
         // Pass Page and Comment Display info to template in case it wants to display anything else with comments
         $articleTemplate->set_var('page_number', $articlePage);
         $articleTemplate->set_var('page_total', $page_break_count);
@@ -435,7 +429,7 @@ if ($A['count'] > 0) {
 
         $articleTemplate->set_var('story_id', $article->getSid());
         $articleTemplate->set_var('story_title', $pagetitle);
-        $story_options = array();
+        $story_options = [];
         if (($_CONF['hideemailicon'] == 0) && (!COM_isAnonUser() ||
                 (($_CONF['loginrequired'] == 0) &&
                     ($_CONF['emailstoryloginrequired'] == 0)))
@@ -499,37 +493,12 @@ if ($A['count'] > 0) {
                     $url);
             }
         }
-        /*
-            if (true) { // can subscribe
-                $commentSubscribeURL = '';
-                $story_options[] = COM_createLink('Nubbies', $commentSubscribeURL, array('rel' => 'nofollow'));
-                $story_template->set_var('comment_subscribe_url', $commentSubscribeURL);
-                $story_template->set_var('lang_comment_subscribe', 'Nubbies');
-            }
-        */
-        $related = STORY_whatsRelated($article->displayElements('related'),
-            $article->displayElements('uid'),
-            $article->getSid());
-        if (!empty($related)) {
-            $related = COM_startBlock($LANG11[1], '',
-                    COM_getBlockTemplate('whats_related_block', 'header'))
-                . $related
-                . COM_endBlock(COM_getBlockTemplate('whats_related_block',
-                    'footer'));
-        }
-        if (count($story_options) > 0) {
-            $optionsblock = COM_startBlock($LANG11[4], '',
-                    COM_getBlockTemplate('story_options_block', 'header'))
-                . COM_makeList($story_options, PLG_getThemeItem('article-css-list-options', 'article'))
-                . COM_endBlock(COM_getBlockTemplate('story_options_block',
-                    'footer'));
-        } else {
-            $optionsblock = '';
-        }
-        $articleTemplate->set_var('whats_related', $related);
-        $articleTemplate->set_var('story_options', $optionsblock);
-        $articleTemplate->set_var('whats_related_story_options',
-            $related . $optionsblock);
+
+        // Render article near top so it can use mode if set (ie to figure out page break)
+        // Another option here could be to figure out if story is first on page
+        $tmpl = $_CONF['showfirstasfeatured'] ? 'featuredarticletext.thtml' : '';
+        $articleTemplate->set_var('formatted_article',
+            STORY_renderArticle($article, 'n', $tmpl, $query, $articlePage, 1, $story_options));
 
         // Display the comments, if there are any ..
         if (($article->displayElements('commentcode') >= 0) && $show_comments) {
@@ -538,31 +507,7 @@ if ($A['count'] > 0) {
                 CMT_userComments($article->getSid(), $article->displayElements('title'), 'article',
                     $commentOrder, $mode, 0, $commentPage, false, $delete_option, $article->displayElements('commentcode')));
         }
-        if ($_CONF['trackback_enabled'] && ($article->displayElements('trackbackcode') >= 0) &&
-            $show_comments
-        ) {
-            if (SEC_hasRights('story.ping')) {
-                if (($article->displayElements('draft_flag') == 0) &&
-                    ($article->displayElements('day') < time())
-                ) {
-                    $url = $_CONF['site_admin_url']
-                        . '/trackback.php?mode=sendall&amp;id=' . $article->getSid();
-                    $articleTemplate->set_var('send_trackback_link',
-                        COM_createLink($LANG_TRB['send_trackback'], $url));
-                    $articleTemplate->set_var('send_trackback_url', $url);
-                    $articleTemplate->set_var('lang_send_trackback_text',
-                        $LANG_TRB['send_trackback']);
-                }
-            }
 
-            $permalink = COM_buildUrl($_CONF['site_url']
-                . '/article.php?story=' . $article->getSid());
-            $articleTemplate->set_var('trackback',
-                TRB_renderTrackbackComments($article->getSID(), 'article',
-                    $article->displayElements('title'), $permalink));
-        } else {
-            $articleTemplate->set_var('trackback', '');
-        }
         $display .= $articleTemplate->finish($articleTemplate->parse('output', 'article'));
 
         $breadcrumbs = TOPIC_breadcrumbs('article', $article->getSid());

@@ -47,10 +47,13 @@
             {!endif}
           {!endif}
 
-          {!if related_articles_by_keyword}
-            <hr{xhtml}>
-            {related_articles_by_keyword}
-          {!endif}
+          {related_articles_by_keyword}
+
+          {whats_related}
+
+          {story_options}
+
+          {trackback}
       {!endif}
       {!if navi_list}
           <ul class="navi">

@@ -62,12 +62,13 @@ if (!defined('STORY_ARCHIVE_ON_EXPIRE')) {
  * @param   string  $query    A search query, if one was specified.
  * @param   string  $articlePage            Current page being displayed for articles. Used only with $index of 'n' and if page breaks enabled (else always assume 1)
  * @param   string  $articleCountOnPage     Current article count being displayed on page. Used for topics to display blocks between articles
+ * @param   array   $story_options          Array of article options for the block. Only displayed on full article page
   * @return  string           Article as formatted HTML.
  *                            Note: Formerly named COM_Article, and re-written totally since then.
  */
-function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml', $query = '', $articlePage = 1, $articleCountOnPage = 1)
+function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml', $query = '', $articlePage = 1, $articleCountOnPage = 1, $story_options = [])
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG_TRB,
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG24, $LANG_TRB,
            $_IMAGE_TYPE, $_STRUCT_DATA;
 
     static $storyCounter = 0;
@@ -654,15 +655,75 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             PLG_templateSetVars('storytext', $article);
         }
 
-        // Add related articles
-        if ($index === 'n' && $_CONF['meta_tags'] > 0) {
-            $article->set_var(
-                'related_articles_by_keyword',
-                $story->getRelatedArticlesByKeywords(
+
+        if ($index === 'n') {
+            // Related Articles block (You might also like)
+            if ($_CONF['meta_tags'] > 0) {
+                $relatedArticles = $story->getRelatedArticlesByKeywords(
                     $story->getSid(),
-                    $story->DisplayElements('meta_keywords')
-                )
-            );
+                    $story->DisplayElements('meta_keywords'));
+                if (!empty($relatedArticles)) {
+                    $relatedArticles = COM_startBlock($LANG24[92], '',
+                        COM_getBlockTemplate('articles_related_block', 'header'))
+                        . $relatedArticles
+                        . COM_endBlock(COM_getBlockTemplate('articles_related_block', 'footer'));
+                }
+
+                $article->set_var('related_articles_by_keyword', $relatedArticles);
+            }
+
+            // What's Related Block
+            $related = STORY_whatsRelated($story->displayElements('related'),
+                $story->displayElements('uid'),
+                $story->getSid());
+            if (!empty($related)) {
+                $related = COM_startBlock($LANG11[1], '',
+                    COM_getBlockTemplate('whats_related_block', 'header'))
+                    . $related
+                    . COM_endBlock(COM_getBlockTemplate('whats_related_block',
+                        'footer'));
+            }
+            $article->set_var('whats_related', $related);
+
+            // Article Options Block
+            if (count($story_options) > 0) {
+                $optionsblock = COM_startBlock($LANG11[4], '',
+                    COM_getBlockTemplate('story_options_block', 'header'))
+                    . COM_makeList($story_options, PLG_getThemeItem('article-css-list-options', 'article'))
+                    . COM_endBlock(COM_getBlockTemplate('story_options_block',
+                        'footer'));
+            } else {
+                $optionsblock = '';
+            }
+            $article->set_var('story_options', $optionsblock);
+            $article->set_var('whats_related_story_options', $related . $optionsblock);
+
+            // Trackback
+            if ($_CONF['trackback_enabled'] && ($story->displayElements('trackbackcode') >= 0) &&
+                $show_comments
+            ) {
+                if (SEC_hasRights('story.ping')) {
+                    if (($story->displayElements('draft_flag') == 0) &&
+                        ($story->displayElements('day') < time())
+                    ) {
+                        $url = $_CONF['site_admin_url']
+                            . '/trackback.php?mode=sendall&amp;id=' . $story->getSid();
+                        $article->set_var('send_trackback_link',
+                            COM_createLink($LANG_TRB['send_trackback'], $url));
+                        $article->set_var('send_trackback_url', $url);
+                        $article->set_var('lang_send_trackback_text',
+                            $LANG_TRB['send_trackback']);
+                    }
+                }
+
+                $permalink = COM_buildUrl($_CONF['site_url']
+                    . '/article.php?story=' . $story->getSid());
+                $article->set_var('trackback',
+                    TRB_renderTrackbackComments($story->getSID(), 'article',
+                        $story->displayElements('title'), $permalink));
+            } else {
+                $article->set_var('trackback', '');
+            }
         }
 
         PLG_templateSetVars($article_filevar, $article);

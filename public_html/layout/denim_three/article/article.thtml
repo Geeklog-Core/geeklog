@@ -6,20 +6,6 @@
 
 {# page_number: current page number - page_total: total page count - comments_on_page: if comments will appear on page #}
 {!if comments_on_page}
-    <div class="uk-margin uk-grid-match" uk-grid>
-    <div class="uk-width-1-2@s">
-    {whats_related}
-    </div>
-
-    <div class="uk-width-1-2@s">
-    {story_options}
-    </div>
-
-    <div class="uk-width-1-1">
-    {trackback}
-    </div>
-    </div>
-
     {commentbar}
 {!endif}
 

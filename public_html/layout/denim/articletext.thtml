@@ -37,10 +37,28 @@
             {!endif}
         {!endif}
 
-        {!if related_articles_by_keyword}
-          <hr{xhtml}>
-          {related_articles_by_keyword}
-        {!endif}
+        <hr{xhtml}>
+        <div class="uk-margin uk-grid" data-uk-grid-margin data-uk-grid-match>
+            {!if related_articles_by_keyword}
+            <div class="uk-width-1-1">
+              {related_articles_by_keyword}
+            </div>
+            {!endif}
+
+            <div class="uk-width-medium-1-2">
+            {whats_related}
+            </div>
+
+            <div class="uk-width-medium-1-2">
+            {story_options}
+            </div>
+
+            {!if trackback}
+            <div class="uk-width-1-1">
+            {trackback}
+            </div>
+            {!endif}
+        </div>
     {!endif}
     {!if navi_list}
         <ul class="story_navi">
