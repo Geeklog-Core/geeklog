@@ -894,7 +894,8 @@ $LANG20 = array(
     5 => 'Lozinka:',
     6 => 'Svaki pokusaj pristupa administratorskim delovima se loguje i proverava.<br' . XHTML . '>Ova stranica je iskljucivo namenjena odredjenim autorizovanim clanovima.',
     7 => 'prijava',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

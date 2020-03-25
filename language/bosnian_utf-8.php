@@ -893,7 +893,8 @@ $LANG20 = array(
     5 => 'lozinka:',
     6 => 'Svaki pokusaj pristupanja administratorskom dijelu bit æe logiran i provjeren.<br' . XHTML . '>Ovi djelovi su SAMO za OVLA©TENE osobe Svaka zloporaba æe biti sankcionirana.',
     7 => 'prijava',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

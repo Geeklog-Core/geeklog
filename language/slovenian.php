@@ -892,7 +892,8 @@ $LANG20 = array(
     5 => 'Geslo:',
     6 => 'Vsi dostopi do skrbniških delov tega spletnega mesta se beležijo in pregledujejo.<br' . XHTML . '>Te strani lahko uporabljajo samo pooblašèene osebe.<p>',
     7 => 'prijava',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

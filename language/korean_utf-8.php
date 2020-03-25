@@ -890,7 +890,8 @@ $LANG20 = array(
     5 => '비밀번호',
     6 => '관리용 조건은 모두가 기록됩니다. <br' . XHTML . '> 이 페이지는 관리자만이 사용할 수 있습니다.',
     7 => '로그인',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

@@ -877,7 +877,8 @@ $LANG20 = array(
     5 => 'رمز عبور:',
     6 => 'تمام قسنتها براي رييس سايت قابل دسترسي است.<<br' . XHTML . '>Tاين صفحه براي استفاده افراد تعيين صلاحيت شده مجاز است',
     7 => 'ورود',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

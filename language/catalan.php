@@ -887,7 +887,8 @@ $LANG20 = array(
     5 => 'Contrassenya:',
     6 => 'Tot accés a les parts administratives queda registrat i revisat.<br' . XHTML . '>Aquesta pàgina és per l\'ús exclusiu del personal autoritzat.',
     7 => 'Identificació',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

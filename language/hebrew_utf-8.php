@@ -891,7 +891,8 @@ $LANG20 = array(
     5 => 'סיסמה',
     6 => 'כל נסיונות הגישה לאיזורים הניהוליים של אתר זה נרשמים ביומן ונבדקים.<br' . XHTML . '>עמוד זה נועד לשימושם של אנשים מאושרים בלבד.',
     7 => 'כניסה למערכת',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

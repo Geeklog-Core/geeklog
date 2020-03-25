@@ -893,7 +893,8 @@ $LANG20 = array(
     5 => 'Пароль:',
     6 => 'Доступ до адм╕н╕стративних функц╕й цього сайта запису╓ться ╕ перегляда╓ться. <br' . XHTML . '>Ця стор╕нка лише для авторизованого персоналу сайту.',
     7 => 'ув╕йти',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

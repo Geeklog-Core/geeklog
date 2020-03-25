@@ -895,7 +895,8 @@ $LANG20 = array(
     5 => 'Wachtwoord:',
     6 => 'Alle toegang tot administratieve functies van het portaal wordt vastgelegd en later bekeken.<br' . XHTML . '>Deze pagina is alleen voor geautoriseerde gebruikers.',
     7 => 'inloggen',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

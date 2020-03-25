@@ -889,7 +889,8 @@ $LANG20 = array(
     5 => 'Wagwoord:',
     6 => 'Alle toegang tot administratiewe gedeeltes van hierdie werf word aangeteken en hersien.<br' . XHTML . '>Hierdie bladsy is allenlik vir die gebruik van regmatige personeel.',
     7 => 'teken in',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

@@ -890,7 +890,8 @@ $LANG20 = array(
     5 => 'Salasına:',
     6 => 'Kıik katsed p‰‰seda ligi selle lehe administreerimisosadele logitakse ja vaadatakse l‰bi. <br >See leht on mıeldud ainult autoriseeritud kasutajatele.',
     7 => 'logi sisse',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

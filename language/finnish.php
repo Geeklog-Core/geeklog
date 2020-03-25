@@ -890,7 +890,8 @@ $LANG20 = array(
     5 => 'Salasana:',
     6 => 'Kaikki ylläpidon osioiden liikenne sivustolla kirjataan ja tarkistetaan. <br' . XHTML . '>Sivu on tarkoitettu vain sallitulle henkilökunnalle.',
     7 => 'kirjaudu',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

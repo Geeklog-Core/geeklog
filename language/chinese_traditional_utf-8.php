@@ -892,7 +892,8 @@ $LANG20 = array(
     5 => '密碼：',
     6 => '這頁只供授權人員使用。<br' . XHTML . '>所有存取將被記錄和檢查。',
     7 => '登入',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

@@ -897,7 +897,8 @@ $LANG20 = array(
     5 => 'Κωδικός πρόσβασης:',
     6 => 'Η πρόσβαση σε επίπεδο διαχειριστή για αυτήν την ιστοσελίδα είναι ελεγχόμενη και καταγραφόμενη. <br' . XHTML . '> Η παρούσα ιστοσελίδα είναι για χρήση πιστοποιημένου προσωπικού',
     7 => 'σύνδεση',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

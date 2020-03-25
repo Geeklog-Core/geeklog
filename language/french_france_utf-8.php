@@ -890,7 +890,8 @@ $LANG20 = array(
     5 => 'Mot de passe:',
     6 => 'Cette page est réservée aux membres du site. Merci de vous identifier pour continuer.',
     7 => 'Connexion',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

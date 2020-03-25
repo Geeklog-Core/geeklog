@@ -894,7 +894,8 @@ $LANG20 = array(
     5 => 'Passwort:',
     6 => 'Zugriffe auf die Administrationsseiten dieser Website werden aufgezeichnet und kontrolliert.<br' . XHTML . '>Diese Seiten sind nur für befugte Personen zugänglich.',
     7 => 'einloggen',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

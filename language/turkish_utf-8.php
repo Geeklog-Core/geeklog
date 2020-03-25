@@ -889,7 +889,8 @@ $LANG20 = array(
     5 => 'Þifre:',
     6 => 'Sitenin yönetim alanlarýnda yapýlan tüm iþlemler kaydedilir ve kontrol edilir.<br' . XHTML . '>Bu sayfa sadece yetkili kiþiler tarafýndan kullanýlabilir.',
     7 => 'sisteme giriþ yap',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

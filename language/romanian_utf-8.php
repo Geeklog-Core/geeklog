@@ -888,7 +888,8 @@ $LANG20 = array(
     5 => 'Parola:',
     6 => 'Accesul la zona de administrare a sit-ului este inregistrat si verificat periodic.<br' . XHTML . '>Aceasta zona este doar pentru persoanele autorizate.',
     7 => 'intra/login',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

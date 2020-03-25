@@ -888,7 +888,8 @@ $LANG20 = array(
     5 => 'Heslo:',
     6 => 'Ka¾dý pøístup do administrátorské èásti stránek je zapisován do log_file a je tam také kontrolován.<br' . XHTML . '>Tato stránka je jen pro autorizované u¾ivatele s administrátorskými právy.',
     7 => 'Pøihlásit',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

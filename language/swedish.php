@@ -893,7 +893,8 @@ $LANG20 = array(
     5 => 'Lösenord:',
     6 => 'All tillgång till administrativa delar av denna webbsajt loggas och kontrolleras.<br />Denna sida är bara till för behörig personal.',
     7 => 'logga in',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

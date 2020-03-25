@@ -889,7 +889,8 @@ $LANG20 = array(
     5 => 'Password:',
     6 => 'Semua akses ke halaman administrator telah terekam dan akan diperiksa.<br' . XHTML . '>Halaman ini hanya khusus untuk yang memiliki otorisasi.',
     7 => 'login',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

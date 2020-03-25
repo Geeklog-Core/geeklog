@@ -902,7 +902,8 @@ $LANG20 = array(
     5 => 'Passord:',
     6 => 'All tilgang til administrative deler av nettstedet blir logget og gransket.<br' . XHTML . '>Denne siden er kun autorisert personell.',
     7 => 'logg inn',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################

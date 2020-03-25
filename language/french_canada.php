@@ -892,7 +892,8 @@ $LANG20 = array(
     5 => 'Mot de passe:',
     6 => 'Toutes tentatives d\'acc&egrave;s &agrave; cette portion du site est enregistr&eacute;e et analys&eacute;e.<br' . XHTML . '>Cette page est r&eacute;serv&eacute;e aux personnes autoris&eacute;es.',
     7 => 'Connexion',
-    8 => 'Login'
+    8 => 'Login',
+    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
 );
 
 ###############################################################################
