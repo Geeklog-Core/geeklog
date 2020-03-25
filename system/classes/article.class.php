@@ -2025,15 +2025,15 @@ class Article
      * @return array
      * @link   http://www.enkeladress.com/article/20110315104621317
      */
-    public static function getRelatedArticlesByKeywords($articleId, $keywordList, $limit = 5)
+    public function getRelatedArticlesByKeywords($articleId, $keywordList, $limit = 5)
     {
         global $_CONF, $LANG24, $_TABLES;
 
         $work = array();
-
+		
 		// Lets search the 50 latest articles that match the keyword
 		// This will return the most related
-		$searchlimit = 50;
+		$searchlimit = 50; 
 
         $articleId = trim($articleId);
         $keywords = explode(',', $keywordList);
@@ -2065,7 +2065,7 @@ class Article
 
             while (($A = DB_fetchArray($resultSet, false)) !== false) {
                 $sid = $A['sid'];
-                $title = stripslashes($A['title']);
+                $title = $A['title'];
                 $found = false;
 
                 foreach ($work as &$item) {
@@ -2103,7 +2103,7 @@ class Article
             foreach ($work as $item) {
                 $retval[] = '<li>'
                     . '<a href="' . COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $item['sid'])
-                    . '">' . htmlspecialchars($item['title'], ENT_QUOTES, $encoding) . '</a>'
+                    . '">' . $this->_displayEscape($item['title']). '</a>'
                     . '</li>' . PHP_EOL;
             }
 

@@ -658,7 +658,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         if ($index === 'n' && $_CONF['meta_tags'] > 0) {
             $article->set_var(
                 'related_articles_by_keyword',
-                Article::getRelatedArticlesByKeywords(
+                $story->getRelatedArticlesByKeywords(
                     $story->getSid(),
                     $story->DisplayElements('meta_keywords')
                 )
