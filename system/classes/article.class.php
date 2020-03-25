@@ -2021,7 +2021,7 @@ class Article
      *
      * @param  string $articleId
      * @param  string $keywordList a comma-separated list of keywords
-     * @param  int    $limit       max number od related articles
+     * @param  int    $limit       max number of related articles returned
      * @return array
      * @link   http://www.enkeladress.com/article/20110315104621317
      */
@@ -2030,6 +2030,10 @@ class Article
         global $_CONF, $LANG24, $_TABLES;
 
         $work = array();
+
+		// Lets search the 50 latest articles that match the keyword
+		// This will return the most related
+		$searchlimit = 50;
 
         $articleId = trim($articleId);
         $keywords = explode(',', $keywordList);
@@ -2053,9 +2057,10 @@ class Article
             $sql = "SELECT sid, title FROM {$_TABLES['stories']} "
                 . "WHERE (sid  <> '{$escapedArticleId}') "
                 . "AND (draft_flag = 0) AND (date <= NOW()) "
-                . "AND meta_keywords LIKE '%{$escapedKeyword}%' "
+                . "AND LOWER(meta_keywords) LIKE LOWER('%{$escapedKeyword}%') "
                 . "GROUP BY sid, title "
-                . "LIMIT 5 ";
+				. "ORDER BY date DESC "
+                . "LIMIT $searchlimit ";
             $resultSet = DB_query($sql);
 
             while (($A = DB_fetchArray($resultSet, false)) !== false) {
@@ -2083,7 +2088,7 @@ class Article
         }
 
         $retval = '';
-        if ($found) {
+        if (count($work) > 0) {
             if (count($work) > 1) {
                 usort($work, array(__CLASS__, 'getRelatedArticlesSort'));
             }

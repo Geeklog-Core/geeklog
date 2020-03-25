@@ -655,7 +655,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         }
 
         // Add related articles
-        if ($index === 'n') {
+        if ($index === 'n' && $_CONF['meta_tags'] > 0) {
             $article->set_var(
                 'related_articles_by_keyword',
                 Article::getRelatedArticlesByKeywords(
