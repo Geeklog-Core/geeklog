@@ -5,6 +5,7 @@
   <meta name="robots" content="NOINDEX"{xhtml}>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"{xhtml}>
   <meta http-equiv="Content-Style-Type" content="text/css"{xhtml}>
+  {plg_headercode}
   <link rel="stylesheet" type="text/css" href="{layout_url}/css_{direction}/print.css"{xhtml}>
   <link rel="stylesheet" type="text/css" media="print" href="{layout_url}/css_{direction}/print.css"{xhtml}>
   <link rel="shortcut icon" href="{layout_url}/images/favicon.ico"{xhtml}>
@@ -14,10 +15,12 @@
 {# begin {templatelocation} #}
 
     <div id="wrapper">
+		{!if sp_inblock}
         <div id="header">
-            <h2>{sp_title}</h2>
+            <h1>{sp_title}</h1>
         </div>
-        
+		{!endif}
+		
         <div id="story">
             {sp_content}
         </div>
@@ -30,6 +33,7 @@
           <p>{page_title}<br>{sp_url}</p>
         </div>    
     </div>
+	{plg_footercode}
     
 {# end {templatelocation} #}
 </body>

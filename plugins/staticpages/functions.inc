@@ -648,11 +648,39 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
 function SP_printPage($page, $A)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG_STATIC, $LANG_DIRECTION,
-           $_IMAGE_TYPE;
+           $_IMAGE_TYPE, $_SCRIPTS;
 
     $print = COM_newTemplate(CTL_plugin_templatePath('staticpages'));
     $print->set_file(array('print' => 'printable.thtml'));
     $print->set_var('site_slogan', $_CONF['site_slogan']);
+	
+	
+	// Add Cookie Consent ( https://cookieconsent.osano.com )
+	if (isset($_CONF['cookie_consent']) && $_CONF['cookie_consent']) {
+		$_SCRIPTS->setCssFile(
+			'cookiconsent', 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css',
+			true, array(), 100
+		);
+		$_SCRIPTS->setJavaScriptFile(
+			'cookie_consent', 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js',
+			false, 100, false,
+			array('data-cfasync' => 'false')
+		);
+
+		if (isset($_CONF['cookie_consent_theme_customization']) && $_CONF['cookie_consent_theme_customization']) {
+			// Theme should have already set customizations in functions.php
+
+		} else {
+			$_SCRIPTS->setJavaScriptFile(
+				'cookie_consent_config', '/javascript/cookie_consent.js',
+				true, 110
+			);
+		}
+	}
+
+	$print->set_var('plg_headercode', $_SCRIPTS->getHeader());
+	
+	$print->set_var('plg_footercode', $_SCRIPTS->getFooter());	
 
     $print->set_var('direction', $LANG_DIRECTION);
     COM_setLangIdAndAttribute($print);
@@ -669,6 +697,7 @@ function SP_printPage($page, $A)
         . '/staticpages/index.php?page=' . $page);
     $print->set_var('sp_url', $sp_url);
     $print->set_var('sp_title', stripslashes($A['sp_title']));
+	$print->set_var('sp_inblock', $A['sp_inblock']);
     $print->set_var('sp_content', $A['sp_content']);
 
     $author_name = COM_getDisplayName($A['owner_id']);

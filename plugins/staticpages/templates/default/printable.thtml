@@ -5,6 +5,7 @@
   <meta name="robots" content="NOINDEX"{xhtml}>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"{xhtml}>
   <meta http-equiv="Content-Style-Type" content="text/css"{xhtml}>  
+  {plg_headercode}
   <link rel="stylesheet" type="text/css" href="{layout_url}/print.css"{xhtml}>
   <link rel="stylesheet" type="text/css" media="print" href="{layout_url}/print.css"{xhtml}>
   <link rel="shortcut icon" href="{layout_url}/images/favicon.ico"{xhtml}>
@@ -13,7 +14,9 @@
 <body dir="{direction}">
 {# begin {templatelocation} #}
 
+	{!if sp_inblock}		
     <h1>{sp_title}</h1>
+	{!endif}
 
     {sp_content}
 
@@ -25,6 +28,7 @@
         <dt>{site_name}</dt>
         <dd><a href="{sp_url}">{sp_url}</a></dd>
     </dl>
+	{plg_footercode}
 
 {# end {templatelocation} #}
 </body>

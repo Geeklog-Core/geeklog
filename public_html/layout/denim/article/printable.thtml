@@ -17,21 +17,22 @@
       <h2>{story_title}</h2>
       <p>{lang_contributedby} {story_author} {story_date}</p>
     </div>
-    
+
     <div id="print_story">
       {story_text_no_br}
     </div>
-    
+
     <p>{comments_with_count}</p>
-    
+
     <hr class="hidden">
-    
+
     <div id="print_footer">
       <p>{page_title}<br>{article_url}</p>
       {external_links}
     </div>
   </div>
-
-{# end {templatelocation} #}  
+  {plg_footercode}
+  
+{# end {templatelocation} #}
 </body>
 </html>

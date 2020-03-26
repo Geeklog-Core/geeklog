@@ -31,6 +31,8 @@
   </dl>
   {external_links}
 
+  {plg_footercode}
+
 {# end {templatelocation} #}
 </body>
 </html>

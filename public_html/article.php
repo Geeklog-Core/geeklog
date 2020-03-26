@@ -193,10 +193,36 @@ if ($A['count'] > 0) {
                 $_SCRIPTS->setCssFile('print', '/' . $path, true, array('media' => 'print'));
             }
         }
-
-        // Override style for <a> tags
+        
+		// Override style for <a> tags
         $_SCRIPTS->setCSS('a { color: blue !important; text-decoration: underline !important; }');
+		
+		// Add Cookie Consent ( https://cookieconsent.osano.com )
+        if (isset($_CONF['cookie_consent']) && $_CONF['cookie_consent']) {
+            $_SCRIPTS->setCssFile(
+                'cookiconsent', 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css',
+                true, array(), 100
+            );
+            $_SCRIPTS->setJavaScriptFile(
+                'cookie_consent', 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js',
+                false, 100, false,
+                array('data-cfasync' => 'false')
+            );
+
+            if (isset($_CONF['cookie_consent_theme_customization']) && $_CONF['cookie_consent_theme_customization']) {
+                // Theme should have already set customizations in functions.php
+
+            } else {
+                $_SCRIPTS->setJavaScriptFile(
+                    'cookie_consent_config', '/javascript/cookie_consent.js',
+                    true, 110
+                );
+            }
+        }
+
         $articleTemplate->set_var('plg_headercode', $_SCRIPTS->getHeader());
+        
+		$articleTemplate->set_var('plg_footercode', $_SCRIPTS->getFooter());
 
         $page_title = $article->DisplayElements('page_title');
         if (empty($page_title)) {
