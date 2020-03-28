@@ -181,7 +181,7 @@ if ($A['count'] > 0) {
 
         global $_SCRIPTS;
         $printCssPath = PLG_getThemeItem('core-file-print-css', 'core');
-        if (empty($printCssFile)) {
+        if (empty($printCssPath)) {
             // Depreciated. Article should not depend on hardcoded file locations for print.css for a theme. Use PLG_getThemeItem('core-file-print-css', 'core'); instead
             COM_deprecatedLog(__FILE__, '2.2.1sr1', '3.0.0', 'Use PLG_getThemeItem with \'core-file-print-css\' instead to retrieve themes print.css file');
 
