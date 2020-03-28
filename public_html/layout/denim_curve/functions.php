@@ -85,8 +85,8 @@ function theme_config_denim_curve()
 
     return array(
         'theme_name'            => 'Denim Curve',
-        'theme_version'         => '1.0.1',
-        'theme_gl_version'      => '2.2.1',
+        'theme_version'         => '1.0.3', // Released Geeklog v2.2.1sr1
+        'theme_gl_version'      => '2.2.1', // Minimum Geeklog version theme is compatible with
         'theme_description'     => '',
         'theme_author'          => 'dengen',
         'theme_homepage'        => 'https://www.geeklog.net/',
@@ -347,6 +347,12 @@ function theme_getThemeItem_denim_curve($item)
     $retval = '';
 
     switch ($item) {
+        case 'core-file-print-css': // Return Common CSS file to be used for print pages - New item as of GL v2.2.1sr1
+            global  $_CONF, $LANG_DIRECTION;
+            $dir = isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl') ? 'rtl' : 'ltr';
+            $retval = 'layout/' . $_CONF['theme'] . '/css_' . $dir . '/print.css';
+            break;
+
         // ***************************
         // Item names used for lists created by COM_makeList
         // These original list items css classes which were defined way back in Geeklog 1.3. Most are not in use anymore by any updated theme
@@ -380,7 +386,7 @@ function theme_getThemeItem_denim_curve($item)
         case 'core-css-list-feed': // Return 1 or more CSS Classes - For RSS Feed Portal Block - replacing "list-feed"
         case 'article-css-list-directory':  // Return 1 or more CSS Classes - For Article Directory page - New item as of GL v2.2.1
         case 'article-css-list-related': // Return 1 or more CSS Classes - For Article Page What's Related List - replacing 'list-whats-related'
-        case 'article-css-list-related-articles': // Return 1 or more CSS Classes - For Article Page You might also like
+        case 'article-css-list-related-articles': // Return 1 or more CSS Classes - For Article Page You might also like - New item as of GL v2.2.1sr1
         case 'article-css-list-older':  // Return 1 or more CSS Classes - For Older Articles Block - replacing "list-older-stories"
         case 'topic-css-list-related': // Return 1 or more CSS Classes - For Autotags Related Topic items list - New item as of GL v2.2.1
 

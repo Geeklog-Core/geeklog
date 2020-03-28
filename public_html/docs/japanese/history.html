@@ -50,8 +50,16 @@
     <li>[Bug] [#1049] Fixed Print Pages for Articles and Staticpages javascript crashing issue [Tom]</li>
 </ul>
 
-<p>The following items are all current Geeklog API, functions, and/or global variables that are planned to be either required or depreciated by a current Geeklog version. Plugin and Theme developers please take note of these changes in case they affect you.<br>
-Since Geeklog v2.2.1</p>
+<p>The following items are all current Geeklog API, functions, and/or global variables that are planned to be either required or depreciated by a current Geeklog version. Plugin and Theme developers please take note of these changes in case they affect you.</p>
+
+<p>Since Geeklog v2.2.1sr1</p>
+
+<ul>
+    <li>[Depreciated] [#1052] By Geeklog 3.0.0 - Article should not depend on hardcoded file locations for print.css for a theme. Use PLG_getThemeItem('core-file-print-css', 'core'); instead</li>
+</ul>
+
+
+<p>Since Geeklog v2.2.1</p>
 
 <ul>
     <li>[Depreciated] [#872] By Geeklog 3.0.0 - Global $topic variable. Please use function TOPIC_getTopic or TOPIC_setTopic instead to determine Geeklog topic</li>

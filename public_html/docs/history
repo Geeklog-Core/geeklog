@@ -25,6 +25,10 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 
 The following items are all current Geeklog API, functions, and/or global variables that are planned to be either required or depreciated by a current Geeklog version. Plugin and Theme developers please take note of these changes in case they affect you.
 
+Since Geeklog v2.2.1sr1
+
+- [Depreciated] [#1052] By Geeklog 3.0.0 - Article should not depend on hardcoded file locations for print.css for a theme. Use PLG_getThemeItem('core-file-print-css', 'core'); instead
+
 Since Geeklog v2.2.1
 
 - [Depreciated] [#872] By Geeklog 3.0.0 - Global $topic variable. Please use function TOPIC_getTopic or TOPIC_setTopic instead to determine Geeklog topic

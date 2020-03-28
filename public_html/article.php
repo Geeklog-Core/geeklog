@@ -179,24 +179,34 @@ if ($A['count'] > 0) {
         }
         $articleTemplate->set_var('direction', $LANG_DIRECTION);
 
-        $theme = $_CONF['theme'];
-        $dir = isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl') ? 'rtl' : 'ltr';
-        $paths = array(
-            'denim'        => 'layout/' . $theme . '/css_' . $dir . '/print.css',
-            'professional' => 'layout/' . $theme . '/print.css',
-            'other'        => 'layout/' . $theme . '/css/print.css',
-        );
-
         global $_SCRIPTS;
-        foreach ($paths as $path) {
-            if (file_exists($_CONF['path_html'] . $path)) {
-                $_SCRIPTS->setCssFile('print', '/' . $path, true, array('media' => 'print'));
+        $printCssPath = PLG_getThemeItem('core-file-print-css', 'core');
+        if (empty($printCssFile)) {
+            // Depreciated. Article should not depend on hardcoded file locations for print.css for a theme. Use PLG_getThemeItem('core-file-print-css', 'core'); instead
+            COM_deprecatedLog(__FILE__, '2.2.1sr1', '3.0.0', 'Use PLG_getThemeItem with \'core-file-print-css\' instead to retrieve themes print.css file');
+
+            $theme = $_CONF['theme'];
+            $dir = isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl') ? 'rtl' : 'ltr';
+            $paths = array(
+                'denim'        => 'layout/' . $theme . '/css_' . $dir . '/print.css',
+                'professional' => 'layout/' . $theme . '/print.css',
+                'other'        => 'layout/' . $theme . '/css/print.css',
+            );
+
+            foreach ($paths as $path) {
+                if (file_exists($_CONF['path_html'] . $path)) {
+                    $_SCRIPTS->setCssFile('print', '/' . $path, true, array('media' => 'print'));
+                }
+            }
+        } else {
+            if (file_exists($_CONF['path_html'] . $printCssPath)) {
+                $_SCRIPTS->setCssFile('print', '/' . $printCssPath, true, array('media' => 'print'));
             }
         }
-        
+
 		// Override style for <a> tags
         $_SCRIPTS->setCSS('a { color: blue !important; text-decoration: underline !important; }');
-		
+
 		// Add Cookie Consent ( https://cookieconsent.osano.com )
         if (isset($_CONF['cookie_consent']) && $_CONF['cookie_consent']) {
             $_SCRIPTS->setCssFile(
@@ -221,7 +231,7 @@ if ($A['count'] > 0) {
         }
 
         $articleTemplate->set_var('plg_headercode', $_SCRIPTS->getHeader());
-        
+
 		$articleTemplate->set_var('plg_footercode', $_SCRIPTS->getFooter());
 
         $page_title = $article->DisplayElements('page_title');

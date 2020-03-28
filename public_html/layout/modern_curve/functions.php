@@ -46,8 +46,8 @@ function theme_config_modern_curve()
 {
     return array(
         'theme_name'            => 'Modern Curve',
-        'theme_version'         => '1.0.1',
-        'theme_gl_version'      => '2.2.1',
+        'theme_version'         => '1.0.2', // Released Geeklog v2.2.1sr1
+        'theme_gl_version'      => '2.2.1', // Minimum Geeklog version theme is compatible with
         'theme_description'     => '',
         'theme_author'          => '',
         'theme_homepage'        => 'https://www.geeklog.net/',
@@ -271,9 +271,10 @@ function theme_getThemeItem_modern_curve($item)
         case 'comment-width-user-avatar': // Return width in pixels of user photos in comments - New item as of GL v2.2.1
         case 'article-css-list-directory':  // Return 1 or more CSS Classes - For Article Directory page - New item as of GL v2.2.1
         case 'article-css-list-related': // Return 1 or more CSS Classes - For Article Page What's Related List - replacing 'list-whats-related'
-        case 'article-css-list-related-articles': // Return 1 or more CSS Classes - For Article Page You might also like
+        case 'article-css-list-related-articles': // Return 1 or more CSS Classes - For Article Page You might also like - New item as of GL v2.2.1sr1
         case 'article-css-list-older':  // Return 1 or more CSS Classes - For Older Articles Block - replacing "list-older-stories"
         case 'topic-css-list-related': // Return 1 or more CSS Classes - For Autotags Related Topic items list - New item as of GL v2.2.1
+        case 'core-file-print-css': // Return Common CSS file to be used for print pages - New item as of GL v2.2.1sr1
 
         // If any other items requested return empty string
         default:
