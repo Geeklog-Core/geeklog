@@ -142,6 +142,12 @@ $LANG_STATIC = array(
     'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).'
 );
 
+$LANG_staticpages_search = array(
+    0 => 'Excluded',
+    1 => 'Use Default',
+    2 => 'Included'
+);
+
 $PLG_staticpages_MESSAGE15 = 'Sinu kommentaar on saadetud läbivaatamiseks. See ilmub lehele pärast moderaatorite poolset heakskiitmist.';
 $PLG_staticpages_MESSAGE19 = 'Sinu leht on edukalt salvestatud.';
 $PLG_staticpages_MESSAGE20 = 'Sinu leht on edukalt kustutatud.';

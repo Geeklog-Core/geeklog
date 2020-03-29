@@ -142,6 +142,12 @@ $LANG_STATIC = array(
     'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).'
 );
 
+$LANG_staticpages_search = array(
+    0 => 'Excluded',
+    1 => 'Use Default',
+    2 => 'Included'
+);
+
 $PLG_staticpages_MESSAGE15 = 'Komentar je oddan v pregled in bo objavljen, ko ga odobri urednik.';
 $PLG_staticpages_MESSAGE19 = 'Stran je uspešno shranjena.';
 $PLG_staticpages_MESSAGE20 = 'Stran je uspešno izbrisana.';

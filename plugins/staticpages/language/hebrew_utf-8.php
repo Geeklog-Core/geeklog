@@ -141,6 +141,12 @@ $LANG_STATIC = array(
     'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).'
 );
 
+$LANG_staticpages_search = array(
+    0 => 'Excluded',
+    1 => 'Use Default',
+    2 => 'Included'
+);
+
 $PLG_staticpages_MESSAGE15 = 'תגובתכם נשלחה לסקירה ותפורסם כאשר תאושר על ידי המשגיחים.';
 $PLG_staticpages_MESSAGE19 = 'העמוד שלכם נשמר בהצלחה.';
 $PLG_staticpages_MESSAGE20 = 'העמוד שלכם נמחק בהצלחה.';

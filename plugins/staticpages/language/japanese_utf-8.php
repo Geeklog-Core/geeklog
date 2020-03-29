@@ -145,6 +145,12 @@ $LANG_STATIC = array(
     'search_desc' => '検索対象にするかどうかを指定します。既定値はコンフィギュレーションの設定とページの種類(センターブロックに表示するか、テンプレートを使用するか、PHPを使用するかどうか)で決まります。'
 );
 
+$LANG_staticpages_search = array(
+    0 => 'Excluded',
+    1 => 'Use Default',
+    2 => 'Included'
+);
+
 $PLG_staticpages_MESSAGE15 = 'あなたのコメントは投稿スタッフによる承認待ちとなっていて、承認が済むとサイトに表示します。';
 $PLG_staticpages_MESSAGE19 = '静的ページを保存しました。';
 $PLG_staticpages_MESSAGE20 = '静的ページを削除しました。';

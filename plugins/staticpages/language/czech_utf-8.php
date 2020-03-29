@@ -140,6 +140,12 @@ $LANG_STATIC = array(
     'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).'
 );
 
+$LANG_staticpages_search = array(
+    0 => 'Excluded',
+    1 => 'Use Default',
+    2 => 'Included'
+);
+
 $PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
 $PLG_staticpages_MESSAGE19 = 'Your page has been successfully saved.';
 $PLG_staticpages_MESSAGE20 = 'Your page has been successfully deleted.';

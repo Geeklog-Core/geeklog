@@ -140,6 +140,12 @@ $LANG_STATIC = array(
     'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).'
 );
 
+$LANG_staticpages_search = array(
+    0 => 'Excluded',
+    1 => 'Use Default',
+    2 => 'Included'
+);
+
 $PLG_staticpages_MESSAGE15 = 'Votre commentaire à bien été soumis et sera publié après avoir été approuvé par un modérateur.';
 $PLG_staticpages_MESSAGE19 = 'La page à bien été sauvegardée.';
 $PLG_staticpages_MESSAGE20 = 'La page à bien été effacée.';
