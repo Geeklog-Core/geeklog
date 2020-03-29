@@ -31,6 +31,7 @@
 
 // save the english text strings
 $ENG_STATIC = $LANG_STATIC;
+$ENG_staticpages_search = $LANG_staticpages_search;
 
 $ENG_MSG15 = $PLG_staticpages_MESSAGE15;
 $ENG_MSG19 = $PLG_staticpages_MESSAGE19;
@@ -59,6 +60,7 @@ echo "#               YY    - phrase id number\n";
 separator();
 
 mergeArrays($ENG_STATIC, $LANG_STATIC, 'LANG_STATIC', false);
+mergeArrays($ENG_staticpages_search, $LANG_staticpages_search, 'LANG_staticpages_search', false);
 
 echo "\n";
 mergeString($ENG_MSG15, $PLG_staticpages_MESSAGE15, 'PLG_staticpages_MESSAGE15');
