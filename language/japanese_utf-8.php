@@ -896,10 +896,10 @@ $LANG20 = array(
     3 => 'パスワードが違います。ユーザー名:',
     4 => 'ユーザー名:',
     5 => 'パスワード:',
-    6 => "This page you tried to access is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.<br" . XHTML . "><br" . XHTML . ">The login form displayed here is for regular user accounts only. If you login via a remote method please use our <a href=\"{$_CONF['site_url']}/users.php\">main login form</a>.",
+    6 => "このページは管理者のみ使用できます。管理ツールの使用はすべて記録・検査しています。<br" . XHTML . "><br" . XHTML . ">現在表示されているログインフォームはローカルアカウント専用です。リモートアカウントでログインする場合は、<a href=\"{$_CONF['site_url']}/users.php\">メイン・ログインフォーム</a>を使用してください。",
     7 => 'ログイン',
     8 => 'ログイン',
-    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
+    9 => 'このページは管理者のみ使用できます。管理ツールの使用はすべて記録・検査しています。'
 );
 
 ###############################################################################
@@ -1236,8 +1236,8 @@ $LANG28 = array(
     43 => '有効となるのを待機中',
     44 => '承認が通るのを待機中',
     45 => '有効',
-    46 => 'ユーザーの状態',
-    'user_status_desc' => "An explanation of all possible user statuses: <ul>\n        <li><strong>Awaiting Activation</strong> - New account awaiting user to login. Email has been sent but not verified. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>\n        <li><strong>Awaiting Authorization</strong> - New account awaiting moderator approval in the User Submission Queue. When User Submission approved, user will be sent email with password. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>\n        <li><strong>Active</strong> - This is an Active account.</li>\n        <li><strong>Banned</strong> -  This Account is banned/disabled. Username is crossed out on the site for any content they have submitted, User cannot login, emails to account is disabled, and profile cannot be viewed by any user except Admins.</li>\n        <li><strong>Locked</strong> - This Account is locked. User cannot login, emails to account is disabled, but profile can still be viewed by all.</li>\n        <li><strong>New Email Required</strong> - Emails to account is disabled. When user logs in again they must submit new email address and verify before access to rest of the website (under this user account). Status stays the same until email is verified. If \"Require User Email\" config option true then any users who login (includes remote accounts) that do not have an email address will automatically switch to this status.</li>\n        <li><strong>New Password Required</strong> -  When the user logs in they must submit a new password before access to rest of website (under this user account). This is only for regular accounts and not remote accounts.</li>\n        </ul>\n    ",
+    46 => 'ユーザーのステータス(状態)',
+    'user_status_desc' => "ユーザーが取り得るすべてのステータスの説明: <ul>\n        <li><strong>有効となるのを待機中</strong> - 新規ユーザーがログインするのを待機中です。ユーザー宛にメールを送信していますが、まだメールアドレスを検証していません。このステータスは新規アカウント専用で自動的に設定されます(管理者が手動でこのステータスを設定することはできません)。</li>\n        <li><strong>承認が通るのを待機中</strong> - 管理者が承認するのを待っている新規アカウントです。承認すると、ユーザー宛にパスワードを記したメールを送信します。このステータスは新規アカウント専用で自動的に設定されます(管理者が手動でこのステータスを設定することはできません)。</li>\n        <li><strong>有効</strong> - 有効なアカウントです。</li>\n        <li><strong>禁止</strong> -  このアカウントは禁止されているか無効にされています。このユーザーがこのサイトで投稿したどのコンテンツでもユーザー名に取り消し線が引かれています。ユーザーはログインできず、メールは無効になっており、管理者以外のユーザーがプロフィールを閲覧することもできません。</li>\n        <li><strong>ロック中</strong> - このアカウントはロックされています。ユーザーはログインできず、メールは無効になっていますが、すべてのユーザーがプロフィールを閲覧することは可能です。</li>\n        <li><strong>メールアドレスを更新する必要あり</strong> - このアカウントのメールは無効になっています。ユーザーが次回ログインするときにメールアドレスを更新・確認しないと(このアカウントでは)サイトの他の部分にアクセスできません。メールアドレスを確認するまではこのステータスは変わりません。コンフィギュレーションの\"ユーザーに新しいメールアドレスを要求する\"が「はい」の場合は、(リモートアカウントを含めて)メールアドレスを登録していない全てのユーザーがログインしようとすると自動的にこのステータスになります。</li>\n        <li><strong>パスワードを更新する必要あり</strong> -  ユーザーがログインするときにパスワードを更新しないと、(このアカウントでは)サイトの他の部分にアクセスできません。このステータスが適用されるのはローカルアカウントのみでリモートアカウントは対象外です。</li>\n        </ul>\n    ",
     47 => '編集',
     48 => '管理者グループを表示',
     49 => '管理者グループ',
@@ -1863,7 +1863,7 @@ $LANG_404 = array(
 
 $LANG_LOGIN = array(
     1 => 'ログインしてください',
-    2 => "Sorry, to access this area you need to be <a href=\"{$_CONF['site_url']}/users.php\">logged in as a user</a>.",
+    2 => "ここにアクセスするには、まず<a href=\"{$_CONF['site_url']}/users.php\">ログインしてください</a>。",
     3 => 'ログイン',
     4 => '新規登録'
 );
@@ -2253,7 +2253,7 @@ $LANG_confignames['Core'] = array(
     'hide_author_exclusion' => '所有者の非表示を許可する',
     'show_fullname' => 'ユーザー名の代わりに氏名を表示する',
     'show_servicename' => 'サービス名を表示する',
-    'require_user_email' => 'ユーザーにメールアドレスを要求する',
+    'require_user_email' => 'ユーザーに新しいメールアドレスを要求する',
     'custom_registration' => 'カスタム登録を有効にする',
     'user_login_method' => 'ログイン方法',
     'facebook_login' => 'FacebookのOAuthを有効にする',
