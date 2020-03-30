@@ -146,9 +146,9 @@ $LANG_STATIC = array(
 );
 
 $LANG_staticpages_search = array(
-    0 => 'Excluded',
-    1 => 'Use Default',
-    2 => 'Included'
+    0 => '除外する',
+    1 => '既定値を使用する',
+    2 => '含める'
 );
 
 $PLG_staticpages_MESSAGE15 = 'あなたのコメントは投稿スタッフによる承認待ちとなっていて、承認が済むとサイトに表示します。';
