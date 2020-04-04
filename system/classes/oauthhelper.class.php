@@ -268,14 +268,18 @@ class OAuthConsumer
                 // Treat username same as Geeklog would for normal account (see USER_createAccount) even though they will not use name to login
                 // So remove any unwanted characters
                 $loginName = trim(GLText::remove4byteUtf8Chars(COM_applyFilter($users['loginname'])));
+				// Length of username cannot be larger than 16 characters
+				if (strlen($loginName) > 16) {
+					$loginName = substr($loginName, 0, 16);
+				}
+				
                 // Remember some database collations are case and accent insensitive and some are not. They would consider "nina", "nina  ", "Nina", and, "niña" as the same
                 $checkName = DB_getItem($_TABLES['users'], 'username', "TRIM(LOWER(username)) = TRIM(LOWER('" . DB_escapeString($loginName) . "'))");
                 if (!empty($checkName) || empty($loginName)) { // also if for some reason blank login name we should create one
                     if (function_exists('CUSTOM_uniqueRemoteUsername')) {
                         /** @noinspection PhpUndefinedVariableInspection */
                         $loginName = CUSTOM_uniqueRemoteUsername($loginName, $remoteService);
-                    }
-                    if (strcasecmp($checkName, $loginName) == 0) {
+					} else {
                         $loginName = USER_uniqueUsername($loginName);
                     }
                 }
