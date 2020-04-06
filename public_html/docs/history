@@ -22,7 +22,7 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Bug] [#1047] Fixed Admin login form for those who try to access the Geeklog Admin area. Regular Logged in Users get just a message now instead of showing a login form [Tom]
 - [Bug] [#1048] Fixed related Articles are Missing From the Article Page [Tom]
 - [Bug] [#1049] Fixed Print Pages for Articles and Staticpages javascript crashing issue [Tom]
-- [Bug] [#1058] Fixed URL Routing for Articles that could cause errors in some cases [Tom]
+- [Bug] [#1058] Fixed URL Routing for Articles that could cause errors in some cases. Also disabled multiview by default for Apache servers in the htaccess file [Tom]
 
 The following items are all current Geeklog API, functions, and/or global variables that are planned to be either required or depreciated by a current Geeklog version. Plugin and Theme developers please take note of these changes in case they affect you.
 

@@ -1,9 +1,9 @@
 ##
 # Geeklog .htaccess file for Apache Web Servers
-#     
+#
 # - URL Routing Rule
 # - Security and Optimizing Rules
-# 
+#
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # !!                                                                       !!
 # !!  If you get an Internal Server Error 500 or a blank page when trying  !!
@@ -11,8 +11,9 @@
 # !!                                                                       !!
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-## No directory listings
+## Disable directory listings and multi views
 IndexIgnore *
+Options -Indexes -MultiViews
 
 ## URL Routing
 <IfModule mod_rewrite.c>
