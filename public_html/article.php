@@ -44,7 +44,15 @@
 /**
  * Geeklog common function library
  */
-require_once 'lib-common.php';
+
+ // Geeklog common function library. If VERSION set then lib-common already loaded. Check required for URL Routing functionality (with or without "index.php")
+ if (!defined('VERSION')) {
+     require_once 'lib-common.php';
+} else {
+     // You have to set any global variables used by this file since the scope is different as it is routed through index.php (and lib-common is loaded from there. See Github Issue #945 for more info
+     global $_USER, $LANG11, $LANG01, $LANG_TRB, $LANG_DIRECTION, $LANG08;
+ }
+
 require_once $_CONF['path_system'] . 'lib-article.php';
 require_once $_CONF['path_system'] . 'lib-comment.php';
 if ($_CONF['trackback_enabled']) {

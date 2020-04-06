@@ -52,13 +52,13 @@
  * @author     Dirk Haun, dirk AT haun-online DOT de
  */
 
-// Geeklog common function library. If VERSION set then lib-common already loaded. Check required for URL Routing functionality
-if (!defined('VERSION')) {
-    require_once '../lib-common.php';
-}
-
-// Required to declare global variables for URL Routing functionality (as scope changes)
-global $_CONF, $_PLUGINS, $_LI_CONF;
+ // Geeklog common function library. If VERSION set then lib-common already loaded. Check required for URL Routing functionality (with or without "index.php")
+ if (!defined('VERSION')) {
+     require_once '../lib-common.php';
+ } else {
+      // You have to set any global variables used by this file since the scope is different as it is routed through index.php (and lib-common is loaded from there. See Github Issue #945 for more info
+      global $_CONF, $_PLUGINS, $_LI_CONF;
+ }
 
 if (!in_array('links', $_PLUGINS)) {
     COM_handle404();
@@ -75,11 +75,11 @@ function links_list($message)
 {
     global $_CONF, $_TABLES, $_LI_CONF, $LANG_LINKS_ADMIN, $LANG_LINKS,
            $LANG_LINKS_STATS;
-           
+
     define('LINKS_PLACEHOLDER', 'links_placeholder');
 
     $display = '';
-    
+
     if ($_CONF['url_rewrite'] && !$_CONF['url_routing']) {
         COM_setArgNames(array('category'));
         $cid = COM_applyFilter(COM_getArgument('category'));
@@ -90,11 +90,11 @@ function links_list($message)
         $cid = GLText::stripTags(Geeklog\Input::fGet('category'));
     }
 
-    // If empty assume root 
+    // If empty assume root
     if (empty($cid)) {
         $cid = $_LI_CONF['root'];
     }
-    
+
     $cat = DB_escapeString($cid);
     $page = (int) Geeklog\Input::fGet('page', 0);
     if ($page == 0) {

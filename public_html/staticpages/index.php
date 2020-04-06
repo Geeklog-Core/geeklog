@@ -38,13 +38,13 @@
  * @subpackage public_html
  */
 
-// Geeklog common function library. If VERSION set then lib-common already loaded. Check required for URL Routing functionality
+// Geeklog common function library. If VERSION set then lib-common already loaded. Check required for URL Routing functionality (with or without "index.php")
 if (!defined('VERSION')) {
     require_once '../lib-common.php';
+} else {
+     // You have to set any global variables used by this file since the scope is different as it is routed through index.php (and lib-common is loaded from there. See Github Issue #945 for more info
+     global $_PLUGINS;
 }
-
-// Required to declare global variables for URL Routing functionality (as scope changes)
-global $_PLUGINS;
 
 if (!in_array('staticpages', $_PLUGINS)) {
     COM_handle404();
