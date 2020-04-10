@@ -59,7 +59,7 @@ abstract class Log
      */
     public static function __callStatic($name, $arguments)
     {
-        global $_USER;
+        global $_USER, $LANG01;
 
         $fileName = strtolower(basename($name));
         if (substr($fileName, -4) !== '.log') {
@@ -111,7 +111,12 @@ abstract class Log
         }
 
         if (strpos($flags, 'n') !== false) {    // User name
-            $entry .= 'User: ' . $_USER['username'] . ', ';
+			if ($_USER['uid'] == 1) {
+				$username = $LANG01[24]; // Anonymous
+			} else {
+				$username = $_USER['username']; // username is not set for anonymous users
+			}
+            $entry .= 'User: ' . $username . ', ';
             $addedFields = true;
         }
 
