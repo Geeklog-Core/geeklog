@@ -904,9 +904,9 @@ function PLG_doSearch($query, $dateStart, $dateEnd, $topic, $type, $author, $key
      * The API, as of 1.6.0, does not use $page, $perpage
      * $type is now only used in the core and should not be passed to the plugin
      */
-	
-	$search_results = array();	
-	
+
+	$search_results = array();
+
 	require_once $_CONF['path_system'] . 'lib-article.php';
 	$all_plugins = array_merge($_PLUGINS, array('article'));
 
@@ -3507,7 +3507,7 @@ function PLG_printDependencies($pi_name, $pi_gl_version = '')
                 } else if ($status == 'ok') {
                     $retval .= "<b class='status_green'>{$LANG32[51]}</b>";
                 }
-                $retval .= "</b>";
+                $retval .= "</b> "; // Need space after tag incase tags are removed in geeklog tooltips for theme
             } else if (isset($value['db'])) { // check for a database requirement
                 $dbAvailable[] = array($value['db'], $op, $ver); // cache the database types
                 if ($_DB_dbms == $value['db']) { // this db requirement matches the database that the site is run on
@@ -3519,7 +3519,7 @@ function PLG_printDependencies($pi_name, $pi_gl_version = '')
                     } else { // unsupported version
                         $retval .= "<b class='status_red'>{$LANG32[54]}</b>";
                     }
-                    $retval .= "</b>";
+                    $retval .= "</b> "; // Need space after tag incase tags are removed in geeklog tooltips for theme
                 }
             }
         }
@@ -3528,7 +3528,7 @@ function PLG_printDependencies($pi_name, $pi_gl_version = '')
             foreach ($dbAvailable as $key => $value) { // print every database that would satisfy this requirement
                 $retval .= "<b class=\"notbold\" style=\"display: block; padding: 2px; margin: 0;\">{$value[0]} {$value[1]} {$value[2]} ";
                 $retval .= "<b class='status_red'>{$LANG32[54]}</b>";
-                $retval .= "</b>";
+                $retval .= "</b> "; // Need space after tag incase tags are removed in geeklog tooltips for theme
             }
         }
     } else if (!empty($pi_gl_version)) { // old plugin install
