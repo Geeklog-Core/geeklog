@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-March ? 2020 (2.2.1sr1)
+April 16 2020 (2.2.1sr1)
 ------------
 Explanation of list item:
 - [Issue Type] [#Github_Issue_Number OR commit reference OR NA] Description of issue [Person who worked on issue]
@@ -23,6 +23,7 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Bug] [#1048] Fixed related Articles are Missing From the Article Page [Tom]
 - [Bug] [#1049] Fixed Print Pages for Articles and Staticpages javascript crashing issue [Tom]
 - [Bug] [#1058] Fixed URL Routing for Articles that could cause errors in some cases. Also disabled multiview by default for Apache servers in the htaccess file [Tom]
+- [Bug] [#1054] Fixed duplicate usernames issue that could happen only for remote accounts using OAuth. The issue dealt with usernames using accents [Tom]
 
 The following items are all current Geeklog API, functions, and/or global variables that are planned to be either required or depreciated by a current Geeklog version. Plugin and Theme developers please take note of these changes in case they affect you.
 
