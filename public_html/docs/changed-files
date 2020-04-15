@@ -139,12 +139,14 @@ public_html/admin/plugins.php
 public_html/admin/plugins/staticpages/index.php
 public_html/admin/user.php
 public_html/article.php
+public_html/docs/changed-files
 public_html/docs/english/config.html
 public_html/docs/english/staticpages.html
 public_html/docs/history
 public_html/docs/japanese/config.html
 public_html/docs/japanese/history.html
 public_html/docs/japanese/staticpages.html
+public_html/docs/removed-files
 public_html/layout/denim/admin/user/edituser.thtml
 public_html/layout/denim/archivearticletext.thtml
 public_html/layout/denim/article/article.thtml
