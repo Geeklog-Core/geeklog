@@ -63,6 +63,8 @@ plugins/menu
 public_html/menu
 public_html/admin/plugins/menu
 data/menu_data
+plugins/nettools
+public_html/nettools
 
 # test framework, if present
 public_html/tests
