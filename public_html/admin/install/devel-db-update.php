@@ -581,8 +581,8 @@ function update_DatabaseFor212()
 
 $display = '<h2>Development Database Update</h2>';
 
-$gl_prev_version = "2.2.1";
-$gl_devel_version = "2.2.1sr1";
+$gl_prev_version = "2.2.1sr1";
+$gl_devel_version = "2.2.2";
 
 $display .= "<p>This update is for Geeklog Core and Core Plugins. Can include changes to database structure and data, along with configuration options. All Core plugins must be installed when you run this script.</p>
              <p>Update works for Geeklog $gl_prev_version up to latest Geeklog development version for $gl_devel_version.</p>";
@@ -623,7 +623,7 @@ foreach ($corePlugins AS $pi_name) {
     $new_plugin_version = false;
     switch ($pi_name) {
         case 'staticpages':
-            $new_plugin_version = true;
+            $new_plugin_version = false;
             $plugin_version = '1.7.2'; // Current Geeklog v2.2.1sr1 for plugin
             break;
         case 'spamx':
