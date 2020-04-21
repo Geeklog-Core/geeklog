@@ -75,7 +75,7 @@ if (empty($_CONF['cookiedomain'])) {
 */
 function SESS_sessionCheck()
 {
-    global $_CONF, $_TABLES, $_USER, $_SESS_VERBOSE;
+    global $_CONF, $_TABLES, $_USER, $_SESS_VERBOSE, $LANG01;
 
     if ($_SESS_VERBOSE) {
         COM_errorLog("*** Inside SESS_sessionCheck ***",1);
@@ -83,6 +83,7 @@ function SESS_sessionCheck()
 
     $_USER = array(
         'uid' => Session::ANON_USER_ID,
+        'username' => $LANG01[24] // Anonymous
     );
 
     // Check for a cookie on the users's machine.  If the cookie exists, build
@@ -418,13 +419,13 @@ function SESS_deleteUserSessions($userId)
 */
 function SESS_getUserDataFromId($userId)
 {
-    global $_TABLES, $_USER;
+    global $_TABLES, $_USER, $LANG01;
 
     $userId = (int) $userId;
     if ($userId <= Session::ANON_USER_ID) {
         return array(
             'uid'      => Session::ANON_USER_ID,
-            'username' => 'anonymous',
+            'username' => $LANG01[24] // Anonymous
         );
     }
 
@@ -435,7 +436,7 @@ function SESS_getUserDataFromId($userId)
     if ((!$result = DB_query($sql)) || (!$myRow = DB_fetchArray($result, false))) {
         return array(
             'uid'      => $userId,
-            'username' => 'anonymous',
+            'username' => $LANG01[24], // Anonymous
             'error'    => '1',
         );
     }
