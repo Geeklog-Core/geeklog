@@ -257,6 +257,7 @@ function plugin_templatesetvars_recaptcha($type, Template $template)
 {
     global $_RECAPTCHA_CONF, $_SCRIPTS, $_CONF, $_USER;
     static $pluginInfo = null;
+    static $firstTime = true; // Allows items to be set only once
 
     if ($pluginInfo === null) {
         $pluginInfo = PLG_collectRecaptchaInfo();
@@ -303,11 +304,14 @@ JS;
         $_SCRIPTS->setJavaScript($code, false, false);
     }
 
-    $_SCRIPTS->setJavaScriptFile(
-        'recaptcha',
-        'https://www.google.com/recaptcha/api.js?hl=' . RECAPTCHA_getLangCode(),
-        true
-    );
+    // Only need to set this once
+    if ($firstTime) {
+        $_SCRIPTS->setJavaScriptFile(
+            'recaptcha',
+            'https://www.google.com/recaptcha/api.js?hl=' . RECAPTCHA_getLangCode(),
+            true
+        );
+    }
 
     if ($pluginInfo[$type]['version'] == RECAPTCHA_SUPPORT_V2_INVISIBLE) {
         // reCAPTCHA V2 Invisible
@@ -323,6 +327,8 @@ JS;
             . RECAPTCHA_esc($_RECAPTCHA_CONF['site_key']) . '"></div>';
         $template->set_var('captcha', $captcha);
     }
+
+    $firstTime = false;
 }
 
 /**
@@ -793,7 +799,7 @@ function plugin_supportsRecaptcha_recaptcha()
             'version' => $_RECAPTCHA_CONF['enable_story'],
             'form_id' => 'submitstory',
             'js_onsubmit' 	=> '',
-			'js_onsubmit_advanced_editor' 	=> 'set_postcontent();',            
+			'js_onsubmit_advanced_editor' 	=> 'set_postcontent();',
         ],
     ];
 }

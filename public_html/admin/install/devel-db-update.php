@@ -66,6 +66,39 @@ if (!SEC_inGroup('Root')) {
     exit;
 }
 
+function update_DatabaseFor222()
+{
+    global $_TABLES, $_CONF, $_PLUGINS, $use_innodb, $_DB_table_prefix, $gl_devel_version;
+
+    // ***************************************
+    // Add database Geeklog Core updates here.
+    // NOTE: Cannot use ones found in normal upgrade script as no checks are performed to see if already done.
+
+    // ***************************************
+    // Core Plugin Updates Here (including version update)
+
+    // ReCaptcha
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.2.2', pi_gl_version='". VERSION ."', pi_homepage='https://github.com/Geeklog-Plugins/recaptcha' WHERE pi_name='recaptcha'";
+
+    if ($use_innodb) {
+        $statements = count($_SQL);
+        for ($i = 0; $i < $statements; $i++) {
+            $_SQL[$i] = str_replace('MyISAM', 'InnoDB', $_SQL[$i]);
+        }
+    }
+
+    foreach ($_SQL as $sql) {
+        DB_query($sql,1);
+    }
+
+    // update Geeklog version number
+    DB_query("INSERT INTO {$_TABLES['vars']} SET value='$gl_devel_version',name='database_version'",1);
+    DB_query("UPDATE {$_TABLES['vars']} SET value='$gl_devel_version' WHERE name='database_version'",1);
+
+    return true;
+}
+
+
 function update_DatabaseFor221()
 {
     global $_TABLES, $_CONF, $_PLUGINS, $use_innodb, $_DB_table_prefix, $gl_devel_version;
@@ -647,8 +680,8 @@ foreach ($corePlugins AS $pi_name) {
             $plugin_version = '2.0.2'; // Current Geeklog v2.2.1 for plugin
             break;
         case 'recaptcha':
-            $new_plugin_version = false;
-            $plugin_version = '1.2.1'; // Current Geeklog v2.2.1 for plugin
+            $new_plugin_version = true;
+            $plugin_version = '1.2.2'; // Current Geeklog v2.2.2 for plugin
             break;
     }
 
