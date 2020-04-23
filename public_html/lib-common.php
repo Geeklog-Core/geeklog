@@ -133,6 +133,7 @@ $_CONF = $config->get_config('Core');
 
 // Some hard coded additional config options
 $_CONF['path_admin'] = $_CONF['path_html'] . substr($_CONF['site_admin_url'], strlen($_CONF['site_url']) + 1) . '/'; // path to admin directory
+$_CONF['path_themes'] = $_CONF['path_html'] .'layout/'; // Hardcode the themes path based on path_html (this is also done in the config class but lets be double sure)
 $_CONF['theme_geeklog_default'] = 'denim_three'; // Geeklog default theme. If this changes then remember to change default theme in Installer for Install class and config-install.php files
 $_CONF['theme_site_default'] = $_CONF['theme']; // Store original theme set in config
 $_CONF['language_site_default'] = $_CONF['language']; // Store original site default language before it may get changed depending on other settings
@@ -873,9 +874,10 @@ function COM_validateTheme($theme)
  *
  * @param    boolean $all if true, return all themes even if users aren't allowed to change their default themes
  * @param    boolean $valid if true, return all valid themes only
- * @return   array        All installed themes
+ * @param    boolean $info if true, return all theme config info as well
+ * @return   array        All installed themes. If $info true then theme folder name is used as an index for the array followed by the configuration (as an array)
  */
-function COM_getThemes($all = false, $valid = true)
+function COM_getThemes($all = false, $valid = true, $info = false)
 {
     global $_CONF;
 
@@ -885,7 +887,11 @@ function COM_getThemes($all = false, $valid = true)
     // If users aren't allowed to change their theme then only return the default theme
 
     if (($_CONF['allow_user_themes'] == 0) && !$all) {
-        $themes[$index] = $_CONF['theme'];
+        if ($info) {
+            $themes[$dir] = COM_getThemeInfo($_CONF['theme']);
+        } else {
+            $themes[$index] = $_CONF['theme'];
+        }
     } else {
         $fd = opendir($_CONF['path_themes']);
 
@@ -896,10 +902,18 @@ function COM_getThemes($all = false, $valid = true)
                 clearstatcache();
                 if ($valid) {
                     if (COM_validateTheme($dir)) {
-                        $themes[$index] = $dir;
+                        if ($info) {
+                            $themes[$dir] = COM_getThemeInfo($dir);
+                        } else {
+                            $themes[$index] = $dir;
+                        }
                     }
                 } else {
-                    $themes[$index] = $dir;
+                    if ($info) {
+                        $themes[$dir] = COM_getThemeInfo($dir);
+                    } else {
+                        $themes[$index] = $dir;
+                    }
                 }
                 $index++;
             }
@@ -907,6 +921,53 @@ function COM_getThemes($all = false, $valid = true)
     }
 
     return $themes;
+}
+
+/**
+ * Gets theme info if found
+ *
+ * @param    string theme   id of theme (which is also the directory name that should be located in the layout folder)
+ * @return   array        All installed themes
+ */
+function COM_getThemeInfo($theme)
+{
+    global $_CONF;
+
+    $theme_config = array();
+
+    if (!empty($theme)) {
+        $temp_path_layout = $_CONF['path_themes'] . $theme . '/';
+        if (file_exists($temp_path_layout . 'functions.php')) {
+            require_once $temp_path_layout . 'functions.php';
+            $func = 'theme_config_' . $theme;
+            if (is_callable($func)) {
+                $theme_config = $func();
+
+                // Make sure theme name exists else could really cause problems
+                if (isset($theme_config['theme_name'])) {
+                    if (empty(trim($theme_config['theme_name']))) {
+                        $theme_config['theme_name'] = $theme;
+                    }
+                } else {
+                    $theme_config['theme_name'] = $theme;
+                }
+
+                $currentThemePath = $_CONF['path_themes'] . $theme . '/';
+                $previewImage = $theme . '.png';
+                if (!file_exists($currentThemePath . $previewImage)) {
+                    $previewImage = $theme . '.jpg';
+                    if (!file_exists($currentThemePath . $previewImage)) {
+                        $previewImage = '';
+                    }
+                }
+                if (!empty($previewImage)) {
+                    $theme_config['theme_preview_image'] = $previewImage;
+                }
+            }
+        }
+    }
+
+    return $theme_config;
 }
 
 /**

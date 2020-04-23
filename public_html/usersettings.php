@@ -605,27 +605,16 @@ function editpreferences()
             $usertheme = $_USER['theme'];
         }
 
-        $themeFiles = COM_getThemes();
-        usort($themeFiles, 'strcasecmp');
+        $themeFiles = COM_getThemes(false, true, true);
 
         $items = '';
-        foreach ($themeFiles as $theme) {
-            $items .= '<option value="' . $theme . '"';
-            if ($usertheme == $theme) {
+        foreach ($themeFiles as $key => $theme) {
+            $items .= '<option value="' . $key . '"';
+            if ($usertheme == $key) {
                 $items .= ' selected="selected"';
             }
-            $words = explode('_', $theme);
-            $bwords = array();
-            foreach ($words as $th) {
-                if ((strtolower($th[0]) == $th[0]) &&
-                    (strtolower($th[1]) == $th[1])
-                ) {
-                    $bwords[] = ucfirst($th);
-                } else {
-                    $bwords[] = $th;
-                }
-            }
-            $items .= '>' . implode(' ', $bwords) . '</option>' . LB;
+
+            $items .= '>' . $theme['theme_name'] . '</option>' . LB;
         }
 
         $selection = COM_createControl('type-select', array(
