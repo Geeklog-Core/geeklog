@@ -222,7 +222,7 @@ the admin panel.</p>
     <td valign="top">Create a feed file for the articles in rdf_file (0=no, 1=yes)</td></tr>
 <tr><td valign="top"><a name="desc_rdf_file">rdf_file</a></td>
     <td valign="top">HTML path with "/backend/geeklog.rss" suffix</td>
-    <td valign="top">File system path for the feed file. This file allows you to share your site's headlines with others. <em>Important:</em> This path needs to include the path from $_CONF['path_html'] exactly or the path reported in your rss feed may be incorrect.</td></tr>
+    <td valign="top">File system path for the feed file. This file allows you to share your site's headlines with others. <em>Important:</em> This directory path for the rss feeds MUST be part of the <a href="#desc_path_html">path_html</a>.</td></tr>
 <tr><td valign="top"><a name="desc_rdf_limit">rdf_limit</a></td>
     <td valign="top">10</td>
     <td valign="top">Limit the number of articles to export to the news feed. If the value for this setting is a number, the feed will hold this many articles. If the number is followed by a lower-case 'h' (e.g. 24h) it denotes the number of hours from which to chose the articles.</td></tr>
@@ -266,7 +266,7 @@ the admin panel.</p>
     <th style="width:50%">Description</th></tr>
 <tr><td valign="top"><a name="desc_path_html">path_html</a></td>
     <td valign="top">/path/to/geeklog/public_html/</td>
-    <td valign="top">Path to your web tree directory for your site (trailing slash necessary).  This directory holds all the web pages used by Geeklog.</td></tr>
+    <td valign="top">Path to your web tree directory for your site (trailing slash necessary).  This directory holds all the web pages used by Geeklog and should not be changed in the Geeklog Configuration once your site is up and running. This only should be changed by the install when migrating a site. <em>Important:</em> If this path is changed you MUST also update <a href="#desc_path_images">path_images</a>, <a href="#desc_path_editors">path_editors</a>, <a href="#desc_path_themes">path_themes</a>, and <a href="#desc_rdf_file">path_rdf_file</a> as these paths must reside in the path_html.</td></tr>
 <tr><td valign="top"><a name="desc_path_log">path_log</a></td>
     <td valign="top">/path/to/geeklog/logs/</td>
     <td valign="top">File system path for the log files</td></tr>
@@ -282,10 +282,10 @@ the admin panel.</p>
 <tr><td valign="top"><a name="desc_path_images">path_images</a></td>
     <td valign="top">/path/to/geeklog/public_html/images/</td>
     <td valign="top">Path where Geeklog expects to find its images, including
-        user photos and images for articles.</td></tr>
+        user photos and images for articles. <em>Important:</em> This directory path for the images MUST be part of the <a href="#desc_path_html">path_html</a>.</td></tr>
 <tr><td valign="top"><a name="desc_path_editors">path_editors</a></td>
     <td valign="top">/path/to/geeklog/public_html/editors/</td>
-    <td valign="top">Path where all WYSIWYG editors reside.</td></tr>
+    <td valign="top">Path where all WYSIWYG editors reside. <em>Important:</em> This directory path for the editors MUST be part of the <a href="#desc_path_html">path_html</a>.</td></tr>
 </table>
 
 <h3><a name="site_database">Site: Database</a></h3>
@@ -641,8 +641,8 @@ the admin panel.</p>
     <span class="tt">lib-custom.php</span> for details).</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_themes">path_themes</a></td>
-  <td valign="top">path/to/path_themes</td>
-  <td valign="top">Specifies the path to the parent directory (named "layout") of themes, which is directly under the path to public_html.  Trailing slash is necessary.</td></tr>
+  <td valign="top">/path/to/geeklog/public_html/layout/</td>
+  <td valign="top">Path to where all theme directories reside. This cannot be changed from the default (which is "/path/to/geeklog/public_html/layout/"). For more information see <a href="#desc_path_html">path_html</a>.</td></tr>
 <tr>
   <td valign="top"><a name="desc_cache_templates">cache_templates</a></td>
   <td valign="top">true</td>
