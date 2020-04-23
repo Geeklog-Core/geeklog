@@ -44,14 +44,20 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.php') !== false) {
  */
 function theme_config_modern_curve()
 {
+
+    // All options below only required if specified
+    // Some Options are used to display information about the theme on Geeklog and some plugins
+    // Note: You can include a preview image for your theme in the root of your theme folder. The image must be the same name as your theme's folder and be either a .png or .jpg file type.
     return array(
-        'theme_name'            => 'Modern Curve',
-        'theme_version'         => '1.0.2', // Released Geeklog v2.2.1sr1
-        'theme_gl_version'      => '2.2.1', // Minimum Geeklog version theme is compatible with
-        'theme_description'     => '',
+        'theme_name'            => 'Modern Curve', // Required
+        'theme_version'         => '1.0.3', // Required - This theme version released Geeklog v2.2.2
+        'theme_gl_version'      => '2.2.1', // Required - Minimum Geeklog version theme is compatible with
+        'theme_description'     => '', // Can contain HTML
         'theme_author'          => '',
+        'theme_author_url'      => '',
+        'theme_download_url'    => '',
         'theme_homepage'        => 'https://www.geeklog.net/',
-        'theme_copyright'       => '2019',
+        'theme_copyright'       => '2020',
         'theme_license'         => 'GPL-2.0+',
         'theme_path_site_logo'  => '/layout/modern_curve/images/logo.png', // Used to override path_site_logo config option if needed. Empty or should have absolute path with Logo image filename. See path_site_logo option in config docs for more info
         'image_type'            => 'png',
