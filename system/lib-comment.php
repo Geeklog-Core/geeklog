@@ -630,6 +630,9 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             if (!empty($sig)) {
                 $template->set_var('user_signature', COM_nl2br($sig));
                 $template->parse('comment_signature', 'comment_signature');
+            } else {
+                $template->set_var('user_signature', '');
+                $template->set_var('comment_signature', '');
             }
         } else {
             $template->set_var('user_signature', '');
