@@ -207,6 +207,16 @@ function render($renderType, $args = array()) {
             echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . LB;
         ?>
         <?php elseif ($renderType == 'updateConfigs'):
+            if ($_POST['old_path_html'] !== $_POST['path_html']) {
+                // $_CONF['path_html'] was changed, so we have to update $_CONF['path_themes'],
+                // $_CONF['path_editors'], $_CONF['path_images'], and $_CONF['rdf_file'] values accordingly
+                $_POST['path_html'] = rtrim($_POST['path_html'], '/\\') . '/';
+                $_POST['path_themes'] = $_POST['path_html'] . 'layout/';
+                $_POST['path_editors'] = $_POST['path_html'] . 'editors/';
+                $_POST['path_images'] = $_POST['path_html'] . 'images/';
+                $_POST['rdf_file'] = str_ireplace($_POST['old_path_html'], $_POST['path_html'], $_POST['rdf_file']);
+            }
+
             foreach ($configs as $config){
                 $sql = sprintf("UPDATE %s SET value = '%s' WHERE name = '%s'", $_TABLES['conf_values'], serialize($_POST[$config]), $config);
                 if (DB_query($sql)) {
@@ -372,6 +382,9 @@ function render($renderType, $args = array()) {
                 ?>
                         <fieldset><legend><?php echo $config; ?>:</legend><input type="text" size="80" id="<?php echo $config; ?>" name="<?php echo $config; ?>" value="<?php echo unserialize($row['value']); ?>" /></fieldset>
                 <?php
+                        if ($config === 'path_html') {
+                            echo '<input type="hidden" name="old_path_html" id="old_path_html" value="' . unserialize($row['value']) . '" />';
+                        }
                     }
                 ?>
                 <input type="submit" value="<?php e(41); ?>" onclick="this.disabled=true;this.form.submit();" />
