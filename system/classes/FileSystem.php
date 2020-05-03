@@ -10,31 +10,55 @@ namespace Geeklog;
 abstract class FileSystem
 {
     /**
-     * Remove file(s) or dir(s)
+     * Remove the directory and all files and directories under it
      *
-     * @param  string  $path  path to remove
-     * @param  bool    $isRecursive
-     * @return bool true on success
+     * @param  string  $dir  the directory to remove
+     * @return bool          true on success, false otherwise
      */
-    public static function remove($path, $isRecursive = true)
+    public static function remove($dir)
     {
-        $flag = $isRecursive ? '-rf ' : '-f ';
+        $retval = true;
 
-        return @\System::rm($flag . $path);
+        $dir = rtrim($dir, '/\\');
+        if (!is_dir($dir)) {
+            return false;
+        }
+
+        foreach (scandir($dir) as $item) {
+            if (($item !== '.') && ($item !== '..')) {
+                $path = $dir . DIRECTORY_SEPARATOR . $item;
+
+                if (is_dir($path)) {
+                    if (!self::remove($path)) {
+                        $retval = false;
+                    }
+                } else {
+                    if (!@unlink($path)) {
+                        $retval = false;
+                    }
+                }
+            }
+        }
+
+        if ($retval) {
+            $retval = @rmdir($dir);
+        }
+
+        return $retval;
     }
 
     /**
-     * Normalize a file name so it can safely used both on Windows and Unixy systems like Linux
+     * Normalize a file name so it can safely be used both on Windows and Unixy systems like Linux
      *
-     * @param  string  $fileName
+     * @param  string  $path
      * @return string
      * @see https://en.wikipedia.org/wiki/Filename#Comparison_of_filename_limitations
      */
-    public static function normalizeFileName($fileName)
+    public static function normalizeFileName($path)
     {
-        $fileName = basename($fileName);
+        $fileName = basename($path);
         $fileName = preg_replace('@[\x00-\x1f\x5c\x7f<>:\"/|?*]@', '_', $fileName);
 
-        return $fileName;
+        return dirname($path) . DIRECTORY_SEPARATOR . $fileName;
     }
 }
