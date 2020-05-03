@@ -2701,8 +2701,8 @@ function service_submit_story($args, &$output, &$svc_msg)
                 if ($file['error'] == 0) {
                     $num = str_replace('file', '', $k);
                     $pos = strrpos($file['name'], '.') + 1;
-                    $fextension = substr($file['name'], $pos);
-                    $ai_fnames[$num] = $sid . '_' . $num . '.' . $fextension;
+                    $fExtension = substr($file['name'], $pos);
+                    $ai_fnames[$num] = $sid . '_' . $num . '.' . $fExtension;
                     $filenames[] = $ai_fnames[$num];
                     $uploadFiles[$num] = $file;
                 }

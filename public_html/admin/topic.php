@@ -884,7 +884,7 @@ function handleIconUpload($tid)
     if (!empty($newIcon['name'])) {
         $pos = strrpos($newIcon['name'], '.') + 1;
         $fExtension = substr($newIcon['name'], $pos);
-        $filename = 'topic_' . $tid . '.' . $fExtension;
+        $filename = \Geeklog\FileSystem::normalizeFileName('topic_' . $tid . '.' . $fExtension);
     }
 
     // do the upload

@@ -871,10 +871,10 @@ function emailAddressExists($email, $uid)
 /**
  * Upload new photo, delete old photo
  *
- * @param    string $delete_photo 'on': delete old photo
+ * @param    string $deletePhoto 'on': delete old photo
  * @return   string                  filename of new photo (empty = no new photo)
  */
-function handlePhotoUpload($delete_photo = '')
+function handlePhotoUpload($deletePhoto = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG24;
 
@@ -918,35 +918,26 @@ function handlePhotoUpload($delete_photo = '')
     }
 
     $filename = '';
-    if (!empty($delete_photo) && ($delete_photo === 'on')) {
-        $delete_photo = true;
-    } else {
-        $delete_photo = false;
-    }
-
-    $curphoto = DB_getItem($_TABLES['users'], 'photo',
-        "uid = {$_USER['uid']}");
-    if (empty($curphoto)) {
-        $delete_photo = false;
+    $deletePhoto = (!empty($deletePhoto) && ($deletePhoto === 'on'));
+    $currentPhoto = DB_getItem($_TABLES['users'], 'photo', "uid = {$_USER['uid']}");
+    if (empty($currentPhoto)) {
+        $deletePhoto = false;
     }
 
     // see if user wants to upload a (new) photo
-    $newphoto = $_FILES['photo'];
-    if (!empty($newphoto['name'])) {
-        $pos = strrpos($newphoto['name'], '.') + 1;
-        $fextension = substr($newphoto['name'], $pos);
-        $filename = $_USER['username'] . '.' . $fextension;
+    $newPhoto = $_FILES['photo'];
+    if (!empty($newPhoto['name'])) {
+        $pos = strrpos($newPhoto['name'], '.') + 1;
+        $fExtension = substr($newPhoto['name'], $pos);
 
-        if (!empty($curphoto) && ($filename != $curphoto)) {
-            $delete_photo = true;
-        } else {
-            $delete_photo = false;
-        }
+        // Prevent a file name like '::ben.jpg' from being created
+        $filename = \Geeklog\FileSystem::normalizeFileName($_USER['username'] . '.' . $fExtension);
+        $deletePhoto = (!empty($currentPhoto) && ($filename !== $currentPhoto));
     }
 
     // delete old photo first
-    if ($delete_photo) {
-        USER_deletePhoto($curphoto);
+    if ($deletePhoto) {
+        USER_deletePhoto($currentPhoto);
     }
 
     // now do the upload
@@ -975,8 +966,8 @@ function handlePhotoUpload($delete_photo = '')
             COM_output($display);
             exit; // don't return
         }
-    } elseif (!$delete_photo && !empty($curphoto)) {
-        $filename = $curphoto;
+    } elseif (!$deletePhoto && !empty($currentPhoto)) {
+        $filename = $currentPhoto;
     }
 
     return $filename;

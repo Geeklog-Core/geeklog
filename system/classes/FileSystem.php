@@ -58,7 +58,8 @@ abstract class FileSystem
     {
         $fileName = basename($path);
         $fileName = preg_replace('@[\x00-\x1f\x5c\x7f<>:\"/|?*]@', '_', $fileName);
+        $dir = dirname($path);
 
-        return dirname($path) . DIRECTORY_SEPARATOR . $fileName;
+        return ($dir === '.') ? $fileName : $dir . DIRECTORY_SEPARATOR . $fileName;
     }
 }
