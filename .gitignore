@@ -31,6 +31,9 @@ public_html/images/_thumbs
 plugins/forum
 public_html/forum
 public_html/admin/plugins/forum
+plugins/messenger
+public_html/messenger
+public_html/admin/plugins/messenger
 plugins/gus
 public_html/gus
 public_html/admin/plugins/gus
