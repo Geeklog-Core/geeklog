@@ -3852,7 +3852,11 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
 {
     global $_TABLES, $_CONF;
 
-    // NOTE: If emails are not being sent as HTML all HTML tags (including broken and bad tags) will be removed. Nake sure BEFORE using COM_mail that your message doesn't contain any HTML. Remember this includes any HTML inserted by things like autotags within your content. If you want to show for example HTML code examples in an email then these tags will have to be converted to HTML entities first in your message before sending it to COM_Mail. COM_mail cannot do this as it also converts links to entitites in our email notifications
+    // NOTE: If emails are not being sent as HTML all HTML tags (including broken and bad tags) will be removed.
+    // Make sure BEFORE using COM_mail that your message doesn't contain any HTML. Remember this includes any HTML
+    // inserted by things like autotags within your content. If you want to show for example HTML code examples
+    // in an email then these tags will have to be converted to HTML entities first in your message before sending it
+    // to COM_Mail. COM_mail cannot do this as it also converts links to entities in our email notifications.
 
     // Need to check email address to ensure they are not from account that have a status of locked or new email. If so we need to remove them so no email sent
     // Email addresses without accounts are not affected
