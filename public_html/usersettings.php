@@ -465,6 +465,9 @@ function editpreferences()
         'privacy'  => 'privacyblock.thtml',
         'editor'   => 'editor.thtml',
     ));
+
+    $preferences->set_block('privacy', 'extra_privacy_field'); // For if plugins want to add additional privacy features via PLG_profileVariablesEdit
+
     $preferences->set_var('user_name', $_USER['username']);
 
     $preferences->set_var('lang_language', $LANG04[73]);

@@ -23,8 +23,15 @@
 
       <dt><label for="displayprefs-showonline">{lang_showonline}</label></dt>
       <dd class="controls_text"><label><input type="checkbox" {showonline_checked} name="showonline" id="displayprefs-showonline"{xhtml}>{lang_showonline_text}</label></dd>
+
+      {extra_privacy_fields}
     </dl>
   </div>
 </fieldset>
+
+<!-- BEGIN extra_privacy_field -->
+<dt><label for="displayprefs-{fieldname}">{lang_field}</label></dt>
+<dd class="controls_text"><label><input type="checkbox" {fieldchecked} value="{fieldvalue}" name="{fieldname}" id="displayprefs-{fieldname}"{xhtml}>{lang_field_text}</label></dd>
+<!-- END extra_privacy_field -->
 
 {# end {templatelocation} #}
