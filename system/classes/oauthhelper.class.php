@@ -272,7 +272,7 @@ class OAuthConsumer
 				if (strlen($loginName) > 16) {
 					$loginName = substr($loginName, 0, 16);
 				}
-				
+
                 // Remember some database collations are case and accent insensitive and some are not. They would consider "nina", "nina  ", "Nina", and, "niña" as the same
                 $checkName = DB_getItem($_TABLES['users'], 'username', "TRIM(LOWER(username)) = TRIM(LOWER('" . DB_escapeString($loginName) . "'))");
                 if (!empty($checkName) || empty($loginName)) { // also if for some reason blank login name we should create one
@@ -330,9 +330,12 @@ class OAuthConsumer
                 }
                 $updateColumns .= "homepage='" . DB_escapeString($users['homepage']) . "'";
             }
-            $sql = $sql . $updateColumns . " WHERE uid=" . (int) $_USER['uid'];
 
-            DB_query($sql);
+            if (!empty($updateColumns)) {
+                $sql = $sql . $updateColumns . " WHERE uid=" . (int) $_USER['uid'];
+
+                DB_query($sql);
+            }
 
             // Update rest of users info
             $this->_DBupdate_users($_USER['uid'], $users);
