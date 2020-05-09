@@ -1477,6 +1477,7 @@ function PLG_groupChanged($grp_id, $mode)
 /**
  * Geeklog is about to display the edit form for the user's profile. Plugins
  * now get a chance to add their own variables and input fields to the form.
+ * Note: When data is saved PLG_profileExtrasSave is called
  *
  * @param  int      $uid      user id of the user profile to be edited
  * @param  Template $template reference of the Template for the profile edit form
@@ -1501,6 +1502,7 @@ function PLG_profileVariablesEdit($uid, &$template)
 /**
  * Geeklog is about to display the edit form for the user's profile. Plugins
  * now get a chance to add their own blocks below the standard form.
+ * Note: When data is saved PLG_profileExtrasSave is called
  *
  * @param    int $uid user id of the user profile to be edited
  * @return   string          HTML for additional block(s)
@@ -1524,6 +1526,33 @@ function PLG_profileBlocksEdit($uid)
     }
 
     return $retval;
+}
+
+/**
+ * The user wants to save changes to his/her profile. Any plugin that added its
+ * own variables (PLG_profileVariablesEdit) or blocks (PLG_profileBlocksEdit)
+ * to the profile input form will now have to extract its data and save it.
+ * Note: Plugins will have to refer to the global $_POST array to get the
+ * actual data.
+ * Note: Extra fields can be added to the "About You" and "Privacy" tabs only.
+ * Remember The User Admin form only saves the About You information so those
+ * that use the Privacy fields when saving will have to check what file they are
+ * saving from.
+ *
+ * @param    string $plugin name of a specific plugin or empty(all plugins)
+ * @return   void
+ */
+function PLG_profileExtrasSave($plugin = '', $uid = '')
+{
+    $args = array(
+        1 => $uid
+    );
+
+    if (empty($plugin)) {
+        PLG_callFunctionForAllPlugins('profileextrassave', $args);
+    } else {
+        PLG_callFunctionForOnePlugin('plugin_profileextrassave_' . $plugin, $args);
+    }
 }
 
 /**
@@ -1577,29 +1606,6 @@ function PLG_profileBlocksDisplay($uid)
     }
 
     return $retval;
-}
-
-/**
- * The user wants to save changes to his/her profile. Any plugin that added its
- * own variables or blocks to the profile input form will now have to extract
- * its data and save it.
- * Plugins will have to refer to the global $_POST array to get the
- * actual data.
- *
- * @param    string $plugin name of a specific plugin or empty(all plugins)
- * @return   void
- */
-function PLG_profileExtrasSave($plugin = '', $uid = '')
-{
-    $args = array(
-        1 => $uid
-    );
-
-    if (empty($plugin)) {
-        PLG_callFunctionForAllPlugins('profileextrassave', $args);
-    } else {
-        PLG_callFunctionForOnePlugin('plugin_profileextrassave_' . $plugin, $args);
-    }
 }
 
 /**
