@@ -30,6 +30,7 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
         'R' => 
         array (
             'RobThree\\Auth\\' => 14,
+            'ReCaptcha\\' => 10,
             'RFM\\' => 4,
         ),
         'M' => 
@@ -71,6 +72,10 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
         'RobThree\\Auth\\' => 
         array (
             0 => __DIR__ . '/..' . '/robthree/twofactorauth/lib',
+        ),
+        'ReCaptcha\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google/recaptcha/src/ReCaptcha',
         ),
         'RFM\\' => 
         array (

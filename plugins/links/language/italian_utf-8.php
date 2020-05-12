@@ -270,5 +270,5 @@ $LANG_configselects['links'] = array(
     9 => array('Mostra Pagina' => 'item', 'Mostra Lista' => 'list', 'Display Public List' => 'plugin', 'Mostra Home' => 'home', 'Mostra Ammin' => 'admin'),
     12 => array('Nessun Accesso' => 0, 'Solo Lettura' => 2, 'Lettura e Scrittura' => 3),
     13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2),
-    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
+    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
 );

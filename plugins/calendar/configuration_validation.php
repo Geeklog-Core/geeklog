@@ -50,7 +50,7 @@ $_CONF_VALIDATE['calendar']['delete_event'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['calendar']['aftersave'] = array(
     'rule' => array('inList', array('item', 'list', 'plugin', 'home', 'admin'), true)
 );
-$_CONF_VALIDATE['calendar']['recaptcha'] = ['rule' => ['inList', ['0', '1', '2'], true]];
+$_CONF_VALIDATE['calendar']['recaptcha'] = ['rule' => ['inList', ['0', '1', '2', '4'], true]];
 
 // Default Permissions
 $_CONF_VALIDATE['calendar']['default_permissions[0]'] = array(

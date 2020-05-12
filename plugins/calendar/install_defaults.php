@@ -92,7 +92,7 @@ $_CA_DEFAULT['delete_event'] = 0;
 $_CA_DEFAULT['aftersave'] = 'list';
 
 // Which reCAPTCHA version the plugin supports (since Geeklog 2.2.1)
-// Possible values are: RECAPTCHA_SUPPORT_NONE, RECAPTCHA_SUPPORT_V2, RECAPTCHA_SUPPORT_V2_INVISIBLE
+// Possible values are: RECAPTCHA_SUPPORT_NONE, RECAPTCHA_SUPPORT_V2, RECAPTCHA_SUPPORT_V2_INVISIBLE, RECAPTCHA_SUPPORT_V2
 $_CA_DEFAULT['recaptcha'] = RECAPTCHA_SUPPORT_V2;
 
 // Events Block

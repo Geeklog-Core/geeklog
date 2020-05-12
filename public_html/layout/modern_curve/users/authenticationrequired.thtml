@@ -26,6 +26,7 @@
                   <div style="clear:both"></div>
                   {!endif}
                   <button type="submit" value="{value_login}" class="g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_login}</button>
+                  {recaptcha_v3}
                 </td>
             </tr>
         </table>

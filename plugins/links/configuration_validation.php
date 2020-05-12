@@ -41,7 +41,7 @@ $_CONF_VALIDATE['links']['linksperpage'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['links']['show_top10'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['links']['show_category_descriptions'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['links']['new_window'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['links']['recaptcha'] = ['rule' => ['inList', ['0', '1', '2'], true]];
+$_CONF_VALIDATE['links']['recaptcha'] = ['rule' => ['inList', ['0', '1', '2', '4'], true]];
 
 // Links Admin Settings
 $_CONF_VALIDATE['links']['hidenewlinks'] = array('rule' => 'boolean');

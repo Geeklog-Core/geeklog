@@ -248,5 +248,5 @@ $LANG_configselects['calendar'] = array(
     13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
     15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
-    16 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
+    16 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
 );

@@ -35,6 +35,7 @@
         <input type="hidden" name="sid" value="{story_id}"{xhtml}>
         <input type="hidden" name="what" value="sendstory"{xhtml}>
         <button type="submit" value="{lang_sendmessage}" onclick="return postconfirm();" onkeypress="return postconfirm();" class="uk-button uk-button-primary g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_sendmessage}</button>
+        {recaptcha_v3}
       </div>
     </div>
   </form>

@@ -9,20 +9,21 @@
 
         <p class="message">{lang_message}</p>
 
-          <input type="text" size="16" name="loginname" id="loginform-loginname" class="text"{xhtml}>
-          <label for="loginform-loginname">{lang_username}</label>
-          <div style="clear:both"></div>
-          {services}
-          <div style="clear:both"></div>
-          <input type="password" size="16" name="passwd" id="loginform-passwd" class="text"{xhtml}>
-          <label for="loginform-passwd">{lang_password}</label>
-          <div style="clear:both"></div>
-          {!if captcha} 
-          {captcha}
-          <div style="clear:both"></div>
-          {!endif}
-          <button type="submit" value="{lang_login}" class="g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_login}</button>
-          <div style="clear:both"></div>
+        <input type="text" size="16" name="loginname" id="loginform-loginname" class="text"{xhtml}>
+        <label for="loginform-loginname">{lang_username}</label>
+        <div style="clear:both"></div>
+        {services}
+        <div style="clear:both"></div>
+        <input type="password" size="16" name="passwd" id="loginform-passwd" class="text"{xhtml}>
+        <label for="loginform-passwd">{lang_password}</label>
+        <div style="clear:both"></div>
+        {!if captcha}
+        {captcha}
+        <div style="clear:both"></div>
+        {!endif}
+        <button type="submit" value="{lang_login}" class="g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_login}</button>
+        {recaptcha_v3}
+        <div style="clear:both"></div>
 
         <ul class="navi">
           {!if lang_newreglink}<li>{lang_newreglink}</li>{!endif}

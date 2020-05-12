@@ -63,6 +63,7 @@
 {!if allow_save}
       <button type="submit" name="{nprefix}mode" value="{lang_save}" class="uk-button uk-button-primary g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_save}</button>
       <input type="hidden" name="{nprefix}mode" value="{lang_save}"{xhtml}> {# Needed for Invisible reCaptcha Error message and must be before preview #}
+      {recaptcha_v3}
 {!endif}
       <button type="submit" name="{nprefix}mode" value="{lang_preview}" class="uk-button uk-button-default">{lang_preview}</button>
 {!if allow_delete}

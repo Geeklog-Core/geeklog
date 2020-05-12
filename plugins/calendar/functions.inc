@@ -2361,7 +2361,6 @@ function plugin_usercontributed_calendar($uid)
  */
 function plugin_getlanguageoverrides_calendar()
 {
-
     return array('LANG_CAL_1', 'LANG_CAL_2', '_LANG_CAL_SEARCH', 'LANG_CAL_MESSAGE', 'PLG_calendar_MESSAGE4');
 }
 
@@ -2369,11 +2368,11 @@ function plugin_getlanguageoverrides_calendar()
  * Return the info asked by PLG_collectRecaptchaInfo().
  *
  * @return  array of type => [
- *              'type'     => type               // required, passed as the 1st parameter to
- *                                                  plugin_templatesetvars_xxx()
- *              'version'  => reCAPTCHA version, // required: RECAPTCHA_NO_SUPPORT(0), RECAPTCHA_SUPPORT_V2(1),
- *                                                  RECAPTCHA_SUPPORT_V2_INVISIBLE(2)
- *              'form_id'  => form id,           // required only for reCAPTCHA V2 Invisible
+ *              'type'     => type                   // required, passed as the 1st parameter to plugin_templatesetvars_xxx()
+ *              'version'  => reCAPTCHA version,     // required: RECAPTCHA_NO_SUPPORT(0), RECAPTCHA_SUPPORT_V2(1), RECAPTCHA_SUPPORT_V2_INVISIBLE(2), RECAPTCHA_SUPPORT_V3(4)
+ *              'form_id'  => form id,               // required only for reCAPTCHA V2 Invisible
+ *              'action'   => action,                // optional
+ *              'score_threshold' => score threshold // required only for reCAPTCHA V3 (0.0 - 1.0)
  *           ]
  */
 function plugin_supportsRecaptcha_calendar()
@@ -2382,9 +2381,11 @@ function plugin_supportsRecaptcha_calendar()
 
     return [
         [
-            'type'    => 'calendar',
-            'version' => (isset($_CA_CONF['recaptcha']) ? (int) $_CA_CONF['recaptcha'] : RECAPTCHA_SUPPORT_V2_INVISIBLE),
-            'form_id' => 'submit_event_form',
+            'type'            => 'calendar',
+            'version'         => (isset($_CA_CONF['recaptcha']) ? (int) $_CA_CONF['recaptcha'] : RECAPTCHA_SUPPORT_V2_INVISIBLE),
+            'form_id'         => 'submit_event_form',
+            'action'          => 'calendar/submit',
+            'score_threshold' => RECAPTCHA_DEFAULT_SCORE_THRESHOLD,
         ],
     ];
 }

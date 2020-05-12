@@ -8932,7 +8932,7 @@ function COM_nl2br($string)
  */
 function COM_getLangIso639Code($langName = null)
 {
-    $mapping = array(
+    $mapping = [
         // GL language name   => ISO-639-1
         'afrikaans'           => 'af',
         'bosnian'             => 'bs',
@@ -8958,8 +8958,8 @@ function COM_getLangIso639Code($langName = null)
         'italian'             => 'it',
         'japanese'            => 'ja',
         'korean'              => 'ko',
-        'norwegian'           => 'no',  // Norwegian (nynorsk)
-        //      'norwegian'           => 'nb',  // Norwegian (Bokmal)
+        'norwegian'           => 'nb',  // Norwegian (Bokmal)
+        //      'norwegian'           => 'no',  // Norwegian (nynorsk)
         'polish'              => 'pl',
         'portuguese'          => 'pt',
         'portuguese_brazil'   => 'pt-br',
@@ -8974,7 +8974,7 @@ function COM_getLangIso639Code($langName = null)
         'turkish'             => 'tr',
         'ukrainian'           => 'uk',
         'ukrainian_koi8-u'    => 'uk',
-    );
+    ];
 
     if ($langName === null) {
         $langName = COM_getLanguage();

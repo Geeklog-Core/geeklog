@@ -272,5 +272,5 @@ $LANG_configselects['links'] = array(
     9 => array('הפנייה לעמוד המקושר' => 'item', 'הצגת רשימת הניהול' => 'list', 'הצגת הרשימה הציבורית' => 'plugin', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
     13 => array('אין גישה' => 0, 'מותר לשימוש' => 2),
-    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
+    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
 );

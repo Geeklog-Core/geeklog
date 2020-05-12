@@ -273,5 +273,5 @@ $LANG_configselects['links'] = array(
     9 => array('Afficher le lien' => 'item', 'Afficher la liste administrateur' => 'list', 'Afficher la liste publique' => 'plugin', 'Afficher page d\'accueil' => 'home', 'Afficher l\'interface Admin' => 'admin'),
     12 => array('Pas d\'accès' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
     13 => array('No access' => 0, 'Use' => 2),
-    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
+    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
 );

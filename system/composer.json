@@ -24,6 +24,7 @@
     "mlocati/ip-lib": "1.*",
     "mobiledetect/mobiledetectlib": "^2.8",
     "mrclay/jsmin-php": "^2.4",
+    "google/recaptcha": "^1.2",
     "ext-json": "*"
   },
   "repositories":

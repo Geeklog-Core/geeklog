@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // | geeklog/plugins/recaptcha/autoinstall.php                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2014-2019 mystral-kk - geeklog AT mystral-kk DOT net        |
+// | Copyright (C) 2014-2020 mystral-kk - geeklog AT mystral-kk DOT net        |
 // |                                                                           |
 // | Based on the CAPTCHA Plugin by Ben                                        |
 // |                                                - ben AT geeklog DOT fr    |
@@ -95,5 +95,5 @@ function plugin_compatible_with_this_version_recaptcha($pi_name)
     $geeklogVersion = preg_replace('/[^0-9.]/', '', VERSION);
 
     return version_compare(PHP_VERSION, '5.3.0', '>=') &&
-        version_compare($geeklogVersion, $_RECAPTCHA_CONF['gl_version'], '>=');
+        COM_versionCompare($geeklogVersion, $_RECAPTCHA_CONF['gl_version'], '>=');
 }

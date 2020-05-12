@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // | geeklog/plugins/recaptcha/config.php                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2014-2019 mystral-kk - geeklog AT mystral-kk DOT net        |
+// | Copyright (C) 2014-2020 mystral-kk - geeklog AT mystral-kk DOT net        |
 // |                                                                           |
 // | Based on the CAPTCHA Plugin by Ben                                        |
 // |                                                - ben AT geeklog DOT fr    |
@@ -36,9 +36,9 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 
 // Plugin info
 $_RECAPTCHA_CONF = [
-    'pi_version' => '1.2.2',                                        // Plugin Version
-    'gl_version' => '2.2.1',                                        // GL Version plugin for];
-    'pi_url'     => 'https://github.com/Geeklog-Plugins/recaptcha', // Plugin Homepage
+    'pi_version' => '1.2.4',                                    // Plugin Version
+    'gl_version' => '2.2.2',                                    // GL Version plugin for];
+    'pi_url'     => 'https://github.com/Geeklog-Core/geeklog',  // Plugin Homepage
     'GROUPS'     => [
         'reCAPTCHA Admin' => 'Users in this group can administer the ReCAPTCHA plugin',
     ],

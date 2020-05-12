@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // | geeklog/plugins/recaptcha/autoinstall.php                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2014-2019 mystral-kk - geeklog AT mystral-kk DOT net        |
+// | Copyright (C) 2014-2020 mystral-kk - geeklog AT mystral-kk DOT net        |
 // |                                                                           |
 // | Based on the CAPTCHA Plugin by Ben                                        |
 // |                                                - ben AT geeklog DOT fr    |
@@ -35,7 +35,7 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 }
 
 // reCAPTCHA Plugin Main Settings
-$_CONF_VALIDATE['recaptcha'] = array(
+$_CONF_VALIDATE['recaptcha'] = [
     'site_key'             => ['rule' => 'stringOrEmpty'],
     'secret_key'           => ['rule' => 'stringOrEmpty'],
     'invisible_site_key'   => ['rule' => 'stringOrEmpty'],
@@ -44,12 +44,12 @@ $_CONF_VALIDATE['recaptcha'] = array(
     'anonymous_only'       => ['rule' => ['inList', ['0', '1'], true]],
     'remoteusers'          => ['rule' => ['inList', ['0', '1'], true]],
 
-    // '0' => Disabled, '1' => reCAPTCHA V2, '2' => reCAPTCHA V2 Invisible
-    'enable_comment'       => ['rule' => ['inList', ['0', '1', '2'], true]],
-    'enable_contact'       => ['rule' => ['inList', ['0', '1', '2'], true]],
-    'enable_emailstory'    => ['rule' => ['inList', ['0', '1', '2'], true]],
-    'enable_registration'  => ['rule' => ['inList', ['0', '1', '2'], true]],
-    'enable_getpassword'   => ['rule' => ['inList', ['0', '1', '2'], true]],
-    'enable_loginform'     => ['rule' => ['inList', ['0', '1', '2'], true]],
-    'enable_story'         => ['rule' => ['inList', ['0', '1', '2'], true]],
-);
+    // '0' => Disabled, '1' => reCAPTCHA V2, '2' => reCAPTCHA V2 Invisible, '4' => reCAPTCHA V3
+    'enable_comment'       => ['rule' => ['inList', ['0', '1', '2', '4'], true]],
+    'enable_contact'       => ['rule' => ['inList', ['0', '1', '2', '4'], true]],
+    'enable_emailstory'    => ['rule' => ['inList', ['0', '1', '2', '4'], true]],
+    'enable_registration'  => ['rule' => ['inList', ['0', '1', '2', '4'], true]],
+    'enable_getpassword'   => ['rule' => ['inList', ['0', '1', '2', '4'], true]],
+    'enable_loginform'     => ['rule' => ['inList', ['0', '1', '2', '4'], true]],
+    'enable_story'         => ['rule' => ['inList', ['0', '1', '2', '4'], true]],
+];

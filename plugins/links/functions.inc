@@ -1953,11 +1953,11 @@ function plugin_getlanguageoverrides_links()
  * Return the info asked by PLG_collectRecaptchaInfo().
  *
  * @return  array of type => [
- *              'type'     => type               // required, passed as the 1st parameter to
- *                                                  plugin_templatesetvars_xxx()
- *              'version'  => reCAPTCHA version, // required: RECAPTCHA_NO_SUPPORT(0), RECAPTCHA_SUPPORT_V2(1),
- *                                                  RECAPTCHA_SUPPORT_V2_INVISIBLE(2)
- *              'form_id'  => form id,           // required only for reCAPTCHA V2 Invisible
+ *              'type'     => type                   // required, passed as the 1st parameter to plugin_templatesetvars_xxx()
+ *              'version'  => reCAPTCHA version,     // required: RECAPTCHA_NO_SUPPORT(0), RECAPTCHA_SUPPORT_V2(1), RECAPTCHA_SUPPORT_V2_INVISIBLE(2), RECAPTCHA_SUPPORT_V3(4)
+ *              'form_id'  => form id,               // required only for reCAPTCHA V2 Invisible
+ *              'action'   => action,                // optional
+ *              'score_threshold' => score threshold // required only for reCAPTCHA V3 (0.0 - 1.0)
  *           ]
  */
 function plugin_supportsRecaptcha_links()
@@ -1966,10 +1966,11 @@ function plugin_supportsRecaptcha_links()
 
     return [
         [
-            'type'    => 'links',
-            'version' => (isset($_LI_CONF['recaptcha']) ? (int) $_LI_CONF['recaptcha'] : RECAPTCHA_SUPPORT_V2),
-            'form_id' => 'submitlink',
+            'type'            => 'links',
+            'version'         => (isset($_LI_CONF['recaptcha']) ? (int) $_LI_CONF['recaptcha'] : RECAPTCHA_SUPPORT_V2),
+            'form_id'         => 'submitlink',
+            'action'          => 'links/submit',
+            'score_threshold' => RECAPTCHA_DEFAULT_SCORE_THRESHOLD,
         ],
-
     ];
 }

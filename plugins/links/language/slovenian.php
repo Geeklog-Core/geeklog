@@ -274,5 +274,5 @@ $LANG_configselects['links'] = array(
     9 => array('Naprej na povezano stran' => 'item', 'Prikaži skrbnikov seznam' => 'list', 'Prikaži javni seznam' => 'plugin', 'Prikaži vstopno stran' => 'home', 'Prikaži skrbnikovo stran' => 'admin'),
     12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
     13 => array('No access' => 0, 'Use' => 2),
-    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
+    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
 );

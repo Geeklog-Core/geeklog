@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // | geeklog/plugins/recaptcha/install_updates.php                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2014-2019 mystral-kk - geeklog AT mystral-kk DOT net        |
+// | Copyright (C) 2014-2020 mystral-kk - geeklog AT mystral-kk DOT net        |
 // |                                                                           |
 // | Based on the CAPTCHA Plugin by Ben                                        |
 // |                                                - ben AT geeklog DOT fr    |
@@ -146,6 +146,30 @@ function recaptcha_update_ConfValues_1_2_0()
     $c->del('enable_rating', $me);
     $c->del('enable_calendar', $me);
     $c->del('enable_links', $me);
+
+    return true;
+}
+
+/**
+ * Update Configuration settings for reCAPTCHA plugin v1.2.2 (Geeklog 2.2.2)
+ *
+ * @return bool true on success, false otherwise
+ */
+function recaptcha_update_ConfValues_1_2_2()
+{
+    global $_RECAPTCHA_DEFAULT;
+
+    require_once __DIR__ . '/install_defaults.php';
+
+    $c = config::get_instance();
+    $me = 'recaptcha';
+    $sg = 0;
+    $fs = 0;
+    $tab = 0;
+
+    // Add reCAPTCHA V3 support
+    $c->add('site_key_v3', $_RECAPTCHA_DEFAULT['site_key_v3'], 'text', $sg, $fs, null, 42, true, $me, $tab);
+    $c->add('secret_key_v3', $_RECAPTCHA_DEFAULT['secret_key_v3'], 'text', $sg, $fs, null, 44, true, $me, $tab);
 
     return true;
 }

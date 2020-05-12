@@ -41,10 +41,10 @@ $LANG_LINKS = array(
     116 => 'Crea un Collegamento',
     117 => 'Segnala Collegamento non Funzionante',
     118 => 'Segnalazione Collegamento non Funzionante',
-    119 => 'Il Seguente Collegamento √© Stato Segnalato Come Non Funzionante: ',
+    119 => 'Il Seguente Collegamento È Stato Segnalato Come Non Funzionante: ',
     120 => 'Clicca Qui Per Modificare il Collegamento: ',
-    121 => 'Il Collegamento Non Funzionante √© Stato Segnalato Da: ',
-    122 => 'Grazie Per Aver Segnalato Questo Collegamento. L\'amministratore corregger√° questo problema al pi√∫ presto possibile',
+    121 => 'Il Collegamento Non Funzionante È Stato Segnalato Da: ',
+    122 => 'Grazie Per Aver Segnalato Questo Collegamento. L\'amministratore corregger· questo problema al pi˙ presto possibile',
     123 => 'Grazie',
     124 => 'Invia',
     125 => 'Categorie',
@@ -85,7 +85,7 @@ $LANG_LINKS_SUBMIT = array(
     4 => 'Altro',
     5 => 'Se Altro, specifica',
     6 => 'Errore: Nessuna Categoria',
-    7 => 'Specifica il nome di una categorie, se "Altro" √© stato selezionato.',
+    7 => 'Specifica il nome di una categorie, se "Altro" È stato selezionato.',
     8 => 'Titolo',
     9 => 'Indirizzo',
     10 => 'Categoria',
@@ -95,24 +95,24 @@ $LANG_LINKS_SUBMIT = array(
 ###############################################################################
 # Messages for COM_showMessage the submission form
 
-$PLG_links_MESSAGE1 = "Grazie per l'invio del collegamento a {$_CONF['site_name']}.  Presto sar√° esaminato da uno dei amministratori.  Se approvato, verr√° visualizzato in <a href={$_CONF['site_url']}/links/index.php>questa</a> sezione.";
-$PLG_links_MESSAGE2 = 'Il tuo collegamento √© stato salvato.';
-$PLG_links_MESSAGE3 = 'Il collegamento √© stato eliminato.';
-$PLG_links_MESSAGE4 = "Grazie per l'invio del collegamento a {$_CONF['site_name']}.  √© ora disponibile in <a href={$_CONF['site_url']}/links/index.php>questa</a> sezione.";
+$PLG_links_MESSAGE1 = "Grazie per l'invio del collegamento a {$_CONF['site_name']}.  Presto sar· esaminato da uno dei amministratori.  Se approvato, verr· visualizzato in <a href={$_CONF['site_url']}/links/index.php>questa</a> sezione.";
+$PLG_links_MESSAGE2 = 'Il tuo collegamento È stato salvato.';
+$PLG_links_MESSAGE3 = 'Il collegamento È stato eliminato.';
+$PLG_links_MESSAGE4 = "Grazie per l'invio del collegamento a {$_CONF['site_name']}.  È ora disponibile in <a href={$_CONF['site_url']}/links/index.php>questa</a> sezione.";
 $PLG_links_MESSAGE5 = 'Non hai le necessarie autorizzazioni per visualizzare questa categoria.';
 $PLG_links_MESSAGE6 = 'Non hai le necessarie autorizzazioni per modificare questa categoria.';
 $PLG_links_MESSAGE7 = 'Specifica il nome per la Categoria ed una Descrizione.';
-$PLG_links_MESSAGE10 = 'La tua categoria √© stata salvata.';
+$PLG_links_MESSAGE10 = 'La tua categoria È stata salvata.';
 $PLG_links_MESSAGE11 = 'Gli id "site" or "user" sono riservati per uso interno. Scegli un altro id.';
-$PLG_links_MESSAGE12 = 'Stai cercando di spostare una categoria nella sua stessa categoria dipendente. Questo non √© permesso. Prego sposta le categorie dipendenti ad un livello superiore e riprova.';
-$PLG_links_MESSAGE13 = 'La categoria √© stata eliminata.';
+$PLG_links_MESSAGE12 = 'Stai cercando di spostare una categoria nella sua stessa categoria dipendente. Questo non È permesso. Prego sposta le categorie dipendenti ad un livello superiore e riprova.';
+$PLG_links_MESSAGE13 = 'La categoria È stata eliminata.';
 $PLG_links_MESSAGE14 = 'Questa categoria contiene altre categorie e/o collegamenti. Elimina questi elementi o spostali in un altra categoria';
 $PLG_links_MESSAGE15 = 'Non hai le necessarie autorizzazioni per eliminare questa categoria.';
 $PLG_links_MESSAGE16 = 'Questa categoria non esiste.';
-$PLG_links_MESSAGE17 = 'Questo id √© gi√° utilizzato da un altra categoria.';
+$PLG_links_MESSAGE17 = 'Questo id È gi· utilizzato da un altra categoria.';
 
 // Messages for the plugin upgrade
-$PLG_links_MESSAGE3001 = 'L\'aggiornamento delle Estensioni plugin non √© supportato.';
+$PLG_links_MESSAGE3001 = 'L\'aggiornamento delle Estensioni plugin non È supportato.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
@@ -130,16 +130,16 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Descrizione del Collegamento',
     10 => 'Il Titolo, Indirizzo e la Descrizione Sono Necessari per Salvare il Collegamento.',
     11 => 'Manager Collegamenti',
-    12 => 'Per modificare o eliminare un collegamento, clicca sull\'icona di modifica sottostante. Per creare un nuovo collegamento o categoria, clicca su "Nuovo Collegamento" o "Nuova Categoria". Per modificare pi√∫ di una categoria, clicca su "Mostra Categorie".',
+    12 => 'Per modificare o eliminare un collegamento, clicca sull\'icona di modifica sottostante. Per creare un nuovo collegamento o categoria, clicca su "Nuovo Collegamento" o "Nuova Categoria". Per modificare pi˙ di una categoria, clicca su "Mostra Categorie".',
     14 => 'Categoria del Collegamento',
     16 => 'Accesso Negato',
-    17 => "Hai cercato di accedere ad un collegamento per il quale non hai le necessarie autorizzazioni. Questo tentativo √© stato salvato. <a href\"{$_CONF['site_admin_url']}/plugins/links/index.php\">Ritorna alo scermo amministrativo dei collegamenti</a>.",
+    17 => "Hai cercato di accedere ad un collegamento per il quale non hai le necessarie autorizzazioni. Questo tentativo È stato salvato. <a href\"{$_CONF['site_admin_url']}/plugins/links/index.php\">Ritorna alo scermo amministrativo dei collegamenti</a>.",
     20 => 'Se altro, specifica',
     21 => 'salva',
     22 => 'annulla',
     23 => 'elimina',
     24 => 'Collegamento non trovato',
-    25 => 'Il collegamento che hai selezionato non √© stato trovato.',
+    25 => 'Il collegamento che hai selezionato non È stato trovato.',
     26 => 'Controlla Collegamenti',
     27 => 'Risposta HTTP',
     28 => 'Modifica categoria',
@@ -161,7 +161,7 @@ $LANG_LINKS_ADMIN = array(
     52 => 'Nuova Categoria',
     53 => 'Mostra Collegamenti',
     54 => 'Manager Categorie',
-    55 => 'Modifica le categorie sottostanti. Nota che non √© possibile eliminare una categoria che contiene altre categorie o collegamenti - prima √© necessario eliminare questi elementi o spostarli in un altra categoria',
+    55 => 'Modifica le categorie sottostanti. Nota che non È possibile eliminare una categoria che contiene altre categorie o collegamenti - prima È necessario eliminare questi elementi o spostarli in un altra categoria',
     56 => 'Editor Categorie',
     57 => 'Non controllato',
     58 => 'Controlla Collegamenti',
@@ -202,13 +202,13 @@ $LANG_LINKS_STATUS = array(
     410 => 'Gone',
     411 => 'Lunghezza richiesta',
     412 => 'Condizione preliminare non riuscita',
-    413 => 'Entit√° della richiesta troppo grande',
-    414 => 'L\'indirizzo della richiest √© troppo lungo',
+    413 => 'Entit· della richiesta troppo grande',
+    414 => 'L\'indirizzo della richiest È troppo lungo',
     415 => 'Unsupported Media Type',
-    416 => 'L\'Intervallo Richiesto non √© valido',
+    416 => 'L\'Intervallo Richiesto non È valido',
     417 => 'Expectation Failed',
     500 => 'Errore interno del server',
-    501 => 'Valori di intestazione specificano una configurazione non √® implementata',
+    501 => 'Valori di intestazione specificano una configurazione non Ë implementata',
     502 => 'Gateway non valido',
     503 => 'Servizio non disponibile',
     504 => 'Gateway Timeout',
@@ -270,5 +270,5 @@ $LANG_configselects['links'] = array(
     9 => array('Mostra Pagina' => 'item', 'Mostra Lista' => 'list', 'Display Public List' => 'plugin', 'Mostra Home' => 'home', 'Mostra Ammin' => 'admin'),
     12 => array('Nessun Accesso' => 0, 'Solo Lettura' => 2, 'Lettura e Scrittura' => 3),
     13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2),
-    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
+    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
 );

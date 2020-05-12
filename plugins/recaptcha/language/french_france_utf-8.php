@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // | geeklog/plugins/recaptcha/language/french_france_utf-8.php                |
 // +---------------------------------------------------------------------------|
-// | Copyright (C) 2014-2019 mystral-kk - geeklog AT mystral-kk DOT net        |
+// | Copyright (C) 2014-2020 mystral-kk - geeklog AT mystral-kk DOT net        |
 // |                                                                           |
 // | Based on the CAPTCHA Plugin by Ben                                        |
 // |                                                - ben AT geeklog DOT fr    |
@@ -33,24 +33,26 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file cannot be used on its own!');
 }
 
-$LANG_RECAPTCHA = array(
+$LANG_RECAPTCHA = [
     'plugin'      => 'reCAPTCHA',
     'admin'       => 'reCAPTCHA',
     'msg_error'   => 'Error, reCAPTCHA was invalid.',
     'entry_error' => 'An invalid reCAPTCHA string was entered in %1s - IP Address: %2s - Error Codes: %3s',    // %1s = $type, %2s = $ip, %3s = $errorCode
-);
+];
 
 // Localization of the Admin Configuration UI
-$LANG_configsections['recaptcha'] = array(
+$LANG_configsections['recaptcha'] = [
     'label' => 'reCAPTCHA',
     'title' => 'reCAPTCHA Configuration',
-);
+];
 
-$LANG_confignames['recaptcha'] = array(
-    'site_key'             => 'reCAPTCHA v2 Site Key',
-    'secret_key'           => 'reCAPTCHA v2 Secret Key',
+$LANG_confignames['recaptcha'] = [
+    'site_key'             => 'reCAPTCHA V2 Site Key',
+    'secret_key'           => 'reCAPTCHA V2 Secret Key',
     'invisible_site_key'   => 'Invisible reCAPTCHA Site Key',
     'invisible_secret_key' => 'Invisible reCAPTCHA Secret Key',
+    'site_key_v3'          => 'reCAPTCHA V3 Site Key',
+    'secret_key_v3'        => 'reCAPTCHA V3 Secret Key',
     'logging'              => 'Log invalid reCAPTCHA attempts',
     'anonymous_only'       => 'Anonymous Only',
     'remoteusers'          => 'Force CAPTCHA for all Remote Users',
@@ -61,24 +63,24 @@ $LANG_confignames['recaptcha'] = array(
     'enable_loginform'     => 'Enable Login Form Support',
     'enable_getpassword'   => 'Enable Get Password Form Support',
     'enable_story'         => 'Enable Story Support',
-);
+];
 
-$LANG_configsubgroups['recaptcha'] = array(
+$LANG_configsubgroups['recaptcha'] = [
     'sg_main' => 'Main Settings',
-);
+];
 
-$LANG_tab['recaptcha'] = array(
+$LANG_tab['recaptcha'] = [
     'tab_general'     => 'reCAPTCHA Settings',
     'tab_integration' => 'Geeklog Integration',
-);
+];
 
-$LANG_fs['recaptcha'] = array(
+$LANG_fs['recaptcha'] = [
     'fs_system'         => 'System',
     'fs_integration'    => 'Geeklog Integration'
-);
+];
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
-$LANG_configselects['recaptcha'] = array(
-    0 => array('Yes' => 1, 'No' => 0),
-    2 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2),
-);
+$LANG_configselects['recaptcha'] = [
+    0 => ['Yes' => 1, 'No' => 0],
+    2 => ['Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4],
+];

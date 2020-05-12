@@ -21,6 +21,7 @@
 
       <div class="submit">
         <button type="submit" value="{lang_login}" class="uk-button uk-button-primary uk-margin-small-bottom g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_login}</button>
+        {recaptcha_v3}
         {!if lang_newreglink}
         <div class="uk-margin-small-bottom">{lang_newreglink}</div>
         {!endif}

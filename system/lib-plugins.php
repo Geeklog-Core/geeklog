@@ -70,8 +70,9 @@ define('RECAPTCHA_NO_SUPPORT', 0);
 define('RECAPTCHA_SUPPORT_V2', 1);
 define('RECAPTCHA_SUPPORT_V2_INVISIBLE', 2);
 
-// Not supported as of v1.2.1 (Geeklog 2.2.1)
+// Supported since v1.2.4 (Geeklog 2.2.2)
 define('RECAPTCHA_SUPPORT_V3', 4);
+define('RECAPTCHA_DEFAULT_SCORE_THRESHOLD', 0.5);
 
 // buffer for function names for the center block API
 $PLG_bufferCenterAPI = array();
@@ -4116,12 +4117,11 @@ function PLG_collectRecaptchaInfo()
             }
 
             // Check which reCAPTCHA version each plugin supports.  Valid values are:
-            // RECAPTCHA_NO_SUPPORT(0), RECAPTCHA_SUPPORT_V2(1), RECAPTCHA_SUPPORT_V2_INVISIBLE(2)
+            // RECAPTCHA_NO_SUPPORT(0), RECAPTCHA_SUPPORT_V2(1), RECAPTCHA_SUPPORT_V2_INVISIBLE(2), RECAPTCHA_SUPPORT_V3(4)
             if (isset($item['version'])) {
                 $item['version'] = (int) $item['version'];
 
-                if (($item['version'] < RECAPTCHA_NO_SUPPORT) ||
-                        ($item['version'] > RECAPTCHA_SUPPORT_V2_INVISIBLE)) {
+                if (($item['version'] < RECAPTCHA_NO_SUPPORT) || ($item['version'] > RECAPTCHA_SUPPORT_V3)) {
                     COM_errorLog(__METHOD__ . ': bad reCAPTCHA version for "' . $pluginName . '".');
                     continue;
                 }

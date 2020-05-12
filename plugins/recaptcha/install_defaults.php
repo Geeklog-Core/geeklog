@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // | geeklog/plugins/recaptcha/install_defaults.php                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2014-2019 mystral-kk - geeklog AT mystral-kk DOT net        |
+// | Copyright (C) 2014-2020 mystral-kk - geeklog AT mystral-kk DOT net        |
 // |                                                                           |
 // | Based on the CAPTCHA Plugin by Ben                                        |
 // |                                                - ben AT geeklog DOT fr    |
@@ -43,11 +43,13 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
  */
 global $_RECAPTCHA_DEFAULT;
 
-$_RECAPTCHA_DEFAULT = array(
+$_RECAPTCHA_DEFAULT = [
     'site_key'             => '',
     'secret_key'           => '',
     'invisible_site_key'   => '',
     'invisible_secret_key' => '',
+    'site_key_v3'          => '',
+    'secret_key_v3'        => '',
 
     'logging'        => 0,
     'anonymous_only' => 0,
@@ -60,7 +62,7 @@ $_RECAPTCHA_DEFAULT = array(
     'enable_getpassword'  => RECAPTCHA_SUPPORT_V2,
     'enable_loginform'    => RECAPTCHA_SUPPORT_V2,
     'enable_story'        => RECAPTCHA_SUPPORT_V2,
-);
+];
 
 /**
  * Initializes reCAPTCHA plugin configuration
@@ -98,6 +100,10 @@ function plugin_initconfig_recaptcha()
         $c->add('invisible_site_key', $_RECAPTCHA_DEFAULT['invisible_site_key'], 'text', $sg, $fs, null, $so, true, $me, $tab);
         $so += 10;
         $c->add('invisible_secret_key', $_RECAPTCHA_DEFAULT['invisible_secret_key'], 'text', $sg, $fs, null, $so, true, $me, $tab);
+        $so += 10;
+        $c->add('site_key_v3', $_RECAPTCHA_DEFAULT['site_key_v3'], 'text', $sg, $fs, null, $so, true, $me, $tab);
+        $so += 10;
+        $c->add('secret_key_v3', $_RECAPTCHA_DEFAULT['secret_key_v3'], 'text', $sg, $fs, null, $so, true, $me, $tab);
         $so += 10;
         $c->add('logging', $_RECAPTCHA_DEFAULT['logging'], 'select', $sg, $fs, 0, $so, true, $me, $tab);
         $so += 10;
