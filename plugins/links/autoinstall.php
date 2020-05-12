@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Links Plugin 2.2                                                          |
+// | Links Plugin 2.1                                                          |
 // +---------------------------------------------------------------------------+
 // | autoinstall.php                                                           |
 // |                                                                           |
 // | This file provides helper functions for the automatic plugin install.     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2019 by the following authors:                         |
+// | Copyright (C) 2008-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -51,8 +51,8 @@ function plugin_autoinstall_links($pi_name)
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '2.1.7',
-        'pi_gl_version'   => '2.2.1',
+        'pi_version'      => '2.1.8',
+        'pi_gl_version'   => '2.2.2',
         'pi_homepage'     => 'https://www.geeklog.net/'
     );
 

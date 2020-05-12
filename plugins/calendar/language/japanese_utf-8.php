@@ -216,6 +216,7 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => '所有者の削除と共に削除する',
     'aftersave' => 'イベント保存後の画面遷移',
     'recaptcha' => 'reCAPTCHA',
+    'recaptcha_score' => 'reCAPTCHAスコア',
     'default_permissions' => 'パーミッション',
     'autotag_permissions_event' => '[event: ] パーミッション',
     'block_enable' => '有効',

@@ -171,5 +171,24 @@ function recaptcha_update_ConfValues_1_2_2()
     $c->add('site_key_v3', $_RECAPTCHA_DEFAULT['site_key_v3'], 'text', $sg, $fs, null, 42, true, $me, $tab);
     $c->add('secret_key_v3', $_RECAPTCHA_DEFAULT['secret_key_v3'], 'text', $sg, $fs, null, 44, true, $me, $tab);
 
+    // Add score thresholds fro V3
+    $tab = 2;
+    $so = 200;
+    $c->add('tab_score', null, 'tab', $sg, $fs, null, $so, true, $me, $tab);
+    $so += 10;
+    $c->add('fs_score', null, 'fieldset', $sg, $fs, null, $so, true, $me, $tab);
+    $so += 10;
+    $c->add('score_comment', $_RECAPTCHA_DEFAULT['score_comment'], 'text', $sg, $fs, null, $so, true, $me, $tab);
+    $so += 10;
+    $c->add('score_emailstory', $_RECAPTCHA_DEFAULT['score_emailstory'], 'text', $sg, $fs, null, $so, true, $me, $tab);
+    $so += 10;
+    $c->add('score_registration', $_RECAPTCHA_DEFAULT['score_registration'], 'text', $sg, $fs, null, $so, true, $me, $tab);
+    $so += 10;
+    $c->add('score_getpassword', $_RECAPTCHA_DEFAULT['score_getpassword'], 'text', $sg, $fs, null, $so, true, $me, $tab);
+    $so += 10;
+    $c->add('score_loginform', $_RECAPTCHA_DEFAULT['score_loginform'], 'text', $sg, $fs, null, $so, true, $me, $tab);
+    $so += 10;
+    $c->add('score_story', $_RECAPTCHA_DEFAULT['score_story'], 'text', $sg, $fs, null, $so, true, $me, $tab);
+
     return true;
 }

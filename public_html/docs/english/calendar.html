@@ -112,13 +112,19 @@ panel:</p>
 <tr>
   <td><a name="desc_recaptcha">recaptcha</a></td>
   <td>1</td>
-  <td>Requires the reCAPTCHA plugin v1.2.1+ to be installed, setup with the proper keys, and enabled. reCAPTCHA options include :
+  <td>Requires the reCAPTCHA plugin v1.2.4+ to be installed, setup with the proper keys, and enabled. reCAPTCHA options include:
     <ul>
       <li>0: Disabled, don't show reCAPTCHA</li>
-      <li>1: Use reCAPTCHA V2 (default)</li>
+      <li>1: Use reCAPTCHA V2 Checkbox</li>
       <li>2: Use reCAPTCHA V2 Invisible</li>
+      <li>4: Use reCAPTCHA V3 (default)</li>
     </ul>
-    For more about how reCAPTCHA helps fight SPAM see the reCAPTCHA plugin docs or visit the <a href="https://www.google.com/recaptcha/" target="_blank">Google reCAPTCHA</a> website.</td>
+    <p>For more about how reCAPTCHA helps fight SPAM see the reCAPTCHA plugin docs or visit the <a href="https://www.google.com/recaptcha/" target="_blank">Google reCAPTCHA</a> website.</p></td>
+</tr>
+<tr>
+  <td><a name="desc_recaptcha_score">recaptcha_score</a></td>
+  <td>0.5</td>
+  <td>Specify score threshold for reCAPTCHA V3.  Valid value is 0.0 (even a bot could pass for a human) - 1.0 (only a human will be accepted).</td>
 </tr>
 <tr>
   <td valign="top"><a name="desc_default_permissions_0">default_permissions[0]</a></td>

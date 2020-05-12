@@ -67,17 +67,23 @@
   <strong>Note:</strong> Use this option with care. <a
     href="http://diveintoaccessibility.org/day_16_not_opening_new_windows.html">It takes control away</a> from your users and may confuse or annoy them.</td>
 </tr>
-<tr>
-  <td><a name="desc_recaptcha">recaptcha</a></td>
-  <td>1</td>
-  <td>Requires the reCAPTCHA plugin v1.2.1+ to be installed, setup with the proper keys, and enabled. reCAPTCHA options include :
-    <ul>
-      <li>0: Disabled, don't show reCAPTCHA</li>
-      <li>1: Use reCAPTCHA V2 (default)</li>
-      <li>2: Use reCAPTCHA V2 Invisible</li>
-    </ul>
-    For more about how reCAPTCHA helps fight SPAM see the reCAPTCHA plugin docs or visit the <a href="https://www.google.com/recaptcha/" target="_blank">Google reCAPTCHA</a> website.</td>
-</tr>
+  <tr>
+    <td><a name="desc_recaptcha">recaptcha</a></td>
+    <td>1</td>
+    <td>Requires the reCAPTCHA plugin v1.2.4+ to be installed, setup with the proper keys, and enabled. reCAPTCHA options include:
+      <ul>
+        <li>0: Disabled, don't show reCAPTCHA</li>
+        <li>1: Use reCAPTCHA V2 Checkbox</li>
+        <li>2: Use reCAPTCHA V2 Invisible</li>
+        <li>4: Use reCAPTCHA V3 (default)</li>
+      </ul>
+      <p>For more about how reCAPTCHA helps fight SPAM see the reCAPTCHA plugin docs or visit the <a href="https://www.google.com/recaptcha/" target="_blank">Google reCAPTCHA</a> website.</p></td>
+  </tr>
+  <tr>
+    <td><a name="desc_recaptcha_score">recaptcha_score</a></td>
+    <td>0.5</td>
+    <td>Specify score threshold for reCAPTCHA V3.  Valid value is 0.0 (even a bot could pass for a human) - 1.0 (only a human will be accepted).</td>
+  </tr>
 </table>
 
 <h3><a name="admin">Links Admin Settings</a></h3>

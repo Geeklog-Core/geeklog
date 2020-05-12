@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Calendar   |
 // | plugin's PHP files.                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2017 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -1644,7 +1644,12 @@ function plugin_upgrade_calendar()
 
             case '1.1.7':
                 calendar_update_ConfValues_1_1_7();
-                $current_version = '1.1.8';  // Shipped with Geeklog-2.2.1
+                $current_version = '1.1.8';  // Shipped with Geeklog 2.2.1
+                break;
+
+            case '1.1.8':
+                calendar_update_ConfValues_1_1_8();
+                $current_version = '1.1.9';  // Shipped with Geeklog 2.2.2
                 break;
 
             default:
@@ -2382,10 +2387,10 @@ function plugin_supportsRecaptcha_calendar()
     return [
         [
             'type'            => 'calendar',
-            'version'         => (isset($_CA_CONF['recaptcha']) ? (int) $_CA_CONF['recaptcha'] : RECAPTCHA_SUPPORT_V2_INVISIBLE),
+            'version'         => (isset($_CA_CONF['recaptcha']) ? (int) $_CA_CONF['recaptcha'] : RECAPTCHA_SUPPORT_V3),
             'form_id'         => 'submit_event_form',
             'action'          => 'calendar/submit',
-            'score_threshold' => RECAPTCHA_DEFAULT_SCORE_THRESHOLD,
+            'score_threshold' => (isset($_CA_CONF['recaptcha_score']) ? $_CA_CONF['recaptcha_score'] : RECAPTCHA_DEFAULT_SCORE_THRESHOLD),
         ],
     ];
 }

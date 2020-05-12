@@ -25,27 +25,40 @@
     <tr>
         <td valign="top"><a name="desc_site_key">site_key</a></td>
         <td valign="top">(未入力)</td>
-        <td valign="top">reCAPTCHA APIのSite Keyを入力します。お持ちでない場合は、<a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>で登録して入手してください。
+        <td valign="top">reCAPTCHA V2(チェックボックス)APIのSite Keyを入力します。お持ちでない場合は、<a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>で登録して入手してください。
         </td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_secret_key">secret_key</a></td>
         <td valign="top">(未入力)</td>
-        <td valign="top">reCAPTCHA APIのSecret Keyを入力します。お持ちでない場合は、<a
+        <td valign="top">reCAPTCHA V2(チェックボックス)APIのSecret Keyを入力します。お持ちでない場合は、<a
                 href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>で登録して入手してください。
         </td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_invisible_site_key">invisible_site_key</a></td>
         <td valign="top">(未入力)</td>
-        <td valign="top">Invisible reCAPTCHA APIのSite Keyを入力します。お持ちでない場合は、<a
+        <td valign="top">reCAPTCHA V2 Invisible APIのSite Keyを入力します。お持ちでない場合は、<a
                 href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>で登録して入手してください。
         </td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_invisible_secret_key">invisible_secret_key</a></td>
         <td valign="top">(未入力)</td>
-        <td valign="top">Invisible reCAPTCHA APIのSecret Keyを入力します。お持ちでない場合は、<a
+        <td valign="top">reCAPTCHA V2 Invisible APIのSecret Keyを入力します。お持ちでない場合は、<a
+                href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>で登録して入手してください。
+        </td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_site_key_v3">site_key_v3</a></td>
+        <td valign="top">(未入力)</td>
+        <td valign="top">reCAPTCHA V3 APIのSite Keyを入力します。お持ちでない場合は、<a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>で登録して入手してください。
+        </td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_secret_key_v3">secret_key_v3</a></td>
+        <td valign="top">(未入力)</td>
+        <td valign="top">reCAPTCHA V3 APIのSecret Keyを入力します。お持ちでない場合は、<a
                 href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>で登録して入手してください。
         </td>
     </tr>
@@ -76,43 +89,90 @@
     </tr>
     <tr>
         <td valign="top"><a name="desc_enable_comment">enable_comment</a></td>
-        <td valign="top">はい</td>
-        <td valign="top">「はい」にすると、reCAPTCHAがコメントに対して有効になります。</td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top">コメントフォーム用に「無効」、「reCAPTCHA V2」、「reCAPTCHA V2 Invisible」、「reCAPTCHA V3」のどれかを選びます。</td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_enable_contact">enable_contact</a></td>
-        <td valign="top">はい</td>
-        <td valign="top">「はい」にすると、reCAPTCHAがメール送信に対して有効になります。</td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top">メールフォーム用に「無効」、「reCAPTCHA V2」、「reCAPTCHA V2 Invisible」、「reCAPTCHA V3」のどれかを選びます。</td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_enable_emailstory">enable_emailstory</a></td>
-        <td valign="top">はい</td>
-        <td valign="top">「はい」にすると、reCAPTCHAが「記事をメールする」に対して有効になります。</td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top">「記事をメールする」フォーム用に「無効」、「reCAPTCHA V2」、「reCAPTCHA V2 Invisible」、「reCAPTCHA V3」のどれかを選びます。</td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_enable_registration">enable_registration</a></td>
-        <td valign="top">はい</td>
-        <td valign="top">「はい」にすると、reCAPTCHAがユーザー登録の際に有効になります。</td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top">ユーザー登録フォーム用に「無効」、「reCAPTCHA V2」、「reCAPTCHA V2 Invisible」、「reCAPTCHA V3」のどれかを選びます。</td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_enable_story">enable_story</a></td>
-        <td valign="top">はい</td>
-        <td valign="top">「はい」にすると、reCAPTCHAが記事を投稿する際に有効になります。</td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top">記事投稿用に「無効」、「reCAPTCHA V2」、「reCAPTCHA V2 Invisible」、「reCAPTCHA V3」のどれかを選びます。</td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_enable_getpassword">enable_getpassword</a></td>
-        <td valign="top">はい</td>
-        <td valign="top">「はい」にすると、reCAPTCHAがパスワード再設定フォームに対して有効になります。</td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top">パスワード再設定フォーム用に「無効」、「reCAPTCHA V2」、「reCAPTCHA V2 Invisible」、「reCAPTCHA V3」のどれかを選びます。</td>
     </tr>
     <tr>
         <td valign="top"><a id="desc_enable_loginform">enable_loginform</a></td>
-        <td valign="top">Yes</td>
-        <td valign="top"><p>「はい」にすると、reCAPTCHAがログインフォームに対して有効になります。</p><p><strong>Important:</strong> If any type of CAPTCHA is enabled for the user login you must disable Read Access for Anonymous users for the User Functions block. The Block Name is "user_block" and you can find the permission under Access Rights on the Block Editor form. The reason for this is because this block will display a mini login form that does not support reCAPTCHA and therefore will always fail to login the user from it. <strong>Do not disable this block completely as the User Functions block is needed once users are logged in.</strong></p><p>You should then make sure the login menu element is enabled in the Geeklog Configuration so users can find out how to access the full page login form.</p></td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top">ログインフォーム用に「無効」、「reCAPTCHA V2」、「reCAPTCHA V2 Invisible」、「reCAPTCHA V3」のどれかを選びます。
+            <p><strong>重要:</strong> ログインフォームにreCAPTCHAを有効にする場合は、ゲストユーザーが「ユーザー情報」ブロックにアクセスできないようにしてください。ブロック名は "user_block" です。ブロックエディターの「アクセス権」でゲストユーザーのRのチェックを外します。このようにするのは、このブロックがreCAPTCHAをサポートしていないため、ブロック内に表示されるミニログインフォームからのログインが常に失敗してしまうからです。<strong>ログイン後に必要になるので、このブロックを完全に無効にしないでください。</strong></p>
+            <p>また、コンフィギュレーション→ユーザー→ユーザーログイン方法[standard]が有効になっていて、ユーザーがログインフォームにアクセスできることを確認してください。</p></td>
+    </tr>
+</table>
+
+<h2><a name="score">スコア</a></h2>
+
+<table border="1" width="100%">
+    <tr>
+        <th style="width: 20%;">項目(変数)</th>
+        <th style="width: 20%;">デフォルト</th>
+        <th style="width: 60%;">説明</th>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_comment">コメントフォーム用のスコア(score_comment)</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top">reCAPTCHA V3用のスコアを指定します。有効な値は 0.0 (botでも人間として受け入れられるかもしれない) - 1.0 (人間しか受け入れない) です。</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_contact">メールフォーム用のスコア(score_contact)</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top">reCAPTCHA V3用のスコアを指定します。有効な値は 0.0 (botでも人間として受け入れられるかもしれない) - 1.0 (人間しか受け入れない) です。</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_emailstory">「記事をメールする」フォーム用のスコア(score_emailstory)</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top">reCAPTCHA V3用のスコアを指定します。有効な値は 0.0 (botでも人間として受け入れられるかもしれない) - 1.0 (人間しか受け入れない) です。</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_registration">ユーザー登録フォーム用のスコア(score_registration)</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top">reCAPTCHA V3用のスコアを指定します。有効な値は 0.0 (botでも人間として受け入れられるかもしれない) - 1.0 (人間しか受け入れない) です。</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_story">記事投稿用のスコア(score_story)</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top">reCAPTCHA V3用のスコアを指定します。有効な値は 0.0 (botでも人間として受け入れられるかもしれない) - 1.0 (人間しか受け入れない) です。</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_getpassword">パスワード再設定フォーム用のスコア(score_getpassword)</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top">reCAPTCHA V3用のスコアを指定します。有効な値は 0.0 (botでも人間として受け入れられるかもしれない) - 1.0 (人間しか受け入れない) です。</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_loginform">ログインフォーム用のスコア(score_loginform)</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top"><p>reCAPTCHA V3用のスコアを指定します。有効な値は 0.0 (botでも人間として受け入れられるかもしれない) - 1.0 (人間しか受け入れない) です。</p></td>
     </tr>
 </table>
 
 <div class="footer">
-    <a href="https://github.com/Geeklog-Plugins/recaptcha">https://github.com/Geeklog-Plugins/recaptcha</a><br/>
+    <a href="https://github.com/Geeklog-Core/geeklog">https://github.com/Geeklog-Core/geeklog</a><br/>
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 

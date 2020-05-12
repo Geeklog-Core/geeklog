@@ -19,27 +19,47 @@
 <p>このドキュメントでは最も重要な変更点や目につく変更点を簡潔に説明しています。変更履歴の詳細なリストは、<a href="history.html">変更詳細履歴</a>をご覧ください。<span class="tt">docs/changed-files</span>には、前回リリース以来変更されたファイルの一覧があります。
 </p>
 
-<h2><a name="changes221sr1">Geeklog v2.2.1sr1</a></h2>
+<h2><a name="changes222">Geeklog v2.2.2</a></h2>
 
-<p>Geeklog v2.2.1sr1 is a security update with a few fixes and improvements as well.</p>
+<p>Geeklog v2.2.2では多数の新機能追加とバグ修正を行っています。</p>
 
-<h3>Important Fixes and New Features and Improvements</h3>
+<h3>主要な新機能と改善点</h3>
 
 <ul>
-    <li>[Security] [NA] XSS issue with the Plugin Admin interface (reported by Netsparker.com)</li>
-    <li>[Security] [NA] Issue with the comment library (reported by (reported by Netsparker.com)</li>
-    <li>[Feature] [#1016] Staticpages can now be set individually if they will appear in the search results or not</li>
-    <li>[Bug] [#1043] Fixed hardcoded table names in upgrade for Geeklog v2.2.1</li>
-    <li>[Bug] [#1043] Fixed issue where the install would fail in some cases because it did not know where the system directory was</li>
-    <li>[Bug] [#1046] Fixed Users can only be set to certain statuses by Admins</li>
-    <li>[Bug] [#1048] Fixed related Articles are Missing From the Article Page</li>
-    <li>[Bug] [#1049] Fixed Print Pages for Articles and Staticpages javascript crashing issue</li>
-    <li>[Bug] [#1058] Fixed URL Routing for Articles that could cause errors in some cases. Also disabled multiview by default for Apache servers in the htaccess file</li>
+    <li>reCAPTCHA V3をサポートしました。</li>
+    <li></li>
+</ul>
+
+<h3>バグ修正</h3>
+
+<p>??以上の大きなバグを修正しました。</p>
+
+<ul>
+    <li></li>
+    <li></li>
+</ul>
+
+<h2><a name="changes221sr1">Geeklog v2.2.1sr1</a></h2>
+
+<p>Geeklog v2.2.1sr1はバグ修正を含むセキュリティを改善したリリースで機能改善も行われています。</p>
+
+<h3>主要な新機能と改善点</h3>
+
+<ul>
+    <li>[脆弱性] [NA] プラグイン・エディターのXSS脆弱性を修正しました(情報提供: Netsparker.com)。</li>
+    <li>[脆弱性] [NA] コメントライブラリーの脆弱性を修正しました(情報提供: Netsparker.com)。</li>
+    <li>[機能追加] [#1016] 個々の静的ページを検索結果に表示するかどうかを指定できるようになりました。</li>
+    <li>[バグ] [#1043] アップグレード時にGeeklog v2.2.1用にハードコードされていたテーブル名を修正しました。</li>
+    <li>[バグ] [#1043] システムディレクトリーが不明なためインストールが失敗していたバグを修正しました。</li>
+    <li>[バグ] [#1046] 管理者がユーザーのステータスを特定のものにしか設定できないようにしました。</li>
+    <li>[バグ] [#1048] 記事ページで関連記事が表示されなくなっていたバグを修正しました。</li>
+    <li>[バグ] [#1049] 記事と静的ページでJavaScriptがエラーを起こしていたバグを修正しました。</li>
+    <li>[バグ] [#1058] 記事でURUルーティングがエラーになっていたバグを修正しました。また、.htaccessファイルでApacheサーバーのマルチビューを無効にしました。</li>
 </ul>
 
 <h2><a name="changes221">Geeklog v2.2.1</a></h2>
 
-<p>Geeklog v2.2.1には多数の新機能追加とバグ修正を行っています。</p>
+<p>Geeklog v2.2.1では多数の新機能追加とバグ修正を行っています。</p>
 
 <p>Geeklogのインストール要件も変わりました。GeeklogはPHP v7.3をサポートしています。インストール要件は次の通りです:</p>
 

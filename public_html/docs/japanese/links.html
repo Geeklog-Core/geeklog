@@ -62,13 +62,20 @@
 </tr>
 <tr>
   <td><a name="desc_recaptcha">reCAPTCHA(recaptcha)</a></td>
-  <td>'reCAPTCHA V2'</td>
+  <td>'reCAPTCHA V3'</td>
   <td>使用するreCAPTCHAのバージョンを設定します。
     <ul>
       <li>無効: reCAPTCHAを表示しません。</li>
-      <li>reCAPTCHA V2: reCAPTCHA V2を表示します(デフォルト)</li>
+      <li>reCAPTCHA V2: reCAPTCHA V2を表示します</li>
       <li>reCAPTCHA V2 Invisible: reCAPTCHA V2 Invisibleを表示します。</li>
-    </ul></td>
+      <li>reCAPTCHA V3: reCAPTCHA V3を表示します。(初期値)</li>
+    </ul>
+    <p>詳しくは、reCAPTCHAプラグインのドキュメントをご覧になるか、<a href="https://www.google.com/recaptcha/" target="_blank">Google reCAPTCHA</a>をご覧ください。</p></td>
+</tr>
+<tr>
+  <td><a name="desc_recaptcha_score">reCAPTCHA V3のスコア(recaptcha_score)</a></td>
+  <td>0.5</td>
+  <td>reCAPTCHA V3用のスコアを指定します。有効な値は 0.0 (botでも人間として受け入れられるかもしれない) - 1.0 (人間しか受け入れない) です。</td>
 </tr>
 </table>
 

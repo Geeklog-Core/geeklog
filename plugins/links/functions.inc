@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Links      |
 // | Plugins' PHP files.                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2017 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users.sourceforge DOT net       |
@@ -810,19 +810,25 @@ function plugin_upgrade_links()
             break;
 
         case '2.1.4':
-            $current_version = '2.1.5'; // Shipped with Geeklog-2.1.3
+            $current_version = '2.1.5'; // Shipped with Geeklog 2.1.3
             break;
 
         case '2.1.5':
-            $current_version = '2.1.6'; // Shipped with Geeklog-2.2.0
+            $current_version = '2.1.6'; // Shipped with Geeklog 2.2.0
             break;
 
         case '2.1.6':
             links_update_ConfValues_2_1_6();
-            $current_version = '2.1.7'; // Shipped with Geeklog-2.2.1
+            $current_version = '2.1.7'; // Shipped with Geeklog 2.2.1
             break;
 
-        default:
+        case '2.1.7':
+        case '2.1.8':
+            links_update_ConfValues_2_1_7();
+            $current_version = '2.1.9'; // Shipped with Geeklog 2.2.2
+            break;
+
+            default:
             $done = true;
         }
     }
@@ -1967,10 +1973,10 @@ function plugin_supportsRecaptcha_links()
     return [
         [
             'type'            => 'links',
-            'version'         => (isset($_LI_CONF['recaptcha']) ? (int) $_LI_CONF['recaptcha'] : RECAPTCHA_SUPPORT_V2),
+            'version'         => (isset($_LI_CONF['recaptcha']) ? (int) $_LI_CONF['recaptcha'] : RECAPTCHA_SUPPORT_V3),
             'form_id'         => 'submitlink',
             'action'          => 'links/submit',
-            'score_threshold' => RECAPTCHA_DEFAULT_SCORE_THRESHOLD,
+            'score_threshold' => (isset($_LI_CONF['recaptcha_score']) ? $_LI_CONF['recaptcha_score'] : RECAPTCHA_DEFAULT_SCORE_THRESHOLD),
         ],
     ];
 }

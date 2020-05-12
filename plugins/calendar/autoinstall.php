@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file provides helper functions for the automatic plugin install.     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2019 by the following authors:                         |
+// | Copyright (C) 2008-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -46,8 +46,8 @@ function plugin_autoinstall_calendar($pi_name)
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '1.1.8',
-        'pi_gl_version'   => '2.2.1',
+        'pi_version'      => '1.1.9',
+        'pi_gl_version'   => '2.2.2',
         'pi_homepage'     => 'https://www.geeklog.net/'
     );
 

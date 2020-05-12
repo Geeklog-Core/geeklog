@@ -14,13 +14,13 @@
 
 <h1>reCAPTCHA Types</h1>
 
-<p>Geeklog's reCAPTCHA plugin supports both reCAPTCHA v2 and Invisible reCAPTCHA. Both will require you to setup on the Google reCAPTCHA website (<a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>). You will need to create an account and add your site and create a site key and a secret key to be able to use the free service.</p> 
+<p>Geeklog's reCAPTCHA plugin supports both reCAPTCHA V2 (with checkbox and invisible) and reCAPTCHA V3. Each of them will require you to setup on the Google reCAPTCHA website (<a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>). You will need to create an account and add your site and create a site key and a secret key to be able to use the free service.</p>
 
-<h2>reCAPTCHA v2</h2>
-<p>reCAPTCHA v2 requires the user to click a checkbox indicating the user is not a robot. This will either pass the user immediately (with No CAPTCHA) or challenge them to validate whether or not they are human.</p>
+<h2>reCAPTCHA V2 with checkbox</h2>
+<p>reCAPTCHA V2 requires the user to click a checkbox indicating the user is not a robot. This will either pass the user immediately (with No CAPTCHA) or challenge them to validate whether or not they are human.</p>
 
-<h2>Invisible reCAPTCHA</h2>
-<p>Unlike reCAPTCHA v2, 'Invisible reCAPTCHA' does not require the user to click on a checkbox, instead it is invoked directly when the user clicks on an existing button on your site. By default only the most suspicious traffic will be prompted to solve a captcha. To alter this behavior edit your site security preference under advanced settings on the Google reCAPTCHA website.</p>
+<h2>reCAPTCHA V2 Invisible and reCAPTCHA V3</h2>
+<p>Unlike reCAPTCHA with checkbox, these do not require the user to click on a checkbox, instead it is invoked directly when the user clicks on an existing button on your site. By default only the most suspicious traffic will be prompted to solve a captcha. To alter this behavior edit your site security preference under advanced settings on the Google reCAPTCHA website.</p>
 
 <p>For more information on the different reCAPTCHA types please go to <a href="https://developers.google.com/recaptcha/docs/versions">https://developers.google.com/recaptcha/docs/versions</a>.</p> 
 
@@ -37,7 +37,7 @@
     <tr>
         <td valign="top"><a name="desc_site_key">site_key</a></td>
         <td valign="top">(empty)</td>
-        <td valign="top">reCAPTCHA API Site Key. If you don't have one, please go to <a
+        <td valign="top">reCAPTCHA V2 with checkbox API Site Key. If you don't have one, please go to <a
                 href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>
             and sign up.
         </td>
@@ -45,7 +45,7 @@
     <tr>
         <td valign="top"><a name="desc_secret_key">secret_key</a></td>
         <td valign="top">(empty)</td>
-        <td valign="top">reCAPTCHA API Secret Key. If you don't have one, please go to <a
+        <td valign="top">reCAPTCHA V2 with checkbox API Secret Key. If you don't have one, please go to <a
                 href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>
             and sign up.
         </td>
@@ -53,7 +53,7 @@
     <tr>
         <td valign="top"><a name="desc_invisible_site_key">invisible_site_key</a></td>
         <td valign="top">(empty)</td>
-        <td valign="top">Invisible reCAPTCHA API Site Key. If you don't have one, please go to <a
+        <td valign="top">reCAPTCHA V2 Invisible API Site Key. If you don't have one, please go to <a
                 href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>
             and sign up.
         </td>
@@ -61,7 +61,23 @@
     <tr>
         <td valign="top"><a name="desc_invisible_secret_key">invisible_secret_key</a></td>
         <td valign="top">(empty)</td>
-        <td valign="top">Invisible reCAPTCHA API Secret Key. If you don't have one, please go to <a
+        <td valign="top">reCAPTCHA V2 Invisible API Secret Key. If you don't have one, please go to <a
+                href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>
+            and sign up.
+        </td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_site_key_v3">site_key_v3</a></td>
+        <td valign="top">(empty)</td>
+        <td valign="top">reCAPTCHA V3 API Site Key. If you don't have one, please go to <a
+                href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>
+            and sign up.
+        </td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_secret_key_v3">secret_key_v3</a></td>
+        <td valign="top">(empty)</td>
+        <td valign="top">reCAPTCHA V3 Secret Key. If you don't have one, please go to <a
                 href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>
             and sign up.
         </td>
@@ -95,43 +111,90 @@
     </tr>
     <tr>
         <td valign="top"><a name="desc_enable_comment">enable_comment</a></td>
-        <td valign="top">reCAPTCHA v2</td>
-        <td valign="top">If you set this to reCAPTCHA v2, reCAPTCHA (version 2) will be enabled for comments. If set to invisible reCAPTCHA, the invisible version will be used.</td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top">If you set this to reCAPTCHA V2, reCAPTCHA with checkbox (version 2) will be enabled for comments. If set to reCAPTCHA V2 invisible, the V2 invisible version will be used.</td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_enable_contact">enable_contact</a></td>
-        <td valign="top">reCAPTCHA v2</td>
-        <td valign="top">If you set this to reCAPTCHA v2, reCAPTCHA (version 2) will be enabled for contact. If set to invisible reCAPTCHA, the invisible version will be used.</td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top">If you set this to reCAPTCHA V2, reCAPTCHA with checkbox (version 2) will be enabled for contact form. If set to reCAPTCHA V2 invisible, the V2 invisible version will be used.</td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_enable_emailstory">enable_emailstory</a></td>
-        <td valign="top">reCAPTCHA v2</td>
-        <td valign="top">If you set this to reCAPTCHA v2, reCAPTCHA (version 2) will be enabled for emailing a article. If set to invisible reCAPTCHA, the invisible version will be used.</td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top">If you set this to reCAPTCHA V2, reCAPTCHA with checkbox (version 2) will be enabled for "Email Story" form. If set to reCAPTCHA V2 invisible, the V2 invisible version will be used.</td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_enable_registration">enable_registration</a></td>
-        <td valign="top">reCAPTCHA v2</td>
-        <td valign="top">If you set this to reCAPTCHA v2, reCAPTCHA (version 2) will be enabled for user registration. If set to invisible reCAPTCHA, the invisible version will be used.</td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top">If you set this to reCAPTCHA V2, reCAPTCHA with checkbox (version 2) will be enabled for registration. If set to reCAPTCHA V2 invisible, the V2 invisible version will be used.</td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_enable_story">enable_story</a></td>
-        <td valign="top">reCAPTCHA v2</td>
-        <td valign="top">If you set this to reCAPTCHA v2, reCAPTCHA (version 2) will be enabled for submitting a article. If set to invisible reCAPTCHA, the invisible version will be used.</td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top">If you set this to reCAPTCHA V2, reCAPTCHA with checkbox (version 2) will be enabled for "Story Submission" form. If set to reCAPTCHA V2 invisible, the V2 invisible version will be used.</td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_enable_getpassword">enable_getpassword</a></td>
-        <td valign="top">reCAPTCHA v2</td>
-        <td valign="top">If you set this to reCAPTCHA v2, reCAPTCHA (version 2) will be enabled for Forget Password Form. If set to invisible reCAPTCHA, the invisible version will be used.</td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top">If you set this to reCAPTCHA V2, reCAPTCHA with checkbox (version 2) will be enabled for "Get Password" form. If set to reCAPTCHA V2 invisible, the V2 invisible version will be used.</td>
     </tr>
     <tr>
         <td valign="top"><a name="desc_enable_loginform">enable_loginform</a></td>
-        <td valign="top">reCAPTCHA v2</td>
-        <td valign="top"><p>If you set this to reCAPTCHA v2, reCAPTCHA (version 2) will be enabled for Login Form. If set to invisible reCAPTCHA, the invisible version will be used.</p><p><strong>Important:</strong> If any type of CAPTCHA is enabled for the user login you must disable Read Access for Anonymous users for the User Functions block. The Block Name is "user_block" and you can find the permission under Access Rights on the Block Editor form. The reason for this is because this block will display a mini login form that does not support reCAPTCHA and therefore will always fail to login the user from it. <strong>Do not disable this block completely as the User Functions block is needed once users are logged in.</strong></p><p>You should then make sure the login menu element is enabled in the Geeklog Configuration so users can find out how to access the full page login form.</p></td>
+        <td valign="top">reCAPTCHA V3</td>
+        <td valign="top"><p>If you set this to reCAPTCHA V2, reCAPTCHA with checkbox (version 2) will be enabled for login form. If set to reCAPTCHA V2 invisible, the V2 invisible version will be used.</p>
+            <p><strong>Important:</strong> If any type of CAPTCHA is enabled for the user login you must disable Read Access for Anonymous users for the User Functions block. The Block Name is "user_block" and you can find the permission under Access Rights on the Block Editor form. The reason for this is because this block will display a mini login form that does not support reCAPTCHA and therefore will always fail to login the user from it. <strong>Do not disable this block completely as the User Functions block is needed once users are logged in.</strong></p>
+            <p>You should then make sure the login menu element is enabled in the Geeklog Configuration so users can find out how to access the full page login form.</p></td>
+    </tr>
+</table>
+
+<h2><a name="score">Score</a></h2>
+
+<table border="1" width="100%">
+    <tr>
+        <th style="width: 20%;">Variable</th>
+        <th style="width: 20%;">Default Value</th>
+        <th style="width: 60%;">Description</th>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_comment">score_comment</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top">Specify score threshold for reCAPTCHA V3.  Valid value is 0.0 (even a bot could pass for a human) - 1.0 (only a human will be accepted).</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_contact">score_contact</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top">Specify score threshold for reCAPTCHA V3.  Valid value is 0.0 (even a bot could pass for a human) - 1.0 (only a human will be accepted).</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_emailstory">score_emailstory</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top">Specify score threshold for reCAPTCHA V3.  Valid value is 0.0 (even a bot could pass for a human) - 1.0 (only a human will be accepted).</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_registration">score_registration</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top">Specify score threshold for reCAPTCHA V3.  Valid value is 0.0 (even a bot could pass for a human) - 1.0 (only a human will be accepted).</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_story">score_story</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top">Specify score threshold for reCAPTCHA V3.  Valid value is 0.0 (even a bot could pass for a human) - 1.0 (only a human will be accepted).</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_getpassword">score_getpassword</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top">Specify score threshold for reCAPTCHA V3.  Valid value is 0.0 (even a bot could pass for a human) - 1.0 (only a human will be accepted).</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_score_loginform">score_loginform</a></td>
+        <td valign="top">0.5</td>
+        <td valign="top"><p>Specify score threshold for reCAPTCHA V3.  Valid value is 0.0 (even a bot could pass for a human) - 1.0 (only a human will be accepted).</p></td>
     </tr>
 </table>
 
 <div class="footer">
-    <a href="https://github.com/Geeklog-Plugins/recaptcha">https://github.com/Geeklog-Plugins/recaptcha</a><br/>
+    <a href="https://github.com/Geeklog-Core/geeklog">https://github.com/Geeklog-Core/geeklog</a><br/>
     All trademarks and copyrights on this page are owned by their respective owners. Geeklog is copyleft.
 </div>
 

@@ -52,4 +52,13 @@ $_CONF_VALIDATE['recaptcha'] = [
     'enable_getpassword'   => ['rule' => ['inList', ['0', '1', '2', '4'], true]],
     'enable_loginform'     => ['rule' => ['inList', ['0', '1', '2', '4'], true]],
     'enable_story'         => ['rule' => ['inList', ['0', '1', '2', '4'], true]],
+
+    // Score thresholds: 0.0 (even a bot will be accepted) - 1.0 (only humans will be accepted), default 0.5
+    'score_comment'        => ['rule' => ['range', 0, 1]],
+    'score_contact'        => ['rule' => ['range', 0, 1]],
+    'score_emailstory'     => ['rule' => ['range', 0, 1]],
+    'score_registration'   => ['rule' => ['range', 0, 1]],
+    'score_getpassword'    => ['rule' => ['range', 0, 1]],
+    'score_loginform'      => ['rule' => ['range', 0, 1]],
+    'score_story'          => ['rule' => ['range', 0, 1]],
 ];

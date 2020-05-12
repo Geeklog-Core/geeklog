@@ -12,7 +12,7 @@
 # Tranlated by Geeklog Japanese group
 # Copyright (C) 2008 Takahiro Kambe
 # Additional translation to Japanese by taca AT back-street DOT net
-# Copyright (C) 2006-2019 Geeklog.jp group
+# Copyright (C) 2006-2020 Geeklog.jp group
 # Additional translation to Japanese by Geeklog.jp group info AT geeklog DOT jp
 #
 # This program is free software; you can redistribute it and/or
@@ -245,6 +245,7 @@ $LANG_confignames['links'] = array(
     'show_category_descriptions' => 'カテゴリの説明を表示する',
     'new_window' => 'リンクを新しいウィンドウで開く',
     'recaptcha' => 'reCAPTCHA',
+    'recaptcha_score' => 'reCAPTCHAスコア',
     'root' => 'トップカテゴリのID',
     'default_permissions' => 'パーミッション',
     'category_permissions' => 'パーミッション',

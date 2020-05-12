@@ -63,6 +63,13 @@ $LANG_confignames['recaptcha'] = [
     'enable_loginform'     => 'ログインフォームをサポートする',
     'enable_getpassword'   => 'パスワード再設定フォームをサポートする',
     'enable_story'         => '記事投稿をサポートする',
+    'score_comment'        => 'コメント用のスコア',
+    'score_contact'        => 'メール送信用のスコア',
+    'score_emailstory'     => '「記事をメールする」用のスコア',
+    'score_registration'   => 'ユーザー登録用のスコア',
+    'score_loginform'      => 'ログインフォーム用のスコア',
+    'score_getpassword'    => 'パスワード再設定フォーム用のスコア',
+    'score_story'          => '記事投稿用のスコア',
 ];
 
 $LANG_configsubgroups['recaptcha'] = [
@@ -72,11 +79,13 @@ $LANG_configsubgroups['recaptcha'] = [
 $LANG_tab['recaptcha'] = [
     'tab_general'     => 'reCAPTCHA設定',
     'tab_integration' => 'Geeklogへの統合',
+    'tab_score'       => 'スコア',
 ];
 
 $LANG_fs['recaptcha'] = [
-    'fs_system'         => 'システム',
-    'fs_integration'    => 'Geeklogへの統合',
+    'fs_system'      => 'システム',
+    'fs_integration' => 'Geeklogへの統合',
+    'fs_score'       => 'スコア',
 ];
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

@@ -75,3 +75,14 @@ function calendar_update_ConfValues_1_1_7()
     $c->add('recaptcha', $_CA_DEFAULT['recaptcha'],
         'select', 0, 0, 16, 120, true, 'calendar', 0);
 }
+
+function calendar_update_ConfValues_1_1_8()
+{
+    global $_CONF, $_CA_DEFAULT;
+
+    $c = config::get_instance();
+
+    require_once $_CONF['path'] . 'plugins/calendar/install_defaults.php';
+    $c->add('recaptcha_score', $_CA_DEFAULT['recaptcha_score'],
+        'text', 0, 0, null, 130, true, 'calendar', 0);
+}

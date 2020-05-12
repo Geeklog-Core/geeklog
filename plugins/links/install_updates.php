@@ -34,3 +34,14 @@ function links_update_ConfValues_2_1_6()
     $c->add('recaptcha', $_LI_DEFAULT['recaptcha'], 'select',
         0, 0, 14, 58, true, 'links',0);
 }
+
+function links_update_ConfValues_2_1_7()
+{
+    global $_CONF, $_LI_DEFAULT, $_LI_CONF;
+
+    $c = config::get_instance();
+
+    require_once $_CONF['path'] . 'plugins/links/install_defaults.php';
+    $c->add('recaptcha_score', $_LI_DEFAULT['recaptcha_score'], 'text',
+        0, 0, null, 59, true, 'links',0);
+}

@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Calendar plugin 1.0                                                       |
+// | Calendar plugin 1.1                                                       |
 // +---------------------------------------------------------------------------+
 // | install_defaults.php                                                      |
 // |                                                                           |
@@ -10,7 +10,7 @@
 // | records. These settings are only used during the initial installation     |
 // | and not referenced any more once the plugin is installed.                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -92,8 +92,9 @@ $_CA_DEFAULT['delete_event'] = 0;
 $_CA_DEFAULT['aftersave'] = 'list';
 
 // Which reCAPTCHA version the plugin supports (since Geeklog 2.2.1)
-// Possible values are: RECAPTCHA_SUPPORT_NONE, RECAPTCHA_SUPPORT_V2, RECAPTCHA_SUPPORT_V2_INVISIBLE, RECAPTCHA_SUPPORT_V2
-$_CA_DEFAULT['recaptcha'] = RECAPTCHA_SUPPORT_V2;
+// Possible values are: RECAPTCHA_SUPPORT_NONE, RECAPTCHA_SUPPORT_V2, RECAPTCHA_SUPPORT_V2_INVISIBLE, RECAPTCHA_SUPPORT_V3
+$_CA_DEFAULT['recaptcha'] = RECAPTCHA_SUPPORT_V3;
+$_CA_DEFAULT['recaptcha_score'] = RECAPTCHA_DEFAULT_SCORE_THRESHOLD;
 
 // Events Block
 $_CA_DEFAULT['block_isleft'] = 1;
@@ -183,6 +184,8 @@ function plugin_initconfig_calendar()
                 'select', 0, 0, 9, 110, true, 'calendar', 0);
         $c->add('recaptcha', $_CA_DEFAULT['recaptcha'],
                 'select', 0, 0, 16, 120, true, 'calendar', 0);
+        $c->add('recaptcha_score', $_CA_DEFAULT['recaptcha_score'],
+                'text', 0, 0, null, 130, true, 'calendar', 0);
 
         $c->add('tab_permissions', NULL, 'tab', 0, 1, NULL, 0, true, 'calendar', 1);
         $c->add('fs_permissions', NULL, 'fieldset', 0, 1, NULL, 0, true, 'calendar', 1);

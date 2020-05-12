@@ -63,6 +63,13 @@ $LANG_confignames['recaptcha'] = [
     'enable_loginform'     => 'Enable Login Form Support',
     'enable_getpassword'   => 'Enable Get Password Form Support',
     'enable_story'         => 'Enable Story Support',
+    'score_comment'        => 'Score Threshold for Comment',
+    'score_contact'        => 'Score Threshold for Contact',
+    'score_emailstory'     => 'Score Threshold for Email Story',
+    'score_registration'   => 'Score Threshold for Registration',
+    'score_loginform'      => 'Score Threshold for Login Form',
+    'score_getpassword'    => 'Score Threshold for Get Password Form',
+    'score_story'          => 'Score Threshold for Story',
 ];
 
 $LANG_configsubgroups['recaptcha'] = [
@@ -72,11 +79,13 @@ $LANG_configsubgroups['recaptcha'] = [
 $LANG_tab['recaptcha'] = [
     'tab_general'     => 'reCAPTCHA Settings',
     'tab_integration' => 'Geeklog Integration',
+    'tab_score'       => 'Score Thresholds',
 ];
 
 $LANG_fs['recaptcha'] = [
-    'fs_system'         => 'System',
-    'fs_integration'    => 'Geeklog Integration'
+    'fs_system'      => 'System',
+    'fs_integration' => 'Geeklog Integration',
+    'fs_score'       => 'Score Thresholds',
 ];
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

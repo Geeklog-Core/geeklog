@@ -10,7 +10,7 @@
 // | records. These settings are only used during the initial installation     |
 // | and not referenced any more once the plugin is installed.                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users.sourceforge DOT net       |
@@ -144,8 +144,9 @@ $_LI_DEFAULT['show_category_descriptions'] = true;
 $_LI_DEFAULT['new_window'] = false;
 
 // Which reCAPTCHA version the plugin supports (since Geeklog 2.2.1)
-// Possible values are: RECAPTCHA_SUPPORT_NONE, RECAPTCHA_SUPPORT_V2, RECAPTCHA_SUPPORT_V2_INVISIBLE
-$_LI_DEFAULT['recaptcha'] = RECAPTCHA_SUPPORT_V2;
+// Possible values are: RECAPTCHA_SUPPORT_NONE, RECAPTCHA_SUPPORT_V2, RECAPTCHA_SUPPORT_V2_INVISIBLE, RECAPTCHA_SUPPORT_V3
+$_LI_DEFAULT['recaptcha'] = RECAPTCHA_SUPPORT_V3;
+$_LI_DEFAULT['recaptcha_score'] = RECAPTCHA_DEFAULT_SCORE_THRESHOLD;
 
 /**
  * Links root category id
@@ -221,6 +222,8 @@ function plugin_initconfig_links()
                 0, 0, 1, 55, true, 'links',0);
         $c->add('recaptcha', $_LI_DEFAULT['recaptcha'], 'select',
             0, 0, 14, 58, true, 'links',0);
+        $c->add('recaptcha_score', $_LI_DEFAULT['recaptcha_score'], 'text',
+            0, 0, null, 59, true, 'links',0);
 
         $c->add('tab_admin', NULL, 'tab', 0, 1, NULL, 0, true, 'links', 1);
         $c->add('fs_admin', NULL, 'fieldset', 0, 1, NULL, 0, true, 'links', 1);
@@ -255,7 +258,6 @@ function plugin_initconfig_links()
         $c->add('fs_autotag_permissions', NULL, 'fieldset', 0, 10, NULL, 0, true, 'links', 10);
         $c->add('autotag_permissions_link', $_LI_DEFAULT['autotag_permissions_link'], '@select',
                 0, 10, 13, 10, true, 'links', 10);
-
     }
 
     return true;
