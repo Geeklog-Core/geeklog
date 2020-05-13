@@ -6,37 +6,7 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit647b661b9928303dce883d0f06de4722
 {
-    public static $files = array (
-        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
-    );
-
-    public static $prefixLengthsPsr4 = array (
-        'S' => 
-        array (
-            'Symfony\\Polyfill\\Ctype\\' => 23,
-            'Symfony\\Component\\Yaml\\' => 23,
-        ),
-    );
-
-    public static $prefixDirsPsr4 = array (
-        'Symfony\\Polyfill\\Ctype\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
-        ),
-        'Symfony\\Component\\Yaml\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/yaml',
-        ),
-    );
-
     public static $prefixesPsr0 = array (
-        'P' => 
-        array (
-            'PEAR' => 
-            array (
-                0 => __DIR__ . '/..' . '/pear/pear_exception',
-            ),
-        ),
         'C' => 
         array (
             'Console' => 
@@ -326,6 +296,7 @@ class ComposerStaticInit647b661b9928303dce883d0f06de4722
         'PDOSQLExecTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/pdo/PDOSQLExecTask.php',
         'PDOSQLExecTransaction' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/pdo/PDOSQLExecTask.php',
         'PDOTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/pdo/PDOTask.php',
+        'PEAR_Exception' => __DIR__ . '/..' . '/pear/pear_exception/PEAR/Exception.php',
         'PEAR_PackageFileManager_Fileset' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/pearpackage/Fileset.php',
         'PHPCPDFormatterElement' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/phpcpd/PHPCPDFormatterElement.php',
         'PHPCPDResultFormatter' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/phpcpd/formatter/PHPCPDResultFormatter.php',
@@ -563,8 +534,6 @@ class ComposerStaticInit647b661b9928303dce883d0f06de4722
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit647b661b9928303dce883d0f06de4722::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit647b661b9928303dce883d0f06de4722::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInit647b661b9928303dce883d0f06de4722::$prefixesPsr0;
             $loader->fallbackDirsPsr0 = ComposerStaticInit647b661b9928303dce883d0f06de4722::$fallbackDirsPsr0;
             $loader->classMap = ComposerStaticInit647b661b9928303dce883d0f06de4722::$classMap;
