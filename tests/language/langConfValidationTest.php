@@ -78,6 +78,10 @@ class langConfValidation extends TestCase
             define('RECAPTCHA_SUPPORT_V2_INVISIBLE', 2);
         }
 
+        if (!defined('RECAPTCHA_SUPPORT_V3')) {
+            define('RECAPTCHA_SUPPORT_V3', 4);
+        }
+
         // there's a date() call somewhere - make PHP 5.2 shut up
         $system_timezone = @date_default_timezone_get();
         date_default_timezone_set($system_timezone);
