@@ -68,7 +68,7 @@
     <!-- ============================== -->
     <!-- Target: build                  -->
     <!-- ============================== -->
-    <target name="build" depends="prepare,lang">
+    <target name="build" depends="prepare">
         <!-- Create the "changed-files" and "removed-files" files -->
         <myDiff previousVersionSHA="${previousVersionSHA}" currentVersionSHA="${currentVersionSHA}"/>
 

@@ -118,10 +118,15 @@ class MyRemoveUnchangedFilesTask extends Task
             } else {
                 $relativePath = str_ireplace($this->dstDir, '', $path);
 
-                if (!in_array($path, $this->filesToInclude) || !$this->shouldInclude($path)) {
+                if (!in_array($relativePath, $this->filesToInclude) || !$this->shouldInclude($relativePath)) {
                     @unlink($path);
                 }
             }
+        }
+
+        // Remove an empty directory
+        if (count(scandir($dir)) === 2) {
+            @rmdir($dir);
         }
     }
 
