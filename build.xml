@@ -7,7 +7,8 @@
 
     <!-- Define custom tasks -->
     <includepath classpath="${srcDir}/system/build/tasks"/>
-    <taskdef name="mydiff" classname="MyDiffTask"/>
+    <taskdef name="myDiff" classname="MyDiffTask"/>
+    <taskdef name="MyRemoveUnchangedFiles" classname="MyRemoveUnchangedFilesTask"/>
 
     <!-- ============================== -->
     <!-- Target: help                   -->
@@ -22,8 +23,11 @@
         <echo msg="To show help [this screen], enter:"/>
         <echo msg="./system/build/vendor/phing/phing/bin/phing.bat[ENTER]"/>
         <echo msg=""/>
-        <echo msg="To create a tarball, enter:"/>
+        <echo msg="To create an INSTALL distribution tarball, enter:"/>
         <echo msg="./system/build/vendor/phing/phing/bin/phing.bat dist[ENTER]"/>
+        <echo msg=""/>
+        <echo msg="To create an UPGRADE distribution tarball, enter:"/>
+        <echo msg="./system/build/vendor/phing/phing/bin/phing.bat dist-upgrade[ENTER]"/>
         <echo msg=""/>
         <echo msg="To synchronize language files, enter:"/>
         <echo msg="./system/build/vendor/phing/phing/bin/phing.bat lang[ENTER]"/>
@@ -64,9 +68,9 @@
     <!-- ============================== -->
     <!-- Target: build                  -->
     <!-- ============================== -->
-    <target name="build" depends="prepare">
-        <!-- Create the "changed-files" file -->
-        <mydiff previousVersionSHA="${previousVersionSHA}" currentVersionSHA="${currentVersionSHA}"/>
+    <target name="build" depends="prepare,lang">
+        <!-- Create the "changed-files" and "removed-files" files -->
+        <myDiff previousVersionSHA="${previousVersionSHA}" currentVersionSHA="${currentVersionSHA}"/>
 
         <!-- Copy files -->
         <echo msg="Copying files..."/>
@@ -110,62 +114,84 @@
 
         <!-- Change permissions -->
         <echo msg="Changing directory and file permissions..."/>
-        <chmod file="${dstDir}/db-config.php" mode="0666"/>
-        <chmod file="${dstDir}/emailgeeklogstories" mode="0755"/>
-        <chmod file="${dstDir}/backups" mode="0777"/>
-        <chmod file="${dstDir}/data" mode="0777"/>
-        <chmod file="${dstDir}/data/layout_cache" mode="0777"/>
-        <chmod file="${dstDir}/data/layout_css" mode="0777"/>
-        <chmod file="${dstDir}/logs" mode="0777"/>
-        <chmod mode="0666">
+        <chmod file="${dstDir}/db-config.php" mode="${perm_file_w}"/>
+        <chmod file="${dstDir}/emailgeeklogstories" mode="${perm_file_x}"/>
+        <chmod file="${dstDir}/backups" mode="${perm_dir_w}"/>
+        <chmod file="${dstDir}/data" mode="${perm_dir_w}"/>
+        <chmod file="${dstDir}/data/layout_cache" mode="${perm_dir_w}"/>
+        <chmod file="${dstDir}/data/layout_css" mode="${perm_dir_w}"/>
+        <chmod file="${dstDir}/logs" mode="${perm_dir_w}"/>
+        <chmod mode="${perm_file_w}">
             <fileset dir="${dstDir}/logs">
                 <include name="*.log"/>
             </fileset>
         </chmod>
-        <chmod file="${dstDir}/public_html/backend" mode="0777"/>
-        <chmod mode="0666">
+        <chmod file="${dstDir}/public_html/backend" mode="${perm_dir_w}"/>
+        <chmod mode="${perm_file_w}">
             <fileset dir="${dstDir}/public_html/backend">
                 <include name="*.rss"/>
             </fileset>
         </chmod>
-        <chmod file="${dstDir}/public_html/images/articles" mode="0777"/>
-        <chmod mode="0666">
+        <chmod file="${dstDir}/public_html/images/articles" mode="${perm_dir_w}"/>
+        <chmod mode="${perm_file_w}">
             <fileset dir="${dstDir}/public_html/images/articles">
                 <include name="*,*.*"/>
             </fileset>
         </chmod>
-        <chmod file="${dstDir}/public_html/images/library" mode="0777"/>
-        <chmod file="${dstDir}/public_html/images/library/File" mode="0777"/>
-        <chmod file="${dstDir}/public_html/images/library/Flash" mode="0777"/>
-        <chmod file="${dstDir}/public_html/images/library/Image" mode="0777"/>
-        <chmod file="${dstDir}/public_html/images/library/Image/_thumbs" mode="0777"/>
-        <chmod file="${dstDir}/public_html/images/library/Media" mode="0777"/>
-        <chmod file="${dstDir}/public_html/images/topics" mode="0777"/>
-        <chmod mode="0666">
+        <chmod file="${dstDir}/public_html/images/library" mode="${perm_dir_w}"/>
+        <chmod file="${dstDir}/public_html/images/library/File" mode="${perm_dir_w}"/>
+        <chmod file="${dstDir}/public_html/images/library/Flash" mode="${perm_dir_w}"/>
+        <chmod file="${dstDir}/public_html/images/library/Image" mode="${perm_dir_w}"/>
+        <chmod file="${dstDir}/public_html/images/library/Image/_thumbs" mode="${perm_dir_w}"/>
+        <chmod file="${dstDir}/public_html/images/library/Media" mode="${perm_dir_w}"/>
+        <chmod file="${dstDir}/public_html/images/topics" mode="${perm_dir_w}"/>
+        <chmod mode="${perm_file_w}">
             <fileset dir="${dstDir}/public_html/images/topics">
                 <include name="*,*.*"/>
             </fileset>
         </chmod>
-        <chmod file="${dstDir}/public_html/images/userphotos" mode="0777"/>
-        <chmod mode="0666">
+        <chmod file="${dstDir}/public_html/images/userphotos" mode="${perm_dir_w}"/>
+        <chmod mode="${perm_file_w}">
             <fileset dir="${dstDir}/public_html/images/userphotos">
                 <include name="*,*.*"/>
             </fileset>
         </chmod>
-        <chmod file="${dstDir}/public_html/images/_thumbs" mode="0777"/>
-        <chmod file="${dstDir}/public_html/images/_thumbs/articles" mode="0777"/>
-        <chmod file="${dstDir}/public_html/images/_thumbs/userphotos" mode="0777"/>
-        <chmod file="${dstDir}/public_html/filemanager/config/filemanager.config.json" mode="0666"/>
-        <chmod file="${dstDir}/public_html/siteconfig.php" mode="0666"/>
+        <chmod file="${dstDir}/public_html/images/_thumbs" mode="${perm_dir_w}"/>
+        <chmod file="${dstDir}/public_html/images/_thumbs/articles" mode="${perm_dir_w}"/>
+        <chmod file="${dstDir}/public_html/images/_thumbs/userphotos" mode="${perm_dir_w}"/>
+        <chmod file="${dstDir}/public_html/filemanager/config/filemanager.config.json" mode="${perm_file_w}"/>
+        <chmod file="${dstDir}/public_html/siteconfig.php" mode="${perm_file_w}"/>
     </target>
 
     <!-- ============================== -->
     <!-- Target: dist                   -->
     <!-- ============================== -->
     <target name="dist" depends="build">
-        <echo msg="Creating an archive..."/>
+        <echo msg="Creating an INSTALL package..."/>
         <delete file="${project.basedir}/geeklog-${version}.tar.gz" quiet="true"/>
         <tar destfile="${project.basedir}/geeklog-${version}.tar.gz" compression="gzip">
+            <fileset dir="${dstDir}">
+                <include name="*"/>
+            </fileset>
+        </tar>
+
+        <echo msg="Removing work files..."/>
+        <delete dir="${dstDir}"/>
+
+        <echo msg="Files copied and compressed in the current directory OK!"/>
+    </target>
+
+    <!-- ============================== -->
+    <!-- Target: dist-upgrade           -->
+    <!-- ============================== -->
+    <target name="dist-upgrade" depends="build">
+        <echo msg="Creating an UPGRADE package..."/>
+
+        <!-- Remove unchanged file and create the "removed-files" file -->
+        <MyRemoveUnchangedFiles previousVersionSHA="${previousVersionSHA}" currentVersionSHA="${currentVersionSHA}" dstDir="${dstDir}"/>
+
+        <delete file="${project.basedir}/geeklog-${previousVersion}-to-${version}.tar.gz" quiet="true"/>
+        <tar destfile="${project.basedir}/geeklog-${previousVersion}-to-${version}.tar.gz" compression="gzip">
             <fileset dir="${dstDir}">
                 <include name="*"/>
             </fileset>
