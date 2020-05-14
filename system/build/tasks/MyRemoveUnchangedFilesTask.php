@@ -2,27 +2,37 @@
 
 require_once dirname(__DIR__) . '/vendor/phing/phing/classes/phing/Task.php';
 
-class MyDiffTask extends Task
+class MyRemoveUnchangedFilesTask extends Task
 {
-    /**
-     * @var string
-     */
-    private $previousVersionSHA;
-
-    /**
-     * @var
-     */
-    private $currentVersionSHA;
-
     /**
      * @var array
      */
     private $startsWith = [];
 
     /**
-     * @var array of pathes that should be excluded from the resulting archive
+     * @var array of paths that should be excluded from the resulting archive
      */
     private $excludes = [];
+
+    /**
+     * @var array
+     */
+    private $filesToInclude = [];
+
+    /**
+     * @var string
+     */
+    private $previousVersionSHA;
+
+    /**
+     * @var string
+     */
+    private $currentVersionSHA;
+
+    /**
+     * @var string
+     */
+    private $dstDir;
 
     /**
      * Initialize the task
@@ -57,6 +67,16 @@ class MyDiffTask extends Task
     }
 
     /**
+     * Setter for the attribute "dstDir"
+     *
+     * @param  string  $dir
+     */
+    public function setDstDir($dir)
+    {
+        $this->dstDir = str_replace('/\\', '/', $dir) . '/';
+    }
+
+    /**
      * Return if a given path should be included in diff result
      *
      * @param  string  $path
@@ -80,7 +100,38 @@ class MyDiffTask extends Task
     }
 
     /**
-     * Create the 'changed-files' and 'removed-files' files
+     * Remove files to exclude from the upgrade package
+     *
+     * @param  string  $dir  current directory
+     */
+    private function removeUnnecessaryFiles($dir)
+    {
+        foreach (scandir($dir) as $item) {
+            if (($item === '.') || ($item === '..')) {
+                continue;
+            }
+
+            $path = $dir . $item;
+
+            if (is_dir($path)) {
+                $this->removeUnnecessaryFiles($path . '/');
+            } else {
+                $relativePath = str_ireplace($this->dstDir, '', $path);
+
+                if (!in_array($relativePath, $this->filesToInclude) || !$this->shouldInclude($relativePath)) {
+                    @unlink($path);
+                }
+            }
+        }
+
+        // Remove an empty directory
+        if (count(scandir($dir)) === 2) {
+            @rmdir($dir);
+        }
+    }
+
+    /**
+     * Create an upgrade distribution tarball
      */
     public function main()
     {
@@ -88,10 +139,9 @@ class MyDiffTask extends Task
         chdir(__DIR__ . '/../../../');
         exec('git config diff.renameLimit 999999');
 
-        // Create the 'changed-files' file
         exec(sprintf('git diff --name-only --diff-filter=ACMR %s %s', $this->previousVersionSHA, $this->currentVersionSHA), $lines);
-        $changedFiles = array_filter($lines, [$this, 'shouldInclude']);
-        @file_put_contents('./public_html/docs/changed-files', implode("\n", $changedFiles) . "\n");
+        $this->filesToInclude = array_filter($lines, [$this, 'shouldInclude']);
+        $this->removeUnnecessaryFiles($this->dstDir);
 
         // Create the 'removed-files' file
         unset($lines);
@@ -104,5 +154,6 @@ class MyDiffTask extends Task
         if ($currentDir !== false) {
             chdir($currentDir);
         }
+
     }
 }
