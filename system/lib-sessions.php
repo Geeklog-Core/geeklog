@@ -75,15 +75,15 @@ if (empty($_CONF['cookiedomain'])) {
 */
 function SESS_sessionCheck()
 {
-    global $_CONF, $_TABLES, $_USER, $_SESS_VERBOSE, $LANG01;
+    global $_CONF, $_TABLES, $_USER, $_SESS_VERBOSE;
 
     if ($_SESS_VERBOSE) {
         COM_errorLog("*** Inside SESS_sessionCheck ***",1);
     }
 
     $_USER = array(
-        'uid' => Session::ANON_USER_ID,
-        'username' => $LANG01[24] // Anonymous
+        'uid'      => Session::ANON_USER_ID,
+        'username' => 'Anonymous'               // $LANG01[24] is still not defined here
     );
 
     // Check for a cookie on the users's machine.  If the cookie exists, build

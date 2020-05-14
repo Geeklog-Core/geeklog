@@ -150,6 +150,8 @@ function plugin_initconfig_recaptcha()
         $so += 10;
         $c->add('score_comment', $_RECAPTCHA_DEFAULT['score_comment'], 'text', $sg, $fs, null, $so, true, $me, $tab);
         $so += 10;
+        $c->add('score_contact', $_RECAPTCHA_DEFAULT['score_contact'], 'text', $sg, $fs, null, $so, true, $me, $tab);
+        $so += 10;
         $c->add('score_emailstory', $_RECAPTCHA_DEFAULT['score_emailstory'], 'text', $sg, $fs, null, $so, true, $me, $tab);
         $so += 10;
         $c->add('score_registration', $_RECAPTCHA_DEFAULT['score_registration'], 'text', $sg, $fs, null, $so, true, $me, $tab);
