@@ -829,7 +829,8 @@ function COM_getBlockTemplate($blockName, $which, $position = '', $plugin = '')
 /**
  * See if passed theme is valid.
  *
- * @param    string theme   id of theme (which is also the directory name that should be located in the layout folder)
+ * @param  string $theme  id of theme (which is also the directory name that should be located in the layout folder)
+ * @return bool
  */
 function COM_validateTheme($theme)
 {
@@ -838,7 +839,7 @@ function COM_validateTheme($theme)
     $valid = false;
 
     // All themes require a functions.php (ie child themes don't require any template files) so check for just this one file
-    // At some point could actualy check for min geeklog version of theme theme_gl_version wgich was introduced in Geeklog v2.2.1
+    // At some point could actually check for min geeklog version of theme theme_gl_version which was introduced in Geeklog v2.2.1
     if (!empty($theme)) {
         $temp_path_layout = $_CONF['path_themes'] . $theme . '/';
         if (file_exists($temp_path_layout . 'functions.php')) {
