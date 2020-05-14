@@ -81,6 +81,7 @@ define('TOPIC_ROOT', 'root');
 define('RECAPTCHA_NO_SUPPORT', 0);
 define('RECAPTCHA_SUPPORT_V2', 1);
 define('RECAPTCHA_SUPPORT_V2_INVISIBLE', 2);
+define('RECAPTCHA_SUPPORT_V3', 4);
 
 // list of all variables accessed in the language file
 $_DB_mysqldump_path = '{$_DB_mysqldump_path}';
