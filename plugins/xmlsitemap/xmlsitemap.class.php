@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Google Sitemap Generator class                                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2019 by the following authors:                         |
+// | Copyright (C) 2009-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO        - geeklog AT mystral-kk DOT net                 |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -787,11 +787,11 @@ class SitemapXML
 
             switch ($dest) {
                 case 'google':
-                    $url = 'http://www.google.com/webmasters/tools/ping?sitemap=' . $sitemapUrl;
+                    $url = 'http://www.google.com/ping?sitemap=' . $sitemapUrl;
                     break;
 
                 case 'bing':
-                    $url = 'http://www.bing.com/ping?sitemap=' . $sitemapUrl;
+                    $url = 'https://www.bing.com/ping?sitemap=' . $sitemapUrl;
                     break;
 
                 default:
@@ -802,21 +802,18 @@ class SitemapXML
 
             // Sends a ping to the endpoint of a search engine
             if ($url !== '') {
-                $req = new HTTP_Request2(
-                    $url,
-                    HTTP_Request2::METHOD_GET
-                );
+                $req = new HTTP_Request2($url, HTTP_Request2::METHOD_GET);
 
                 try {
                     $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
                     $response = $req->send();
-                    $status = $response->getStatus();
+                    $status = (int) $response->getStatus();
 
-                    if ($status == 200) {
+                    if ($status === 200) {
                         $success++;
                         $records[$dest] = time();
                     } else {
-                        COM_errorLog(__METHOD__ . ': HTTP status ' . $status);
+                        COM_errorLog(sprintf('Failed to send a ping to %s: HTTP status %d',$url , $status));
                     }
                 } catch (HTTP_Request2_Exception $e) {
                     COM_errorLog(__METHOD__ . ': ' . $e->getMessage());
