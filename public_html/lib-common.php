@@ -1366,7 +1366,12 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $welcome_msg = rtrim($LANG01[67]) . ' ' . $_CONF['site_name'];
 
     if (!empty($_USER['username'])) {
-        $welcome_msg .= ', ' . COM_getDisplayName($_USER['uid'], $_USER['username'], $_USER['fullname']);
+        $welcome_msg .= ', '
+            . COM_getDisplayName(
+                $_USER['uid'],
+                $_USER['username'],
+                (isset($_USER['fullname']) ? $_USER['fullname'] : '')   // Anonymous user has no full name
+            );
     }
 
     $currentTime = COM_getUserDateTimeFormat();
