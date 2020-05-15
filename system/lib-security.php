@@ -58,6 +58,8 @@
 // Turn this on to get various debug messages from the code in this library
 // Need to perform check as lib-security is also loaded by the Geeklog Emergency Rescue Tool
 // which does not load lib-common.php
+use Geeklog\Session;
+
 if (function_exists('COM_isEnableDeveloperModeLog')) {
     $_SEC_VERBOSE = COM_isEnableDeveloperModeLog('security');
 } else {
@@ -765,6 +767,7 @@ function SEC_authenticate($username, $password, &$uid)
 {
     global $_CONF, $_TABLES, $LANG01;
 
+    $uidToCheck = Session::getVar('uid_to_check', -1);
     $password = str_replace(array("\015", "\012"), '', $password);
 
     $result = DB_query("SELECT uid, status, passwd, email, uid, invalidlogins, lastinvalid + {$_CONF['invalidloginmaxtime']} AS lastinvalidcheck, UNIX_TIMESTAMP() AS currenttime  FROM {$_TABLES['users']} WHERE username='$username' AND ((remoteservice is null) or (remoteservice = ''))");
@@ -773,11 +776,15 @@ function SEC_authenticate($username, $password, &$uid)
 
     if (($tmp == 0) && ($nrows == 1)) {
         $U = DB_fetchArray($result);
-        $uid = $U['uid'];
+        $uid = (int) $U['uid'];
+
         if ($U['status'] == USER_ACCOUNT_DISABLED) {
             // banned, jump to here to save an password hash calc.
             return USER_ACCOUNT_DISABLED;
-        } elseif (SEC_encryptUserPassword($password, $uid) < 0) {
+        } elseif ((SEC_encryptUserPassword($password, $uid) < 0) ||
+                // The person who is trying to reauthenticate has entered the correct pair of
+                // user name and password, but they are not his/hers
+                (($uidToCheck > Session::ANON_USER_ID) && ($uidToCheck !== $uid))) {
             $tmp = $LANG01['error_invalid_password'] . ": '" . $username . "'";
             COM_accessLog($tmp);
 
@@ -1429,7 +1436,11 @@ function SEC_createToken($ttl = 1200)
         return $last_token;
     }
 
-    $uid = isset($_USER['uid']) ? $_USER['uid'] : 1;
+    $uid = isset($_USER['uid']) ? (int) $_USER['uid'] : 1;
+
+    // Save user ID to the current session to make sure the user getting the CSRF token
+    // is the same person that will be check by SEC_checkToken() later
+    Session::setVar('uid_to_check', $uid);
 
     /* Figure out the full url to the current page */
     $pageURL = COM_getCurrentURL();
@@ -1445,7 +1456,7 @@ function SEC_createToken($ttl = 1200)
         . " AND (ttl > 0)";
     DB_query($sql);
 
-    /* Destroy tokens for this user/url combination. Since anonymous user share same id do not delete */
+    // Destroy tokens for this user/url combination. Since anonymous user share same id do not delete
     if (!COM_isDemoMode()) {
         if ($uid != 1) {
             $sql = "DELETE FROM {$_TABLES['tokens']} WHERE owner_id = '{$uid}' AND urlfor= '$pageURL'";
@@ -1453,16 +1464,15 @@ function SEC_createToken($ttl = 1200)
         }
     }
 
-    /* Create a token for this user/url combination */
-    /* NOTE: TTL mapping for PageURL not yet implemented */
+    // Create a token for this user/url combination
+    // TODO: TTL mapping for PageURL not yet implemented
     $sql = "INSERT INTO {$_TABLES['tokens']} (token, created, owner_id, urlfor, ttl) "
         . "VALUES ('$token', NOW(), $uid, '$pageURL', $ttl)";
     DB_query($sql);
 
     $last_token = $token;
 
-    /* And return the token to the user */
-
+    // And return the token to the user
     return $token;
 }
 
@@ -1533,6 +1543,10 @@ function SECINT_checkToken()
 {
     global $_TABLES, $_USER;
 
+    if (Session::getVar('uid_to_check', -1) !== Session::getUid()) {
+        return false;
+    }
+
     $token = Geeklog\Input::fGetOrPost(CSRF_TOKEN, ''); // Default to no token
 
     if (trim($token) != '') {
@@ -1567,6 +1581,10 @@ function SECINT_checkToken()
         }
     } else {
         $return = false; // no token.
+    }
+
+    if ($return) {
+        Session::unsetVar('uid_to_check');
     }
 
     return $return;
