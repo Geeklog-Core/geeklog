@@ -79,10 +79,40 @@ if (! empty($_COOKIE['GLEMERGENCY']) && trim($_COOKIE['GLEMERGENCY']) == md5($_D
     }
     render($view, $args);
     exit;
-} else if (! empty($_POST['gl_password'])) {
-    /* Login attempt */
+} elseif (! empty($_POST['gl_password'])) {
+    // Login attempt
     if ($_POST['gl_password'] == $_DB_pass) {
-        setcookie("GLEMERGENCY", md5($_DB_pass), 0);
+        $sql = "SELECT name, value FROM {$_TABLES['conf_values']} "
+            . "WHERE (group_name = 'Core') "
+            . "AND ((name = 'cookie_path') OR (name = 'cookiedomain') OR (name = 'cookiesecure'))";
+        $result = DB_query($sql);
+
+        if (!DB_error()) {
+            $rows = [];
+
+            while (($A = DB_fetchArray($result, false))) {
+                $rows[$A['name']] = unserialize($A['value']);
+            }
+        } else {
+            $rows = [
+                'cookie_path'  => str_ireplace(
+                    basename(__FILE__),
+                    '',
+                    str_replace(
+                        $_SERVER['DOCUMENT_ROOT'], '', @$_SERVER['SCRIPT_FILENAME']
+                    )
+                ),
+                'cookiedomain' => '',
+                'cookiesecure' => (isset($_SERVER['REQUEST_SCHEME']) && ($_SERVER['REQUEST_SCHEME'] === 'https')) ||
+                    (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] === 'on')) ||
+                    (isset($_SERVER['SERVER_PORT']) && ($_SERVER['SERVER_PORT'] == 443)),
+            ];
+        }
+
+        SEC_setCookie(
+                "GLEMERGENCY", md5($_DB_pass), 0,
+                $rows['cookie_path'], $rows['cookiedomain'], $rows['cookiesecure']
+        );
         $url = $self . '?view=options&amp;args=result:success|statusMessage:' . urlencode(s(0)) . '&amp;lang=' . urlencode($lang);
         echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . LB;
     } else {
