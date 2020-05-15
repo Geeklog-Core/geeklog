@@ -104,10 +104,7 @@ if ($_CONF['allow_user_language'] == 1) {
             // Set the language cookie.
             // Mainly used for anonymous users so the rest of their session
             // will remain in the selected language
-            setcookie(
-                $_CONF['cookie_language'], $langFile, time() + 31536000, 
-                $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']
-            );
+            SEC_setCookie($_CONF['cookie_language'], $langFile, time() + 31536000);
 
             // if user is not anonymous, store the preference in the database
             if (!COM_isAnonUser()) {

@@ -155,10 +155,7 @@ if (empty($pid)) {
     }
     $aids = substr($aids, 0, -1);
 
-    setcookie(
-        'poll-' . $pid, $aids, time() + $_PO_CONF['pollcookietime'], $_CONF['cookie_path'],
-        $_CONF['cookiedomain'], $_CONF['cookiesecure']
-    );
+    SEC_setCookie('poll-' . $pid, $aids, time() + $_PO_CONF['pollcookietime']);
     $display .= POLLS_pollsave($pid, $aid);
     $display = COM_createHTMLDocument($display);
 } elseif (!empty($pid)) {

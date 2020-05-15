@@ -659,10 +659,7 @@ function USER_doLogin()
     // Now that we have user's data see if their theme cookie is set.
     // If not set it
     if (!empty($_USER['theme'])) {
-        setcookie(
-            $_CONF['cookie_theme'], $_USER['theme'], time() + 31536000, $_CONF['cookie_path'],
-            $_CONF['cookiedomain'], $_CONF['cookiesecure']
-        );
+        SEC_setCookie($_CONF['cookie_theme'], $_USER['theme'], time() + 31536000);
     }
 
     if (!empty($_SERVER['HTTP_REFERER'])

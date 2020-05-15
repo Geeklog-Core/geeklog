@@ -1479,9 +1479,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         if (strcmp($_POST[CMT_USERNAME], $anon) != 0) {
             $username = COM_checkWords(GLText::stripTags(Geeklog\Input::post(CMT_USERNAME)), 'comment');
             $username = GLText::remove4byteUtf8Chars($username);
-            setcookie($_CONF['cookie_anon_name'], $username, time() + 31536000,
-                $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                $_CONF['cookiesecure']);
+            SEC_setCookie($_CONF['cookie_anon_name'], $username, time() + 31536000);
             $name = DB_escapeString($username);
         }
     }

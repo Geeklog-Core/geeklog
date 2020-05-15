@@ -380,10 +380,7 @@ if ($found_valid_theme) {
     // Update Cookie as well if needed for anonymous and users
     if (!isset($_COOKIE[$_CONF['cookie_theme']]) || (isset($_COOKIE[$_CONF['cookie_theme']]) && $_COOKIE[$_CONF['cookie_theme']] != $_CONF['theme'])) {
         if (!headers_sent()) {
-            @setcookie(
-                $_CONF['cookie_theme'], $_CONF['theme'], time() + 31536000, $_CONF['cookie_path'],
-                $_CONF['cookiedomain'], $_CONF['cookiesecure']
-            );
+            SEC_setCookie($_CONF['cookie_theme'], $_CONF['theme'], time() + 31536000);
         }
     }
 

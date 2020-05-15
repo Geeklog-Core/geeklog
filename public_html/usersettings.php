@@ -1448,15 +1448,9 @@ function savepreferences($A)
         . "WHERE uid = '{$_USER['uid']}'"
     );
 
-    setcookie($_CONF['cookie_theme'], $A['theme'], time() + 31536000,
-        $_CONF['cookie_path'], $_CONF['cookiedomain'],
-        $_CONF['cookiesecure']);
-    setcookie($_CONF['cookie_language'], $A['language'], time() + 31536000,
-        $_CONF['cookie_path'], $_CONF['cookiedomain'],
-        $_CONF['cookiesecure']);
-    setcookie($_CONF['cookie_tzid'], $A['tzid'], time() + 31536000,
-        $_CONF['cookie_path'], $_CONF['cookiedomain'],
-        $_CONF['cookiesecure']);
+    SEC_setCookie($_CONF['cookie_theme'], $A['theme'], time() + 31536000);
+    SEC_setCookie($_CONF['cookie_language'], $A['language'], time() + 31536000);
+    SEC_setCookie($_CONF['cookie_tzid'], $A['tzid'], time() + 31536000);
 
     // When the user has disabled Two Factor Authentication, invalidate secret code and all the backup codes he/she might have
     if (!$A['enable_twofactorauth']) {

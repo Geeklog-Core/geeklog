@@ -1783,9 +1783,7 @@ function SEC_setCookie($name, $value, $expire = 0, $path = null, $domain = null,
         $secure = $_CONF['cookiesecure'];
     }
 
-    $retval = setcookie($name, $value, $expire, $path, $domain, $secure, true);
-
-    return $retval;
+    return setcookie($name, $value, $expire, $path, $domain, $secure, true);
 }
 
 /**
