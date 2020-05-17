@@ -356,8 +356,8 @@ class SitemapXML
                         $offset = -$offset;
                     }
 
-                    $hour = floor($offset / 3600000);
-                    $min = ($offset - 3600000 * $hour) % 60000;
+                    $hour = floor($offset / 3600);
+                    $min = ($offset - 3600 * $hour) % 60;
                     $retval .= sprintf('%02d:%02d', $hour, $min);
                 } catch (Exception $e) {
                     COM_errorLog(__METHOD__ . ': invalid timezone name was given');
