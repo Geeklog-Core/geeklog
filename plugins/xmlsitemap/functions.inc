@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the XMLSitemap |
 // | Plugin's PHP files.                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2019 by the following authors:                         |
+// | Copyright (C) 2009-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO         - geeklog AT mystral-kk DOT net                |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -43,18 +43,16 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 }
 
 // Language file Include
-$langfile = $_CONF['path'] . 'plugins/xmlsitemap/language/' . $_CONF['language'] . '.php';
+$langfile = __DIR__ . '/language/' . $_CONF['language'] . '.php';
 clearstatcache();
 
 if (file_exists($langfile)) {
     include_once $langfile;
 } else {
-    include_once $_CONF['path'] . 'plugins/xmlsitemap/language/english.php';
+    include_once __DIR__ . '/language/english.php';
 }
 
-Language::override([
-    'LANG_XMLSMAP',
-]);
+Language::override(['LANG_XMLSMAP']);
 
 // Load the plugin configuration
 $_XMLSMAP_CONF = XMLSMAP_loadConfig();
@@ -70,9 +68,7 @@ $_XMLSMAP_CONF = XMLSMAP_loadConfig();
  */
 function plugin_chkVersion_xmlsitemap()
 {
-    global $_CONF;
-
-    require_once $_CONF['path'] . 'plugins/xmlsitemap/autoinstall.php';
+    require_once __DIR__ . '/autoinstall.php';
 
     $inst_parms = plugin_autoinstall_xmlsitemap('xmlsitemap');
 
@@ -82,14 +78,13 @@ function plugin_chkVersion_xmlsitemap()
 /**
  * Upgrade the plugin
  *
- * @return   bool true (= success)
+ * @return bool true (= success)
  */
 function plugin_upgrade_xmlsitemap()
 {
     global $_CONF, $_TABLES, $_DB_dbms, $_XMLSMAP_DEFAULT;
 
-    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
-        "pi_name = 'xmlsitemap'");
+    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'xmlsitemap'");
     $code_version = plugin_chkVersion_xmlsitemap();
 
     if ($installed_version == $code_version) {
@@ -97,7 +92,7 @@ function plugin_upgrade_xmlsitemap()
         return true;
     }
 
-    require_once $_CONF['path'] . 'plugins/xmlsitemap/autoinstall.php';
+    require_once __DIR__ . '/autoinstall.php';
 
     if (!plugin_compatible_with_this_version_xmlsitemap('xmlsitemap')) {
         return 3002;
@@ -106,8 +101,8 @@ function plugin_upgrade_xmlsitemap()
     // Retrieve other plugin info like min geeklog version and homepage
     $inst_parms = plugin_autoinstall_xmlsitemap('xmlsitemap');
 
-    require_once $_CONF['path'] . 'plugins/xmlsitemap/sql/' . $_DB_dbms . '_updates.php';
-    require_once $_CONF['path'] . 'plugins/xmlsitemap/install_updates.php';
+    require_once __DIR__ . '/sql/' . $_DB_dbms . '_updates.php';
+    require_once __DIR__ . '/install_updates.php';
 
     $current_version = $installed_version;
     $done = false;
@@ -156,7 +151,11 @@ function plugin_upgrade_xmlsitemap()
                 }
                 xmlsitemap_update_ConfValues_2_0_2();
 
-                $current_version = '2.0.2'; // Released with Geeklog v2.2.1
+                $current_version = '2.0.2'; // Released with Geeklog 2.2.1
+                break;
+
+            case '2.0.2':
+                $current_version = '2.0.3'; // Released with Geeklog 2.2.2
                 break;
 
             default:
@@ -167,7 +166,6 @@ function plugin_upgrade_xmlsitemap()
 
     // update plugin version number and other info
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'xmlsitemap'");
-
     COM_errorLog("Updated xmlsitemap plugin from v$installed_version to v$code_version", 1);
 
     return true;
@@ -176,35 +174,31 @@ function plugin_upgrade_xmlsitemap()
 /**
  * Automatic uninstall function for plugins
  *
- * @return   array
+ * @return array
  */
 function plugin_autouninstall_xmlsitemap()
 {
-    global $_XMLSMAP_CONF;
+    XMLSITEMAP_removeSitemapFiles();
 
-    $out = [
-        /* give the name of the tables, without $_TABLES[] */
+    return [
+        // give the name of the tables, without $_TABLES[]
         'tables'     => [],
-        /* give the full name of the group, as in the db */
+        // give the full name of the group, as in the db
         'groups'     => ['XMLSitemap Admin'],
-        /* give the full name of the feature, as in the db */
+        // give the full name of the feature, as in the db
         'features'   => [
             'config.xmlsitemap.tab_main',
             'config.xmlsitemap.tab_pri',
             'config.xmlsitemap.tab_freq',
             'config.xmlsitemap.tab_ping',
         ],
-        /* give the full name of the block, including 'phpblock_', etc */
+        // give the full name of the block, including 'phpblock_', etc
         'php_blocks' => [],
-        /* give all vars with their name */
+        // give all vars with their name
         'vars'       => [
             'xmlsitemap_filename', 'xmlsitemap_mobile', 'xmlsitemap_news', 'xmlsitemap.pings',
         ],
     ];
-
-    XMLSITEMAP_removeSitemapFiles();
-
-    return $out;
 }
 
 /**
@@ -214,8 +208,6 @@ function plugin_autouninstall_xmlsitemap()
  */
 function XMLSMAP_loadConfig()
 {
-    global $_CONF;
-
     $config = config::get_instance();
     if ($config->group_exists('xmlsitemap')) {
         return $config->get_config('xmlsitemap');
@@ -255,7 +247,7 @@ function XMLSMAP_esc($str)
  * @param  string  $type     plugin name
  * @param  string  $include  plugin to add after install/enabled
  * @param  string  $exclude  plugin to remove after uninstall/disabled
- * @return   bool             true = success, false = otherwise
+ * @return bool              true on success, false otherwise
  */
 function XMLSMAP_update($type = null, $include = null, $exclude = null)
 {
@@ -267,7 +259,7 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
         $_XMLSMAP_CONF = XMLSMAP_loadConfig();
         // Fail gracefully here if $_XMLSMAP_CONF not completely loaded
         // This means after migrate the sitemap most likely will be outdated
-        if (($_XMLSMAP_CONF === false) || !is_array($_XMLSMAP_CONF['types']) || !is_array($_XMLSMAP_CONF['exclude']) ) {
+        if (($_XMLSMAP_CONF === false) || !is_array($_XMLSMAP_CONF['types']) || !is_array($_XMLSMAP_CONF['exclude'])) {
             return true;
         }
     }
@@ -283,10 +275,9 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
         return true;
     }
 
-    require_once $_CONF['path'] . 'plugins/xmlsitemap/xmlsitemap.class.php';
+    require_once __DIR__ . '/xmlsitemap.class.php';
 
-    $charset = COM_getCharset();
-    $sitemap = new SitemapXML($charset);
+    $sitemap = new XMLSitemap(COM_getCharset());
 
     // Set sitemap file names
     $sitemap_file = isset($_XMLSMAP_CONF['sitemap_file']) ? $_XMLSMAP_CONF['sitemap_file'] : '';
@@ -320,7 +311,7 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
 
     // Set update frequencies
     foreach ($_XMLSMAP_CONF['frequencies'] as $type => $freq) {
-        $sitemap->setChangeFreq($type, $freq);
+        $sitemap->setChangeFrequency($type, $freq);
     }
 
     // News Sitemap settings
@@ -335,7 +326,9 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
         }
     }
 
-    $retval = $sitemap->create();
+    if (!$sitemap->create()) {
+        return false;
+    }
 
     // Send ping to search engines
     $pingTargets = [];
@@ -348,42 +341,75 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
         $pingTargets[] = 'bing';
     }
 
-    if (!COM_isDemoMode()) {
-        if (count($pingTargets) > 0) {
-            $sitemap->sendPing($pingTargets);
-        }
+    foreach ($sitemap->getFileNames() as $fileName) {
+        $sitemap->sendPing($pingTargets, $fileName);
     }
 
-    return $retval;
+    return true;
 }
 
 /**
  * Callback function when an item was saved
  *
- * @param  string  $id      (unused) ID of item being saved
- * @param  string  $type    type of item ('article', 'staticpages', ...)
- * @param  string  $old_id  (unused) previous ID of item, if != $id
- * @return   void
- * @see      PLG_itemSaved
+ * @param  string  $id        (unused) ID of item being saved
+ * @param  string  $type      type of item ('article', 'staticpages', ...)
+ * @param  string  $old_id    (unused) previous ID of item, if != $id
+ * @param  string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
+ * @see    PLG_itemSaved
  */
-function plugin_itemsaved_xmlsitemap($id, $type, $old_id)
+function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
 {
-    XMLSMAP_update($type);
+    global $_XMLSMAP_CONF;
+
+    $result = false;
+
+    if (!empty($id) && !empty($type)) {
+        require_once __DIR__ . '/xmlsitemap.class.php';
+
+        $sitemap = new XMLSitemap(COM_getCharset());
+        $newItem = PLG_getItemInfo($type, $id, 'url,date-modified', 1);
+
+        if (!empty($newItem)) {
+            if (!empty($old_id) && ($id !== $old_id)) {
+                // Item updated
+                $oldItem = PLG_getItemInfo($type, $old_id, 'url', 1);
+                $sitemap->beginUpdate();
+                $sitemap->deleteItem($oldItem['url']);
+                $sitemap->addItem(
+                    $newItem['url'], $newItem['date-modified'],
+                    $_XMLSMAP_CONF['priorities'][$type], $_XMLSMAP_CONF['frequencies'][$type]
+                );
+                $result = $sitemap->endUpdate();
+            } else {
+                // Item created
+                $sitemap->addItem(
+                    $newItem['url'], $newItem['date-modified'],
+                    $_XMLSMAP_CONF['priorities'][$type], $_XMLSMAP_CONF['frequencies'][$type]
+                );
+            }
+        }
+    }
+
+    if (!$result) {
+        // Tried to update sitemap files partially, but failed.  Let's resort to the old way
+        XMLSMAP_update($type);
+    }
 }
 
 /**
  * Callback function when an item was deleted
  *
- * @param  string  $id    (unused) ID of item being deleted
- * @param  string  $type  type of item ('article', 'staticpages', ...)
- * @see      PLG_itemDeleted
+ * @param  string  $id        (unused) ID of item being deleted
+ * @param  string  $type      type of item ('article', 'staticpages', ...)
+ * @param  string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
+ * @see    PLG_itemDeleted
  */
-function plugin_itemdeleted_xmlsitemap($id, $type)
+function plugin_itemdeleted_xmlsitemap($id, $type, $sub_type)
 {
     global $_XMLSMAP_CONF;
 
     // we're really only interested in Topic Deletes because of the News Sitemap
-    if ($type == 'topic') {
+    if ($type === 'topic') {
         $key = array_search($id, $_XMLSMAP_CONF['news_sitemap_topics']);
 
         if ($key > 0) {
@@ -393,18 +419,24 @@ function plugin_itemdeleted_xmlsitemap($id, $type)
             // Now save it to the configuration
             $c = config::get_instance();
             $c->set('news_sitemap_topics', $_XMLSMAP_CONF['news_sitemap_topics'], 'xmlsitemap');
-        }
-    }
 
-    // Rewrite all sitmap files
-    XMLSMAP_update($type);
+            // Rewrite all sitemap files
+            XMLSMAP_update($type);
+        }
+    } else {
+        require_once __DIR__ . '/xmlsitemap.class.php';
+
+        $sitemap = new XMLSitemap(COM_getCharset());
+        $oldItem = PLG_getItemInfo($type, $id, 'url', 1);
+        $sitemap->deleteItem($oldItem['url']);
+    }
 }
 
 /**
  * Callback function when this plugin is being enabled/disabled
  *
  * @param  bool  $enable  true: we're being enabled, false: disabled
- * @see      PLG_enableStateChange
+ * @see    PLG_enableStateChange
  */
 function plugin_enablestatechange_xmlsitemap($enable)
 {
@@ -439,14 +471,14 @@ function XMLSITEMAP_checkChange($name)
 
     $enabled_plugins = $_PLUGINS;
     $enabled_plugins[] = 'article';
-    $valids = [];
+    $validItems = [];
 
-    // Check and add a valid value to $valids
+    // Check and add a valid value to $validItems
     foreach ($_XMLSMAP_CONF[$name] as $key => $value) {
         switch ($name) {
             case 'types':
                 if (in_array($value, $enabled_plugins)) {
-                    $valids[] = $value;
+                    $validItems[] = $value;
                 }
                 break;
 
@@ -458,39 +490,39 @@ function XMLSITEMAP_checkChange($name)
                         $value = 0.5;
                     }
 
-                    $valids[$key] = $value;
+                    $validItems[$key] = $value;
                 }
                 break;
 
             case 'frequencies':
                 $value = strtolower(trim($value));
-                $valid_change_freqs = ['always', 'hourly', 'daily',
-                    'weekly', 'monthly', 'yearly', 'never', 'hidden'];
+                $validChangeFrequencies = [
+                    'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never', 'hidden'
+                ];
 
-                if (!is_numeric($key) && in_array($key, $enabled_plugins)
-                    && in_array($value, $valid_change_freqs)) {
-                    $valids[$key] = $value;
+                if (!is_numeric($key) && in_array($key, $enabled_plugins) &&
+                        in_array($value, $validChangeFrequencies)) {
+                    $validItems[$key] = $value;
                 }
                 break;
 
             default:
-                trigger_error('XMLSITEMAP_checkChange: "' . $name
-                    . '" not implemented');
+                trigger_error('XMLSITEMAP_checkChange: "' . $name . '" not implemented');
                 break;
         }
     }
 
     ksort($_XMLSMAP_CONF[$name]);
-    ksort($valids);
+    ksort($validItems);
 
-    // If $valids is different from the current value, we have to update config
-    if ($_XMLSMAP_CONF[$name] != $valids) {
-        $_XMLSMAP_CONF[$name] = $valids;
+    // If $validItems is different from the current value, we have to update config
+    if ($_XMLSMAP_CONF[$name] != $validItems) {
+        $_XMLSMAP_CONF[$name] = $validItems;
         $config = config::get_instance();
-        $config->set($name, $valids, 'xmlsitemap');
+        $config->set($name, $validItems, 'xmlsitemap');
     }
 
-    if ($name == 'types') {
+    if ($name === 'types') {
         /**
          * The list of plugins in the sitemap changed. Make sure we have
          * priorities and frequencies for all active plugins and remove
@@ -527,16 +559,16 @@ function XMLSITEMAP_checkChange($name)
  * Delete an old sitemap file and update $_TABLES['vars']
  *
  * @param  string  $key      config key
- * @param  string  $varname  name field of $_TABLES['vars']
+ * @param  string  $varName  name field of $_TABLES['vars']
  */
-function XMLSITEMAP_changeFile($key, $varname)
+function XMLSITEMAP_changeFile($key, $varName)
 {
     global $_CONF, $_TABLES, $_XMLSMAP_CONF;
 
-    $old_file = basename(DB_getItem($_TABLES['vars'], 'value', "name= '{$varname}'"));
+    $old_file = basename(DB_getItem($_TABLES['vars'], 'value', "name= '{$varName}'"));
 
-    if ($old_file != '') {
-        $old_file = $_CONF['path_html'] . $old_file;
+    if (!empty($old_file)) {
+        $old_file = $_CONF['path_html'] . basename($old_file);
         clearstatcache();
 
         if (file_exists($old_file)) {
@@ -546,11 +578,11 @@ function XMLSITEMAP_changeFile($key, $varname)
         }
     }
 
-    if (isset($_XMLSMAP_CONF[$key])) { // need to check incase enabling or not
+    if (isset($_XMLSMAP_CONF[$key])) { // need to check in case enabling or not
         $_XMLSMAP_CONF[$key] = basename(trim($_XMLSMAP_CONF[$key]));
         $sql = "UPDATE {$_TABLES['vars']} "
             . "SET value = '" . DB_escapeString($_XMLSMAP_CONF[$key]) . "' "
-            . "WHERE (name = '{$varname}') ";
+            . "WHERE (name = '{$varName}') ";
         DB_query($sql);
     }
 }
@@ -560,15 +592,15 @@ function XMLSITEMAP_changeFile($key, $varname)
  *
  * @param  string  $group    'Core' or 'xmlsitemap'
  * @param  array   $changes  array of strings: config var key
- * @see      PLG_configChange
+ * @see    PLG_configChange
  */
 function plugin_configchange_xmlsitemap($group, $changes = [])
 {
     global $_XMLSMAP_CONF;
 
-    $need_update = false;
+    $needUpdate = false;
 
-    if ($group == 'xmlsitemap') {
+    if ($group === 'xmlsitemap') {
         if (is_array($changes) && (count($changes) > 0)) {
             /**
              * At this time, changes in configuration is not reflected in
@@ -577,27 +609,26 @@ function plugin_configchange_xmlsitemap($group, $changes = [])
             $_XMLSMAP_CONF = XMLSMAP_loadConfig();
 
             foreach ($changes as $name) {
-                if ($name == 'sitemap_file') {
+                if ($name === 'sitemap_file') {
                     XMLSITEMAP_changeFile($name, 'xmlsitemap_filename');
-                } elseif ($name == 'mobile_sitemap_file') {
+                } elseif ($name === 'mobile_sitemap_file') {
                     XMLSITEMAP_changeFile($name, 'xmlsitemap_mobile');
-                } elseif ($name == 'news_sitemap_file') {
+                } elseif ($name === 'news_sitemap_file') {
                     XMLSITEMAP_changeFile($name, 'xmlsitemap_news');
-
-                } elseif ($name != 'exclude') {
+                } elseif ($name !== 'exclude') {
                     XMLSITEMAP_checkChange($name);
                 }
             }
 
-            $need_update = true;
+            $needUpdate = true;
         }
     } else {
         if (in_array($group, $_XMLSMAP_CONF['types'])) {
-            $need_update = true;
+            $needUpdate = true;
         }
     }
 
-    if ($need_update) {
+    if ($needUpdate) {
         XMLSMAP_update();
     }
 }
@@ -606,10 +637,9 @@ function plugin_configchange_xmlsitemap($group, $changes = [])
  * Callback function when another plugin was installed/uninstalled/upgarded/
  * enabled/disabled
  *
- * @param  string  $type     plugin name
- * @param  string  $status   'installed', 'uninstalled', 'upgraded', 'enabled',
- *                           or 'disabled'
- * @see      PLG_pluginStateChange
+ * @param  string  $type    plugin name
+ * @param  string  $status  'installed', 'uninstalled', 'upgraded', 'enabled' or 'disabled'
+ * @see    PLG_pluginStateChange
  */
 function plugin_pluginstatechange_xmlsitemap($type, $status)
 {
@@ -665,14 +695,13 @@ function plugin_pluginstatechange_xmlsitemap($type, $status)
              * So we have to handle this case in a peculiar way
              */
             if (in_array($type, $_XMLSMAP_CONF['types'])) {
-                if ($status == 'enabled') {
+                if ($status === 'enabled') {
                     $include = $type;
-                } elseif ($status == 'disabled') {
+                } elseif ($status === 'disabled') {
                     $exclude = $type;
                 }
 
-                // A plugin supporting plugin_getiteminfo_xxx() was
-                // enabled/disabled.
+                // A plugin supporting plugin_getiteminfo_xxx() was enabled/disabled.
                 $need_update = true;
             }
             break;
@@ -687,8 +716,7 @@ function plugin_pluginstatechange_xmlsitemap($type, $status)
  * Provide URL of a documentation file
  *
  * @param  string  $file  documentation file being requested, e.g. 'config'
- * @return   string|false           URL or false when not available
- *
+ * @return string|false   URL or false when not available
  */
 function plugin_getdocumentationurl_xmlsitemap($file)
 {
@@ -728,7 +756,7 @@ function plugin_getconfigtooltip_xmlsitemap($id)
  * Called during site migration - handle changed URLs or paths
  *
  * @param  array  $old_conf  contents of the $_CONF array on the old site
- * @return   bool             true on success, otherwise false
+ * @return bool              true on success, otherwise false
  */
 function plugin_migrate_xmlsitemap($old_conf)
 {
@@ -745,6 +773,7 @@ function XMLSITEMAP_removeSitemapFiles()
     global $_CONF, $_XMLSMAP_CONF;
 
     $filenames = ['sitemap_file', 'mobile_sitemap_file', 'news_sitemap_file'];
+    clearstatcache();
 
     foreach ($filenames as $filename) {
         if (!empty($_XMLSMAP_CONF[$filename])) {

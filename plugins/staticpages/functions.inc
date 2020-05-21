@@ -2664,13 +2664,13 @@ function plugin_getcommenturlid_staticpages($id)
 /**
  * Callback function when an item was saved
  *
- * @param    string $id     (unused) ID of item being saved
- * @param    string $type   type of item ('article', 'staticpages', ...)
- * @param    string $old_id (unused) previous ID of item, if != $id
- * @return   void
+ * @param    string $id         (unused) ID of item being saved
+ * @param    string $type       type of item ('article', 'staticpages', ...)
+ * @param    string $old_id     (unused) previous ID of item, if != $id
+ * @param    string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
  * @see      PLG_itemSaved
  */
-function plugin_itemsaved_staticpages($id, $type, $old_id)
+function plugin_itemsaved_staticpages($id, $type, $old_id, $sub_type)
 {
     global $_TABLES;
 
@@ -2685,12 +2685,12 @@ function plugin_itemsaved_staticpages($id, $type, $old_id)
 /**
  * Callback function when an item was deleted
  *
- * @param    string $id   ID of item being deleted
- * @param    string $type type of item ('article', 'staticpages', ...)
- * @return   void
+ * @param    string  $id        ID of item being deleted
+ * @param    string  $type      type of item ('article', 'staticpages', ...)
+ * @param    string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
  * @see      PLG_itemDeleted
  */
-function plugin_itemdeleted_staticpages($id, $type)
+function plugin_itemdeleted_staticpages($id, $type, $sub_type)
 {
     global $_TABLES;
 

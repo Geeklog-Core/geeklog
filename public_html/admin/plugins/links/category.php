@@ -462,9 +462,9 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
         }
 
         if (($update === 'existing') && ($cid != $old_cid)) {
-            PLG_itemSaved($cid, 'links.category', $old_cid);
+            PLG_itemSaved($cid, 'links', $old_cid, '', 'category');
         } else {
-            PLG_itemSaved($cid, 'links.category');
+            PLG_itemSaved($cid, 'links', '', 'category');
         }
     }
 
@@ -497,7 +497,7 @@ function links_delete_category($cid)
             if (($sf == 0) && ($sl == 0)) {
                 // No subfolder/links so OK to delete
                 DB_delete($_TABLES['linkcategories'], 'cid', $cid);
-                PLG_itemDeleted($cid, 'links.category');
+                PLG_itemDeleted($cid, 'links', 'category');
 
                 return 13;
             } else {

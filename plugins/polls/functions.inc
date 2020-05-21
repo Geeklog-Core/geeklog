@@ -2057,12 +2057,13 @@ function plugin_configmanager_select_block_topic_polls()
 /**
  * Callback function when an item was saved
  *
- * @param    string $id     (unused) ID of item being saved
- * @param    string $type   type of item ('article', 'staticpages', ...)
- * @param    string $old_id (unused) previous ID of item, if != $id
+ * @param    string $id         (unused) ID of item being saved
+ * @param    string $type       type of item ('article', 'staticpages', ...)
+ * @param    string $old_id     (unused) previous ID of item, if != $id
+ * @param    string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
  * @see      PLG_itemSaved
  */
-function plugin_itemsaved_polls($id, $type, $old_id)
+function plugin_itemsaved_polls($id, $type, $old_id, $sub_type)
 {
     global $_PO_CONF;
 
@@ -2084,11 +2085,12 @@ function plugin_itemsaved_polls($id, $type, $old_id)
 /**
  * Callback function when an item was deleted
  *
- * @param    string $id   ID of item being deleted
- * @param    string $type type of item ('article', 'staticpages', ...)
+ * @param    string  $id        ID of item being deleted
+ * @param    string  $type      type of item ('article', 'staticpages', ...)
+ * @param    string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
  * @see      PLG_itemDeleted
  */
-function plugin_itemdeleted_polls($id, $type)
+function plugin_itemdeleted_polls($id, $type, $sub_type)
 {
     global $_PO_CONF;
 
