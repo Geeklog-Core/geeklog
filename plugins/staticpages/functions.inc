@@ -2478,7 +2478,7 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
 
             case 'url':
                 // needed for $sp_id == '*', but also in case we're only requesting
-                // the URL (so that $fields isn't emtpy)
+                // the URL (so that $fields isn't empty)
                 $fields[] = 'sp_id';
                 break;
 
@@ -2664,13 +2664,13 @@ function plugin_getcommenturlid_staticpages($id)
 /**
  * Callback function when an item was saved
  *
- * @param    string $id     (unused) ID of item being saved
- * @param    string $type   type of item ('article', 'staticpages', ...)
- * @param    string $old_id (unused) previous ID of item, if != $id
- * @return   void
+ * @param    string $id         (unused) ID of item being saved
+ * @param    string $type       type of item ('article', 'staticpages', ...)
+ * @param    string $old_id     (unused) previous ID of item, if != $id
+ * @param    string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
  * @see      PLG_itemSaved
  */
-function plugin_itemsaved_staticpages($id, $type, $old_id)
+function plugin_itemsaved_staticpages($id, $type, $old_id, $sub_type)
 {
     global $_TABLES;
 
@@ -2685,12 +2685,12 @@ function plugin_itemsaved_staticpages($id, $type, $old_id)
 /**
  * Callback function when an item was deleted
  *
- * @param    string $id   ID of item being deleted
- * @param    string $type type of item ('article', 'staticpages', ...)
- * @return   void
+ * @param    string  $id        ID of item being deleted
+ * @param    string  $type      type of item ('article', 'staticpages', ...)
+ * @param    string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
  * @see      PLG_itemDeleted
  */
-function plugin_itemdeleted_staticpages($id, $type)
+function plugin_itemdeleted_staticpages($id, $type, $sub_type)
 {
     global $_TABLES;
 
@@ -2763,4 +2763,19 @@ function plugin_getlanguageoverrides_staticpages()
 {
 
     return array('LANG_STATIC');
+}
+
+/**
+ * Return URL of item even if the item doesn't exist, e.g., after it has been deleted
+ *
+ * @param  string  $sub_type  (unused) sub type of plugin
+ * @param  string  $item_id   the id of the item
+ * @return string
+ * @since  Geeklog 2.2.2
+ */
+function plugin_idToURL_staticpages($sub_type, $item_id)
+{
+    global $_CONF;
+
+    return COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $item_id);
 }

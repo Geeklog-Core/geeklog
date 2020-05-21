@@ -19,7 +19,7 @@ function xmlsitemap_update_ConfValues_1_0_1()
 {
     global $_CONF, $_XMLSMAP_DEFAULT;
 
-    require_once $_CONF['path'] . 'plugins/xmlsitemap/install_defaults.php';
+    require_once __DIR__ . '/install_defaults.php';
 
     $c = config::get_instance();
     $me = 'xmlsitemap';
@@ -41,7 +41,7 @@ function xmlsitemap_update_ConfValues_2_0_2()
 {
     global $_CONF, $_XMLSMAP_DEFAULT;
 
-    require_once $_CONF['path'] . 'plugins/xmlsitemap/install_defaults.php';
+    require_once __DIR__ . '/install_defaults.php';
 
     $c = config::get_instance();
     $me = 'xmlsitemap';

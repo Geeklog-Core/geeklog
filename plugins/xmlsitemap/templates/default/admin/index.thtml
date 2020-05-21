@@ -1,0 +1,22 @@
+<p>{lang_description}</p>
+
+{!if message}
+<p>{message}</p>
+{!endif}
+
+<table class="uk-table uk-table-striped">
+    <thead>
+        <tr>
+            <th>{lang_filename}</th>
+            <th>{lang_updated}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {rows}
+    </tbody>
+</table>
+
+<form action="" method="post">
+    <button type="submit" name="submit" value="submit">{lang_update_now}</button>
+    <input type="hidden" name="{token_name}" value="{token_value}"{xhtml}>
+</form>

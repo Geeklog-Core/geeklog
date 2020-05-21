@@ -538,19 +538,19 @@ function plugin_submissiondeleted_template($type)
  * an item is saved or modified.
  * NOTE:     The behaviour of this API function changed in Geeklog 1.6.0
  *
- * @param    string $id     unique ID of the item
- * @param    string $type   type of the item, e.g. 'article'
- * @param    string $old_id (optional) old ID when the ID was changed
- * @return   void            (actually: false, for backward compatibility)
+ * @param    string  $id        unique ID of the item
+ * @param    string  $type      type of the item, e.g. 'article'
+ * @param    string  $old_id    (optional) old ID when the ID was changed
+ * @param    string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
  * @link     http://wiki.geeklog.net/index.php/PLG_itemSaved
  */
-function plugin_itemsaved_template($id, $type, $old_id = '')
+function plugin_itemsaved_template($id, $type, $old_id = '', $sub_type = '')
 {
     // Just call item delete since same functionality
     if (empty($old_id)) {
-        plugin_itemdeleted_template($id, $type);
+        plugin_itemdeleted_template($id, $type, $sub_type);
     } else {
-        plugin_itemdeleted_template($old_id, $type);
+        plugin_itemdeleted_template($old_id, $type, $sub_type);
     }
 }
 
@@ -559,12 +559,12 @@ function plugin_itemsaved_template($id, $type, $old_id = '')
  * Plugins can define their own 'itemdeleted' function to be notified whenever
  * an item is deleted.
  *
- * @param    string $id   ID of the item
- * @param    string $type type of the item, e.g. 'article'
- * @return   void
+ * @param    string  $id        ID of the item
+ * @param    string  $type      type of the item, e.g. 'article'
+ * @param    string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
  * @since    Geeklog 1.6.0
  */
-function plugin_itemdeleted_template($id, $type)
+function plugin_itemdeleted_template($id, $type, $sub_type)
 {
     global $_STRUCT_DATA;
 

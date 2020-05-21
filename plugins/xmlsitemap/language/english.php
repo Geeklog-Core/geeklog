@@ -36,6 +36,13 @@ global $LANG32;
 $LANG_XMLSMAP = array(
     'plugin'            => 'XMLSitemap',
     'admin'             => 'XMLSitemap Admin',
+    'description'       => 'Usually, all the sitemap files will automatically be updated whenever an item is added, changed or deleted.  If something went wrong, please update sitemap files manually by pressing the button bellow.',
+    'filename'          => 'File name',
+    'updated'           => 'Updated',
+    'not_saved'         => 'Not Saved',
+    'update_now'        => 'Update all the sitemap files now!',
+    'update_success'    => 'All the sitemap files were successfully updated.',
+    'update_fail'       => 'Failed to update sitemap files.  Please refer to the "error.log" for details.',
 );
 
 // Localization of the Admin Configuration UI

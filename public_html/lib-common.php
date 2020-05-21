@@ -8137,7 +8137,7 @@ HTML;
             if ($type == 1) {
                 $output .= '<h1>A PHP error has occurred:</h1>';
             } else {
-                $output .= '<h1>A Geeklog Specfic error has occurred:</h1>';
+                $output .= '<h1>A Geeklog Specific error has occurred:</h1>';
             }
 
             if ($_CONF['rootdebug']) {

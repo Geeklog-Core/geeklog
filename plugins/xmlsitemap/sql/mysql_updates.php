@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | mysql_updates.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2014 by the following authors:                         |
+// | Copyright (C) 2009-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO         - geeklog AT mystral-kk DOT net                |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -33,36 +33,40 @@
 * @package XMLsitemap
 */
 
-$_UPDATES = array(
+global $_TABLES, $_XMLSMAP_DEFAULT;
 
-    '1.0.0' => array(
+$_UPDATES = [
+    '1.0.0' => [
         // Set new Tab column to whatever fieldset is
         "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'xmlsitemap'",
 
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.xmlsitemap.tab_main', 'Access to configure general XMLSitemap settings', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.xmlsitemap.tab_pri', 'Access to configure XMLSitemap priorities', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.xmlsitemap.tab_freq', 'Access to configure XMLSitemap update frequency', 0)"
-    ),
-    '1.0.1' => array(
-        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.xmlsitemap.tab_ping', 'Access to configure XMLSitemap ping', 0)"
-    ),
-    '2.0.1' => array(
-        "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('xmlsitemap_news', '" . DB_escapeString($_XMLSMAP_DEFAULT['news_sitemap_file']) . "')"
-    )
+    ],
 
-);
+    '1.0.1' => [
+        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.xmlsitemap.tab_ping', 'Access to configure XMLSitemap ping', 0)"
+    ],
+
+    '2.0.1' => [
+        "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('xmlsitemap_news', '" . DB_escapeString($_XMLSMAP_DEFAULT['news_sitemap_file']) . "')"
+    ],
+
+    '2.0.2' => [
+        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('xmlsitemap.edit', 'Access to XMLSitemap administration screen', 0)",
+    ],
+];
 
 /**
- * Add is new security rights for the Group "XMLSitemap Admin"
- *
+ * Add new security rights for the Group "XMLSitemap Admin"
  */
 function xmlsitemap_update_ConfigSecurity_1_0_0()
 {
     global $_TABLES;
 
     // Add in security rights for XMLSitemap Admin
-    $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
-                           "grp_name = 'XMLSitemap Admin'");
+    $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'XMLSitemap Admin'");
 
     /*
      * For some time, from Geeklog 1.6.0 through to 1.7.0, we already had
@@ -86,26 +90,23 @@ function xmlsitemap_update_ConfigSecurity_1_0_0()
     }
 
     // now that we cleaned this up, add the new stuff
-
     if ($group_id > 0) {
         $ft_names[] = 'config.xmlsitemap.tab_main';
         $ft_names[] = 'config.xmlsitemap.tab_pri';
         $ft_names[] = 'config.xmlsitemap.tab_freq';
 
         foreach ($ft_names as $name) {
-            $ft_id = DB_getItem($_TABLES['features'], 'ft_id',
-                                "ft_name = '$name'");
+            $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$name'");
             if ($ft_id > 0) {
                 $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $group_id)";
                 DB_query($sql);
             }
         }
     }
-
 }
 
 /**
- * Add is new security rights for the Group "XMLSitemap Admin"
+ * Add a new security right for the Group "XMLSitemap Admin"
  *
  */
 function xmlsitemap_update_ConfigSecurity_1_0_1()
@@ -113,18 +114,15 @@ function xmlsitemap_update_ConfigSecurity_1_0_1()
     global $_TABLES;
 
     // Add in security rights for XMLSitemap Admin
-    $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
-                           "grp_name = 'XMLSitemap Admin'");
+    $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'XMLSitemap Admin'");
 
     if ($group_id > 0) {
         $ft_name = 'config.xmlsitemap.tab_ping';
 
-        $ft_id = DB_getItem($_TABLES['features'], 'ft_id',
-                            "ft_name = '$ft_name'");
+        $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$ft_name'");
         if ($ft_id > 0) {
             $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $group_id)";
             DB_query($sql);
         }
     }
-
 }

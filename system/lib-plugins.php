@@ -75,7 +75,7 @@ define('RECAPTCHA_SUPPORT_V3', 4);
 define('RECAPTCHA_DEFAULT_SCORE_THRESHOLD', 0.5);
 
 // buffer for function names for the center block API
-$PLG_bufferCenterAPI = array();
+$PLG_bufferCenterAPI = [];
 $PLG_buffered = false;
 
 // buffer enabled plugins
@@ -85,7 +85,7 @@ $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled =
  * @global array List of all active plugins
  */
 global $_PLUGINS;
-$_PLUGINS = array();
+$_PLUGINS = [];
 while ($A = DB_fetchArray($result)) {
     $_PLUGINS[] = $A['pi_name'];
 }
@@ -2686,30 +2686,33 @@ function PLG_submissionDeleted($type)
  * an item is saved or modified.
  * NOTE:     The behaviour of this API function changed in Geeklog 1.6.0
  *
- * @param    string $id     unique ID of the item
- * @param    string $type   type of the item, e.g. 'article'
- * @param    string $old_id (optional) old ID when the ID was changed
- * @return   void|bool      (actually: false, for backward compatibility)
+ * @param    string  $id        unique ID of the item
+ * @param    string  $type      type of the item, e.g. 'article'
+ * @param    string  $old_id    (optional) old ID when the ID was changed
+ * @param    string  $sub_type  (optional) sub type of the item (since Geeklog 2.2.2)
+ * @return   void|bool          (actually: false, for backward compatibility)
  * @link     http://wiki.geeklog.net/index.php/PLG_itemSaved
  */
-function PLG_itemSaved($id, $type, $old_id = '')
+function PLG_itemSaved($id, $type, $old_id = '', $sub_type = '')
 {
     global $_CONF, $_PLUGINS;
 
-    $t = explode('.', $type);
-    $plg_type = $t[0];
+    if (strpos($type, '.') !== false) {
+        // Old way
+        list($type, $sub_type) = explode('.', $type, 2);
+    }
 
     // Treat template system like a plugin (since belong to core group)
-    $pluginTypes = array('template');
+    $pluginTypes = ['template'];
     require_once $_CONF['path_system'] . 'lib-template.php';
 
     $pluginTypes = array_merge($pluginTypes, $_PLUGINS);
 
     foreach ($pluginTypes as $pi_name) {
-        if ($pi_name != $plg_type) {
+        if ($pi_name !== $type) {
             $function = 'plugin_itemsaved_' . $pi_name;
             if (function_exists($function)) {
-                $function($id, $type, $old_id);
+                $function($id, $type, $old_id, $sub_type);
             }
         }
     }
@@ -2727,35 +2730,37 @@ function PLG_itemSaved($id, $type, $old_id = '')
  * Plugins can define their own 'itemdeleted' function to be notified whenever
  * an item is deleted.
  *
- * @param    string $id   ID of the item
- * @param    string $type type of the item, e.g. 'article'
- * @return   void
+ * @param    string $id         ID of the item
+ * @param    string $type       type of the item, e.g. 'article'
+ * @param    string  $sub_type  sub type of item (since Geeklog 2.2.2)
  * @since    Geeklog 1.6.0
  */
-function PLG_itemDeleted($id, $type)
+function PLG_itemDeleted($id, $type, $sub_type = '')
 {
     global $_CONF, $_PLUGINS;
 
-    $t = explode('.', $type);
-    $plg_type = $t[0];
+    if (strpos($type, '.') !== false) {
+        // The old way
+        list($type, $sub_type) = explode('.', $type, 2);
+    }
 
     // Treat template system like a plugin (since belong to core group)
-    $pluginTypes = array('template');
+    $pluginTypes = ['template'];
     require_once $_CONF['path_system'] . 'lib-template.php';
 
     $pluginTypes = array_merge($pluginTypes, $_PLUGINS);
 
     foreach ($pluginTypes as $pi_name) {
-        if ($pi_name != $plg_type) {
+        if ($pi_name !== $type) {
             $function = 'plugin_itemdeleted_' . $pi_name;
             if (function_exists($function)) {
-                $function($id, $type);
+                $function($id, $type, $sub_type);
             }
         }
     }
 
     if (function_exists('CUSTOM_itemdeleted')) {
-        CUSTOM_itemdeleted($id, $type);
+        CUSTOM_itemdeleted($id, $type, $sub_type);
     }
 }
 
@@ -4183,4 +4188,24 @@ function PLG_getStructuredDataTypes()
     }
 
     return $structureddatatypes;
+}
+
+/**
+ * Return URL of item EVEN IF THE ITEM DOES NOT EXIST, e.g., after it has been deleted
+ *
+ * @param  string  $type      plugin name
+ * @param  string  $sub_type  sub type of plugin
+ * @param  string  $item_id   the id of the item
+ * @return string             URL of the item
+ * @since  Geeklog 2.2.2
+ */
+function PLG_idToURL($type, $sub_type, $item_id)
+{
+    $args = [
+        1 => $sub_type,
+        2 => $item_id,
+    ];
+    $function = 'plugin_idToURL_' . $type;
+
+    return PLG_callFunctionForOnePlugin($function, $args);
 }

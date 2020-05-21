@@ -10,7 +10,7 @@
 // | records. These settings are only used during the initial installation     |
 // | and not referenced any more once the plugin is installed.                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2014 by the following authors:                         |
+// | Copyright (C) 2009-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO         - geeklog AT mystral-kk DOT net                |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -51,7 +51,7 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 */
 
 global $_XMLSMAP_DEFAULT;
-$_XMLSMAP_DEFAULT = array();
+$_XMLSMAP_DEFAULT = [];
 
 // XML sitemap names
 $_XMLSMAP_DEFAULT['sitemap_file']        = 'sitemap.xml';
@@ -62,30 +62,30 @@ $_XMLSMAP_DEFAULT['news_sitemap_file']   = 'news_sitemap.xml';
 $_XMLSMAP_DEFAULT['include_homepage'] = false;
 
 // Content types
-$_XMLSMAP_DEFAULT['types'] = array('article', 'calendar', 'polls', 'staticpages');
+$_XMLSMAP_DEFAULT['types'] = ['article', 'calendar', 'polls', 'staticpages'];
 
 // Plugins to exclude from sitemap
-$_XMLSMAP_DEFAULT['exclude'] = array('links');
+$_XMLSMAP_DEFAULT['exclude'] = ['links'];
 
 // Content types to include lastmod element for (last modification date)
-$_XMLSMAP_DEFAULT['lastmod'] = array('article', 'calendar', 'polls', 'staticpages');
+$_XMLSMAP_DEFAULT['lastmod'] = ['article', 'calendar', 'polls', 'staticpages'];
 
 // Priorities (must be between 0.0 and 1.0; default value is 0.5)
-$_XMLSMAP_DEFAULT['priorities'] = array(
+$_XMLSMAP_DEFAULT['priorities'] = [
     'article'     => 0.5,
     'calendar'    => 0.5,
     'polls'       => 0.5,
     'staticpages' => 0.5
-);
+];
 
 // Frequencies (must be one of 'always', 'hourly', 'daily', 'weekly',
 // 'monthly', 'yearly', 'never')
-$_XMLSMAP_DEFAULT['frequencies'] = array(
+$_XMLSMAP_DEFAULT['frequencies'] = [
     'article'     => 'daily',
     'calendar'    => 'daily',
     'polls'       => 'daily',
     'staticpages' => 'weekly'
-);
+];
 
 // Ping targets
 $_XMLSMAP_DEFAULT['ping_google'] = true;
@@ -93,9 +93,10 @@ $_XMLSMAP_DEFAULT['ping_bing']   = true;
 
 // News Sitemap settings
 // Array of article topics for news. If none then all topics.
-$_XMLSMAP_DEFAULT['news_sitemap_topics'] = array();
-// In seconds (2 days default)
-$_XMLSMAP_DEFAULT['news_sitemap_age'] = 172800;
+$_XMLSMAP_DEFAULT['news_sitemap_topics'] = [];
+
+// In seconds
+$_XMLSMAP_DEFAULT['news_sitemap_age'] = 2 * 24 * 3600;  // 2 days
 
 /**
 * Initialize XMLSitemap plugin configuration

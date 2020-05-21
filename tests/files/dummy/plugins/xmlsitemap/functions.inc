@@ -208,7 +208,7 @@ function XMLSMAP_update($type = NULL, $include = NULL, $exclude = NULL)
     require_once $_CONF['path'] . 'plugins/xmlsitemap/xmlsitemap.class.php';
 
     $charset = COM_getCharset();
-    $sitemap = new SitemapXML($charset);
+    $sitemap = new XMLSitemap($charset);
 
     // Set sitemap file names
     if (empty($_XMLSMAP_CONF['mobile_sitemap_file'])) {
@@ -242,7 +242,7 @@ function XMLSMAP_update($type = NULL, $include = NULL, $exclude = NULL)
 
     // Set update frequencies
     foreach ($_XMLSMAP_CONF['frequencies'] as $type => $freq) {
-        $sitemap->setChangeFreq($type, $freq);
+        $sitemap->setChangeFrequency($type, $freq);
     }
 
     return $sitemap->create();

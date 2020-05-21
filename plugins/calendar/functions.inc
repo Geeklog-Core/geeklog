@@ -2284,13 +2284,13 @@ function plugin_configmanager_select_block_topic_calendar()
 /**
  * Callback function when an item was saved
  *
- * @param    string $id     (unused) ID of item being saved
- * @param    string $type   type of item ('article', 'staticpages', ...)
- * @param    string $old_id (unused) previous ID of item, if != $id
- * @return   void
+ * @param    string  $id        (unused) ID of item being saved
+ * @param    string  $type      type of item ('article', 'staticpages', ...)
+ * @param    string  $old_id    (unused) previous ID of item, if != $id
+ * @param    string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
  * @see      PLG_itemSaved
  */
-function plugin_itemsaved_calendar($id, $type, $old_id)
+function plugin_itemsaved_calendar($id, $type, $old_id, $sub_type)
 {
     global $_TABLES, $_CA_CONF;
 
@@ -2312,12 +2312,12 @@ function plugin_itemsaved_calendar($id, $type, $old_id)
 /**
  * Callback function when an item was deleted
  *
- * @param    string $id   ID of item being deleted
- * @param    string $type type of item ('article', 'staticpages', ...)
- * @return   void
+ * @param    string  $id        ID of item being deleted
+ * @param    string  $type      type of item ('article', 'staticpages', ...)
+ * @param    string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
  * @see      PLG_itemDeleted
  */
-function plugin_itemdeleted_calendar($id, $type)
+function plugin_itemdeleted_calendar($id, $type, $sub_type)
 {
     global $_TABLES, $_CA_CONF;
 
@@ -2393,4 +2393,19 @@ function plugin_supportsRecaptcha_calendar()
             'score_threshold' => (isset($_CA_CONF['recaptcha_score']) ? $_CA_CONF['recaptcha_score'] : RECAPTCHA_DEFAULT_SCORE_THRESHOLD),
         ],
     ];
+}
+
+/**
+ * Return URL of item even if the item doesn't exist, e.g., after it has been deleted
+ *
+ * @param  string  $sub_type  (unused) sub type of plugin
+ * @param  string  $item_id   the id of the item
+ * @return string
+ * @since  Geeklog 2.2.2
+ */
+function plugin_idToURL_calendar($sub_type, $item_id)
+{
+    global $_CONF;
+
+    return $_CONF['site_url'] . '/calendar/event.php?' . 'eid=' . $item_id;
 }
