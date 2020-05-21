@@ -76,13 +76,61 @@ function plugin_chkVersion_xmlsitemap()
 }
 
 /**
+ * Return the icon URL for this plugin
+ *
+ * @return string
+ */
+function plugin_geticon_xmlsitemap()
+{
+    global $_CONF;
+
+    return $_CONF['site_url'] . '/xmlsitemap/images/xmlsitemap.png';
+}
+
+/**
+ * This will put an option for XMLSitemap in the command and control block on moderation.php
+ *
+ * @return array|false
+ */
+function plugin_cclabel_xmlsitemap()
+{
+    global $LANG_XMLSMAP, $_CONF;
+
+    if (SEC_hasRights('xmlsitemap.edit')) {
+        return [
+            $LANG_XMLSMAP['plugin'],
+            $_CONF['site_admin_url'] . '/plugins/xmlsitemap/index.php',
+            plugin_geticon_xmlsitemap()
+        ];
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Return the administrative option for this plugin
+ *
+ * @return array
+ */
+function plugin_getadminoption_xmlsitemap()
+{
+    global $_CONF, $_TABLES, $LANG_XMLSMAP;
+
+    if (SEC_hasRights('xmlsitemap.edit')) {
+        return [$LANG_XMLSMAP['plugin'], $_CONF['site_admin_url'] . '/plugins/xmlsitemap/index.php', ''];
+    } else {
+        return [];
+    }
+}
+
+/**
  * Upgrade the plugin
  *
  * @return bool true (= success)
  */
 function plugin_upgrade_xmlsitemap()
 {
-    global $_CONF, $_TABLES, $_DB_dbms, $_XMLSMAP_DEFAULT;
+    global $_CONF, $_TABLES, $_DB_dbms;
 
     $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'xmlsitemap'");
     $code_version = plugin_chkVersion_xmlsitemap();
@@ -101,8 +149,9 @@ function plugin_upgrade_xmlsitemap()
     // Retrieve other plugin info like min geeklog version and homepage
     $inst_parms = plugin_autoinstall_xmlsitemap('xmlsitemap');
 
-    require_once __DIR__ . '/sql/' . $_DB_dbms . '_updates.php';
+    require_once __DIR__ . '/install_defaults.php';
     require_once __DIR__ . '/install_updates.php';
+    require_once __DIR__ . '/sql/' . $_DB_dbms . '_updates.php';
 
     $current_version = $installed_version;
     $done = false;
@@ -155,6 +204,18 @@ function plugin_upgrade_xmlsitemap()
                 break;
 
             case '2.0.2':
+                if (isset($_UPDATES[$current_version])) {
+                    $_SQL = $_UPDATES[$current_version];
+                    foreach ($_SQL as $sql) {
+                        DB_query($sql);
+                    }
+                }
+
+                // Add 'xmlsitemap.edit' feature and assign it to those in the "XMLSitemap Admin" group
+                $featureId = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'xmlsitemap.edit'");
+                $groupId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'XMLSitemap Admin'");
+                DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureId}, {$groupId})");
+
                 $current_version = '2.0.3'; // Released with Geeklog 2.2.2
                 break;
 

@@ -62,6 +62,7 @@ function plugin_autoinstall_xmlsitemap($pi_name)
     ];
 
     $features = [
+        $pi_name . '.edit'                 => 'Access to XMLSitemap administration screen',
         'config.' . $pi_name . '.tab_main' => 'Access to configure general XMLSitemap settings',
         'config.' . $pi_name . '.tab_pri'  => 'Access to configure XMLSitemap priorities',
         'config.' . $pi_name . '.tab_freq' => 'Access to configure XMLSitemap update frequency',
@@ -69,6 +70,7 @@ function plugin_autoinstall_xmlsitemap($pi_name)
     ];
 
     $mappings = [
+        $pi_name . '.edit'                 => [$pi_admin],
         'config.' . $pi_name . '.tab_main' => [$pi_admin],
         'config.' . $pi_name . '.tab_pri'  => [$pi_admin],
         'config.' . $pi_name . '.tab_freq' => [$pi_admin],

@@ -33,7 +33,7 @@
 * @package XMLsitemap
 */
 
-global $_TABLES;
+global $_TABLES, $_XMLSMAP_DEFAULT;
 
 $_UPDATES = [
     '1.0.0' => [
@@ -51,7 +51,11 @@ $_UPDATES = [
 
     '2.0.1' => [
         "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('xmlsitemap_news', '" . DB_escapeString($_XMLSMAP_DEFAULT['news_sitemap_file']) . "')"
-    ]
+    ],
+
+    '2.0.2' => [
+        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('xmlsitemap.edit', 'Access to XMLSitemap administration screen', 0)",
+    ],
 ];
 
 /**
