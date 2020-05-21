@@ -367,23 +367,30 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
         require_once __DIR__ . '/xmlsitemap.class.php';
 
         $sitemap = new XMLSitemap(COM_getCharset());
+        $sitemap->setFileNames(
+            @$_XMLSMAP_CONF['sitemap_file'],
+            @$_XMLSMAP_CONF['mobile_sitemap_file'],
+            @$_XMLSMAP_CONF['news_sitemap_file']
+        );
         $newItem = PLG_getItemInfo($type, $id, 'url,date-modified', 1);
 
         if (!empty($newItem)) {
             if (!empty($old_id) && ($id !== $old_id)) {
                 // Item updated
-                $oldItem = PLG_getItemInfo($type, $old_id, 'url', 1);
+
+                // PLG_getItemInfo doesn't work here, since the item has already been deleted from database
+                $oldUrl = PLG_idToURL($type, $sub_type, $old_id);
                 $sitemap->beginUpdate();
-                $sitemap->deleteItem($oldItem['url']);
+                $sitemap->deleteItem($oldUrl);
                 $sitemap->addItem(
-                    $newItem['url'], $newItem['date-modified'],
+                    $newItem[0], $newItem[1],
                     $_XMLSMAP_CONF['priorities'][$type], $_XMLSMAP_CONF['frequencies'][$type]
                 );
                 $result = $sitemap->endUpdate();
             } else {
                 // Item created
-                $sitemap->addItem(
-                    $newItem['url'], $newItem['date-modified'],
+                $result = $sitemap->addItem(
+                    $newItem[0], $newItem[1],
                     $_XMLSMAP_CONF['priorities'][$type], $_XMLSMAP_CONF['frequencies'][$type]
                 );
             }
@@ -427,8 +434,18 @@ function plugin_itemdeleted_xmlsitemap($id, $type, $sub_type)
         require_once __DIR__ . '/xmlsitemap.class.php';
 
         $sitemap = new XMLSitemap(COM_getCharset());
-        $oldItem = PLG_getItemInfo($type, $id, 'url', 1);
-        $sitemap->deleteItem($oldItem['url']);
+        $sitemap->setFileNames(
+            @$_XMLSMAP_CONF['sitemap_file'],
+            @$_XMLSMAP_CONF['mobile_sitemap_file'],
+            @$_XMLSMAP_CONF['news_sitemap_file']
+        );
+
+        // PLG_getItemInfo doesn't work here, since the item has already been deleted from database
+        $oldUrl = PLG_idToURL($type, $sub_type, $id);
+
+        if (!$sitemap->deleteItem($oldUrl)) {
+            XMLSMAP_update($type);
+        }
     }
 }
 

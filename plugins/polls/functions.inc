@@ -2174,3 +2174,18 @@ function plugin_getlanguageoverrides_polls()
 
     return array('LANG_POLLS');
 }
+
+/**
+ * Return URL of item even if the item doesn't exist, e.g., after it has been deleted
+ *
+ * @param  string  $sub_type  (unused) sub type of plugin
+ * @param  string  $item_id   the id of the item
+ * @return string
+ * @since  Geeklog 2.2.2
+ */
+function plugin_idToURL_polls($sub_type, $item_id)
+{
+    global $_CONF;
+
+    return $_CONF['site_url'] . '/polls/index.php?pid=' . $item_id . '&amp;aid=-1';
+}

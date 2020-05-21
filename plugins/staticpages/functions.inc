@@ -2478,7 +2478,7 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
 
             case 'url':
                 // needed for $sp_id == '*', but also in case we're only requesting
-                // the URL (so that $fields isn't emtpy)
+                // the URL (so that $fields isn't empty)
                 $fields[] = 'sp_id';
                 break;
 
@@ -2763,4 +2763,19 @@ function plugin_getlanguageoverrides_staticpages()
 {
 
     return array('LANG_STATIC');
+}
+
+/**
+ * Return URL of item even if the item doesn't exist, e.g., after it has been deleted
+ *
+ * @param  string  $sub_type  (unused) sub type of plugin
+ * @param  string  $item_id   the id of the item
+ * @return string
+ * @since  Geeklog 2.2.2
+ */
+function plugin_idToURL_staticpages($sub_type, $item_id)
+{
+    global $_CONF;
+
+    return COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $item_id);
 }

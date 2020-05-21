@@ -1368,18 +1368,15 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
 
     $fields = array_unique($fields);
 
-    if (count($fields) == 0) {
-        $retval = array();
-
-        return $retval;
+    if (count($fields) === 0) {
+        return [];
     }
 
     // prepare SQL request
     $where = ' WHERE 1=1';
-    $permSql = '';
-    $groupbySQL = '';
+    $groupBySQL = '';
     $filter_flag = false;
-    if ($sid == '*') {
+    if ($sid === '*') {
         // Check options to see if filters enabled
         if (isset($options['filter']['date-created'])) {
             $filter_flag = true;
@@ -1401,7 +1398,7 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
         if ($filter_flag) {
             // Need to group by as duplicates may be returned since we need to return articles that may belong in 1 or more topics (and the default may not be one of them)
             $permSql = COM_getPermSql('AND', $uid) . " AND ta.type = 'article' AND ta.id = sid " . COM_getTopicSql('AND', $uid, 'ta');
-            $groupbySQL = " GROUP BY " . implode(',', $groupby_fields);
+            $groupBySQL = " GROUP BY " . implode(',', $groupby_fields);
         } else {
             // Without a filter we can select just a the stories from a default topic since all stories are required a default topic.
             // So no duplicates returned
@@ -1412,7 +1409,7 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
     }
 
     $sql = "SELECT " . implode(',', $fields)
-        . " FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta" . $where . $permSql . $groupbySQL;
+        . " FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta" . $where . $permSql . $groupBySQL;
     if ($sid != '*') {
         $sql .= ' LIMIT 1';
     }
@@ -1423,8 +1420,8 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
     $retval = array();
     for ($i = 0; $i < $numRows; $i++) {
         $A = DB_fetchArray($result);
+        $props = [];
 
-        $props = array();
         foreach ($properties as $p) {
             switch ($p) {
                 case 'date-created':
@@ -2389,6 +2386,21 @@ function plugin_dopluginsearch_article($query, $datestart, $dateend, $topic, $ty
 
     return array($search_s, $search_c);
 
+}
+
+/**
+ * Return URL of item even if the item doesn't exist, e.g., after it has been deleted
+ *
+ * @param  string  $sub_type  (unused) sub type of plugin
+ * @param  string  $item_id   the id of the item
+ * @return string
+ * @since  Geeklog 2.2.2
+ */
+function plugin_idToURL_article($sub_type, $item_id)
+{
+    global $_CONF;
+
+    return COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $item_id);
 }
 
 /*

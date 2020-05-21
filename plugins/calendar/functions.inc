@@ -2394,3 +2394,18 @@ function plugin_supportsRecaptcha_calendar()
         ],
     ];
 }
+
+/**
+ * Return URL of item even if the item doesn't exist, e.g., after it has been deleted
+ *
+ * @param  string  $sub_type  (unused) sub type of plugin
+ * @param  string  $item_id   the id of the item
+ * @return string
+ * @since  Geeklog 2.2.2
+ */
+function plugin_idToURL_calendar($sub_type, $item_id)
+{
+    global $_CONF;
+
+    return $_CONF['site_url'] . '/calendar/event.php?' . 'eid=' . $item_id;
+}

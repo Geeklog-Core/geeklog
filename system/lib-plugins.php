@@ -4189,3 +4189,23 @@ function PLG_getStructuredDataTypes()
 
     return $structureddatatypes;
 }
+
+/**
+ * Return URL of item EVEN IF THE ITEM DOES NOT EXIST, e.g., after it has been deleted
+ *
+ * @param  string  $type      plugin name
+ * @param  string  $sub_type  sub type of plugin
+ * @param  string  $item_id   the id of the item
+ * @return string             URL of the item
+ * @since  Geeklog 2.2.2
+ */
+function PLG_idToURL($type, $sub_type, $item_id)
+{
+    $args = [
+        1 => $sub_type,
+        2 => $item_id,
+    ];
+    $function = 'plugin_idToURL_' . $type;
+
+    return PLG_callFunctionForOnePlugin($function, $args);
+}

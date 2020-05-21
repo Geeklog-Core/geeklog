@@ -168,15 +168,15 @@ class XMLSitemap
     {
         global $_CONF;
 
-        if ($filename != '') {
+        if (!empty($filename)) {
             $this->filename = $_CONF['path_html'] . basename($filename);
         }
 
-        if ($mobile_filename != '') {
+        if (!empty($mobile_filename)) {
             $this->mobileFilename = $_CONF['path_html'] . basename($mobile_filename);
         }
 
-        if ($news_filename != '') {
+        if (!empty($news_filename)) {
             $this->newsFilename = $_CONF['path_html'] . basename($news_filename);
         }
     }
@@ -927,7 +927,7 @@ class XMLSitemap
             $retval = $retval && $this->patchFile($filename, $this->items);
 
             if ($retval) {
-                $retval = $retval && $this->sendPing($pingTargets, $filename);
+                $this->sendPing($pingTargets, $filename);
             }
         }
 
@@ -935,7 +935,7 @@ class XMLSitemap
             $retval = $retval && $this->patchFile($mobileFilename, $this->items);
 
             if ($retval)  {
-                $retval = $retval && $this->sendPing($pingTargets, $mobileFilename);
+                $this->sendPing($pingTargets, $mobileFilename);
             }
         }
 
