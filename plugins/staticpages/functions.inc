@@ -653,8 +653,8 @@ function SP_printPage($page, $A)
     $print = COM_newTemplate(CTL_plugin_templatePath('staticpages'));
     $print->set_file(array('print' => 'printable.thtml'));
     $print->set_var('site_slogan', $_CONF['site_slogan']);
-	
-	
+
+
 	// Add Cookie Consent ( https://cookieconsent.osano.com )
 	if (isset($_CONF['cookie_consent']) && $_CONF['cookie_consent']) {
 		$_SCRIPTS->setCssFile(
@@ -679,8 +679,8 @@ function SP_printPage($page, $A)
 	}
 
 	$print->set_var('plg_headercode', $_SCRIPTS->getHeader());
-	
-	$print->set_var('plg_footercode', $_SCRIPTS->getFooter());	
+
+	$print->set_var('plg_footercode', $_SCRIPTS->getFooter());
 
     $print->set_var('direction', $LANG_DIRECTION);
     COM_setLangIdAndAttribute($print);
@@ -1796,6 +1796,10 @@ function plugin_upgrade_staticpages()
                 staticpages_update_ConfValues_1_7_2();
 
                 $current_version = '1.7.2';
+                break;
+
+            case '1.72':
+                $current_version = '1.7.3'; // Ships with Geeklog v2.2.2
                 break;
 
             default:
