@@ -52,7 +52,7 @@ class Resource
     const DEFAULT_THEME = 'denim';
 
     // Local library versions
-    const JQUERY_VERSION = '3.4.1';
+    const JQUERY_VERSION = '3.5.1';
     const JQUERY_PRIORITY = -5000;
 
     const JQUERY_UI_VERSION = '1.12.1';
@@ -62,7 +62,7 @@ class Resource
     const UIKIT_VERSION = '2.27.5';
     const UIKIT_PRIORITY = -3000;
 
-    const UIKIT3_VERSION = '3.4.1';
+    const UIKIT3_VERSION = '3.4.6';
     const UIKIT3_PRIORITY = -3000;
 
     /**
@@ -70,9 +70,11 @@ class Resource
      */
 
     // JQuery & JQuery UI
-    const JQUERY_CDN = 'https://ajax.googleapis.com/ajax/libs/jquery/%s/jquery.min.js';
-    const JQUERY_UI_CDN = 'https://ajax.googleapis.com/ajax/libs/jqueryui/%s/jquery-ui.min.js';
-    const JQUERY_UI_CSS_CDN = 'https://ajax.googleapis.com/ajax/libs/jqueryui/%s/themes/%s/jquery-ui.css';
+    //
+    // Note: URLs are now hard-coded with version numbers to include an SRI hash
+    const JQUERY_CDN = '<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>';
+    const JQUERY_UI_CDN = '<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>';
+    const JQUERY_UI_CSS_CDN = '<link rel="stylesheet" href="https://code.jquery.com/ui/%s/themes/%s/jquery-ui.css">';
 
     // UIkit v2
     const UIKIT_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/uikit/%s/js/uikit.min.js';
@@ -80,7 +82,7 @@ class Resource
 
     // UIkit v3
     const UIKIT3_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/uikit/%s/js/uikit.min.js';
-    const UIKIT3_CDN2 = 'https://cdnjs.cloudflare.com/ajax/libs/uikit/%s/js/uikit-icons.min.js';
+    const UIKIT3_ICONS_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/uikit/%s/js/uikit-icons.min.js';
     const UIKIT3_CSS_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/uikit/%s/css/uikit.min.css';
 
     /**
@@ -983,10 +985,7 @@ class Resource
         if ((!$isFooter && ($this->jQueryPosition === 'header')) ||
             ($isFooter && ($this->jQueryPosition === 'footer'))) {
             if ($this->config['cdn_hosted']) {
-                $retval .= sprintf(
-                    self::JS_TAG_TEMPLATE,
-                    sprintf(self::JQUERY_CDN, self::JQUERY_VERSION)
-                );
+                $retval .= self::JQUERY_CDN;
             } else {
                 $retval .= sprintf(
                     self::JS_TAG_TEMPLATE,
@@ -1001,10 +1000,8 @@ class Resource
         if ((!$isFooter && ($this->jQueryUIPosition === 'header')) ||
             ($isFooter && ($this->jQueryUIPosition === 'footer'))) {
             if ($this->config['cdn_hosted']) {
-                $retval .= sprintf(
-                    self::JS_TAG_TEMPLATE,
-                    sprintf(self::JQUERY_UI_CDN, self::JQUERY_UI_VERSION)
-                );
+                $retval .= sprintf(self::JQUERY_UI_CSS_CDN, self::JQUERY_UI_VERSION, self::JQUERY_UI_THEME)
+                    . self::JQUERY_UI_CDN;
             } else {
                 $retval .= sprintf(
                     self::JS_TAG_TEMPLATE,
@@ -1043,7 +1040,7 @@ class Resource
                 );
                 $retval .= sprintf(
                     self::JS_TAG_TEMPLATE,
-                    sprintf(self::UIKIT3_CDN2, self::UIKIT3_VERSION)
+                    sprintf(self::UIKIT3_ICONS_CDN, self::UIKIT3_VERSION)
                 );
             } else {
                 $retval .= sprintf(
