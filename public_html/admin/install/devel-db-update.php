@@ -656,32 +656,32 @@ foreach ($corePlugins AS $pi_name) {
     $new_plugin_version = false;
     switch ($pi_name) {
         case 'staticpages':
-            $new_plugin_version = false;
-            $plugin_version = '1.7.2'; // Current Geeklog v2.2.1sr1 for plugin
+            $new_plugin_version = true;
+            $plugin_version = '1.7.3'; // Current Geeklog v2.2.2 for plugin
             break;
         case 'spamx':
             $new_plugin_version = false;
             $plugin_version = '1.3.6'; // Current Geeklog v2.2.1 for plugin
             break;
         case 'links':
-            $new_plugin_version = false;
-            $plugin_version = '2.1.7'; // Current Geeklog v2.2.1 for plugin
+            $new_plugin_version = true;
+            $plugin_version = '2.1.8'; // Current Geeklog v2.2.2 for plugin
             break;
         case 'polls':
-            $new_plugin_version = false;
-            $plugin_version = '2.2.0'; // Current Geeklog v2.2.1 for plugin
+            $new_plugin_version = true;
+            $plugin_version = '2.2.1'; // Current Geeklog v2.2.2 for plugin
             break;
         case 'calendar':
-            $new_plugin_version = false;
-            $plugin_version = '1.1.8'; // Current Geeklog v2.2.1 for plugin
+            $new_plugin_version = true;
+            $plugin_version = '1.1.9'; // Current Geeklog v2.2.2 for plugin
             break;
         case 'xmlsitemap':
-            $new_plugin_version = false;
-            $plugin_version = '2.0.2'; // Current Geeklog v2.2.1 for plugin
+            $new_plugin_version = true;
+            $plugin_version = '2.0.3'; // Current Geeklog v2.2.2 for plugin
             break;
         case 'recaptcha':
             $new_plugin_version = true;
-            $plugin_version = '1.2.2'; // Current Geeklog v2.2.2 for plugin
+            $plugin_version = '1.2.4'; // Current Geeklog v2.2.2 for plugin
             break;
     }
 
