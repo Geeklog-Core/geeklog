@@ -1398,6 +1398,10 @@ function plugin_upgrade_polls()
                 $current_version = '2.2.0'; // Ships with Geeklog v2.2.1
                 break;
 
+            case '2.2.0':
+                $current_version = '2.2.1'; // Ships with Geeklog v2.2.2
+                break;
+
             default:
                 $done = true;
         }
