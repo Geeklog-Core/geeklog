@@ -126,35 +126,18 @@ class Resource
      * @var array
      */
     private $libraryLocations = [
+        // jQuery
         'jquery'                          => '/vendor/jquery/jquery.min.js',
+
+        // jQuery UI and addons
         'jquery-ui'                       => '/vendor/jquery-ui/jquery-ui.min.js',
-        'jquery-ui-i18n'                  => '/javascript/jquery_ui/jquery-ui-i18n.min.js',
-        'jquery-ui-slideraccess'          => '/javascript/jquery_ui/jquery-ui-slideraccess.min.js',
-        'jquery-ui-timepicker-addon'      => '/javascript/jquery_ui/jquery-ui-timepicker-addon.min.js',
-        'jquery-ui-timepicker-addon-i18n' => '/javascript/jquery_ui/jquery-ui-timepicker-addon-i18n.min.js',
-        'jquery-ui-dialogoptions'         => '/javascript/jquery_ui/jquery-ui-dialogoptions.js', // Used to make jquery help dialogs responsive. Found at https://github.com/jasonday/jQuery-UI-Dialog-extended
-        'admin.configuration'             => '/javascript/admin.configuration.js',
-        'admin.topic'                     => '/javascript/admin.topic.js',
-        'advanced_editor'                 => '/javascript/advanced_editor.js',
-        'comment'                         => '/javascript/comment.js',
-        'common'                          => '/javascript/common.js',
-        'datepicker'                      => '/javascript/datepicker.js',
-        'datetimepicker'                  => '/javascript/datetimepicker.js',
-        'dbadmin'                         => '/javascript/dbadmin.js',
-        'dbbackup'                        => '/javascript/dbbackup.js',
-        'dialog_help'                     => '/javascript/dialog_help.js',
-        'fix_tooltip'                     => '/javascript/fix_tooltip.js',
-        'login'                           => '/javascript/login.js',
-        'moveuser'                        => '/javascript/moveuser.js',
-        'postmode_control'                => '/javascript/postmode_control.js',
-        'profile_editor'                  => '/javascript/profile_editor.js',
-        'story_editor'                    => '/javascript/story_editor.js',
-        'storyeditor_advanced'            => '/javascript/storyeditor_advanced.js',
-        'submitcomment_adveditor'         => '/javascript/submitcomment_adveitor.js',
-        'submitstory_adveditor'           => '/javascript/submitstory_adveditor',
-        'title_2_id'                      => '/javascript/title_2_id.js',
-        'topic_control'                   => '/javascript/topic_control.js',
-        'uikit_modifier'                  => '/javascript/uikit_modifier.js',
+        'jquery-ui-i18n'                  => '/vendor/jquery-ui/jquery-ui-i18n.min.js',
+        'jquery-ui-slideraccess'          => '/vendor/jquery-ui/jquery-ui-slideraccess.min.js',
+        'jquery-ui-timepicker-addon'      => '/vendor/jquery-ui/jquery-ui-timepicker-addon.min.js',
+        'jquery-ui-timepicker-addon-i18n' => '/vendor/jquery-ui/jquery-ui-timepicker-addon-i18n.min.js',
+        'jquery-ui-dialogoptions'         => '/vendor/jquery-ui/jquery-ui-dialogoptions.js', // Used to make jquery help dialogs responsive. Found at https://github.com/jasonday/jQuery-UI-Dialog-extended
+
+        // UIkit
         'uikit'                           => '/vendor/uikit/js/uikit.min.js',
         'uikit.accordion'                 => '/vendor/uikit/js/components/accordion.min.js',
         'uikit.autocomplete'              => '/vendor/uikit/js/components/autocomplete.min.js',
@@ -179,9 +162,35 @@ class Resource
         'uikit.timepicker'                => '/vendor/uikit/js/components/timepicker.min.js',
         'uikit.tooltip'                   => '/vendor/uikit/js/components/tooltip.min.js',
         'uikit.upload'                    => '/vendor/uikit/js/components/upload.min.js',
+
+        // UIkit3
         'uikit3'                          => '/vendor/uikit3/js/uikit.min.js',
         'uikit3-icons'                    => '/vendor/uikit3/js/uikit-icons.min.js',
-        'uikit3_modifier'                  => '/javascript/uikit3_modifier.js',
+
+        // Geeklog
+        'admin.configuration'             => '/javascript/admin.configuration.js',
+        'admin.topic'                     => '/javascript/admin.topic.js',
+        'advanced_editor'                 => '/javascript/advanced_editor.js',
+        'comment'                         => '/javascript/comment.js',
+        'common'                          => '/javascript/common.js',
+        'datepicker'                      => '/javascript/datepicker.js',
+        'datetimepicker'                  => '/javascript/datetimepicker.js',
+        'dbadmin'                         => '/javascript/dbadmin.js',
+        'dbbackup'                        => '/javascript/dbbackup.js',
+        'dialog_help'                     => '/javascript/dialog_help.js',
+        'fix_tooltip'                     => '/javascript/fix_tooltip.js',
+        'login'                           => '/javascript/login.js',
+        'moveuser'                        => '/javascript/moveuser.js',
+        'postmode_control'                => '/javascript/postmode_control.js',
+        'profile_editor'                  => '/javascript/profile_editor.js',
+        'story_editor'                    => '/javascript/story_editor.js',
+        'storyeditor_advanced'            => '/javascript/storyeditor_advanced.js',
+        'submitcomment_adveditor'         => '/javascript/submitcomment_adveitor.js',
+        'submitstory_adveditor'           => '/javascript/submitstory_adveditor',
+        'title_2_id'                      => '/javascript/title_2_id.js',
+        'topic_control'                   => '/javascript/topic_control.js',
+        'uikit_modifier'                  => '/javascript/uikit_modifier.js',
+        'uikit3_modifier'                 => '/javascript/uikit3_modifier.js',
     ];
 
     /**
