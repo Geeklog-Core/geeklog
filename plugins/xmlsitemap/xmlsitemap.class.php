@@ -508,16 +508,15 @@ class XMLSitemap
 
         // Last modified time
         if (!empty($lastModified)) {
-            $date = date('Y-m-d', $lastModified);
-
             if ($timezone === null) {
                 $timezone = $this->getTimezoneStr();
             }
 
             if ($timezone !== false) {
-                $date .= 'T' . date('H:i:s', $lastModified)
-                    . $timezone;
-            }
+				$date = date('c', $lastModified); // Want date format for time zone like 2012-11-28T10:53:17+01:00
+            } else {
+				$date = date('Y-m-d', $lastModified);
+			}
 
             $retval .= '    <lastmod>' . $date . '</lastmod>' . self::LB;
         }
