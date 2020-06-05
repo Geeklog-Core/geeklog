@@ -25,9 +25,9 @@
 // +---------------------------------------------------------------------------+
 //
 require_once '../../siteconfig.php';
-require_once $_CONF['path'].'db-config.php';
-require_once $_CONF['path_system'].'lib-database.php';
-require_once $_CONF['path_system'].'lib-security.php';
+require_once $_CONF['path'] . 'db-config.php';
+require_once $_CONF['path_system'] . 'lib-database.php';
+require_once $_CONF['path_system'] . 'lib-security.php';
 
 if (!defined('LB')) {
     define('LB', "\n");
@@ -41,28 +41,26 @@ if (!defined('CRLB')) {
 $self = basename(__FILE__);
 
 // The conf_values we're making available to edit.
-$configs = array(
+$configs = [
     'site_url', 'site_admin_url', 'site_mail', 'rdf_file', 'language', 'path_html',
     'path_themes', 'path_editors', 'path_images', 'path_log', 'path_language',
     'backup_path', 'path_data', 'theme', 'cookie_path', 'cookiedomain',
-);
+];
 
 // Start it off
 $lang = 'english';
 
 if (isset($_POST['lang'])) {
     $lang = preg_replace('/[^0-9_a-z-]/i', '', $_POST['lang']);
-} else if (isset($_GET['lang'])) {
+} elseif (isset($_GET['lang'])) {
     $lang = preg_replace('/[^0-9_a-z-]/i', '', $_GET['lang']);
 }
 
-$langfile = dirname(__FILE__) . '/language/' . $lang . '.php';
-
+$langfile = $_CONF['path'] . 'language/' . $lang . '.php';
 if (!file_exists($langfile)) {
     $lang = 'english';
-    $langfile = dirname(__FILE__) . '/language/' . $lang . '.php';
+    $langfile = $_CONF['path'] . 'language/' . $lang . '.php';
 }
-
 require_once $langfile;
 
 if (! empty($_COOKIE['GLEMERGENCY']) && trim($_COOKIE['GLEMERGENCY']) == md5($_DB_pass)) {

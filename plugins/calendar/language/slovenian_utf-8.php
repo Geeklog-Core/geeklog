@@ -212,6 +212,7 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => 'Izbriši dogodke skupaj z lastnikom?',
     'aftersave' => 'Po shranitvi dogodka',
     'recaptcha' => 'reCAPTCHA',
+    'recaptcha_score' => 'reCAPTCHA Score',
     'default_permissions' => 'Prednastavljene pravice dogodka',
     'autotag_permissions_event' => '[event: ] Permissions',
     'block_enable' => 'Enabled',

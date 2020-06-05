@@ -209,6 +209,7 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => 'Termine mit User löschen?',
     'aftersave' => 'Nach Speichern des Termins',
     'recaptcha' => 'reCAPTCHA',
+    'recaptcha_score' => 'reCAPTCHA Score',
     'default_permissions' => 'Grundeinstellungen Termine',
     'autotag_permissions_event' => '[event: ] Permissions',
     'block_enable' => 'Enabled',

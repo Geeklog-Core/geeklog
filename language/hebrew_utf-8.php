@@ -1230,7 +1230,7 @@ $LANG28 = array(
     44 => 'מחכה לאישור',
     45 => 'פעיל',
     46 => 'סטאטוס משתמש',
-    'user_status_desc' => "An explanation of all possible user statuses: <ul>\n        <li><strong>Awaiting Activation</strong> - New account awaiting user to login. Email has been sent but not verified. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>\n        <li><strong>Awaiting Authorization</strong> - New account awaiting moderator approval in the User Submission Queue. When User Submission approved, user will be sent email with password. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>\n        <li><strong>Active</strong> - This is an Active account.</li>\n        <li><strong>Banned</strong> -  This Account is banned/disabled. Username is crossed out on the site for any content they have submitted, User cannot login, emails to account is disabled, and profile cannot be viewed by any user except Admins.</li>\n        <li><strong>Locked</strong> - This Account is locked. User cannot login, emails to account is disabled, but profile can still be viewed by all.</li>\n        <li><strong>New Email Required</strong> - Emails to account is disabled. When user logs in again they must submit new email address and verify before access to rest of the website (under this user account). Status stays the same until email is verified. If \"Require User Email\" config option true then any users who login (includes remote accounts) that do not have an email address will automatically switch to this status.</li>\n        <li><strong>New Password Required</strong> -  When the user logs in they must submit a new password before access to rest of website (under this user account). This is only for regular accounts and not remote accounts.</li>\n        </ul>\n    ",
+    'user_status_desc' => "An explanation of all possible user statuses: <ul>\n\n        <li><strong>Awaiting Activation</strong> - New account awaiting user to login. Email has been sent but not verified. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>\n\n        <li><strong>Awaiting Authorization</strong> - New account awaiting moderator approval in the User Submission Queue. When User Submission approved, user will be sent email with password. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>\n\n        <li><strong>Active</strong> - This is an Active account.</li>\n\n        <li><strong>Banned</strong> -  This Account is banned/disabled. Username is crossed out on the site for any content they have submitted, User cannot login, emails to account is disabled, and profile cannot be viewed by any user except Admins.</li>\n\n        <li><strong>Locked</strong> - This Account is locked. User cannot login, emails to account is disabled, but profile can still be viewed by all.</li>\n\n        <li><strong>New Email Required</strong> - Emails to account is disabled. When user logs in again they must submit new email address and verify before access to rest of the website (under this user account). Status stays the same until email is verified. If \"Require User Email\" config option true then any users who login (includes remote accounts) that do not have an email address will automatically switch to this status.</li>\n\n        <li><strong>New Password Required</strong> -  When the user logs in they must submit a new password before access to rest of website (under this user account). This is only for regular accounts and not remote accounts.</li>\n\n        </ul>\n\n    ",
     47 => 'עריכה',
     48 => 'הציגו קבוצות ניהול',
     49 => 'קבוצת ניהול',
@@ -2176,6 +2176,55 @@ $LANG_structureddatatypes = array(
 $LANG_STRUCT_DATA = array(
     'lang_structured_data_type' => 'Structured Data Type',
     'autotag_desc_structureddata' => '[structureddata:schema_property]Property Value[/structureddata] - Adds a property to the structured data of the content that the autotag is embedded in.'
+);
+
+$LANG_RESCUE = array(
+    0 => 'הכניסה למערכת הצליחה',
+    1 => 'כלי סיוע חירום של Geeklog',
+    2 => 'התקנת Geeklog',
+    3 => 'כלי סיוע חירום של Geeklog',
+    4 => 'אל תשכחו <strong>למחוק את הקובץ {{SELF}} הזה ואת ספריית ההתקנה ברגע שתסיימו!</strong> אם משתמשים אחרים ינחשו את הססמה, הם יוכלו לפגוע בצורה חמורה בהתקנת ה-Geeklog שלכם!',
+    5 => 'סטטוס',
+    6 => 'הנכם מנסים לגשת למקום מאובטח. לא תוכלו להמשיך עד שתעברו את בדיקת האבטחה.',
+    7 => 'כדי לוודא את זהותכם, אנו דורשים שתקלידו את ססמת מאגר המידע שםכם. זוהי הססמה שרשומה בקובץ geeklog\'s db-config.php',
+    8 => 'ססמה',
+    9 => 'וודאו אותי',
+    10 => 'הססמה לא נכונה!',
+    11 => 'איפשור ',
+    12 => 'ניטרול ',
+    13 => 'הצלחה ',
+    14 => 'שגיאה ',
+    15 => 'חלה שגיאה בעדכון הכיוונים',
+    16 => 'עדכון הכיוונים הסתיימה בהצלחה',
+    17 => 'חלה שגיאה בעדכון ססמתכם',
+    18 => 'בקשת ססמת Geeklog',
+    19 => 'בוקשה ססמה',
+    20 => 'מישהי (בתקווה אתם) ניגש לטופס בקשת ססמת חירום וססמה חדשה:"%s" לחשבונכם "%s" שבתוך %s, נוצרה.',
+    21 => 'אם זה לא הייתם אתם, אנא בידקו את אבטחת אתרכם. בידקו שהסרתם את טופס סיוע החירום /admin/rescue.php',
+    22 => 'ססמה חדשה נשלחה לכתובת האימייל הרשומה',
+    23 => 'חלה שגיאה בשליחת אימייל עם הנושא: ',
+    24 => 'מידע PHP',
+    25 => 'חזרה למסך הראשי',
+    26 => 'מידע מערכת',
+    27 => 'גרסת PHP',
+    28 => 'גרסה Geeklog',
+    29 => 'אפשרויות',
+    30 => 'אם יצא לכם להתקין plugin או תוסף שהפיל את אתר ה-Geeklog שלכם, תוכלו לתקן את הבעיה בעזרת האפשרויות שלהלן.',
+    31 => 'איפשרו/ניטרול plugins',
+    32 => 'איפשרו/ניטרול קוביות מידע',
+    33 => 'עריכת ערכי $_CONF נבחרים',
+    34 => 'איפוס ססמת ניהול',
+    35 => 'כאן תוכלו לאפשר/לנטרל כל plugin שכרגע מותקן באתר ה-Geeklog שלכם.',
+    36 => 'בחירת plugin',
+    37 => 'איפשור',
+    38 => 'ניטרול',
+    39 => 'כאן תוכלו לאפשר/לנטרל כל קוביית מידע (חוץ מדינמית) שכרגע מותקמת באתר ה-Geeklog שלכם.',
+    40 => 'בחירת קוביית מידע',
+    41 => 'אישור',
+    42 => 'תוכלו לערוך כמה אפשרויות $_CONF מרכזיות.',
+    43 => 'כאן תוכלו לאפס את הססמה הראשית/הניהולית של Geeklog שלכם.',
+    44 => 'שליחת הססמה באימייל',
+    45 => 'Geeklog appears not to be installed or the install did not complete properly as core information is missing in the Geeklog database. Therefore this rescue tool cannot be used.'
 );
 
 ###############################################################################

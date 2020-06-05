@@ -208,6 +208,7 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => 'Rimuovere gli Eventi se l\'Utente che li ha create é rimosso?',
     'aftersave' => 'Dopo aver Salvato l\'Evento',
     'recaptcha' => 'reCAPTCHA',
+    'recaptcha_score' => 'reCAPTCHA Score',
     'default_permissions' => 'Permessi Predefiniti per Eventi',
     'autotag_permissions_event' => '[event: ] Permessi',
     'block_enable' => 'Enabled',

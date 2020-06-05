@@ -240,6 +240,7 @@ $LANG_confignames['links'] = array(
     'show_category_descriptions' => 'Afficher la description de la catégorie?',
     'new_window' => 'Ouvrir les liens externes dans une nouvelle fenêtre?',
     'recaptcha' => 'reCAPTCHA',
+    'recaptcha_score' => 'reCAPTCHA Score',
     'root' => 'ID de la catégorie Root',
     'default_permissions' => 'Permissions par défaut des liens',
     'category_permissions' => 'Permissions par défaut des catégories',

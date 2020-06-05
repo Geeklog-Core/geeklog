@@ -239,6 +239,7 @@ $LANG_confignames['links'] = array(
     'show_category_descriptions' => 'הצגת תיאור הקטגוריה?',
     'new_window' => 'האם לפתוח קישורים חיצוניים בחלון חדש?',
     'recaptcha' => 'reCAPTCHA',
+    'recaptcha_score' => 'reCAPTCHA Score',
     'root' => 'קוד הזיהוי של הקטגוריה הראשית',
     'default_permissions' => 'הרשאות ברירת המחדל של קישורים',
     'category_permissions' => 'הרשאות ברירת המחדל של קטגוריות',

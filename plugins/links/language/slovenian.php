@@ -241,6 +241,7 @@ $LANG_confignames['links'] = array(
     'show_category_descriptions' => 'Pokaži opis kategorije?',
     'new_window' => 'Odpri zunanje povezave v drugem oknu?',
     'recaptcha' => 'reCAPTCHA',
+    'recaptcha_score' => 'reCAPTCHA Score',
     'root' => 'ID korenske kategorije',
     'default_permissions' => 'Prednastavljene pravice povezave',
     'category_permissions' => 'Prednastavljene pravice kategorije',
