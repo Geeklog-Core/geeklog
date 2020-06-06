@@ -1226,7 +1226,16 @@ $LANG28 = array(
     44 => 'Awaiting Authorization',
     45 => 'Active',
     46 => 'User Status',
-    'user_status_desc' => "An explanation of all possible user statuses: <ul>\n        <li><strong>Awaiting Activation</strong> - New account awaiting user to login. Email has been sent but not verified. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>\n        <li><strong>Awaiting Authorization</strong> - New account awaiting moderator approval in the User Submission Queue. When User Submission approved, user will be sent email with password. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>\n        <li><strong>Active</strong> - This is an Active account.</li>\n        <li><strong>Banned</strong> -  This Account is banned/disabled. Username is crossed out on the site for any content they have submitted, User cannot login, emails to account is disabled, and profile cannot be viewed by any user except Admins.</li>\n        <li><strong>Locked</strong> - This Account is locked. User cannot login, emails to account is disabled, but profile can still be viewed by all.</li>\n        <li><strong>New Email Required</strong> - Emails to account is disabled. When user logs in again they must submit new email address and verify before access to rest of the website (under this user account). Status stays the same until email is verified. If \"Require User Email\" config option true then any users who login (includes remote accounts) that do not have an email address will automatically switch to this status.</li>\n        <li><strong>New Password Required</strong> -  When the user logs in they must submit a new password before access to rest of website (under this user account). This is only for regular accounts and not remote accounts.</li>\n        </ul>\n    ",
+    'user_status_desc' => "An explanation of all possible user statuses: <ul>
+\n        <li><strong>Awaiting Activation</strong> - New account awaiting user to login. Email has been sent but not verified. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>
+\n        <li><strong>Awaiting Authorization</strong> - New account awaiting moderator approval in the User Submission Queue. When User Submission approved, user will be sent email with password. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>
+\n        <li><strong>Active</strong> - This is an Active account.</li>
+\n        <li><strong>Banned</strong> -  This Account is banned/disabled. Username is crossed out on the site for any content they have submitted, User cannot login, emails to account is disabled, and profile cannot be viewed by any user except Admins.</li>
+\n        <li><strong>Locked</strong> - This Account is locked. User cannot login, emails to account is disabled, but profile can still be viewed by all.</li>
+\n        <li><strong>New Email Required</strong> - Emails to account is disabled. When user logs in again they must submit new email address and verify before access to rest of the website (under this user account). Status stays the same until email is verified. If \"Require User Email\" config option true then any users who login (includes remote accounts) that do not have an email address will automatically switch to this status.</li>
+\n        <li><strong>New Password Required</strong> -  When the user logs in they must submit a new password before access to rest of website (under this user account). This is only for regular accounts and not remote accounts.</li>
+\n        </ul>
+\n    ",
     47 => 'Edit',
     48 => 'Show Admin Groups',
     49 => 'Admin Group',
@@ -2179,7 +2188,7 @@ $LANG_RESCUE = array(
     1 => 'Geeklog Emergency Rescue Tool',
     2 => 'Geeklog Install',
     3 => 'Geeklog Emergency Rescue Tool',
-    4 => 'Do not forget to <strong>delete this {{SELF}} file and the install directory once you are done!</strong>  If other users guess the password, they can seriously harm your geeklog installation!',
+    4 => 'Do not forget to <strong>delete this {{SELF}} file once you are done!</strong>  If other users guess the password, they can seriously harm your geeklog installation!',
     5 => 'Status',
     6 => 'You are attempting to access a secure section.  You can\'t proceed until you pass the security check.',
     7 => 'In order to verify you, we require you to enter your database password.  This is the password that is stored in geeklog\'s db-config.php',

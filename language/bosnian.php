@@ -72,7 +72,7 @@ $LANG01 = array(
     23 => 'Sigurnosna razina',
     24 => 'Anonimus',
     25 => 'Odgovori',
-    26 => 'Sljedeæi komentari su vlasnistvo onog koji ih je napisao. Mi nismo odgovorni na bilo koji nacin u vezi onoga sto autor u njima kaze.',
+    26 => 'Sljedeï¿½i komentari su vlasnistvo onog koji ih je napisao. Mi nismo odgovorni na bilo koji nacin u vezi onoga sto autor u njima kaze.',
     27 => 'Najnoviji tekst',
     28 => 'Obrisati',
     29 => 'Nema korisnickih komentara.',
@@ -237,7 +237,7 @@ $LANG03 = array(
     19 => 'Molimo Vas da se vasi komentari pridrzavaju teme.',
     20 => 'Molimo Vas da odgovarate na vec objavljene komentare umjesto da zapocinjete nove teme.',
     21 => 'Prije nego posaljete komentar, molim procitajte komentare ostalih korisnika da bi se izbjeglo ponavljanje.',
-    22 => 'Koristite jednostavni naziv teksta da bi bilo jasno o cemu je rijec u va¹em tekstu.',
+    22 => 'Koristite jednostavni naziv teksta da bi bilo jasno o cemu je rijec u vaï¿½em tekstu.',
     23 => 'Vas email nece biti javno dostupan.',
     'instr_line6' => 'When logged in as a user your comments will be linked to your account and you can specify if you would like notifications of any replies.',
     24 => 'Anonimni korisnik',
@@ -889,9 +889,9 @@ $LANG20 = array(
     1 => 'Autorizacija potrebna',
     2 => 'Odbijeno! Neispravne prijavne informacije.',
     3 => 'Neispravna lozinka za korisnika',
-    4 => 'Korisnièko ime:',
+    4 => 'Korisniï¿½ko ime:',
     5 => 'lozinka:',
-    6 => 'Svaki pokusaj pristupanja administratorskom dijelu bit æe logiran i provjeren.<br' . XHTML . '>Ovi djelovi su SAMO za OVLA©TENE osobe Svaka zloporaba æe biti sankcionirana.',
+    6 => 'Svaki pokusaj pristupanja administratorskom dijelu bit ï¿½e logiran i provjeren.<br' . XHTML . '>Ovi djelovi su SAMO za OVLAï¿½TENE osobe Svaka zloporaba ï¿½e biti sankcionirana.',
     7 => 'prijava',
     8 => 'Login',
     9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
@@ -1232,7 +1232,16 @@ $LANG28 = array(
     44 => 'Awaiting Authorization',
     45 => 'Active',
     46 => 'User Status',
-    'user_status_desc' => "An explanation of all possible user statuses: <ul>\n        <li><strong>Awaiting Activation</strong> - New account awaiting user to login. Email has been sent but not verified. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>\n        <li><strong>Awaiting Authorization</strong> - New account awaiting moderator approval in the User Submission Queue. When User Submission approved, user will be sent email with password. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>\n        <li><strong>Active</strong> - This is an Active account.</li>\n        <li><strong>Banned</strong> -  This Account is banned/disabled. Username is crossed out on the site for any content they have submitted, User cannot login, emails to account is disabled, and profile cannot be viewed by any user except Admins.</li>\n        <li><strong>Locked</strong> - This Account is locked. User cannot login, emails to account is disabled, but profile can still be viewed by all.</li>\n        <li><strong>New Email Required</strong> - Emails to account is disabled. When user logs in again they must submit new email address and verify before access to rest of the website (under this user account). Status stays the same until email is verified. If \"Require User Email\" config option true then any users who login (includes remote accounts) that do not have an email address will automatically switch to this status.</li>\n        <li><strong>New Password Required</strong> -  When the user logs in they must submit a new password before access to rest of website (under this user account). This is only for regular accounts and not remote accounts.</li>\n        </ul>\n    ",
+    'user_status_desc' => "An explanation of all possible user statuses: <ul>
+\n        <li><strong>Awaiting Activation</strong> - New account awaiting user to login. Email has been sent but not verified. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>
+\n        <li><strong>Awaiting Authorization</strong> - New account awaiting moderator approval in the User Submission Queue. When User Submission approved, user will be sent email with password. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>
+\n        <li><strong>Active</strong> - This is an Active account.</li>
+\n        <li><strong>Banned</strong> -  This Account is banned/disabled. Username is crossed out on the site for any content they have submitted, User cannot login, emails to account is disabled, and profile cannot be viewed by any user except Admins.</li>
+\n        <li><strong>Locked</strong> - This Account is locked. User cannot login, emails to account is disabled, but profile can still be viewed by all.</li>
+\n        <li><strong>New Email Required</strong> - Emails to account is disabled. When user logs in again they must submit new email address and verify before access to rest of the website (under this user account). Status stays the same until email is verified. If \"Require User Email\" config option true then any users who login (includes remote accounts) that do not have an email address will automatically switch to this status.</li>
+\n        <li><strong>New Password Required</strong> -  When the user logs in they must submit a new password before access to rest of website (under this user account). This is only for regular accounts and not remote accounts.</li>
+\n        </ul>
+\n    ",
     47 => 'Edit',
     48 => 'Show Admin Groups',
     49 => 'Admin Group',
@@ -1472,9 +1481,9 @@ $LANG33 = array(
     23 => 'all Articles',
     24 => 'Feed Editor',
     25 => 'Feed Title',
-    26 => 'Ogranièenje',
+    26 => 'Ograniï¿½enje',
     27 => 'Length of entries',
-    28 => '(0 = nema teksta, 1 = puni tekst, ostalo = ogranièen broj znakova.)',
+    28 => '(0 = nema teksta, 1 = puni tekst, ostalo = ograniï¿½en broj znakova.)',
     29 => 'Opis',
     30 => 'Zadnja obnova',
     31 => 'Character Set',
@@ -2185,7 +2194,7 @@ $LANG_RESCUE = array(
     1 => 'Geeklog Emergency Rescue Tool',
     2 => 'Geeklog Install',
     3 => 'Geeklog Emergency Rescue Tool',
-    4 => 'Do not forget to <strong>delete this {{SELF}} file and the install directory once you are done!</strong>  If other users guess the password, they can seriously harm your geeklog installation!',
+    4 => 'Do not forget to <strong>delete this {{SELF}} file once you are done!</strong>  If other users guess the password, they can seriously harm your geeklog installation!',
     5 => 'Status',
     6 => 'You are attempting to access a secure section.  You can\'t proceed until you pass the security check.',
     7 => 'In order to verify you, we require you to enter your database password.  This is the password that is stored in geeklog\'s db-config.php',
