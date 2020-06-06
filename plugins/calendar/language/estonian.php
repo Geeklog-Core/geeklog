@@ -212,6 +212,7 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => 'Kustuta sündmused, omanikuks?',
     'aftersave' => 'Pärast sündmuste salvestamist',
     'recaptcha' => 'reCAPTCHA',
+    'recaptcha_score' => 'reCAPTCHA Score',
     'default_permissions' => 'Sündmuste vaikimisi õigused',
     'autotag_permissions_event' => '[event: ] Permissions',
     'block_enable' => 'Enabled',

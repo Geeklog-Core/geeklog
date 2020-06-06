@@ -29,65 +29,65 @@
 
 global $LANG32;
 
-$LANG_XMLSMAP = [
-    'plugin'         => 'XMLSitemap',
-    'admin'          => 'XMLSitemap管理',
-    'description'    => 'ふつう、アイテムを追加・変更・削除するたびにサイトマップは自動的に更新されます。うまくいかない場合は、下のボタンをクリックして手動で更新してください。',
-    'filename'       => 'ファイル名',
-    'updated'        => '更新日時',
-    'not_saved'      => '保存されていません',
-    'update_now'     => 'すべてのサイトマップを更新する',
+$LANG_XMLSMAP = array(
+    'plugin' => 'XMLSitemap',
+    'admin' => 'XMLSitemap管理',
+    'description' => 'ふつう、アイテムを追加・変更・削除するたびにサイトマップは自動的に更新されます。うまくいかない場合は、下のボタンをクリックして手動で更新してください。',
+    'filename' => 'ファイル名',
+    'updated' => '更新日時',
+    'not_saved' => '保存されていません',
+    'update_now' => 'すべてのサイトマップを更新する',
     'update_success' => 'すべてのサイトマップを更新しました。',
-    'update_fail'    => 'サイトマップを更新できませんでした。詳しくは "error.log" を参照してください。',
-];
+    'update_fail' => 'サイトマップを更新できませんでした。詳しくは "error.log" を参照してください。'
+);
 
 // Localization of the Admin Configuration UI
-$LANG_configsections['xmlsitemap'] = [
+$LANG_configsections['xmlsitemap'] = array(
     'label' => 'XMLSitemap',
-    'title' => 'XMLSitemapの設定',
-];
+    'title' => 'XMLSitemapの設定'
+);
 
-$LANG_confignames['xmlsitemap'] = [
-    'sitemap_file'        => 'サイトマップファイル名',
+$LANG_confignames['xmlsitemap'] = array(
+    'sitemap_file' => 'サイトマップファイル名',
     'mobile_sitemap_file' => 'モバイルサイトマップ名',
-    'include_homepage'    => 'トップページをサイトマップに含める',
-    'types'               => 'サイトマップの内容',
-    'exclude'             => '除外するプラグイン',
-    'lastmod'             => '最終編集日',
-    'priorities'          => '優先度',
-    'frequencies'         => '頻度',
-    'ping_google'         => 'Googleにpingを送信する',
-    'ping_bing'           => 'Bingにpingを送信する',
-    'news_sitemap_file'   => 'ニュースサイトマップ名',
+    'include_homepage' => 'トップページをサイトマップに含める',
+    'types' => 'サイトマップの内容',
+    'exclude' => '除外するプラグイン',
+    'lastmod' => '最終編集日',
+    'priorities' => '優先度',
+    'frequencies' => '頻度',
+    'ping_google' => 'Googleにpingを送信する',
+    'ping_bing' => 'Bingにpingを送信する',
+    'news_sitemap_file' => 'ニュースサイトマップ名',
     'news_sitemap_topics' => 'この話題の記事を含める',
-    'news_sitemap_age'    => '記事の古さの最大値',
-];
+    'news_sitemap_age' => '記事の古さの最大値'
+);
 
-$LANG_configsubgroups['xmlsitemap'] = [
-    'sg_main' => '主要設定',
-];
+$LANG_configsubgroups['xmlsitemap'] = array(
+    'sg_main' => '主要設定'
+);
 
-$LANG_tab['xmlsitemap'] = [
+$LANG_tab['xmlsitemap'] = array(
     'tab_main' => 'XMLSitemapの主要設定',
-    'tab_pri'  => '優先度',
+    'tab_pri' => '優先度',
     'tab_freq' => '更新頻度',
     'tab_ping' => 'Ping送信',
-    'tab_news' => 'ニュースサイトマップ',
-];
+    'tab_news' => 'ニュースサイトマップ'
+);
 
-$LANG_fs['xmlsitemap'] = [
+$LANG_fs['xmlsitemap'] = array(
     'fs_main' => 'XMLSitemapのメイン設定',
-    'fs_pri'  => '優先度(既定値 = 0.5、0.0 = 最低、1.0 = 最高)',
+    'fs_pri' => '優先度(既定値 = 0.5、0.0 = 最低、1.0 = 最高)',
     'fs_freq' => '更新頻度',
     'fs_ping' => 'サイトマップ更新時にPingを送信する',
-    'fs_news' => 'ニュースサイトマップの設定',
-];
+    'fs_news' => 'ニュースサイトマップの設定'
+);
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
-$LANG_configselects['xmlsitemap'] = [
-    0  => ['はい' => 1, 'いいえ' => 0],
-    1  => ['はい' => true, 'いいえ' => false],
-    9  => ['ページを表示' => 'item', 'リストを表示' => 'list', 'ホームを表示' => 'home', '管理画面のトップを表示' => 'admin'],
-    12 => ['アクセス不可' => 0, '表示' => 2, '表示・編集' => 3],
-    20 => ['常時' => 'always', '毎時間' => 'hourly', '毎日' => 'daily', '毎週' => 'weekly', '毎月' => 'monthly', '毎年' => 'yearly', '更新しない' => 'never', 'hidden' => 'hidden'],
-];
+$LANG_configselects['xmlsitemap'] = array(
+    0 => array('はい' => 1, 'いいえ' => 0),
+    1 => array('はい' => true, 'いいえ' => false),
+    9 => array('ページを表示' => 'item', 'リストを表示' => 'list', 'ホームを表示' => 'home', '管理画面のトップを表示' => 'admin'),
+    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
+    20 => array('常時' => 'always', '毎時間' => 'hourly', '毎日' => 'daily', '毎週' => 'weekly', '毎月' => 'monthly', '毎年' => 'yearly', '更新しない' => 'never', 'hidden' => 'hidden')
+);

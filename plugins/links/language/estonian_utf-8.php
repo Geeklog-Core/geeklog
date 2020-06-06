@@ -241,6 +241,7 @@ $LANG_confignames['links'] = array(
     'show_category_descriptions' => 'Näita kategooriate kirjeldust?',
     'new_window' => 'Ava välised lingid uues aknas?',
     'recaptcha' => 'reCAPTCHA',
+    'recaptcha_score' => 'reCAPTCHA Score',
     'root' => 'Peakategooria ID',
     'default_permissions' => 'Linkide vaikimisi õigused',
     'category_permissions' => 'Kategooria vaikimisi õigused',

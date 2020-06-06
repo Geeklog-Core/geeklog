@@ -210,6 +210,7 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => 'Delete Events with Owner?',
     'aftersave' => 'After Saving Event',
     'recaptcha' => 'reCAPTCHA',
+    'recaptcha_score' => 'reCAPTCHA Score',
     'default_permissions' => 'Event Default Permissions',
     'autotag_permissions_event' => '[event: ] Permissions',
     'block_enable' => 'Enabled',

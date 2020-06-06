@@ -209,6 +209,7 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => 'מחיקת אירועים ביחד עם שולחיהם?',
     'aftersave' => 'לאחר שמירת האירוע',
     'recaptcha' => 'reCAPTCHA',
+    'recaptcha_score' => 'reCAPTCHA Score',
     'default_permissions' => 'אישורי ברירת המחדל של אירוע',
     'autotag_permissions_event' => '[event: ] הרשאות',
     'block_enable' => 'מאופשר',

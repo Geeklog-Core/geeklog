@@ -237,6 +237,7 @@ $LANG_confignames['links'] = array(
     'show_category_descriptions' => 'Mostrare la Descrizoine della Categoria?',
     'new_window' => 'Aprire Collegamenti in una Nuova Finestra?',
     'recaptcha' => 'reCAPTCHA',
+    'recaptcha_score' => 'reCAPTCHA Score',
     'root' => 'ID della Categoria Principale',
     'default_permissions' => 'Permessi Predefiniti per i Collegamenti',
     'category_permissions' => 'Permessi Predefiniti per le Categorie',

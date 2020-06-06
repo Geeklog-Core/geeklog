@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Update a language file for the install script                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2012 by the following authors:                         |
+// | Copyright (C) 2009-2020 by the following authors:                         |
 // |                                                                           |
 // | Author:  Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -37,7 +37,7 @@ $ENG_PLUGINS = $LANG_PLUGINS;
 $ENG_BIGDUMP = $LANG_BIGDUMP;
 $ENG_ERROR = $LANG_ERROR;
 $ENG_HELP = $LANG_HELP;
-$ENG_RESCUE = $LANG_RESCUE;
+// $LANG_RESCUE moved to the main language file since Geeklog 2.2.2
 
 // now load the language file we want to update
 require_once $langfile;
@@ -93,10 +93,6 @@ separatorThin();
 echo "// help.php\n";
 mergeArrays($ENG_HELP, $LANG_HELP, 'LANG_HELP', false);
 echo "\n";
-
-separatorThin();
-echo "// rescue.php\n";
-mergeArrays($ENG_RESCUE, $LANG_RESCUE, 'LANG_RESCUE', false);
 
 // hard-code this here (for now)
 $label = '

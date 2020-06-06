@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1.0                                                             |
+// | Geeklog 2.2.0                                                             |
 // +---------------------------------------------------------------------------+
 // | core.inc                                                                  |
 // |                                                                           |
@@ -112,6 +112,9 @@ $ENG_statuscodes = $LANG_statuscodes;
 $ENG_trackbackcodes = $LANG_trackbackcodes;
 $ENG_structureddatatypes = $LANG_structureddatatypes;
 $ENG_STRUCT_DATA = $LANG_STRUCT_DATA;
+
+// $LANG_RESCUE moved to the main language file since Geeklog 2.2.2
+$ENG_RESCUE = $LANG_RESCUE;
 
 $ENG_CONFIG = $LANG_CONFIG;
 $ENG_configsections['Core'] = $LANG_configsections['Core'];
@@ -231,6 +234,7 @@ mergeArrays($ENG_statuscodes, $LANG_statuscodes, 'LANG_statuscodes', false);
 mergeArrays($ENG_trackbackcodes, $LANG_trackbackcodes, 'LANG_trackbackcodes', false);
 mergeArrays($ENG_structureddatatypes, $LANG_structureddatatypes, 'LANG_structureddatatypes', false);
 mergeArrays($ENG_STRUCT_DATA, $LANG_STRUCT_DATA, 'LANG_STRUCT_DATA', false);
+mergeArrays($ENG_RESCUE, $LANG_RESCUE, 'LANG_RESCUE', false);
 
 echo "\n";
 separator();

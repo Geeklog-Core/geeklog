@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // | admin/rescue.php                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2010 Wayne Patterson [suprsidr@flashyourweb.com]            |
+// | Copyright (C) 2010-2020 Wayne Patterson [suprsidr@flashyourweb.com]       |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -24,10 +24,33 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-require_once '../../siteconfig.php';
-require_once $_CONF['path'].'db-config.php';
-require_once $_CONF['path_system'].'lib-database.php';
-require_once $_CONF['path_system'].'lib-security.php';
+
+use Geeklog\Autoload;
+
+require_once dirname(__DIR__) . '/siteconfig.php';
+
+// Set dummy contents to prevent "undefined variable" E_NOTICE
+$_CONF['backup_path'] = $_CONF['path'] . 'backups/';
+$_CONF['commentspeedlimit'] = 10;
+$_CONF['invalidloginattempts'] = 3;
+$_CONF['invalidloginmaxtime'] = 10;
+$_CONF['min_theme_gl_version'] = '2.2.2';
+$_CONF['site_admin_url'] = '';
+$_CONF['site_name'] = '';
+$_CONF['site_url'] = '';
+$_CONF['speedlimit'] = 10;
+$_CONF['theme'] = 'denim_three';
+$_CONF['theme_site_default'] = 'denim_three';
+
+// Load autoloader
+if (is_readable($_CONF['path'] . 'system/classes/Autoload.php')) {
+    require_once $_CONF['path'] . 'system/classes/Autoload.php';
+    Autoload::initialize();
+}
+
+require_once $_CONF['path'] . 'db-config.php';
+require_once $_CONF['path_system'] . 'lib-database.php';
+require_once $_CONF['path_system'] . 'lib-security.php';
 
 if (!defined('LB')) {
     define('LB', "\n");
@@ -37,32 +60,33 @@ if (!defined('CRLB')) {
     define('CRLB', "\r\n");
 }
 
+if (!defined('XHTML')) {
+    define('XHTML', '');
+}
+
 // This
 $self = basename(__FILE__);
 
 // The conf_values we're making available to edit.
-$configs = array(
-    'site_url', 'site_admin_url', 'site_mail', 'rdf_file', 'language', 'path_html',
-    'path_themes', 'path_editors', 'path_images', 'path_log', 'path_language',
-    'backup_path', 'path_data', 'theme', 'cookie_path', 'cookiedomain',
-);
+$configs = [
+    'site_url', 'site_admin_url', 'site_mail', 'language', 'path_html', 'path_log',
+    'path_language', 'backup_path', 'path_data', 'theme', 'cookie_path', 'cookiedomain',
+];
 
 // Start it off
 $lang = 'english';
 
 if (isset($_POST['lang'])) {
     $lang = preg_replace('/[^0-9_a-z-]/i', '', $_POST['lang']);
-} else if (isset($_GET['lang'])) {
+} elseif (isset($_GET['lang'])) {
     $lang = preg_replace('/[^0-9_a-z-]/i', '', $_GET['lang']);
 }
 
-$langfile = dirname(__FILE__) . '/language/' . $lang . '.php';
-
+$langfile = $_CONF['path'] . 'language/' . $lang . '.php';
 if (!file_exists($langfile)) {
     $lang = 'english';
-    $langfile = dirname(__FILE__) . '/language/' . $lang . '.php';
+    $langfile = $_CONF['path'] . 'language/' . $lang . '.php';
 }
-
 require_once $langfile;
 
 if (! empty($_COOKIE['GLEMERGENCY']) && trim($_COOKIE['GLEMERGENCY']) == md5($_DB_pass)) {
@@ -110,8 +134,8 @@ if (! empty($_COOKIE['GLEMERGENCY']) && trim($_COOKIE['GLEMERGENCY']) == md5($_D
         }
 
         SEC_setCookie(
-                "GLEMERGENCY", md5($_DB_pass), 0,
-                $rows['cookie_path'], $rows['cookiedomain'], $rows['cookiesecure']
+            "GLEMERGENCY", md5($_DB_pass), 0,
+            $rows['cookie_path'], $rows['cookiedomain'], $rows['cookiesecure']
         );
         $url = $self . '?view=options&amp;args=result:success|statusMessage:' . urlencode(s(0)) . '&amp;lang=' . urlencode($lang);
         echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . LB;
@@ -135,21 +159,18 @@ function e($index) {
 }
 
 function langSelector() {
-    global $lang, $LANG_CHARSET;
+    global $_CONF, $lang, $LANG_CHARSET;
 
     $retval = '<form action="" method="post">' . LB
             . '<div>' . LB
             . '<select name="lang">' . LB;
-    $files = glob(dirname(__FILE__) . '/language/*.php');
+    $files = glob($_CONF['path'] . 'language/*.php');
 
-    if ($files !== FALSE) {
+    if ($files !== false) {
         foreach ($files as $file) {
-            if (basename($file) != '_list.php') {
-                $file = str_replace('.php', '', basename($file));
-                $selected = ($file === $lang) ? ' selected="selected"' : '';
-                $retval .= '<option value="' . $file . '"' . $selected . '>'
-                        .  $file . '</option>' . LB;
-            }
+            $file = str_replace('.php', '', basename($file));
+            $selected = ($file === $lang) ? ' selected="selected"' : '';
+            $retval .= '<option value="' . $file . '"' . $selected . '>' .  $file . '</option>' . LB;
         }
     }
 
@@ -196,7 +217,7 @@ function render($renderType, $args = array()) {
         <div class="main center">
         <div class="header-navigation-container">
             <div class="header-navigation-line">
-                <a href="index.php?language=<?php echo $lang; ?>" class="header-navigation"><?php e(2); ?></a>&nbsp;&nbsp;&nbsp;<?php echo langSelector(); ?>&nbsp;&nbsp;
+                <a href="install/index.php?language=<?php echo $lang; ?>" class="header-navigation"><?php e(2); ?></a>&nbsp;&nbsp;&nbsp;<?php echo langSelector(); ?>&nbsp;&nbsp;
             </div>
         </div>
         <h1><?php e(3); ?></h1>
@@ -209,7 +230,7 @@ function render($renderType, $args = array()) {
             <?php echo $args['statusMessage']; ?>
         </div>
         <?php endif; ?>
-        <?php if ($renderType == 'passwordForm'): ?>
+        <?php if ($renderType === 'passwordForm'): ?>
         <h2><?php e(6); ?></h2>
         <div class="password_form">
             <div class="box">
@@ -229,14 +250,14 @@ function render($renderType, $args = array()) {
                 <?php endif; ?>
             </div>
         </div>
-        <?php elseif ($renderType == 'handleRequest'):
+        <?php elseif ($renderType === 'handleRequest'):
             $sql = sprintf("%s %s SET %s = '%s' WHERE %s = '%s'", $args['operation'], $_TABLES[$args['table']], $args['field'], trim($_POST['value']), $args['where'], trim($_POST['target']));
             $enable = (trim($_POST['value'])) ? s(11) : s(12);
             $success = (DB_query($sql)) ? s(13) : s(14);
             $url = $self . '?view=options&amp;args=result:' . urlencode($success) . '|statusMessage:' . urlencode($success . $enable . trim($_POST['target'])) . '&amp;lang=' . urlencode($lang);
             echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . LB;
         ?>
-        <?php elseif ($renderType == 'updateConfigs'):
+        <?php elseif ($renderType === 'updateConfigs'):
             if ($_POST['old_path_html'] !== $_POST['path_html']) {
                 // $_CONF['path_html'] was changed, so we have to update $_CONF['path_themes'],
                 // $_CONF['path_editors'], $_CONF['path_images'], and $_CONF['rdf_file'] values accordingly
@@ -260,7 +281,7 @@ function render($renderType, $args = array()) {
             $url = $self.'?view=options&amp;args=result:success|statusMessage:' . urlencode(s(16)) . '&amp;lang=' . urlencode($lang);
             echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . 'LB';
         ?>
-        <?php elseif ($renderType == 'updateEmail'):
+        <?php elseif ($renderType === 'updateEmail'):
             $passwd = rand();
             $passwd = md5($passwd);
             $passwd = substr($passwd, 1, 8);
@@ -299,14 +320,14 @@ function render($renderType, $args = array()) {
                 exit;
             }
         ?>
-        <?php elseif ($renderType == 'phpinfo'): ?>
+        <?php elseif ($renderType === 'phpinfo'): ?>
         <h2><?php e(24); ?></h2>
         <ul><li><a href="javascript:self.location.href='<?php echo $self . '?lang=' . urlencode($lang); ?>';"> <?php e(25); ?></a></li></ul>
         <div class="info">
             <?php phpinfo(); ?>
         </div>
         <ul><li><a href="javascript:self.location.href='<?php echo $self . '?lang=' . urlencode($lang); ?>';"> <?php e(25); ?></a></li></ul>
-        <?php elseif ($renderType == 'options'): ?>
+        <?php elseif ($renderType === 'options'): ?>
         <h2><?php e(26); ?></h2>
         <div class="info">
             <ul>
@@ -319,10 +340,9 @@ function render($renderType, $args = array()) {
         // ********************************************************
         // A few checks to see if Geeklog is installed properly. If not we generate a php error and stop tool
         function fatal_handler() {
-
             $error = error_get_last();
             //check if it's a core/fatal error, otherwise it's a normal shutdown
-            if ($error !== NULL) {
+            if ($error !== null) {
             ?>
             <div class="box error">
                 <p><?php e(45); ?></p>
@@ -334,18 +354,18 @@ function render($renderType, $args = array()) {
                 die;
             }
         }
-        register_shutdown_function( "fatal_handler" );
+        register_shutdown_function( 'fatal_handler');
 
         // Check if `conf_values` table exists
         $count = DB_count($_TABLES['conf_values']);
         if ($count == 0) {
-            trigger_error("Fatal error", E_USER_ERROR);
+            trigger_error('Fatal error', E_USER_ERROR);
         }
 
         // Check if `vars` table exists
         $count = DB_count($_TABLES['vars']);
         if ($count == 0) {
-            trigger_error("Fatal error", E_USER_ERROR);
+            trigger_error('Fatal error', E_USER_ERROR);
         }
         // ********************************************************
         ?>
@@ -448,7 +468,7 @@ function printHtmlStyle() {
 
     body {
         font-size: .80em;
-        margin: 16px 16px 0px 16px;
+        margin: 16px 16px 0 16px;
         background: white;
     }
 
@@ -523,7 +543,7 @@ function printHtmlStyle() {
     }
 
     div.center {
-        margin: 0px auto;
+        margin: 0 auto;
         position: relative;
     }
 
@@ -583,4 +603,3 @@ function printJs() {
 </script>
 <?php
 }
-?>

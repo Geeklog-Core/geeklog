@@ -9,7 +9,7 @@
 // |                                                                           |
 // | Update a language file by merging it with english.php                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004-2019 by the following authors:                         |
+// | Copyright (C) 2004-2020 by the following authors:                         |
 // |                                                                           |
 // | Author:  Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -109,9 +109,9 @@ $topic = '{$topic}';
 $type = '{$type}';
 
 // names of constants to be used in the configselect arrays
-$config_constants = array(
+$config_constants = [
     'TOPIC_ALL_OPTION', 'TOPIC_HOMEONLY_OPTION', 'TOPIC_SELECTED_OPTION',
-);
+];
 
 // load the English language file
 if (empty($module)) {
@@ -231,8 +231,14 @@ function prepareText($newText)
 
 /**
  * Merge two language arrays
+ *
  * This function does all the work. Any missing text strings are copied
  * over from english.php. Also does some pretty-printing.
+ *
+ * @param  array         $ENG        an array of language items in English
+ * @param  array         $OTHER      an array of language items to be translated
+ * @param  array         $arrayName  the name of a language data array
+ * @param  string|false  $comment    a comment to be added as a header, none if false
  */
 function mergeArrays($ENG, $OTHER, $arrayName, $comment = '')
 {
@@ -284,7 +290,7 @@ function mergeArrays($ENG, $OTHER, $arrayName, $comment = '')
 
                 // Note: We can't use array_merge() or "+" since we want to
                 // keep the original order intact.
-                $newText = array();
+                $newText = [];
                 foreach ($ENG[$key] as $eKey => $eValue) {
                     $oKey = array_search($eValue, $OTHER[$key], true);
                     if ($oKey === false) {
@@ -368,7 +374,7 @@ function mergeString($eng, $other, $name)
  */
 function readCredits($langfile)
 {
-    $credits = array();
+    $credits = [];
     $firstComment = false;
 
     $fh = fopen($langfile, 'r');

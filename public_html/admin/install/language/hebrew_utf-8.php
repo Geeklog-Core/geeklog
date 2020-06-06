@@ -347,7 +347,7 @@ $LANG_ERROR = array(
     19 => "Comment Signatures before Geeklog 2.2.0 where stored with the comment. Now they are added when the comment is viewed. For backwards compatibility the upgrade will remove all comment signatures stored directly
     with the comment  (so comment signatures will not display twice).",
     20 => 'Plugin Compatibility',
-    21 => 'Geeklog internally has undergone some changes which may affect compatibility of some older plugins which have not been updated in a while. Please make sure all the plugins you have installed have been updated to the latest version before upgrading Geeklog to v2.2.0.<br><br>If you still wish to upgrade Geeklog to v2.2.0 and you are not sure about a plugin please post a question about it on our <a href="https://www.geeklog.net/forum/index.php?forum=2" target="_blank">Geeklog Forum</a>. Else, you can also disable or uninstall the plugin and then perform the Geeklog upgrade.<br><br>If you do perform the upgrade and run into problems you can then use the <a href="/admin/install/rescue.php">Geeklog Emergency Rescue Tool</a> to disable the plugin with the issue.',
+    21 => 'Geeklog internally has undergone some changes which may affect compatibility of some older plugins which have not been updated in a while. Please make sure all the plugins you have installed have been updated to the latest version before upgrading Geeklog to v2.2.0.<br><br>If you still wish to upgrade Geeklog to v2.2.0 and you are not sure about a plugin please post a question about it on our <a href="https://www.geeklog.net/forum/index.php?forum=2" target="_blank">Geeklog Forum</a>. Else, you can also disable or uninstall the plugin and then perform the Geeklog upgrade.<br><br>If you do perform the upgrade and run into problems you can then use the <a href="/admin/rescue.php">Geeklog Emergency Rescue Tool</a> to disable the plugin with the issue.',
     22 => 'Default Security Group Assignments',
     23 => 'User security group assignments for groups "Root" and "All Users" will be fixed along with the security group assignments for the "Admin" (2) user. The "Admin" user had duplicate permissions in some cases and these will be removed after this upgrade.<br><br>Please Note: The issue that caused duplicate permissions has been fixed but it does mean any user that you may have edited in the Admin User Editor before Geeklog v2.2.1 may have been affected. This only really affects permissions when you have security groups within security groups. While these permissions at the time of saving the user are correct if you modified security groups since then these users may still have access to groups they may have been removed from now. As each site is setup differently, the only way to fix this is for the Admin to review each user manually and confirm their security privileges.',
     24 => 'FCKEditor Removed',
@@ -423,57 +423,6 @@ $LANG_HELP = array(
     'plugin_upload' => 'ביחרו ארכיון plugin (בצורת zip, tar.gz או tgz) בשביל להעלות ולהתקין.'
 );
 
-// +---------------------------------------------------------------------------+
-// rescue.php
-
-$LANG_RESCUE = array(
-    0 => 'הכניסה למערכת הצליחה',
-    1 => 'כלי סיוע חירום של Geeklog',
-    2 => 'התקנת Geeklog',
-    3 => 'כלי סיוע חירום של Geeklog',
-    4 => 'אל תשכחו <strong>למחוק את הקובץ {{SELF}} הזה ואת ספריית ההתקנה ברגע שתסיימו!</strong> אם משתמשים אחרים ינחשו את הססמה, הם יוכלו לפגוע בצורה חמורה בהתקנת ה-Geeklog שלכם!',
-    5 => 'סטטוס',
-    6 => 'הנכם מנסים לגשת למקום מאובטח. לא תוכלו להמשיך עד שתעברו את בדיקת האבטחה.',
-    7 => 'כדי לוודא את זהותכם, אנו דורשים שתקלידו את ססמת מאגר המידע שםכם. זוהי הססמה שרשומה בקובץ geeklog\'s db-config.php',
-    8 => 'ססמה',
-    9 => 'וודאו אותי',
-    10 => 'הססמה לא נכונה!',
-    11 => 'איפשור ',
-    12 => 'ניטרול ',
-    13 => 'הצלחה ',
-    14 => 'שגיאה ',
-    15 => 'חלה שגיאה בעדכון הכיוונים',
-    16 => 'עדכון הכיוונים הסתיימה בהצלחה',
-    17 => 'חלה שגיאה בעדכון ססמתכם',
-    18 => 'בקשת ססמת Geeklog',
-    19 => 'בוקשה ססמה',
-    20 => 'מישהי (בתקווה אתם) ניגש לטופס בקשת ססמת חירום וססמה חדשה:"%s" לחשבונכם "%s" שבתוך %s, נוצרה.',
-    21 => 'אם זה לא הייתם אתם, אנא בידקו את אבטחת אתרכם. בידקו שהסרתם את טופס סיוע החירום /admin/rescue.php',
-    22 => 'ססמה חדשה נשלחה לכתובת האימייל הרשומה',
-    23 => 'חלה שגיאה בשליחת אימייל עם הנושא: ',
-    24 => 'מידע PHP',
-    25 => 'חזרה למסך הראשי',
-    26 => 'מידע מערכת',
-    27 => 'גרסת PHP',
-    28 => 'גרסה Geeklog',
-    29 => 'אפשרויות',
-    30 => 'אם יצא לכם להתקין plugin או תוסף שהפיל את אתר ה-Geeklog שלכם, תוכלו לתקן את הבעיה בעזרת האפשרויות שלהלן.',
-    31 => 'איפשרו/ניטרול plugins',
-    32 => 'איפשרו/ניטרול קוביות מידע',
-    33 => 'עריכת ערכי $_CONF נבחרים',
-    34 => 'איפוס ססמת ניהול',
-    35 => 'כאן תוכלו לאפשר/לנטרל כל plugin שכרגע מותקן באתר ה-Geeklog שלכם.',
-    36 => 'בחירת plugin',
-    37 => 'איפשור',
-    38 => 'ניטרול',
-    39 => 'כאן תוכלו לאפשר/לנטרל כל קוביית מידע (חוץ מדינמית) שכרגע מותקמת באתר ה-Geeklog שלכם.',
-    40 => 'בחירת קוביית מידע',
-    41 => 'אישור',
-    42 => 'תוכלו לערוך כמה אפשרויות $_CONF מרכזיות.',
-    43 => 'כאן תוכלו לאפס את הססמה הראשית/הניהולית של Geeklog שלכם.',
-    44 => 'שליחת הססמה באימייל',
-    45 => 'Geeklog appears not to be installed or the install did not complete properly as core information is missing in the Geeklog database. Therefore this rescue tool cannot be used.'
-);
 
 // which texts to use as labels, so they don't have to be translated again
 $LANG_LABEL = array(

@@ -1233,7 +1233,16 @@ $LANG28 = array(
     44 => 'Erwartet Freigabe',
     45 => 'Aktiv',
     46 => 'User-Status',
-    'user_status_desc' => "An explanation of all possible user statuses: <ul>\n        <li><strong>Awaiting Activation</strong> - New account awaiting user to login. Email has been sent but not verified. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>\n        <li><strong>Awaiting Authorization</strong> - New account awaiting moderator approval in the User Submission Queue. When User Submission approved, user will be sent email with password. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>\n        <li><strong>Active</strong> - This is an Active account.</li>\n        <li><strong>Banned</strong> -  This Account is banned/disabled. Username is crossed out on the site for any content they have submitted, User cannot login, emails to account is disabled, and profile cannot be viewed by any user except Admins.</li>\n        <li><strong>Locked</strong> - This Account is locked. User cannot login, emails to account is disabled, but profile can still be viewed by all.</li>\n        <li><strong>New Email Required</strong> - Emails to account is disabled. When user logs in again they must submit new email address and verify before access to rest of the website (under this user account). Status stays the same until email is verified. If \"Require User Email\" config option true then any users who login (includes remote accounts) that do not have an email address will automatically switch to this status.</li>\n        <li><strong>New Password Required</strong> -  When the user logs in they must submit a new password before access to rest of website (under this user account). This is only for regular accounts and not remote accounts.</li>\n        </ul>\n    ",
+    'user_status_desc' => "An explanation of all possible user statuses: <ul>
+\n        <li><strong>Awaiting Activation</strong> - New account awaiting user to login. Email has been sent but not verified. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>
+\n        <li><strong>Awaiting Authorization</strong> - New account awaiting moderator approval in the User Submission Queue. When User Submission approved, user will be sent email with password. This is only set for a new account and is an automated status (Admins cannot set accounts to this status manually)</li>
+\n        <li><strong>Active</strong> - This is an Active account.</li>
+\n        <li><strong>Banned</strong> -  This Account is banned/disabled. Username is crossed out on the site for any content they have submitted, User cannot login, emails to account is disabled, and profile cannot be viewed by any user except Admins.</li>
+\n        <li><strong>Locked</strong> - This Account is locked. User cannot login, emails to account is disabled, but profile can still be viewed by all.</li>
+\n        <li><strong>New Email Required</strong> - Emails to account is disabled. When user logs in again they must submit new email address and verify before access to rest of the website (under this user account). Status stays the same until email is verified. If \"Require User Email\" config option true then any users who login (includes remote accounts) that do not have an email address will automatically switch to this status.</li>
+\n        <li><strong>New Password Required</strong> -  When the user logs in they must submit a new password before access to rest of website (under this user account). This is only for regular accounts and not remote accounts.</li>
+\n        </ul>
+\n    ",
     47 => 'Ändern',
     48 => 'Admin-Gruppen anzeigen',
     49 => 'Admin-Gruppe',
@@ -2179,6 +2188,55 @@ $LANG_structureddatatypes = array(
 $LANG_STRUCT_DATA = array(
     'lang_structured_data_type' => 'Structured Data Type',
     'autotag_desc_structureddata' => '[structureddata:schema_property]Property Value[/structureddata] - Adds a property to the structured data of the content that the autotag is embedded in.'
+);
+
+$LANG_RESCUE = array(
+    0 => 'Login successful',
+    1 => 'Geeklog Emergency Rescue Tool',
+    2 => 'Geeklog Install',
+    3 => 'Geeklog Emergency Rescue Tool',
+    4 => 'Do not forget to <strong>delete this {{SELF}} file once you are done!</strong>  If other users guess the password, they can seriously harm your geeklog installation!',
+    5 => 'Status',
+    6 => 'You are attempting to access a secure section.  You can\'t proceed until you pass the security check.',
+    7 => 'In order to verify you, we require you to enter your database password.  This is the password that is stored in geeklog\'s db-config.php',
+    8 => 'Password',
+    9 => 'Verify Me',
+    10 => 'Password incorrect!',
+    11 => 'enabling ',
+    12 => 'disabling ',
+    13 => 'success ',
+    14 => 'error ',
+    15 => 'There was an error updating configs',
+    16 => 'Updating configs completed successfully',
+    17 => 'There was an error updating your password',
+    18 => 'Geeklog password request',
+    19 => 'Requested Password',
+    20 => 'Someone (hopefully you) has accessed the emergency password request form and a new password:"%s" for your account "%s" on %s, has been generated.',
+    21 => 'If it was not you, please check the security of your site. Make sure to remove the Emergency Rescue Form /admin/rescue.php',
+    22 => 'New password has been sent to the recorded email address',
+    23 => 'There was an error sending email with the subject: ',
+    24 => 'PHP Information',
+    25 => 'Return to main screen',
+    26 => 'System Information',
+    27 => 'PHP version',
+    28 => 'Geeklog version',
+    29 => 'Options',
+    30 => 'If you happen to install a plugin or addon that brings down your geeklog site, you can remedy the problem with the options below.',
+    31 => 'Enable/Disable Plugins',
+    32 => 'Enable/Disable Blocks',
+    33 => 'Edit Select $_CONF Values',
+    34 => 'Reset Admin Password',
+    35 => 'Here you can enable/disable any plugin that is currently installed on your geeklog website.',
+    36 => 'Select a plugin',
+    37 => 'Enable',
+    38 => 'Disable',
+    39 => 'Here you can enable/disable any block (except dynamic) that is currently installed on your geeklog website.',
+    40 => 'Select a block',
+    41 => 'Go',
+    42 => 'You can edit some key $_CONF options.',
+    43 => 'Here you can reset your geeklog root/admin password.',
+    44 => 'Email my password',
+    45 => 'Geeklog appears not to be installed or the install did not complete properly as core information is missing in the Geeklog database. Therefore this rescue tool cannot be used.'
 );
 
 ###############################################################################
