@@ -44,6 +44,12 @@ use mysqli_result;
  */
 class DbMysqli
 {
+    // Minimum requirement
+    const SUPPORTED_MYSQL_VER = '4.1.3';
+
+    // Default database character set
+    const DEFAULT_CHARSET = 'latin1';
+
     // MySQL sql_mode constants
     const MYSQL_SQL_MODE_NONE = 0;    // Prior to MySQL 5.6.6
     const MYSQL_SQL_MODE_566 = 1;
@@ -308,6 +314,31 @@ class DbMysqli
     }
 
     /**
+     * Return if we can connect to MySQL server with the info given
+     *
+     * @param  string  $host
+     * @param  string  $user
+     * @param  string  $pass
+     * @param  string  $database
+     * @return int     0 = failed to connect, 1 = failed to select database, 2 = succeeded
+     */
+    public static function tryConnect($host, $user, $pass, $database)
+    {
+        // Connect to MySQL server
+        $conn = new Mysqli($host, $user, $pass);
+
+        if (!$conn instanceof Mysqli) {
+            return 0;
+        }
+
+        $retval = $conn->select_db($database) ? 2 : 1;
+        $conn->close();
+        $conn = null;
+
+        return $retval;
+    }
+
+    /**
      * constructor for database class
      * This initializes an instance of the database object
      *
@@ -333,6 +364,7 @@ class DbMysqli
         $this->_use_innodb = false;
 
         $this->_connect();
+        $this->_db->query("SET SESSION sql_mode = '" . $this->getMysqlSqlModeString() . "'");
     }
 
     /**
@@ -474,8 +506,6 @@ class DbMysqli
         $sql = $this->fixCreateSQL($sql);
 
         // Run query
-        @$this->_db->query("SET SESSION sql_mode = '" . $this->getMysqlSqlModeString() . "'");
-
         if ($ignore_errors) {
             $result = @$this->_db->query($sql);
         } else {
@@ -1034,5 +1064,35 @@ class DbMysqli
     public function isInnoDb()
     {
         return $this->_use_innodb;
+    }
+
+    /**
+     * Check for InnoDB table support (usually as of MySQL 4.0, but may be
+     * available in earlier versions, e.g. "Max" or custom builds).
+     *
+     * @return  bool true = InnoDB tables supported, false = not supported
+     */
+    public function isInnodbSupported()
+    {
+        $retval = false;
+
+        $result = $this->dbQuery("SHOW ENGINES");
+        $numEngines = $this->dbNumRows($result);
+
+        for ($i = 0; $i < $numEngines; $i++) {
+            $A = $this->dbFetchArray($result, false);
+
+            if (strcasecmp($A['Engine'], 'InnoDB') === 0) {
+                if ((strcasecmp($A['Support'], 'yes') === 0) ||
+                    (strcasecmp($A['Support'], 'default') === 0)
+                ) {
+                    $retval = true;
+                }
+
+                break;
+            }
+        }
+
+        return $retval;
     }
 }

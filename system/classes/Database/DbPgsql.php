@@ -39,6 +39,12 @@ namespace Geeklog\Database;
  */
 class DbPgsql
 {
+    // Minimum requirement
+    const SUPPORTED_PGSQL_VER = '9.1.7';
+
+    // Default database character set
+    const DEFAULT_CHARSET = 'LATIN1';
+
     /**
      * @var string
      */
@@ -207,6 +213,32 @@ class DbPgsql
         } else {
             $this->_errorlog_fn = [$this, 'defaultLogger'];
         }
+    }
+
+    /**
+     * Return if we can connect to PostgreSQL server with the info given
+     *
+     * @param  string  $host
+     * @param  string  $user
+     * @param  string  $pass
+     * @param  string  $database
+     * @return int     0 = failed to connect, 1 = failed to select database, 2 = succeeded
+     */
+    public static function tryConnect($host, $user, $pass, $database)
+    {
+        // Connect to PostgreSQL server
+        $dsn = sprintf('host=%s user=%s password=%s', $host, $user, $pass);
+        $conn = pg_connect($dsn);
+        if ($conn === false) {
+            return 0;
+        }
+
+        pg_close($conn);
+        $dsn = sprintf('host=%s user=%s password=%s dbname=%s', $host, $user, $pass, $database);
+        $conn = pg_connect($dsn);
+        pg_close($conn);
+
+        return  ($conn === false) ? 1 : 2;
     }
 
     /**

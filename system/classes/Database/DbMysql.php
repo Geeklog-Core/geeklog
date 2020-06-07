@@ -139,6 +139,29 @@ class DbMysql extends DbMysqli
     }
 
     /**
+     * Return if we can connect to MySQL server with the info given
+     *
+     * @param  string  $host
+     * @param  string  $user
+     * @param  string  $pass
+     * @param  string  $database
+     * @return int     0 = failed to connect, 1 = failed to select database, 2 = succeeded
+     */
+    public static function tryConnect($host, $user, $pass, $database)
+    {
+        // Connect to MySQL server
+        $conn = @mysql_connect($host, $user, $pass);
+        if ($conn === false) {
+            return 0;
+        }
+
+        $retval = mysql_select_db($database, $conn) ? 2 : 1;
+        mysql_close($conn);
+
+        return $retval;
+    }
+
+    /**
      * constructor for database
      * This initializes an instance of the database object
      *
@@ -165,6 +188,7 @@ class DbMysql extends DbMysqli
         $this->_use_innodb = false;
 
         $this->_connect();
+        mysql_query("SET SESSION sql_mode = '" . $this->getMysqlSqlModeString() . "'", $this->_db);
     }
 
     /**
@@ -185,8 +209,6 @@ class DbMysql extends DbMysqli
         $sql = $this->fixCreateSQL($sql);
 
         // Run query
-        @mysql_query("SET SESSION sql_mode = '" . $this->getMysqlSqlModeString() . "'", $this->_db);
-
         if ($ignore_errors) {
             $result = @mysql_query($sql, $this->_db);
         } else {
