@@ -4,11 +4,11 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
-// | pgsql.class.php                                                           |
+// | DbPgsql.php                                                               |
 // |                                                                           |
 // | PostgreSQL database class                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2017 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Stanislav Palatnik, spalatnikk AT gmail DoT com                  |
 // +---------------------------------------------------------------------------+
@@ -29,16 +29,16 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+namespace Geeklog\Database;
+
 /**
  * This file is the pgsql implementation of the Geeklog abstraction layer.
  * Unfortunately the Geeklog abstraction layer isn't 100% abstract because a few
  * key functions use MySQL's REPLACE INTO syntax which is not a SQL standard.
  * This issue will need to be resolved some time ...
  */
-class Database
+class DbPgsql
 {
-    // PRIVATE PROPERTIES
-
     /**
      * @var string
      */
@@ -94,8 +94,6 @@ class Database
      */
     private $_pgsql_version = 0;
 
-    // PRIVATE METHODS
-
     /**
      * Logs messages
      * Logs messages by calling the function held in $_errorlog_fn
@@ -135,9 +133,8 @@ class Database
 
         $result = $this->dbQuery("SELECT check_table('{$_TABLES[$tableName]}', 'public');", $ignoreErrors);
         $row = $this->dbFetchArray($result);
-        $retval = !empty($row['check_table']);
 
-        return $retval;
+        return !empty($row['check_table']);
     }
 
     /**
@@ -184,7 +181,7 @@ class Database
      *
      * @param  string $msg
      */
-    private function defaultLogger($msg)
+    public function defaultLogger($msg)
     {
         if (is_callable('error_log')) {
             $msg .= PHP_EOL;
@@ -208,7 +205,7 @@ class Database
         if (is_callable($functionName)) {
             $this->_errorlog_fn = $functionName;
         } else {
-            $this->_errorlog_fn = array($this, 'defaultLogger');
+            $this->_errorlog_fn = [$this, 'defaultLogger'];
         }
     }
 
@@ -753,8 +750,7 @@ class Database
                     next($value);
                 }
             } else {
-                // error, they both have to be arrays and of the
-                // same size
+                // error, they both have to be arrays and of the same size
                 return false;
             }
         } else {
@@ -1011,8 +1007,6 @@ class Database
      */
     public function dbEscapeString($str)
     {
-        $retval = pg_escape_string($this->_db, $str);
-
-        return $retval;
+        return pg_escape_string($this->_db, $str);
     }
 }

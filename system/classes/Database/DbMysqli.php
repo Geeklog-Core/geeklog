@@ -4,11 +4,11 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
-// | mysqli.class.php                                                          |
+// | DbMysqli.php                                                              |
 // |                                                                           |
 // | mysql database class with MySQLi extension                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2017 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // |          Kenji Ito, geeklog AT mystral-kk DOT net                         |
@@ -30,13 +30,19 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+namespace Geeklog\Database;
+
+use InvalidArgumentException;
+use Mysqli;
+use mysqli_result;
+
 /**
  * This file is the mysql implementation of the Geeklog abstraction layer.
  * Unfortunately the Geeklog abstraction layer isn't 100% abstract because a few
  * key functions use MySQL's REPLACE INTO syntax which is not a SQL standard.
  * This issue will need to be resolved some time ...
  */
-class Database
+class DbMysqli
 {
     // MySQL sql_mode constants
     const MYSQL_SQL_MODE_NONE = 0;    // Prior to MySQL 5.6.6
@@ -50,67 +56,67 @@ class Database
     /**
      * @var string
      */
-    private $_host = '';
+    protected $_host = '';
 
     /**
      * @var string
      */
-    private $_name = '';
+    protected $_name = '';
 
     /**
      * @var string
      */
-    private $_user = '';
+    protected $_user = '';
 
     /**
      * @var string
      */
-    private $_pass = '';
+    protected $_pass = '';
 
     /**
      * @var string
      */
-    private $_tablePrefix = '';
+    protected $_tablePrefix = '';
 
     /**
-     * @var mysqli|false
+     * @var Mysqli
      */
-    private $_db = false;
+    private $_db;
 
     /**
      * @var bool
      */
-    private $_verbose = false;
+    protected $_verbose = false;
 
     /**
      * @var bool
      */
-    private $_display_error = false;
+    protected $_display_error = false;
 
     /**
      * @var string|callable
      */
-    private $_errorlog_fn = '';
+    protected $_errorlog_fn = '';
 
     /**
      * @var string
      */
-    private $_charset = '';
+    protected $_charset = '';
 
     /**
      * @var int
      */
-    private $_mysql_version = 0;
+    protected $_mysql_version = 0;
 
     /**
      * @var bool
      */
-    private $_use_innodb = false;
+    protected $_use_innodb = false;
 
     /**
      * @var int
      */
-    private $sqlMode = self::MYSQL_SQL_MODE_NONE;
+    protected $sqlMode = self::MYSQL_SQL_MODE_NONE;
 
     /**
      * Logs messages
@@ -119,7 +125,7 @@ class Database
      * @param    string $msg Message to log
      * @access   private
      */
-    private function _errorLog($msg)
+    protected function _errorLog($msg)
     {
         call_user_func($this->_errorlog_fn, $msg);
     }
@@ -137,9 +143,9 @@ class Database
         }
 
         // Connect to MySQL server
-        $this->_db = new mysqli($this->_host, $this->_user, $this->_pass);
+        $this->_db = new Mysqli($this->_host, $this->_user, $this->_pass);
 
-        if (!$this->_db instanceof mysqli) {
+        if (!$this->_db instanceof Mysqli) {
             die('Cannot connect to DB server');
         }
 
@@ -191,7 +197,7 @@ class Database
     {
         $charset = strtolower($this->_charset);
 
-        if (!in_array($charset, array('utf-8', 'utf8', 'utf8mb4'))) {
+        if (!in_array($charset, ['utf-8', 'utf8', 'utf8mb4'])) {
             return true;
         }
 
@@ -238,31 +244,31 @@ class Database
      *
      * @return string
      */
-    private function getMysqlSqlModeString()
+    protected function getMysqlSqlModeString()
     {
-        $sqlModes = array(
-            self::MYSQL_SQL_MODE_NONE => array(),
-            self::MYSQL_SQL_MODE_566  => array(
+        $sqlModes = [
+            self::MYSQL_SQL_MODE_NONE => [],
+            self::MYSQL_SQL_MODE_566  => [
                 'NO_ENGINE_SUBSTITUTION'
-            ),
-            self::MYSQL_SQL_MODE_570 => array(
+            ],
+            self::MYSQL_SQL_MODE_570 => [
                 'NO_ENGINE_SUBSTITUTION',
-            ),
-            self::MYSQL_SQL_MODE_575  => array(
+            ],
+            self::MYSQL_SQL_MODE_575  => [
                 'ONLY_FULL_GROUP_BY', 'STRICT_TRANS_TABLES', 'NO_ENGINE_SUBSTITUTION',
-            ),
-            self::MYSQL_SQL_MODE_577  => array(
+            ],
+            self::MYSQL_SQL_MODE_577  => [
                 'ONLY_FULL_GROUP_BY', 'STRICT_TRANS_TABLES', 'NO_AUTO_CREATE_USER', 'NO_ENGINE_SUBSTITUTION',
-            ),
-            self::MYSQL_SQL_MODE_578  => array(
+            ],
+            self::MYSQL_SQL_MODE_578  => [
                 'ONLY_FULL_GROUP_BY', 'STRICT_TRANS_TABLES', 'NO_ZERO_IN_DATE', 'NO_ZERO_DATE',
                 'ERROR_FOR_DIVISION_BY_ZERO', 'NO_AUTO_CREATE_USER', 'NO_ENGINE_SUBSTITUTION',
-            ),
-            self::MYSQL_SQL_MODE_800  => array(
+            ],
+            self::MYSQL_SQL_MODE_800  => [
                 'ONLY_FULL_GROUP_BY', 'STRICT_TRANS_TABLES', 'NO_ZERO_IN_DATE', 'NO_ZERO_DATE',
                 'ERROR_FOR_DIVISION_BY_ZERO', 'NO_AUTO_CREATE_USER', 'NO_ENGINE_SUBSTITUTION',
-            ),
-        );
+            ],
+        ];
 
         if ($this->_mysql_version < 50606) {
             $currentMode = self::MYSQL_SQL_MODE_NONE;
@@ -297,9 +303,8 @@ class Database
         global $_TABLES;
 
         $result = $this->dbQuery("SHOW TABLES LIKE '{$_TABLES[$tableName]}'", $ignoreErrors);
-        $retval = ($this->dbNumRows($result) > 0);
 
-        return $retval;
+        return ($this->dbNumRows($result) > 0);
     }
 
     /**
@@ -380,7 +385,7 @@ class Database
      *
      * @param  string $msg
      */
-    private function defaultLogger($msg)
+    public function defaultLogger($msg)
     {
         if (is_callable('error_log')) {
             $msg .= PHP_EOL;
@@ -404,26 +409,18 @@ class Database
         if (is_callable($functionName)) {
             $this->_errorlog_fn = $functionName;
         } else {
-            $this->_errorlog_fn = array($this, 'defaultLogger');
+            $this->_errorlog_fn = [$this, 'defaultLogger'];
         }
     }
 
     /**
-     * Executes a query on the MySQL server
-     * This executes the passed SQL and returns the recordset or errors out
+     * Fix an SQL statement containing "CREATE TABLE"
      *
-     * @param    string $sql              SQL to be executed
-     * @param    int    $ignore_errors    If 1 this function suppresses any error messages
-     * @return   mysqli_result|bool       Returns results of query
+     * @param  string  $sql
+     * @return string
      */
-    public function dbQuery($sql, $ignore_errors = 0)
+    protected function fixCreateSQL($sql)
     {
-        if ($this->_verbose) {
-            $this->_errorLog("\n***inside database->dbQuery***");
-            $this->_errorLog("\n*** sql to execute is $sql ***");
-        }
-
-        // Modifies "CREATE TABLE" SQL
         if (preg_match('/^\s*create\s\s*table\s/i', $sql)) {
             $p = strrpos($sql, ')');
 
@@ -455,6 +452,26 @@ class Database
                 $sql .= $option;
             }
         }
+
+        return $sql;
+    }
+
+    /**
+     * Executes a query on the MySQL server
+     * This executes the passed SQL and returns the recordset or errors out
+     *
+     * @param    string $sql              SQL to be executed
+     * @param    int    $ignore_errors    If 1 this function suppresses any error messages
+     * @return   mysqli_result|bool       Returns results of query
+     */
+    public function dbQuery($sql, $ignore_errors = 0)
+    {
+        if ($this->_verbose) {
+            $this->_errorLog("\n***inside database->dbQuery***");
+            $this->_errorLog("\n*** sql to execute is $sql ***");
+        }
+
+        $sql = $this->fixCreateSQL($sql);
 
         // Run query
         @$this->_db->query("SET SESSION sql_mode = '" . $this->getMysqlSqlModeString() . "'");
@@ -576,7 +593,7 @@ class Database
             $this->_errorLog("\n*** inside database->dbDelete ***");
         }
 
-        $sql = "DELETE FROM $table";
+        $sql = "DELETE FROM {$table}";
         $id_and_value = $this->_buildIdValuePair($id, $value);
 
         if ($id_and_value === false) {
@@ -649,7 +666,7 @@ class Database
      * @param    string       $table Table to perform count on
      * @param    array|string $id    field name(s) of fields to use in where clause
      * @param    array|string $value Value(s) to use in where clause
-     * @return   bool     returns count on success otherwise FALSE
+     * @return   int|bool            returns count on success otherwise FALSE
      */
     public function dbCount($table, $id = '', $value = '')
     {
@@ -657,7 +674,7 @@ class Database
             $this->_errorLog("\n*** Inside database->dbCount ***");
         }
 
-        $sql = "SELECT COUNT(*) FROM $table";
+        $sql = "SELECT COUNT(*) FROM {$table}";
         $id_and_value = $this->_buildIdValuePair($id, $value);
 
         if ($id_and_value === false) {
@@ -676,7 +693,7 @@ class Database
             $this->_errorLog("\n*** Leaving database->dbCount ***");
         }
 
-        return $this->dbResult($result, 0);
+        return (int) $this->dbResult($result, 0);
     }
 
     /**
@@ -919,7 +936,7 @@ class Database
             $this->_errorLog("\n*** Inside database->dbLockTable ***");
         }
 
-        $sql = "LOCK TABLES $table WRITE";
+        $sql = "LOCK TABLES {$table} WRITE";
         $this->dbQuery($sql);
 
         if ($this->_verbose) {
@@ -1006,9 +1023,7 @@ class Database
      */
     public function dbEscapeString($str)
     {
-        $retval = $this->_db->real_escape_string($str);
-
-        return $retval;
+        return $this->_db->real_escape_string($str);
     }
 
     /**
