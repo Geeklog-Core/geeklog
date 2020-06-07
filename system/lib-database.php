@@ -35,6 +35,10 @@
  * NOTE: As of Geeklog 1.3.5 you should not have to edit this file any more.
  */
 
+use Geeklog\Database\DbMysql;
+use Geeklog\Database\DbMysqli;
+use Geeklog\Database\DbPgsql;
+
 if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
@@ -131,24 +135,21 @@ $_TABLES['userevent'] = $_DB_table_prefix . 'userevent';
 // | DO NOT TOUCH ANYTHING BELOW HERE                                          |
 // +---------------------------------------------------------------------------+
 
-/**
- * Include appropriate DBMS object
- */
-if (($_DB_dbms === 'mysql') && class_exists('MySQLi')) {
-    require_once $_CONF['path_system'] . 'databases/mysqli.class.php';
-} else {
-    require_once $_CONF['path_system'] . 'databases/' . $_DB_dbms . '.class.php';
+// Set the appropriate database character set
+if (empty($_DB_charset)) {
+    $_DB_charset = $_CONF['default_charset'];
 }
 
-// Instantiate the database object
-if (!empty($_DB_charset)) {
-    $_DB = new Database(
-        $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, 'COM_errorLog', $_DB_charset
-    );
+if ($_DB_dbms === 'mysql') {
+    if (class_exists('MySQLi')) {
+        $_DB = new DbMysqli($_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, 'COM_errorLog', $_DB_charset);
+    } else {
+        $_DB = new DbMysql($_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, 'COM_errorLog', $_DB_charset);
+    }
+} elseif ($_DB_dbms === 'pgsql') {
+    $_DB = new DbPgsql($_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, 'COM_errorLog', $_DB_charset);
 } else {
-    $_DB = new Database(
-        $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, 'COM_errorLog', $_CONF['default_charset']
-    );
+    throw new InvalidArgumentException(sprintf('Unknown database driver "%s" was specified', $_DB_dbms));
 }
 
 if (isset($_CONF['rootdebug']) && $_CONF['rootdebug']) {
