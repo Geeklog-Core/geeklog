@@ -425,6 +425,12 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
     $result = false;
 
     if (!empty($id) && !empty($type)) {
+		
+		// Make sure type is setup in the arrays else bail
+		if (!isset($_XMLSMAP_CONF[$type]) ||  !isset($_XMLSMAP_CONF['priorities'][$type]) || !isset($_XMLSMAP_CONF['frequencies'][$type])) {
+			return;
+		}		
+		
         require_once __DIR__ . '/xmlsitemap.class.php';
 
         $sitemap = new XMLSitemap(COM_getCharset());
