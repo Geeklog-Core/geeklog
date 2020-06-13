@@ -11,7 +11,7 @@
 <!-- BEGIN text-element -->
 <div{hide_row} class="config_name"><div class="config_label">{display_name} {doc_link} {unset_link}</div>
 <input type="hidden" value="true" name="{name}[nameholder]"{xhtml}>
-<input type="text" class="opt{error_class}" name="{name}" value="{value}"{xhtml}>
+<input type="text" class="opt{error_class}" name="{name}" value="{value}"{readonly}{xhtml}>
 {delete}{error_block}
 </div>
 <!-- END text-element -->
