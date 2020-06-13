@@ -48,7 +48,6 @@ $LANG_confignames['xmlsitemap'] = array(
     'mobile_sitemap_file' => 'Nome del file per Sitemap per Dispositivi Mobili',
     'include_homepage' => 'Homepage in Sitemap',
     'types' => 'Contenuto di sitemap',
-    'exclude' => 'Estensioni da escludere dal Sitemap',
     'lastmod' => 'Content Types to include lastmod element',
     'priorities' => 'Priority',
     'frequencies' => 'Frequency',

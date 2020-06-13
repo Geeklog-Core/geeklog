@@ -266,7 +266,7 @@ class XMLSitemap
      * @param  string  $type  'article', 'staticpages', ...
      * @return string         any of 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never', ''
      */
-    public function getChangeFreq($type)
+    public function getChangeFrequency($type)
     {
         return isset($this->changeFrequencies[$type]) ? $this->changeFrequencies[$type] : '';
     }
@@ -593,7 +593,7 @@ class XMLSitemap
                         // Frequency of change
                         $frequency = isset($entry['change-freq'])
                             ? $entry['change-freq']
-                            : $this->getChangeFreq($type);
+                            : $this->getChangeFrequency($type);
 
                         // Last modified time stamp
                         $lastModified = (isset($entry['date-modified']) && in_array($type, $_XMLSMAP_CONF['lastmod']))

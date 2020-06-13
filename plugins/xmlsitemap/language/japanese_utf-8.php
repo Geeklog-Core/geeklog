@@ -52,7 +52,6 @@ $LANG_confignames['xmlsitemap'] = array(
     'mobile_sitemap_file' => 'モバイルサイトマップ名',
     'include_homepage' => 'トップページをサイトマップに含める',
     'types' => 'サイトマップの内容',
-    'exclude' => '除外するプラグイン',
     'lastmod' => '最終編集日',
     'priorities' => '優先度',
     'frequencies' => '頻度',

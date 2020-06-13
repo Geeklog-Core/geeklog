@@ -210,6 +210,7 @@ function plugin_upgrade_xmlsitemap()
                         DB_query($sql);
                     }
                 }
+                xmlsitemap_update_ConfValues_2_0_3();
 
                 // Add 'xmlsitemap.edit' feature and assign it to those in the "XMLSitemap Admin" group
                 $featureId = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'xmlsitemap.edit'");
@@ -320,7 +321,7 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
         $_XMLSMAP_CONF = XMLSMAP_loadConfig();
         // Fail gracefully here if $_XMLSMAP_CONF not completely loaded
         // This means after migrate the sitemap most likely will be outdated
-        if (($_XMLSMAP_CONF === false) || !is_array($_XMLSMAP_CONF['types']) || !is_array($_XMLSMAP_CONF['exclude'])) {
+        if (($_XMLSMAP_CONF === false) || !is_array($_XMLSMAP_CONF['types'])) {
             return true;
         }
     }
@@ -328,11 +329,6 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
     if (($type !== null) && !in_array($type, $_XMLSMAP_CONF['types'])) {
         // Notified about content change, but from an irrelevant plugin, one
         // that doesn't implement 'plugin_getiteminfo_xxx' function.
-        return true;
-    }
-
-    if (($type !== null) && in_array($type, $_XMLSMAP_CONF['exclude'])) {
-        // plugin is on our exclude list, so ignore
         return true;
     }
 
@@ -351,7 +347,7 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
     );
 
     // Set types
-    $types = array_diff($_XMLSMAP_CONF['types'], $_XMLSMAP_CONF['exclude']);
+    $types = $_XMLSMAP_CONF['types'];
     if ($include !== null) {
         if (($index = array_search($exclude, $types)) === false) {
             $types[] = $include;
@@ -422,50 +418,47 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
 {
     global $_XMLSMAP_CONF;
 
+    // Make sure type is setup in the arrays and $id is set
+    if (empty($type) || empty($_XMLSMAP_CONF['types'][$type]) || empty($id)) {
+        return;
+    }
+
     $result = false;
 
-    if (!empty($id) && !empty($type)) {
-		
-		// Make sure type is setup in the arrays else bail
-		if (!isset($_XMLSMAP_CONF[$type]) ||  !isset($_XMLSMAP_CONF['priorities'][$type]) || !isset($_XMLSMAP_CONF['frequencies'][$type])) {
-			return;
-		}		
-		
-        require_once __DIR__ . '/xmlsitemap.class.php';
+    require_once __DIR__ . '/xmlsitemap.class.php';
 
-        $sitemap = new XMLSitemap(COM_getCharset());
-        $sitemap->setFileNames(
-            @$_XMLSMAP_CONF['sitemap_file'],
-            @$_XMLSMAP_CONF['mobile_sitemap_file'],
-            @$_XMLSMAP_CONF['news_sitemap_file']
-        );
-        $newItem = PLG_getItemInfo($type, $id, 'url,date-modified', 1);
+    $sitemap = new XMLSitemap(COM_getCharset());
+    $sitemap->setFileNames(
+        @$_XMLSMAP_CONF['sitemap_file'],
+        @$_XMLSMAP_CONF['mobile_sitemap_file'],
+        @$_XMLSMAP_CONF['news_sitemap_file']
+    );
+    $newItem = PLG_getItemInfo($type, $id, 'url,date-modified', 1);
 
-        if (!empty($newItem)) {
-            if (!empty($old_id) && ($id !== $old_id)) {
-                // Item updated
+    if (!empty($newItem)) {
+        if (!empty($old_id) && ($id !== $old_id)) {
+            // Item updated
 
-                // PLG_getItemInfo doesn't work here, since the item has already been deleted from database
-                $oldUrl = PLG_idToURL($type, $sub_type, $old_id);
-                $sitemap->beginUpdate();
-                $sitemap->deleteItem($oldUrl);
-                $sitemap->addItem(
-                    $newItem[0], $newItem[1],
-                    $_XMLSMAP_CONF['priorities'][$type], $_XMLSMAP_CONF['frequencies'][$type]
-                );
-                $result = $sitemap->endUpdate();
-            } else {
-                // Item created
-                $result = $sitemap->addItem(
-                    $newItem[0], $newItem[1],
-                    $_XMLSMAP_CONF['priorities'][$type], $_XMLSMAP_CONF['frequencies'][$type]
-                );
-            }
+            // PLG_getItemInfo doesn't work here, since the item has already been deleted from database
+            $oldUrl = PLG_idToURL($type, $sub_type, $old_id);
+            $sitemap->beginUpdate();
+            $sitemap->deleteItem($oldUrl);
+            $sitemap->addItem(
+                $newItem[0], $newItem[1],
+                @$_XMLSMAP_CONF['priorities'][$type], @$_XMLSMAP_CONF['frequencies'][$type]
+            );
+            $result = $sitemap->endUpdate();
+        } else {
+            // Item created
+            $result = $sitemap->addItem(
+                $newItem[0], $newItem[1],
+                @$_XMLSMAP_CONF['priorities'][$type], @$_XMLSMAP_CONF['frequencies'][$type]
+            );
         }
     }
 
     if (!$result) {
-        // Tried to update sitemap files partially, but failed.  Let's resort to the old way
+        // Tried to update sitemap files partially, but failed.  Let's use the old way
         XMLSMAP_update($type);
     }
 }
@@ -735,8 +728,7 @@ function plugin_pluginstatechange_xmlsitemap($type, $status)
 
     switch ($status) {
         case 'installed':
-            if (is_callable('plugin_getiteminfo_' . $type) &&
-                !in_array($type, $_XMLSMAP_CONF['exclude'])) {
+            if (is_callable('plugin_getiteminfo_' . $type)) {
                 // A new plugin supporting plugin_getiteminfo_xxx() was
                 // installed
                 $_XMLSMAP_CONF['types'][] = $type;

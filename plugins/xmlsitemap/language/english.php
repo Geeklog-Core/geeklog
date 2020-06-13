@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | english.php                                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2014 by the following authors:                         |
+// | Copyright (C) 2009-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO         - geeklog AT mystral-kk DOT net                |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -56,7 +56,6 @@ $LANG_confignames['xmlsitemap'] = array(
     'mobile_sitemap_file' => 'Mobile Sitemap file name',
     'include_homepage'    => 'Homepage in Sitemap',
     'types'               => 'Contents of sitemap',
-    'exclude'             => 'Plugins to exclude from sitemap',
     'lastmod'             => 'Content Types to include lastmod element',
     'priorities'          => 'Priority',
     'frequencies'         => 'Frequency',

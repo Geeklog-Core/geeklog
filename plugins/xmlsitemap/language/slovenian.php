@@ -52,7 +52,6 @@ $LANG_confignames['xmlsitemap'] = array(
     'mobile_sitemap_file' => 'Mobilno ime kazala strani',
     'include_homepage' => 'Homepage in Sitemap',
     'types' => 'Vsebina kazala strani',
-    'exclude' => 'Vti�niki za iklju�itev iz kazala strani',
     'lastmod' => 'Content Types to include lastmod element',
     'priorities' => 'Priority',
     'frequencies' => 'Frequency',

@@ -59,3 +59,16 @@ function xmlsitemap_update_ConfValues_2_0_2()
     $c->add('include_homepage', $_XMLSMAP_DEFAULT['include_homepage'],
         'select', 0, 0, 1, 25, true, $me, 0);
 }
+
+function xmlsitemap_update_ConfValues_2_0_3()
+{
+    global $_CONF, $_XMLSMAP_DEFAULT;
+
+    require_once __DIR__ . '/install_defaults.php';
+
+    $c = config::get_instance();
+    $me = 'xmlsitemap';
+
+    // Drop $_XMLSMAP_CONF['exclude']
+    $c->del('exclude', $me);
+}

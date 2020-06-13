@@ -52,7 +52,6 @@ $LANG_confignames['xmlsitemap'] = array(
     'mobile_sitemap_file' => 'Mobile Saidikaardi faili nimi',
     'include_homepage' => 'Homepage in Sitemap',
     'types' => 'Saidikaardi sisu',
-    'exclude' => 'Saidikaardilt v�ljaj��tavad pluginad',
     'lastmod' => 'Content Types to include lastmod element',
     'priorities' => 'Priority',
     'frequencies' => 'Frequency',
