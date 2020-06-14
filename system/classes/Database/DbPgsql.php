@@ -1041,4 +1041,14 @@ class DbPgsql
     {
         return pg_escape_string($this->_db, $str);
     }
+
+    /**
+     * Return if PostgreSQL server supports utf8mb4 charset
+     *
+     * @return bool
+     */
+    public function isUtf8mb4Supported()
+    {
+        return true;
+    }
 }

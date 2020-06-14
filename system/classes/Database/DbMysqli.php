@@ -1095,4 +1095,14 @@ class DbMysqli
 
         return $retval;
     }
+
+    /**
+     * Return if MySQL server supports utf8mb4 charset
+     *
+     * @return bool
+     */
+    public function isUtf8mb4Supported()
+    {
+        return ($this->_db->server_version > 50503);
+    }
 }

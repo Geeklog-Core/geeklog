@@ -484,4 +484,23 @@ class DbMysql extends DbMysqli
     {
         return mysql_real_escape_string($str, $this->_db);
     }
+
+    /**
+     * Return if MySQL server supports utf8mb4 charset
+     *
+     * @return bool
+     */
+    public function isUtf8mb4Supported()
+    {
+        $version = $this->dbGetVersion();
+        $version = preg_replace('/[^0-9.]/', '', $version);
+        $parts = explode('.', $version, 3);
+        $version = 0;
+
+        while (($part = array_shift($parts)) !== null) {
+            $version = 100 * $version + (int) $part;
+        }
+
+        return ($version > 50503);
+    }
 }
