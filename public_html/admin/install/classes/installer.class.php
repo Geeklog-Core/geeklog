@@ -995,15 +995,13 @@ class Installer
             $prefix = $info['file'];
 
             if (file_exists($gl_path . '/sql/' . $prefix . '_tableanddata.php') &&
-                file_exists($gl_path . '/system/databases/' . $prefix
-                    . '.class.php')
+                file_exists($gl_path . '/system/classes/Database/Db' . ucfirst($prefix)
+                    . '.php')
             ) {
                 if ($prefix === 'mysql') {
                     // check that the MySQLi driver file is also there so we
                     // don't have to check for it every time at runtime
-                    if (!file_exists($gl_path . '/system/databases/'
-                        . 'mysqli.class.php')
-                    ) {
+                    if (!file_exists($gl_path . '/system/classes/Database/DbMysqli.php')) {
                         continue;
                     }
                 }
