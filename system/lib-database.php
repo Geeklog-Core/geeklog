@@ -695,3 +695,19 @@ function DB_rollBack()
 
     return $_DB->dbRollback();
 }
+
+/**
+ * Return if InnoDB storage engine is supported
+ *
+ * @return bool
+ */
+function DB_innoDbSupported()
+{
+    global $_DB_dbms, $_DB;
+
+    if ($_DB_dbms === 'mysql') {
+        return $_DB->isInnodbSupported();
+    } else {
+        return false;
+    }
+}

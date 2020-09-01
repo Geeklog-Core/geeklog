@@ -13,6 +13,9 @@ class Installer
     const SUPPORTED_MYSQL_VER = '4.1.3';
     const SUPPORTED_PGSQL_VER = '9.1.7';
 
+    // Default database character set
+    const DEFAULT_DB_CHARSET = 'latin1';
+
     // Default UI language
     const DEFAULT_LANGUAGE = 'english';
 
@@ -106,7 +109,7 @@ class Installer
 
         return array_key_exists($charset, $this->databaseCharsets[$driver])
             ? $this->databaseCharsets[$driver][$charset]
-            : 'latin1';
+            : self::DEFAULT_DB_CHARSET;
     }
 
     /**
@@ -115,7 +118,7 @@ class Installer
     public function __construct()
     {
         global $LANG_BIGDUMP, $LANG_CHARSET, $LANG_DIRECTION, $LANG_ERROR, $LANG_HELP, $LANG_INSTALL,
-               $LANG_LABEL, $LANG_MIGRATE, $LANG_PLUGINS, $LANG_RESCUE, $LANG_SUCCESS;
+               $LANG_LABEL, $LANG_MIGRATE, $LANG_PLUGINS, $LANG_SUCCESS;
 
         // this is not ideal but will stop PHP 5.3.0ff from complaining ...
         date_default_timezone_set(@date_default_timezone_get());
@@ -138,7 +141,6 @@ class Installer
         if (!file_exists(PATH_INSTALL . 'language/' . $language . '.php')) {
             $language = self::DEFAULT_LANGUAGE;
         }
-
         $this->env['language'] = $language;
         require_once PATH_INSTALL . 'language/' . $language . '.php';
 
@@ -164,7 +166,6 @@ class Installer
             'LABEL'     => $LANG_LABEL,
             'MIGRATE'   => $LANG_MIGRATE,
             'PLUGINS'   => $LANG_PLUGINS,
-            'RESCUE'    => $LANG_RESCUE,
             'SUCCESS'   => $LANG_SUCCESS,
         ];
 
@@ -255,7 +256,6 @@ class Installer
                 // If size exceeds, display an error message
                 $content = '<h1>' . $this->LANG['ERROR'][8] . '</h1>' . PHP_EOL
                     . $this->getAlertMessage($this->LANG['ERROR'][7], 'error');
-
                 $this->display($content);
                 die(1);
             }
@@ -263,7 +263,7 @@ class Installer
     }
 
     /**
-     * Check if any message for upgrades,  exit the installer
+     * Check if any message for upgrades, exit the installer
      *
      * @param  string  $currentVersion
      * @return string
@@ -292,12 +292,14 @@ class Installer
                         }
                     }
                 } else {
-                    // Upgrade message array changed in Geeklog v2.2.0 to allow multiple boxes of the same type (warning, information or error) to be displayed in the same Geeklog version
+                    // Upgrade message array changed in Geeklog v2.2.0 to allow multiple boxes of the same type
+                    // (warning, information or error) to be displayed in the same Geeklog version
                     foreach ($message as $id => $info) {
                         $type = $info[0];
                         $title_id = $info[1];
                         $message_id = $info[2];
                         $retval .= $this->getAlertMessage($this->LANG['ERROR'][$message_id], $type, $this->LANG['ERROR'][$title_id]);
+
                         // record what type of prompt we need
                         if ($type === 'information' || $type === 'warning' || $type === 'error') {
                             if ($prompt !== 'error') {
@@ -384,7 +386,7 @@ class Installer
     }
 
     /**
-     * Check PHP version and exit if the environment is too pld
+     * Check PHP version and exit if the environment is too old
      */
     public function checkPhpVersion()
     {
@@ -2039,36 +2041,6 @@ class Installer
     }
 
     /**
-     * Check for InnoDB table support (usually as of MySQL 4.0, but may be
-     * available in earlier versions, e.g. "Max" or custom builds).
-     *
-     * @return  bool true = InnoDB tables supported, false = not supported
-     */
-    private function isInnodbSupported()
-    {
-        $retval = false;
-
-        $result = DB_query("SHOW ENGINES");
-        $numEngines = DB_numRows($result);
-
-        for ($i = 0; $i < $numEngines; $i++) {
-            $A = DB_fetchArray($result);
-
-            if (strcasecmp($A['Engine'], 'InnoDB') === 0) {
-                if ((strcasecmp($A['Support'], 'yes') === 0) ||
-                    (strcasecmp($A['Support'], 'default') === 0)
-                ) {
-                    $retval = true;
-                }
-
-                break;
-            }
-        }
-
-        return $retval;
-    }
-
-    /**
      * Get the current installed version of Geeklog
      *
      * @return  string  Geeklog version in x.x.x format
@@ -2519,7 +2491,6 @@ class Installer
             }
         }
     }
-
 
     /**
      * Perform database upgrades
@@ -4185,7 +4156,7 @@ class Installer
             if ($db_engine === 'InnoDB') {
                 // we've migrated, probably to a different server
                 // - so check InnoDB support again
-                if ($this->innodbSupported()) {
+                if (DB_innoDbSupported()) {
                     $use_innodb = true;
                 } else {
                     // no InnoDB support on this server
@@ -5072,6 +5043,8 @@ HTML;
 
     /**
      * Display the installer
+     *
+     * @param string$content
      */
     public function display($content)
     {
@@ -5100,7 +5073,7 @@ HTML;
         $this->env['dbconfig_path'] = $this->sanitizePath($this->env['dbconfig_path']);
         $this->env['use_innodb'] = false;
 
-		// Before we have db-config path lets guess
+		// Before we have db-config path let's guess
 		if (empty($this->env['dbconfig_path'])) {
 			// Prepare some hints about what /path/to/geeklog might be ...
 			$this->env['gl_path'] = BASE_FILE;

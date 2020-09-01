@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog installation script.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2019 by the following authors:                         |
+// | Copyright (C) 2007-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West         - matt AT mattdanger DOT net                   |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -43,7 +43,7 @@ define('BASE_FILE', str_replace('\\', '/', __FILE__));
 require_once __DIR__ . '/classes/micro_template.class.php';
 require_once __DIR__ . '/classes/installer.class.php';
 
-// Note: PHP error repoting uses the settings found in siteconfig.php for developer mode
+// Note: PHP error reporting uses the settings found in siteconfig.php for developer mode
 //  PHP error reporting is set in the spots below and should be covered by most parts of install (except in help and stuff above):
 //  - installer run function (not construct)
 //  - By lib-common.php when required
