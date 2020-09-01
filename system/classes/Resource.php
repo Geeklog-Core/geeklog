@@ -62,7 +62,7 @@ class Resource
     const UIKIT_VERSION = '2.27.5';
     const UIKIT_PRIORITY = -3000;
 
-    const UIKIT3_VERSION = '3.4.6';
+    const UIKIT3_VERSION = '3.5.7';
     const UIKIT3_PRIORITY = -3000;
 
     /**
@@ -115,12 +115,12 @@ class Resource
     /**
      * @var string
      */
-    private $theme = self::DEFAULT_THEME;
+    private $theme;
 
     /**
      * @var bool to check if compatible with Modern Curve theme
      */
-    private $compatibleWithMC = false;
+    private $compatibleWithMC;
 
     /**
      * @var array
