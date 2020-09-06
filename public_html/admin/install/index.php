@@ -41,6 +41,10 @@ define('PATH_LAYOUT', PATH_INSTALL . 'layout');
 define('BASE_FILE', str_replace('\\', '/', __FILE__));
 
 require_once __DIR__ . '/classes/micro_template.class.php';
+require_once __DIR__ . '/classes/Common.php';
+require_once __DIR__ . '/classes/Install.php';
+require_once __DIR__ . '/classes/Upgrade.php';
+require_once __DIR__ . '/classes/Migrate.php';
 require_once __DIR__ . '/classes/installer.class.php';
 
 // Note: PHP error reporting uses the settings found in siteconfig.php for developer mode
