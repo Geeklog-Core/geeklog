@@ -197,68 +197,6 @@ class Migrate extends Common
     }
 
     /**
-     * @return string
-     */
-    private function getLanguage()
-    {
-        return Common::$env['language'];
-    }
-
-    /**
-     * Upgrade any enabled plugins
-     * NOTE: Needs a fully working Geeklog, so can only be done late in the upgrade
-     *       process!
-     *
-     * @param  boolean  $migration  whether the upgrade is part of a site migration
-     * @param  array    $old_conf   old $_CONF values before the migration
-     * @return   int     number of failed plugin updates (0 = everything's fine)
-     * @see      PLG_upgrade
-     * @see      PLG_migrate
-     */
-    private function pluginUpgrades($migration = false, $old_conf = [])
-    {
-        global $_CONF, $_PLUGINS, $_TABLES;
-
-        $failed = 0;
-
-        $result = DB_query("SELECT pi_name, pi_version FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
-        $numPlugins = DB_numRows($result);
-
-        for ($i = 0; $i < $numPlugins; $i++) {
-            list($pi_name, $pi_version) = DB_fetchArray($result);
-
-            $isSuccess = true;
-            if ($migration) {
-                $isSuccess = PLG_migrate($pi_name, $old_conf);
-            }
-
-            if ($isSuccess) {
-                $code_version = PLG_chkVersion($pi_name);
-                if (!empty($code_version) && ($code_version != $pi_version)) {
-                    $isSuccess = PLG_upgrade($pi_name);
-                }
-            }
-
-            if (!$isSuccess) {
-                // migration or upgrade failed - disable plugin
-                DB_change($_TABLES['plugins'], 'pi_enabled', 0,
-                    'pi_name', $pi_name);
-                COM_errorLog("Migration or upgrade for '{$pi_name}' plugin failed - plugin disabled");
-                $failed++;
-            }
-        }
-
-        // Only after all the other plugins are updated can we update sitemaps
-        if (in_array('xmlsitemap', $_PLUGINS)) {
-            require_once $_CONF['path'] . 'plugins/xmlsitemap/functions.inc';
-            XMLSMAP_update();
-            COM_errorLog('Successfully updated/migrated the "XMLSitemap" plugin');
-        }
-
-        return $failed;
-    }
-
-    /**
      * Migrate page 1 - Form for user to enter their database and path information
      * and to select a database backup file from the backups directory
      * or upload a backup from their computer.
@@ -697,7 +635,7 @@ class Migrate extends Common
             $backLink = 'index.php?'
                 . http_build_query([
                     'mode'     => 'migrate',
-                    'language' => $this->getLanguage(),
+                    'language' => Common::$env['language'],
                 ]);
             exit($this->getAlertMsg(sprintf($LANG_MIGRATE[40], $backupFile, $backLink)));
         }
@@ -909,7 +847,7 @@ HTML;
             // We did a database upgrade above. Now that any missing plugins
             // have been disabled and we've loaded lib-common.php, perform
             // upgrades for the remaining plugins.
-            $disabled_plugins = $this->pluginUpgrades(true, $_OLD_CONF);
+            $disabled_plugins = $this->upgradePlugins(true, false, $_OLD_CONF);
         }
 
         // finally, check for any new plugins and install them
@@ -975,9 +913,6 @@ HTML;
         if ((!empty($_OLD_CONF['site_url'])) & (!empty($_CONF['site_url'])) && ($_OLD_CONF['site_url'] != $_CONF['site_url'])) {
             self::updateSiteUrl($_OLD_CONF['site_url'], $_CONF['site_url']);
         }
-
-        // Clear the Geeklog Cache in case paths etc. in cache files
-        $this->clearCache();
 
         /**
          * Import complete.

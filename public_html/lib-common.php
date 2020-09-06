@@ -149,7 +149,7 @@ $_CONF['language_site_default'] = $_CONF['language']; // Store original site def
 // If default site theme is not compatible then a warning message will be displayed to the Root user
 $_CONF['min_theme_gl_version'] = '2.2.1'; // Updated to 2.2.1 since index.thtml file added and header and footer files removed. Multiple new Template Variables also exist
 
-// Installer calls lib-common so make sure it doesn't get affectd by certain config options
+// Installer calls lib-common so make sure it doesn't get affected by certain config options
 if (defined('GL_INSTALL_ACTIVE')) {
     $_CONF['site_enabled'] = true;
     $_CONF['demo_mode'] = false;

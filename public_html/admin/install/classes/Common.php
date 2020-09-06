@@ -2112,23 +2112,6 @@ abstract class Common
     }
 
     /**
-     * Clear cache files
-     *
-     * @param  string  $plugin
-     */
-    protected function clearCache($plugin = '')
-    {
-        global $_CONF;
-
-        if (!empty($plugin)) {
-            $plugin = '__' . $plugin . '__';
-        }
-
-        $this->clearCacheDirectories($_CONF['path'] . 'data/layout_cache/', $plugin);
-        $this->clearCacheDirectories($_CONF['path'] . 'data/layout_css/', $plugin);
-    }
-
-    /**
      * Return the database character set
      *
      * @param  string  $driver  either 'mysql' or 'pgsql'
@@ -2148,5 +2131,53 @@ abstract class Common
         return array_key_exists($charset, $this->databaseCharsets[$driver])
             ? $this->databaseCharsets[$driver][$charset]
             : self::DEFAULT_DB_CHARSET;
+    }
+
+    /**
+     * Upgrade any enabled plugins
+     * NOTE: Needs a fully working Geeklog, so can only be done late in the upgrade
+     *       process!
+     *
+     * @param  boolean  $migration  whether the upgrade is part of a site migration
+     * @param  bool  $upgrade  whether to upgrade plugins
+     * @param  array    $old_conf   old $_CONF values before the migration
+     * @return int     number of failed plugin updates (0 = everything's fine)
+     * @see     PLG_upgrade
+     * @see     PLG_migrate
+     */
+    protected function upgradePlugins($migration = false, $upgrade = false, array $old_conf = [])
+    {
+        global $_TABLES;
+
+        $failed = 0;
+
+        $result = DB_query("SELECT pi_name, pi_version FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+        $numPlugins = DB_numRows($result);
+
+        for ($i = 0; $i < $numPlugins; $i++) {
+            list($pi_name, $pi_version) = DB_fetchArray($result);
+            $success = true;
+
+            if ($migration) {
+                $success = PLG_migrate($pi_name, $old_conf);
+            }
+
+            if (($success === true) && $upgrade) {
+                $codeVersion = PLG_chkVersion($pi_name);
+
+                if (!empty($codeVersion) && ($codeVersion != $pi_version)) {
+                    $success = PLG_upgrade($pi_name);
+                }
+            }
+
+            if ($success !== true) {
+                // migration or upgrade failed - disable plugin
+                DB_change($_TABLES['plugins'], 'pi_enabled', 0, 'pi_name', $pi_name);
+                COM_errorLog("Migration or upgrade for '$pi_name' plugin failed - plugin disabled");
+                $failed++;
+            }
+        }
+
+        return $failed;
     }
 }

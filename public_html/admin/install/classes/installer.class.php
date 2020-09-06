@@ -13,21 +13,6 @@ require_once __DIR__ . '/Common.php';
 class Installer extends Common
 {
     /**
-     * Replaces all newlines in a string with <br> or <br />,
-     * depending on the detected setting.  Ported from "lib-common.php"
-     *
-     * @param  string  $string  The string to modify
-     * @return  string         The modified string
-     */
-    public static function nl2br($string)
-    {
-        $replace = '<br>';
-        $find = ["\r\n", "\n\r", "\r", "\n"];
-
-        return str_replace($find, $replace, $string);
-    }
-
-    /**
      * Installer constructor.
      */
     public function __construct()
@@ -598,53 +583,6 @@ class Installer extends Common
     }
 
     /**
-     * Upgrade any enabled plugins
-     * NOTE: Needs a fully working Geeklog, so can only be done late in the upgrade
-     *       process!
-     *
-     * @param  boolean  $migration  whether the upgrade is part of a site migration
-     * @param  array    $old_conf   old $_CONF values before the migration
-     * @return int     number of failed plugin updates (0 = everything's fine)
-     * @see     PLG_upgrade
-     * @see     PLG_migrate
-     */
-    private function upgradePlugins($migration = false, array $old_conf = [])
-    {
-        global $_TABLES;
-
-        $failed = 0;
-
-        $result = DB_query("SELECT pi_name, pi_version FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
-        $numPlugins = DB_numRows($result);
-
-        for ($i = 0; $i < $numPlugins; $i++) {
-            list($pi_name, $pi_version) = DB_fetchArray($result);
-            $success = true;
-
-            if ($migration) {
-                $success = PLG_migrate($pi_name, $old_conf);
-            }
-
-            if ($success === true) {
-                $codeVersion = PLG_chkVersion($pi_name);
-
-                if (!empty($codeVersion) && ($codeVersion != $pi_version)) {
-                    $success = PLG_upgrade($pi_name);
-                }
-            }
-
-            if ($success !== true) {
-                // migration or upgrade failed - disable plugin
-                DB_change($_TABLES['plugins'], 'pi_enabled', 0, 'pi_name', $pi_name);
-                COM_errorLog("Migration or upgrade for '$pi_name' plugin failed - plugin disabled");
-                $failed++;
-            }
-        }
-
-        return $failed;
-    }
-
-    /**
      * Returns the HTML form to return the user's inputted data to the
      * previous page.
      *
@@ -1096,8 +1034,6 @@ class Installer extends Common
                         break;
                 }
 
-                // Clear the Geeklog Cache
-                $this->clearCache();
                 break;
 
             case 4:
@@ -1108,7 +1044,7 @@ class Installer extends Common
                     return $controller->step4();
                 }
 
-                $this->upgradePlugins();
+                // $this->upgradePlugins(false, false, []);
                 $installPlugins = ($this->get('install_plugins') === 'true');
 
                 if (!$installPlugins) {
