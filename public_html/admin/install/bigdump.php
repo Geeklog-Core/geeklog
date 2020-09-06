@@ -45,6 +45,18 @@
 // THIS SCRIPT IS PROVIDED AS IS, WITHOUT ANY WARRANTY OR GUARANTEE OF ANY KIND
 //
 
+/**
+ * Replaces all newlines in a string with <br> or <br />,
+ * depending on the detected setting.  Ported from "lib-common.php"
+ *
+ * @param  string  $string  The string to modify
+ * @return  string         The modified string
+ */
+function myNl2br($string)
+{
+    return str_replace(["\r\n", "\n\r", "\r", "\n"], '<br>', $string);
+}
+
 define('GL_INSTALL_ACTIVE', true);
 define('PATH_INSTALL', __DIR__ . '/');
 define('PATH_LAYOUT', PATH_INSTALL . 'layout');
@@ -133,23 +145,23 @@ $upload_dir = __DIR__;
 $db = false;
 $dbConnection = false;
 $errorMessage = '';
-$args = array(
+$args = [
     'host'    => $_DB_host,
     'user'    => $_DB_user,
     'pass'    => $_DB_pass,
     'name'    => $_DB_name,
     'charset' => $db_connection_charset,
-);
+];
 
 if (!$error && !TESTMODE) {
     try {
         $dbConnection = Geeklog\Db::connect(Geeklog\Db::DB_MYSQLI, $args);
         $db = true;
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         try {
             $dbConnection = Geeklog\Db::connect(Geeklog\Db::DB_MYSQL, $args);
             $db = true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $errorMessage = $e->getMessage();
             $dbConnection = false;
         }
@@ -321,7 +333,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
                     if ($dbConnection->query(trim($query)) === false) {
                         $content .= $installer->getAlertMsg(
                             $LANG_BIGDUMP[17] . $lineNumber . ': ' . trim($dumpLine) . '.<br ' . PHP_EOL . '>'
-                            . $LANG_BIGDUMP[18] . trim(Installer::nl2br(htmlentities($query))) . '<br ' . PHP_EOL . '>'
+                            . $LANG_BIGDUMP[18] . trim(myNl2br(htmlentities($query))) . '<br ' . PHP_EOL . '>'
                             . $LANG_BIGDUMP[19] . $dbConnection->error()
                         );
                         $error = true;

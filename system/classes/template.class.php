@@ -310,7 +310,8 @@ class Template
         $this->set_root($root);
         $this->set_unknowns($unknowns);
 
-        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true)) {
+        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) &&
+            !defined('GL_INSTALL_ACTIVE')) {
             clearstatcache();
         }
 
@@ -546,7 +547,8 @@ class Template
                 return false;
             }
             $tFilename = $this->filename($filename);
-            if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true)) {
+            if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) &&
+                !defined('GL_INSTALL_ACTIVE')) {
                 $filename = $this->check_cache($varName, $tFilename);
                 $this->file[$varName] = $filename;
             } else {
@@ -566,7 +568,8 @@ class Template
                     return false;
                 }
                 $tFilename = $this->filename($f);
-                if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true)) {
+                if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) &&
+                    !defined('GL_INSTALL_ACTIVE')) {
                     $f = $this->check_cache($v, $tFilename);
                     $this->file[$v] = $f;
                 } else {
@@ -611,7 +614,9 @@ class Template
         // Should use parent here when checking view since assumed parent is the view that was set or not.
         // NOTE: This means while blocks can be set in views they CANNOT be nested
         // VIEWS with blocks need to be TESTED better as maybe there is a workaround to this
-        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) && (!isset($this->view[$parent]) || ($this->view[$parent] == false))) {
+        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) &&
+            !defined('GL_INSTALL_ACTIVE') &&
+            (!isset($this->view[$parent]) || ($this->view[$parent] == false))) {
             $filename = $this->file[$parent];
             $p = pathinfo($filename);
             $this->blocks[$varName] = $p['dirname'] . '/' . substr($p['basename'], 0, -(strlen($p['extension']) + 1)) . '__' . $varName . '.' . $p['extension'];
@@ -823,6 +828,7 @@ class Template
 
         // If view always bypass cache
         if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) &&
+            !defined('GL_INSTALL_ACTIVE') &&
             (!isset($this->view[$varName]) || ($this->view[$varName] == false))) {
             if (isset($this->blocks[$varName])) {
                 $filename = $this->blocks[$varName];

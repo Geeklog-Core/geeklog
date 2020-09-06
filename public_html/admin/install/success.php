@@ -8,13 +8,13 @@
 // |                                                                           |
 // | Page that is displayed upon a successful Geeklog installation or upgrade  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2019 by the following authors:                         |
+// | Copyright (C) 2000-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
-// |          Randy Kolenko     - randy AT nextide DOT ca
+// |          Randy Kolenko     - randy AT nextide DOT ca                      |
 // |          Matt West         - matt AT mattdanger DOT net                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
- // Need to set incase site is disabled as we want the User to know of the success of the Installer
+ // Need to set in case site is disabled as we want the User to know of the success of the Installer
 define('GL_INSTALL_ACTIVE', true);
 
 use Geeklog\Input;
@@ -109,6 +109,10 @@ $languagePath = dirname(__FILE__) . '/language/' . $language . '.php';
 
 if (is_readable($languagePath)) {
     require_once __DIR__ . '/language/' . $language . '.php';
+
+    // Update $_CONF['language'] (issue #991)
+    $config = config::get_instance();
+    $config->set('language', $language, 'Core');
 } else {
     require_once __DIR__ . '/language/english.php';
 }
@@ -135,6 +139,9 @@ switch ($submit) {
         // do nothing
         break;
 }
+
+// Clear old cache
+CTL_clearCache();
 
 $T = COM_newTemplate(CTL_core_templatePath(__DIR__ . '/layout'));
 $T->set_file('success', 'success.thtml');
@@ -196,3 +203,4 @@ $doc = COM_createHTMLDocument(
     )
 );
 COM_output($doc);
+
