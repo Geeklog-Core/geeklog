@@ -1778,19 +1778,22 @@ function SEC_getTokenExpiryNotice($token, $extra_msg = '')
  * Browsers that support the HttpOnly flag will not allow JavaScript access
  * to such a cookie.
  *
- * @param  string  $name   cookie name
- * @param  string  $value  cookie value
- * @param  int     $expire expire time
- * @param  string  $path   path on the server or $_CONF['cookie_path']
- * @param  string  $domain domain or $_CONF['cookiedomain']
- * @param  bool    $secure whether to use HTTPS or $_CONF['cookiesecure']
+ * @param  string  $name   		cookie name
+ * @param  string  $value  		cookie value
+ * @param  int     $expire 		expire time
+ * @param  string  $path   		path on the server or $_CONF['cookie_path']
+ * @param  string  $domain 		domain or $_CONF['cookiedomain']
+ * @param  bool    $secure 		whether to use HTTPS or $_CONF['cookiesecure']
+ * @param  string  $samesite	either None, Lax or Strict
  * @return bool
  * @link http://blog.mattmecham.com/2006/09/12/http-only-cookies-without-php-52/
  */
-function SEC_setCookie($name, $value, $expire = 0, $path = null, $domain = null, $secure = null)
+function SEC_setCookie($name, $value, $expire = 0, $path = null, $domain = null, $secure = null, $samesite = null)
 {
     global $_CONF;
 
+	$retval = false;
+	
     if ($path === null) {
         $path = $_CONF['cookie_path'];
     }
@@ -1800,8 +1803,46 @@ function SEC_setCookie($name, $value, $expire = 0, $path = null, $domain = null,
     if ($secure === null) {
         $secure = $_CONF['cookiesecure'];
     }
+	
+	// Below line is original way Geeklog set cookies
+	// return setcookie($name, $value, $expire, $path, $domain, $secure, true);
+	
+	// ********************
+	// Now we should set samesite for new browser cookie default rules. Setting thiss depends on PHP version
 
-    return setcookie($name, $value, $expire, $path, $domain, $secure, true);
+	// SameSite=Strict 	Domain in URL bar equals the cookie’s domain (first-party) AND the link isn’t coming from a third-party
+	// SameSite=Lax 	Domain in URL bar equals the cookie’s domain (first-party) 	New default if SameSite is not set
+	// SameSite=None 	No domain limitations and third-party cookies can fire 	Previous default; now needs to specify 'None; Secure' for Chrome 80
+	if ($samesite === null || !(strtolower($samesite) == 'lax' || strtolower($samesite) == 'none' || strtolower($samesite) == 'strict')) {
+		$samesite = 'Lax';
+	}
+	
+	// https://www.php.net/manual/en/function.setcookie.php
+	// Fix for Warning in New Browsers: Mark cross-site cookies as Secure to allow them to be sent in cross-site requests
+	// In a future version of the browser, cookies marked with SameSite=None must also be marked with Secure to get sent in cross-site requests. This behavior protects user data from being sent over an insecure connection.
+	// SameSite attribute can only be set in PHP v7.3 and higher so do this the old way
+	// To add the "samesite" attribute, you can concatenate it to the path option (since we can only use the setcookie function options array in PHP 7.3+)
+	//  samesite element should be either None, Lax or Strict (Cookies without a SameSite attribute will be treated as SameSite=Lax)
+	if (version_compare(PHP_VERSION, '7.3.0', '<')) {
+		// Note this way by adding to path only works on PHP version lower than 7.3
+		$path .= '; SameSite=' . $samesite;
+
+		$retval = setcookie($name, $value, $expire, $path, $domain, $secure, true);
+	} else {
+		// Required to use options array (as the old way errors out on PHP 7.3+)
+		$arr_cookie_options = array(
+			'expires' => $expire,
+			'path' => $path,
+			'domain' => $domain,
+			'secure' => $secure,
+			'httponly' => true,
+			'samesite' => $samesite
+		);
+			
+		$retval = setcookie($name, $value, $arr_cookie_options);  		
+	}
+	
+	return $retval;
 }
 
 /**
