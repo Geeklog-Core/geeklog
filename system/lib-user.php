@@ -582,8 +582,9 @@ function USER_generateUserICON($uid, $width = 0, $cssClasses = '', $anonName = '
             $text_color = _textColorBasedOnBgColor($bg_color, 'FFFFFF', '000000');
             // See https://ui-avatars.com/ for API
             // See https://github.com/LasseRafn/php-initial-avatar-generator and https://github.com/LasseRafn/ui-avatars for github libraries
+			// Fix Letter offset issue for MS Edge 11. Specify png instead of default svg. See https://github.com/LasseRafn/ui-avatars/issues/37#issuecomment-688314690 (Note: Should set back to svg once issue fixed)
             $extrasettings = PLG_getThemeItem('core-auto-generated-user-avatar-settings', 'core');
-            $retval = '<img src="https://ui-avatars.com/api/?name=' . $letters . '&color=' . $text_color . '&background=' . $bg_color . '&size=' . $_CONF['max_photo_width']
+            $retval = '<img src="https://ui-avatars.com/api/?name=' . $letters . '&color=' . $text_color . '&background=' . $bg_color . '&size=' . $_CONF['max_photo_width'] . '&format=png'
                 . $extrasettings . '"  alt="" title="' . $altText . '" class="' . $cssClasses . '"';
             if ($width > 0) {
                 // Since a square is returned set height as well
