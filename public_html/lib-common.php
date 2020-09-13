@@ -529,7 +529,7 @@ $language_overrides = array(
     'LANG_VALIDATION');
 $language_overrides = array_merge($language_overrides, PLG_getLanguageOverrides());
 Language::override($language_overrides);
-echo $_CONF['language'];
+
 // Set template class default template variables option
 /**
  * @global $TEMPLATE_OPTIONS array
@@ -541,7 +541,7 @@ $TEMPLATE_OPTIONS = array(
         $_CONF['path'],
         '/'                     // this entry must always exist and must always be last
     ),
-    'incl_phpself_header' => true,          // set this to true if your template cache exists within your web server's docroot.
+    'incl_phpself_header' => true,          // set this to true if your template cache exists within your web server's doc root.
     'cache_by_language'   => true,            // create cache directories for each language. Takes extra space but moves all $LANG variable text directly into the cached file
     'cache_for_mobile'    => $_CONF['cache_mobile'],  // create cache directories for mobile devices. Non mobile devices uses regular directory. If disabled mobile uses regular cache files. Takes extra space
     'default_vars'        => array(                                // list of vars found in all templates.
