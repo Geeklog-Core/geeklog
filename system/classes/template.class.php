@@ -294,6 +294,7 @@ class Template
                     'layout_url'      => $_CONF['layout_url'], // Can be set by lib-common on theme change
                     'anonymous_user'  => true,
                     'device_mobile'   => false,
+					'language'		  => $_CONF['language'],
                     'front_page'      => false,
                     'current_url'     => ''
                 ),
