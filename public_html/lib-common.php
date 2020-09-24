@@ -7533,6 +7533,7 @@ function _getLanguageInfoFromURL()
 
 /**
  * Determine the language of the object from the id
+ * This function assumes COM_isMultiLanguageEnabled() has already been run
  *
  * @param    string $id id of object to retrieve language id from
  * @return   string     language ID, e.g 'en'; empty string on error
@@ -7565,10 +7566,13 @@ function COM_getLanguageIdForObject($id)
 }
 
 /**
- * Determine the ID to use for the current language
+ * Determine the ID to use for the current language (only when multi language is enabled)
  * The $_CONF['language_files'] array maps language IDs to language file names.
  * This function returns the language ID for a certain language file, to be
- * used in language-dependent URLs.
+ * used in language-dependent URLs. Note: there is some code (for story id, blocks, topics) 
+ * which depends on this function returning an empty string as a way to determine if multi language 
+ * support is enabled
+ 
  *
  * @param    string $language current language file name (optional)
  * @return   string           language ID, e.g 'en'; empty string on error
@@ -7577,21 +7581,21 @@ function COM_getLanguageId($language = '')
 {
     global $_CONF;
 
-    if (empty($language)) {
-        $language = COM_getLanguage();
-    }
+	$lang_id = '';
+	if (COM_isMultiLanguageEnabled()) { // this checks if $_CONF['language_files'] is set
+		if (empty($language)) {
+			$language = COM_getLanguage();
+		}
 
-    $lang_id = '';
-    if (isset($_CONF['language_files'])) {
-        $lang_id = array_search($language, $_CONF['language_files']);
+		$lang_id = array_search($language, $_CONF['language_files']);
 
-        if ($lang_id === false) {
-            // that looks like a misconfigured $_CONF['language_files'] array
-            COM_errorLog('Language "' . $language . '" not found in $_CONF[\'language_files\'] array!');
+		if ($lang_id === false) {
+			// that looks like a misconfigured $_CONF['language_files'] array
+			COM_errorLog('Language "' . $language . '" not found in $_CONF[\'language_files\'] array!');
 
-            $lang_id = ''; // not much we can do here ...
-        }
-    }
+			$lang_id = ''; // not much we can do here ...
+		}
+	}
 
     return $lang_id;
 }
