@@ -273,7 +273,7 @@ class Template
      */
     public function __construct($root = array('.'), $unknowns = 'remove')
     {
-        global $_CONF, $TEMPLATE_OPTIONS;
+        global $_CONF, $TEMPLATE_OPTIONS, $LANG_ISO639_1;
 
         // Set $TEMPLATE_OPTIONS if Template class is called during tests
         if (empty($TEMPLATE_OPTIONS) || !is_array($TEMPLATE_OPTIONS)) {
@@ -294,7 +294,7 @@ class Template
                     'layout_url'      => $_CONF['layout_url'], // Can be set by lib-common on theme change
                     'anonymous_user'  => true,
                     'device_mobile'   => false,
-					'language'		  => $_CONF['language'],
+					'language_code'	  => $LANG_ISO639_1,
                     'front_page'      => false,
                     'current_url'     => ''
                 ),
