@@ -204,7 +204,7 @@ class StructuredData
      */
     public function add_type($type, $id, $sd_type, $properties = array(), $attributes = array(), &$data = null)
     {
-        global $_CONF;
+        global $_CONF, $LANG_ISO639_1;
 
         // Create structured data name
         $sd_name = $this->create_name($type, $id);
@@ -253,7 +253,7 @@ class StructuredData
                             }
                             if (empty($lang_id)) {
                                 // Assume default language of site
-                                $lang_id = COM_getLanguageId($_CONF['language_site_default']);
+                                $lang_id = $LANG_ISO639_1;
                             }
                             $data['inLanguage'] = $lang_id;
                             break;
