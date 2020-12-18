@@ -57,6 +57,7 @@ return array(
     'CommandlineMarker' => $vendorDir . '/phing/phing/classes/phing/types/Commandline.php',
     'Comment' => $vendorDir . '/phing/phing/classes/phing/filters/StripLineComments.php',
     'ComposerTask' => $vendorDir . '/phing/phing/classes/phing/tasks/ext/ComposerTask.php',
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'CompositeMapper' => $vendorDir . '/phing/phing/classes/phing/mappers/CompositeMapper.php',
     'ConcatFilter' => $vendorDir . '/phing/phing/classes/phing/filters/ConcatFilter.php',
     'Condition' => $vendorDir . '/phing/phing/classes/phing/tasks/system/condition/Condition.php',

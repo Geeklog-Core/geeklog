@@ -1,317 +1,330 @@
-[
-    {
-        "name": "pear/archive_tar",
-        "version": "1.4.9",
-        "version_normalized": "1.4.9.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/pear/Archive_Tar.git",
-            "reference": "c5b00053770e1d72128252c62c2c1a12c26639f0"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/c5b00053770e1d72128252c62c2c1a12c26639f0",
-            "reference": "c5b00053770e1d72128252c62c2c1a12c26639f0",
-            "shasum": ""
-        },
-        "require": {
-            "pear/pear-core-minimal": "^1.10.0alpha2",
-            "php": ">=5.2.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "*"
-        },
-        "suggest": {
-            "ext-bz2": "Bz2 compression support.",
-            "ext-xz": "Lzma2 compression support.",
-            "ext-zlib": "Gzip compression support."
-        },
-        "time": "2019-12-04T10:17:28+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.4.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Archive_Tar": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "include-path": [
-            "./"
-        ],
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Vincent Blavet",
-                "email": "vincent@phpconcept.net"
+{
+    "packages": [
+        {
+            "name": "pear/archive_tar",
+            "version": "1.4.11",
+            "version_normalized": "1.4.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pear/Archive_Tar.git",
+                "reference": "17d355cb7d3c4ff08e5729f29cd7660145208d9d"
             },
-            {
-                "name": "Greg Beaver",
-                "email": "greg@chiaraquartet.net"
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/17d355cb7d3c4ff08e5729f29cd7660145208d9d",
+                "reference": "17d355cb7d3c4ff08e5729f29cd7660145208d9d",
+                "shasum": ""
             },
-            {
-                "name": "Michiel Rook",
-                "email": "mrook@php.net"
-            }
-        ],
-        "description": "Tar file management class with compression support (gzip, bzip2, lzma2)",
-        "homepage": "https://github.com/pear/Archive_Tar",
-        "keywords": [
-            "archive",
-            "tar"
-        ]
-    },
-    {
-        "name": "pear/console_getopt",
-        "version": "v1.4.3",
-        "version_normalized": "1.4.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/pear/Console_Getopt.git",
-            "reference": "a41f8d3e668987609178c7c4a9fe48fecac53fa0"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/pear/Console_Getopt/zipball/a41f8d3e668987609178c7c4a9fe48fecac53fa0",
-            "reference": "a41f8d3e668987609178c7c4a9fe48fecac53fa0",
-            "shasum": ""
-        },
-        "time": "2019-11-20T18:27:48+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Console": "./"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "include-path": [
-            "./"
-        ],
-        "license": [
-            "BSD-2-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Andrei Zmievski",
-                "email": "andrei@php.net",
-                "role": "Lead"
+            "require": {
+                "pear/pear-core-minimal": "^1.10.0alpha2",
+                "php": ">=5.2.0"
             },
-            {
-                "name": "Stig Bakken",
-                "email": "stig@php.net",
-                "role": "Developer"
+            "require-dev": {
+                "phpunit/phpunit": "*"
             },
-            {
-                "name": "Greg Beaver",
-                "email": "cellog@php.net",
-                "role": "Helper"
-            }
-        ],
-        "description": "More info available on: http://pear.php.net/package/Console_Getopt"
-    },
-    {
-        "name": "pear/pear-core-minimal",
-        "version": "v1.10.10",
-        "version_normalized": "1.10.10.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/pear/pear-core-minimal.git",
-            "reference": "625a3c429d9b2c1546438679074cac1b089116a7"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/625a3c429d9b2c1546438679074cac1b089116a7",
-            "reference": "625a3c429d9b2c1546438679074cac1b089116a7",
-            "shasum": ""
-        },
-        "require": {
-            "pear/console_getopt": "~1.4",
-            "pear/pear_exception": "~1.0"
-        },
-        "replace": {
-            "rsky/pear-core-min": "self.version"
-        },
-        "time": "2019-11-19T19:00:24+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "include-path": [
-            "src/"
-        ],
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Christian Weiske",
-                "email": "cweiske@php.net",
-                "role": "Lead"
-            }
-        ],
-        "description": "Minimal set of PEAR core files to be used as composer dependency"
-    },
-    {
-        "name": "pear/pear_exception",
-        "version": "v1.0.1",
-        "version_normalized": "1.0.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/pear/PEAR_Exception.git",
-            "reference": "dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/pear/PEAR_Exception/zipball/dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7",
-            "reference": "dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=4.4.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "*"
-        },
-        "time": "2019-12-10T10:24:42+00:00",
-        "type": "class",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "PEAR/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "include-path": [
-            "."
-        ],
-        "license": [
-            "BSD-2-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Helgi Thormar",
-                "email": "dufuz@php.net"
+            "suggest": {
+                "ext-bz2": "Bz2 compression support.",
+                "ext-xz": "Lzma2 compression support.",
+                "ext-zlib": "Gzip compression support."
             },
-            {
-                "name": "Greg Beaver",
-                "email": "cellog@php.net"
-            }
-        ],
-        "description": "The PEAR Exception base class.",
-        "homepage": "https://github.com/pear/PEAR_Exception",
-        "keywords": [
-            "exception"
-        ]
-    },
-    {
-        "name": "phing/phing",
-        "version": "2.16.3",
-        "version_normalized": "2.16.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phingofficial/phing.git",
-            "reference": "b34c2bf9cd6abd39b4287dee31e68673784c8567"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phingofficial/phing/zipball/b34c2bf9cd6abd39b4287dee31e68673784c8567",
-            "reference": "b34c2bf9cd6abd39b4287dee31e68673784c8567",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.2.0"
-        },
-        "require-dev": {
-            "ext-pdo_sqlite": "*",
-            "mikey179/vfsstream": "^1.6",
-            "pdepend/pdepend": "2.x",
-            "pear/archive_tar": "1.4.x",
-            "pear/http_request2": "dev-trunk",
-            "pear/net_growl": "dev-trunk",
-            "pear/pear-core-minimal": "1.10.1",
-            "pear/versioncontrol_git": "@dev",
-            "pear/versioncontrol_svn": "~0.5",
-            "phpdocumentor/phpdocumentor": "2.x",
-            "phploc/phploc": "~2.0.6",
-            "phpmd/phpmd": "~2.2",
-            "phpunit/phpunit": ">=3.7",
-            "sebastian/git": "~1.0",
-            "sebastian/phpcpd": "2.x",
-            "siad007/versioncontrol_hg": "^1.0",
-            "simpletest/simpletest": "^1.1",
-            "squizlabs/php_codesniffer": "~2.2",
-            "symfony/yaml": "^2.8 || ^3.1 || ^4.0"
-        },
-        "suggest": {
-            "pdepend/pdepend": "PHP version of JDepend",
-            "pear/archive_tar": "Tar file management class",
-            "pear/versioncontrol_git": "A library that provides OO interface to handle Git repository",
-            "pear/versioncontrol_svn": "A simple OO-style interface for Subversion, the free/open-source version control system",
-            "phpdocumentor/phpdocumentor": "Documentation Generator for PHP",
-            "phploc/phploc": "A tool for quickly measuring the size of a PHP project",
-            "phpmd/phpmd": "PHP version of PMD tool",
-            "phpunit/php-code-coverage": "Library that provides collection, processing, and rendering functionality for PHP code coverage information",
-            "phpunit/phpunit": "The PHP Unit Testing Framework",
-            "sebastian/phpcpd": "Copy/Paste Detector (CPD) for PHP code",
-            "siad007/versioncontrol_hg": "A library for interfacing with Mercurial repositories.",
-            "tedivm/jshrink": "Javascript Minifier built in PHP"
-        },
-        "time": "2020-02-03T18:50:54+00:00",
-        "bin": [
-            "bin/phing"
-        ],
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.16.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "classes/phing/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "include-path": [
-            "classes"
-        ],
-        "license": [
-            "LGPL-3.0-only"
-        ],
-        "authors": [
-            {
-                "name": "Michiel Rook",
-                "email": "mrook@php.net"
+            "time": "2020-11-19T22:10:24+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
             },
-            {
-                "name": "Phing Community",
-                "homepage": "https://www.phing.info/trac/wiki/Development/Contributors"
-            }
-        ],
-        "description": "PHing Is Not GNU make; it's a PHP project build system or build tool based on Apache Ant.",
-        "homepage": "https://www.phing.info/",
-        "keywords": [
-            "build",
-            "phing",
-            "task",
-            "tool"
-        ]
-    }
-]
+            "installation-source": "dist",
+            "autoload": {
+                "psr-0": {
+                    "Archive_Tar": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "./"
+            ],
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Vincent Blavet",
+                    "email": "vincent@phpconcept.net"
+                },
+                {
+                    "name": "Greg Beaver",
+                    "email": "greg@chiaraquartet.net"
+                },
+                {
+                    "name": "Michiel Rook",
+                    "email": "mrook@php.net"
+                }
+            ],
+            "description": "Tar file management class with compression support (gzip, bzip2, lzma2)",
+            "homepage": "https://github.com/pear/Archive_Tar",
+            "keywords": [
+                "archive",
+                "tar"
+            ],
+            "support": {
+                "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Archive_Tar",
+                "source": "https://github.com/pear/Archive_Tar"
+            },
+            "install-path": "../pear/archive_tar"
+        },
+        {
+            "name": "pear/console_getopt",
+            "version": "v1.4.3",
+            "version_normalized": "1.4.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pear/Console_Getopt.git",
+                "reference": "a41f8d3e668987609178c7c4a9fe48fecac53fa0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pear/Console_Getopt/zipball/a41f8d3e668987609178c7c4a9fe48fecac53fa0",
+                "reference": "a41f8d3e668987609178c7c4a9fe48fecac53fa0",
+                "shasum": ""
+            },
+            "time": "2019-11-20T18:27:48+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-0": {
+                    "Console": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "./"
+            ],
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Andrei Zmievski",
+                    "email": "andrei@php.net",
+                    "role": "Lead"
+                },
+                {
+                    "name": "Stig Bakken",
+                    "email": "stig@php.net",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Greg Beaver",
+                    "email": "cellog@php.net",
+                    "role": "Helper"
+                }
+            ],
+            "description": "More info available on: http://pear.php.net/package/Console_Getopt",
+            "install-path": "../pear/console_getopt"
+        },
+        {
+            "name": "pear/pear-core-minimal",
+            "version": "v1.10.10",
+            "version_normalized": "1.10.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pear/pear-core-minimal.git",
+                "reference": "625a3c429d9b2c1546438679074cac1b089116a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/625a3c429d9b2c1546438679074cac1b089116a7",
+                "reference": "625a3c429d9b2c1546438679074cac1b089116a7",
+                "shasum": ""
+            },
+            "require": {
+                "pear/console_getopt": "~1.4",
+                "pear/pear_exception": "~1.0"
+            },
+            "replace": {
+                "rsky/pear-core-min": "self.version"
+            },
+            "time": "2019-11-19T19:00:24+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-0": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "src/"
+            ],
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Weiske",
+                    "email": "cweiske@php.net",
+                    "role": "Lead"
+                }
+            ],
+            "description": "Minimal set of PEAR core files to be used as composer dependency",
+            "install-path": "../pear/pear-core-minimal"
+        },
+        {
+            "name": "pear/pear_exception",
+            "version": "v1.0.1",
+            "version_normalized": "1.0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pear/PEAR_Exception.git",
+                "reference": "dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pear/PEAR_Exception/zipball/dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7",
+                "reference": "dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=4.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "time": "2019-12-10T10:24:42+00:00",
+            "type": "class",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "PEAR/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "."
+            ],
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Helgi Thormar",
+                    "email": "dufuz@php.net"
+                },
+                {
+                    "name": "Greg Beaver",
+                    "email": "cellog@php.net"
+                }
+            ],
+            "description": "The PEAR Exception base class.",
+            "homepage": "https://github.com/pear/PEAR_Exception",
+            "keywords": [
+                "exception"
+            ],
+            "install-path": "../pear/pear_exception"
+        },
+        {
+            "name": "phing/phing",
+            "version": "2.16.3",
+            "version_normalized": "2.16.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phingofficial/phing.git",
+                "reference": "b34c2bf9cd6abd39b4287dee31e68673784c8567"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phingofficial/phing/zipball/b34c2bf9cd6abd39b4287dee31e68673784c8567",
+                "reference": "b34c2bf9cd6abd39b4287dee31e68673784c8567",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "ext-pdo_sqlite": "*",
+                "mikey179/vfsstream": "^1.6",
+                "pdepend/pdepend": "2.x",
+                "pear/archive_tar": "1.4.x",
+                "pear/http_request2": "dev-trunk",
+                "pear/net_growl": "dev-trunk",
+                "pear/pear-core-minimal": "1.10.1",
+                "pear/versioncontrol_git": "@dev",
+                "pear/versioncontrol_svn": "~0.5",
+                "phpdocumentor/phpdocumentor": "2.x",
+                "phploc/phploc": "~2.0.6",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/phpunit": ">=3.7",
+                "sebastian/git": "~1.0",
+                "sebastian/phpcpd": "2.x",
+                "siad007/versioncontrol_hg": "^1.0",
+                "simpletest/simpletest": "^1.1",
+                "squizlabs/php_codesniffer": "~2.2",
+                "symfony/yaml": "^2.8 || ^3.1 || ^4.0"
+            },
+            "suggest": {
+                "pdepend/pdepend": "PHP version of JDepend",
+                "pear/archive_tar": "Tar file management class",
+                "pear/versioncontrol_git": "A library that provides OO interface to handle Git repository",
+                "pear/versioncontrol_svn": "A simple OO-style interface for Subversion, the free/open-source version control system",
+                "phpdocumentor/phpdocumentor": "Documentation Generator for PHP",
+                "phploc/phploc": "A tool for quickly measuring the size of a PHP project",
+                "phpmd/phpmd": "PHP version of PMD tool",
+                "phpunit/php-code-coverage": "Library that provides collection, processing, and rendering functionality for PHP code coverage information",
+                "phpunit/phpunit": "The PHP Unit Testing Framework",
+                "sebastian/phpcpd": "Copy/Paste Detector (CPD) for PHP code",
+                "siad007/versioncontrol_hg": "A library for interfacing with Mercurial repositories.",
+                "tedivm/jshrink": "Javascript Minifier built in PHP"
+            },
+            "time": "2020-02-03T18:50:54+00:00",
+            "bin": [
+                "bin/phing"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.16.x-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "classes/phing/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "classes"
+            ],
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Michiel Rook",
+                    "email": "mrook@php.net"
+                },
+                {
+                    "name": "Phing Community",
+                    "homepage": "https://www.phing.info/trac/wiki/Development/Contributors"
+                }
+            ],
+            "description": "PHing Is Not GNU make; it's a PHP project build system or build tool based on Apache Ant.",
+            "homepage": "https://www.phing.info/",
+            "keywords": [
+                "build",
+                "phing",
+                "task",
+                "tool"
+            ],
+            "install-path": "../phing/phing"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}
