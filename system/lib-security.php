@@ -774,7 +774,7 @@ function SEC_authenticate($username, $password, &$uid)
     $tmp = DB_error();
     $nrows = DB_numRows($result);
 
-    if (($tmp == 0) && ($nrows == 1)) {
+    if (empty($tmp) && ($nrows == 1)) {
         $U = DB_fetchArray($result);
         $uid = (int) $U['uid'];
 
