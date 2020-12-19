@@ -2143,24 +2143,36 @@ class Template
  * @param  string $needle String matched against cache filenames
  * @param  int    $since
  * @access private
- * @return void
+ * @return int            number of files not deleted
  */
 function cache_clean_directories($path, $needle = '', $since = 0)
 {
+    $numFiles = 0;
+
     if ($dir = @opendir($path)) {
         while (false !== ($entry = readdir($dir))) {
-            if ($entry == '.' || $entry == '..' || $entry == '.svn' || is_link($entry)) {
+            if ($entry === '.' || $entry === '..') {
+                continue;
+            } elseif ($entry === '.svn' || is_link($entry)) {
+                $numFiles++;
             } elseif (is_dir($path . '/' . $entry)) {
-                cache_clean_directories($path . '/' . $entry, $needle);
-                @rmdir($path . '/' . $entry);
+                if (cache_clean_directories($path . '/' . $entry, $needle) === 0) {
+                    @rmdir($path . '/' . $entry);
+                }
             } elseif (empty($needle) || strpos($entry, $needle) !== false) {
                 if (!$since || @filectime($path . '/' . $entry) <= $since) {
                     @unlink($path . '/' . $entry);
+                } else {
+                    $numFiles++;
                 }
+            } else {
+                $numFiles++;
             }
         }
         @closedir($dir);
     }
+
+    return $numFiles;
 }
 
 /******************************************************************************
