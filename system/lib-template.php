@@ -88,25 +88,37 @@ function CTL_setTemplateRoot($root)
  *
  * @param  string $path
  * @param  string $needle
+ * @return int    number of files not deleted
  */
 function CTL_clearCacheDirectories($path, $needle = '')
 {
     $path = rtrim($path, '/\\') . DIRECTORY_SEPARATOR;
+    $numFiles = 0;
 
     if ($dir = @opendir($path)) {
         while ($entry = readdir($dir)) {
-            if ($entry === '.' || $entry === '..' || is_link($entry) || $entry === '.svn' || $entry === 'index.html') {
+            if ($entry === '.' || $entry === '..') {
+                continue;
+            } elseif (is_link($entry) || $entry === '.svn' || $entry === 'index.html') {
+                $numFiles++;
                 continue;
             } elseif (is_dir($path . $entry)) {
-                CTL_clearCacheDirectories($path . $entry, $needle);
-                @rmdir($path . $entry);
+                if (CTL_clearCacheDirectories($path . $entry, $needle) === 0) {
+                    @rmdir($path . $entry);
+                } else {
+                    $numFiles++;
+                }
             } elseif (empty($needle) || strpos($entry, $needle) !== false) {
                 @unlink($path . $entry);
+            } else {
+                $numFiles++;
             }
         }
 
         @closedir($dir);
     }
+
+    return $numFiles;
 }
 
 /**
