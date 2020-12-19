@@ -8,7 +8,7 @@
 // |                                                                          |
 // | Likes System                                                             |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2019 by the following authors:                             |
+// | Copyright (C) 2020 by the following authors:                             |
 // |                                                                          |
 // | Tom Homer              tomhomer AT gmail DOT com                         |
 // |                                                                          |
@@ -81,7 +81,7 @@ define('LIKES_ACTION_UNDISLIKE', 4);
 * @return       string      html of the likes control
 *
 */
-function LIKES_control($type, $sub_type = '', $id, $likes_setting, $message = '') {
+function LIKES_control($type, $sub_type, $id, $likes_setting, $message = '') {
     global $_USER, $_CONF, $LANG_LIKES, $_SCRIPTS;
 
     // Figure out if dislike is enabled or not
@@ -193,7 +193,7 @@ function LIKES_formatNum($num)
 * @return       array       an array of number of likes and dislikes
 *
 */
-function LIKES_getLikes($type, $sub_type = '', $item_id)
+function LIKES_getLikes($type, $sub_type, $item_id)
 {
     global $_TABLES;
 
@@ -219,7 +219,7 @@ function LIKES_getLikes($type, $sub_type = '', $item_id)
 * @return       string      Empty if not voted else returns "like" or "dislike"
 *
 */
-function LIKES_hasAction($type, $sub_type = '', $item_id, $uid, $ip)
+function LIKES_hasAction($type, $sub_type, $item_id, $uid, $ip)
 {
     global $_TABLES, $_LIKES_DEBUG;
 
@@ -252,10 +252,10 @@ function LIKES_hasAction($type, $sub_type = '', $item_id, $uid, $ip)
 * @param        string      $type     plugin name
 * @param        string      $sub_type Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
 * @param        string      $item_id  item id
-* @return       none
+* @return       void
 *
 */
-function LIKES_deleteActions($type, $sub_type = '', $item_id)
+function LIKES_deleteActions($type, $sub_type, $item_id)
 {
     global $_TABLES;
 
@@ -272,12 +272,13 @@ function LIKES_deleteActions($type, $sub_type = '', $item_id)
 * @param        string      $sub_type Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
 * @param        string      $item_id  item id
 * @param        int         $action   like action sent by user
+* @param        int         $prev_action
 * @param        int         $uid      user id of voter
 * @param        string      $ip       IP address of voter
 * @return       array       an array with the new overall number of likes and dislikes.
 *
 */
-function LIKES_addAction($type, $sub_type = '', $item_id, $action, $prev_action, $uid, $ip)
+function LIKES_addAction($type, $sub_type, $item_id, $action, $prev_action, $uid, $ip)
 {
     global $_TABLES;
 
@@ -317,10 +318,10 @@ function LIKES_addAction($type, $sub_type = '', $item_id, $action, $prev_action,
 * @param        string      $sub_type Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
 * @param        string      $old_item_id  Original item id
 * @param        string      $new_item_id  New item id
-* @return       none
+* @return       void
 *
 */
-function LIKES_moveActions($type, $sub_type = '', $old_item_id, $new_item_id)
+function LIKES_moveActions($type, $sub_type, $old_item_id, $new_item_id)
 {
     global $_TABLES;
 
@@ -342,9 +343,7 @@ function LIKES_moveActions($type, $sub_type = '', $old_item_id, $new_item_id)
 * @param        string      $type     plugin name
 * @param        string      $sub_type Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
 * @param        array       $item_ids  item id
-* @param        int         $uid      user id of voter
-* @param        string      $ip       IP address of voter
-* @return       array       an array with the new overall number of likes and dislikes.
+* @return       int         the new overall number of likes and dislikes.
 *
 */
 function LIKES_getStats($action, $type = '', $sub_type = '', $item_ids = array())

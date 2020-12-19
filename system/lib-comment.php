@@ -909,7 +909,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
  * @param    int    $page     Page number of comments to display
  * @return   string  HTML for comment form
  */
-function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMode, $format = '', $order = '', $page = 0)
+function CMT_commentForm($title, $comment, $sid, $pid, $type, $mode, $postMode, $format = '', $order = '', $page = 0)
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG03, $LANG12, $LANG_ADMIN
            , $LANG_ACCESS, $MESSAGE, $_SCRIPTS, $CMT_formVariablePrefix;
@@ -923,6 +923,10 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
         $uid = (int) $_USER['uid'];
     }
     $isAnon = ($uid <= 1);
+
+    if (empty($pid)) {
+        $pid = 0;
+    }
 
     if (empty($format)) {
         if (isset($_REQUEST['format'])) {
@@ -2725,11 +2729,11 @@ function CMT_handlePreview($title, $comment, $sid, $pid, $type, $mode, $postMode
  * @param  int    $page   Page number of comments to display
  * @return string HTML (possibly a refresh)
  */
-function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
+function CMT_handleEdit($mode, $format, $order, $page)
 {
     global $_TABLES, $LANG03, $_CONF, $_USER, $_COMMENT_DEBUG;
 
-    // Befor displaying the comment edit form lets do some checks to see if user has appropriate permissions
+    // Before displaying the comment edit form lets do some checks to see if user has appropriate permissions
     if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
         if ($_COMMENT_DEBUG) {
             COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit a comment without proper permission.");
@@ -2994,7 +2998,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             }
         // deliberate fall-through
         case 'edit':
-            $retval .= CMT_handleEdit($commentMode, $postMode, $format, $order, $cPage);
+            $retval .= CMT_handleEdit($commentMode, $format, $order, $cPage);
             if ($is_comment_page) {
                 $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
             }
