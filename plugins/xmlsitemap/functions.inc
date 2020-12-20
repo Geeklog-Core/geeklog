@@ -494,11 +494,10 @@ function plugin_itemdeleted_xmlsitemap($id, $type, $sub_type)
         require_once __DIR__ . '/xmlsitemap.class.php';
 
         $sitemap = new XMLSitemap(COM_getCharset());
-        $sitemap->setFileNames(
-            @$_XMLSMAP_CONF['sitemap_file'],
-            @$_XMLSMAP_CONF['mobile_sitemap_file'],
-            @$_XMLSMAP_CONF['news_sitemap_file']
-        );
+        $sitemapFile = isset($_XMLSMAP_CONF['sitemap_file']) ? $_XMLSMAP_CONF['sitemap_file'] : '';
+        $mobileSitemapFile = isset($_XMLSMAP_CONF['mobile_sitemap_file']) ? $_XMLSMAP_CONF['mobile_sitemap_file'] : '';
+        $newsSitemapFile = isset($_XMLSMAP_CONF['news_sitemap_file']) ? $_XMLSMAP_CONF['news_sitemap_file'] : '';
+        $sitemap->setFileNames($sitemapFile, $mobileSitemapFile, $newsSitemapFile);
 
         // PLG_getItemInfo doesn't work here, since the item has already been deleted from database
         $oldUrl = PLG_idToURL($type, $sub_type, $id);

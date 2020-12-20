@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-syndication.php                                                       |
 // |                                                                           |
 // | Geeklog syndication library.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2010 by the following authors:                         |
+// | Copyright (C) 2003-2020 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun        - dirk AT haun-online DOT de                    |
 // |          Michael Jervis   - mike AT fuckingbrit DOT com                   |
@@ -470,7 +470,7 @@ function SYND_updateFeed($fid)
         $feed = $factory->writer($format[0], $format[1]);
 
         if ($feed) {
-            $feed->encoding = $A['charset'];
+            $feed->setEncoding($A['charset']);
             $feed->lang = $A['language'];
 
             if ($A['type'] == 'article') {

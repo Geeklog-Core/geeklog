@@ -61,7 +61,7 @@ abstract class FeedParserBase
      *
      * @var string
      */
-    public $encoding;
+    protected $encoding;
 
     /**
      * Language for the feed
@@ -162,7 +162,7 @@ abstract class FeedParserBase
      */
     public function __construct()
     {
-        $this->encoding = 'iso-8859-1';
+        $this->setEncoding('iso-8859-1');
         $this->title = '';
         $this->lang = 'en-gb';
         $this->namespaces = array();
@@ -171,6 +171,20 @@ abstract class FeedParserBase
         $this->_currentTag = '';
         $this->_inItem = false;
         $this->_currentItem = array();
+    }
+
+    /**
+     * Set encoding
+     *
+     * @param  string  $encoding
+     */
+    public function setEncoding($encoding)
+    {
+        if (strcasecmp($encoding, 'utf8') === 0) {
+            $encoding = 'UTF-8';
+        }
+
+        $this->encoding = $encoding;
     }
 
     /**
