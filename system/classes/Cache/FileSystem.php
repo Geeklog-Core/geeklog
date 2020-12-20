@@ -193,7 +193,11 @@ class FileSystem implements CacheInterface
     {
         $fileName = $this->getFileName($key);
 
-        return @unlink($fileName);
+        if (is_readable($fileName)) {
+            return @unlink($fileName);
+        } else {
+            return true;
+        }
     }
 
     /**
