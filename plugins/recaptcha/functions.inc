@@ -424,7 +424,9 @@ function plugin_commentPreSave_recaptcha($uid, $title, $comment, $sid, $pid, $ty
  */
 function plugin_itemPreSave_recaptcha($type, $content = '')
 {
-    return RECAPTCHA_verify($type, @$_POST['g-recaptcha-response']);
+    $response = isset($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
+
+    return RECAPTCHA_verify($type, $response);
 }
 
 /**
