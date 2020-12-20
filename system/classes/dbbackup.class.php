@@ -138,9 +138,14 @@ class dbBackup
         $this->tablenames = array_intersect($mysql_tables, $_TABLES);
 
         // Get exclusions and remove from backup list
-        $this->exclusions = @unserialize($_VARS['_dbback_exclude']);
-        if (!is_array($this->exclusions))
-            $this->exclusions = [$this->exclusions];
+        if (isset($_VARS['_dbback_exclude'])) {
+            $this->exclusions = @unserialize($_VARS['_dbback_exclude']);
+            if (!is_array($this->exclusions)) {
+                $this->exclusions = [$this->exclusions];
+            }
+        } else {
+            $this->exclusions = [];
+        }
         $this->tablenames = array_diff($this->tablenames, $this->exclusions);
 
         return $this->tablenames;
