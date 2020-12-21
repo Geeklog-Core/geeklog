@@ -1095,9 +1095,13 @@ function DBADMIN_configBackup()
     $excluded = '';
     $retval = '';
 
-    $exclude_tables = @unserialize($_VARS['_dbback_exclude']);
-    if (!is_array($exclude_tables)) {
-        $exclude_tables = [];
+    $exclude_tables = [];
+    if (isset($_VARS['_dbback_exclude'])) {
+        $exclude_tables = @unserialize($_VARS['_dbback_exclude']);
+
+        if (!is_array($exclude_tables)) {
+            $exclude_tables = [];
+        }
     }
 
     $menu_arr = [
