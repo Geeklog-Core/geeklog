@@ -574,7 +574,7 @@ function WS_xmlToArgs(&$args)
                 if ($node->nodeType == XML_ELEMENT_NODE) {
                     $child_nodes = $node->childNodes;
                     if ($child_nodes == null) {
-                        continue;
+                        continue 2;
                     }
                     $args[$node->localName] = array();
                     for ($i = 0; $i < $child_nodes->length; $i++) {
@@ -585,7 +585,7 @@ function WS_xmlToArgs(&$args)
                                         = $child_node->firstChild->nodeValue;
                                 break;
                             }
-                        }
+                            }
                     }
                 }
                 break;
@@ -594,7 +594,7 @@ function WS_xmlToArgs(&$args)
                     $is_array = 1;
                     $child_nodes = $node->childNodes;
                     if ($child_nodes == null)
-                        continue;
+                        continue 2;
 
                     $args[$node->localName] = array();
                     for ($i = 0; $i < $child_nodes->length; $i++) {
