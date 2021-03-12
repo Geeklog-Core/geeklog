@@ -974,7 +974,7 @@ function STORY_whatsRelated($related, $uid, $sid)
                 if ($_CONF['whats_related_trim'] > 0 && (MBYTE_strlen($author) > $_CONF['whats_related_trim'])) {
                     $author = substr($author, 0, $_CONF['whats_related_trim'] - 3) . '...';
                 }
-                $topics[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">$author</a>";
+                $topics[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=article&amp;author=$uid\">$author</a>";
             }
 
             // Retrieve topics
@@ -987,7 +987,7 @@ function STORY_whatsRelated($related, $uid, $sid)
                     $topic = substr($topic, 0, $_CONF['whats_related_trim'] - 3) . '...';
                 }
                 $topics[] = '<a href="' . $_CONF['site_url']
-                    . '/search.php?mode=search&amp;type=stories&amp;topic=' . $tid
+                    . '/search.php?mode=search&amp;type=article&amp;topic=' . $tid
                     . '">' . $topic . '</a>';
             }
         }
