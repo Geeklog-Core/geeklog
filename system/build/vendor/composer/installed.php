@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'be747ec612ce02c5c64a3061bb378b9739b82109',
+    'reference' => 'a8a5c801495ee7927892dbcf84a2115e7f8ae399',
     'name' => '__root__',
   ),
   'versions' => 
@@ -18,16 +18,16 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'be747ec612ce02c5c64a3061bb378b9739b82109',
+      'reference' => 'a8a5c801495ee7927892dbcf84a2115e7f8ae399',
     ),
     'pear/archive_tar' => 
     array (
-      'pretty_version' => '1.4.11',
-      'version' => '1.4.11.0',
+      'pretty_version' => '1.4.13',
+      'version' => '1.4.13.0',
       'aliases' => 
       array (
       ),
-      'reference' => '17d355cb7d3c4ff08e5729f29cd7660145208d9d',
+      'reference' => '2b87b41178cc6d4ad3cba678a46a1cae49786011',
     ),
     'pear/console_getopt' => 
     array (
@@ -49,21 +49,21 @@
     ),
     'pear/pear_exception' => 
     array (
-      'pretty_version' => 'v1.0.1',
-      'version' => '1.0.1.0',
+      'pretty_version' => 'v1.0.2',
+      'version' => '1.0.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7',
+      'reference' => 'b14fbe2ddb0b9f94f5b24cf08783d599f776fff0',
     ),
     'phing/phing' => 
     array (
-      'pretty_version' => '2.16.3',
-      'version' => '2.16.3.0',
+      'pretty_version' => '2.16.4',
+      'version' => '2.16.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'b34c2bf9cd6abd39b4287dee31e68673784c8567',
+      'reference' => '30831b22fc6bab57003f1893842668c44b7f65ae',
     ),
     'rsky/pear-core-min' => 
     array (
