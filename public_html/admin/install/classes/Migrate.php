@@ -650,6 +650,8 @@ class Migrate extends Common
     {
         global $_CONF, $_DB_dbms, $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
                $_TABLES, $LANG_INSTALL, $LANG_MIGRATE, $_URL, $_DEVICE;
+        global $LANG01, $LANG03, $LANG04, $LANG05, $LANG08, $LANG09, $LANG10, $LANG11, $LANG12, $LANG20, $LANG21;
+        global $LANG23, $LANG24, $LANG27, $LANG28, $LANG29, $LANG31, $LANG32, $LANG33, $MESSAGE;
 
         if (empty(Common::$env['dbconfig_path'])) {
             Common::$env['dbconfig_path'] = $_CONF['path'] . 'db-config.php';

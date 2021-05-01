@@ -177,6 +177,8 @@ class Install extends Common
     public function step3($retval, $_DB_dbms, $installPlugins, $nextLink, $gl_path)
     {
         global $_CONF, $_DEVICE, $_URL;
+        global $LANG01, $LANG03, $LANG04, $LANG05, $LANG08, $LANG09, $LANG10, $LANG11, $LANG12, $LANG20, $LANG21;
+        global $LANG23, $LANG24, $LANG27, $LANG28, $LANG29, $LANG31, $LANG32, $LANG33, $MESSAGE;
 
         if ($this->post('submit') === '<< ' . Common::$LANG['INSTALL'][61]) {
             header('Location: index.php?mode=install');
