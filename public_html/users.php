@@ -1273,12 +1273,14 @@ switch ($mode) {
             isset($_GET['oauth_login'])
         ) {
             // Here we go with the handling of OAuth authentication.
+			$oauth_login = Geeklog\Input::fGet('oauth_login');
             $modules = SEC_collectRemoteOAuthModules();
-            $active_service = (count($modules) == 0) ? false : in_array($_GET['oauth_login'], $modules);
+            $active_service = (count($modules) == 0) ? false : in_array($oauth_login, $modules);
             if (!$active_service) {
                 $status = -1;
-                COM_errorLog("OAuth login failed - there was no consumer available for the service:" . $_GET['oauth_login'], 1);
+                COM_errorLog("OAuth login failed - there was no consumer available for the service:" . $oauth_login, 1);
             } else {
+				// Remember these super global variables have not been validated beyond if the oauth login exists and has been enabled
                 $query = array_merge($_GET, $_POST);
                 $service = $query['oauth_login'];
 
