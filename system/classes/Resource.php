@@ -52,7 +52,7 @@ class Resource
     const DEFAULT_THEME = 'denim';
 
     // Local library versions
-    const JQUERY_VERSION = '3.5.1';
+    const JQUERY_VERSION = '3.6.0';
     const JQUERY_PRIORITY = -5000;
 
     const JQUERY_UI_VERSION = '1.12.1';
@@ -72,7 +72,7 @@ class Resource
     // JQuery & JQuery UI
     //
     // Note: URLs are now hard-coded with version numbers to include an SRI hash
-    const JQUERY_CDN = '<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>';
+    const JQUERY_CDN = '<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>';
     const JQUERY_UI_CDN = '<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>';
     const JQUERY_UI_CSS_CDN = '<link rel="stylesheet" href="https://code.jquery.com/ui/%s/themes/%s/jquery-ui.css">';
 
