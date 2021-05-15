@@ -7,7 +7,7 @@
 <center><h1>Class: OAuth client</h1></center>
 <hr />
 <ul>
-<p><b>Version:</b> <tt>@(#) $Id: oauth_client.php,v 1.163 2017/03/18 07:38:13 mlemos Exp $</tt></p>
+<p><b>Version:</b> <tt>@(#) $Id: oauth_client.php,v 1.170 2021/01/13 22:47:12 mlemos Exp $</tt></p>
 <h2><a name="table_of_contents">Contents</a></h2>
 <ul>
 <li><a href="#2.1.1">Summary</a></li>
@@ -101,9 +101,9 @@
 <h3><a name="3.2.0.0">Author</a></h3>
 <p>Manuel Lemos (<a href="mailto:mlemos-at-acm.org">mlemos-at-acm.org</a>)</p>
 <h3><a name="3.2.0.1">Copyright</a></h3>
-<p></p>
+<p>Copyright &copy; (C) Manuel Lemos 2012</p>
 <h3><a name="3.2.0.2">Version</a></h3>
-<p>@(#) $Id: oauth_client.php,v 1.163 2017/03/18 07:38:13 mlemos Exp $</p>
+<p>@(#) $Id: oauth_client.php,v 1.170 2021/01/13 22:47:12 mlemos Exp $</p>
 <h3><a name="3.2.0.3">Purpose</a></h3>
 <p>This class serves two main purposes:</p>
 <p> 1) Implement the OAuth protocol to retrieve a token from a server to authorize the access to an API on behalf of the current user.</p>
@@ -263,7 +263,7 @@
 <p>Identify the type of OAuth server to access.</p>
 <h3>Usage</h3>
 <p>The class provides built-in support to several types of OAuth servers. This means that the class can automatically initialize several configuration variables just by setting this server variable.</p>
-<p> Currently it supports the following servers: '37Signals', 'Amazon', 'AOL', 'Bitbucket', 'Bitly', 'Box', 'Buffer', 'Copy', 'Dailymotion', 'Discogs', 'Disqus', 'Dropbox' (Dropbox with OAuth 1.0), 'Dropbox2' (Dropbox with OAuth 2.0), 'Etsy', 'Eventful', 'Facebook', 'Fitbit', 'Flickr', 'Foursquare', 'github', 'Google', 'Google1' (Google with OAuth 1.0), 'iHealth', 'iHealthSandbox', 'imgur', 'Infusionsoft', 'Instagram', 'Intuit', 'Jawbone', 'LinkedIn', 'LinkedIn2' (LinkedIn with OAuth 2.0), 'mail.ru', 'MailChimp', 'Mavenlink', 'Meetup', 'Microsoft', 'Misfit', 'oDesk', 'Paypal', 'PaypalApplication', 'Pinterest', 'Rdio', 'Reddit', 'RunKeeper', 'Salesforce', 'Scoop.it', 'StockTwits', 'SurveyMonkey', 'TeamViewer', 'Tumblr', 'Twitter', 'Vimeo', 'VK', 'Withings', 'Wordpress', 'Xero', 'XING', 'Yahoo', 'Yammer' and 'Yandex'. Please contact the author if you would like to ask to add built-in support for other types of OAuth servers.</p>
+<p> Currently it supports the following servers: '37Signals', 'Amazon', 'AOL', 'Bitbucket', 'Bitly', 'Box', 'Buffer', 'Copy', 'Dailymotion', 'Discogs', 'Disqus', 'Dropbox' (Dropbox with OAuth 1.0), 'Dropbox2' (Dropbox with OAuth 2.0), 'Etsy', 'Eventful', 'Facebook', 'Fitbit', 'Flickr', 'Foursquare', 'github', 'Google', 'Google1' (Google with OAuth 1.0), 'iHealth', 'iHealthSandbox', 'imgur', 'Infusionsoft', 'Instagram', 'Intuit', 'Jawbone', 'LinkedIn', 'LinkedIn2' (LinkedIn with OAuth 2.0), 'mail.ru', 'MailChimp', 'Mavenlink', 'Meetup', 'Microsoft', 'Misfit', 'oDesk', 'Odnoklassniki', 'Paypal', 'PaypalApplication', 'Polar', 'Pinterest', 'Rdio', 'Reddit', 'RunKeeper', 'Salesforce', 'Scoop.it', 'StockTwits', 'SurveyMonkey', 'TeamViewer', 'Tumblr', 'Twitter', 'Vimeo', 'VK', 'Withings', 'Wordpress', 'Xero', 'XING', 'Yahoo', 'Yahoo2', 'Yammer' and 'Yandex'. Please contact the author if you would like to ask to add built-in support for other types of OAuth servers.</p>
 <p> If you want to access other types of OAuth servers that are not yet supported, set this variable to an empty string and configure other variables with values specific to those servers.</p>
 <p><a href="#variables">Variables</a></p>
 <h3><a name="variable_configuration_file"></a><li><a name="5.2.62">configuration_file</a></li></h3>

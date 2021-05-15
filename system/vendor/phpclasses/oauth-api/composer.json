@@ -6,5 +6,5 @@
 ,
 	"require": 
 	{
-		"phpclasses/httpclient": "1.0.5"
+		"phpclasses/httpclient": "1.0.7"
 	}}

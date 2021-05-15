@@ -11,7 +11,7 @@ class ZipTestCase extends TestCase
     protected $counter = 0;
 
     /** @inheritdoc */
-    protected function setUp()
+    protected function setUp() : void
     {
         vfsStream::setup('home_root_path');
     }
@@ -33,11 +33,9 @@ class ZipTestCase extends TestCase
         $this->assertTrue(function_exists('zip_open'));
     }
 
-    /**
-     * @expectedException \splitbrain\PHPArchive\ArchiveIOException
-     */
     public function testMissing()
     {
+        $this->expectException(ArchiveIOException::class);
         $tar = new Zip();
         $tar->open('nope.zip');
     }
@@ -125,41 +123,29 @@ class ZipTestCase extends TestCase
         $this->assertTrue(strpos($data, "foobar") === false, 'Path not in ZIP');
     }
 
-    /**
-     * @expectedException \splitbrain\PHPArchive\ArchiveIOException
-     */
     public function testCreateWithInvalidFilePath()
     {
+        $this->expectException(ArchiveIOException::class);
         $zip = new Zip();
-
         $tmp = vfsStream::url('invalid_root_path/test.zip');
-
         $zip->create($tmp);
     }
 
-    /**
-     * @expectedException \splitbrain\PHPArchive\ArchiveIOException
-     */
     public function testAddFileWithArchiveStreamIsClosed()
     {
+        $this->expectException(ArchiveIOException::class);
         $zip = new Zip();
-
         $dir = dirname(__FILE__) . '/zip';
-
         $zip->setCompression(0);
         $zip->close();
         $zip->addFile("$dir/testdata1.txt", "$dir/testdata1.txt");
     }
 
-    /**
-     * @expectedException \splitbrain\PHPArchive\ArchiveIOException
-     */
     public function testAddFileWithInvalidFile()
     {
+        $this->expectException(ArchiveIOException::class);
         $zip = new Zip();
-
         $tmp = vfsStream::url('home_root_path/test.zip');
-
         $zip->create($tmp);
         $zip->setCompression(0);
         $zip->addFile('invalid_file', false);
@@ -188,16 +174,12 @@ class ZipTestCase extends TestCase
         $this->assertEquals(13, $content[4]->getSize(), "Contents of $file");
     }
 
-    /**
-     * @expectedException \splitbrain\PHPArchive\ArchiveIOException
-     */
     public function testZipContentWithArchiveStreamIsClosed()
     {
+        $this->expectException(ArchiveIOException::class);
         $dir = dirname(__FILE__) . '/zip';
-
         $zip = new Zip();
         $file = "$dir/test.zip";
-
         $zip->open($file);
         $zip->close();
         $zip->contents();
@@ -245,6 +227,38 @@ class ZipTestCase extends TestCase
     }
 
     /**
+     * Add a zero byte file to a zip and extract it again
+     */
+    public function testZeroByteFile() {
+        $archive = sys_get_temp_dir() . '/dwziptest' . md5(time()) . '.zip';
+        $extract = sys_get_temp_dir() . '/dwziptest' . md5(time() + 1);
+
+        $zip = new Zip();
+        $zip->create($archive);
+        $zip->addFile(__DIR__ . '/zip/zero.txt', 'foo/zero.txt');
+        $zip->close();
+        $this->assertFileExists($archive);
+
+        $zip = new Zip();
+        $zip->open($archive);
+        $contents = $zip->contents();
+
+        $this->assertEquals(1, count($contents));
+        $this->assertEquals('foo/zero.txt', ($contents[0])->getPath());
+
+        $zip = new Zip();
+        $zip->open($archive);
+        $zip->extract($extract);
+        $zip->close();
+
+        $this->assertFileExists("$extract/foo/zero.txt");
+        $this->assertEquals(0, filesize("$extract/foo/zero.txt"));
+
+        self::RDelete($extract);
+        unlink($archive);
+    }
+
+    /**
      * @depends testExtZipIsInstalled
      */
     public function testUtf8()
@@ -273,11 +287,9 @@ class ZipTestCase extends TestCase
         unlink($archive);
     }
 
-    /**
-     * @expectedException \splitbrain\PHPArchive\ArchiveIOException
-     */
     public function testAddDataWithArchiveStreamIsClosed()
     {
+        $this->expectException(ArchiveIOException::class);
         $archive = sys_get_temp_dir() . '/dwziptest' . md5(time()) . '.zip';
 
         $zip = new Zip();
@@ -310,11 +322,9 @@ class ZipTestCase extends TestCase
         $this->assertTrue(true); // succeed if no exception, yet
     }
 
-    /**
-     * @expectedException \splitbrain\PHPArchive\ArchiveIOException
-     */
     public function testSaveWithInvalidFilePath()
     {
+        $this->expectException(ArchiveIOException::class);
         $archive = sys_get_temp_dir() . '/dwziptest' . md5(time()) . '.zip';
 
         $zip = new Zip();
@@ -396,11 +406,9 @@ class ZipTestCase extends TestCase
         self::RDelete($out);
     }
 
-    /**
-     * @expectedException \splitbrain\PHPArchive\ArchiveIOException
-     */
     public function testZipExtractWithArchiveStreamIsClosed()
     {
+        $this->expectException(ArchiveIOException::class);
         $dir = dirname(__FILE__) . '/zip';
         $out = sys_get_temp_dir() . '/dwziptest' . md5(time());
 

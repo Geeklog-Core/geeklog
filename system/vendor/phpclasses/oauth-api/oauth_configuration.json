@@ -1,5 +1,5 @@
 {
-	"version": "$Id: oauth_configuration.json,v 1.43 2019/12/06 02:28:21 mlemos Exp $",
+	"version": "$Id: oauth_configuration.json,v 1.44 2021/01/13 22:43:51 mlemos Exp $",
 	"comments": [
 		"The servers entry should be an object with a list of object",
 		"entries, one for each server type. The server object entry name is",
@@ -359,6 +359,15 @@
 			"oauth_version": "2.0",
 			"dialog_url": "https://api.pinterest.com/oauth/?response_type=code&redirect_uri={REDIRECT_URI}&client_id={CLIENT_ID}&scope={SCOPE}&state={STATE}",
 			"access_token_url": "https://api.pinterest.com/v1/oauth/token"
+		},
+
+		"Polar":
+		{
+			"oauth_version": "2.0",
+			"dialog_url": "https://flow.polar.com/oauth2/authorization?response_type=code&scope={SCOPE}&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&state={STATE}",
+			"access_token_url": "https://polarremote.com/v2/oauth2/token",
+			"access_token_authentication": "basic",
+			"store_access_token_response": true
 		},
 
 		"Rdio":

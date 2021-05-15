@@ -2,7 +2,7 @@
 /*
  * http.php
  *
- * @(#) $Header: /opt2/ena/metal/http/http.php,v 1.94 2016/05/03 02:07:04 mlemos Exp $
+ * @(#) $Header: /opt2/ena/metal/http/http.php,v 1.98 2021/01/09 17:41:40 mlemos Exp $
  *
  */
 
@@ -27,7 +27,7 @@ class http_class
 
 	var $protocol="http";
 	var $request_method="GET";
-	var $user_agent='httpclient (http://www.phpclasses.org/httpclient $Revision: 1.94 $)';
+	var $user_agent='httpclient (http://www.phpclasses.org/httpclient $Revision: 1.98 $)';
 	var $accept='';
 	var $authentication_mechanism="";
 	var $user;
@@ -57,6 +57,7 @@ class http_class
 	var $data_timeout=0;
 	var $debug=0;
 	var $log_debug=0;
+	var $log_file_name = '';
 	var $debug_response_body=1;
 	var $html_debug=0;
 	var $support_cookies=1;
@@ -421,7 +422,21 @@ class http_class
 			$this->OutputDebug('Connecting to '.$server_type.' server IP '.$ip.' port '.$port.'...');
 		if($ssl)
 			$ip="ssl://".$host_name;
-		if(($this->connection=($this->timeout ? @fsockopen($ip, $port, $errno, $error, $this->timeout) : @fsockopen($ip, $port, $errno)))==0)
+		if(function_exists('stream_socket_client'))
+		{
+			$context = stream_context_create(array(
+				'ssl' => array(
+					'verify_peer' => false,
+					'verify_peer_name' => false
+				)
+			));
+			$this->connection = @stream_socket_client($ip.':'.$port, $errno, $error, $this->timeout ? $this->timeout : ini_get("default_socket_timeout"), STREAM_CLIENT_CONNECT, $context);
+		}
+		if(!$this->connection)
+		{
+			$this->connection=($this->timeout ? @fsockopen($ip, $port, $errno, $error, $this->timeout) : @fsockopen($ip, $port, $errno));
+		}
+		if($this->connection==0)
 		{
 			$error_code = HTTP_CLIENT_ERROR_CANNOT_CONNECT;
 			switch($errno)
@@ -437,7 +452,7 @@ class http_class
 				case -7:
 					return($this->SetError("setvbuf() call failed", $error_code));
 				default:
-					return($this->SetPHPError($errno." could not connect to the host \"".$host_name."\"",$php_errormsg, $error_code));
+					return($this->SetPHPError(serialize($this->connection).' '.$errno." could not connect to the host \"".$host_name."\"",$php_errormsg, $error_code));
 			}
 		}
 		else

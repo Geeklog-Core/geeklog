@@ -2,7 +2,7 @@
 /*
  * database_oauth_client.php
  *
- * @(#) $Id: database_oauth_client.php,v 1.9 2015/10/16 20:05:49 mlemos Exp $
+ * @(#) $Id: database_oauth_client.php,v 1.10 2021/03/22 23:55:47 mlemos Exp $
  *
  */
 
@@ -64,7 +64,7 @@ class database_oauth_client_class extends oauth_client_class
 		$oauth_session->server = $session[8];
 		$oauth_session->creation = $session[9];
 		$oauth_session->refresh_token = $session[10];
-		$oauth_session->access_token_response = (IsSet($session[11]) ? json_decode($session[11]) : null);
+		$oauth_session->access_token_response = (IsSet($session[11]) ? json_decode($session[11], true) : null);
 	}
 
 	Function GetUserSession($user, &$oauth_session)

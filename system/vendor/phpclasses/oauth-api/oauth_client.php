@@ -2,7 +2,7 @@
 /*
  * oauth_client.php
  *
- * @(#) $Id: oauth_client.php,v 1.166 2018/08/16 07:12:24 mlemos Exp $
+ * @(#) $Id: oauth_client.php,v 1.170 2021/01/13 22:47:12 mlemos Exp $
  *
  */
 
@@ -28,7 +28,7 @@ class oauth_session_value_class
 
 	<package>net.manuellemos.oauth</package>
 
-	<version>@(#) $Id: oauth_client.php,v 1.166 2018/08/16 07:12:24 mlemos Exp $</version>
+	<version>@(#) $Id: oauth_client.php,v 1.170 2021/01/13 22:47:12 mlemos Exp $</version>
 	<copyright>Copyright © (C) Manuel Lemos 2012</copyright>
 	<title>OAuth client</title>
 	<author>Manuel Lemos</author>
@@ -302,6 +302,7 @@ class oauth_client_class
 				<stringvalue>Odnoklassniki</stringvalue>,
 				<stringvalue>Paypal</stringvalue>,
 				<stringvalue>PaypalApplication</stringvalue>,
+				<stringvalue>Polar</stringvalue>,
 				<stringvalue>Pinterest</stringvalue>,
 				<stringvalue>Rdio</stringvalue>,
 				<stringvalue>Reddit</stringvalue>,
@@ -1183,7 +1184,7 @@ class oauth_client_class
 {/metadocument}
 */
 	var $http_arguments = array();
-	var $oauth_user_agent = 'PHP-OAuth-API (http://www.phpclasses.org/oauth-api $Revision: 1.166 $)';
+	var $oauth_user_agent = 'PHP-OAuth-API (http://www.phpclasses.org/oauth-api $Revision: 1.170 $)';
 
 	var $response_time = 0;
 	var $session = '';
@@ -1321,6 +1322,11 @@ class oauth_client_class
 			return false;
 		}
 		$check = (strlen($this->append_state_to_redirect_uri) ? $this->append_state_to_redirect_uri : 'state');
+		if($this->debug)
+		{
+			if(!IsSet($_GET[$check]))
+				$this->OutputDebug('The authentication state value was not passed by the OAuth server.');
+		}
 		$state = (IsSet($_GET[$check]) ? $_GET[$check] : null);
 		return(true);
 	}
@@ -1355,7 +1361,7 @@ class oauth_client_class
 		if(strlen($this->redirect_uri))
 			$redirect_uri = $this->redirect_uri;
 		else
-			$redirect_uri = (IsSet($_SERVER['HTTPS']) ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			$redirect_uri = ((IsSet($_SERVER['HTTP_HOST']) && IsSet($_SERVER['REQUEST_URI'])) ? '' : (IsSet($_SERVER['HTTPS']) ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 		return true;
 	}
 
@@ -2960,11 +2966,13 @@ class oauth_client_class
 						return $this->SetError($this->grant_type.' is not yet a supported OAuth 2 grant type');
 				}
 				if($this->debug)
-					$this->OutputDebug('Checking the authentication state in URI '.$_SERVER['REQUEST_URI']);
+					$this->OutputDebug('Getting the authentication state from URI '.(IsSet($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '"'.$this->redirect_uri.'"'));
 				if(!$this->GetStoredState($stored_state))
 					return false;
 				if(strlen($stored_state) == 0)
 					return($this->SetError('it was not set the OAuth state'));
+				if($this->debug)
+					$this->OutputDebug('Checking the authentication state');
 				if(!$this->GetRequestState($state))
 					return false;
 				if($state === $stored_state)
@@ -3005,6 +3013,11 @@ class oauth_client_class
 				}
 				else
 				{
+					if($this->debug)
+					{
+						if($stored_state !== '')
+							$this->OutputDebug('The authentication state is not valid.');
+					}
 					if(!$this->GetRedirectURI($redirect_uri))
 						return false;
 					if(strlen($this->append_state_to_redirect_uri))
