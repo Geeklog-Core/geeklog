@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog class to include javascript, javascript files and css files.      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2020 by the following authors:                         |
+// | Copyright (C) 2000-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer, tomhomer AT gmail DOT com                             |
 // |          Kenji ITO, mystralkk AT gmail DOT com                            |
@@ -62,7 +62,7 @@ class Resource
     const UIKIT_VERSION = '2.27.5';
     const UIKIT_PRIORITY = -3000;
 
-    const UIKIT3_VERSION = '3.5.7';
+    const UIKIT3_VERSION = '3.6.20';
     const UIKIT3_PRIORITY = -3000;
 
     /**
@@ -84,6 +84,7 @@ class Resource
     const UIKIT3_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/uikit/%s/js/uikit.min.js';
     const UIKIT3_ICONS_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/uikit/%s/js/uikit-icons.min.js';
     const UIKIT3_CSS_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/uikit/%s/css/uikit.min.css';
+    const UIKIT3_RTL_CSS_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/uikit/%s/css/uikit-rtl.min.css';
 
     /**
      * Debug mode
