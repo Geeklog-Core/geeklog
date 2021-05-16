@@ -318,7 +318,7 @@ $msql = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
             {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND
             ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND
             {$sql} GROUP BY s.sid, s.uid, s.draft_flag, s.date, s.modified, s.title, s.page_title, s.introtext,
-            s.bodytext, s.text_version, s.hits, s.numemails, s.comments, s.comment_expire, s.trackbacks,
+            s.bodytext, s.text_version, s.hits, s.numpages, s.numemails, s.comments, s.comment_expire, s.trackbacks,
             s.related, s.featured, s.show_topic_icon, s.commentcode, s.structured_data_type, s.trackbackcode,
             s.statuscode, s.expire, s.postmode, s.advanced_editor_mode, s.frontpage, s.meta_description,
             s.meta_keywords, s.cache_time, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members,

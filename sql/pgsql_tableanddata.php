@@ -201,9 +201,7 @@ CREATE TABLE {$_TABLES['likes']} (
   ipaddress VARCHAR(39) NOT NULL,
   action smallint NOT NULL,
   created timestamp NOT NULL,
-  PRIMARY KEY (lid),
-  KEY type (type,subtype,id),
-  KEY type_2 (type,id)
+  PRIMARY KEY (lid)
 )
 ";
 
@@ -393,10 +391,7 @@ CREATE TABLE {$_TABLES['topic_assignments']} (
   id varchar(128) NOT NULL,
   inherit smallint NOT NULL default '1',
   tdefault smallint NOT NULL default '0',
-  PRIMARY KEY (tid,type,subtype,id),
-  KEY tid (tid,type,id),
-  KEY type (type,subtype,id),
-  KEY type_2 (type`,id)
+  PRIMARY KEY (tid,type,subtype,id)
 )
 ";
 

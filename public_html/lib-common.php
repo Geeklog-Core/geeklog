@@ -707,7 +707,9 @@ if (isset($_VARS['last_article_publish']) && ($_VARS['last_article_publish'] != 
     // Can only have one but you can have one current featured article
     // and one for the future...this check will set the latest one as featured
     // solely
-    COM_featuredCheck();
+    if (!defined('GL_INSTALL_ACTIVE')) {
+        COM_featuredCheck();
+    }
 
     // Geeklog now allows for articles to be published in the future.  Because of
     // this, we need to check to see if we need to rebuild the RDF file in the case

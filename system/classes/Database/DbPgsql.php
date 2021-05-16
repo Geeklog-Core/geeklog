@@ -936,37 +936,39 @@ class DbPgsql
 
         $result = pg_get_result($this->_db);
 
-        if ($this->_pgsql_version >= 7.4) {
-            // this provides a much more detailed error report
-            if (pg_result_error_field($result, PGSQL_DIAG_SOURCE_LINE)) {
-                $this->_errorLog('You have an error in your SQL query on line '
-                    . pg_result_error_field($result, PGSQL_DIAG_SOURCE_LINE)
-                    . "$fn\nSQL in question: $sql");
-                $this->_errorLog('Error: '
-                    . pg_result_error_field($result, PGSQL_DIAG_SQLSTATE)
-                    . "$fn\nDescription: "
-                    . pg_result_error_field($result, PGSQL_DIAG_MESSAGE_DETAIL));
+        if (is_resource($result)) {
+            if ($this->_pgsql_version >= 7.4) {
+                // this provides a much more detailed error report
+                if (pg_result_error_field($result, PGSQL_DIAG_SOURCE_LINE)) {
+                    $this->_errorLog('You have an error in your SQL query on line '
+                        . pg_result_error_field($result, PGSQL_DIAG_SOURCE_LINE)
+                        . "$fn\nSQL in question: $sql");
+                    $this->_errorLog('Error: '
+                        . pg_result_error_field($result, PGSQL_DIAG_SQLSTATE)
+                        . "$fn\nDescription: "
+                        . pg_result_error_field($result, PGSQL_DIAG_MESSAGE_DETAIL));
 
-                if ($this->_display_error) {
-                    $error = "An SQL error has occurred in the following SQL: $sql";
-                } else {
-                    $error = 'An SQL error has occurred. Please see error.log for details.';
+                    if ($this->_display_error) {
+                        $error = "An SQL error has occurred in the following SQL: $sql";
+                    } else {
+                        $error = 'An SQL error has occurred. Please see error.log for details.';
+                    }
+
+                    return $error;
                 }
+            } else {
+                if (pg_result_error($result)) {
+                    $this->_errorLog(pg_result_error($result)
+                        . "$fn. SQL in question: $sql");
 
-                return $error;
-            }
-        } else {
-            if (pg_result_error($result)) {
-                $this->_errorLog(pg_result_error($result)
-                    . "$fn. SQL in question: $sql");
+                    if ($this->_display_error) {
+                        $error = 'Error ' . pg_result_error($result);
+                    } else {
+                        $error = 'An SQL error has occurred. Please see error.log for details.';
+                    }
 
-                if ($this->_display_error) {
-                    $error = 'Error ' . pg_result_error($result);
-                } else {
-                    $error = 'An SQL error has occurred. Please see error.log for details.';
+                    return $error;
                 }
-
-                return $error;
             }
         }
 

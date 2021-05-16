@@ -35,9 +35,7 @@ CREATE TABLE {$_TABLES['likes']} (
   ipaddress VARCHAR(39) NOT NULL,
   action TINYINT NOT NULL,
   created DATETIME NOT NULL,
-  PRIMARY KEY (lid),
-  KEY type (type,subtype,id),
-  KEY type_2 (type,id)
+  PRIMARY KEY (lid)
 )
 ";
 
