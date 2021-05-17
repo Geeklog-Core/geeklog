@@ -552,12 +552,25 @@ function savefeed($A)
         $A[$name] = DB_escapeString($value);
     }
 
-    DB_save($_TABLES['syndication'], 'fid,type,topic,header_tid,format,limits,content_length,title,description,feedlogo,filename,charset,language,is_enabled,updated,update_info',
-        "{$A['fid']},'{$A['type']}','{$A['topic']}','{$A['header_tid']}','{$A['format']}','{$A['limits']}',{$A['content_length']},'{$A['title']}','{$A['description']}','{$A['feedlogo']}','{$A['filename']}','{$A['charset']}','{$A['language']}',{$A['is_enabled']},NULL,NULL");
-
+    $timestamp = date('Y-m-d H:i:s');
     if ($A['fid'] == 0) {
+        DB_query(
+            "INSERT INTO {$_TABLES['syndication']} (type,topic,header_tid,format,limits,content_length,title,description,feedlogo,filename,charset,language,is_enabled,updated,update_info)"
+            . "VALUES('{$A['type']}','{$A['topic']}','{$A['header_tid']}','{$A['format']}','{$A['limits']}',{$A['content_length']},'{$A['title']}','{$A['description']}','{$A['feedlogo']}','{$A['filename']}','{$A['charset']}','{$A['language']}',{$A['is_enabled']},'{$timestamp}', NULL)"
+        );
         $A['fid'] = DB_insertId();
+    } else {
+        DB_query(
+            "UPDATE {$_TABLES['syndication']} SET type = '{$A['type']}', topic = '{$A['topic']}', "
+            . "header_tid = '{$A['header_tid']}', format = '{$A['format']}', limits = '{$A['limits']}', "
+            . "content_length = {$A['content_length']}, title = '{$A['title']}', description = '{$A['description']}', "
+            . "feedlogo = '{$A['feedlogo']}', filename = '{$A['filename']}', charset = '{$A['charset']}', "
+            . "language = '{$A['language']}', is_enabled = {$A['is_enabled']}, updated ='{$timestamp}', "
+            . "update_info = NULL "
+            . "WHERE fid = {$A['fid']}"
+        );
     }
+
     if ($A['is_enabled'] == 1) {
         SYND_updateFeed($A['fid']);
     } else {

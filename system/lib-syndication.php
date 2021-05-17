@@ -250,7 +250,7 @@ function SYND_getFeedContentPerTopic($tid, $limit, &$link, &$update, $contentLen
             WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0
             AND ta.type = 'article' AND ta.id = sid
             AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '$tid')))
-            GROUP BY sid
+            GROUP BY sid, uid, title, introtext, bodytext, postmode, UNIX_TIMESTAMP(date), commentcode, trackbackcode, date
             ORDER BY date DESC $limitsql";
 
         $result = DB_query($sql);

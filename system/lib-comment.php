@@ -3193,7 +3193,7 @@ function plugin_getfeedcontent_comment($feed, &$link, &$update)
         . " AND ta.type = 'article' AND ta.id = s.sid "
         . " AND c.type = 'article' AND s.sid = c.sid "
         . "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$S['topic']}'))) "
-        . "GROUP BY c.cid "
+        . "GROUP BY c.cid, c.sid, c.title, c.comment, UNIX_TIMESTAMP(c.date), s.title, c.uid, s.uid "
         . "ORDER BY modified DESC  LIMIT 0, {$S['limits']} ";
 
     $result = DB_query($sql);
