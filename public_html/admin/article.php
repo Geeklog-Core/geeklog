@@ -235,7 +235,7 @@ function liststories($current_topic = '', $editaccessonly = '')
         'query_group'    => "sid,{$_TABLES['users']}.username, {$_TABLES['users']}.fullname, {$_TABLES['stories']}.uid,"
             . "{$_TABLES['stories']}.draft_flag, {$_TABLES['stories']}.date, {$_TABLES['stories']}.title, "
             . "{$_TABLES['stories']}.page_title, {$_TABLES['stories']}.introtext, {$_TABLES['stories']}.bodytext, "
-            . "{$_TABLES['stories']}.text_version, {$_TABLES['stories']}.hits, {$_TABLES['stories']}.numemails, "
+            . "{$_TABLES['stories']}.text_version, {$_TABLES['stories']}.hits, {$_TABLES['stories']}.numpages, {$_TABLES['stories']}.numemails, "
             . "{$_TABLES['stories']}.comments, {$_TABLES['stories']}.comment_expire, {$_TABLES['stories']}.trackbacks, "
             . "{$_TABLES['stories']}.related, {$_TABLES['stories']}.featured, {$_TABLES['stories']}.show_topic_icon, "
             . "{$_TABLES['stories']}.commentcode, {$_TABLES['stories']}.trackbackcode, {$_TABLES['stories']}.statuscode, "

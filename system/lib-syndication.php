@@ -145,7 +145,7 @@ function SYND_feedUpdateCheckTopic($tid, $update_info, $limit, $updated_topic = 
         WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0
         AND ta.type = 'article' AND ta.id = sid
         AND ta.tid = '$tid'" . COM_getTopicSQL('AND', 1, 'ta') . "
-        GROUP BY sid
+        GROUP BY sid, date
         ORDER BY date DESC $limitsql";
 
     $result = DB_query($sql);

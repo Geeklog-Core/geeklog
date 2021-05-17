@@ -3304,7 +3304,7 @@ function plugin_feedupdatecheck_comment($feed, $topic, $update_data, $limit, $up
         . " AND ta.type = 'article' AND ta.id = s.sid "
         . " AND c.type = 'article' AND s.sid = c.sid "
         . "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}'))) "
-        . "GROUP BY c.cid "
+        . "GROUP BY c.cid, UNIX_TIMESTAMP(c.date) "
         . "ORDER BY modified DESC  LIMIT 0, {$limit} ";
 
     $result = DB_query($sql);
