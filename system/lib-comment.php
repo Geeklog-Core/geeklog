@@ -731,7 +731,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
     // Retrieve base url in case needed for 404 error
     $pluginLink = CMT_getCommentUrlId($type, $sid);
 
-    if ($page == '') {
+    if (empty($page)) {
         // Assume first page if none given
         $page = 1;
     } elseif (!is_numeric($page) || $page < 1) {
