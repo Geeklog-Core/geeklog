@@ -3186,7 +3186,7 @@ function plugin_getfeedcontent_comment($feed, &$link, &$update)
     $tid_list = TOPIC_getChildList($S['topic'], 1);
 
     $sql = "SELECT c.cid, c.sid, c.title as title, c.comment, UNIX_TIMESTAMP(c.date) AS modified, "
-        . " s.title as articleTitle, c.uid, s.uid as articleAuthor "
+        . " s.title as article_title, c.uid, s.uid as article_author "
         . "FROM {$_TABLES['comments']} c, {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta "
         . "WHERE (s.draft_flag = 0) AND (s.date <= NOW()) "
         . COM_getPermSQL('AND', 1, 2, 's')
@@ -3214,12 +3214,12 @@ function plugin_getfeedcontent_comment($feed, &$link, &$update)
         $articleLink = COM_buildURL($_CONF['site_url'] . "/article.php?story={$row['sid']}");
 
         $link = $_CONF['site_url'] . "/comment.php?mode=view&cid={$row['cid']}";
-        $articleTitle = $row['articleTitle'];
+        $articleTitle = $row['article_title'];
 
         if ($_CONF['comment_feeds_article_tag_position'] !== 'none') {
             $articleAuthor = sprintf($_CONF['comment_feeds_article_author_tag'],
-                $_CONF['site_url'] . '/users.php?mode=profile&uid=' . $row['articleAuthor'],
-                COM_getDisplayName($row['articleAuthor']));
+                $_CONF['site_url'] . '/users.php?mode=profile&uid=' . $row['article_author'],
+                COM_getDisplayName($row['article_author']));
             $commentAuthor = sprintf($_CONF['comment_feeds_comment_author_tag'],
                 $_CONF['site_url'] . '/users.php?mode=profile&uid=' . $row['uid'],
                 COM_getDisplayName($row['uid']));
