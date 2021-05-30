@@ -866,7 +866,8 @@ $LANG_ENVCHECK = array(
     'showhide_phpinfo'          => 'Show/Hide Full PHP Info',
     'view_online'               => 'Click here %s to view online',
     'no_new_items'              => 'No New Items',
-    'max_execution_time'        => 'Geeklog recommends the PHP default value of 30 seconds as a minimum, but plugin uploads and other operations may take longer than this depending upon your hosting environment.  You may be able to increase this by modifying the value of <b>max_execution_time</b> in your php.ini file.'
+    'max_execution_time'        => 'Geeklog recommends the PHP default value of 30 seconds as a minimum, but plugin uploads and other operations may take longer than this depending upon your hosting environment.  You may be able to increase this by modifying the value of <b>max_execution_time</b> in your php.ini file.',
+    'phpinfo_disabled'          => 'In order to view the current php settings, you will have to contact your host and enable access to the phpinfo() function.'
 );
 
 ###############################################################################

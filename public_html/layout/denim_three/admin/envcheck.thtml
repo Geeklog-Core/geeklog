@@ -8,18 +8,19 @@
 
 {filesystem_list}
 
-{!if phpinfo_content}
 <section class="block-center">
     {# Mimic ADMIN_simpleList function output #}
     <h2>{lang_current_php_settings}</h2>
     <div class="block-center-content">
         <div id="toggle_phpinfo">{lang_showhide_phpinfo}</div>
+        {!if phpinfo_content}
         <section id="panel_phpinfo">
             <!--
             <style>{phpinfo_style}</style>
             -->
             {phpinfo_content}
         </section>
+        {!endif}
     </div>
 </section>
 <script>
@@ -27,7 +28,6 @@
         $("#panel_phpinfo table").addClass("uk-table").wrap("<div class='uk-overflow-auto'></div>");
     });
 </script>
-{!endif}
 
 {# end {templatelocation} #}
 

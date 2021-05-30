@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog Environment Check.                                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2020 by the following authors:                         |
+// | Copyright (C) 2000-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Mark R. Evans      - mark AT glfusion DOT org                    |
 // |          Tom Homer          - tomhomer AT gmail DOT com                   |
@@ -47,7 +47,11 @@ if (!SEC_inGroup('Root')) {
     exit;
 };
 
-function _checkEnvironment()
+/**
+ * @param  bool  $phpInfoDisabled  true if phpinfo() function is disabled
+ * @return string
+ */
+function _checkEnvironment($phpInfoDisabled)
 {
     global $_CONF, $_TABLES, $_PLUGINS, $_SYSTEM, $LANG_ADMIN, $LANG_ENVCHECK, $_SCRIPTS, $_DB_dbms;
 
@@ -57,15 +61,17 @@ function _checkEnvironment()
     $T = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin'));
     $T->set_file('page','envcheck.thtml');
     $T->set_block('page', 'status');
-
     $_SCRIPTS->setJavaScriptLibrary('jquery');
-    $javascript = '
+
+    if (!$phpInfoDisabled) {
+        $javascript = '
     $(document).ready(function(){
       $("#toggle_phpinfo").click(function(){
         $("#panel_phpinfo").toggle();
       });
     });';
-    $_SCRIPTS->setJavascript($javascript, true);
+        $_SCRIPTS->setJavascript($javascript, true);
+    }
 
     $menu_arr = array (
         array('url'  => $_CONF['site_admin_url'] . '/envcheck.php',
@@ -238,7 +244,7 @@ function _checkEnvironment()
     );
 
     $max_execution_time = ini_get('max_execution_time');
-    $className = ($max_execution_time < 30) ? 'notok' : 'yes';
+    $className = ($max_execution_time >= 30) || ($max_execution_time == 0) ? 'yes' : 'notok';
     $value = $max_execution_time . ' secs';
     $current = _getStatusTags($T, $className, $value);
     $data_arr[] = array(
@@ -625,13 +631,19 @@ function _checkEnvironment()
     // ***********************************************
     // Current PHP Settings
     if (!COM_isDemoMode()) {
-        $T->set_var(array(
-            'lang_current_php_settings' => $LANG_ENVCHECK['current_php_settings'],
-            'lang_showhide_phpinfo'     => $LANG_ENVCHECK['showhide_phpinfo'],
-        ));
+        if ($phpInfoDisabled) {
+            $T->set_var([
+                'lang_current_php_settings' => $LANG_ENVCHECK['current_php_settings'],
+                'lang_showhide_phpinfo'     => $LANG_ENVCHECK['phpinfo_disabled'],
+            ]);
+        } else {
+            $T->set_var([
+                'lang_current_php_settings' => $LANG_ENVCHECK['current_php_settings'],
+                'lang_showhide_phpinfo'     => $LANG_ENVCHECK['showhide_phpinfo'],
+            ]);
 
-
-        _phpinfo($T);
+            _phpinfo($T);
+        }
     }
 
     $T->parse('output', 'page');
@@ -839,6 +851,7 @@ function _phpinfo($T)
     $T->set_var('phpinfo_content', $content);
 }
 
-$content = _checkEnvironment();
+$phpInfoDisabled = !is_callable('phpinfo');
+$content = _checkEnvironment($phpInfoDisabled);
 $display = COM_createHTMLDocument($content, array('pagetitle' => $LANG_ENVCHECK['env_check']));
 COM_output($display);

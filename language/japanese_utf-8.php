@@ -14,7 +14,7 @@
 # taca AT back-street DOT net
 # Copyright (C) 2006,2007,2008 Tetsuko Komma
 # ivy AT geeklog DOT jp
-# Copyright (C) 2006-2020 Geeklog.jp group
+# Copyright (C) 2006-2021 Geeklog.jp group
 # info AT geeklog DOT jp
 #
 # This program is free software; you can redistribute it and/or
@@ -870,7 +870,8 @@ $LANG_ENVCHECK = array(
     'showhide_phpinfo' => 'phpinfo 表示/非表示',
     'view_online' => 'オンライン表示はここ %s をクリック',
     'no_new_items' => '新アイテムはありません',
-    'max_execution_time' => 'Geeklogは最少値として30秒を要求していますが、プラグインアップロードなどを行う場合、サーバー環境によってはそれ以上を要求します。php.iniで<b>max_execution_time</b> を増やすことで対応できます。'
+    'max_execution_time' => 'Geeklogは最少値として30秒を要求していますが、プラグインアップロードなどを行う場合、サーバー環境によってはそれ以上を要求します。php.iniで<b>max_execution_time</b> を増やすことで対応できます。',
+    'phpinfo_disabled'   => '現在のPHPの設定を見るには、ホスティング会社に連絡してphpinfo()関数を有効にする必要があります。'
 );
 
 ###############################################################################
