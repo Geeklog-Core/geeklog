@@ -9,7 +9,7 @@
 // | This pages lets GL users communicate with each other without risk of      |
 // | their email address being intercepted by spammers.                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2011 by the following authors:                         |
+// | Copyright (C) 2000-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -131,10 +131,11 @@ function contactemail($uid, $cc, $author, $authorEmail, $subject, $message)
             $sent = COM_mail($to, $subject, $message, $from);
 
             if ($sent && $_CONF['mail_cc_enabled'] && (Geeklog\Input::post('cc') === 'on')) {
-                $ccmessage = sprintf($LANG08[38], COM_getDisplayName($uid, $A['username'], $A['fullname']));
-                $ccmessage .= "\n------------------------------------------------------------\n\n" . $message;
+                $ccmessage = sprintf($LANG08[38], COM_getDisplayName($uid, $A['username'], $A['fullname'])) . "\n"
+                           . $LANG08[45]
+                           . "\n------------------------------------------------------------\n\n" . $message;
 
-                $sent = COM_mail($from, $subject, $ccmessage, $from);
+                $sent = COM_mail($from, $subject, $ccmessage, $_CONF['noreply_mail']);
             }
 
             COM_updateSpeedlimit('mail');
@@ -405,10 +406,11 @@ function mailstory($sid, $to, $toEmail, $from, $fromEmail, $shortMessage)
     $sent = COM_mail($mailto, $subject, $mailText, $mailfrom);
 
     if ($sent && $_CONF['mail_cc_enabled'] && (Geeklog\Input::post('cc') === 'on')) {
-        $ccmessage = sprintf($LANG08[38], $to);
-        $ccmessage .= "\n------------------------------------------------------------\n\n" . $mailText;
+        $ccmessage = sprintf($LANG08[38], $to) . "\n"
+                   . $LANG08[45]
+                   . "\n------------------------------------------------------------\n\n" . $mailText;
 
-        $sent = COM_mail($mailfrom, $subject, $ccmessage, $mailfrom);
+        $sent = COM_mail($mailfrom, $subject, $ccmessage, $_CONF['noreply_mail']);
     }
 
     COM_updateSpeedlimit('mail');
