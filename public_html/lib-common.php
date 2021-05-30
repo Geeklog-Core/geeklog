@@ -4718,12 +4718,23 @@ function COM_getDisplayName($uid = 0, $username = '', $fullname = '', $remoteUse
     global $_CONF, $_TABLES, $_USER;
 
     if (empty($uid)) {
-        $uid = COM_isAnonUser() ? 1 : $_USER['uid'];
+        $uid = COM_isAnonUser() ? 1 : (int) $_USER['uid'];
     }
 
     // "this shouldn't happen"
-    if ($uid == 0) {
+    if ($uid <= 0) {
         $uid = 1;
+    }
+
+    // When an anonymous user has saved his/her user name to a cookie, then use it instead
+    if (($uid === 1) && isset($_COOKIE[$_CONF['cookie_anon_name']])) {
+        $username = GLText::stripTags($_COOKIE[$_CONF['cookie_anon_name']]);
+        $username = COM_checkWords($username, 'comment');
+        $username = GLText::remove4byteUtf8Chars($username);
+
+        if (!empty($username)) {
+            return $username;
+        }
     }
 
     if (empty($username)) {
