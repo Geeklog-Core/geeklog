@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Page that is displayed upon a successful Geeklog installation or upgrade  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2020 by the following authors:                         |
+// | Copyright (C) 2000-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
- // Need to set in case site is disabled as we want the User to know of the success of the Installer
+// Need to set in case site is disabled as we want the User to know of the success of the Installer
 define('GL_INSTALL_ACTIVE', true);
 
 use Geeklog\Input;
@@ -67,12 +67,12 @@ function SUCCESS_getInstallPath()
 /**
  * Delete all files and directories under the $baseDir
  *
- * @param  string $baseDir
+ * @param  string  $baseDir
  * @return array of files and directories that the script couldn't delete
  */
 function SUCCESS_deleteAll($baseDir)
 {
-    static $failures = array();
+    static $failures = [];
 
     foreach (scandir($baseDir) as $item) {
         if (($item !== '.') && ($item !== '..')) {
@@ -105,7 +105,7 @@ $type = Input::fGet('type', 'install');
 $submit = Input::post('submit', '');
 $language = Input::fGet('language', 'english');
 $language = preg_replace('/[^a-z0-9\-_]/', '', $language);
-$languagePath = dirname(__FILE__) . '/language/' . $language . '.php';
+$languagePath = __DIR__ . '/language/' . $language . '.php';
 
 if (is_readable($languagePath)) {
     require_once __DIR__ . '/language/' . $language . '.php';
@@ -124,14 +124,15 @@ $_CONF['rootdebug'] = true;
 // $_CONF['cache_templates'] = false;
 
 switch ($submit) {
-    case $LANG_SUCCESS[24]:  // Delete all the fies and directories
+    case $LANG_SUCCESS[24]: // Delete all the fies and directories
         $failures = SUCCESS_deleteAll(__DIR__);
         $redirect = $_CONF['site_url'] . '/index.php?msg='
             . ((count($failures) === 0) ? 150 : 151);
         header('Location: ' . $redirect);
+        die(0);
         break;
 
-    case $LANG_SUCCESS[25]: // Don't delete any files and directories
+    case $LANG_SUCCESS[25]: // Don't delete any files or directories
         header('Location: ' . $_CONF['site_url'] . '/index.php?msg=152');
         break;
 
@@ -154,7 +155,7 @@ if ($type === 'install') {
     $message = $LANG_SUCCESS[22];
 }
 
-$T->set_var(array(
+$T->set_var([
     'conf_path'           => $_CONF['path'],
     'conf_path_html'      => $_CONF['path_html'],
     'conf_site_url'       => $_CONF['site_url'],
@@ -191,16 +192,15 @@ $T->set_var(array(
     'older_geeklog'       => (DB_count($_TABLES['users'], 'username', 'NewAdmin') > 0),
     'type'                => $type,
     'version'             => VERSION,
-));
+]);
 
 $T->parse('output', 'success');
 $content = $T->finish($T->get_var('output'));
 $doc = COM_createHTMLDocument(
     $content,
-    array(
+    [
         'what'      => 'menu',
         'pagetitle' => $LANG_SUCCESS[0],
-    )
+    ]
 );
 COM_output($doc);
-
