@@ -42,7 +42,7 @@ function update_TablesContainingIPAddresses222()
     $data = [
         'comments'          => ['cid', 'ipaddress'],
         'commentsumissions' => ['cid', 'ipaddress'],
-        'likes'             => ['lid', 'ipaddress'],
+//        'likes'             => ['lid', 'ipaddress'],
         'sessions'          => ['sess_id', 'remote_ip'],
         'speedlimit'        => ['id', 'ipaddress'],
         'trackback'         => ['cid', 'ipaddress'],
@@ -55,7 +55,7 @@ function update_TablesContainingIPAddresses222()
         // Add 'seq' column
         DB_query("ALTER TABLE $_TABLES[$table] ADD COLUMN seq INT NOT NULL DEFAULT 0");
 
-        // Collect primary ke values and IP addresses
+        // Collect primary key values and IP addresses
         $result = DB_query("SELECT $primaryKeyColumn, $ipColumn FROM $_TABLES[$table]");
         $rows = [];
 

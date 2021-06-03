@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog database library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2020 by the following authors:                         |
+// | Copyright (C) 2000-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -67,6 +67,7 @@ $_TABLES['dateformats'] = $_DB_table_prefix . 'dateformats';
 $_TABLES['features'] = $_DB_table_prefix . 'features';
 $_TABLES['group_assignments'] = $_DB_table_prefix . 'group_assignments';
 $_TABLES['groups'] = $_DB_table_prefix . 'groups';
+$_TABLES['ip_addresses'] = $_DB_table_prefix . 'ip_addresses';
 $_TABLES['language_items'] = $_DB_table_prefix . 'language_items';
 $_TABLES['likes'] = $_DB_table_prefix . 'likes'; // As of Geeklog 2.2.1
 $_TABLES['maillist'] = $_DB_table_prefix . 'maillist';
