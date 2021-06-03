@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Initial configuration setup.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2019 by the following authors:                         |
+// | Copyright (C) 2007-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -70,6 +70,7 @@ function install_config(ConfigInterface $c)
     $c->add('about_cookies_link','','text',0,0,NULL,2040,TRUE, $me, 0);
     $c->add('terms_of_use_link','','text',0,0,NULL,2050,TRUE, $me, 0);
     $c->add('privacy_policy_link','','text',0,0,NULL,2060,TRUE, $me, 0);
+    $c->add('ip_anonymization',\Geeklog\IP::POLICY_NEVER_ANONYMIZE,'text',0,0,NULL,2070,TRUE, $me, 0);
 
     $c->add('tab_mail', NULL, 'tab', 0, 1, NULL, 0, TRUE, $me, 1);
     $c->add('fs_mail', NULL, 'fieldset', 0, 1, NULL, 0, TRUE, $me, 1);

@@ -181,6 +181,16 @@ CREATE TABLE {$_TABLES['groups']} (
 ";
 
 $_SQL[] = "
+CREATE TABLE {$_TABLES['ip_addresses']} (
+  seq SERIAL,
+  ipaddress VARCHAR(39) NOT NULL DEFAULT '0.0.0.0',
+  created_at INT NOT NULL DEFAULT 0,
+  is_anonymized INT NOT NULL default 0,
+  PRIMARY KEY (seq)
+)
+";
+
+$_SQL[] = "
 CREATE TABLE {$_TABLES['language_items']} (
   id SERIAL NOT NULL,
   var_name varchar(30) NOT NULL,

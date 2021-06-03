@@ -1592,6 +1592,11 @@ abstract class Common
                     break;
 
                 case '2.2.1sr1':
+                    require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.2.1_to_2.2.2.php';
+                    $this->updateDB($_SQL, $progress);
+                    update_ConfValuesFor222();
+                    update_TablesContainingIPAddresses222();
+
                     $currentGlVersion = '2.2.2';
                     break;
 

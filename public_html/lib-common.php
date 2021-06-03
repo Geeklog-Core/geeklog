@@ -235,6 +235,11 @@ require_once $_CONF['path_system'] . 'lib-plugins.php';
 $_PAGE_TIMER = new timerobject();
 $_PAGE_TIMER->startTimer();
 
+// Initialize IP class
+if (!defined('GL_INSTALL_ACTIVE')) {
+    \Geeklog\IP::init($_TABLES['ip_addresses'], $_CONF['ip_anonymization']);
+}
+
 /**
  * This provides optional URL rewriting functionality.
  *
@@ -9309,6 +9314,10 @@ if ($_CONF['cron_schedule_interval'] > 0 && COM_onFrontpage()) {
     if (($_VARS['last_scheduled_run'] + $_CONF['cron_schedule_interval']) <= time()) {
         DB_query("UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'");
         PLG_runScheduledTask();
+
+        if (!defined('GL_INSTALL_ACTIVE')) {
+            \Geeklog\IP::updateIPAddressesTable();
+        }
     }
 }
 
