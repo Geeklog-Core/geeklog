@@ -91,7 +91,7 @@ CREATE TABLE {$_TABLES['comments']} (
   indent mediumint(10) unsigned NOT NULL default '0',
   name varchar(32) default NULL,
   uid mediumint(8) NOT NULL default '1',
-  ipaddress varchar(39) NOT NULL default '',
+  seq INT NOT NULL DEFAULT 0,
   INDEX comments_sid(sid),
   INDEX comments_uid(uid),
   INDEX comments_lft(lft),
@@ -112,7 +112,7 @@ CREATE TABLE {$_TABLES['commentsubmissions']} (
   uid mediumint(8) NOT NULL default '1',
   name varchar(32) default NULL,
   pid int(10) NOT NULL default '0',
-  ipaddress varchar(39) NOT NULL,
+  seq INT NOT NULL DEFAULT 0,
   PRIMARY KEY  (cid)
 ) ENGINE=MyISAM
 ";

@@ -181,6 +181,16 @@ abstract class IP
     }
 
     /**
+     * Return the original $_SERVER['REMOTE_ADDR']
+     *
+     * @return string
+     */
+    public static function getIPAddress()
+    {
+        return self::$ipAddress;
+    }
+
+    /**
      * Anonymize an IP address
      *
      * @param  string  $ipAddress

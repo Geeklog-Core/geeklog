@@ -324,7 +324,10 @@ function ADMIN_buildCommentList($suffix, $tableName, $securityToken)
 
     $queryArray = array(
         'table'          => $tableName,
-        'sql'            => "SELECT * FROM " . $_TABLES[$tableName] . " WHERE (1 = 1) ",
+        'sql'            => "SELECT c.type, c.sid, c.date, c.title, c.comment, c.uid, i.ipaddress FROM " . $_TABLES[$tableName] . " AS c "
+            . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+            . "ON c.seq = i.seq "
+            . "WHERE (1 = 1) ",
         'query_fields'   => array('type', 'sid', 'date', 'title', 'comment', 'uid', 'ipaddress'),
         'default_filter' => $sqlForType . COM_getPermSql('AND'),
     );
@@ -567,9 +570,11 @@ function banIpAddresses_spamx($suffix)
                 $table = $_TABLES['commentsubmissions'];
             }
 
-            $sql = "SELECT DISTINCT ipaddress FROM $table "
-                . "WHERE (ipaddress NOT LIKE '192.168.%') AND (ipaddress <> '::1') AND "
-                . " (cid IN (" . implode(',', $getCommentIds) . "))";
+            $sql = "SELECT DISTINCT i.ipaddress FROM $table AS c "
+                . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+                . "ON c.seq = i.seq "
+                . "WHERE (i.ipaddress NOT LIKE '192.168.%') AND (iipaddress <> '::1') AND "
+                . " (c.cid IN (" . implode(',', $getCommentIds) . "))";
 
             $result = DB_query($sql);
 
@@ -620,9 +625,11 @@ function banIpAddresses_ban($suffix)
                 $table = $_TABLES['commentsubmissions'];
             }
 
-            $sql = "SELECT DISTINCT ipaddress FROM $table "
-                . "WHERE (ipaddress NOT LIKE '192.168.%') AND (ipaddress <> '::1') AND "
-                . " (cid IN (" . implode(',', $getCommentIds) . "))";
+            $sql = "SELECT DISTINCT i.ipaddress FROM $table AS c "
+                . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+                . "ON c.seq = i.seq "
+                . "WHERE (i.ipaddress NOT LIKE '192.168.%') AND (i.ipaddress <> '::1') AND "
+                . " (c.cid IN (" . implode(',', $getCommentIds) . "))";
 
             $result = DB_query($sql);
 

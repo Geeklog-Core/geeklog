@@ -1498,15 +1498,17 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 
     if (($_CONF['commentsubmission'] == 1) && !SEC_hasRights('comment.submit')) {
         // comment into comment submission table enabled
+        $seq = \Geeklog\IP::getSeq();
+
         if (isset($name) AND trim($name) == '') {
-            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,type,date,title,pid,ipaddress) "
-                . "VALUES ('$sid',$uid,NULL,'$comment','$type',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
+            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,type,date,title,pid,seq) "
+                . "VALUES ('$sid',$uid,NULL,'$comment','$type',NOW(),'$title',$pid,$seq)");
         } elseif (isset($name)) {
-            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,type,date,title,pid,ipaddress) "
-                . "VALUES ('$sid',$uid,'$name','$comment','$type',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
+            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,type,date,title,pid,seq) "
+                . "VALUES ('$sid',$uid,'$name','$comment','$type',NOW(),'$title',$pid,$seq)");
         } else {
-            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,comment,type,date,title,pid,ipaddress) "
-                . "VALUES ('$sid',$uid,'$comment','$type',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
+            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,comment,type,date,title,pid,seq) "
+                . "VALUES ('$sid',$uid,'$comment','$type',NOW(),'$title',$pid,$seq)");
         }
 
         $cid = DB_insertId('', $_TABLES['commentsubmissions'] . '_cid_seq');
@@ -1525,15 +1527,17 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             DB_query("UPDATE {$_TABLES['comments']} SET rht = rht + 2 "
                 . "WHERE sid = '$sid' AND type = '$type' AND rht >= $rht");
 
+            $seq = \Geeklog\IP::getSeq();
+
             if (isset($name) AND trim($name) == '') {
-                DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
-                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type','{$_SERVER['REMOTE_ADDR']}',NULL");
+                DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,seq,name',
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type',$seq,NULL");
             } elseif (isset($name)) {
-                DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
-                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type','{$_SERVER['REMOTE_ADDR']}','$name'");
+                DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,seq,name',
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type',$seq,'$name'");
             } else {
-                DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
-                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type','{$_SERVER['REMOTE_ADDR']}'");
+                DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,seq',
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type',$seq");
             }
 
             $cid = DB_insertId('', $_TABLES['comments'] . '_cid_seq');
@@ -1584,15 +1588,17 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         }
         $rht2 = $rht + 1;  // value of new comment's "lft"
         $rht3 = $rht + 2;  // value of new comment's "rht"
+        $seq = \Geeklog\IP::getSeq();
+
         if (isset($name) AND trim($name) == '') {
-            DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
-                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}',NULL");
+            DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,seq,name',
+                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type',$seq,NULL");
         } elseif (isset($name)) {
-            DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
-                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}','$name'");
+            DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,seq,name',
+                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type',$seq,'$name'");
         } else {
-            DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
-                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}'");
+            DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,seq',
+                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type',$seq");
         }
 
         $cid = DB_insertId('', $_TABLES['comments'] . '_cid_seq');
@@ -1658,8 +1664,8 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
     global $_CONF, $_TABLES, $LANG01, $LANG03, $LANG08, $LANG09, $LANG29;
 
     // sanity check
-    if (($username == $_SERVER['REMOTE_ADDR']) &&
-        ($ipaddress != $_SERVER['REMOTE_ADDR'])
+    if (($username == \Geeklog\IP::getIPAddress()) &&
+        ($ipaddress != \Geeklog\IP::getIPAddress())
     ) {
         COM_errorLog("The API for CMT_sendNotification has changed ...");
 
@@ -1957,7 +1963,12 @@ function CMT_sendReport($cid)
 
     $username = DB_getItem($_TABLES['users'], 'username',
         "uid = {$_USER['uid']}");
-    $result = DB_query("SELECT uid,title,comment,type,sid,ipaddress FROM {$_TABLES['comments']} WHERE cid = $cid");
+    $result = DB_query(
+        "SELECT c.uid, c.title, c.comment, c.type, c.sid, i.ipaddress FROM {$_TABLES['comments']} AS c "
+        . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+        . "ON c.seq = i.seq "
+        . "WHERE c.cid = $cid"
+    );
     $A = DB_fetchArray($result);
 
     $title = stripslashes($A['title']);
@@ -2306,7 +2317,13 @@ function CMT_approveModeration($cid)
 {
     global $_CONF, $_TABLES;
 
-    $result = DB_query("SELECT type, sid, date, title, comment, uid, name, pid, ipaddress FROM {$_TABLES['commentsubmissions']} WHERE cid = '$cid'");
+    $cid = DB_escapeString($cid);
+    $result = DB_query(
+        "SELECT c.type, c.sid, c.date, c.title, c.comment, c.uid, c.name, c.pid, i.ipaddress FROM {$_TABLES['commentsubmissions']} AS c "
+        . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+        . "ON c.seq = i.seq "
+        . "WHERE c.cid = '$cid'"
+    );
     $A = DB_fetchArray($result);
 
     if ($A['pid'] > 0) {
@@ -2326,14 +2343,14 @@ function CMT_approveModeration($cid)
     if (isset($A['name'])) {
         // insert data
         $A['name'] = DB_escapeString($A['name']);
-        DB_save($_TABLES['comments'], 'type,sid,date,title,comment,uid,name,pid,ipaddress,indent',
+        DB_save($_TABLES['comments'], 'type,sid,date,title,comment,uid,name,pid,seq,indent',
             "'{$A['type']}','{$A['sid']}','{$A['date']}','{$A['title']}','{$A['comment']}','{$A['uid']}'," .
-            "'{$A['name']}','{$A['pid']}','{$A['ipaddress']}',$indent");
+            "'{$A['name']}','{$A['pid']}',{$A['seq']},$indent");
     } else {
         // insert data, null automatically goes into name column
-        DB_save($_TABLES['comments'], 'type,sid,date,title,comment,uid,pid,ipaddress,indent',
+        DB_save($_TABLES['comments'], 'type,sid,date,title,comment,uid,pid,seq,indent',
             "'{$A['type']}','{$A['sid']}','{$A['date']}','{$A['title']}','{$A['comment']}','{$A['uid']}'," .
-            "'{$A['pid']}','{$A['ipaddress']}',$indent");
+            "'{$A['pid']}',{$A['seq']},$indent");
     }
     $newCid = DB_insertId('', 'comments_cid_seq');
 
@@ -3395,7 +3412,10 @@ function plugin_canuserlike_comment($sub_type, $id, $uid, $ip)
     	// Make sure $id is just a number as comment id is numeric
         // Cannot change id in this function, since the id from the calling function is used else where
     	if (strval((int) $id) == $id) {
-            $sql = "SELECT type, sid, uid, ipaddress FROM {$_TABLES['comments']} WHERE cid = " . $id;
+            $sql = "SELECT c.type, c.sid, c.uid, i.ipaddress FROM {$_TABLES['comments']} AS c "
+                . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+                . "ON c.seq = i.seq "
+                . "WHERE c.cid = " . $id;
             $result = DB_query($sql);
             if (DB_numRows($result) > 0) {
                 list ($type, $sid, $owner_id, $owner_ip) = DB_fetchArray($result);
