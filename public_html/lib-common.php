@@ -6137,7 +6137,12 @@ function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '')
     }
     $property = DB_escapeString($property);
 
-    $res = DB_query("SELECT date FROM {$_TABLES['speedlimit']} WHERE (type = '$type') AND (ipaddress = '$property') ORDER BY date ASC");
+    $res = DB_query(
+        "SELECT s.date FROM {$_TABLES['speedlimit']} AS s "
+        . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+        . "ON s.seq  i.seq "
+        . "WHERE (s.type = '$type') AND (i.ipaddress = '$property') ORDER BY date ASC"
+    );
 
     // If the number of allowed tries has not been reached,
     // return 0 (didn't hit limit)
@@ -6169,13 +6174,13 @@ function COM_updateSpeedlimit($type = 'submit', $property = '')
     global $_TABLES;
 
     if (empty($property)) {
-        $property = $_SERVER['REMOTE_ADDR'];
+        $property = \Geeklog\IP::getIPAddress();
     }
 
-    $property = DB_escapeString($property);
+    $seq = \Geeklog\IP::getSeq($property);
     $type = DB_escapeString($type);
-    $sql = "INSERT INTO {$_TABLES['speedlimit']} (ipaddress, date, type) "
-        . "VALUES ('{$property}', UNIX_TIMESTAMP(), '{$type}') ";
+    $sql = "INSERT INTO {$_TABLES['speedlimit']} (seq, date, type) "
+        . "VALUES ($seq, UNIX_TIMESTAMP(), '{$type}') ";
     DB_query($sql);
 }
 
@@ -6189,11 +6194,15 @@ function COM_clearSpeedlimit($speedLimit = 60, $type = '')
 {
     global $_TABLES;
 
-    $sql = "DELETE FROM {$_TABLES['speedlimit']} WHERE ";
-    if (!empty($type)) {
-        $sql .= "(type = '$type') AND ";
-    }
-    $sql .= "(date < UNIX_TIMESTAMP() - {$speedLimit})";
+    $typeSql = empty($type) ? '' : "(type = '$type') AND ";
+    $dateSql = "(date < UNIX_TIMESTAMP() - {$speedLimit})";
+
+    // Delete corresponding records from the 'ip_addresses' table
+    $sql = "DELETE FROM {$_TABLES['ip_addresses']} "
+        . "WHERE seq = ANY(SELECT seq FROM {$_TABLES['speedlimit']} WHERE $typeSql $dateSql)";
+    DB_query($sql);
+
+    $sql = "DELETE FROM {$_TABLES['speedlimit']} WHERE $typeSql $dateSql";
     DB_query($sql);
 }
 
@@ -6208,12 +6217,33 @@ function COM_resetSpeedlimit($type = 'submit', $property = '')
     global $_TABLES;
 
     if (empty($property)) {
-        $property = $_SERVER['REMOTE_ADDR'];
+        $property = \Geeklog\IP::getIPAddress();
     }
-    $property = DB_escapeString($property);
 
-    DB_delete($_TABLES['speedlimit'], array('type', 'ipaddress'),
-        array($type, $property));
+    // Delete corresponding records from the 'ip_addresses' table
+    $property = DB_escapeString($property);
+    $sql = "SELECT s.id, i.seq FROM {$_TABLES['speedlimit']} AS s "
+        . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+        . "ON s.seq = i.seq "
+        . "WHERE (s.type = '$type') AND (i.ipaddress = '$property')";
+    $result = DB_query($sql);
+    $ids = [];
+    $seqs = [];
+
+    while (($A = DB_fetchArray($result, false)) !== false) {
+        $ids[] = (int) $A['id'];
+        $seqs[] = (int) $A['seq'];
+    }
+
+    if (!empty($ids)) {
+        $sql = "DELETE FROM {$_TABLES['speedlimit']} WHERE id IN (" . implode(', '. $ids) . ")";
+        DB_query($sql);
+    }
+
+    if (!empty($seq)) {
+        $sql = "DELETE FROM {$_TABLES['ip_addresses']} WHERE seq IN (" . implode(', '. $seqs) . ")";
+        DB_query($sql);
+    }
 }
 
 /**

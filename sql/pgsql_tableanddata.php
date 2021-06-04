@@ -279,12 +279,11 @@ CREATE TABLE {$_TABLES['sessions']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['speedlimit']} (
   id SERIAL,
-  ipaddress varchar(39) NOT NULL default '',
+  seq INT NOT NULL DEFAULT 0,
   date int default NULL,
   type varchar(30) NOT NULL default 'submit',
   PRIMARY KEY (id)
 );
-  CREATE UNIQUE INDEX {$_TABLES['speedlimit']}_type_ipaddress ON {$_TABLES['speedlimit']}(type,ipaddress);
   CREATE UNIQUE INDEX {$_TABLES['speedlimit']}_date ON {$_TABLES['speedlimit']}(date);
 ";
 
