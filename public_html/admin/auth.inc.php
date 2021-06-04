@@ -67,7 +67,7 @@ $display = '';
 if ($status == USER_ACCOUNT_ACTIVE) {
     DB_query("UPDATE {$_TABLES['users']} SET pwrequestid = NULL WHERE uid = $uid");
     $_USER = SESS_getUserDataFromId($uid);
-    SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR']);
+    SESS_newSession($_USER['uid'], \Geeklog\IP::getIPAddress());
     PLG_loginUser($_USER['uid']);
 
     // Issue an auto-login key user cookie and record hash in db if needed

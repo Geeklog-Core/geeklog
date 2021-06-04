@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog session library.                                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2019 by the following authors:                         |
+// | Copyright (C) 2000-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Mark Limburg     - mlimburg AT users DOT sourceforge DOT net     |
@@ -114,14 +114,21 @@ function SESS_sessionCheck()
         $sql = "SELECT start_time, autologin_key_hash FROM {$_TABLES['sessions']} WHERE sess_id = '$escSessionId'";
         $result = DB_query($sql);
         $numRows = DB_numRows($result);
+
         if ($numRows) {
             $A = DB_fetchArray($result);
             $sessionStartTime = $A['start_time'];
-            if (empty($sessionStartTime) || (!empty($sessionStartTime) && $sessionStartTime < $expiryTime)) {
+
+            if (empty($sessionStartTime) || ($sessionStartTime < $expiryTime)) {
                 // Session found but should have been deleted since expired so delete it now then
                 $validUserSessionExists = false;
                 $escSessionAutoLoginKeyHash = DB_escapeString($A['autologin_key_hash']);
+                $seq = DB_getItem($_TABLES['sessions'], 'seq', "sess_id = '$escSessionId'", \Geeklog\IP::INVALID_SEQ);
                 DB_query("DELETE FROM {$_TABLES['sessions']} WHERE sess_id = '$escSessionId'");
+
+                if ($seq !== \Geeklog\IP::INVALID_SEQ) {
+                    DB_query("DELETE FROM {$_TABLES['sessions']} WHERE seq = $seq");
+                }
 
                 // Also delete auto login key associated with session if key expired
                 if (!empty($sessionAutoLoginKeyHash)) {
@@ -170,7 +177,7 @@ function SESS_sessionCheck()
             $userId = SESS_handleAutoLogin();
 
             if ($userId > Session::ANON_USER_ID) {
-                SESS_newSession($userId, $_SERVER['REMOTE_ADDR']);
+                SESS_newSession($userId, \Geeklog\IP::getIPAddress());
                 $_USER = SESS_getUserDataFromId($userId);
                 SESS_issueAutoLogin($userId);
             } else {
@@ -204,7 +211,7 @@ function SESS_sessionCheck()
                 }
 
                 // Create new session and write cookie since user is now logged in
-                SESS_newSession($userId, $_SERVER['REMOTE_ADDR']);
+                SESS_newSession($userId, \Geeklog\IP::getIPAddress());
                 $_USER = SESS_getUserDataFromId($userId);
 				SESS_issueAutoLogin($userId); // New session here so auto login key will be new
             }
@@ -215,7 +222,7 @@ function SESS_sessionCheck()
 
             // Anonymous user has session id but it has been expired and wiped from the db so reset.
             // Or new anonymous user so create new session and write cookie.
-            SESS_newSession($userId, $_SERVER['REMOTE_ADDR']);
+            SESS_newSession($userId, \Geeklog\IP::getIPAddress());
         }
     }
 
@@ -259,7 +266,6 @@ function SESS_sessionCheck()
 *
 * @param   int     $userId     User ID to create session for
 * @param   string  $remote_ip  IP address user is connected from
-* @param   string  $lifespan   How long (seconds) this cookie should persist
 * @return  string              Session ID
 */
 function SESS_newSession($userId, $remote_ip)
@@ -281,7 +287,7 @@ function SESS_newSession($userId, $remote_ip)
     // Check to delete expired sessions from database
     $lifespan =  $_CONF['session_cookie_timeout'];
     $ctime = time();
-    $currentTime = (string) ($ctime);
+    $currentTime = (string) $ctime;
     $expiryTime = (string) ($ctime - $lifespan);
     $deleteResult = false;
     $retryMax = 3;
@@ -289,15 +295,42 @@ function SESS_newSession($userId, $remote_ip)
 
     for ($i = 0; $i < $retryMax; $i++) {
         DB_lockTable($_TABLES['sessions']);
-        $deleteSQL = "DELETE FROM {$_TABLES['sessions']} WHERE (start_time < {$expiryTime})";
-        $deleteResult = DB_query($deleteSQL);
-        DB_unlockTable($_TABLES['sessions']);
-        if ($_SESS_VERBOSE) {
-            COM_errorLog("Attempted to delete rows from session table with following SQL\n$deleteSQL\n",1);
-            COM_errorLog("Got $deleteResult as a result from the query",1);
+        $sql = "SELECT s.sess_id, i.seq FROM {$_TABLES['sessions']} AS s "
+            . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+            . "ON s.seq = i.seq "
+            . "WHERE (start_time < {$expiryTime})";
+        $result = DB_query($sql);
+        $sessIds = [];
+        $seqs = [];
+
+        while (($A = DB_fetchArray($result, false)) !== false) {
+            $sessIds[] = $A['sess_id'];
+            $seqs[] = (int) $A['seq'];
         }
 
-        if ($deleteResult) {
+        $deleteResult1 = true;
+
+        if (!empty($sessIds)) {
+            $deleteSQL1 = "DELETE FROM {$_TABLES['sessions']} WHERE sess_id IN ('" . implode("', '", $sessIds) . "')";
+            $deleteResult1 = DB_query($deleteSQL1);
+        }
+
+        $deleteResult2 = true;
+
+        if (!empty($seqs)) {
+            $deleteSQL2 = "DELETE FROM {$_TABLES['ip_addresses']} WHERE seq IN (" . implode(', ', $seqs) . ")";
+            $deleteResult2 = DB_query($deleteSQL2);
+        }
+        DB_unlockTable($_TABLES['sessions']);
+
+        if ($_SESS_VERBOSE) {
+            COM_errorLog("Attempted to delete rows from session table with following SQL\n$deleteSQL1\n",1);
+            COM_errorLog("Got $deleteResult1 as a result from the query",1);
+            COM_errorLog("Attempted to delete rows from session table with following SQL\n$deleteSQL2\n",1);
+            COM_errorLog("Got $deleteResult2 as a result from the query",1);
+        }
+
+        if ($deleteResult1) {
             break;
         }
 
@@ -317,17 +350,19 @@ function SESS_newSession($userId, $remote_ip)
     $escOldSessionId = DB_escapeString($oldSessionId);
 
     // Delete old session from database
+    $seq = DB_getItem($_TABLES['sessions'], 'seq', "sess_id = '$escOldSessionId'");
     DB_query("DELETE FROM {$_TABLES['sessions']} WHERE sess_id = '{$escOldSessionId}'");
+    DB_query("DELETE FROM {$_TABLES['ip_addresses']} WHERE seq = $seq");
 
     // Create new session ID and insert it into database
     $sessId = Session::regenerateId();
     $escSessionId = DB_escapeString($sessId);
-    $escRemoteIp = DB_escapeString($remote_ip);
+    $seq = \Geeklog\IP::getSeq($remote_ip);
 
     // Create new session
     Session::setUid($userId);
-    $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, uid, start_time, remote_ip, whos_online) "
-        . "VALUES ('{$escSessionId}', {$userId}, {$currentTime}, '{$escRemoteIp}', 1)";
+    $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, uid, start_time, seq, whos_online) "
+        . "VALUES ('{$escSessionId}', {$userId}, {$currentTime}, {$seq}, 1)";
     $result = DB_query($sql);
     if (!$result) {
         echo DB_error() . ': ' . DB_error() . '<br' . XHTML . '>';
@@ -370,7 +405,6 @@ function SESS_updateSessionTime($sessId)
 *
 * Delete the given session from the database. Used to logout the current user (by the logout page).
 *
-* @param   int   $userId  User ID to end session of
 * @return  bool           Always true for some reason
 */
 function SESS_endCurrentUserSession()
@@ -404,9 +438,13 @@ function SESS_deleteUserSessions($userId)
     global $_TABLES;
 
     SESS_deleteUserAutoLoginKeys($userId);
-
+    $seq = DB_getItem($_TABLES['sessions'], 'seq', "uid = $userId", \Geeklog\IP::INVALID_SEQ);
     $sql = "DELETE FROM {$_TABLES['sessions']} WHERE uid = $userId";
     DB_query($sql);
+
+    if ($seq !== \Geeklog\IP::INVALID_SEQ) {
+        DB_query("DELETE FROM {$_TABLES['ip_addresses']} WHERE seq = $seq");
+    }
 
     return 1;
 }
@@ -511,7 +549,12 @@ function SESS_handleAutoLogin()
 
         // Delete old original session record tied to this auto login key if it exists (this only may happen if the server has been rebooted or something which flushed all the sesions) as actual PHP Session doesn't exist anymore
         // from the current anonymous session to a new actual user session
+        $seq = DB_getItem($_TABLES['sessions'], 'seq', "autologin_key_hash = '{$escAutoLoginKeyHash}'", \Geeklog\IP::INVALID_SEQ);
 		DB_query("DELETE FROM {$_TABLES['sessions']} WHERE autologin_key_hash = '{$escAutoLoginKeyHash}'");
+
+		if ($seq !== \Geeklog\IP::INVALID_SEQ) {
+		    DB_query("DELETE FROM {$_TABLES['ip_addresses']} WHERE seq = $seq");
+        }
 
         // Auto login is successful. Update user array with new information (at this point user array is still for anonymous user and hasn't been loaded yet)
         global $_USER;
@@ -613,7 +656,7 @@ function SESS_issueAutoLogin($userId)
             $autoLoginKey = SEC_randomBytes(80);
             $autoLoginKey = sha1($autoLoginKey);
 
-            // Extra bit of security. We store hash of key bassed on current Geeklog password encryption settings
+            // Extra bit of security. We store hash of key based on current Geeklog password encryption settings
             // Calculate hash to store in database so actual key is only stored in cookie on users device
             $salt = ''; // Can't use salt as we don't know the user at the point the auto login key is checked
             $autoLoginKeyHash = SEC_encryptPassword($autoLoginKey, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']);

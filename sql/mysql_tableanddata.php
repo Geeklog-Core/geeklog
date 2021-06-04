@@ -270,13 +270,12 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['sessions']} (
   sess_id VARCHAR(190) NOT NULL DEFAULT '',
   start_time INT(10) unsigned NOT NULL DEFAULT '0',
-  remote_ip VARCHAR(39) NOT NULL DEFAULT '',
+  seq INT NOT NULL DEFAULT 0,
   uid MEDIUMINT(8) NOT NULL DEFAULT '1',
   whos_online TINYINT(1) NOT NULL DEFAULT '1',
   autologin_key_hash VARCHAR(190) NOT NULL DEFAULT '',
   PRIMARY KEY  (sess_id),
-  KEY start_time (start_time),
-  KEY remote_ip (remote_ip)
+  KEY start_time (start_time)
 ) ENGINE=MyISAM
 ";
 

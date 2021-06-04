@@ -266,14 +266,13 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['sessions']} (
   sess_id VARCHAR(190) NOT NULL default '',
   start_time int NOT NULL default '0',
-  remote_ip varchar(39) NOT NULL default '',
+  seq INT NOT NULL default 0,
   uid smallint NOT NULL default '1',
   whos_online smallint NOT NULL default '1',
   autologin_key_hash VARCHAR(190) NOT NULL DEFAULT '',
   PRIMARY KEY (sess_id)
 );
   CREATE INDEX {$_TABLES['sessions']}_start_time ON {$_TABLES['sessions']} (start_time);
-  CREATE INDEX {$_TABLES['sessions']}_remote_ip ON {$_TABLES['sessions']}(remote_ip);
 ";
 
 $_SQL[] = "
