@@ -439,7 +439,7 @@ CREATE TABLE {$_TABLES['trackback']} (
   excerpt text,
   date timestamp default NULL,
   type varchar(30) NOT NULL default 'article',
-  ipaddress varchar(39) NOT NULL default '',
+  seq INT NOT NULL DEFAULT 0,
   PRIMARY KEY (cid)
 );
   CREATE INDEX {$_TABLES['trackback']}_sid ON {$_TABLES['trackback']}(sid);

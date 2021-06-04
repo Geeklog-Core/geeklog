@@ -44,7 +44,7 @@ function update_TablesContainingIPAddresses222()
 //        'likes'             => ['lid', 'ipaddress'],
 //        'sessions'          => ['sess_id', 'remote_ip'],
         'speedlimit'        => ['id', 'ipaddress'],
-//        'trackback'         => ['cid', 'ipaddress'],
+        'trackback'         => ['cid', 'ipaddress'],
     ];
 
     foreach ($data as $table => $pair) {

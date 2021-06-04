@@ -445,7 +445,7 @@ CREATE TABLE {$_TABLES['trackback']} (
   excerpt text,
   date datetime default NULL,
   type varchar(30) NOT NULL default 'article',
-  ipaddress varchar(39) NOT NULL default '',
+  seq INT NOT NULL DEFAULT 0,
   PRIMARY KEY (cid),
   INDEX trackback_sid(sid),
   INDEX trackback_url(url),

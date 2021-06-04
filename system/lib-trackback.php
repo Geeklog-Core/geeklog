@@ -310,8 +310,9 @@ function TRB_saveTrackbackComment($sid, $type, $url, $title = '', $blog = '', $e
             array($url, $sid, $type));
     } // else: multiple trackbacks allowed
 
-    DB_save($_TABLES['trackback'], 'sid,url,title,blog,excerpt,date,type,ipaddress',
-        "'$sid','$url','$title','$blog','$excerpt',NOW(),'$type','{$_SERVER['REMOTE_ADDR']}'");
+    $seq = \Geeklog\IP::getSeq();
+    DB_save($_TABLES['trackback'], 'sid,url,title,blog,excerpt,date,type,seq',
+        "'$sid','$url','$title','$blog','$excerpt',NOW(),'$type',$seq");
 
     $comment_id = DB_insertId();
 
@@ -687,8 +688,14 @@ function TRB_renderTrackbackComments($sid, $type, $title, $permalink, $trackback
     $template->set_var('permalink_and_title', $link_and_title);
     $template->set_var('trackback_url', $trackbackUrl);
 
-    $result = DB_query("SELECT cid,url,title,blog,excerpt,ipaddress,UNIX_TIMESTAMP(date) AS day "
-        . "FROM {$_TABLES['trackback']} WHERE sid = '$sid' AND type = '$type' ORDER BY date");
+    $result = DB_query(
+        "SELECT t.cid, t.url, t.title, t.blog, t.excerpt, i.ipaddress, UNIX_TIMESTAMP(t.date) AS day "
+        . "FROM {$_TABLES['trackback']} AS t "
+        . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+        . "ON t.seq = i.seq "
+        . " WHERE t.sid = '$sid' AND t.type = '$type' "
+        . "ORDER BY date"
+    );
     $numrows = DB_numRows($result);
 
     $template->set_var('trackback_comment_count', $numrows);
@@ -883,7 +890,12 @@ function TRB_sendNotificationEmail($cid, $what = 'trackback')
     global $_CONF, $_TABLES, $LANG03, $LANG08, $LANG09, $LANG29, $LANG_TRB;
 
     $cid = DB_escapeString($cid);
-    $result = DB_query("SELECT sid,type,title,excerpt,url,blog,ipaddress FROM {$_TABLES['trackback']} WHERE (cid = '$cid')");
+    $result = DB_query(
+        "SELECT t.sid, t.type, t.title, t.excerpt, t.url, t.blog, i.ipaddress FROM {$_TABLES['trackback']} AS t "
+        . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+        . "ON t.seq = i.seq "
+        . "WHERE (t.cid = '$cid')"
+    );
     $A = DB_fetchArray($result);
     $type = $A['type'];
     $id = $A['sid'];
