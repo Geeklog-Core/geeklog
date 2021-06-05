@@ -224,7 +224,7 @@ function plugin_deletecomment_staticpages($cid, $id)
         $retval .= COM_refresh ($_CONF['site_url']
                                  . "/staticpages/index.php?page=$id");
     } else {
-        COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
+        COM_errorLog ("User {$_USER['username']} (IP: " . \Geeklog\IP::getIPAddress() . ") "
                     . "tried to illegally delete comment $cid from staticpage $id");
         $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
     }

@@ -119,7 +119,7 @@ function LIKES_control($type, $sub_type, $id, $likes_setting, $message = '') {
     $likes_templates->set_var('item_id', $id);
 
     $uid = isset($_USER['uid']) ? $_USER['uid'] : 1;
-    $ip = $_SERVER['REMOTE_ADDR'];
+    $ip = \Geeklog\IP::getIPAddress();
 
     $action_enabled = PLG_canUserLike($type, $sub_type, $id, $uid, $ip);
 

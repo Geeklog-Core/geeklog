@@ -158,7 +158,7 @@ class MassDelete extends BaseAdmin {
                 DB_change($_TABLES['stories'], 'comments', $comments,
                           'sid', $sid);
             } else {
-                COM_errorLog("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) tried to illegally delete comment $cid from $type $sid");
+                COM_errorLog("User {$_USER['username']} (IP: " . \Geeklog\IP::getIPAddress() . ") tried to illegally delete comment $cid from $type $sid");
             }
             break;
 

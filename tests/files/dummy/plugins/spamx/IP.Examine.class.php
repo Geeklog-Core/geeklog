@@ -43,7 +43,7 @@ class IP extends BaseCommand {
      */
     function execute($comment)
     {
-        return $this->_process($_SERVER['REMOTE_ADDR']);
+        return $this->_process(\Geeklog\IP::getIPAddress());
     }
 
     /**

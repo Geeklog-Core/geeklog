@@ -84,7 +84,7 @@ function TRB_logRejected($reason, $url = '')
 
     if ($_TRB_LOG_REJECTS) {
 
-        $logmsg = 'Trackback from IP ' . $_SERVER['REMOTE_ADDR']
+        $logmsg = 'Trackback from IP ' . \Geeklog\IP::getIPAddress()
             . ' rejected for ' . $reason . ', URL: ' . $url;
 
         if (function_exists('SPAMX_log')) {
@@ -602,7 +602,7 @@ function TRB_handleTrackbackPing($sid, $type = 'article')
                 return false;
             } else {
                 $ip = gethostbyname($parts['host']);
-                if ($ip != $_SERVER['REMOTE_ADDR']) {
+                if ($ip !== \Geeklog\IP::getIPAddress()) {
                     TRB_sendTrackbackResponse(1, $TRB_ERROR['spam'], 403, 'Forbidden');
                     TRB_logRejected('IP address mismatch', Geeklog\Input::post('url'));
 

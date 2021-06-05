@@ -64,7 +64,7 @@ abstract class IP
             self::$anonymizationPolicy = $anonymizationPolicy;
 
             self::$ipAddress = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.01';
-            $_SERVER['REMOTE_ADDR'] = '0.0.0.0';
+//            $_SERVER['REMOTE_ADDR'] = '0.0.0.0';  // some time in the future
             self::$isInitialized = true;
         }
     }

@@ -322,7 +322,7 @@ function plugin_deletecomment_staticpages($cid, $id, $returnBoolean)
             COM_redirect($url);
         }
     } else {
-        COM_errorLog("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
+        COM_errorLog("User {$_USER['username']} (IP: " . \Geeklog\IP::getIPAddress() . ") "
             . "tried to illegally delete comment $cid from staticpage $id");
 
         if ($returnBoolean) {

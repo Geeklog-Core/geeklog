@@ -46,7 +46,7 @@ class SFS extends BaseCommand
             $answer = PLG_SPAM_FOUND;
             SPAMX_log($LANG_SX00['foundspam'] . 'Stop Forum Spam (SFS)' .
                 $LANG_SX00['foundspam2'] . $uid .
-                $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']
+                $LANG_SX00['foundspam3'] . \Geeklog\IP::getIPAddress()
             );
         }
 

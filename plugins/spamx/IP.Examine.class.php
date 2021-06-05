@@ -41,7 +41,7 @@ class IP extends BaseCommand
     public function execute($comment, $permanentLink = null, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
                             $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
     {
-        return $this->_process($_SERVER['REMOTE_ADDR']);
+        return $this->_process(\Geeklog\IP::getIPAddress());
     }
 
     /**

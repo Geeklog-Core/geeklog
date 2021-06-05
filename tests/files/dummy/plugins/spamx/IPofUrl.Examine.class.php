@@ -68,7 +68,7 @@ class IPofUrl extends BaseCommand {
                 $ans = 1; // quit on first positive match
                 SPAMX_log ($LANG_SX00['foundspam'] . $urls[2][$i] .
                            $LANG_SX00['foundspam2'] . $uid .
-                           $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
+                           $LANG_SX00['foundspam3'] . \Geeklog\IP::getIPAddress());
                 break;
               }
             }

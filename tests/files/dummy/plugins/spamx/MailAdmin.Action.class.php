@@ -50,7 +50,7 @@ class MailAdmin extends BaseCommand {
         } else {
             $uid = 1;
         }
-        $uid .= '@' . $_SERVER['REMOTE_ADDR'];
+        $uid .= '@' . \Geeklog\IP::getIPAddress();
         $msg = sprintf ($LANG_SX00['emailmsg'],
                         $_CONF['site_name'], $uid, $comment);
 

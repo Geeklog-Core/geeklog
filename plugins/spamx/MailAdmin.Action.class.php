@@ -48,7 +48,7 @@ class MailAdmin extends BaseCommand
     {
         global $_CONF, $LANG_SX00, $_SPX_CONF;
 
-        $uid = $this->getUid() . '@' . $_SERVER['REMOTE_ADDR'];
+        $uid = $this->getUid() . '@' . \Geeklog\IP::getIPAddress();
         $msg = sprintf($LANG_SX00['emailmsg'],
             $_CONF['site_name'], $uid, $comment);
 
