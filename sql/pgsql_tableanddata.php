@@ -89,7 +89,7 @@ CREATE TABLE {$_TABLES['comments']} (
   indent smallint NOT NULL default '0',
   name varchar(32) default NULL,
   uid smallint NOT NULL default '1',
-  ipaddress varchar(39) NOT NULL default '',
+  seq INT NOT NULL DEFAULT 0,
   PRIMARY KEY (cid)
 );
   CREATE INDEX {$_TABLES['comments']}_sid ON {$_TABLES['comments']}(sid);
@@ -110,7 +110,7 @@ CREATE TABLE {$_TABLES['commentsubmissions']} (
   uid smallint NOT NULL default '1',
   name varchar(32) default NULL,
   pid int NOT NULL default '0',
-  ipaddress varchar(39) NOT NULL,
+  seq INT NOT NULL DEFAULT 0,
   PRIMARY KEY (cid)
 )
 ";
@@ -208,7 +208,7 @@ CREATE TABLE {$_TABLES['likes']} (
   subtype varchar(15) NOT NULL DEFAULT '',
   id varchar(128) NOT NULL,
   uid smallint NOT NULL,
-  ipaddress VARCHAR(39) NOT NULL,
+  seq INT NOT NULL DEFAULT 0,
   action smallint NOT NULL,
   created timestamp NOT NULL,
   PRIMARY KEY (lid)

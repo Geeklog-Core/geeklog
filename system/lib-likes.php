@@ -226,7 +226,10 @@ function LIKES_hasAction($type, $sub_type, $item_id, $uid, $ip)
     $prev_action = LIKES_ACTION_NONE;
 
     if ($uid == 1) {
-        $sql = "SELECT action FROM {$_TABLES['likes']} WHERE uid=1 AND ipaddress='".DB_escapeString($ip)."' AND type='".DB_escapeString($type)."' AND subtype='" . DB_escapeString($sub_type) . "' AND id='".DB_escapeString($item_id)."'";
+        $sql = "SELECT L.action FROM {$_TABLES['likes']} AS L "
+            . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+            . "ON L.seq = i.seq "
+            . "WHERE L.uid=1 AND i.ipaddress='".DB_escapeString($ip)."' AND L.type='".DB_escapeString($type)."' AND L.subtype='" . DB_escapeString($sub_type) . "' AND L.id='".DB_escapeString($item_id)."'";
     } else {
         //$sql = "SELECT action FROM {$_TABLES['likes']} WHERE (uid=$uid OR ipaddress='".DB_escapeString($ip)."') AND type='".DB_escapeString($type)."' AND id='".DB_escapeString($item_id)."'";
         //$sql = "SELECT action FROM {$_TABLES['likes']} WHERE (uid=$uid OR (uid=1 AND ipaddress='".DB_escapeString($ip)."')) AND type='".DB_escapeString($type)."' AND id='".DB_escapeString($item_id)."'";
@@ -286,20 +289,39 @@ function LIKES_addAction($type, $sub_type, $item_id, $action, $prev_action, $uid
 
     // Delete any previous action if exist
     if ($prev_action != LIKES_ACTION_NONE) {
-        $sql = "DELETE FROM {$_TABLES['likes']} WHERE type = '" . DB_escapeString($type) . "' AND subtype='" . DB_escapeString($sub_type) . "' AND id = '" . DB_escapeString($item_id) . "' ";
+        $escType = DB_escapeString($type);
+        $escSubType = DB_escapeString($sub_type);
+        $escItemId = DB_escapeString($item_id);
+        $escIp = DB_escapeString($ip);
+
         if ($uid > 1) {
-            $sql .= "AND uid = " . $uid;
+            $sql = "DELETE FROM {$_TABLES['likes']} WHERE type = '$escType' AND subtype='$escSubType' AND id = '$escItemId' AND uid = $uid";
+            DB_query($sql);
         } else {
-            $sql .= "AND uid = 1 AND ipaddress = '" . DB_escapeString($ip) ."'";
+            $sql = DB_query(
+                "SELECT L.seq FROM {$_TABLES['likes']} AS L "
+                . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+                . "ON L.seq = i.seq "
+                . "WHERE L.type = '$escType' AND L.subtype='$escSubType' AND L.id = '$escItemId' AND L.uid = 1 AND i.ipaddress = '$escIp'"
+            );
+            $result = DB_query($sql);
+            $A = DB_fetchArray($result, false);
+
+            if (is_array($A) && isset($A['seq'])) {
+                $seq = (int) $A['seq'];
+                DB_query("DELETE FROM {$_TABLES['ip_addresses']} WHERE seq = $seq");
+                DB_query("DELETE FROM {$_TABLES['likes']} WHERE seq = $seq");
+            }
         }
 
-        DB_query($sql);
+        $sql = "DELETE FROM {$_TABLES['likes']} WHERE type = '$escType' AND subtype='$escSubType' AND id = '$escItemId' ";
     }
 
     // Now Insert new action if like or dislike
     if ($action == LIKES_ACTION_LIKE OR $action == LIKES_ACTION_DISLIKE) {
-        $sql = "INSERT INTO {$_TABLES['likes']} (type, subtype, id, uid, ipaddress, action, created) " .
-               "VALUES ('" . DB_escapeString($type) . "', '" . DB_escapeString($sub_type) . "', '" . DB_escapeString($item_id) . "', " . $uid . ", '" . DB_escapeString($ip) . "', " . $action . ", CURRENT_TIMESTAMP);";
+        $seq = \Geeklog\IP::getSeq($ip);
+        $sql = "INSERT INTO {$_TABLES['likes']} (type, subtype, id, uid, seq, action, created) " .
+               "VALUES ('" . DB_escapeString($type) . "', '" . DB_escapeString($sub_type) . "', '" . DB_escapeString($item_id) . "', " . $uid . ", '" . $seq . "', " . $action . ", CURRENT_TIMESTAMP);";
 
         DB_query($sql);
     }

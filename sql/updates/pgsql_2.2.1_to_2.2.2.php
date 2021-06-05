@@ -24,7 +24,7 @@ function update_ConfValuesFor222()
     $me = 'Core';
 
     // Add IP anonymization policy
-    $c->add('ip_anonymization',\Geeklog\IP::POLICY_NEVER_ANONYMIZE,'text',0,0,NULL,2070,TRUE, $me, 0);
+    $c->add('ip_anonymization', \Geeklog\IP::POLICY_NEVER_ANONYMIZE, 'text', 0, 0, null, 2070, true, $me, 0);
 
     return true;
 }
@@ -41,7 +41,7 @@ function update_TablesContainingIPAddresses222()
     $data = [
         'comments'          => ['cid', 'ipaddress'],
         'commentsumissions' => ['cid', 'ipaddress'],
-//        'likes'             => ['lid', 'ipaddress'],
+        'likes'             => ['lid', 'ipaddress'],
         'sessions'          => ['sess_id', 'remote_ip'],
         'speedlimit'        => ['id', 'ipaddress'],
         'trackback'         => ['cid', 'ipaddress'],

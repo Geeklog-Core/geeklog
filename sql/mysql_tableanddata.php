@@ -211,7 +211,7 @@ CREATE TABLE {$_TABLES['likes']} (
   subtype varchar(15) NOT NULL DEFAULT '',
   id varchar(128) NOT NULL,
   uid MEDIUMINT NOT NULL,
-  ipaddress VARCHAR(39) NOT NULL,
+  seq INT NOT NULL DEFAULT 0,
   action TINYINT NOT NULL,
   created DATETIME NOT NULL,
   PRIMARY KEY (lid),

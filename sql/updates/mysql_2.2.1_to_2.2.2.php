@@ -42,7 +42,7 @@ function update_TablesContainingIPAddresses222()
     $data = [
         'comments'          => ['cid', 'ipaddress'],
         'commentsumissions' => ['cid', 'ipaddress'],
-//        'likes'             => ['lid', 'ipaddress'],
+        'likes'             => ['lid', 'ipaddress'],
         'sessions'          => ['sess_id', 'remote_ip'],
         'speedlimit'        => ['id', 'ipaddress'],
         'trackback'         => ['cid', 'ipaddress'],
