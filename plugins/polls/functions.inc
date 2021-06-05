@@ -801,9 +801,10 @@ function POLLS_pollsave($pid, $aid)
     }
 
     // This always does an insert so no need to provide key_field and key_value args
+    $seq = \Geeklog\IP::getSeq();
     DB_query(
-        "INSERT INTO {$_TABLES['pollvoters']} (ipaddress, date, pid) "
-        . "VALUES ('" . DB_escapeString(\Geeklog\IP::getIPAddress()) . "', " . time() . ", '" . DB_escapeString($pid) . "')");
+        "INSERT INTO {$_TABLES['pollvoters']} (seq, date, pid) "
+        . "VALUES ($seq, " . time() . ", '" . DB_escapeString($pid) . "')");
     $retval .= COM_showMessageText(
             $LANG_POLLS['savedvotemsg'] . ' "'
             . DB_getItem($_TABLES['polltopics'], 'topic', "pid = '" . DB_escapeString($pid) . "'") . '"',
@@ -1030,10 +1031,16 @@ function POLLS_ipAlreadyVoted($pid, $ip = '')
         $ip = \Geeklog\IP::getIPAddress();
     }
 
-    if (DB_count($_TABLES['pollvoters'],
-            array('ipaddress', 'pid'),
-            array(DB_escapeString($ip), DB_escapeString($pid))) > 0
-    ) {
+    $ip = DB_escapeString($ip);
+    $pid = DB_escapeString($pid);
+    $sql = "SELECT COUNT(p.*) AS cnt FROM {$_TABLES['pollvoters']} AS p "
+        . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+        . "ON p.seq = i.seq "
+        . "WHERE (i.ipaddress = '$ip') AND (p.pid = '$pid')";
+    $result = DB_query($sql);
+    $A = DB_fetchArray($result, false);
+
+    if (is_array($A) && isset($A['cnt']) && ($A['cnt'] > 0)) {
         $retval = true;
     }
 
@@ -1399,6 +1406,32 @@ function plugin_upgrade_polls()
                 break;
 
             case '2.2.0':
+                // Add 'seq' column
+                if (isset($_UPDATES[$current_version])) {
+                    $_SQL = $_UPDATES[$current_version];
+                    foreach ($_SQL as $sql) {
+                        DB_query($sql);
+                    }
+                }
+
+                // Move IP addresses to the 'ip_addresses' table
+                $result = DB_query("SELECT id, ipaddress FROM {$_TABLES['pollvoters']}");
+                $rows = [];
+
+                while (($A = DB_fetchArray($result, false)) !== false) {
+                    $rows[] = $A;
+                }
+
+                foreach ($rows as $row) {
+                    $id = (int) $row['id'];
+                    $ipAddress = $row['ipaddress'];
+                    $seq = \Geeklog\IP::getSeq($ipAddress);
+                    DB_query("UPDATE {$_TABLES['pollvoters']} SET seq = $seq WHERE id = $id");
+                }
+
+                // Drop the 'ipaddress' column
+                DB_query("ALTER TABLE {$_TABLES['pollvoters']} DROP COLUMN ipaddress");
+
                 $current_version = '2.2.1'; // Ships with Geeklog v2.2.2
                 break;
 

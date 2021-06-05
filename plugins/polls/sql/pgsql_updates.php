@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls Plugin 2.1                                                          |
+// | Polls Plugin 2.2                                                          |
 // +---------------------------------------------------------------------------+
 // | pgsql_updates.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2010 by the following authors:                         |
+// | Copyright (C) 2008-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -60,6 +60,12 @@ $_UPDATES = array(
         "ALTER TABLE {$_TABLES['pollquestions']} ADD `description` TEXT NULL",
         "ALTER TABLE {$_TABLES['polltopics']} ADD `description` TEXT NULL",
     ),
+
+    '2.2.0' => [
+        // Add 'seq' column for IP anonymization
+        "ALTER TABLE {$_TABLES['pollvoters']} ADD COLUMN seq INT NOT NULL DEFAULT 0",
+    ],
+
 );
 
 /**

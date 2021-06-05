@@ -16,7 +16,7 @@ use IPLib\Range\RangeInterface;
  * @copyright (C) 2004-2017 Tom Willett - tomw AT pigstye DOT net
  * @copyright (C) 2017-2021 Kenji ITO   - mystralkk AT gmail DOT com
  * @license       GPL
- * @note          most of the code below were taken from IP.Examine.class.php created by Tom Willett.
+ * @note          some of the code below was taken from 'IP.Examine.class.php' created by Tom Willett.
  */
 abstract class IP
 {
@@ -44,7 +44,7 @@ abstract class IP
     /**
      * @var string
      */
-    private static $ipAddress;
+    private static $originalIpAddress;
 
     /**
      * Initialize the IP class
@@ -63,7 +63,7 @@ abstract class IP
             }
             self::$anonymizationPolicy = $anonymizationPolicy;
 
-            self::$ipAddress = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.01';
+            self::$originalIpAddress = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.01';
 //            $_SERVER['REMOTE_ADDR'] = '0.0.0.0';  // some time in the future
             self::$isInitialized = true;
         }
@@ -181,13 +181,13 @@ abstract class IP
     }
 
     /**
-     * Return the original $_SERVER['REMOTE_ADDR']
+     * Return the original (unanonymized) $_SERVER['REMOTE_ADDR']
      *
      * @return string
      */
     public static function getIPAddress()
     {
-        return self::$ipAddress;
+        return self::$originalIpAddress;
     }
 
     /**
@@ -236,7 +236,7 @@ abstract class IP
     public static function getSeq($ipAddress = null)
     {
         if (empty($ipAddress)) {
-            $ipAddress = self::$ipAddress;
+            $ipAddress = self::$originalIpAddress;
         }
 
         if (self::$anonymizationPolicy === self::POLICY_ANONYMIZE_IMMEDIATELY) {

@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls Plugin 2.1                                                          |
+// | Polls Plugin 2.2                                                          |
 // +---------------------------------------------------------------------------+
 // | mysql_updates.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2011 by the following authors:                         |
+// | Copyright (C) 2008-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -110,7 +110,12 @@ $_UPDATES = array(
         // Fix for sql upgrade bug in Polls v1.1.0  where qid added as varchar(20) and not mediumint(9)
         // Only needed for mysql version since pgsql was not available for Polls Plugin v1.1.0
         "ALTER TABLE {$_TABLES['pollanswers']} CHANGE `qid` `qid` MEDIUMINT(9) NOT NULL DEFAULT '0'"
-    )
+    ),
+
+    '2.2.0' => [
+        // Add 'seq' column for IP anonymization
+        "ALTER TABLE {$_TABLES['pollvoters']} ADD COLUMN seq INT NOT NULL DEFAULT 0",
+    ],
 );
 
 /**
