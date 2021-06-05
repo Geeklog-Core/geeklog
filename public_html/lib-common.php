@@ -6241,8 +6241,7 @@ function COM_resetSpeedlimit($type = 'submit', $property = '')
     }
 
     if (!empty($seq)) {
-        $sql = "DELETE FROM {$_TABLES['ip_addresses']} WHERE seq IN (" . implode(', '. $seqs) . ")";
-        DB_query($sql);
+        \Geeklog\IP::deleteIpAddressBySeq($seqs);
     }
 }
 

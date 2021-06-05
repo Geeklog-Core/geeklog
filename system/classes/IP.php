@@ -261,6 +261,31 @@ abstract class IP
     }
 
     /**
+     * Delete an IP address(es) stored in 'ip_addresses' table
+     *
+     * @param  int|array  $seq
+     * @return bool
+     */
+    public static function deleteIpAddressBySeq($seq)
+    {
+        if (is_numeric($seq)) {
+            $seq = (int) $seq;
+
+            if ($seq <= self::INVALID_SEQ) {
+                return false;
+            } else {
+                return DB_query("DELETE FROM " . self::$ipAddressTable . " WHERE seq = $seq");
+            }
+        } elseif (is_array($seq)) {
+            $seqs = implode(', ', $seq);
+
+            return DB_query("DELETE FROM " . self::$ipAddressTable . " WHERE seq IN ($seqs)");
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Scan the 'ip_addresses' table and anonymize IP addresses if necessary
      *
      * @note This method is intended to called from within PLG_runScheduledTask() or at the end of "lib-common.php"

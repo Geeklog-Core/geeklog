@@ -352,7 +352,7 @@ function SESS_newSession($userId, $remote_ip)
     // Delete old session from database
     $seq = DB_getItem($_TABLES['sessions'], 'seq', "sess_id = '$escOldSessionId'");
     DB_query("DELETE FROM {$_TABLES['sessions']} WHERE sess_id = '{$escOldSessionId}'");
-    DB_query("DELETE FROM {$_TABLES['ip_addresses']} WHERE seq = $seq");
+    \Geeklog\IP::deleteIpAddressBySeq($seq);
 
     // Create new session ID and insert it into database
     $sessId = Session::regenerateId();
@@ -441,10 +441,7 @@ function SESS_deleteUserSessions($userId)
     $seq = DB_getItem($_TABLES['sessions'], 'seq', "uid = $userId", \Geeklog\IP::INVALID_SEQ);
     $sql = "DELETE FROM {$_TABLES['sessions']} WHERE uid = $userId";
     DB_query($sql);
-
-    if ($seq !== \Geeklog\IP::INVALID_SEQ) {
-        DB_query("DELETE FROM {$_TABLES['ip_addresses']} WHERE seq = $seq");
-    }
+    \Geeklog\IP::deleteIpAddressBySeq($seq);
 
     return 1;
 }
@@ -551,10 +548,7 @@ function SESS_handleAutoLogin()
         // from the current anonymous session to a new actual user session
         $seq = DB_getItem($_TABLES['sessions'], 'seq', "autologin_key_hash = '{$escAutoLoginKeyHash}'", \Geeklog\IP::INVALID_SEQ);
 		DB_query("DELETE FROM {$_TABLES['sessions']} WHERE autologin_key_hash = '{$escAutoLoginKeyHash}'");
-
-		if ($seq !== \Geeklog\IP::INVALID_SEQ) {
-		    DB_query("DELETE FROM {$_TABLES['ip_addresses']} WHERE seq = $seq");
-        }
+        \Geeklog\IP::deleteIpAddressBySeq($seq);
 
         // Auto login is successful. Update user array with new information (at this point user array is still for anonymous user and hasn't been loaded yet)
         global $_USER;

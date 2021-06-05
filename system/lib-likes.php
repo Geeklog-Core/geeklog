@@ -309,7 +309,7 @@ function LIKES_addAction($type, $sub_type, $item_id, $action, $prev_action, $uid
 
             if (is_array($A) && isset($A['seq'])) {
                 $seq = (int) $A['seq'];
-                DB_query("DELETE FROM {$_TABLES['ip_addresses']} WHERE seq = $seq");
+                \Geeklog\IP::deleteIpAddressBySeq($seq);
                 DB_query("DELETE FROM {$_TABLES['likes']} WHERE seq = $seq");
             }
         }
