@@ -6140,7 +6140,7 @@ function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '')
     $res = DB_query(
         "SELECT s.date FROM {$_TABLES['speedlimit']} AS s "
         . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
-        . "ON s.seq  i.seq "
+        . "ON s.seq = i.seq "
         . "WHERE (s.type = '$type') AND (i.ipaddress = '$property') ORDER BY date ASC"
     );
 

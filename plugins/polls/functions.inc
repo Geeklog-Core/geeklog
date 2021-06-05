@@ -1033,7 +1033,7 @@ function POLLS_ipAlreadyVoted($pid, $ip = '')
 
     $ip = DB_escapeString($ip);
     $pid = DB_escapeString($pid);
-    $sql = "SELECT COUNT(p.*) AS cnt FROM {$_TABLES['pollvoters']} AS p "
+    $sql = "SELECT COUNT(*) AS cnt FROM {$_TABLES['pollvoters']} AS p "
         . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
         . "ON p.seq = i.seq "
         . "WHERE (i.ipaddress = '$ip') AND (p.pid = '$pid')";

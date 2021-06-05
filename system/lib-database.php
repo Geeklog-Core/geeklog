@@ -500,10 +500,10 @@ function DB_doDatabaseUpgrade($current_gl_version)
 }
 
 /**
- * Lock a table
- * Locks a table for write operations
+ * Lock a table/tables
+ * Locks a table/tables for write operations
  *
- * @param    string $table Table to lock
+ * @param    string|string[] $table Table to lock
  * @see DB_unlockTable
  */
 function DB_lockTable($table)
@@ -514,10 +514,10 @@ function DB_lockTable($table)
 }
 
 /**
- * Unlock a table
- * Unlocks a table after DB_lockTable
+ * Unlock a table/tables
+ * Unlocks a table/tables after DB_lockTable
  *
- * @param    string $table Table to unlock
+ * @param    string|string[] $table Table to unlock
  * @see DB_lockTable
  */
 function DB_unlockTable($table)

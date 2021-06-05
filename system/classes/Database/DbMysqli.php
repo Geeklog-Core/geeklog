@@ -954,10 +954,10 @@ class DbMysqli
     }
 
     /**
-     * Lock a table
+     * Lock a table/tables
      * Locks a table for write operations
      *
-     * @param    string $table Table to lock
+     * @param    string|string[] $table Table to lock
      * @see dbUnlockTable
      */
     public function dbLockTable($table)
@@ -966,7 +966,17 @@ class DbMysqli
             $this->_errorLog("\n*** Inside database->dbLockTable ***");
         }
 
-        $sql = "LOCK TABLES {$table} WRITE";
+        if (is_string($table)) {
+            $sql = "LOCK TABLES {$table} WRITE";
+        } else {
+            foreach ($table as &$t) {
+                $t = $t . ' WRITE';
+            }
+            unset($t);
+
+            $sql = "LOCK TABLES " . implode(', ', $table);
+        }
+
         $this->dbQuery($sql);
 
         if ($this->_verbose) {
@@ -975,8 +985,8 @@ class DbMysqli
     }
 
     /**
-     * Unlock a table
-     * Unlocks a table after a dbLockTable (actually, unlocks all tables)
+     * Unlock a table/tables
+     * Unlocks a table/tables after a dbLockTable (actually, unlocks all tables)
      *
      * @param    string $table Table to unlock (ignored)
      * @see dbLockTable

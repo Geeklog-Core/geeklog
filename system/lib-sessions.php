@@ -289,15 +289,16 @@ function SESS_newSession($userId, $remote_ip)
     $ctime = time();
     $currentTime = (string) $ctime;
     $expiryTime = (string) ($ctime - $lifespan);
-    $deleteResult = false;
+    $deleteResult1 = true;
+    $deleteResult2 = true;
     $retryMax = 3;
     $wait = 50000; // 50 ms
 
     for ($i = 0; $i < $retryMax; $i++) {
-        DB_lockTable($_TABLES['sessions']);
-        $sql = "SELECT s.sess_id, i.seq FROM {$_TABLES['sessions']} AS s "
-            . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
-            . "ON s.seq = i.seq "
+        DB_lockTable([$_TABLES['sessions'], $_TABLES['ip_addresses']]);
+        $sql = "SELECT sess_id, {$_TABLES['sessions']}.seq FROM {$_TABLES['sessions']} "
+            . "LEFT JOIN {$_TABLES['ip_addresses']} "
+            . "ON {$_TABLES['sessions']}.seq = {$_TABLES['ip_addresses']}.seq "
             . "WHERE (start_time < {$expiryTime})";
         $result = DB_query($sql);
         $sessIds = [];
@@ -308,20 +309,14 @@ function SESS_newSession($userId, $remote_ip)
             $seqs[] = (int) $A['seq'];
         }
 
-        $deleteResult1 = true;
-
         if (!empty($sessIds)) {
             $deleteSQL1 = "DELETE FROM {$_TABLES['sessions']} WHERE sess_id IN ('" . implode("', '", $sessIds) . "')";
             $deleteResult1 = DB_query($deleteSQL1);
-        }
-
-        $deleteResult2 = true;
-
-        if (!empty($seqs)) {
             $deleteSQL2 = "DELETE FROM {$_TABLES['ip_addresses']} WHERE seq IN (" . implode(', ', $seqs) . ")";
             $deleteResult2 = DB_query($deleteSQL2);
         }
-        DB_unlockTable($_TABLES['sessions']);
+
+        DB_unlockTable([$_TABLES['sessions'], $_TABLES['ip_addresses']]);
 
         if ($_SESS_VERBOSE) {
             COM_errorLog("Attempted to delete rows from session table with following SQL\n$deleteSQL1\n",1);
@@ -330,14 +325,14 @@ function SESS_newSession($userId, $remote_ip)
             COM_errorLog("Got $deleteResult2 as a result from the query",1);
         }
 
-        if ($deleteResult1) {
+        if ($deleteResult1 && $deleteResult2) {
             break;
         }
 
         usleep($wait);
     }
 
-    if (!$deleteResult) {
+    if (!$deleteResult1 || !$deleteResult2) {
         die("Delete failed in SESS_newSession()");
     }
 

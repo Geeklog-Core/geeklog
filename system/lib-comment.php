@@ -1515,7 +1515,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 
         $ret = -1; // comment queued
     } elseif ($pid > 0) {
-        DB_lockTable($_TABLES['comments']);
+        DB_lockTable([$_TABLES['comments'], $_TABLES['ip_addresses']]);
 
         $result = DB_query("SELECT rht, indent FROM {$_TABLES['comments']} WHERE cid = $pid AND sid = '$sid'");
         list($rht, $indent) = DB_fetchArray($result);
@@ -1548,7 +1548,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             }
             $ret = 4; // Cannot return here, tables locked!
         }
-        DB_unlockTable($_TABLES['comments']);
+        DB_unlockTable([$_TABLES['comments'], $_TABLES['ip_addresses']]);
 
         // If no error then
         if ($ret != 4) {
@@ -1581,7 +1581,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             }
         }
     } else {
-        DB_lockTable($_TABLES['comments']);
+        DB_lockTable([$_TABLES['comments'], $_TABLES['ip_addresses']]);
         $rht = DB_getItem($_TABLES['comments'], 'MAX(rht)', "sid = '$sid'");
         if (DB_error()) {
             $rht = 0;
@@ -1602,7 +1602,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         }
 
         $cid = DB_insertId('', $_TABLES['comments'] . '_cid_seq');
-        DB_unlockTable($_TABLES['comments']);
+        DB_unlockTable([$_TABLES['comments'], $_TABLES['ip_addresses']]);
 
         // Update Comment Feeds
         COM_rdfUpToDateCheck('comment');
