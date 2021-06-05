@@ -74,7 +74,12 @@ class MassDelete extends BaseAdmin
                 closedir($dir);
             }
 
-            $result = DB_query("SELECT comment,cid,sid,type,UNIX_TIMESTAMP(date) as date,ipaddress FROM {$_TABLES['comments']} ORDER BY date DESC LIMIT $lmt");
+            $result = DB_query(
+                "SELECT c.comment, c.cid, c.sid, c.type, UNIX_TIMESTAMP(c.date) AS date, i.ipaddress FROM {$_TABLES['comments']} AS c "
+                . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+                . "ON c.seq = i.seq "
+                . "ORDER BY date DESC LIMIT $lmt"
+            );
             $numRows = DB_numRows($result);
 
             for ($i = 0; $i < $numRows; $i++) {

@@ -76,7 +76,12 @@ class MassDelTrackback extends BaseAdmin
 
             require_once $_CONF['path_system'] . 'lib-trackback.php';
 
-            $result = DB_query("SELECT cid,sid,type,url,title,blog,excerpt,ipaddress,UNIX_TIMESTAMP(date) AS date FROM {$_TABLES['trackback']} ORDER BY date DESC LIMIT $lmt");
+            $result = DB_query(
+                "SELECT t.cid, t.sid, t.type, t.url, t.title, t.blog, t.excerpt, i.ipaddress, UNIX_TIMESTAMP(t.date) AS date FROM {$_TABLES['trackback']} AS t "
+                . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+                . "ON t.seq = i.seq "
+                . "ORDER BY date DESC LIMIT $lmt"
+            );
             $numRows = DB_numRows($result);
 
             for ($i = 0; $i < $numRows; $i++) {
