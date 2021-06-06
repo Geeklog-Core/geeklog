@@ -1191,6 +1191,6 @@ SQL;
      */
     public function dbOptimizeTable($tableName)
     {
-        return DB_query("VACUUM $tableName");
+        return $this->dbQuery("VACUUM $tableName");
     }
 }

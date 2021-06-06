@@ -1180,6 +1180,6 @@ class DbMysqli
      */
     public function dbOptimizeTable($tableName)
     {
-        return DB_query("OPTIMIZE TABLE $tableName");
+        return $this->dbQuery("OPTIMIZE TABLE $tableName");
     }
 }
