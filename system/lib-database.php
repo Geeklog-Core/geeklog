@@ -712,3 +712,44 @@ function DB_innoDbSupported()
         return false;
     }
 }
+
+/**
+ * Return a list of tables used for the Geeklog installation
+ *
+ * @return string[]
+ * @since  Geeklog 2.2.2
+ */
+function DB_getAllTables()
+{
+    global $_DB;
+
+    return $_DB->dbGetAllTables();
+}
+
+/**
+ * Return the structure of a table given
+ *
+ * @param  string  $tableName
+ * @return string
+ * @since  Geeklog 2.2.2
+ */
+function DB_getTableStructure($tableName)
+{
+    global $_DB;
+
+    return $_DB->dbGetTableStructure($tableName);
+}
+
+/**
+ * Escape an identifier like a database name or a table name
+ *
+ * @param  string  $identifier
+ * @return string
+ * @since  Geeklog 2.2.2
+ */
+function DB_escapeIdentifier($identifier)
+{
+    global $_DB;
+
+    return $_DB->dbEscapeIdentifier($identifier);
+}

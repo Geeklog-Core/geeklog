@@ -8,7 +8,7 @@
 // |                                                                           |
 // | mysql database class with MySQLi extension                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2020 by the following authors:                         |
+// | Copyright (C) 2000-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // |          Kenji Ito, geeklog AT mystral-kk DOT net                         |
@@ -128,7 +128,7 @@ class DbMysqli
      * Logs messages
      * Logs messages by calling the function held in $_errorLog_fn
      *
-     * @param    string $msg Message to log
+     * @param  string  $msg  Message to log
      * @access   private
      */
     protected function _errorLog($msg)
@@ -232,7 +232,7 @@ class DbMysqli
     /**
      * Set MySQL sql_mode
      *
-     * @param int $mode one of SQL_MODE_xxx constants
+     * @param  int  $mode  one of SQL_MODE_xxx constants
      */
     public function setSqlMode($mode)
     {
@@ -255,9 +255,9 @@ class DbMysqli
         $sqlModes = [
             self::MYSQL_SQL_MODE_NONE => [],
             self::MYSQL_SQL_MODE_566  => [
-                'NO_ENGINE_SUBSTITUTION'
+                'NO_ENGINE_SUBSTITUTION',
             ],
-            self::MYSQL_SQL_MODE_570 => [
+            self::MYSQL_SQL_MODE_570  => [
                 'NO_ENGINE_SUBSTITUTION',
             ],
             self::MYSQL_SQL_MODE_575  => [
@@ -300,8 +300,8 @@ class DbMysqli
     /**
      * Return if a given table exists in the current database
      *
-     * @param  string $tableName
-     * @param  int    $ignoreErrors
+     * @param  string  $tableName
+     * @param  int     $ignoreErrors
      * @return bool
      */
     public function dbTableExists($tableName, $ignoreErrors = 0)
@@ -342,13 +342,13 @@ class DbMysqli
      * constructor for database class
      * This initializes an instance of the database object
      *
-     * @param        string $dbhost      Database host
-     * @param        string $dbname      Name of database
-     * @param        string $dbuser      User to make connection as
-     * @param        string $dbpass      Password for dbuser
-     * @param        string $tablePrefix Table prefix
-     * @param        string $errorlogfn  Name of the errorlog function
-     * @param        string $charset     Character set to use
+     * @param  string  $dbhost       Database host
+     * @param  string  $dbname       Name of database
+     * @param  string  $dbuser       User to make connection as
+     * @param  string  $dbpass       Password for dbuser
+     * @param  string  $tablePrefix  Table prefix
+     * @param  string  $errorlogfn   Name of the errorlog function
+     * @param  string  $charset      Character set to use
      */
     public function __construct($dbhost, $dbname, $dbuser, $dbpass, $tablePrefix, $errorlogfn = '', $charset = '')
     {
@@ -371,7 +371,7 @@ class DbMysqli
      * Turns debug mode on
      * Set this to TRUE to see debug messages
      *
-     * @param    bool $flag
+     * @param  bool  $flag
      */
     public function setVerbose($flag)
     {
@@ -385,7 +385,7 @@ class DbMysqli
      * details. The complete error message (including the offending SQL request)
      * is always available from error.log.
      *
-     * @param    bool $flag
+     * @param  bool  $flag
      */
     public function setDisplayError($flag)
     {
@@ -415,7 +415,7 @@ class DbMysqli
     /**
      * Default logger when COM_errorLog is not available
      *
-     * @param  string $msg
+     * @param  string  $msg
      */
     public function defaultLogger($msg)
     {
@@ -434,7 +434,7 @@ class DbMysqli
     /**
      * Sets the function this class should call to log debug messages
      *
-     * @param  string $functionName Function name
+     * @param  string  $functionName  Function name
      */
     public function setErrorFunction($functionName)
     {
@@ -492,8 +492,8 @@ class DbMysqli
      * Executes a query on the MySQL server
      * This executes the passed SQL and returns the recordset or errors out
      *
-     * @param    string $sql              SQL to be executed
-     * @param    int    $ignore_errors    If 1 this function suppresses any error messages
+     * @param  string  $sql            SQL to be executed
+     * @param  int     $ignore_errors  If 1 this function suppresses any error messages
      * @return   mysqli_result|bool       Returns results of query
      */
     public function dbQuery($sql, $ignore_errors = 0)
@@ -547,9 +547,9 @@ class DbMysqli
      * This will use a REPLACE INTO to save a record into the
      * database
      *
-     * @param    string $table  The table to save to
-     * @param    string $fields string  Comma-delimited list of fields to save
-     * @param    string $values Values to save to the database table
+     * @param  string  $table   The table to save to
+     * @param  string  $fields  string  Comma-delimited list of fields to save
+     * @param  string  $values  Values to save to the database table
      */
     public function dbSave($table, $fields, $values)
     {
@@ -568,8 +568,8 @@ class DbMysqli
     /**
      * Builds a pair of a column name and a value that can be used as a part of an SQL
      *
-     * @param   mixed|array $id
-     * @param   mixed|array $value
+     * @param  mixed|array  $id
+     * @param  mixed|array  $value
      * @return  mixed         string = column_name-value pair(s), FALSE = error
      */
     private function _buildIdValuePair($id, $value)
@@ -612,9 +612,9 @@ class DbMysqli
      * id and value are arrays then it will traverse the arrays setting
      * $id[curval] = $value[curval].
      *
-     * @param    string       $table Table to delete data from
-     * @param    array|string $id    field name(s) to include in where clause
-     * @param    array|string $value field value(s) corresponding to field names
+     * @param  string        $table  Table to delete data from
+     * @param  array|string  $id     field name(s) to include in where clause
+     * @param  array|string  $value  field value(s) corresponding to field names
      * @return   bool     Returns TRUE on success otherwise FALSE
      */
     public function dbDelete($table, $id, $value)
@@ -646,12 +646,12 @@ class DbMysqli
      * This will change the data in the given table that meet the given criteria and will
      * redirect user to another page if told to do so
      *
-     * @param    string       $table           Table to perform change on
-     * @param    string       $item_to_set     field name of unique ID field for table
-     * @param    string       $value_to_set    Value for id
-     * @param    array|string $id              additional field name used in where clause
-     * @param    array|string $value           additional values used in where clause
-     * @param    bool         $suppress_quotes if FALSE it will not use '<value>' in where clause
+     * @param  string        $table            Table to perform change on
+     * @param  string        $item_to_set      field name of unique ID field for table
+     * @param  string        $value_to_set     Value for id
+     * @param  array|string  $id               additional field name used in where clause
+     * @param  array|string  $value            additional values used in where clause
+     * @param  bool          $suppress_quotes  if FALSE it will not use '<value>' in where clause
      * @return   bool     Returns TRUE on success otherwise FALSE
      */
     public function dbChange($table, $item_to_set, $value_to_set, $id, $value,
@@ -693,9 +693,9 @@ class DbMysqli
      * This will build a SELECT count(*) statement with the given criteria and
      * return the result
      *
-     * @param    string       $table Table to perform count on
-     * @param    array|string $id    field name(s) of fields to use in where clause
-     * @param    array|string $value Value(s) to use in where clause
+     * @param  string        $table  Table to perform count on
+     * @param  array|string  $id     field name(s) of fields to use in where clause
+     * @param  array|string  $value  Value(s) to use in where clause
      * @return   int|bool            returns count on success otherwise FALSE
      */
     public function dbCount($table, $id = '', $value = '')
@@ -731,12 +731,12 @@ class DbMysqli
      * This will use a REPLACE INTO...SELECT FROM to copy a record from one table
      * to another table.  They can be the same table.
      *
-     * @param    string       $table     Table to insert record into
-     * @param    string       $fields    Comma delmited list of fields to copy over
-     * @param    string       $values    Values to store in database fields
-     * @param    string       $tableFrom Table to get record from
-     * @param    array|string $id        field name(s) to use in where clause
-     * @param    array|string $value     Value(s) to use in where clause
+     * @param  string        $table      Table to insert record into
+     * @param  string        $fields     Comma delmited list of fields to copy over
+     * @param  string        $values     Values to store in database fields
+     * @param  string        $tableFrom  Table to get record from
+     * @param  array|string  $id         field name(s) to use in where clause
+     * @param  array|string  $value      Value(s) to use in where clause
      * @return   bool     Returns TRUE on success otherwise FALSE
      */
     public function dbCopy($table, $fields, $values, $tableFrom, $id, $value)
@@ -768,7 +768,7 @@ class DbMysqli
      * Retrieves the number of rows in a recordset
      * This returns the number of rows in a recordset
      *
-     * @param    mysqli_result $recordSet The record set to operate one
+     * @param  mysqli_result  $recordSet  The record set to operate one
      * @return   int           Returns number of rows otherwise FALSE (0)
      */
     public function dbNumRows($recordSet)
@@ -798,9 +798,9 @@ class DbMysqli
     /**
      * Returns the contents of one cell from a MySQL result set
      *
-     * @param    mysqli_result $recordSet The recordset to operate on
-     * @param    int           $row       row to get data from
-     * @param    mixed         $field     field to return
+     * @param  mysqli_result  $recordSet  The recordset to operate on
+     * @param  int            $row        row to get data from
+     * @param  mixed          $field      field to return
      * @return   mixed (depends on field content)
      */
     public function dbResult($recordSet, $row, $field = 0)
@@ -839,7 +839,7 @@ class DbMysqli
      * Retrieves the number of fields in a recordset
      * This returns the number of fields in a recordset
      *
-     * @param   mysqli_result $recordSet The recordset to operate on
+     * @param  mysqli_result  $recordSet  The recordset to operate on
      * @return  int     Returns number of rows from query
      */
     public function dbNumFields($recordSet)
@@ -851,8 +851,8 @@ class DbMysqli
      * Retrieves returns the field name for a field
      * Returns the field name for a given field number
      *
-     * @param    mysqli_result $recordSet   The recordset to operate on
-     * @param    int           $fieldNumber field number to return the name of
+     * @param  mysqli_result  $recordSet    The recordset to operate on
+     * @param  int            $fieldNumber  field number to return the name of
      * @return   string      Returns name of specified field
      */
     public function dbFieldName($recordSet, $fieldNumber)
@@ -866,7 +866,7 @@ class DbMysqli
      * Retrieves returns the number of effected rows for last query
      * Retrieves returns the number of effected rows for last query
      *
-     * @param    mysqli_result $recordSet The record set to operate on
+     * @param  mysqli_result  $recordSet  The record set to operate on
      * @return   int     Number of rows affected by last query
      */
     public function dbAffectedRows($recordSet)
@@ -878,8 +878,8 @@ class DbMysqli
      * Retrieves record from a record set
      * Gets the next record in a record set and returns in array
      *
-     * @param    mysqli_result $recordSet The record set to operate on
-     * @param    bool          $both      get both assoc and numeric indices
+     * @param  mysqli_result  $recordSet  The record set to operate on
+     * @param  bool           $both       get both assoc and numeric indices
      * @return   array|false              Returns data array of current row from record set
      */
     public function dbFetchArray($recordSet, $both = false)
@@ -898,8 +898,8 @@ class DbMysqli
      * Returns the last ID inserted
      * Returns the last auto_increment ID generated
      *
-     * @param    resource $link_identifier identifier for opened link
-     * @param    string   $sequence
+     * @param  resource  $link_identifier  identifier for opened link
+     * @param  string    $sequence
      * @return   int                             Returns last auto-generated ID
      */
     public function dbInsertId($link_identifier = null, $sequence = '')
@@ -911,7 +911,7 @@ class DbMysqli
      * returns a database error string
      * Returns an database error message
      *
-     * @param    string $sql SQL that may have caused the error
+     * @param  string  $sql  SQL that may have caused the error
      * @return   string      Text for error message
      */
     public function dbError($sql = '')
@@ -957,7 +957,7 @@ class DbMysqli
      * Lock a table/tables
      * Locks a table for write operations
      *
-     * @param    string|string[] $table Table to lock
+     * @param  string|string[]  $table  Table to lock
      * @see dbUnlockTable
      */
     public function dbLockTable($table)
@@ -988,7 +988,7 @@ class DbMysqli
      * Unlock a table/tables
      * Unlocks a table/tables after a dbLockTable (actually, unlocks all tables)
      *
-     * @param    string $table Table to unlock (ignored)
+     * @param  string  $table  Table to unlock (ignored)
      * @see dbLockTable
      */
     public function dbUnlockTable($table)
@@ -1058,7 +1058,7 @@ class DbMysqli
     /**
      * Escapes a string so that it can be safely used in a query
      *
-     * @param   string $str a string to be escaped
+     * @param  string  $str  a string to be escaped
      * @return  string
      */
     public function dbEscapeString($str)
@@ -1114,5 +1114,61 @@ class DbMysqli
     public function isUtf8mb4Supported()
     {
         return ($this->_db->server_version > 50503);
+    }
+
+    /**
+     * Return a list of tables used for the Geeklog installation
+     *
+     * @return string[]
+     */
+    public function dbGetAllTables()
+    {
+        $retval = [];
+
+        $result = $this->dbQuery("SHOW TABLES");
+
+        if ($result !== false) {
+            while (($A = $this->dbFetchArray($result)) !== false) {
+                $retval[] = $A['Tables_in_' . $this->_name];
+            }
+        }
+
+        return $retval;
+    }
+
+    /**
+     * Return the structure of a table given
+     *
+     * @param  string  $tableName
+     * @return string
+     */
+    public function dbGetTableStructure($tableName)
+    {
+        $result = $this->dbQuery("SHOW CREATE TABLE $tableName;");
+
+        if (!empty($result)) {
+            $A = $this->dbFetchArray($result);
+
+            if (is_array($A) && isset($A['Create Table'])) {
+                return $A['Create Table'];
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * Escape an identifier like a database name or a table name
+     *
+     * @param  string  $identifier
+     * @return string
+     */
+    public function dbEscapeIdentifier($identifier)
+    {
+        if (!empty($identifier) && ($identifier !== '*')) {
+            $identifier = '`' . $identifier . '`';
+        }
+
+        return $identifier;
     }
 }

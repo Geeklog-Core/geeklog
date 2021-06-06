@@ -8,7 +8,7 @@
 // |                                                                           |
 // | PostgreSQL database class                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2020 by the following authors:                         |
+// | Copyright (C) 2000-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Stanislav Palatnik, spalatnikk AT gmail DoT com                  |
 // +---------------------------------------------------------------------------+
@@ -104,7 +104,7 @@ class DbPgsql
      * Logs messages
      * Logs messages by calling the function held in $_errorlog_fn
      *
-     * @param    string $msg Message to log
+     * @param  string  $msg  Message to log
      */
     private function _errorLog($msg)
     {
@@ -129,8 +129,8 @@ class DbPgsql
     /**
      * Return if a given table exists in the current database
      *
-     * @param  string $tableName
-     * @param  int    $ignoreErrors
+     * @param  string  $tableName
+     * @param  int     $ignoreErrors
      * @return bool
      */
     public function dbTableExists($tableName, $ignoreErrors = 0)
@@ -185,7 +185,7 @@ class DbPgsql
     /**
      * Default logger when COM_errorLog is not available
      *
-     * @param  string $msg
+     * @param  string  $msg
      */
     public function defaultLogger($msg)
     {
@@ -204,7 +204,7 @@ class DbPgsql
     /**
      * Sets the function this class should call to log debug messages
      *
-     * @param  string $functionName Function name
+     * @param  string  $functionName  Function name
      */
     public function setErrorFunction($functionName)
     {
@@ -238,20 +238,20 @@ class DbPgsql
         $conn = pg_connect($dsn);
         pg_close($conn);
 
-        return  ($conn === false) ? 1 : 2;
+        return ($conn === false) ? 1 : 2;
     }
 
     /**
      * constructor for database
      * This initializes an instance of the database object
      *
-     * @param        string $dbhost      Database host
-     * @param        string $dbname      Name of database
-     * @param        string $dbuser      User to make connection as
-     * @param        string $dbpass      Password for dbuser
-     * @param        string $tablePrefix Table prefix
-     * @param        string $errorlogfn  Name of the errorlog function
-     * @param        string $charset     Character set to use
+     * @param  string  $dbhost       Database host
+     * @param  string  $dbname       Name of database
+     * @param  string  $dbuser       User to make connection as
+     * @param  string  $dbpass       Password for dbuser
+     * @param  string  $tablePrefix  Table prefix
+     * @param  string  $errorlogfn   Name of the errorlog function
+     * @param  string  $charset      Character set to use
      */
     public function __construct($dbhost, $dbname, $dbuser, $dbpass, $tablePrefix, $errorlogfn = '', $charset = '')
     {
@@ -271,7 +271,7 @@ class DbPgsql
      * Retrieves returns the number of effected rows for last query
      * Retrieves returns the number of effected rows for last query
      *
-     * @param    object $recordSet The recordset to operate on
+     * @param  object  $recordSet  The recordset to operate on
      * @return   int     Number of rows affected by last query
      */
     public function dbAffectedRows($recordSet)
@@ -286,9 +286,9 @@ class DbPgsql
     /**
      * Returns the contents of one cell from a PostgreSQL result set
      *
-     * @param    resource $recordset The recordset to operate on
-     * @param    int      $row       row to get data from
-     * @param    mixed    $field     field to return
+     * @param  resource  $recordset  The recordset to operate on
+     * @param  int       $row        row to get data from
+     * @param  mixed     $field      field to return
      * @return   mixed    depends on field content
      */
     public function dbResult($recordset, $row, $field = 0)
@@ -312,9 +312,9 @@ class DbPgsql
      * Retrieves record from a recordset
      * Gets the next record in a recordset and returns in array
      *
-     * @param    resource $recordSet The record set to operate on
-     * @param    boolean  $both      get both assoc and numeric indices
-     * @return   array     Returns data array of current row from record set
+     * @param  resource  $recordSet  The record set to operate on
+     * @param  boolean   $both       get both assoc and numeric indices
+     * @return   array|false         Returns data array of current row from record set
      */
     public function dbFetchArray($recordSet, $both = false)
     {
@@ -327,8 +327,8 @@ class DbPgsql
      * Retrieves returns the field name for a field
      * Returns the field name for a given field number
      *
-     * @param    resource $recordSet   The recordset to operate on
-     * @param    int      $fieldNumber field number to return the name of
+     * @param  resource  $recordSet    The recordset to operate on
+     * @param  int       $fieldNumber  field number to return the name of
      * @return   string   Returns name of specified field
      */
     public function dbFieldName($recordSet, $fieldNumber)
@@ -341,12 +341,12 @@ class DbPgsql
      * This will use a REPLACE INTO...SELECT FROM to copy a record from one table
      * to another table.  They can be the same table.
      *
-     * @param    string       $table     Table to insert record into
-     * @param    string       $fields    Comma delmited list of fields to copy over
-     * @param    string       $values    Values to store in database fields
-     * @param    string       $tableFrom Table to get record from
-     * @param    array|string $id        field name(s) to use in where clause
-     * @param    array|string $value     Value(s) to use in where clause
+     * @param  string        $table      Table to insert record into
+     * @param  string        $fields     Comma delmited list of fields to copy over
+     * @param  string        $values     Values to store in database fields
+     * @param  string        $tableFrom  Table to get record from
+     * @param  array|string  $id         field name(s) to use in where clause
+     * @param  array|string  $value      Value(s) to use in where clause
      * @return   boolean     Returns true on success otherwise false
      */
     public function dbCopy($table, $fields, $values, $tableFrom, $id, $value)
@@ -395,8 +395,8 @@ class DbPgsql
      * Executes a query on the pgSQL server
      * This executes the passed SQL and returns the recordset or errors out
      *
-     * @param    string $sql           SQL to be executed
-     * @param    int    $ignore_errors If 1 this function suppresses any error messages
+     * @param  string  $sql            SQL to be executed
+     * @param  int     $ignore_errors  If 1 this function suppresses any error messages
      * @return   bool|resource          Returns results of query
      */
     public function dbQuery($sql, $ignore_errors = 0)
@@ -448,9 +448,9 @@ class DbPgsql
      * This will use a REPLACE INTO to save a record into the
      * database
      *
-     * @param    string $table  The table to save to
-     * @param    string $fields string  Comma-delimited list of fields to save
-     * @param    string $values Values to save to the database table
+     * @param  string  $table   The table to save to
+     * @param  string  $fields  string  Comma-delimited list of fields to save
+     * @param  string  $values  Values to save to the database table
      */
     public function dbSave($table, $fields, $values)
     {
@@ -471,7 +471,7 @@ class DbPgsql
             $fields_array = explode(',', $fields);
             $values_array = DBINT_parseCsvSqlString($values);
             $values = str_replace('0000-00-00 00:00:00', 'NOW()', $values);
-            $row = array();
+            $row = [];
             $sql = 'SELECT pg_attribute.attname FROM pg_index, pg_class, pg_attribute
                     WHERE pg_class.oid = \'' . $table . '\'::regclass AND
                     indrelid = pg_class.oid AND
@@ -593,9 +593,9 @@ class DbPgsql
      * id and value are arrays then it will traverse the arrays setting
      * $id[curval] = $value[curval].
      *
-     * @param    string       $table Table to delete data from
-     * @param    array|string $id    field name(s) to include in where clause
-     * @param    array|string $value field value(s) corresponding to field names
+     * @param  string        $table  Table to delete data from
+     * @param  array|string  $id     field name(s) to include in where clause
+     * @param  array|string  $value  field value(s) corresponding to field names
      * @return   boolean     Returns true on success otherwise false
      */
     public function dbDelete($table, $id, $value)
@@ -656,12 +656,12 @@ class DbPgsql
      * This will change the data in the given table that meet the given criteria and will
      * redirect user to another page if told to do so
      *
-     * @param    string       $table          Table to perform change on
-     * @param    string       $item_to_set    field name of unique ID field for table
-     * @param    string       $value_to_set   Value for id
-     * @param    array|string $id             additional field name used in where clause
-     * @param    array|string $value          additional values used in where clause
-     * @param    boolean      $supress_quotes if false it will not use '<value>' in where clause
+     * @param  string        $table           Table to perform change on
+     * @param  string        $item_to_set     field name of unique ID field for table
+     * @param  string        $value_to_set    Value for id
+     * @param  array|string  $id              additional field name used in where clause
+     * @param  array|string  $value           additional values used in where clause
+     * @param  boolean       $supress_quotes  if false it will not use '<value>' in where clause
      * @return   boolean     Returns true on success otherwise false
      */
     public function dbChange($table, $item_to_set, $value_to_set, $id, $value, $supress_quotes = false)
@@ -719,7 +719,7 @@ class DbPgsql
      * Retrieves the number of rows in a recordset
      * This returns the number of rows in a recordset
      *
-     * @param    resource $recordSet The recordset to operate one
+     * @param  resource  $recordSet  The recordset to operate one
      * @return   int         Returns number of rows otherwise false (0)
      */
     public function dbNumRows($recordSet)
@@ -753,9 +753,9 @@ class DbPgsql
      * This will build a SELECT count(*) statement with the given criteria and
      * return the result
      *
-     * @param    string       $table Table to perform count on
-     * @param    array|string $id    field name(s) of fields to use in where clause
-     * @param    array|string $value Value(s) to use in where clause
+     * @param  string        $table  Table to perform count on
+     * @param  array|string  $id     field name(s) of fields to use in where clause
+     * @param  array|string  $value  Value(s) to use in where clause
      * @return   boolean     returns count on success otherwise false
      */
     public function dbCount($table, $id = '', $value = '')
@@ -808,8 +808,8 @@ class DbPgsql
      * Returns the last ID inserted
      * Returns the last auto_increment ID generated
      *
-     * @param    resource $link_identifier identifier for opened link
-     * @param    string   $sequence        sequence name the sequence to get the value last insert ID from
+     * @param  resource  $link_identifier  identifier for opened link
+     * @param  string    $sequence         sequence name the sequence to get the value last insert ID from
      * @return   int      Returns last auto-generated ID
      */
     public function dbInsertId($link_identifier = null, $sequence = '')
@@ -837,7 +837,7 @@ class DbPgsql
      * Lock a table/tables
      * Locks a table for write operations
      *
-     * @param  string|string[] $table Table to lock
+     * @param  string|string[]  $table  Table to lock
      * @see dbUnlockTable
      */
     public function dbLockTable($table)
@@ -859,7 +859,7 @@ class DbPgsql
      * Unlock a table/tables
      * Unlocks a table/tables after a dbLockTable (actually, unlocks all tables)
      *
-     * @param    string|string[] $table Table to unlock (ignored)
+     * @param  string|string[]  $table  Table to unlock (ignored)
      * @see dbLockTable
      */
     public function dbUnlockTable($table)
@@ -881,7 +881,7 @@ class DbPgsql
      * Turns debug mode on
      * Set this to true to see debug messages
      *
-     * @param    bool $flag true or false
+     * @param  bool  $flag  true or false
      */
     public function setVerbose($flag)
     {
@@ -895,7 +895,7 @@ class DbPgsql
      * details. The complete error message (including the offending SQL request)
      * is always available from error.log.
      *
-     * @param    bool $flag true or false
+     * @param  bool  $flag  true or false
      */
     public function setDisplayError($flag)
     {
@@ -905,7 +905,7 @@ class DbPgsql
     /**
      * Returns a database error message
      *
-     * @param    string $sql SQL that may have caused the error
+     * @param  string  $sql  SQL that may have caused the error
      * @return   string      Text for error message
      */
     public function dbError($sql = '')
@@ -1036,7 +1036,7 @@ class DbPgsql
     /**
      * Escapes a string so that it can be safely used in a query
      *
-     * @param   string $str a string to be escaped
+     * @param  string  $str  a string to be escaped
      * @return  string
      */
     public function dbEscapeString($str)
@@ -1052,5 +1052,134 @@ class DbPgsql
     public function isUtf8mb4Supported()
     {
         return true;
+    }
+
+    /**
+     * Return a list of tables used for the Geeklog installation
+     *
+     * @return string[]
+     */
+    public function dbGetAllTables()
+    {
+        $retval = [];
+
+        $result = $this->dbQuery(
+            "SELECT tablename FROM pg_tables "
+            . "WHERE tablename LIKE '" . $this->_tablePrefix . "%' "
+            . "AND schemaname NOT LIKE 'pg_%' AND schemaname != 'information_schema'"
+        );
+
+        if ($result !== false) {
+            while (($A = $this->dbFetchArray($result, false)) !== false) {
+                $retval[] = $A['tablename'];
+            }
+        }
+
+        return $retval;
+    }
+
+    /**
+     * Return the name of the primary key of a table given
+     *
+     * @param  string  $tableName
+     * @return string
+     * @see    https://tihiro.hatenablog.com/entry/2017/08/27/025113
+     */
+    private function getPrimaryKey($tableName)
+    {
+        $sql = <<<SQL
+SELECT
+  ccu.column_name AS pk
+FROM
+  information_schema.table_constraints tb_con
+    INNER JOIN information_schema.constraint_column_usage ccu
+            ON tb_con.constraint_catalog = ccu.constraint_catalog
+           AND tb_con.constraint_schema = ccu.constraint_schema
+           AND tb_con.constraint_name = ccu.constraint_name
+    INNER JOIN information_schema.key_column_usage kcu
+            ON tb_con.constraint_catalog = kcu.constraint_catalog
+           AND tb_con.constraint_schema = kcu.constraint_schema
+           AND tb_con.constraint_name = kcu.constraint_name
+           AND ccu.column_name = kcu.column_name
+WHERE
+      tb_con.table_name = '$tableName'
+  AND tb_con.constraint_type = 'PRIMARY KEY'
+ORDER BY
+    tb_con.table_catalog
+  , tb_con.table_name
+  , tb_con.constraint_name
+  , kcu.ordinal_position
+SQL;
+        $result = $this->dbQuery($sql);
+
+        if ($result !== false) {
+            $rows = [];
+
+            while (($A = $this->dbFetchArray($result)) !== false) {
+                $rows[] = $A['pk'];
+            }
+
+            return implode(', ', $rows);
+        }
+
+        return '';
+    }
+
+    /**
+     * Return the structure of a table given
+     *
+     * @param  string  $tableName
+     * @return string
+     */
+    public function dbGetTableStructure($tableName)
+    {
+        $retval = '';
+
+        $sql = <<<SQL
+SELECT column_name, data_type, character_maximum_length, is_nullable, column_default FROM information_schema.columns
+WHERE table_name = '$tableName'
+ORDER BY information_schema.columns.ordinal_position
+SQL;
+        $result = $this->dbQuery($sql);
+
+        if ($result !== false) {
+            $retval .= "CREATE TABLE $tableName (" . PHP_EOL;
+
+            while (($A = $this->dbFetchArray($result)) !== false) {
+                $size = (strcasecmp($A['data_type'], 'character varying') === 0)
+                    ? '(' . $A['character_maximum_length'] . ')'
+                    : '';
+                $nullable = (strcasecmp($A['is_nullable'], 'NO') === 0)
+                    ? 'NOT NULL'
+                    : 'NULL';
+                $default = empty($A['column_default'])
+                    ? ''
+                    : 'DEFAULT ' . $A['column_default'];
+
+                $retval .= sprintf('  %s %s %s %s,',
+                        $A['column_name'], $A['data_type'] . $size, $nullable, $default
+                    ) . PHP_EOL;
+            }
+
+            $retval .= '  PRIMARY KEY ' . $this->getPrimaryKey($tableName) . PHP_EOL
+                . ');';
+        }
+
+        return $retval;
+    }
+
+    /**
+     * Escape an identifier like a database name or a table name
+     *
+     * @param  string  $identifier
+     * @return string
+     */
+    public function dbEscapeIdentifier($identifier)
+    {
+        if (!empty($identifier) && ($identifier !== '*')) {
+            $identifier = pg_escape_identifier($this->_db, $identifier);
+        }
+
+        return $identifier;
     }
 }
