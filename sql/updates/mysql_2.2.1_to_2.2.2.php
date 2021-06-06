@@ -1,16 +1,6 @@
 <?php
 
 // *************************************
-// New 'ip_addresses' table
-$_SQL[] = "
-CREATE TABLE {$_TABLES['ip_addresses']} (
-  seq INT NOT NULL AUTO_INCREMENT,
-  ipaddress VARCHAR(39) NOT NULL DEFAULT '0.0.0.0',
-  created_at INT NOT NULL DEFAULT 0,
-  is_anonymized INT NOT NULL default 0,
-  PRIMARY KEY (seq)
-) ENGINE=MyISAM
-";
 
 /**
  * Add/Edit/Delete config options for new version
@@ -39,13 +29,25 @@ function update_TablesContainingIPAddresses222()
 {
     global $_TABLES;
 
+    // New 'ip_addresses' table
+    $sql = "
+CREATE TABLE {$_TABLES['ip_addresses']} (
+  seq INT NOT NULL AUTO_INCREMENT,
+  ipaddress VARCHAR(39) NOT NULL DEFAULT '0.0.0.0',
+  created_at INT NOT NULL DEFAULT 0,
+  is_anonymized INT NOT NULL default 0,
+  PRIMARY KEY (seq)
+) ENGINE=MyISAM
+";
+    DB_query($sql);
+
     $data = [
-        'comments'          => ['cid', 'ipaddress'],
-        'commentsumissions' => ['cid', 'ipaddress'],
-        'likes'             => ['lid', 'ipaddress'],
-        'sessions'          => ['sess_id', 'remote_ip'],
-        'speedlimit'        => ['id', 'ipaddress'],
-        'trackback'         => ['cid', 'ipaddress'],
+        'comments'           => ['cid', 'ipaddress'],
+        'commentsubmissions' => ['cid', 'ipaddress'],
+        'likes'              => ['lid', 'ipaddress'],
+        'sessions'           => ['sess_id', 'remote_ip'],
+        'speedlimit'         => ['id', 'ipaddress'],
+        'trackback'          => ['cid', 'ipaddress'],
     ];
 
     foreach ($data as $table => $pair) {
@@ -74,10 +76,10 @@ function update_TablesContainingIPAddresses222()
 
             // Update 'seq' column
             if ($table === 'sessions') {
-                DB_query("UPDATE $_TABLES[$table] SET seq = $seq WHERE $primaryKeyColumn = $primaryKeyValue");
-            } else {
                 $primaryKeyValue = DB_escapeString($primaryKeyValue);
                 DB_query("UPDATE $_TABLES[$table] SET seq = $seq WHERE $primaryKeyColumn = '$primaryKeyValue'");
+            } else {
+                DB_query("UPDATE $_TABLES[$table] SET seq = $seq WHERE $primaryKeyColumn = $primaryKeyValue");
             }
         }
 

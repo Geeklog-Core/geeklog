@@ -964,6 +964,9 @@ class XMLSitemap
             COM_errorLog(__METHOD__ . ': sitemap file name is not specified.');
 
             return 0;
+        } elseif (preg_match('@\Ahttps?://localhost/@i', $_CONF['site_url'])) {
+            // It seems that 'localhost' is not accepted
+            return 0;
         }
 
         // Checks for the record of previous pings
@@ -1008,15 +1011,15 @@ class XMLSitemap
             }
 
             // Sends a ping to the endpoint of a search engine
-            if ($url !== '') {
+            if (!empty($url)) {
                 $req = new HTTP_Request2($url, HTTP_Request2::METHOD_GET);
 
                 try {
                     $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
                     $response = $req->send();
-                    $status = (int) $response->getStatus();
+                    $status = $response->getStatus();
 
-                    if ($status === 200) {
+                    if ($status == 200) {
                         $success++;
                         $records[$dest] = time();
                     } else {

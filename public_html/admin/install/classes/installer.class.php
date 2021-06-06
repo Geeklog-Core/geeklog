@@ -1146,6 +1146,7 @@ class Installer extends Common
                     // for the plugin install and upgrade,
                     // we need lib-common.php in the global(!) namespace
                     require_once dirname(dirname(dirname(__DIR__))) . '/lib-common.php';
+                    Common::$env['dbconfig_path'] = $_CONF['path'] . Common::DB_CONFIG_FILE;
 
                     // Clear all speed limits for login to prevent login issues after install/upgrade/migrate (bug #995)
                     COM_clearSpeedlimit(0, 'login');

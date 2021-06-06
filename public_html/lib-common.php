@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2020 by the following authors:                         |
+// | Copyright (C) 2000-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -2391,6 +2391,15 @@ function COM_errorLog($logEntry, $actionId = '')
                     $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br' . XHTML . '>' . LB;
                 } else {
                     fputs($file, "$timestamp - $remoteAddress - $logEntry $callTrace \n");
+
+                    // To prevent errors while installing/upgrading/migrating
+                    if (empty($LANG01)) {
+                        $LANG01 = [];
+                    }
+                    if (empty($LANG01[34])) {
+                        $LANG01[34] = 'Error';
+                    }
+
                     $retval .= COM_startBlock($LANG01[34] . ' - ' . $timestamp,
                             '', COM_getBlockTemplate('_msg_block',
                                 'header'))
