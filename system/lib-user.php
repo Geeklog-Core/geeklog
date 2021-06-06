@@ -387,7 +387,7 @@ function USER_sendInvalidLoginAlert($userName, $email, $uid, $mode = 'inactive')
 {
     global $_CONF, $LANG04, $LANG08, $LANG29;
 
-    $remoteAddress = $_SERVER['REMOTE_ADDR'];
+    $remoteAddress = \Geeklog\IP::getIPAddress();
 
     $mailBody = "$LANG04[2]: $userName\n"
         . "$LANG04[5]: $email\n";

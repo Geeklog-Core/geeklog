@@ -222,7 +222,7 @@ class sanitizer
 
         if ($this->_logmode) {
             if (strcmp($p, $parameter) != 0) {
-                COM_errorLog("Filter applied: >> $parameter << filtered to $p [IP {$_SERVER['REMOTE_ADDR']}]", 1);
+                COM_errorLog("Filter applied: >> $parameter << filtered to $p [IP " . \Geeklog\IP::getIPAddress() . "]", 1);
             }
         }
 

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | List of validation rules for Core configurations                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2020 by the following authors:                         |
+// | Copyright (C) 2007-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Akeda Bagus       - admin AT gedex DOT web DOT id                |
 // |          Tom Homer         - tomhomer AT gmail DOT com                    |
@@ -62,6 +62,7 @@ $_CONF_VALIDATE['Core']['cookie_consent'] = ['rule' => 'boolean'];
 $_CONF_VALIDATE['Core']['terms_of_use_link'] = ['rule' => 'stringOrEmpty'];
 $_CONF_VALIDATE['Core']['privacy_policy_link'] = ['rule' => 'stringOrEmpty'];
 $_CONF_VALIDATE['Core']['about_cookies_link'] = ['rule' => 'stringOrEmpty'];
+$_CONF_VALIDATE['Core']['ip_anonymization'] = ['rule' => ['range', -1, 31536000]];  // Max 1 year
 
 // Subgroup Site, Tab Mail
 $_CONF_VALIDATE['Core']['site_mail'] = ['rule' => 'email'];

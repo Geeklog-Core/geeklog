@@ -73,7 +73,7 @@ if (!$error_data) {
     // They cannot filter the id further since that could change the value which doesn't get passed back here
     $id  = Geeklog\Input::fGetOrPost('id', '');
     $action = (int) Geeklog\Input::fGetOrPost('action', 0);
-    $ip         = $_SERVER['REMOTE_ADDR'];
+    $ip         = \Geeklog\IP::getIPAddress();
     $ratingdate = time();
     $uid        = isset($_USER['uid']) ? $_USER['uid'] : 1;
 

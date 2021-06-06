@@ -91,7 +91,7 @@ CREATE TABLE {$_TABLES['comments']} (
   indent mediumint(10) unsigned NOT NULL default '0',
   name varchar(32) default NULL,
   uid mediumint(8) NOT NULL default '1',
-  ipaddress varchar(39) NOT NULL default '',
+  seq INT NOT NULL DEFAULT 0,
   INDEX comments_sid(sid),
   INDEX comments_uid(uid),
   INDEX comments_lft(lft),
@@ -112,7 +112,7 @@ CREATE TABLE {$_TABLES['commentsubmissions']} (
   uid mediumint(8) NOT NULL default '1',
   name varchar(32) default NULL,
   pid int(10) NOT NULL default '0',
-  ipaddress varchar(39) NOT NULL,
+  seq INT NOT NULL DEFAULT 0,
   PRIMARY KEY  (cid)
 ) ENGINE=MyISAM
 ";
@@ -183,6 +183,16 @@ CREATE TABLE {$_TABLES['groups']} (
 ) ENGINE=MyISAM
 ";
 
+$_SQL[] = "
+CREATE TABLE {$_TABLES['ip_addresses']} (
+  seq INT NOT NULL AUTO_INCREMENT,
+  ipaddress VARCHAR(39) NOT NULL DEFAULT '0.0.0.0',
+  created_at INT NOT NULL DEFAULT 0,
+  is_anonymized INT NOT NULL default 0,
+  PRIMARY KEY (seq)
+) ENGINE=MyISAM
+";
+
 $_SQL[] ="
 CREATE TABLE {$_TABLES['language_items']} (
   id INT(11) NOT NULL AUTO_INCREMENT,
@@ -201,7 +211,7 @@ CREATE TABLE {$_TABLES['likes']} (
   subtype varchar(15) NOT NULL DEFAULT '',
   id varchar(128) NOT NULL,
   uid MEDIUMINT NOT NULL,
-  ipaddress VARCHAR(39) NOT NULL,
+  seq INT NOT NULL DEFAULT 0,
   action TINYINT NOT NULL,
   created DATETIME NOT NULL,
   PRIMARY KEY (lid),
@@ -260,24 +270,22 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['sessions']} (
   sess_id VARCHAR(190) NOT NULL DEFAULT '',
   start_time INT(10) unsigned NOT NULL DEFAULT '0',
-  remote_ip VARCHAR(39) NOT NULL DEFAULT '',
+  seq INT NOT NULL DEFAULT 0,
   uid MEDIUMINT(8) NOT NULL DEFAULT '1',
   whos_online TINYINT(1) NOT NULL DEFAULT '1',
   autologin_key_hash VARCHAR(190) NOT NULL DEFAULT '',
   PRIMARY KEY  (sess_id),
-  KEY start_time (start_time),
-  KEY remote_ip (remote_ip)
+  KEY start_time (start_time)
 ) ENGINE=MyISAM
 ";
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['speedlimit']} (
   id int(10) unsigned NOT NULL auto_increment,
-  ipaddress varchar(39) NOT NULL default '',
+  seq INT NOT NULL DEFAULT 0,
   date int(10) unsigned default NULL,
   type varchar(30) NOT NULL default 'submit',
   PRIMARY KEY (id),
-  KEY type_ipaddress (type,ipaddress),
   KEY date (date)
 ) ENGINE=MyISAM
 ";
@@ -436,7 +444,7 @@ CREATE TABLE {$_TABLES['trackback']} (
   excerpt text,
   date datetime default NULL,
   type varchar(30) NOT NULL default 'article',
-  ipaddress varchar(39) NOT NULL default '',
+  seq INT NOT NULL DEFAULT 0,
   PRIMARY KEY (cid),
   INDEX trackback_sid(sid),
   INDEX trackback_url(url),

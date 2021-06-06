@@ -834,10 +834,10 @@ class DbPgsql
     }
 
     /**
-     * Lock a table
+     * Lock a table/tables
      * Locks a table for write operations
      *
-     * @param  string $table Table to lock
+     * @param  string|string[] $table Table to lock
      * @see dbUnlockTable
      */
     public function dbLockTable($table)
@@ -856,10 +856,10 @@ class DbPgsql
     }
 
     /**
-     * Unlock a table
-     * Unlocks a table after a dbLockTable (actually, unlocks all tables)
+     * Unlock a table/tables
+     * Unlocks a table/tables after a dbLockTable (actually, unlocks all tables)
      *
-     * @param    string $table Table to unlock (ignored)
+     * @param    string|string[] $table Table to unlock (ignored)
      * @see dbLockTable
      */
     public function dbUnlockTable($table)

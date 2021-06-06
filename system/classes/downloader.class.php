@@ -497,8 +497,8 @@ class downloader
         // IP address and, if so, verify the user is originating from one of
         // those places
         if ($this->_limitByIP) {
-            if (!in_array($_SERVER['REMOTE_ADDR'], $this->_allowedIPS)) {
-                $this->_addError('The IP, ' . $_SERVER['REMOTE_ADDR'] . ' is not in the list of accepted IP addresses.  Refusing to allow file download(s)');
+            if (!in_array(\Geeklog\IP::getIPAddress(), $this->_allowedIPS)) {
+                $this->_addError('The IP, ' . \Geeklog\IP::getIPAddress() . ' is not in the list of accepted IP addresses.  Refusing to allow file download(s)');
 
                 return false;
             }

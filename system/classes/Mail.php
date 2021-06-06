@@ -173,15 +173,15 @@ class Mail
         $headers = $message->getHeaders();
         $headers->addTextHeader('X-Mailer', 'Geeklog ' . VERSION);
 
-        if (!empty($_SERVER['REMOTE_ADDR']) && !empty($_SERVER['SERVER_ADDR']) &&
-            ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR'])
+        if (!empty(IP::getIPAddress()) && !empty($_SERVER['SERVER_ADDR']) &&
+            (IP::getIPAddress() !== $_SERVER['SERVER_ADDR'])
         ) {
             $url = COM_getCurrentURL();
 
             if (substr($url, 0, strlen($_CONF['site_admin_url']))
                 != $_CONF['site_admin_url']
             ) {
-                $headers->addTextHeader('X-Originating-IP', $_SERVER['REMOTE_ADDR']);
+                $headers->addTextHeader('X-Originating-IP', \Geeklog\IP::getIPAddress());
             }
         }
 

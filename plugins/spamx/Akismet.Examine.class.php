@@ -62,7 +62,7 @@ class Akismet extends BaseCommand
             if (($answer == PLG_SPAM_FOUND) || ($answer == PLG_SPAM_UNSURE)) {
                 SPAMX_log(
                     $LANG_SX00['foundspam'] . 'Akismet' . $LANG_SX00['foundspam2'] . $this->getUid()
-                    . $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']
+                    . $LANG_SX00['foundspam3'] . \Geeklog\IP::getIPAddress()
                 );
             }
         }

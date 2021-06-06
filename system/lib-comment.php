@@ -1410,7 +1410,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
     // Sanity check
     if (empty($sid) || empty($title) || empty($comment) || empty($type)) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried to submit a comment with one or more missing values.");
+            COM_errorLog("CMT_saveComment: $uid from " . \Geeklog\IP::getIPAddress() . " tried to submit a comment with one or more missing values.");
         }
         return $ret = 1;
     }
@@ -1418,7 +1418,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
     // Check that anonymous comments are allowed
     if (($uid == 1) && (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_saveComment: IP address {$_SERVER['REMOTE_ADDR']} attempted to save a comment with anonymous comments disabled for site.");
+            COM_errorLog("CMT_saveComment: IP address " . \Geeklog\IP::getIPAddress() . " attempted to save a comment with anonymous comments disabled for site.");
         }
         return $ret = 2;
     }
@@ -1428,7 +1428,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
     $last = COM_checkSpeedlimit('comment');
     if ($last > 0) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried to submit a comment before the speed limit expired.");
+            COM_errorLog("CMT_saveComment: $uid from " . \Geeklog\IP::getIPAddress() . " tried to submit a comment before the speed limit expired.");
         }
 
         return $ret = 3;
@@ -1491,29 +1491,31 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
     COM_updateSpeedlimit('comment');
     if (empty($title) || empty($comment)) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried to submit a comment with invalid $title and/or $comment.");
+            COM_errorLog("CMT_saveComment: $uid from " . \Geeklog\IP::getIPAddress() . " tried to submit a comment with invalid $title and/or $comment.");
         }
         return $ret = 5;
     }
 
     if (($_CONF['commentsubmission'] == 1) && !SEC_hasRights('comment.submit')) {
         // comment into comment submission table enabled
+        $seq = \Geeklog\IP::getSeq();
+
         if (isset($name) AND trim($name) == '') {
-            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,type,date,title,pid,ipaddress) "
-                . "VALUES ('$sid',$uid,NULL,'$comment','$type',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
+            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,type,date,title,pid,seq) "
+                . "VALUES ('$sid',$uid,NULL,'$comment','$type',NOW(),'$title',$pid,$seq)");
         } elseif (isset($name)) {
-            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,type,date,title,pid,ipaddress) "
-                . "VALUES ('$sid',$uid,'$name','$comment','$type',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
+            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,type,date,title,pid,seq) "
+                . "VALUES ('$sid',$uid,'$name','$comment','$type',NOW(),'$title',$pid,$seq)");
         } else {
-            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,comment,type,date,title,pid,ipaddress) "
-                . "VALUES ('$sid',$uid,'$comment','$type',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
+            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,comment,type,date,title,pid,seq) "
+                . "VALUES ('$sid',$uid,'$comment','$type',NOW(),'$title',$pid,$seq)");
         }
 
         $cid = DB_insertId('', $_TABLES['commentsubmissions'] . '_cid_seq');
 
         $ret = -1; // comment queued
     } elseif ($pid > 0) {
-        DB_lockTable($_TABLES['comments']);
+        DB_lockTable([$_TABLES['comments'], $_TABLES['ip_addresses']]);
 
         $result = DB_query("SELECT rht, indent FROM {$_TABLES['comments']} WHERE cid = $pid AND sid = '$sid'");
         list($rht, $indent) = DB_fetchArray($result);
@@ -1525,26 +1527,28 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             DB_query("UPDATE {$_TABLES['comments']} SET rht = rht + 2 "
                 . "WHERE sid = '$sid' AND type = '$type' AND rht >= $rht");
 
+            $seq = \Geeklog\IP::getSeq();
+
             if (isset($name) AND trim($name) == '') {
-                DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
-                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type','{$_SERVER['REMOTE_ADDR']}',NULL");
+                DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,seq,name',
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type',$seq,NULL");
             } elseif (isset($name)) {
-                DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
-                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type','{$_SERVER['REMOTE_ADDR']}','$name'");
+                DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,seq,name',
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type',$seq,'$name'");
             } else {
-                DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
-                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type','{$_SERVER['REMOTE_ADDR']}'");
+                DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,seq',
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type',$seq");
             }
 
             $cid = DB_insertId('', $_TABLES['comments'] . '_cid_seq');
 
         } else { //replying to non-existent comment or comment in wrong article
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried to reply to a non-existent comment or the pid/sid did not match.");
+                COM_errorLog("CMT_saveComment: $uid from " . \Geeklog\IP::getIPAddress() . " tried to reply to a non-existent comment or the pid/sid did not match.");
             }
             $ret = 4; // Cannot return here, tables locked!
         }
-        DB_unlockTable($_TABLES['comments']);
+        DB_unlockTable([$_TABLES['comments'], $_TABLES['ip_addresses']]);
 
         // If no error then
         if ($ret != 4) {
@@ -1577,26 +1581,28 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             }
         }
     } else {
-        DB_lockTable($_TABLES['comments']);
+        DB_lockTable([$_TABLES['comments'], $_TABLES['ip_addresses']]);
         $rht = DB_getItem($_TABLES['comments'], 'MAX(rht)', "sid = '$sid'");
         if (DB_error()) {
             $rht = 0;
         }
         $rht2 = $rht + 1;  // value of new comment's "lft"
         $rht3 = $rht + 2;  // value of new comment's "rht"
+        $seq = \Geeklog\IP::getSeq();
+
         if (isset($name) AND trim($name) == '') {
-            DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
-                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}',NULL");
+            DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,seq,name',
+                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type',$seq,NULL");
         } elseif (isset($name)) {
-            DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
-                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}','$name'");
+            DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,seq,name',
+                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type',$seq,'$name'");
         } else {
-            DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
-                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}'");
+            DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,seq',
+                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type',$seq");
         }
 
         $cid = DB_insertId('', $_TABLES['comments'] . '_cid_seq');
-        DB_unlockTable($_TABLES['comments']);
+        DB_unlockTable([$_TABLES['comments'], $_TABLES['ip_addresses']]);
 
         // Update Comment Feeds
         COM_rdfUpToDateCheck('comment');
@@ -1631,9 +1637,9 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             $cid = 0; // comment went into the submission queue
         }
         if (($uid == 1) && isset($username)) {
-            CMT_sendNotification($title0, $comment0, $uid, $username, $_SERVER['REMOTE_ADDR'], $type, $sid, $cid);
+            CMT_sendNotification($title0, $comment0, $uid, $username, \Geeklog\IP::getIPAddress(), $type, $sid, $cid);
         } else {
-            CMT_sendNotification($title0, $comment0, $uid, '', $_SERVER['REMOTE_ADDR'], $type, $sid, $cid);
+            CMT_sendNotification($title0, $comment0, $uid, '', \Geeklog\IP::getIPAddress(), $type, $sid, $cid);
         }
     }
 
@@ -1658,8 +1664,8 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
     global $_CONF, $_TABLES, $LANG01, $LANG03, $LANG08, $LANG09, $LANG29;
 
     // sanity check
-    if (($username == $_SERVER['REMOTE_ADDR']) &&
-        ($ipaddress != $_SERVER['REMOTE_ADDR'])
+    if (($username == \Geeklog\IP::getIPAddress()) &&
+        ($ipaddress != \Geeklog\IP::getIPAddress())
     ) {
         COM_errorLog("The API for CMT_sendNotification has changed ...");
 
@@ -1746,7 +1752,7 @@ function CMT_deleteComment($cid, $sid, $type)
     // are performed
     if (!is_numeric($cid) || ($cid < 0) || empty($sid) || empty($type)) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_deleteComment: {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to delete a comment with one or more missing/bad values.");
+            COM_errorLog("CMT_deleteComment: {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to delete a comment with one or more missing/bad values.");
         }
         return $ret = 1;
     }
@@ -1788,7 +1794,7 @@ function CMT_deleteComment($cid, $sid, $type)
     } else {
         DB_unlockTable($_TABLES['comments']);
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_deleteComment: {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to delete a comment that doesn\'t exist as described.");
+            COM_errorLog("CMT_deleteComment: {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to delete a comment that doesn\'t exist as described.");
         }
         return $ret = 2;
     }
@@ -1816,7 +1822,7 @@ function CMT_handleReport($cid, $commentMode)
         list($cid, $type, $sid, $commentuid) = DB_fetchArray($result);
         if (empty($cid)) {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handleReport(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to report a comment that does not exist.");
+                COM_errorLog("CMT_handleReport(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to report a comment that does not exist.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -1840,7 +1846,7 @@ function CMT_handleReport($cid, $commentMode)
 
         if ($uid == $commentuid) {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handleReport(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to report his own comment.");
+                COM_errorLog("CMT_handleReport(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to report his own comment.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -1851,7 +1857,7 @@ function CMT_handleReport($cid, $commentMode)
             // CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
             if (PLG_commentEnabled($type, $sid) == COMMENT_CODE_DISABLED) {
                 if ($_COMMENT_DEBUG) {
-                    COM_errorLog("CMT_handleReport(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to report a comment without proper permission or comments have been disabled for the {$type} with id {$sid}.");
+                    COM_errorLog("CMT_handleReport(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to report a comment without proper permission or comments have been disabled for the {$type} with id {$sid}.");
                 }
                 COM_handle404($_CONF['site_url'] . '/index.php');
             }
@@ -1861,14 +1867,14 @@ function CMT_handleReport($cid, $commentMode)
             // check item for read permissions at least
             if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
                 if ($_COMMENT_DEBUG) {
-                    COM_errorLog("CMT_handleReport(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to report a comment without proper permission for the {$type} with id {$sid}.");
+                    COM_errorLog("CMT_handleReport(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to report a comment without proper permission for the {$type} with id {$sid}.");
                 }
                 COM_handle404($_CONF['site_url'] . '/index.php');
             }
         }
     } else {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_handleReport(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to report a comment that does not exist.");
+            COM_errorLog("CMT_handleReport(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to report a comment that does not exist.");
         }
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
@@ -1957,7 +1963,12 @@ function CMT_sendReport($cid)
 
     $username = DB_getItem($_TABLES['users'], 'username',
         "uid = {$_USER['uid']}");
-    $result = DB_query("SELECT uid,title,comment,type,sid,ipaddress FROM {$_TABLES['comments']} WHERE cid = $cid");
+    $result = DB_query(
+        "SELECT c.uid, c.title, c.comment, c.type, c.sid, i.ipaddress FROM {$_TABLES['comments']} AS c "
+        . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+        . "ON c.seq = i.seq "
+        . "WHERE c.cid = $cid"
+    );
     $A = DB_fetchArray($result);
 
     $title = stripslashes($A['title']);
@@ -2029,7 +2040,7 @@ function CMT_handleEditSubmit($mode = null)
     // Befor displaying the comment edit form lets do some checks to see if user has appropriate permissions and we have good content for a save
     if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit a comment without proper permission.");
+            COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit a comment without proper permission.");
         }
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
@@ -2059,7 +2070,7 @@ function CMT_handleEditSubmit($mode = null)
     list($cid, $type, $sid, $commentuid) = DB_fetchArray($result);
     if (empty($cid)) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit a comment that does not exist.");
+            COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit a comment that does not exist.");
         }
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
@@ -2070,7 +2081,7 @@ function CMT_handleEditSubmit($mode = null)
         // CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
         if (PLG_commentEnabled($type, $sid) != COMMENT_CODE_ENABLED) {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to preview a comment without proper permission or comments have been disabled for the {$type} with id {$sid}.");
+                COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to preview a comment without proper permission or comments have been disabled for the {$type} with id {$sid}.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -2080,7 +2091,7 @@ function CMT_handleEditSubmit($mode = null)
         // check item for read permissions at least
         if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to preview a comment without proper permission for the {$type} with id {$sid}.");
+                COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to preview a comment without proper permission for the {$type} with id {$sid}.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -2094,7 +2105,7 @@ function CMT_handleEditSubmit($mode = null)
     // check comment permissions
     if ($uid != $commentuid && !SEC_hasRights('comment.moderate')) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit a comment without proper permission.");
+            COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit a comment without proper permission.");
         }
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
@@ -2107,13 +2118,13 @@ function CMT_handleEditSubmit($mode = null)
                 // ALl is good continue on
             } else {
                 if ($_COMMENT_DEBUG) {
-                    COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit his own comment $cid after the comment edit time limit had expired.");
+                    COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit his own comment $cid after the comment edit time limit had expired.");
                 }
                 COM_handle404($_CONF['site_url'] . '/index.php');
             }
         } else {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit his own comment $cid which is not allowed for anonymous users.");
+                COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit his own comment $cid which is not allowed for anonymous users.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -2122,7 +2133,7 @@ function CMT_handleEditSubmit($mode = null)
     // check for bad input
     if (empty($_POST['title']) || empty($_POST['comment']) || ($cid <= 0)) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit a comment with one or more missing values.");
+            COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit a comment with one or more missing values.");
         }
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
@@ -2160,7 +2171,7 @@ function CMT_handleEditSubmit($mode = null)
 
         if (DB_error()) { //saving to non-existent comment or comment in wrong article
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit to a non-existent comment or the cid/sid did not match.");
+                COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit to a non-existent comment or the cid/sid did not match.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -2184,7 +2195,7 @@ function CMT_handleEditSubmit($mode = null)
 
     } else {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to submit a comment with invalid $title and/or $comment.");
+            COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to submit a comment with invalid $title and/or $comment.");
         }
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
@@ -2306,7 +2317,13 @@ function CMT_approveModeration($cid)
 {
     global $_CONF, $_TABLES;
 
-    $result = DB_query("SELECT type, sid, date, title, comment, uid, name, pid, ipaddress FROM {$_TABLES['commentsubmissions']} WHERE cid = '$cid'");
+    $cid = DB_escapeString($cid);
+    $result = DB_query(
+        "SELECT c.type, c.sid, c.date, c.title, c.comment, c.uid, c.name, c.pid, i.ipaddress FROM {$_TABLES['commentsubmissions']} AS c "
+        . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+        . "ON c.seq = i.seq "
+        . "WHERE c.cid = '$cid'"
+    );
     $A = DB_fetchArray($result);
 
     if ($A['pid'] > 0) {
@@ -2326,14 +2343,14 @@ function CMT_approveModeration($cid)
     if (isset($A['name'])) {
         // insert data
         $A['name'] = DB_escapeString($A['name']);
-        DB_save($_TABLES['comments'], 'type,sid,date,title,comment,uid,name,pid,ipaddress,indent',
+        DB_save($_TABLES['comments'], 'type,sid,date,title,comment,uid,name,pid,seq,indent',
             "'{$A['type']}','{$A['sid']}','{$A['date']}','{$A['title']}','{$A['comment']}','{$A['uid']}'," .
-            "'{$A['name']}','{$A['pid']}','{$A['ipaddress']}',$indent");
+            "'{$A['name']}','{$A['pid']}',{$A['seq']},$indent");
     } else {
         // insert data, null automatically goes into name column
-        DB_save($_TABLES['comments'], 'type,sid,date,title,comment,uid,pid,ipaddress,indent',
+        DB_save($_TABLES['comments'], 'type,sid,date,title,comment,uid,pid,seq,indent',
             "'{$A['type']}','{$A['sid']}','{$A['date']}','{$A['title']}','{$A['comment']}','{$A['uid']}'," .
-            "'{$A['pid']}','{$A['ipaddress']}',$indent");
+            "'{$A['pid']}',{$A['seq']},$indent");
     }
     $newCid = DB_insertId('', 'comments_cid_seq');
 
@@ -2449,7 +2466,7 @@ function CMT_handleCancel()
             // CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
             if (PLG_commentEnabled($type, $sid) == COMMENT_CODE_DISABLED) {
                 if ($_COMMENT_DEBUG) {
-                    COM_errorLog("CMT_handleCancel(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to cancel a comment without proper permission or comments have been disabled for the {$type} with id {$sid}.");
+                    COM_errorLog("CMT_handleCancel(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to cancel a comment without proper permission or comments have been disabled for the {$type} with id {$sid}.");
                 }
                 COM_handle404($_CONF['site_url'] . '/index.php');
             }
@@ -2459,7 +2476,7 @@ function CMT_handleCancel()
             // check item for read permissions at least
             if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
                 if ($_COMMENT_DEBUG) {
-                    COM_errorLog("CMT_handleCancel(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to cancel a comment without proper permission for the {$type} with id {$sid}.");
+                    COM_errorLog("CMT_handleCancel(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to cancel a comment without proper permission for the {$type} with id {$sid}.");
                 }
                 COM_handle404($_CONF['site_url'] . '/index.php');
             }
@@ -2518,7 +2535,7 @@ function CMT_handleDelete($formType)
     // check comment permissions for delete
     if (!SEC_hasRights('comment.moderate')) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_handleDelete(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to delete a comment without proper permission.");
+            COM_errorLog("CMT_handleDelete(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to delete a comment without proper permission.");
         }
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
@@ -2540,7 +2557,7 @@ function CMT_handleDelete($formType)
     }
     if ($cid <= 0) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_handleDelete(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to delete a comment that does not exist.");
+            COM_errorLog("CMT_handleDelete(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to delete a comment that does not exist.");
         }
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
@@ -2625,7 +2642,7 @@ function CMT_handlePreview($title, $comment, $sid, $pid, $type, $mode, $postMode
         // Befor previewing the comment edit form lets do some checks to see if user has appropriate permissions
         if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to preview a comment without proper permission.");
+                COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to preview a comment without proper permission.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -2641,7 +2658,7 @@ function CMT_handlePreview($title, $comment, $sid, $pid, $type, $mode, $postMode
         list($cid, $db_type, $db_sid, $commentuid) = DB_fetchArray($result);
         if (empty($cid) || ($type != $db_type) || ($sid != $db_sid)) {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to preview a comment that does not exist.");
+                COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to preview a comment that does not exist.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         } else{
@@ -2657,14 +2674,14 @@ function CMT_handlePreview($title, $comment, $sid, $pid, $type, $mode, $postMode
         // check comment permissions
         if (COM_isAnonUser()) {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to preview an existing comment $cid which is not allowed for anonymous users.");
+                COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to preview an existing comment $cid which is not allowed for anonymous users.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
 
         if ($uid != $commentuid && !SEC_hasRights('comment.moderate')) {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to preview a comment without proper permission.");
+                COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to preview a comment without proper permission.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -2676,7 +2693,7 @@ function CMT_handlePreview($title, $comment, $sid, $pid, $type, $mode, $postMode
                 // ALl is good continue on
             } else {
                 if ($_COMMENT_DEBUG) {
-                    COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to preview his own comment $cid after the comment edit time limit had expired.");
+                    COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to preview his own comment $cid after the comment edit time limit had expired.");
                 }
                 COM_handle404($_CONF['site_url'] . '/index.php');
             }
@@ -2689,7 +2706,7 @@ function CMT_handlePreview($title, $comment, $sid, $pid, $type, $mode, $postMode
         // CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
         if (PLG_commentEnabled($type, $sid) != COMMENT_CODE_ENABLED) {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to preview a comment without proper permission or comments have been disabled for the {$type} with id {$sid}.");
+                COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to preview a comment without proper permission or comments have been disabled for the {$type} with id {$sid}.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -2699,7 +2716,7 @@ function CMT_handlePreview($title, $comment, $sid, $pid, $type, $mode, $postMode
         // check item for read permissions at least
         if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to preview a comment without proper permission for the {$type} with id {$sid}.");
+                COM_errorLog("CMT_handlePreview(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to preview a comment without proper permission for the {$type} with id {$sid}.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -2730,7 +2747,7 @@ function CMT_handleEdit($mode, $format, $order, $page)
     // Before displaying the comment edit form lets do some checks to see if user has appropriate permissions
     if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit a comment without proper permission.");
+            COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit a comment without proper permission.");
         }
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
@@ -2739,7 +2756,7 @@ function CMT_handleEdit($mode, $format, $order, $page)
     $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
     if ($cid <= 0) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit a comment with one or more missing/bad values.");
+            COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit a comment with one or more missing/bad values.");
         }
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
@@ -2755,7 +2772,7 @@ function CMT_handleEdit($mode, $format, $order, $page)
     list($cid, $title, $comment, $type, $sid, $commentuid) = DB_fetchArray($result);
     if (empty($cid)) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit a comment that does not exist.");
+            COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit a comment that does not exist.");
         }
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
@@ -2766,7 +2783,7 @@ function CMT_handleEdit($mode, $format, $order, $page)
         // CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
         if (PLG_commentEnabled($type, $sid) != COMMENT_CODE_ENABLED) {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to preview a comment without proper permission or comments have been disabled for the {$type} with id {$sid}.");
+                COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to preview a comment without proper permission or comments have been disabled for the {$type} with id {$sid}.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -2776,7 +2793,7 @@ function CMT_handleEdit($mode, $format, $order, $page)
         // check item for read permissions at least
         if (empty(PLG_getItemInfo($type, $sid, 'url'))) {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to preview a comment without proper permission for the {$type} with id {$sid}.");
+                COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to preview a comment without proper permission for the {$type} with id {$sid}.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -2790,7 +2807,7 @@ function CMT_handleEdit($mode, $format, $order, $page)
     // check comment permissions
     if ($uid != $commentuid && !SEC_hasRights('comment.moderate')) {
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit a comment without proper permission.");
+            COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit a comment without proper permission.");
         }
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
@@ -2803,13 +2820,13 @@ function CMT_handleEdit($mode, $format, $order, $page)
                 // ALl is good continue on
             } else {
                 if ($_COMMENT_DEBUG) {
-                    COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit his own comment $cid after the comment edit time limit had expired.");
+                    COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit his own comment $cid after the comment edit time limit had expired.");
                 }
                 COM_handle404($_CONF['site_url'] . '/index.php');
             }
         } else {
             if ($_COMMENT_DEBUG) {
-                COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit his own comment $cid which is not allowed for anonymous users.");
+                COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit his own comment $cid which is not allowed for anonymous users.");
             }
             COM_handle404($_CONF['site_url'] . '/index.php');
         }
@@ -2908,7 +2925,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
             if ($cid <= 0) {
                 if ($_COMMENT_DEBUG) {
-                    COM_errorLog("CMT_handleComment(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit a comment with one or more missing/bad values.");
+                    COM_errorLog("CMT_handleComment(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit a comment with one or more missing/bad values.");
                 }
                 COM_handle404($_CONF['site_url'] . '/index.php');
             }
@@ -3036,7 +3053,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
                 // Check title, if for some reason blank assume no access allowed to plugin item (therefore cannot add comment) so error 404
                 if (is_array($title) || empty($title) || ($title == false)) {
                     if ($_COMMENT_DEBUG) {
-                        COM_errorLog("CMT_handleComment(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to create a new comment (or new reply) without proper permission for the {$type} with id {$sid}.");
+                        COM_errorLog("CMT_handleComment(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to create a new comment (or new reply) without proper permission for the {$type} with id {$sid}.");
                     }
                     COM_handle404($_CONF['site_url'] . '/index.php');
                 }
@@ -3395,7 +3412,10 @@ function plugin_canuserlike_comment($sub_type, $id, $uid, $ip)
     	// Make sure $id is just a number as comment id is numeric
         // Cannot change id in this function, since the id from the calling function is used else where
     	if (strval((int) $id) == $id) {
-            $sql = "SELECT type, sid, uid, ipaddress FROM {$_TABLES['comments']} WHERE cid = " . $id;
+            $sql = "SELECT c.type, c.sid, c.uid, i.ipaddress FROM {$_TABLES['comments']} AS c "
+                . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+                . "ON c.seq = i.seq "
+                . "WHERE c.cid = " . $id;
             $result = DB_query($sql);
             if (DB_numRows($result) > 0) {
                 list ($type, $sid, $owner_id, $owner_ip) = DB_fetchArray($result);

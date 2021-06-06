@@ -61,7 +61,7 @@ class SFSbase
         }
 
 
-        $ip = $_SERVER['REMOTE_ADDR'];
+        $ip = \Geeklog\IP::getIPAddress();
         $query = "http://api.stopforumspam.org/api?f=serial&ip=$ip";
 
         $req = new HTTP_Request2(

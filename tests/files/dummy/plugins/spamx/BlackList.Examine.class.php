@@ -66,7 +66,7 @@ class BlackList extends BaseCommand {
                 $ans = 1; // quit on first positive match
                 SPAMX_log ($LANG_SX00['foundspam'] . $val .
                            $LANG_SX00['foundspam2'] . $uid .
-                           $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
+                           $LANG_SX00['foundspam3'] . \Geeklog\IP::getIPAddress());
                 break;
             }
         }

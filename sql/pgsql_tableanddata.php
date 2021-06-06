@@ -89,7 +89,7 @@ CREATE TABLE {$_TABLES['comments']} (
   indent smallint NOT NULL default '0',
   name varchar(32) default NULL,
   uid smallint NOT NULL default '1',
-  ipaddress varchar(39) NOT NULL default '',
+  seq INT NOT NULL DEFAULT 0,
   PRIMARY KEY (cid)
 );
   CREATE INDEX {$_TABLES['comments']}_sid ON {$_TABLES['comments']}(sid);
@@ -110,7 +110,7 @@ CREATE TABLE {$_TABLES['commentsubmissions']} (
   uid smallint NOT NULL default '1',
   name varchar(32) default NULL,
   pid int NOT NULL default '0',
-  ipaddress varchar(39) NOT NULL,
+  seq INT NOT NULL DEFAULT 0,
   PRIMARY KEY (cid)
 )
 ";
@@ -181,6 +181,16 @@ CREATE TABLE {$_TABLES['groups']} (
 ";
 
 $_SQL[] = "
+CREATE TABLE {$_TABLES['ip_addresses']} (
+  seq SERIAL,
+  ipaddress VARCHAR(39) NOT NULL DEFAULT '0.0.0.0',
+  created_at INT NOT NULL DEFAULT 0,
+  is_anonymized INT NOT NULL default 0,
+  PRIMARY KEY (seq)
+)
+";
+
+$_SQL[] = "
 CREATE TABLE {$_TABLES['language_items']} (
   id SERIAL NOT NULL,
   var_name varchar(30) NOT NULL,
@@ -198,7 +208,7 @@ CREATE TABLE {$_TABLES['likes']} (
   subtype varchar(15) NOT NULL DEFAULT '',
   id varchar(128) NOT NULL,
   uid smallint NOT NULL,
-  ipaddress VARCHAR(39) NOT NULL,
+  seq INT NOT NULL DEFAULT 0,
   action smallint NOT NULL,
   created timestamp NOT NULL,
   PRIMARY KEY (lid)
@@ -256,25 +266,23 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['sessions']} (
   sess_id VARCHAR(190) NOT NULL default '',
   start_time int NOT NULL default '0',
-  remote_ip varchar(39) NOT NULL default '',
+  seq INT NOT NULL default 0,
   uid smallint NOT NULL default '1',
   whos_online smallint NOT NULL default '1',
   autologin_key_hash VARCHAR(190) NOT NULL DEFAULT '',
   PRIMARY KEY (sess_id)
 );
   CREATE INDEX {$_TABLES['sessions']}_start_time ON {$_TABLES['sessions']} (start_time);
-  CREATE INDEX {$_TABLES['sessions']}_remote_ip ON {$_TABLES['sessions']}(remote_ip);
 ";
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['speedlimit']} (
   id SERIAL,
-  ipaddress varchar(39) NOT NULL default '',
+  seq INT NOT NULL DEFAULT 0,
   date int default NULL,
   type varchar(30) NOT NULL default 'submit',
   PRIMARY KEY (id)
 );
-  CREATE UNIQUE INDEX {$_TABLES['speedlimit']}_type_ipaddress ON {$_TABLES['speedlimit']}(type,ipaddress);
   CREATE UNIQUE INDEX {$_TABLES['speedlimit']}_date ON {$_TABLES['speedlimit']}(date);
 ";
 
@@ -430,7 +438,7 @@ CREATE TABLE {$_TABLES['trackback']} (
   excerpt text,
   date timestamp default NULL,
   type varchar(30) NOT NULL default 'article',
-  ipaddress varchar(39) NOT NULL default '',
+  seq INT NOT NULL DEFAULT 0,
   PRIMARY KEY (cid)
 );
   CREATE INDEX {$_TABLES['trackback']}_sid ON {$_TABLES['trackback']}(sid);

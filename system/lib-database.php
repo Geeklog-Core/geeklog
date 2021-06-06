@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog database library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2020 by the following authors:                         |
+// | Copyright (C) 2000-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -67,6 +67,7 @@ $_TABLES['dateformats'] = $_DB_table_prefix . 'dateformats';
 $_TABLES['features'] = $_DB_table_prefix . 'features';
 $_TABLES['group_assignments'] = $_DB_table_prefix . 'group_assignments';
 $_TABLES['groups'] = $_DB_table_prefix . 'groups';
+$_TABLES['ip_addresses'] = $_DB_table_prefix . 'ip_addresses';
 $_TABLES['language_items'] = $_DB_table_prefix . 'language_items';
 $_TABLES['likes'] = $_DB_table_prefix . 'likes'; // As of Geeklog 2.2.1
 $_TABLES['maillist'] = $_DB_table_prefix . 'maillist';
@@ -499,10 +500,10 @@ function DB_doDatabaseUpgrade($current_gl_version)
 }
 
 /**
- * Lock a table
- * Locks a table for write operations
+ * Lock a table/tables
+ * Locks a table/tables for write operations
  *
- * @param    string $table Table to lock
+ * @param    string|string[] $table Table to lock
  * @see DB_unlockTable
  */
 function DB_lockTable($table)
@@ -513,10 +514,10 @@ function DB_lockTable($table)
 }
 
 /**
- * Unlock a table
- * Unlocks a table after DB_lockTable
+ * Unlock a table/tables
+ * Unlocks a table/tables after DB_lockTable
  *
- * @param    string $table Table to unlock
+ * @param    string|string[] $table Table to unlock
  * @see DB_lockTable
  */
 function DB_unlockTable($table)

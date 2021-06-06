@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2020 by the following authors:                         |
+// | Copyright (C) 2000-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -234,6 +234,11 @@ require_once $_CONF['path_system'] . 'lib-plugins.php';
  */
 $_PAGE_TIMER = new timerobject();
 $_PAGE_TIMER->startTimer();
+
+// Initialize IP class
+if (!defined('GL_INSTALL_ACTIVE')) {
+    \Geeklog\IP::init($_TABLES['ip_addresses'], $_CONF['ip_anonymization']);
+}
 
 /**
  * This provides optional URL rewriting functionality.
@@ -2327,7 +2332,7 @@ function COM_errorLog($logEntry, $actionId = '')
     if (!empty($logEntry)) {
         $logEntry = str_replace(array('<?', '?>'), array('(@', '@)'), $logEntry);
         $timestamp = @strftime('%c');
-        $remoteAddress = $_SERVER['REMOTE_ADDR'];
+        $remoteAddress = \Geeklog\IP::getIPAddress();
 
         if (!isset($_CONF['path_layout']) && (($actionId == 2) || empty($actionId))) {
             $actionId = 1;
@@ -2386,6 +2391,15 @@ function COM_errorLog($logEntry, $actionId = '')
                     $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br' . XHTML . '>' . LB;
                 } else {
                     fputs($file, "$timestamp - $remoteAddress - $logEntry $callTrace \n");
+
+                    // To prevent errors while installing/upgrading/migrating
+                    if (empty($LANG01)) {
+                        $LANG01 = [];
+                    }
+                    if (empty($LANG01[34])) {
+                        $LANG01[34] = 'Error';
+                    }
+
                     $retval .= COM_startBlock($LANG01[34] . ' - ' . $timestamp,
                             '', COM_getBlockTemplate('_msg_block',
                                 'header'))
@@ -6128,11 +6142,16 @@ function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '')
     }
 
     if (empty($property)) {
-        $property = $_SERVER['REMOTE_ADDR'];
+        $property = \Geeklog\IP::getIPAddress();
     }
     $property = DB_escapeString($property);
 
-    $res = DB_query("SELECT date FROM {$_TABLES['speedlimit']} WHERE (type = '$type') AND (ipaddress = '$property') ORDER BY date ASC");
+    $res = DB_query(
+        "SELECT s.date FROM {$_TABLES['speedlimit']} AS s "
+        . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+        . "ON s.seq = i.seq "
+        . "WHERE (s.type = '$type') AND (i.ipaddress = '$property') ORDER BY date ASC"
+    );
 
     // If the number of allowed tries has not been reached,
     // return 0 (didn't hit limit)
@@ -6164,13 +6183,13 @@ function COM_updateSpeedlimit($type = 'submit', $property = '')
     global $_TABLES;
 
     if (empty($property)) {
-        $property = $_SERVER['REMOTE_ADDR'];
+        $property = \Geeklog\IP::getIPAddress();
     }
 
-    $property = DB_escapeString($property);
+    $seq = \Geeklog\IP::getSeq($property);
     $type = DB_escapeString($type);
-    $sql = "INSERT INTO {$_TABLES['speedlimit']} (ipaddress, date, type) "
-        . "VALUES ('{$property}', UNIX_TIMESTAMP(), '{$type}') ";
+    $sql = "INSERT INTO {$_TABLES['speedlimit']} (seq, date, type) "
+        . "VALUES ($seq, UNIX_TIMESTAMP(), '{$type}') ";
     DB_query($sql);
 }
 
@@ -6184,11 +6203,15 @@ function COM_clearSpeedlimit($speedLimit = 60, $type = '')
 {
     global $_TABLES;
 
-    $sql = "DELETE FROM {$_TABLES['speedlimit']} WHERE ";
-    if (!empty($type)) {
-        $sql .= "(type = '$type') AND ";
-    }
-    $sql .= "(date < UNIX_TIMESTAMP() - {$speedLimit})";
+    $typeSql = empty($type) ? '' : "(type = '$type') AND ";
+    $dateSql = "(date < UNIX_TIMESTAMP() - {$speedLimit})";
+
+    // Delete corresponding records from the 'ip_addresses' table
+    $sql = "DELETE FROM {$_TABLES['ip_addresses']} "
+        . "WHERE seq = ANY(SELECT seq FROM {$_TABLES['speedlimit']} WHERE $typeSql $dateSql)";
+    DB_query($sql);
+
+    $sql = "DELETE FROM {$_TABLES['speedlimit']} WHERE $typeSql $dateSql";
     DB_query($sql);
 }
 
@@ -6203,12 +6226,32 @@ function COM_resetSpeedlimit($type = 'submit', $property = '')
     global $_TABLES;
 
     if (empty($property)) {
-        $property = $_SERVER['REMOTE_ADDR'];
+        $property = \Geeklog\IP::getIPAddress();
     }
-    $property = DB_escapeString($property);
 
-    DB_delete($_TABLES['speedlimit'], array('type', 'ipaddress'),
-        array($type, $property));
+    // Delete corresponding records from the 'ip_addresses' table
+    $property = DB_escapeString($property);
+    $sql = "SELECT s.id, i.seq FROM {$_TABLES['speedlimit']} AS s "
+        . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
+        . "ON s.seq = i.seq "
+        . "WHERE (s.type = '$type') AND (i.ipaddress = '$property')";
+    $result = DB_query($sql);
+    $ids = [];
+    $seqs = [];
+
+    while (($A = DB_fetchArray($result, false)) !== false) {
+        $ids[] = (int) $A['id'];
+        $seqs[] = (int) $A['seq'];
+    }
+
+    if (!empty($ids)) {
+        $sql = "DELETE FROM {$_TABLES['speedlimit']} WHERE id IN (" . implode(', '. $ids) . ")";
+        DB_query($sql);
+    }
+
+    if (!empty($seq)) {
+        \Geeklog\IP::deleteIpAddressBySeq($seqs);
+    }
 }
 
 /**
@@ -6560,7 +6603,7 @@ function COM_applyBasicFilter($parameter, $isNumeric = false)
 
     if ($log_manipulation) {
         if (strcmp($p, $parameter) != 0) {
-            COM_errorLog("Filter applied: >> {$parameter} << filtered to {$p} [IP {$_SERVER['REMOTE_ADDR']}]", 1);
+            COM_errorLog("Filter applied: >> {$parameter} << filtered to {$p} [IP " . \Geeklog\IP::getIPAddress() . "]", 1);
         }
     }
 
@@ -8033,9 +8076,9 @@ function COM_handle404($alternate_url = '')
     // Add file log stuff
     if (isset($_CONF['404_log']) && $_CONF['404_log']) {
         if (empty($_USER['uid'])) {
-            $byUser = 'anon@' . $_SERVER['REMOTE_ADDR'];
+            $byUser = 'anon@' . \Geeklog\IP::getIPAddress();
         } else {
-            $byUser = $_USER['uid'] . '@' . $_SERVER['REMOTE_ADDR'];
+            $byUser = $_USER['uid'] . '@' . \Geeklog\IP::getIPAddress();
         }
 
         $logEntry = "404 Error generated by {$byUser} for URL: {$url}";
@@ -9309,6 +9352,10 @@ if ($_CONF['cron_schedule_interval'] > 0 && COM_onFrontpage()) {
     if (($_VARS['last_scheduled_run'] + $_CONF['cron_schedule_interval']) <= time()) {
         DB_query("UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'");
         PLG_runScheduledTask();
+
+        if (!defined('GL_INSTALL_ACTIVE')) {
+            \Geeklog\IP::updateIPAddressesTable();
+        }
     }
 }
 

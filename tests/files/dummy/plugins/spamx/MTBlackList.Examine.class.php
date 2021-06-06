@@ -69,7 +69,7 @@ class MTBlackList extends BaseCommand {
             if (@preg_match ("#$val#i", $comment)) {
                 $ans = 1; // quit on first positive match
                 SPAMX_log ($LANG_SX00['fsc'] . $val . $LANG_SX00['fsc1'] .
-                           $uid . $LANG_SX00['fsc2'] . $_SERVER['REMOTE_ADDR']);
+                           $uid . $LANG_SX00['fsc2'] . \Geeklog\IP::getIPAddress());
                 break;
             } 
         } 

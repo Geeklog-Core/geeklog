@@ -50,7 +50,7 @@ class SFS extends BaseCommand
     public function execute($comment, $permanentLink = null, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
                             $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
     {
-        $this->result = $this->_process($commentAuthorEmail, $_SERVER['REMOTE_ADDR']);
+        $this->result = $this->_process($commentAuthorEmail, \Geeklog\IP::getIPAddress());
 
         return $this->result;
     }

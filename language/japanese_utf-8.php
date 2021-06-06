@@ -2580,7 +2580,8 @@ $LANG_confignames['Core'] = array(
     'cookie_consent' => 'Cookie Consent(クッキー使用通知)を有効にする',
     'terms_of_use_link' => '「利用規約」のリンク',
     'privacy_policy_link' => '「プライバシーポリシー」のリンク',
-    'about_cookies_link' => '「クッキーについて」のリンク'
+    'about_cookies_link' => '「クッキーについて」のリンク',
+    'ip_anonymization' => 'IP匿名化'
 );
 
 $LANG_configsubgroups['Core'] = array(

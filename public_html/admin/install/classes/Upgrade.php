@@ -216,7 +216,12 @@ class Upgrade extends Common
             // Query `vars` and see if 'database_engine' == 'InnoDB'
             $result = DB_query("SELECT value FROM {$_TABLES['vars']} WHERE name = 'database_engine'");
             $row = DB_fetchArray($result);
-            Common::$env['use_innodb'] = $use_innodb = ($row['value'] === 'InnoDB');
+
+            if (is_array($row) && isset($row['value'])) {
+                Common::$env['use_innodb'] = $use_innodb = ($row['value'] === 'InnoDB');
+            } else {
+                Common::$env['use_innodb'] = $use_innodb = false;
+            }
         }
 
         if ($this->doDatabaseUpgrades($version)) {

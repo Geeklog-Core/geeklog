@@ -1926,7 +1926,7 @@ function plugin_deletecomment_article($cid, $id, $returnBoolean)
             COM_redirect(COM_buildUrl($_CONF['site_url'] . "/article.php?story=$id") . '#comments');
         }
     } else {
-        COM_errorLog("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
+        COM_errorLog("User {$_USER['username']} (IP: " . \Geeklog\IP::getIPAddress() . ") "
             . "tried to illegally delete comment $cid from $id");
 
         if ($returnBoolean) {

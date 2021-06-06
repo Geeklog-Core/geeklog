@@ -158,7 +158,7 @@ function plugin_deletecomment_polls($cid, $id)
         $retval .= COM_refresh ($_CONF['site_url']
                                  . "/polls/index.php?pid=$id&amp;aid=-1");
     } else {
-        COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
+        COM_errorLog ("User {$_USER['username']} (IP: " . \Geeklog\IP::getIPAddress() . ") "
                     . "tried to illegally delete comment $cid from poll $id");
         $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
     }
@@ -717,7 +717,7 @@ function POLLS_pollsave($pid, $aid)
     }
 
     // This always does an insert so no need to provide key_field and key_value args
-    DB_save($_TABLES['pollvoters'],'ipaddress,date,pid',"'{$_SERVER['REMOTE_ADDR']}'," . time() . ",'$pid'");
+    DB_save($_TABLES['pollvoters'],'ipaddress,date,pid',"'" . \Geeklog\IP::getIPAddress() . "'," . time() . ",'$pid'");
     $retval .= COM_startBlock ($LANG_POLLS['savedvotetitle'], '',
                        COM_getBlockTemplate ('_msg_block', 'header'))
         . $LANG_POLLS['savedvotemsg'] . ' "'
@@ -927,7 +927,7 @@ function POLLS_ipAlreadyVoted($pid, $ip = '' )
     $retval = false;
 
     if(empty($ip )) {
-        $ip = $_SERVER['REMOTE_ADDR'];
+        $ip = \Geeklog\IP::getIPAddress();
     }
 
     if(DB_count($_TABLES['pollvoters'],

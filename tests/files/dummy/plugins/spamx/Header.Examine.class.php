@@ -83,7 +83,7 @@ class Header extends BaseCommand {
                         SPAMX_log ($LANG_SX00['foundspam'] . $entry .
                                    $LANG_SX00['foundspam2'] . $uid . 
                                    $LANG_SX00['foundspam3'] .
-                                   $_SERVER['REMOTE_ADDR']);
+                            \Geeklog\IP::getIPAddress());
                         break;
                     }
                 }

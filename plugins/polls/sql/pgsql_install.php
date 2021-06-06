@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls Plugin 2.1                                                          |
+// | Polls Plugin 2.2                                                          |
 // +---------------------------------------------------------------------------+
 // | pgsql_install.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2010 by the following authors:                         |
+// | Copyright (C) 2009-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Stansislav Palatnik - spalatnikk AT gmail DOT com                |
 // +---------------------------------------------------------------------------+
@@ -87,7 +87,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['pollvoters']} (
   id SERIAL,
   pid varchar(128) NOT NULL,
-  ipaddress varchar(15) NOT NULL default '',
+  seq INT NOT NULL DEFAULT 0,
   date int default NULL,
   PRIMARY KEY  (id))
 ";

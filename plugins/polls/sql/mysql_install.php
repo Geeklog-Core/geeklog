@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls Plugin 2.1                                                          |
+// | Polls Plugin 2.2                                                          |
 // +---------------------------------------------------------------------------+
 // | mysql_install.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2021 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -94,7 +94,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['pollvoters']} (
   id int(10) unsigned NOT NULL auto_increment,
   pid varchar(128) NOT NULL,
-  ipaddress varchar(39) NOT NULL default '',
+  seq INT NOT NULL DEFAULT 0,
   date int(10) unsigned default NULL,
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM

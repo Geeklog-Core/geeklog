@@ -635,7 +635,7 @@ function RECAPTCHA_getIP()
     } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
     } else {
-        $ip = $_SERVER['REMOTE_ADDR'];
+        $ip = \Geeklog\IP::getIPAddress();
     }
 
     return $ip;
@@ -703,7 +703,7 @@ function RECAPTCHA_verify($type, $token)
             $entry = sprintf(
                 RECAPTCHA_str('entry_error', true),
                 $type,
-                $_SERVER['REMOTE_ADDR'],
+                \Geeklog\IP::getIPAddress(),
                 $msg
             );
             $entry = RECAPTCHA_esc($entry);

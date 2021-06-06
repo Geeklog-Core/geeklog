@@ -650,7 +650,7 @@ function USER_doLogin()
     global $_CONF, $_USER, $USER_VERBOSE;
 
     COM_resetSpeedlimit('login');
-    SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR']);
+    SESS_newSession($_USER['uid'], \Geeklog\IP::getIPAddress());
     PLG_loginUser($_USER['uid']);
 
     // Issue an auto-login key user cookie and record hash in db if needed
