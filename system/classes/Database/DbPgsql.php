@@ -1182,4 +1182,15 @@ SQL;
 
         return $identifier;
     }
+
+    /**
+     * Optimize a table
+     *
+     * @param  string  $tableName
+     * @return bool
+     */
+    public function dbOptimizeTable($tableName)
+    {
+        return DB_query("VACUUM $tableName");
+    }
 }

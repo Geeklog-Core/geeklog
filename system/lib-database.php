@@ -753,3 +753,16 @@ function DB_escapeIdentifier($identifier)
 
     return $_DB->dbEscapeIdentifier($identifier);
 }
+
+/**
+ * Optimize a table
+ *
+ * @param  string  $tableName
+ * @return bool
+ */
+function DB_optimizeTable($tableName)
+{
+    global $_DB;
+
+    return $_DB->dbOptimizeTable($tableName);
+}
