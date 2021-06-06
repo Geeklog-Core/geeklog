@@ -759,6 +759,7 @@ function DB_escapeIdentifier($identifier)
  *
  * @param  string  $tableName
  * @return bool
+ * @since  Geeklog 2.2.2
  */
 function DB_optimizeTable($tableName)
 {
