@@ -360,11 +360,13 @@ function USER_sendNotification($userName, $email, $uid, $mode = 'inactive')
 
     if ($mode === 'inactive') {
         // user needs admin approval
-        $mailBody .= "{$LANG01[10]}: {$_CONF['site_admin_url']}/moderation.php\n\n";
+        $mailBody .= "{$LANG01[10]}: {$_CONF['site_admin_url']}/moderation.php\n";
     } else {
         // user has been created, or has activated themselves:
-        $mailBody .= "{$LANG29[4]}: {$_CONF['site_url']}/users.php?mode=profile&uid={$uid}\n\n";
+        $mailBody .= "{$LANG29[4]}: {$_CONF['site_url']}/users.php?mode=profile&uid={$uid}\n";
     }
+
+    $mailBody .= "IP: " . \Geeklog\IP::getIPAddress() . "\n\n";
     $mailBody .= "\n------------------------------\n";
     $mailBody .= "\n{$LANG08[34]}\n";
     $mailBody .= "\n------------------------------\n";
@@ -394,7 +396,8 @@ function USER_sendInvalidLoginAlert($userName, $email, $uid, $mode = 'inactive')
 
     $mailBody .= sprintf($LANG29['max_invalid_login_msg'] . "\n\n", $remoteAddress);
 
-    $mailBody .= "{$LANG29[4]}: {$_CONF['site_url']}/users.php?mode=profile&uid={$uid}\n\n";
+    $mailBody .= "{$LANG29[4]}: {$_CONF['site_url']}/users.php?mode=profile&uid={$uid}\n";
+    $mailBody .= "IP: " . \Geeklog\IP::getIPAddress() . "\n\n";
 
     $mailBody .= "\n------------------------------\n";
     $mailBody .= "\n{$LANG08[34]}\n";

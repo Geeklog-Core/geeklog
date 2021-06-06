@@ -1720,8 +1720,8 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
     }
 
     $pluginItemUrl = CMT_getCommentUrlId($type, $sid);
-    $mailbody .= $LANG03['comment_for'] . ': ' . $pluginItemUrl . "\n\n";
-
+    $mailbody .= $LANG03['comment_for'] . ': ' . $pluginItemUrl . "\n";
+    $mailbody .= "IP: " . \Geeklog\IP::getIPAddress() . "\n\n";
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";
     $mailbody .= "\n------------------------------\n";
@@ -2006,7 +2006,8 @@ function CMT_sendReport($cid)
         . '/comment.php?mode=view&cid=' . $cid . "\n\n";
 
     $pluginItemUrl = CMT_getCommentUrlId($A['type'], $A['sid']);
-    $mailBody .= $LANG03['comment_for'] . ': ' . $pluginItemUrl . "\n\n";
+    $mailBody .= $LANG03['comment_for'] . ': ' . $pluginItemUrl . "\n";
+    $mailBody .= "IP: " . \Geeklog\IP::getIPAddress() . "\n\n";
 
     $mailBody .= "\n------------------------------\n";
     $mailBody .= "\n$LANG08[34]\n";

@@ -1211,7 +1211,9 @@ function LINKS_sendNotification ($table, $A)
     $mailbody = "$LANG_LINKS_SUBMIT[8]: $title\n"
               . "$LANG_LINKS_SUBMIT[9]: {$A['url']}\n"
               . "$LANG_LINKS_SUBMIT[3]: {$A['category']}\n\n"
-              . $description . "\n\n";
+              . $description . "\n"
+              . "IP: " . \Geeklog\IP::getIPAddress() . "\n\n" ;
+
     if ($table == $_TABLES['linksubmission']) {
         $mailbody .= "$LANG_LINKS[10]: {$_CONF['site_admin_url']}/moderation.php\n\n";
     } else {

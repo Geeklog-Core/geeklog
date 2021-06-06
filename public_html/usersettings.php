@@ -991,7 +991,8 @@ function notifyAdminOfUserUpdate(array $A)
             . "{$LANG04[2]}: {$A['username']}\n"
             . "{$LANG04[5]}: {$A['email']}\n"
             . "{$LANG04[6]}: {$A['homepage']}\n\n"
-            . "{$LANG29[4]}: {$_CONF['site_url']}/users.php?mode=profile&uid={$A['uid']}\n\n"
+            . "{$LANG29[4]}: {$_CONF['site_url']}/users.php?mode=profile&uid={$A['uid']}\n"
+            . "IP: " . \Geeklog\IP::getIPAddress() . "\n\n"
             . "\n------------------------------\n"
             . "\n{$LANG08[34]}\n"
             . "\n------------------------------\n";

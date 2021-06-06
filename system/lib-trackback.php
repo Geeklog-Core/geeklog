@@ -924,7 +924,8 @@ function TRB_sendNotificationEmail($cid, $what = 'trackback')
     // assume that plugins follow the convention and have a 'trackback' anchor
     $trackbackurl = PLG_getItemInfo($type, $id, 'url') . '#trackback';
 
-    $mailbody .= $LANG08[33] . ': ' . $trackbackurl . "\n\n";
+    $mailbody .= $LANG08[33] . ': ' . $trackbackurl . "\n";
+    $mailbody .= "IP: " . \Geeklog\IP::getIPAddress() . "\n\n";
 
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";

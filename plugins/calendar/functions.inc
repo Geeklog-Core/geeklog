@@ -1102,7 +1102,9 @@ function CALENDAR_sendNotification($table, $A)
     if (!empty($A['url']) && ($A['url'] !== 'http://') && ($A['url'] !== 'https://')) {
         $mailBody .= "$LANG09[33]: " . $A['url'] . "\n";
     }
-    $mailBody .= "\n" . $description . "\n\n";
+    $mailBody .= "\n" . $description . "\n"
+        . "IP: " . \Geeklog\IP::getIPAddress() . "\n\n";
+
     if ($table == $_TABLES['eventsubmission']) {
         $mailBody .= "$LANG01[10]: {$_CONF['site_admin_url']}/moderation.php\n\n";
     } else {

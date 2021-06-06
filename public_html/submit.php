@@ -261,14 +261,15 @@ function sendNotification($table, $story)
         $mailbody .= $introtext . "\n\n";
     }
     if ($table == $_TABLES['storysubmission']) {
-        $mailbody .= "$LANG01[10]: {$_CONF['site_admin_url']}/moderation.php\n\n";
+        $mailbody .= "$LANG01[10]: {$_CONF['site_admin_url']}/moderation.php\n";
     } else {
         $articleUrl = COM_buildUrl($_CONF['site_url']
             . '/article.php?story=' . $story->getSid()
         );
-        $mailbody .= $LANG08[33] . ': ' . $articleUrl . "\n\n";
+        $mailbody .= $LANG08[33] . ': ' . $articleUrl . "\n";
     }
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[35];
+    $mailbody .= "IP: " . \Geeklog\IP::getIPAddress() . "\n\n";
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";
     $mailbody .= "\n------------------------------\n";
