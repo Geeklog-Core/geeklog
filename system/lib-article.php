@@ -205,7 +205,11 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                 )
                 , false, true
             );
-            $article->set_var('story_topic_image', $topicimage, false, true);
+			
+			$article->set_var('story_topic_name', $topicname, false, true);
+			$article->set_var('story_topic_url', $topicurl, false, true);
+            $article->set_var('story_topic_image', $imageurl, false, true);			
+            
             $topicimage_noalign = '<img src="' . $imageurl . '" alt="'
                 . $topicname . '" title="' . $topicname . '"' . XHTML . '>';
             $article->set_var('story_anchortag_and_image_no_align',
