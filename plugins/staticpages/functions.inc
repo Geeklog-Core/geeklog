@@ -533,7 +533,17 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
 
         if ($_CONF['hideprintericon'] == 0) {
             $icon_url = $_CONF['layout_url'] . '/images/print.' . $_IMAGE_TYPE;
-            $attr = array('title' => $LANG_STATIC['printable_format']);
+			
+			$attr = array();
+			$attr['title'] = $LANG_STATIC['printable_format'];
+			
+			$icon_path = $_CONF['path_layout'] . '/images/print.' . $_IMAGE_TYPE;
+			$sizeAttributes = COM_getImgSizeAttributes($icon_path, false);
+			if (is_array($sizeAttributes)) {
+				$attr['width'] = $sizeAttributes['width'];
+				$attr['height'] = $sizeAttributes['height'];
+			}			
+            
             $printicon = COM_createImage($icon_url, $LANG01[65], $attr);
             $print_url = COM_buildURL($_CONF['site_url']
                 . '/staticpages/index.php?page=' . $page
@@ -547,7 +557,17 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             SEC_hasRights('staticpages.edit')
         ) {
             $icon_url = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
-            $attr = array('title' => $LANG_STATIC['edit']);
+			
+			$attr = array();
+			$attr['title'] = $LANG_STATIC['edit'];
+			
+			$icon_path = $_CONF['path_layout'] . '/images/edit.' . $_IMAGE_TYPE;
+			$sizeAttributes = COM_getImgSizeAttributes($icon_path, false);
+			if (is_array($sizeAttributes)) {
+				$attr['width'] = $sizeAttributes['width'];
+				$attr['height'] = $sizeAttributes['height'];
+			}			
+            
             $editiconhtml = COM_createImage($icon_url, $LANG_STATIC['edit'], $attr);
             $attr = array(
                 'class' => 'editlink',
@@ -1280,7 +1300,17 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic = '')
 
             if ($_CONF['hideprintericon'] == 0) {
                 $icon_url = $_CONF['layout_url'] . '/images/print.' . $_IMAGE_TYPE;
-                $attr = array('title' => $LANG_STATIC['printable_format']);
+				
+				$attr = array();
+				$attr['title'] = $LANG_STATIC['printable_format'];
+				
+				$icon_path = $_CONF['path_layout'] . '/images/print.' . $_IMAGE_TYPE;
+				$sizeAttributes = COM_getImgSizeAttributes($icon_path, false);
+				if (is_array($sizeAttributes)) {
+					$attr['width'] = $sizeAttributes['width'];
+					$attr['height'] = $sizeAttributes['height'];
+				}				
+
                 $printicon = COM_createImage($icon_url, $LANG01[65], $attr);
                 $print_url = COM_buildURL($_CONF['site_url']
                     . '/staticpages/index.php?page=' . $S['sp_id']
@@ -1292,9 +1322,19 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic = '')
                         $S['perm_group'], $S['perm_members'], $S['perm_anon']) == 3) &&
                 SEC_hasRights('staticpages.edit')
             ) {
-                $icon_url = $_CONF['layout_url'] . '/images/edit.'
-                    . $_IMAGE_TYPE;
-                $attr = array('title' => $LANG_STATIC['edit']);
+                $icon_url = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
+				$icon_url = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
+				
+				$attr = array();
+				$attr['title'] = $LANG_STATIC['edit'];
+				
+				$icon_path = $_CONF['path_layout'] . '/images/edit.' . $_IMAGE_TYPE;
+				$sizeAttributes = COM_getImgSizeAttributes($icon_path, false);
+				if (is_array($sizeAttributes)) {
+					$attr['width'] = $sizeAttributes['width'];
+					$attr['height'] = $sizeAttributes['height'];
+				}				
+				
                 $editiconhtml = COM_createImage($icon_url, $LANG_STATIC['edit'],
                     $attr);
                 $url = $_CONF['site_admin_url']
