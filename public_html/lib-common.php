@@ -7889,7 +7889,10 @@ function COM_getTooltip($hoverOver = '', $text = '', $link = '', $title = '', $t
     }
 
     if ($hoverOver == '') {
-        $hoverOver = '<img alt="?" class="gl-tooltip-icon" src="' . $_CONF['layout_url']
+		$tooltipImage = rtrim($_CONF['path_layout'], '/')  . '/images/tooltips/tooltip.' . $_IMAGE_TYPE;
+		$sizeAttributes = COM_getImgSizeAttributes($tooltipImage);
+		
+        $hoverOver = '<img alt="?" class="gl-tooltip-icon" ' . $sizeAttributes . 'src="' . $_CONF['layout_url']
             . '/images/tooltips/tooltip.' . $_IMAGE_TYPE . '"' . XHTML . '>';
     }
 
