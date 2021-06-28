@@ -306,7 +306,10 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             if (!empty($photo)) {
                 $article->set_var('contributedby_photo', $photo);
                 $article->set_var('author_photo', $photo);
-                $camera_icon = '<img src="' . $_CONF['layout_url']
+				
+				$linkIcon = rtrim($_CONF['path_layout'], '/')  . '/images/smallcamera.' . $_IMAGE_TYPE;
+				$sizeAttributes = COM_getImgSizeAttributes($linkIcon);					
+                $camera_icon = '<img ' . $sizeAttributes . 'src="' . $_CONF['layout_url']
                     . '/images/smallcamera.' . $_IMAGE_TYPE . '" alt=""'
                     . XHTML . '>';
                 $article->set_var('camera_icon',
@@ -419,7 +422,10 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                 $article->set_var('send_trackback_link',
                     COM_createLink($LANG_TRB['send_trackback'], $url)
                 );
-                $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
+				
+				$linkIcon = rtrim($_CONF['path_layout'], '/')  . '/images/sendping.' . $_IMAGE_TYPE;
+				$sizeAttributes = COM_getImgSizeAttributes($linkIcon);					
+                $pingico = '<img ' . $sizeAttributes . 'src="' . $_CONF['layout_url'] . '/images/sendping.'
                     . $_IMAGE_TYPE . '" alt="' . $LANG_TRB['send_trackback']
                     . '" title="' . $LANG_TRB['send_trackback'] . '"' . XHTML . '>';
                 $article->set_var('send_trackback_icon',
@@ -539,7 +545,10 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                 if (SEC_hasRights('story.ping')) {
                     $pingurl = $_CONF['site_admin_url']
                         . '/trackback.php?mode=sendall&amp;id=' . $story->getSid();
-                    $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
+						
+					$linkIcon = rtrim($_CONF['path_layout'], '/')  . '/images/sendping.' . $_IMAGE_TYPE;
+					$sizeAttributes = COM_getImgSizeAttributes($linkIcon);					
+					$pingico = '<img ' . $sizeAttributes . 'src="' . $_CONF['layout_url'] . '/images/sendping.'
                         . $_IMAGE_TYPE . '" alt="' . $LANG_TRB['send_trackback']
                         . '" title="' . $LANG_TRB['send_trackback'] . '"' . XHTML . '>';
                     $article->set_var('send_trackback_icon',
@@ -564,7 +573,10 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             } else {
                 $emailUrl = $_CONF['site_url'] . '/profiles.php?sid=' . $story->getSid()
                     . '&amp;what=emailstory';
-                $emailicon = '<img src="' . $_CONF['layout_url'] . '/images/mail.'
+					
+				$linkIcon = rtrim($_CONF['path_layout'], '/')  . '/images/mail.' . $_IMAGE_TYPE;
+				$sizeAttributes = COM_getImgSizeAttributes($linkIcon);					
+                $emailicon = '<img ' . $sizeAttributes . 'src="' . $_CONF['layout_url'] . '/images/mail.'
                     . $_IMAGE_TYPE . '" alt="' . $LANG01[64] . '" title="'
                     . $LANG11[2] . '"' . XHTML . '>';
                 $article->set_var('email_icon', COM_createLink($emailicon, $emailUrl));
@@ -577,7 +589,9 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             if ($_CONF['hideprintericon'] == 1) {
                 $article->set_var('print_icon', '');
             } else {
-                $printicon = '<img src="' . $_CONF['layout_url']
+				$linkIcon = rtrim($_CONF['path_layout'], '/')  . '/images/print.' . $_IMAGE_TYPE;
+				$sizeAttributes = COM_getImgSizeAttributes($linkIcon);					
+                $printicon = '<img ' . $sizeAttributes . 'src="' . $_CONF['layout_url']
                     . '/images/print.' . $_IMAGE_TYPE . '" alt="' . $LANG01[65]
                     . '" title="' . $LANG11[3] . '"' . XHTML . '>';
                 $article->set_var('print_icon',
@@ -601,7 +615,10 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         ) {
             $editUrl = $_CONF['site_admin_url'] . '/article.php?mode=edit&amp;sid='
                 . $story->getSid();
-            $editiconhtml = '<img src="' . $_CONF['layout_url']
+				
+			$linkIcon = rtrim($_CONF['path_layout'], '/')  . '/images/edit.' . $_IMAGE_TYPE;
+			$sizeAttributes = COM_getImgSizeAttributes($linkIcon);					
+            $editiconhtml = '<img ' . $sizeAttributes . 'src="' . $_CONF['layout_url']
                 . '/images/edit.' . $_IMAGE_TYPE . '" alt="' . $LANG01[4]
                 . '" title="' . $LANG01[4] . '"' . XHTML . '>';
             $article->set_var('edit_link', COM_createLink($LANG01[4], $editUrl));
