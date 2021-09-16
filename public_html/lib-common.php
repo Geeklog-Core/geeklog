@@ -703,7 +703,7 @@ $sql = "SELECT date FROM {$_TABLES['stories']} "
     . "ORDER BY date DESC LIMIT 1";
 $result = DB_query($sql);
 $A = DB_fetchArray($result);
-if (isset($_VARS['last_article_publish']) && ($_VARS['last_article_publish'] != $A['date'])) {
+if (isset($_VARS['last_article_publish']) && isset($A['date']) && ($_VARS['last_article_publish'] != $A['date'])) {
     //Set new latest article published
     // Below similar to what is run in STORY_updateLastArticlePublished
     DB_query("UPDATE {$_TABLES['vars']} SET value='{$A['date']}' WHERE name='last_article_publish'");
