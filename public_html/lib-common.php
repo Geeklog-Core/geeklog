@@ -6245,7 +6245,7 @@ function COM_resetSpeedlimit($type = 'submit', $property = '')
     }
 
     if (!empty($ids)) {
-        $sql = "DELETE FROM {$_TABLES['speedlimit']} WHERE id IN (" . implode(', '. $ids) . ")";
+        $sql = "DELETE FROM {$_TABLES['speedlimit']} WHERE id IN (" . implode(', ', $ids) . ")";
         DB_query($sql);
     }
 
