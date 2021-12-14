@@ -1200,9 +1200,12 @@ function ADMIN_getListField_plugins($fieldName, $fieldValue, $A, $icon_arr, $tok
                     $sorting = '';
                     $csrfToken2 = '&amp;' . CSRF_TOKEN . '=' . $token;
                     if (!empty($_GET['order']) && !empty($_GET['direction'])) { // Remember how the list was sorted
-                        $ord = trim(Geeklog\Input::get('order'));
-                        $dir = trim(Geeklog\Input::get('direction'));
-                        $old = trim(Geeklog\Input::get('prevorder'));
+                        $ord = trim(Geeklog\Input::fGet('order'));
+                        $dir = trim(Geeklog\Input::fGet('direction'));
+                        $old = trim(Geeklog\Input::fGet('prevorder'));
+                        $ord = COM_escHTML($ord);
+                        $dir = COM_escHTML($dir);
+                        $old = COM_escHTML($old);
                         $sorting = "&amp;order=$ord&amp;direction=$dir&amp;prevorder=$old";
                     }
                     $retval = COM_createLink($icon_arr[$switch], $_CONF['site_admin_url'] .
