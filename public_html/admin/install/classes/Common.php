@@ -1585,10 +1585,12 @@ abstract class Common
                         calculateNumPagesArticles221();
                     }
                     $currentGlVersion = '2.2.1';
+					$_SQL = [];
                     break;
 
                 case '2.2.1':
                     $currentGlVersion = '2.2.1sr1';
+					$_SQL = [];
                     break;
 
                 case '2.2.1sr1':
@@ -1601,6 +1603,7 @@ abstract class Common
                     }
 
                     $currentGlVersion = '2.2.2';
+					$_SQL = [];
                     break;
 
                 default:
