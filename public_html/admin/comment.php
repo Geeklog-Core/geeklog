@@ -101,7 +101,7 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
         $encoding = COM_getEncodingt();
     }
 
-    $commentId = $A['cid'];
+	$commentId = $A['cid'];
 
     switch ($fieldName) {
         case 'selector':
@@ -324,7 +324,7 @@ function ADMIN_buildCommentList($suffix, $tableName, $securityToken)
 
     $queryArray = array(
         'table'          => $tableName,
-        'sql'            => "SELECT c.type, c.sid, c.date, c.title, c.comment, c.uid, i.ipaddress FROM " . $_TABLES[$tableName] . " AS c "
+        'sql'            => "SELECT c.cid, c.type, c.sid, c.date, c.title, c.comment, c.name, c.uid, i.ipaddress FROM " . $_TABLES[$tableName] . " AS c "
             . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
             . "ON c.seq = i.seq "
             . "WHERE (1 = 1) ",
