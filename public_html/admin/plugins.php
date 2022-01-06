@@ -324,8 +324,10 @@ function show_newplugins($token)
         array('text' => $LANG32[17], 'field' => 'pi_version'),
         array('text' => $LANG32[50], 'field' => 'pi_dependencies'),
         array('text' => $LANG32[22], 'field' => 'install_link'),
-		array('text' => $LANG32['delete'], 'field' => 'delete_plugin'),
     );
+	if (SEC_hasRights('plugin.install') && SEC_hasRights('plugin.upload')) {
+		$header_arr[] = array('text' => $LANG32['delete'], 'field' => 'delete_plugin');
+	}
 
     $text_arr = array('title'    => $LANG32[14],
                       'form_url' => $_CONF['site_admin_url'] . '/plugins.php',
@@ -1356,7 +1358,7 @@ if ($mode === 'delete') { // Uninstall Plugin
     }
 } elseif ($mode === 'remove') { // Delete Plugin Files (only after uninstall)
     $pi_name = Geeklog\Input::fGet('pi_name');
-    if ((!empty($pi_name)) && SEC_hasRights('plugin.upload')) {
+    if ((!empty($pi_name)) && SEC_hasRights('plugin.install') && SEC_hasRights('plugin.upload')) {
         if ((Geeklog\Input::get('confirmed') == 1) && SEC_checkToken()) {
             $msg = do_deletefiles($pi_name);
             if ($msg === false) {
