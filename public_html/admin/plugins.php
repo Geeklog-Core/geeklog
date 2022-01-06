@@ -309,6 +309,7 @@ function show_newplugins($token)
                             'pi_gl_version'   => '',
                             'number'          => $index,
                             'install_link'    => $url,
+							'token'    		  => $token,
                         );
                         $index++;
                     }
@@ -323,6 +324,7 @@ function show_newplugins($token)
         array('text' => $LANG32[17], 'field' => 'pi_version'),
         array('text' => $LANG32[50], 'field' => 'pi_dependencies'),
         array('text' => $LANG32[22], 'field' => 'install_link'),
+		array('text' => $LANG32['delete'], 'field' => 'delete_plugin'),
     );
 
     $text_arr = array('title'    => $LANG32[14],
@@ -405,6 +407,46 @@ function do_uninstall($pi_name)
 }
 
 /**
+ * Delete a plugin files
+ *
+ * @param    string $pi_name name of the plugin to delete
+ * @return   string              HTML for error or success message
+ */
+function do_deletefiles($pi_name)
+{
+    global $_CONF, $_TABLES, $_DB_table_prefix;
+
+    $retval = false;
+
+    if (empty($pi_name) || (strlen($pi_name) == 0)) {
+        return false;
+    }
+
+	if (PLG_checkAvailable($pi_name, 0) == 'uninstalled') {
+		$plugin_dir = $_CONF['path'] . 'plugins/' . $pi_name;
+		if (file_exists($plugin_dir)) {
+			Geeklog\FileSystem::remove($plugin_dir);
+		}
+
+		$public_dir = $_CONF['path_html'] . $pi_name;
+		if (file_exists($public_dir)) {
+			Geeklog\FileSystem::remove($public_dir);
+		}
+
+		$admin_dir = $_CONF['path_admin'] . 'plugins/' . $pi_name;
+		if (file_exists($admin_dir)) {
+			Geeklog\FileSystem::remove($admin_dir);
+		}
+
+        $retval = 160; // success msg
+    } else {
+        $retval = 95; // error msg
+    }
+
+    return $retval;
+}
+
+/**
  * List available plugins
  *
  * @param    string $token Security token
@@ -428,7 +470,7 @@ function listplugins($token)
         array('text' => $LANG_ADMIN['enabled'], 'field' => 'pi_enabled', 'sort' => true),
         array('text' => $LANG32[25], 'field' => 'delete', 'sort' => false),
     );
-
+	
     $defsort_arr = array('field' => 'pi_load', 'direction' => 'asc');
 
     $menu_arr = array(
@@ -457,6 +499,7 @@ function listplugins($token)
     );
 
     $text_arr = array(
+		'title'    => $LANG32['installed_plugins'],
         'has_extras'   => true,
         'instructions' => $LANG32[11],
         'form_url'     => $_CONF['site_admin_url'] . '/plugins.php',
@@ -1295,11 +1338,27 @@ function plugin_get_pluginname($plugin)
 $display = '';
 $mode = Geeklog\Input::postOrGet('mode', '');
 
-if ($mode === 'delete') {
+if ($mode === 'delete') { // Uninstall Plugin
     $pi_name = Geeklog\Input::fGet('pi_name');
     if ((!empty($pi_name)) && SEC_hasRights('plugin.install')) {
         if ((Geeklog\Input::get('confirmed') == 1) && SEC_checkToken()) {
             $msg = do_uninstall($pi_name);
+            if ($msg === false) {
+                COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
+            } else {
+                COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=' . $msg);
+            }
+        } else {
+            COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
+        }
+    } else {
+        COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
+    }
+} elseif ($mode === 'remove') { // Delete Plugin Files (only after uninstall)
+    $pi_name = Geeklog\Input::fGet('pi_name');
+    if ((!empty($pi_name)) && SEC_hasRights('plugin.upload')) {
+        if ((Geeklog\Input::get('confirmed') == 1) && SEC_checkToken()) {
+            $msg = do_deletefiles($pi_name);
             if ($msg === false) {
                 COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
             } else {

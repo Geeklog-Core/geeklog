@@ -103,7 +103,7 @@ function ADMIN_simpleList($fieldFunction, $header_arr, $text_arr,
     }
 
     # define icon paths. Those will be transmitted to $fieldfunction.
-    $icons_type_arr = array('edit', 'copy', 'list', 'addchild', 'install', 'unavailable', 'info');
+	$icons_type_arr = array('edit', 'copy', 'list', 'addchild', 'install', 'deleteitem', 'enabled', 'disabled', 'unavailable', 'warning', 'info');	
     $icon_arr = array();
     foreach ($icons_type_arr as $icon_type) {
         $icon_url = "{$_CONF['layout_url']}/images/$icon_type.$_IMAGE_TYPE";
@@ -327,7 +327,7 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
     }
 
     // define icon paths. Those will be transmitted to $fieldFunction.
-    $icons_type_arr = array('edit', 'copy', 'list', 'addchild', 'deleteitem', 'enabled', 'disabled', 'unavailable', 'warning', 'info');
+	$icons_type_arr = array('edit', 'copy', 'list', 'addchild', 'install', 'deleteitem', 'enabled', 'disabled', 'unavailable', 'warning', 'info');	
     $icon_arr = array();
     foreach ($icons_type_arr as $icon_type) {
         $icon_url = "{$_CONF['layout_url']}/images/$icon_type.$_IMAGE_TYPE";
@@ -1500,6 +1500,19 @@ function ADMIN_getListField_newplugins($fieldName, $fieldValue, $A, $icon_arr, $
             } else {
                 $retval = str_replace('<img ', '<img title="' . $LANG32[63] . '" ', $icon_arr['unavailable']);
             }
+            break;
+			
+        case 'delete_plugin':
+            $csrfToken2 = '&amp;' . CSRF_TOKEN . '=' . $A['token'];
+            $id = 'delete_' . $A['pi_name']; // used by JavaScript
+            $message = sprintf($LANG32['really_delete_msg'], "\'" . plugin_get_pluginname($A['pi_name']) . "\'"); // used by JavaScript
+            $url = $_CONF['site_admin_url'] . '/plugins.php?mode=remove&amp;pi_name=' . $A['pi_name'] . $csrfToken2;
+            $link_args = array('title'   => $LANG32['click_to_delete_msg'],
+                               'onclick' => "confirm_action('$message', '$url&amp;confirmed=1')",
+                               'id'      => $id);
+            $retval .= COM_createLink($icon_arr['deleteitem'], $url, $link_args);
+            // If javascript is available, we will be using it to get a confirmation from the user. So we need to hide the default link.
+            $retval .= '<script type="text/javascript">document.getElementById("' . $id . '").href = "javascript:void(0);";</script>';
             break;
 
         default:
