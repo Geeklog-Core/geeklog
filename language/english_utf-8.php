@@ -1691,6 +1691,7 @@ $MESSAGE = array(
     152 => 'All the files and directories used during the installation are left as they are.  It is dangerous to keep them on the server, so please don\'t forget to remove them manually.',
     153 => 'You last emailed an article %1$d seconds ago.  This site requires at least %2$d seconds between emailing articles.',
 	160 => 'The plugin files was successfully deleted.',
+    161 => 'The archive includes a file whose name includes an unsafe character.',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
     401 => 'Please enter Fullname',
     500 => 'The Template Cache has been successfully cleared.',

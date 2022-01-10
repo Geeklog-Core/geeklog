@@ -725,7 +725,13 @@ function plugin_upload()
     } else {
         $plugin_file = $_CONF['path_data'] . $_FILES['plugin']['name']; // Name the plugin file
 
-        $archive = new Unpacker($_FILES['plugin']['tmp_name'], $_FILES['plugin']['type']);
+        try {
+            $archive = new Unpacker($_FILES['plugin']['tmp_name'], $_FILES['plugin']['type']);
+        } catch (Exception $e) {
+            COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=161');
+            exit;
+        }
+
         $tmp = $archive->getList(); // Grab the contents of the tarball to see what the plugin name is
         $dirName = preg_replace('/\/.*$/', '', $tmp[0]['filename']);
 

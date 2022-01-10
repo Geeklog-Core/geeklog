@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | unpacker.class.php                                                        |
 // |                                                                           |
@@ -10,7 +10,7 @@
 // | This class wraps calls to pecl Zip, pear Zip, pear Tar, using the best    |
 // | package available to unpack or list information about the archive.        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2010 by the following authors:                         |
+// | Copyright (C) 2009-2012 by the following authors:                         |
 // |                                                                           |
 // | Authors: Justin Carlson        - justin DOT carlson AT gmail DOT com      |
 // +---------------------------------------------------------------------------+
@@ -31,6 +31,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use splitbrain\PHPArchive\Archive;
+use splitbrain\PHPArchive\ArchiveIllegalCompressionException;
 use splitbrain\PHPArchive\ArchiveIOException;
 use splitbrain\PHPArchive\Tar;
 use splitbrain\PHPArchive\Zip;
@@ -68,7 +70,7 @@ class Unpacker
     private $contents = null; // archive contents
 
     /**
-     * @var \splitbrain\PHPArchive\Archive
+     * @var Archive
      */
     private $archive = null; // archive resource handle
     private $errorNo = null; // error number ( set when returned false )
@@ -80,12 +82,24 @@ class Unpacker
     /**
      * Constructor
      *
-     * @param string $file     full path to archive
-     * @param string $mimeType mime type ( optional, application/zip, /tar, etc )
+     * @param  string $file     full path to archive
+     * @param  string $mimeType mime type ( optional, application/zip, /tar, etc )
+     * @throws InvalidArgumentException
      */
     public function __construct($file, $mimeType = null)
     {
         $this->open($file, $mimeType);
+
+        // Check if all files in the archive have the proper file name
+        $files = $this->getList();
+
+        if (is_array($files) && (count($files) > 0)) {
+            foreach ($files as $file) {
+                if (!\Geeklog\FileSystem::isValidFileName(basename($file['filename']))) {
+                    throw new InvalidArgumentException("Bad file name in the archive detected: {$file['filename']}");
+                }
+            }
+        }
     }
 
     /**
@@ -208,6 +222,8 @@ class Unpacker
         try {
             $this->archive->open($this->file);
         } catch (ArchiveIOException $e) {
+            return $this->setError(-1, $e->getMessage());
+        } catch (ArchiveIllegalCompressionException $e) {
             return $this->setError(-1, $e->getMessage());
         }
 
