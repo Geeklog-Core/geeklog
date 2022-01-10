@@ -1,7 +1,7 @@
-{# start {templatelocation} #}
+{# begin {templatelocation} #}
 
 {start_block_userprofile}
-  <dl id="profile-userprofile">
+  <dl id="profile-userprofile" style="margin-bottom:15px;">
     <dt>{lang_username}</dt>
     <dd>{username}&nbsp;{user_fullname} {edit_link}</dd>
     <dd id="profile-user_photo">{user_photo}</dd>
@@ -28,25 +28,25 @@
     
     {display_fields}
   </dl>
-{end_block}
 
-{last10_blocks}
+  {last10_blocks}
 
-{start_block_postingstats}
-  <dl id="profile-postingstats">
-    <dt>{lang_number_stories}</dt>
-    <dd>{number_stories}</dd>
+  {start_block_postingstats}
+    <dl id="profile-postingstats">
+      <dt>{lang_number_stories}</dt>
+      <dd>{number_stories}</dd>
 
-    <dt>{lang_number_comments}</dt>
-    <dd>{number_comments}</dd>
+      <dt>{lang_number_comments}</dt>
+      <dd>{number_comments}</dd>
     
-    {field_statistics}
-  </dl>
+      {field_statistics}
+    </dl>
 
-  <div id="profile-all_postings_by">
-    <a href="{site_url}/search.php?type=all&amp;author={user_id}&amp;mode=search">{lang_all_postings_by}</a>
-  </div>
-{end_block}
+    <div id="profile-all_postings_by">
+      <a href="{site_url}/search.php?type=all&amp;author={user_id}&amp;mode=search">{lang_all_postings_by}</a>
+    </div>
+  {end_block_postingstats}
+{end_block_userprofile}
 
 <!-- BEGIN display_field -->
     <dt>{lang_field}</dt>
@@ -61,7 +61,7 @@
 <!-- BEGIN last10_block -->
 {start_block_last10}
   {last10_rows}
-{end_block}
+{end_block_last10}
 <!-- END last10_block -->
 
 <!-- BEGIN last10_row -->
