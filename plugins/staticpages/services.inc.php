@@ -940,73 +940,53 @@ SQL;
                 $output['sp_content'] = SP_render_content($output);
             }
         } else { // an error occurred (page not found, access denied, ...)
-            /**
-             * if the user has edit permissions and the page does not exist,
-             * send them to the editor so they can create it "wiki style"
-             */
-            $create_page = false;
-            if (($mode !== 'autotag') && ($count == 0) &&
-                SEC_hasRights('staticpages.edit')
-            ) {
-                // check again without permissions
-                if (DB_count($_TABLES['staticpage'], 'sp_id', $page) == 0) {
-                    $url = $_CONF['site_admin_url']
-                        . '/plugins/staticpages/index.php?mode=edit&sp_new_id='
-                        . $page . '&msg=21';
-                    $output = COM_refresh($url);
-                    $create_page = true;
-                }
-            }
+			if (empty($page)) {
+				$failflg = 0;
+			} else {
+				$failflg = DB_getItem($_TABLES['staticpage'], 'sp_nf', "sp_id = '$page'");
+			}
+			if ($failflg) {
+				$output .= SEC_loginRequiredForm();
+				if ($mode !== 'autotag') {
+					// Is user already logged in
+					if (COM_isAnonUser()) {
+						// Okay anonymous user ask to login
+						// Retrieve required info to display login page
+						$sql = "SELECT sp_title, sp_page_title, sp_format FROM {$_TABLES['staticpage']} WHERE sp_id = '$page'";
+						$resultA = DB_query($sql);
+						$A = DB_fetchArray($resultA);
 
-            if (!$create_page) {
-                if (empty($page)) {
-                    $failflg = 0;
-                } else {
-                    $failflg = DB_getItem($_TABLES['staticpage'], 'sp_nf', "sp_id = '$page'");
-                }
-                if ($failflg) {
-                    $output .= SEC_loginRequiredForm();
-                    if ($mode !== 'autotag') {
-                        // Is user already logged in
-                        if (COM_isAnonUser()) {
-                            // Okay anonymous user ask to login
-                            // Retrieve required info to display login page
-                            $sql = "SELECT sp_title, sp_page_title, sp_format FROM {$_TABLES['staticpage']} WHERE sp_id = '$page'";
-                            $resultA = DB_query($sql);
-                            $A = DB_fetchArray($resultA);
+						if ($A['sp_format'] === 'allblocks' || $A['sp_format'] === 'leftblocks') {
+							$what = 'menu';
+						} else {
+							$what = 'none';
+						}
 
-                            if ($A['sp_format'] === 'allblocks' || $A['sp_format'] === 'leftblocks') {
-                                $what = 'menu';
-                            } else {
-                                $what = 'none';
-                            }
+						$page_title = stripslashes($A['sp_page_title']);
+						if (empty($page_title)) {
+							$page_title = stripslashes($A['sp_title']);
+						}
 
-                            $page_title = stripslashes($A['sp_page_title']);
-                            if (empty($page_title)) {
-                                $page_title = stripslashes($A['sp_title']);
-                            }
+						if (($A['sp_format'] == 'allblocks')) {
+							$rightblock = true;
+						} elseif (($A['sp_format'] == 'leftblocks') || ($A['sp_format'] == 'noblocks')) {
+							$rightblock = false;
+						} else {
+							$rightblock = -1;
+						}
 
-                            if (($A['sp_format'] == 'allblocks')) {
-                                $rightblock = true;
-                            } elseif (($A['sp_format'] == 'leftblocks') || ($A['sp_format'] == 'noblocks')) {
-                                $rightblock = false;
-                            } else {
-                                $rightblock = -1;
-                            }
-
-                            $output = COM_createHTMLDocument($output, array('what' => $what, 'pagetitle' => $page_title, 'rightblock' => $rightblock));
-                        } else {
-                            // then he has no access and let him know
-                            $output = COM_showMessageText($LANG_STATIC['deny_msg'], $LANG_STATIC['access_denied']);
-                            $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG_STATIC['access_denied']));
-                        }
-                    }
-                } else {
-                    if ($mode !== 'autotag') {
-                        COM_handle404();
-                    }
-                }
-            }
+						$output = COM_createHTMLDocument($output, array('what' => $what, 'pagetitle' => $page_title, 'rightblock' => $rightblock));
+					} else {
+						// then he has no access and let him know
+						$output = COM_showMessageText($LANG_STATIC['deny_msg'], $LANG_STATIC['access_denied']);
+						$output = COM_createHTMLDocument($output, array('pagetitle' => $LANG_STATIC['access_denied']));
+					}
+				}
+			} else {
+				if ($mode !== 'autotag') {
+					COM_handle404();
+				}
+			}
 
             return PLG_RET_ERROR;
         }
