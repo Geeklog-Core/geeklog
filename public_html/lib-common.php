@@ -55,6 +55,13 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR |
  * lib-custom.php you will find upgrading much easier.
  */
 
+// Prevent PhpStorm from complaining about "undefined variables"
+$_CONF = [];
+$MESSAGE = [];
+$_TABLES = [];
+$_USER = [];
+$LANG_ISO639_1 = 'en';
+
 /**
  * Prevent getting any surprise values. But we should really stop
  * using $_REQUEST altogether.
@@ -892,13 +899,13 @@ function COM_getThemes($all = false, $valid = true, $info = false)
     global $_CONF;
 
     $index = 1;
-    $themes = array();
+    $themes = [];
 
     // If users aren't allowed to change their theme then only return the default theme
 
     if (($_CONF['allow_user_themes'] == 0) && !$all) {
         if ($info) {
-            $themes[$dir] = COM_getThemeInfo($_CONF['theme']);
+            $themes[0] = COM_getThemeInfo($_CONF['theme']);
         } else {
             $themes[$index] = $_CONF['theme'];
         }
