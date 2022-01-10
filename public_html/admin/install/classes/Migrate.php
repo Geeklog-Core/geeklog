@@ -3,6 +3,7 @@
 namespace Geeklog\Install;
 
 use config;
+use Exception;
 use Geeklog\Autoload;
 use Geeklog\Input;
 use MicroTemplate;
@@ -147,7 +148,12 @@ class Migrate extends Common
 
         require_once $gl_path . 'system/classes/Autoload.php';
         Autoload::initialize();
-        $archive = new Unpacker($backupPath . $backupFile);
+
+        try {
+            $archive = new Unpacker($backupPath . $backupFile);
+        } catch (Exception $e) {
+            return false;
+        }
 
         // we're going to extract the first .sql file we find in the archive
         $dirName = '';

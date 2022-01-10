@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2021 by the following authors:                         |
+// | Copyright (C) 2000-2022 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -65,7 +65,7 @@ $_REQUEST = array_merge($_GET, $_POST);
  * Configuration Include:
  * You do NOT need to modify anything here any more!
  */
-require_once __DIR__ . '/siteconfig.php';
+require __DIR__ . '/siteconfig.php';
 
 if (COM_isDeveloperMode() &&
     isset($_CONF['developer_mode_php'], $_CONF['developer_mode_php']['error_reporting'])) {
@@ -892,13 +892,13 @@ function COM_getThemes($all = false, $valid = true, $info = false)
     global $_CONF;
 
     $index = 1;
-    $themes = array();
+    $themes = [];
 
     // If users aren't allowed to change their theme then only return the default theme
 
     if (($_CONF['allow_user_themes'] == 0) && !$all) {
         if ($info) {
-            $themes[$dir] = COM_getThemeInfo($_CONF['theme']);
+            $themes[0] = COM_getThemeInfo($_CONF['theme']);
         } else {
             $themes[$index] = $_CONF['theme'];
         }
@@ -1193,7 +1193,7 @@ function COM_renderMenu($header, $plugin_menu)
  *                              Rightblocks
  * @return string              Formatted HTML document
  */
-function COM_createHTMLDocument(&$content = '', $information = array())
+function COM_createHTMLDocument($content = '', $information = array())
 {
     global $_CONF, $_VARS, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
            $_IMAGE_TYPE, $_COM_VERBOSE, $_SCRIPTS, $_STRUCT_DATA, $_PAGE_TIMER;
@@ -9017,7 +9017,7 @@ function COM_getLangIso639Code($langName = null)
         'dutch'               => 'nl',
         'english'             => 'en',
         'estonian'            => 'et',
-        'farsi'               => 'fa',
+        'farsi'               => 'fa',      // Replaced by 'persian'
         'finnish'             => 'fi',
         'french_canada'       => 'fr-ca',
         'french_france'       => 'fr',
@@ -9030,7 +9030,7 @@ function COM_getLangIso639Code($langName = null)
         'japanese'            => 'ja',
         'korean'              => 'ko',
         'norwegian'           => 'nb',  // Norwegian (Bokmal)
-        //      'norwegian'           => 'no',  // Norwegian (nynorsk)
+        'persian'             => 'fa',
         'polish'              => 'pl',
         'portuguese'          => 'pt',
         'portuguese_brazil'   => 'pt-br',

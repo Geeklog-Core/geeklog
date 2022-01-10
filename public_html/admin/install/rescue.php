@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // | admin/rescue.php                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2010-2020 Wayne Patterson [suprsidr@flashyourweb.com]       |
+// | Copyright (C) 2010-2022 Wayne Patterson [suprsidr@flashyourweb.com]       |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -27,7 +27,7 @@
 
 use Geeklog\Autoload;
 
-require_once dirname(__DIR__) . '/siteconfig.php';
+require_once dirname(dirname(__DIR__)) . '/siteconfig.php';
 
 // Set dummy contents to prevent "undefined variable" E_NOTICE
 $_CONF['backup_path'] = $_CONF['path'] . 'backups/';
@@ -82,10 +82,10 @@ if (isset($_POST['lang'])) {
     $lang = preg_replace('/[^0-9_a-z-]/i', '', $_GET['lang']);
 }
 
-$langfile = $_CONF['path'] . 'language/' . $lang . '.php';
+$langfile = __DIR__ . '/language/' . $lang . '.php';
 if (!file_exists($langfile)) {
     $lang = 'english';
-    $langfile = $_CONF['path'] . 'language/' . $lang . '.php';
+    $langfile = __DIR__ . '/language/' . $lang . '.php';
 }
 require_once $langfile;
 
@@ -159,18 +159,20 @@ function e($index) {
 }
 
 function langSelector() {
-    global $_CONF, $lang, $LANG_CHARSET;
+    global $lang;
 
     $retval = '<form action="" method="post">' . LB
             . '<div>' . LB
             . '<select name="lang">' . LB;
-    $files = glob($_CONF['path'] . 'language/*.php');
 
-    if ($files !== false) {
-        foreach ($files as $file) {
-            $file = str_replace('.php', '', basename($file));
+    if (is_readable(__DIR__ .'/language/_list.php')) {
+        $files = include __DIR__ . '/language/_list.php';
+
+        foreach ($files as $file => $data) {
+            $file = basename($file);
+            $file = str_replace('.php', '', $file);
             $selected = ($file === $lang) ? ' selected="selected"' : '';
-            $retval .= '<option value="' . $file . '"' . $selected . '>' .  $file . '</option>' . LB;
+            $retval .= '<option value="' . $file . '"' . $selected . '>' . $data['langName'] . ' (' . $data['english'] . ')' . '</option>' . LB;
         }
     }
 
@@ -204,7 +206,7 @@ function encryptPassword($password) {
 function render($renderType, $args = array()) {
     global $_TABLES, $self, $configs, $LANG_CHARSET, $LANG_DIRECTION, $lang;
 
-    header('Content-Type: text/html; charset=' . $LANG_CHARSET);
+    header('Content-Type: text/html; charset=UTF-8');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html dir="<?php echo isset($LANG_DIRECTION) ? $LANG_DIRECTION : 'ltr'; ?>">
@@ -217,7 +219,7 @@ function render($renderType, $args = array()) {
         <div class="main center">
         <div class="header-navigation-container">
             <div class="header-navigation-line">
-                <a href="install/index.php?language=<?php echo $lang; ?>" class="header-navigation"><?php e(2); ?></a>&nbsp;&nbsp;&nbsp;<?php echo langSelector(); ?>&nbsp;&nbsp;
+                <a href="index.php?language=<?php echo $lang; ?>" class="header-navigation"><?php e(2); ?></a>&nbsp;&nbsp;&nbsp;<?php echo langSelector(); ?>&nbsp;&nbsp;
             </div>
         </div>
         <h1><?php e(3); ?></h1>
@@ -331,7 +333,7 @@ function render($renderType, $args = array()) {
         <h2><?php e(26); ?></h2>
         <div class="info">
             <ul>
-                <li><?php e(27); ?>: <?php echo PHP_VERSION; ?> <a href="<?php echo $self; ?>?view=phpinfo<?php echo '&amp;lang=' . urlencode($lang); ?>"> <small>phpinfo</small></a></li>
+                <li><?php e(27); ?>: <?php echo PHP_VERSION; ?> <?php if (is_callable('phpinfo')): ?><a href="<?php echo $self; ?>?view=phpinfo<?php echo '&amp;lang=' . urlencode($lang); ?>"> <small>phpinfo</small></a><?php endif; ?></li>
                 <li><?php e(28); ?> <?php echo VERSION; ?></li>
             </ul>
         </div>

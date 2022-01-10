@@ -48,6 +48,20 @@ abstract class FileSystem
     }
 
     /**
+     * Return if the file name given is safe to use on ANY OS
+     *
+     * @param  string  $fileName
+     * @return bool
+     */
+    public static function isValidFileName($fileName)
+    {
+        return (strpos($fileName, '.') !== 0)                    // File name should not start with '.'
+            && (substr($fileName, -1) !== '.')                   // and should not end with '.'
+            && (strpos($fileName, '..') === false)               // and should not include '..'
+            && preg_match('/\A[0-9a-zA-Z_.-]+\z/', $fileName);  // and contains only '0'-'9', 'a'-'z', 'A'-'Z', underscore, '.' and '-'
+    }
+
+    /**
      * Normalize a file name so it can safely be used both on Windows and Unixy systems like Linux
      *
      * @param  string  $path

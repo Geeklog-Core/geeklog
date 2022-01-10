@@ -48,6 +48,7 @@ class libmbyteNoMB extends TestCase
             'japanese_utf-8'            => 'Japanese',
             'korean_utf-8'              => 'Korean',
             'norwegian_utf-8'           => 'Norwegian',
+            'persian_utf-8'             => 'Persian',
             'polish_utf-8'              => 'Polish',
             'portuguese_utf-8'          => 'Portuguese',
             'portuguese_brazil_utf-8'   => 'Portuguese (Brazil)',

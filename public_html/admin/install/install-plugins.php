@@ -139,9 +139,14 @@ switch ($step) {
                     </div>' . PHP_EOL;
             } else {
                 $plugin_file = $_CONF['path_data'] . $_FILES['plugin']['name']; // Name the plugin file
-                $archive = new Unpacker($_CONF['path_data'] . $_FILES['plugin']['name'], $_FILES['plugin']['type']);
-                $contents = $archive->getList();
-                $dirName = preg_replace('/\/.*$/', '', $contents[0]['filename']);
+
+                try {
+                    $archive = new Unpacker($_CONF['path_data'] . $_FILES['plugin']['name'], $_FILES['plugin']['type']);
+                    $contents = $archive->getList();
+                    $dirName = preg_replace('/\/.*$/', '', $contents[0]['filename']);
+                } catch (Exception $e) {
+                    $dirName = '';
+                }
 
                 if (empty($dirName)) { // If $dirname is blank it's probably because the user uploaded a non Tarball file.
                     $content .= '

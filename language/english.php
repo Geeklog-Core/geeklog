@@ -1691,6 +1691,7 @@ $MESSAGE = array(
     152 => 'All the files and directories used during the installation are left as they are.  It is dangerous to keep them on the server, so please don\'t forget to remove them manually.',
     153 => 'You last emailed an article %1$d seconds ago.  This site requires at least %2$d seconds between emailing articles.',
 	160 => 'The plugin files was successfully deleted.',
+    161 => 'The archive includes a file whose name includes an unsafe character.',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
     401 => 'Please enter Fullname',
     500 => 'The Template Cache has been successfully cleared.',
@@ -2201,58 +2202,6 @@ $LANG_structureddatatypes = array(
 $LANG_STRUCT_DATA = array(
     'lang_structured_data_type'     => 'Structured Data Type',
     'autotag_desc_structureddata'   => '[structureddata:schema_property]Property Value[/structureddata] - Adds a property to the structured data of the content that the autotag is embedded in.'
-);
-
-###############################################################################
-# rescue.php
-
-$LANG_RESCUE = array(
-    0 => 'Login successful',
-    1 => 'Geeklog Emergency Rescue Tool',
-    2 => 'Geeklog Install',
-    3 => 'Geeklog Emergency Rescue Tool',
-    4 => 'Do not forget to <strong>delete this {{SELF}} file once you are done!</strong>  If other users guess the password, they can seriously harm your geeklog installation!',    // Don't change or remove "{{SELF}}"
-    5 => 'Status',
-    6 => 'You are attempting to access a secure section.  You can\'t proceed until you pass the security check.',
-    7 => 'In order to verify you, we require you to enter your database password.  This is the password that is stored in geeklog\'s db-config.php',
-    8 => 'Password',
-    9 => 'Verify Me',
-    10 => 'Password incorrect!',
-    11 => 'enabling ',
-    12 => 'disabling ',
-    13 => 'success ',
-    14 => 'error ',
-    15 => 'There was an error updating configs',
-    16 => 'Updating configs completed successfully',
-    17 => 'There was an error updating your password',
-    18 => 'Geeklog password request',
-    19 => 'Requested Password',
-    20 => 'Someone (hopefully you) has accessed the emergency password request form and a new password:"%s" for your account "%s" on %s, has been generated.',
-    21 => 'If it was not you, please check the security of your site. Make sure to remove the Emergency Rescue Form /admin/rescue.php',
-    22 => 'New password has been sent to the recorded email address',
-    23 => 'There was an error sending email with the subject: ',
-    24 => 'PHP Information',
-    25 => 'Return to main screen',
-    26 => 'System Information',
-    27 => 'PHP version',
-    28 => 'Geeklog version',
-    29 => 'Options',
-    30 => 'If you happen to install a plugin or addon that brings down your geeklog site, you can remedy the problem with the options below.',
-    31 => 'Enable/Disable Plugins',
-    32 => 'Enable/Disable Blocks',
-    33 => 'Edit Select $_CONF Values',
-    34 => 'Reset Admin Password',
-    35 => 'Here you can enable/disable any plugin that is currently installed on your geeklog website.',
-    36 => 'Select a plugin',
-    37 => 'Enable',
-    38 => 'Disable',
-    39 => 'Here you can enable/disable any block (except dynamic) that is currently installed on your geeklog website.',
-    40 => 'Select a block',
-    41 => 'Go',
-    42 => 'You can edit some key $_CONF options.',
-    43 => 'Here you can reset your geeklog root/admin password.',
-    44 => 'Email my password',
-    45 => 'Geeklog appears not to be installed or the install did not complete properly as core information is missing in the Geeklog database. Therefore this rescue tool cannot be used.'
 );
 
 ###############################################################################

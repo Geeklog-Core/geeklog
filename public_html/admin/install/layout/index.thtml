@@ -25,7 +25,7 @@
                 <div class="uk-navbar-right">
                     <ul class="uk-navbar-nav uk-visible@s">
                         <li><a href="index.php?language={{ language }}">{{ LANG.INSTALL.121 }}</a></li>
-                        <li><a href="../rescue.php?lang={{ language }}">{{ LANG.INSTALL.109 }}</a></li>
+                        <li><a href="rescue.php?lang={{ language }}">{{ LANG.INSTALL.109 }}</a></li>
                         <li><a href="{{ LANG.INSTALL.87 }}">{{ LANG.INSTALL.1 }}</a></li>
                         <li><a href="help.php?language={{ language }}">{{ LANG.INSTALL.122 }}</a></li>
                         <li class="{{ language_selector_menu }}"><a href="#modal-language" uk-toggle>{{ LANG.INSTALL.118 }}</a></li>
@@ -45,7 +45,7 @@
             <button class="uk-offcanvas-close uk-close uk-icon" type="button" data-uk-close></button>
             <ul class="uk-nav uk-nav-default">
                 <li><a href="index.php?language={{ language }}">{{ LANG.INSTALL.121 }}</a></li>
-                <li><a href="../rescue.php?lang={{ language }}">{{ LANG.INSTALL.109 }}</a></li>
+                <li><a href="rescue.php?lang={{ language }}">{{ LANG.INSTALL.109 }}</a></li>
                 <li><a href="{{ LANG.INSTALL.87 }}">{{ LANG.INSTALL.1 }}</a></li>
                 <li><a href="help.php?language={{ language }}">{{ LANG.INSTALL.122 }}</a></li>
                 <li class="{{ language_selector_menu }}"><a href="#modal-language" uk-toggle>{{ LANG.INSTALL.118 }}</a></li>

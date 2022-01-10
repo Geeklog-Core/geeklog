@@ -8,7 +8,7 @@
 // |                                                                           |
 // | German language file for the Geeklog installation script                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2020 by the following authors:                         |
+// | Copyright (C) 2000-2022 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -448,4 +448,56 @@ $LANG_LABEL = array(
 	'charactersets'  => $LANG_INSTALL[123],
     'migrate_file'   => $LANG_MIGRATE[6],
     'plugin_upload'  => $LANG_PLUGINS[10]
+);
+
+// +---------------------------------------------------------------------------+
+// Emergency Rescue Tool
+
+$LANG_RESCUE = array(
+    0 => 'Login successful',
+    1 => 'Geeklog Emergency Rescue Tool',
+    2 => 'Geeklog Install',
+    3 => 'Geeklog Emergency Rescue Tool',
+    4 => 'Do not forget to <strong>delete this {{SELF}} file once you are done!</strong>  If other users guess the password, they can seriously harm your geeklog installation!',
+    5 => 'Status',
+    6 => 'You are attempting to access a secure section.  You can\'t proceed until you pass the security check.',
+    7 => 'In order to verify you, we require you to enter your database password.  This is the password that is stored in geeklog\'s db-config.php',
+    8 => 'Password',
+    9 => 'Verify Me',
+    10 => 'Password incorrect!',
+    11 => 'enabling ',
+    12 => 'disabling ',
+    13 => 'success ',
+    14 => 'error ',
+    15 => 'There was an error updating configs',
+    16 => 'Updating configs completed successfully',
+    17 => 'There was an error updating your password',
+    18 => 'Geeklog password request',
+    19 => 'Requested Password',
+    20 => 'Someone (hopefully you) has accessed the emergency password request form and a new password:"%s" for your account "%s" on %s, has been generated.',
+    21 => 'If it was not you, please check the security of your site. Make sure to remove the Emergency Rescue Form /admin/rescue.php',
+    22 => 'New password has been sent to the recorded email address',
+    23 => 'There was an error sending email with the subject: ',
+    24 => 'PHP Information',
+    25 => 'Return to main screen',
+    26 => 'System Information',
+    27 => 'PHP version',
+    28 => 'Geeklog version',
+    29 => 'Options',
+    30 => 'If you happen to install a plugin or addon that brings down your geeklog site, you can remedy the problem with the options below.',
+    31 => 'Enable/Disable Plugins',
+    32 => 'Enable/Disable Blocks',
+    33 => 'Edit Select $_CONF Values',
+    34 => 'Reset Admin Password',
+    35 => 'Here you can enable/disable any plugin that is currently installed on your geeklog website.',
+    36 => 'Select a plugin',
+    37 => 'Enable',
+    38 => 'Disable',
+    39 => 'Here you can enable/disable any block (except dynamic) that is currently installed on your geeklog website.',
+    40 => 'Select a block',
+    41 => 'Go',
+    42 => 'You can edit some key $_CONF options.',
+    43 => 'Here you can reset your geeklog root/admin password.',
+    44 => 'Email my password',
+    45 => 'Geeklog appears not to be installed or the install did not complete properly as core information is missing in the Geeklog database. Therefore this rescue tool cannot be used.'
 );
