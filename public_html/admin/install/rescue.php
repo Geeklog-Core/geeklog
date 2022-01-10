@@ -333,7 +333,7 @@ function render($renderType, $args = array()) {
         <h2><?php e(26); ?></h2>
         <div class="info">
             <ul>
-                <li><?php e(27); ?>: <?php echo PHP_VERSION; ?> <a href="<?php echo $self; ?>?view=phpinfo<?php echo '&amp;lang=' . urlencode($lang); ?>"> <small>phpinfo</small></a></li>
+                <li><?php e(27); ?>: <?php echo PHP_VERSION; ?> <?php if (is_callable('phpinfo')): ?><a href="<?php echo $self; ?>?view=phpinfo<?php echo '&amp;lang=' . urlencode($lang); ?>"> <small>phpinfo</small></a><?php endif; ?></li>
                 <li><?php e(28); ?> <?php echo VERSION; ?></li>
             </ul>
         </div>
