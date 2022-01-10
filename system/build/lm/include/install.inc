@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | install.inc                                                               |
 // |                                                                           |
 // | Update a language file for the install script                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2020 by the following authors:                         |
+// | Copyright (C) 2009-2022 by the following authors:                         |
 // |                                                                           |
 // | Author:  Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -37,7 +37,7 @@ $ENG_PLUGINS = $LANG_PLUGINS;
 $ENG_BIGDUMP = $LANG_BIGDUMP;
 $ENG_ERROR = $LANG_ERROR;
 $ENG_HELP = $LANG_HELP;
-// $LANG_RESCUE moved to the main language file since Geeklog 2.2.2
+$ENG_RESCUE = $LANG_RESCUE;
 
 // now load the language file we want to update
 require_once $langfile;
@@ -92,6 +92,11 @@ echo "\n";
 separatorThin();
 echo "// help.php\n";
 mergeArrays($ENG_HELP, $LANG_HELP, 'LANG_HELP', false);
+echo "\n";
+
+separatorThin();
+echo "// rescue.php\n";
+mergeArrays($ENG_RESCUE, $LANG_RESCUE, 'LANG_RESCUE', false);
 echo "\n";
 
 // hard-code this here (for now)
