@@ -1193,7 +1193,7 @@ function COM_renderMenu($header, $plugin_menu)
  *                              Rightblocks
  * @return string              Formatted HTML document
  */
-function COM_createHTMLDocument(&$content = '', $information = array())
+function COM_createHTMLDocument($content = '', $information = array())
 {
     global $_CONF, $_VARS, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
            $_IMAGE_TYPE, $_COM_VERBOSE, $_SCRIPTS, $_STRUCT_DATA, $_PAGE_TIMER;
