@@ -176,7 +176,7 @@ class Install extends Common
 
     public function step3($retval, $_DB_dbms, $installPlugins, $nextLink, $gl_path)
     {
-        global $_CONF, $_DEVICE, $_URL;
+        global $_CONF, $_DEVICE, $_URL, $_TABLES;
         global $LANG01, $LANG03, $LANG04, $LANG05, $LANG08, $LANG09, $LANG10, $LANG11, $LANG12, $LANG20, $LANG21;
         global $LANG23, $LANG24, $LANG27, $LANG28, $LANG29, $LANG31, $LANG32, $LANG33, $MESSAGE;
 
@@ -192,7 +192,7 @@ class Install extends Common
         // We need all this just to do one DB query
         $this->includeConfig(Common::$env['dbconfig_path']);
         require_once Common::$env['siteconfig_path'];
-        $_CONF['path_system'] = Common::$env['gl_path'] . '/system/';
+        $_CONF['path_system'] = Common::$env['gl_path'] . 'system/';
         require_once $_CONF['path_system'] . 'lib-database.php';
 
         if ($_DB_dbms === 'pgsql') {
@@ -294,7 +294,7 @@ class Install extends Common
 
                 $this->setVersion(Common::$env['siteconfig_path']);
 
-                if (!$installPlugins) {
+                if ($installPlugins) {
                     // do a default install of all available plugins
 
                     /**

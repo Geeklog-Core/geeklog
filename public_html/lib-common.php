@@ -55,13 +55,6 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR |
  * lib-custom.php you will find upgrading much easier.
  */
 
-// Prevent PhpStorm from complaining about "undefined variables"
-$_CONF = [];
-$MESSAGE = [];
-$_TABLES = [];
-$_USER = [];
-$LANG_ISO639_1 = 'en';
-
 /**
  * Prevent getting any surprise values. But we should really stop
  * using $_REQUEST altogether.
@@ -72,7 +65,7 @@ $_REQUEST = array_merge($_GET, $_POST);
  * Configuration Include:
  * You do NOT need to modify anything here any more!
  */
-require_once __DIR__ . '/siteconfig.php';
+require __DIR__ . '/siteconfig.php';
 
 if (COM_isDeveloperMode() &&
     isset($_CONF['developer_mode_php'], $_CONF['developer_mode_php']['error_reporting'])) {
