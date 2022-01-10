@@ -1510,7 +1510,7 @@ function ADMIN_getListField_newplugins($fieldName, $fieldValue, $A, $icon_arr, $
             $link_args = array('title'   => $LANG32['click_to_delete_msg'],
                                'onclick' => "confirm_action('$message', '$url&amp;confirmed=1')",
                                'id'      => $id);
-            $retval .= COM_createLink($icon_arr['deleteitem'], $url, $link_args);
+            $retval = COM_createLink($icon_arr['deleteitem'], $url, $link_args);
             // If javascript is available, we will be using it to get a confirmation from the user. So we need to hide the default link.
             $retval .= '<script type="text/javascript">document.getElementById("' . $id . '").href = "javascript:void(0);";</script>';
             break;
