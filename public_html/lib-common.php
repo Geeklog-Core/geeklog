@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2021 by the following authors:                         |
+// | Copyright (C) 2000-2022 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -9017,7 +9017,7 @@ function COM_getLangIso639Code($langName = null)
         'dutch'               => 'nl',
         'english'             => 'en',
         'estonian'            => 'et',
-        'farsi'               => 'fa',
+        'farsi'               => 'fa',      // Replaced by 'persian'
         'finnish'             => 'fi',
         'french_canada'       => 'fr-ca',
         'french_france'       => 'fr',
@@ -9030,7 +9030,7 @@ function COM_getLangIso639Code($langName = null)
         'japanese'            => 'ja',
         'korean'              => 'ko',
         'norwegian'           => 'nb',  // Norwegian (Bokmal)
-        //      'norwegian'           => 'no',  // Norwegian (nynorsk)
+        'persian'             => 'fa',
         'polish'              => 'pl',
         'portuguese'          => 'pt',
         'portuguese_brazil'   => 'pt-br',
