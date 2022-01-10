@@ -449,11 +449,12 @@ function removeIndirectFeatures($grp_id, array $features)
  * code closely if you need to modify this function. Also right is synonymous
  * with feature.
  *
- * @param    mixed   $grp_id ID to print rights for
- * @param    boolean $core   indicates if group is a core Geeklog group
- * @return   string      HTML for rights
+ * @param    mixed     $grp_id           ID to print rights for
+ * @param    boolean   $core             indicates if group is a core Geeklog group
+ * @param    Template  $group_templates  Template instance
+ * @return   string    HTML for rights
  */
-function printrights($grp_id = '', $core = 0, &$group_templates)
+function printrights($grp_id = '', $core = 0, Template $group_templates = null)
 {
     global $_TABLES, $_USER, $LANG_ACCESS, $_GROUP_VERBOSE;
 
