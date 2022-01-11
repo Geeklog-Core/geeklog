@@ -2149,16 +2149,21 @@ abstract class Common
      * NOTE: Needs a fully working Geeklog, so can only be done late in the upgrade
      *       process!
      *
-     * @param  boolean  $migration  whether the upgrade is part of a site migration
-     * @param  bool  $upgrade  whether to upgrade plugins
-     * @param  array    $old_conf   old $_CONF values before the migration
-     * @return int     number of failed plugin updates (0 = everything's fine)
-     * @see     PLG_upgrade
-     * @see     PLG_migrate
+     * @param  bool   $migration  whether the upgrade is part of a site migration
+     * @param  bool   $upgrade    whether to upgrade plugins
+     * @param  array  $old_conf   old $_CONF values before the migration
+     * @return int                number of failed plugin updates (0 = everything's fine)
+     * @see    PLG_upgrade
+     * @see    PLG_migrate
      */
     protected function upgradePlugins($migration = false, $upgrade = false, array $old_conf = [])
     {
         global $_TABLES;
+
+        // Make sure that "lib-common.php" is loaded
+        if (!is_callable('\COM_errorLog')) {
+            require str_replace('siteconfig.php', 'lib-common.php', Common::$env['siteconfig_path']);
+        }
 
         $failed = 0;
 
@@ -2173,7 +2178,7 @@ abstract class Common
                 $success = PLG_migrate($pi_name, $old_conf);
             }
 
-            if (($success === true) && $upgrade) {
+            if ($success && $upgrade) {
                 $codeVersion = PLG_chkVersion($pi_name);
 
                 if (!empty($codeVersion) && ($codeVersion != $pi_version)) {

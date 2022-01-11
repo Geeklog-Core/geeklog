@@ -2,6 +2,10 @@
 <div>
     <p>{lang_success_3}{lang_message}{lang_success_4}</p>
 
+    {!if msg}
+    <p>{msg}</p>
+    {!endif!}
+
     {!if is_install}
     <p>{lang_success_5}</p>
     <p>{lang_success_6}<strong>{lang_success_7}</strong><br{xhtml}>

@@ -1044,7 +1044,16 @@ class Installer extends Common
                     return $controller->step4();
                 }
 
-                // $this->upgradePlugins(false, false, []);
+                if ($installType === 'upgrade') {
+                    $numFailures = $this->upgradePlugins(false, true, []);
+                    $nextLink = 'success.php?' . http_build_query([
+                            'type'     => $installType,
+                            'language' => Common::$env['language'],
+                            'msg'      => ($numFailures === 0) ? 27 : 28,
+                        ]);
+                    header('Location: ' . $nextLink);
+                }
+
                 $installPlugins = ($this->get('install_plugins') === 'true');
 
                 if (!$installPlugins) {
