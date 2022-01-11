@@ -1017,7 +1017,7 @@ class Installer extends Common
                 }
 
                 $gl_path = str_replace(self::DB_CONFIG_FILE, '', Common::$env['dbconfig_path']);
-                $installPlugins = ($this->request('install_plugins') === 'true');
+                $installPlugins = ($this->request('install_plugins') !== 'false');
                 $nextLink = $installPlugins
                     ? 'install-plugins.php?language=' . Common::$env['language']
                     : 'success.php?type=' . $installType . '&language=' . Common::$env['language'];
