@@ -146,6 +146,10 @@ div#centerblocks div.block-center {
   border-bottom: 1px solid #CCC;
 }
 
+div#centerblocks div.block-chid-center {
+  margin: 0 0 1.25em 0;
+}
+
 /* Block Title */
 div#centerblocks h2,
 div#centerblocks h3,

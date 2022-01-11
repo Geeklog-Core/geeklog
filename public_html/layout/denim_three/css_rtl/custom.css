@@ -20,3 +20,9 @@
   width: 64px;
   height: 64px;
 }
+
+/* Used by blockheader-child.thtml and based on block-center CSS class */
+#centerblocks section.block-child-center,
+#centerblocks div.block-child-center {
+  margin: 0 0 1.25em 0;
+}

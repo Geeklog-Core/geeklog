@@ -91,13 +91,13 @@ function theme_config_glnet_curve()
     return array(
         'theme_name'            => 'GLNet Curve', // Required
         'theme_version'         => '1.0.3', // Required - This theme version released Geeklog v2.2.2
-        'theme_gl_version'      => '2.2.1', // Required - Minimum Geeklog version theme is compatible with
+        'theme_gl_version'      => '2.2.2', // Required - Minimum Geeklog version theme is compatible with
         'theme_description'     => 'Based on Denim Curve theme by dengen. Only slight changes made. When updating use Denim Curve as it\'s base.', // Can contain HTML
         'theme_author'          => 'Laugh',
         'theme_author_url'      => 'https://www.geeklog.net/users.php?mode=profile&uid=11721',
         'theme_homepage'        => 'https://www.geeklog.net/',
         'theme_download_url'    => '',
-        'theme_copyright'       => '2017-2020',
+        'theme_copyright'       => '2017-2022',
         'theme_license'         => 'GPL-2.0+',
         'theme_path_site_logo'  => '/layout/glnet_curve/images/logo2.png', // Used to override path_site_logo config option if needed. Empty or should have absolute path with Logo image filename. See path_site_logo option in config docs for more info
         'image_type'            => 'png',
