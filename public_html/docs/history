@@ -1,5 +1,37 @@
 Geeklog History/Changes:
 
+? ? 2022 (2.2.2)
+------------
+Explanation of list item:
+- [Issue Type] [#Github_Issue_Number OR commit reference OR NA] Description of issue [Person who worked on issue]
+
+For more in-depth explanation of the issues below see: https://github.com/Geeklog-Core/geeklog/milestone/48?closed=1
+
+- 
+- 
+- 
+- 
+
+The following items are all current Geeklog API, functions, and/or global variables that are planned to be either required or depreciated by a current Geeklog version. Plugin and Theme developers please take note of these changes in case they affect you.
+
+Since Geeklog v2.2.1sr1
+
+- [Depreciated] [#1052] By Geeklog 3.0.0 - Article should not depend on hardcoded file locations for print.css for a theme. Use PLG_getThemeItem('core-file-print-css', 'core'); instead
+
+Since Geeklog v2.2.1
+
+- [Depreciated] [#872] By Geeklog 3.0.0 - Global $topic variable. Please use function TOPIC_getTopic or TOPIC_setTopic instead to determine Geeklog topic
+- [Depreciated] [#871] By Geeklog 3.0.0 - Theme variable $theme_config['supported_version_theme']. Please use theme_gl_version' instead
+- [Depreciated] [#1022] By Geeklog 3.0.0 - Number of variables passed to PLG_getCommentUrlId function. It now requires an Id field passed to it which means the plugin functions it calls (plugin_getcommenturlid_foo) requires the same thing
+- [Required] [#1023] By Geeklog 3.0.0 - The Comment Library API has had functions added or modified to address a number of issues. This includes: PLG_commentDelete (new $returnBoolean field added), PLG_getCommentUrlId (new $id field added), PLG_commentEnabled (New Function), PLG_approveCommentSubmission (New Function, only required if have submissions and need to do something after new comment approval)
+
+Since Geeklog v2.2.0
+- [Depreciated] [NA] By Geeklog 3.0.0 - Com_refresh. Use COM_redirect instead
+Since Geeklog v2.1.2
+- [Depreciated] [NA] By Geeklog 3.0.0 - CTL_setTemplateRoot. Plugins must use COM_newTemplate and either CTL_core_templatePath or CTL_plugin_templatePath
+Since Geeklog v1.4.0
+- [Depreciated] [NA] By Geeklog 3.0.0 - COM_userComments function. Use CMT_userComments instead
+
 April 16 2020 (2.2.1sr1)
 ------------
 Explanation of list item:
