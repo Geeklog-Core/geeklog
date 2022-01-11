@@ -436,7 +436,7 @@ function DB_affectedRows($recordSet)
  *
  * @param        mixed   $recordSet The record set to operate on
  * @param        boolean $both      get both assoc and numeric indices
- * @return       array      Returns data for a record in an array
+ * @return       array|false        Returns data for a record in an array or false if there is no more row
  */
 function DB_fetchArray($recordSet, $both = true)
 {
