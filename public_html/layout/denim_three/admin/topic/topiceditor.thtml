@@ -17,8 +17,8 @@
       <dt><label for="admin-topiceditor-inherit">{lang_inherit}</label></dt>
       <dd class="controls_text"><label><input type="checkbox" {inherit_checked} name="inherit" id="admin-topiceditor-inherit" class="uk-checkbox"{xhtml}><span class="fieldhelp">{lang_inherit_info}</span></label></dd>
 
-      <dt><label for="admin-topiceditor-hidden">{lang_hidden}</label></dt>
-      <dd class="controls_text"><label><input type="checkbox" {hidden_checked} name="hidden" id="admin-topiceditor-hidden" class="uk-checkbox"{xhtml}><span class="fieldhelp">{lang_hidden_info}</span></label></dd>
+      <dt class="admin-topiceditor-hidden-element" style="display: none"><label for="admin-topiceditor-hidden">{lang_hidden}</label></dt>
+      <dd class="controls_text admin-topiceditor-hidden-element" style="display: none"><label><input type="checkbox" {hidden_checked} name="hidden" id="admin-topiceditor-hidden" class="uk-checkbox"{xhtml}><span class="fieldhelp">{lang_hidden_info}</span></label></dd>
 
       <dt><label for="admin-topiceditor-parent_id">{lang_parent_id}</label></dt>
       <dd>

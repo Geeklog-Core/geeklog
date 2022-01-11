@@ -119,6 +119,8 @@ function edittopic($tid = '')
     }
     $topic_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/topic'));
     $topic_templates->set_file('editor', 'topiceditor.thtml');
+    $_SCRIPTS->setJavaScriptFile('admin.topic', '/javascript/admin.topic.js');
+
     if (!empty($tid) && SEC_hasRights('topic.edit')) {
         $topic_templates->set_var('allow_delete', true);
         $topic_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
