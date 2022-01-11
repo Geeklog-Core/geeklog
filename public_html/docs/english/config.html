@@ -2426,6 +2426,10 @@ supported for URLs to articles, topics, static pages, the article directory, and
         <td>https://www.example.com/article.php/@sid/print</td>
     </tr>
     <tr>
+        <td>https://www.example.com/article.php?story=@sid&page=@page</td>
+        <td>https://www.example.com/article.php/@sid/@page</td>
+    </tr>	
+    <tr>
         <td>https://www.example.com/index.php?topic=@topic</td>
         <td>https://www.example.com/index.php/topic/@topic/</td>
     </tr>
@@ -2489,48 +2493,54 @@ The topic Id that will be used to represent the homepage is a dash "-". This is 
         <td>110</td>
     </tr>
     <tr>
+        <td>https://www.example.com/article/@sid/@page</td>
+        <td>https://www.example.com/article.php?story=@sid&page=@page</td>
+        <td>120</td>
+    </tr>
+    <tr>
         <td>https://www.example.com/topic/@topic</td>
         <td>https://www.example.com/index.php?topic=@topic</td>
-        <td>120</td>
+        <td>130</td>
     </tr>
     <tr>
         <td>https://www.example.com/topic/@topic/@page</td>
         <td>https://www.example.com/index.php?topic=@topic&page=@page</td>
-        <td>130</td>
+        <td>140</td>
     </tr>
     <tr>
         <td>https://www.example.com/archives/@topic/@year/@month</td>
         <td>https://www.example.com/directory.php?topic=@topic&year=@year&month=@month</td>
-        <td>140</td>
+        <td>150</td>
     </tr>
     <tr>
         <td>https://www.example.com/page/@page</td>
         <td>https://www.example.com/staticpages/index.php?page=@page</td>
-        <td>150</td>
+        <td>160</td>
     </tr>
     <tr>
         <td>https://www.example.com/page/@page/print</td>
         <td>https://www.example.com/staticpages/index.php?page=@page&disp_mode=print</td>
-        <td>160</td>
+        <td>170</td>
     </tr>
 
     <tr>
         <td>https://www.example.com/links/portal/@item</td>
         <td>https://www.example.com/links/portal.php?what=link&item=@item</td>
-        <td>170</td>
+        <td>180</td>
     </tr>
     <tr>
         <td>https://www.example.com/links/category/@cat</td>
         <td>https://www.example.com/links/index.php?category=@cat</td>
-        <td>180</td>
+        <td>190</td>
     </tr>
     </tbody>
 </table>
 
 <p>Look at the second row in the table.  This means if you access "https://www.example.com/index.php/article/@sid/print",
     then you will be redirected to "https://www.example.com/article.php?article=@sid&mode=print".
-    @sid is an article ID.</p>
-<p>Then, look at the third row.  You will see an at mark (@), followed by alphabetical
+    @sid is an article ID.<b>PLEASE NOTE that this route must always be above the third row which is for routing articles 
+	with page numbers. The reason for this is backwards compatibility and for websites that just have URL Rewrite enabled and not URL Routing.</b></p>
+<p>Then, look at the fourth row.  You will see an at mark (@), followed by alphabetical
     letters.  This is a placeholder.  For instance, when you access
     "https://www.example.com/index.php/archives/all/2016/1", @topic matches "all", @year matches "2016",
     and @month matches "1" in the rule.  Then, all placeholders in the route will be replaced with

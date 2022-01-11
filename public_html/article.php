@@ -99,12 +99,19 @@ $mode = Geeklog\Input::fPost('mode', Geeklog\Input::fPost('format', ''));
 if (!empty($mode)) {
     $sid = Geeklog\Input::fPost('story', '');
 } else {
-    // This supports URL Rewrite
-    COM_setArgNames(array('story', 'mode'));
-    $sid = COM_applyFilter(COM_getArgument('story'));
-    $mode = COM_applyFilter(COM_getArgument('mode')); // Could be mode or page if numeric
+	// This supports URL Rewrite
+	COM_setArgNames(array('story', 'mode'));
+	$sid = COM_applyFilter(COM_getArgument('story'));
+	$mode = COM_applyFilter(COM_getArgument('mode')); // Could be mode or page if numeric
+	
+	if ($_CONF['url_rewrite'] && $_CONF['url_routing']) {
+		// Quirk of Router class as it matches based on how route is setup and not order set in COM_setArgNames (so that is why it doesn't need to be set in the COM_setArgNames above
+		$articlePage = (int) COM_getArgument('page');	
+	}
 }
-$articlePage = (int) Geeklog\Input::fGet('page', 0);
+if (!isset($articlePage)) {
+	$articlePage = (int) Geeklog\Input::fGet('page', 0);
+}
 
 if ($_CONF['allow_page_breaks'] == 1 && $articlePage == 0) {
     // $mode was used to store page ids before Geeklog v2.2.1 See Issue #1022

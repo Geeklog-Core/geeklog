@@ -110,7 +110,7 @@ class Url
     {
         if ($this->urlRewrite) {
             if ($this->urlRouting) {
-                // Grab converted orginal route url from router class and then parse query string into array
+                // Grab converted original route url from router class and then parse query string into array
                 parse_str( parse_url(Router::getRoute(), PHP_URL_QUERY), $this->arguments);
             } else {
                 $this->arguments = $this->originalArguments;

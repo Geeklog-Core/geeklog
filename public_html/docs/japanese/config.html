@@ -2189,51 +2189,57 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     </thead>
     <tbody>
     <tr>
-        <td>http://yourdomain/article/@sid</td>
-        <td>http://yourdomain/article.php?story=@sid</td>
+        <td>https://www.example.com/article/@sid</td>
+        <td>https://www.example.com/article.php?story=@sid</td>
         <td>100</td>
     </tr>
     <tr>
-        <td>http://yourdomain/article/@sid/print</td>
-        <td>http://yourdomain/article.php?story=@sid&mode=print</td>
+        <td>https://www.example.com/article/@sid/print</td>
+        <td>https://www.example.com/article.php?story=@sid&mode=print</td>
         <td>110</td>
     </tr>
     <tr>
-        <td>http://yourdomain/archives/@topic/@year/@month</td>
-        <td>http://yourdomain/directory.php?topic=@topic&year=@year&month=@month</td>
+        <td>https://www.example.com/article/@sid/@page</td>
+        <td>https://www.example.com/article.php?story=@sid&page=@page</td>
         <td>120</td>
     </tr>
     <tr>
-        <td>http://yourdomain/page/@page</td>
-        <td>http://yourdomain/staticpages/index.php?page=@page</td>
+        <td>https://www.example.com/topic/@topic</td>
+        <td>https://www.example.com/index.php?topic=@topic</td>
         <td>130</td>
     </tr>
     <tr>
-        <td>http://yourdomain/links/portal/@item</td>
-        <td>http://yourdomain/links/portal.php?what=link&item=@item</td>
+        <td>https://www.example.com/topic/@topic/@page</td>
+        <td>https://www.example.com/index.php?topic=@topic&page=@page</td>
         <td>140</td>
     </tr>
     <tr>
-        <td>http://yourdomain/links/category/@cat</td>
-        <td>http://yourdomain/links/index.php?category=@cat</td>
+        <td>https://www.example.com/archives/@topic/@year/@month</td>
+        <td>https://www.example.com/directory.php?topic=@topic&year=@year&month=@month</td>
         <td>150</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/page/@page</td>
+        <td>https://www.example.com/staticpages/index.php?page=@page</td>
+        <td>160</td>
     </tr>
     <tr>
         <td>https://www.example.com/page/@page/print</td>
         <td>https://www.example.com/staticpages/index.php?page=@page&disp_mode=print</td>
-        <td>160</td>
+        <td>170</td>
     </tr>
 
     <tr>
         <td>https://www.example.com/links/portal/@item</td>
         <td>https://www.example.com/links/portal.php?what=link&item=@item</td>
-        <td>170</td>
+        <td>180</td>
     </tr>
     <tr>
         <td>https://www.example.com/links/category/@cat</td>
         <td>https://www.example.com/links/index.php?category=@cat</td>
-        <td>180</td>
+        <td>190</td>
     </tr>
+
     </tbody>
 </table>
 
