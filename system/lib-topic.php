@@ -1826,6 +1826,10 @@ function TOPIC_getUrl($topicId)
                 'topic'           => $topicId,
             ))
         );
+
+        if (strpos($retval, '?') !== false) {
+            $retval = $_CONF['site_url'] . '/index.php/topic/' . rawurlencode($topicId);
+        }
     /*
     if ($_CONF['url_rewrite'] && ($_CONF['url_routing'] == Router::ROUTING_WITH_INDEX_PHP)) {
         $retval = COM_buildURL(

@@ -156,7 +156,7 @@ class Router
         }
 
         // $_SERVER['PATH_INFO'] is unavailable
-        if (!isset($_SERVER['PATH_INFO']) || empty($_SERVER['PATH_INFO'])) {
+        if (empty($_SERVER['PATH_INFO'])) {
             return false;
         }
 
@@ -213,7 +213,7 @@ class Router
             $route = $A['route'];
 
             // HTTP response code since v2.2.0
-            $responseCode = isset($A['response_code']) ? (int) $A['response_code'] : self::DEFAULT_STATUS_CODE;
+            $responseCode = isset($A['status_code']) ? (int) $A['status_code'] : self::DEFAULT_STATUS_CODE;
 
             // Try simple comparison without placeholders
             if (strcasecmp($rule, $pathInfo) === 0) {
@@ -230,7 +230,7 @@ class Router
                     if ($path == '/index.php') {
                         return;
                     } else {
-                        // Lets load in the required file
+                        // Let's load in the required file
                         require_once $_CONF['path_html'] . $path;
                     }
                     //self::proxy($route); // old way that used a redirect which causes the page to basically load twice. See issue #945
@@ -307,6 +307,13 @@ class Router
             }
         }
 
+        // when URL routing is enabled but no rules for topics have matched the pathinfo,
+        // redirect to [site_url]/index.php/topic/{topic_id}
+        if (stripos($pathInfo, '/topic/') === 0) {
+            $url = $_CONF['site_url'] . '/index.php?topic=' . substr($pathInfo, strlen('/topic/'));
+            header('Location: ' . $url);
+        }
+
         return false;
     }
 
@@ -375,6 +382,10 @@ class Router
 
             // Try simple comparison without placeholders
             if (strcasecmp($route, $url) === 0) {
+                if ((int) $A['status_code'] !== 200) {
+                    continue;
+                }
+
                 $retval = $rule;
                 $retval = str_replace('&', '&amp;', $retval);
 

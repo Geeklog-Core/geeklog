@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Page that is displayed upon a successful Geeklog installation or upgrade  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2021 by the following authors:                         |
+// | Copyright (C) 2000-2022 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -147,10 +147,15 @@ CTL_clearCache();
 $T = COM_newTemplate(CTL_core_templatePath(__DIR__ . '/layout'));
 $T->set_file('success', 'success.thtml');
 
+$msg = '';
 if ($type === 'install') {
     $message = $LANG_SUCCESS[20];
 } elseif ($type === 'upgrade') {
     $message = $LANG_SUCCESS[21];
+
+    if (isset($_GET['msg'])) {
+        $msg = $LANG_SUCCESS[(int) $_GET['msg']];
+    }
 } else {
     $message = $LANG_SUCCESS[22];
 }
@@ -161,6 +166,7 @@ $T->set_var([
     'conf_site_url'       => $_CONF['site_url'],
     'is_install'          => ($type === 'install'),
     'lang_message'        => $message,
+    'msg'                 => $msg,
     'lang_success_1'      => $LANG_SUCCESS[1],
     'lang_success_2'      => $LANG_SUCCESS[2],
     'lang_success_3'      => $LANG_SUCCESS[3],

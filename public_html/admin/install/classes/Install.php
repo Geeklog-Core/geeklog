@@ -294,7 +294,7 @@ class Install extends Common
 
                 $this->setVersion(Common::$env['siteconfig_path']);
 
-                if ($installPlugins) {
+                if (!$installPlugins) {
                     // do a default install of all available plugins
 
                     /**

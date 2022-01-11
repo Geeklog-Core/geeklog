@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | install-plugins.php                                                       |
 // |                                                                           |
 // | Install plugins.                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2017 by the following authors:                         |
+// | Copyright (C) 2008-2022 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West - matt AT mattdanger DOT net                           |
 // +---------------------------------------------------------------------------+
@@ -34,6 +34,8 @@
 // +---------------------------------------------------------------------------+
 
 global $_CONF, $_TABLES, $LANG_INSTALL, $LANG_PLUGINS;
+
+use Geeklog\Install\Common;
 
 if (!defined('GL_INSTALL_ACTIVE')) {
     define('GL_INSTALL_ACTIVE', true);
@@ -61,7 +63,7 @@ $installer = new Installer();
 
 // Set some vars
 $html_path = $installer->getHtmlPath();
-$language = $installer->get('language', $installer->post('language', Installer::DEFAULT_LANGUAGE));
+$language = $installer->get('language', $installer->post('language', Common::DEFAULT_LANGUAGE));
 $siteconfig_path = '../../siteconfig.php';
 $pi_name = '';
 
@@ -83,8 +85,8 @@ if ($_CONF['path'] === '/path/to/Geeklog/') { // If the Geeklog path has not bee
 
 $dbconfig_path = isset($_POST['dbconfig_path'])
     ? $_POST['dbconfig_path']
-    : (isset($_GET['dbconfig_path']) ? $_GET['dbconfig_path'] : $_CONF['path'] . '/db-config.php');
-$dbconfig_path = $installer->sanitizePath($dbconfig_path);
+    : (isset($_GET['dbconfig_path']) ? $_GET['dbconfig_path'] : $_CONF['path'] . 'db-config.php');
+Common::$env['dbconfig_path'] = $dbconfig_path = $installer->sanitizePath($dbconfig_path);
 $step = isset($_GET['step'])
     ? $_GET['step']
     : (isset($_POST['step']) ? $_POST['step'] : 1);
@@ -92,7 +94,7 @@ $step = isset($_GET['step'])
 if (file_exists(PATH_INSTALL . 'language/' . $language . '.php')) {
     include_once PATH_INSTALL . 'language/' . $language . '.php';
 } else {
-    include_once PATH_INSTALL . 'language/' . Installer::DEFAULT_LANGUAGE . '.php';
+    include_once PATH_INSTALL . 'language/' . Common::DEFAULT_LANGUAGE . '.php';
 }
 
 if (!isset($LANG_DIRECTION)) {
@@ -216,7 +218,7 @@ switch ($step) {
             }
         } // End check if a plugin file was uploaded
 
-        // If the web server will allow the user to upload a plugin
+        // If the web server allows the user to upload a plugin
         if ($upload_enabled) {
             // Show the upload form
             $content .=
@@ -241,6 +243,7 @@ switch ($step) {
         $plugins_dir = $_CONF['path'] . 'plugins/';
         $numNewPlugins = 0;
         $newPlugins = array();
+        clearstatcache();
 
         foreach (scandir($_CONF['path'] . 'plugins/') as $plugin) {
             if (($plugin !== '.') && ($plugin !== '..') && ($plugin !== 'CVS')) {
@@ -440,7 +443,7 @@ switch ($step) {
 
                     $inst_params = $auto_install($pi_name);
 
-                    if (($inst_params === false) || empty($inst_params)) {
+                    if (empty($inst_params)) {
                         continue; // with next plugin
                     }
 

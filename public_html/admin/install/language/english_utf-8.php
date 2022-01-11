@@ -211,7 +211,9 @@ $LANG_SUCCESS = array(
     23 => 'Would you like to delete all the files and directories used during the installation?',
     24 => 'Yes, please.',
     25 => 'No, thanks.  I will manually delete them afterwards.',
-    26 => 'Remember, if you have disabled your site in <code>public_html/siteconfig.php</code>, you will need to reenable it again before you can use your site.'
+    26 => 'Remember, if you have disabled your site in <code>public_html/siteconfig.php</code>, you will need to reenable it again before you can use your site.',
+    27 => 'Successfully upgraded all plugins.',
+    28 => 'Failed to upgrade some plugins.  They are disabled now.',
 );
 
 // +---------------------------------------------------------------------------+

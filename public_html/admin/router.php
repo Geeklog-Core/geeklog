@@ -463,7 +463,7 @@ function saveRoute($rid, $method, $rule, $route, $statusCode, $priority, $enable
         $enabled = 0;
     }
         
-    $A['is_enabled'] = ($_POST['is_enabled'] == 'on') ? 1 : 0;
+//    $A['is_enabled'] = ($_POST['is_enabled'] == 'on') ? 1 : 0;
 
     if ($messageText !== '') {
         $content = COM_showMessageText($messageText, $MESSAGE[122]) . getRouteEditor($rid);

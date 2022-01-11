@@ -23,17 +23,16 @@ class Migrate extends Common
      * NOTE:    This code is a modified copy from PHP.net
      *
      * @param  int  $size        file size
-     * @param  int  $dec_places  Number of decimal places
      * @return  string             file size string
      */
-    private function formatSize($size, $dec_places = 0)
+    private function formatSize($size)
     {
         $sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
         for ($i = 0; ($size > 1024 && isset($sizes[$i + 1])); $i++) {
             $size /= 1024;
         }
 
-        return round($size, $dec_places) . ' ' . $sizes[$i];
+        return round($size, 0) . ' ' . $sizes[$i];
     }
 
     /**
@@ -855,7 +854,7 @@ HTML;
             // We did a database upgrade above. Now that any missing plugins
             // have been disabled and we've loaded lib-common.php, perform
             // upgrades for the remaining plugins.
-            $disabled_plugins = $this->upgradePlugins(true, false, $_OLD_CONF);
+            $disabled_plugins = $this->upgradePlugins(true, true, $_OLD_CONF);
         }
 
         // finally, check for any new plugins and install them
