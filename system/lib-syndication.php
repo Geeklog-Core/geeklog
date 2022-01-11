@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog syndication library.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2020 by the following authors:                         |
+// | Copyright (C) 2003-2022 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun        - dirk AT haun-online DOT de                    |
 // |          Michael Jervis   - mike AT fuckingbrit DOT com                   |
@@ -146,7 +146,7 @@ function SYND_feedUpdateCheckTopic($tid, $update_info, $limit, $updated_topic = 
         AND ta.type = 'article' AND ta.id = sid
         AND ta.tid = '$tid'" . COM_getTopicSQL('AND', 1, 'ta') . "
         GROUP BY sid, date
-        ORDER BY date DESC $limitsql";
+        ORDER BY date DESC, sid $limitsql";
 
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
@@ -251,7 +251,7 @@ function SYND_getFeedContentPerTopic($tid, $limit, &$link, &$update, $contentLen
             AND ta.type = 'article' AND ta.id = sid
             AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '$tid')))
             GROUP BY sid, uid, title, introtext, bodytext, postmode, UNIX_TIMESTAMP(date), commentcode, trackbackcode, date
-            ORDER BY date DESC $limitsql";
+            ORDER BY date DESC, sid $limitsql";
 
         $result = DB_query($sql);
 
