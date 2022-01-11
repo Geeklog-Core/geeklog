@@ -1992,8 +1992,6 @@ function SEC_loginForm($use_config = array())
         $loginform->set_var('forgetpassword_link', $forget);
     }
     $loginform->set_var('lang_login', $config['button_text']);
-    $loginform->set_var('lang_remote_login', $LANG04[167]);
-    $loginform->set_var('lang_remote_login_desc', $LANG04[168]);
     $loginform->set_var('end_block', COM_endBlock());
 
     // 3rd party remote authentication.
@@ -2108,7 +2106,11 @@ function SEC_loginForm($use_config = array())
     }
 
     if ($have_remote_login) {
-        $loginform->set_var('remote_login_class', 'remote-login-enabled');
+        $loginform->set_var('remote_login_class', 'remote-login-enabled'); // Used by Older themes
+		
+		$loginform->set_var('lang_remote_login', $LANG04[167]);
+		$loginform->set_var('lang_remote_login_desc', $LANG04[168]);
+		$loginform->set_var('user_remote_login_desc_long', $LANG04['user_remote_login_desc_long']);
     }
 
     if (!$config['no_plugin_vars']) {

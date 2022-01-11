@@ -6,7 +6,7 @@
       <legend>{lang_register}</legend>
 
       <p class="form_message">{lang_instructions}</p>
-
+	  
       <dl class="form_block">
         <dt><label for="registrationform-username">{lang_username}</label></dt>
         <dd><input type="text" maxlength="16" name="username" value="{username}" id="registrationform-username" class="size3"{xhtml}></dd>
@@ -28,6 +28,10 @@
       </div>
     </fieldset>
   </form>
+  
+  {!if lang_remote_register_instructions}
+  <p>{lang_remote_register_instructions}</p>
+  {!endif}
 {end_block}
 
 {# end {templatelocation} #}

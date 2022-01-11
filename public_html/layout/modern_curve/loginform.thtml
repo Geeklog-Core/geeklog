@@ -30,8 +30,10 @@
   </ul>
 </form>
 
+{!if lang_remoteloginoptions}
 <div>{lang_remoteloginoptions}</div>
 {oauth_login}
 {openid_login}
+{!endif}
 
 {# end {templatelocation} #}

@@ -28,7 +28,6 @@
     </div>
     {!endif}
     
-
     <div class="navi">
       {!if captcha_required}<div>{lang_loginform}</div>{!endif}
       <div>{lang_signup}</div>
@@ -37,8 +36,10 @@
   </fieldset>
 </form>
 
+{!if lang_remoteloginoptions}
 <div>{lang_remoteloginoptions}</div>
 {oauth_login}
 {openid_login}
+{!endif}
 
 {# end {templatelocation} #}

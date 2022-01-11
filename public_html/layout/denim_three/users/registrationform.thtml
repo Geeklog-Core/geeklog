@@ -28,6 +28,10 @@
       </div>
     </fieldset>
   </form>
+  
+  {!if lang_remote_register_instructions}
+  <p>{lang_remote_register_instructions}</p>
+  {!endif}  
 {end_block}
 
 {# end {templatelocation} #}

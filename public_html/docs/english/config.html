@@ -900,26 +900,24 @@ the admin panel.</p>
   <td valign="top"><a name="desc_user_login_method_openid">openid</a></td>
   <td valign="top">false</td>
   <td valign="top">Whether to allow logins using <a href="http://openid.net/">OpenID</a>. This will display a special OpenID login below the normal login field.<br />
-    <strong>Note:</strong> Currently only OpenID 1.1 is supported.</td></tr>
+  If User Submissions is enabled then this login type will be disabled. It is currently not possible to have these type of accounts go through the submission process.<br />
+  <strong>Note:</strong> Currently only OpenID 1.1 is supported.</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_3rdparty">3rdparty</a></td>
   <td valign="top">false</td>
   <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
-    an account with some other service to log into your Geeklog site with the
-    login for that service. Currently supported: LDAP.<br />
-    Please note that to enable login for a specific service, you need an
-    authorization class in <span class="tt">system/classes/authentication</span>. If you don't
-    want to allow LDAP users, simply
-    remove the class file for the unwanted service.<br />
-    See <a href="https://www.geeklog.net/article.php/remote-authentication">Remote Authentication in Geeklog</a> for more information.</td></tr>
+  an account with some other service to log into your Geeklog site with the login for that service. Currently supported: LDAP.<br />
+  Please note that to enable login for a specific service, you need an authorization class in <span class="tt">system/classes/authentication</span>. If you don't want to allow LDAP users, simply remove the class file for the unwanted service.<br />
+  If User Submissions is enabled then this login type will be disabled. It is currently not possible to have these type of accounts go through the submission process.<br />
+  See <a href="https://www.geeklog.net/article.php/remote-authentication">Remote Authentication in Geeklog</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_oauth">oauth</a></td>
   <td valign="top">false</td>
   <td valign="top">Whether to allow logins using <a href="http://oauth.net/">OAuth</a>. This will display a special OAuth login below the normal login field.<br />
-    <strong>Note:</strong> Currently OAuth 1.0, 1.0a, and 2.0 is supported (depends on what the OAuth provider supports). Current login methods supported: Facebook, Twitter, LinkedIn, Google, Microsoft, and Yahoo.<br />
-    To enable logins for a specific method, you need to enable the method below and you must also update the config options with the correct key and secret string values.
-    The PHP extension OpenSSL is required to be loaded for OAuth logins to work.<br />
-    See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
+  <strong>Note:</strong> Currently OAuth 1.0, 1.0a, and 2.0 is supported (depends on what the OAuth provider supports). Current login methods supported: Facebook, Twitter, LinkedIn, Google, Microsoft, and Yahoo.<br />
+  To enable logins for a specific method, you need to enable the method below and you must also update the config options with the correct key and secret string values. The PHP extension OpenSSL is required to be loaded for OAuth logins to work.<br />
+  If User Submissions is enabled then this login type will be disabled. It is currently not possible to have these type of accounts go through the submission process.<br />
+  See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_google_login">google_login</a></td>
   <td valign="top">false</td>

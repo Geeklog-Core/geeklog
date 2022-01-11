@@ -398,6 +398,14 @@ function USER_newUserForm($msg = 0)
     $user_templates->set_var('lang_email_conf', $LANG04[124]);
     $user_templates->set_var('lang_warning', $LANG04[24]);
     $user_templates->set_var('lang_register', $LANG04[27]);
+	
+	// Is Remote Logins Enabled?
+    if (($_CONF['user_login_method']['oauth'] || $_CONF['user_login_method']['openid']) && 
+	($_CONF['usersubmission'] == 0) && !$_CONF['disable_new_user_registration']) {
+		$user_templates->set_var('lang_remote_register_instructions', $LANG04['remote_register_instructions']);
+			
+	}
+	
     PLG_templateSetVars('registration', $user_templates);
     $user_templates->set_var('end_block', COM_endBlock());
 
@@ -1169,7 +1177,7 @@ switch ($mode) {
         break;
     case 'tokenexpired':
         // deliberate fallthrough (see below)
-    default:
+    default: 
         // prevent dictionary attacks on passwords
         COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
         if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {

@@ -31,8 +31,20 @@
       </div>
    </fieldset>
   </form>
-  {openid_login}
-  {oauth_login}
+  
+  {!if lang_remote_login}
+  <form id="userremoteloginform" class="compact uk-form">
+    <fieldset>
+      <legend>{lang_remote_login}</legend>
+
+      <p class="form_message">{user_remote_login_desc_long}</p>
+  
+      {oauth_login}
+	  {openid_login}
+	  
+   </fieldset>
+  </form>
+  {!endif}
 {end_block}
 
 {# end {templatelocation} #}
