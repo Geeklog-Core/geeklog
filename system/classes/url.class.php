@@ -112,17 +112,22 @@ class Url
             if ($this->urlRouting) {
                 // Grab converted original route url from router class and then parse query string into array
                 parse_str( parse_url(Router::getRoute(), PHP_URL_QUERY), $this->arguments);
-            } else {
-                $this->arguments = $this->originalArguments;
-                
-                $newArray = array();
+				
+				// If empty array returned then possible no routes found so fallback to rewrite
+				if(!empty($this->arguments)) {
+					return true;
+				}
+			}
+			
+			$this->arguments = $this->originalArguments;
+			
+			$newArray = array();
 
-                foreach ($names as $name) {
-                    $newArray[$name] = array_shift($this->arguments);
-                }
+			foreach ($names as $name) {
+				$newArray[$name] = array_shift($this->arguments);
+			}
 
-                $this->arguments = $newArray;
-            }
+			$this->arguments = $newArray;
 
             return true;
         } else {
