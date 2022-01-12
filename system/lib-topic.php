@@ -668,7 +668,9 @@ function TOPIC_hasMultiTopicAccess($type, $id = '', $tid = '', $sub_type = '')
             $result = DB_query($sql);
             $A = DB_fetchArray($result);
             $nrows = DB_numRows($result);
-            $tid = $A['tid'];
+			if ($nrows > 0) {
+				$tid = $A['tid'];
+			}
         } else {
             if (is_array($tid)) {
                 $nrows = count($tid);
