@@ -299,4 +299,100 @@ class Url
     {
         $this->urlRewrite = (bool) $switch;
     }
+
+    /**
+     * Return the current URL
+     *
+     * @param  string  $siteUrl
+     * @return string
+     */
+    public static function getCurrentURL($siteUrl)
+    {
+        static $thisUrl;
+
+        if ($thisUrl !== null) {
+            return $thisUrl;
+        }
+
+        $thisUrl = '';
+
+        if (empty($_SERVER['SCRIPT_URI'])) {
+            if (!empty($_SERVER['DOCUMENT_URI'])) {
+                $document_uri = $_SERVER['DOCUMENT_URI'];
+                $firstSlash = strpos($siteUrl, '/');
+
+                if ($firstSlash === false) {
+                    // special case - assume it's okay
+                    $thisUrl = $siteUrl . $document_uri;
+                } elseif ($firstSlash + 1 == strrpos($siteUrl, '/')) {
+                    // site is in the document root
+                    $thisUrl = $siteUrl . $document_uri;
+                } else {
+                    // extract server name first
+                    $pos = strpos($siteUrl, '/', $firstSlash + 2);
+                    $thisUrl = substr($siteUrl, 0, $pos) . $document_uri;
+                }
+            }
+        } else {
+            $thisUrl = $_SERVER['SCRIPT_URI'];
+        }
+
+        if (!empty($thisUrl) && !empty($_SERVER['QUERY_STRING'])) {
+            $thisUrl .= '?' . $_SERVER['QUERY_STRING'];
+        }
+
+        if (empty($thisUrl)) {
+            $requestUri = $_SERVER['REQUEST_URI'];
+            if (empty($_SERVER['REQUEST_URI'])) {
+                if (empty($_SERVER['PATH_INFO'])) {
+                    $requestUri = $_SERVER['SCRIPT_NAME'];
+                } else {
+                    $requestUri = $_SERVER['PATH_INFO'];
+                }
+
+                if (!empty($_SERVER['QUERY_STRING'])) {
+                    $requestUri .= '?' . $_SERVER['QUERY_STRING'];
+                }
+            }
+
+            $firstSlash = strpos($siteUrl, '/');
+
+            if ($firstSlash === false) {
+                // special case - assume it's okay
+                $thisUrl = $siteUrl . $requestUri;
+            } elseif ($firstSlash + 1 == strrpos($siteUrl, '/')) {
+                // site is in the document root
+                $thisUrl = $siteUrl . $requestUri;
+            } else {
+                // extract server name first
+                $pos = strpos($siteUrl, '/', $firstSlash + 2);
+                $thisUrl = substr($siteUrl, 0, $pos) . $requestUri;
+            }
+        }
+
+        return $thisUrl;
+    }
+
+    /**
+     * Return $_SERVER['PATH_INFO']
+     *
+     * @param  string  $siteUrl
+     * @return string
+     */
+    public static function getPathInfo($siteUrl)
+    {
+        if (isset($_SERVER['PATH_INFO'])) {
+            return $_SERVER['PATH_INFO'];
+        } else {
+            $retval = str_replace($siteUrl, '', self::getCurrentURL($siteUrl));
+
+            if (preg_match('@^.+?\.php/@i', $retval, $match)) {
+                $retval = '/' . str_replace($match[0], '', $retval);
+            } elseif (($retval !== '') && (strpos($retval, '/') !== 0)) {
+                $retval = '/' . $retval;
+            }
+
+            return $retval;
+        }
+    }
 }

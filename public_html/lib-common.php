@@ -6984,69 +6984,8 @@ function COM_isAjax()
 function COM_getCurrentURL()
 {
     global $_CONF;
-    static $thisUrl;
 
-    if ($thisUrl !== null) {
-        return $thisUrl;
-    }
-
-    $thisUrl = '';
-
-    if (empty($_SERVER['SCRIPT_URI'])) {
-        if (!empty($_SERVER['DOCUMENT_URI'])) {
-            $document_uri = $_SERVER['DOCUMENT_URI'];
-            $firstSlash = strpos($_CONF['site_url'], '/');
-
-            if ($firstSlash === false) {
-                // special case - assume it's okay
-                $thisUrl = $_CONF['site_url'] . $document_uri;
-            } elseif ($firstSlash + 1 == strrpos($_CONF['site_url'], '/')) {
-                // site is in the document root
-                $thisUrl = $_CONF['site_url'] . $document_uri;
-            } else {
-                // extract server name first
-                $pos = strpos($_CONF['site_url'], '/', $firstSlash + 2);
-                $thisUrl = substr($_CONF['site_url'], 0, $pos) . $document_uri;
-            }
-        }
-    } else {
-        $thisUrl = $_SERVER['SCRIPT_URI'];
-    }
-
-    if (!empty($thisUrl) && !empty($_SERVER['QUERY_STRING'])) {
-        $thisUrl .= '?' . $_SERVER['QUERY_STRING'];
-    }
-
-    if (empty($thisUrl)) {
-        $requestUri = $_SERVER['REQUEST_URI'];
-        if (empty($_SERVER['REQUEST_URI'])) {
-            if (empty($_SERVER['PATH_INFO'])) {
-                $requestUri = $_SERVER['SCRIPT_NAME'];
-            } else {
-                $requestUri = $_SERVER['PATH_INFO'];
-            }
-
-            if (!empty($_SERVER['QUERY_STRING'])) {
-                $requestUri .= '?' . $_SERVER['QUERY_STRING'];
-            }
-        }
-
-        $firstSlash = strpos($_CONF['site_url'], '/');
-
-        if ($firstSlash === false) {
-            // special case - assume it's okay
-            $thisUrl = $_CONF['site_url'] . $requestUri;
-        } elseif ($firstSlash + 1 == strrpos($_CONF['site_url'], '/')) {
-            // site is in the document root
-            $thisUrl = $_CONF['site_url'] . $requestUri;
-        } else {
-            // extract server name first
-            $pos = strpos($_CONF['site_url'], '/', $firstSlash + 2);
-            $thisUrl = substr($_CONF['site_url'], 0, $pos) . $requestUri;
-        }
-    }
-
-    return $thisUrl;
+    return Url::getCurrentURL($_CONF['site_url']);
 }
 
 /**

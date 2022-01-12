@@ -155,12 +155,13 @@ class Router
             return false;
         }
 
-        // $_SERVER['PATH_INFO'] is unavailable
-        if (empty($_SERVER['PATH_INFO'])) {
+        // Get $_SERVER['PATH_INFO']
+        $pathInfo = Url::getPathInfo($_CONF['site_url']);
+        if (empty($pathInfo) || ($pathInfo === '/')) {
             return false;
         }
 
-        $pathInfo = COM_applyBasicFilter($_SERVER['PATH_INFO']);
+        $pathInfo = COM_applyBasicFilter($pathInfo);
         // Note: For URL Routing with no "Index.php" and when Geeklog site url has a sub directory the rules in the Route Manager
         // need to be updated to include the sub directory in the rule part only (not the route).
         // At some point we should look into striping the sub directory from the pathinfo for this case only instead of having the Admins do 
