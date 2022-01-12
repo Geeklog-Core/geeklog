@@ -952,11 +952,13 @@ class Article
         }
 
         // Load up the topic name and icon
-        $topic = DB_query("SELECT tid, topic, imageurl FROM {$_TABLES['topics']} WHERE tid='" . TOPIC_getTopicDefault('topic') . "'");
-        $topic = DB_fetchArray($topic);
-        $this->_tid = $topic['tid'];
-        $this->_topic = $topic['topic'];
-        $this->_imageurl = $topic['imageurl'];
+        $result = DB_query("SELECT tid, topic, imageurl FROM {$_TABLES['topics']} WHERE tid='" . TOPIC_getTopicDefault('topic') . "'");
+		if ($result && (DB_numRows($result) > 0)) {
+			$topic = DB_fetchArray($result);
+			$this->_tid = $topic['tid'];
+			$this->_topic = $topic['topic'];
+			$this->_imageurl = $topic['imageurl'];
+		}
 
         // Load the title, page title
         $this->_title = $this->_applyTitleFilter($array['title']);
