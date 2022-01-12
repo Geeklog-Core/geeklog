@@ -3,9 +3,13 @@
 {# variables - index_page (first page) are available as well to use #}
 
 {!if topic_id}
-    {!if topic_title}
-    <h1>{topic_title}</h1>
-    {!endif}
+    <h1>{topic_title} 
+	{!if edit_icon}
+    <span style="float:right;">
+	  {edit_icon}
+    </span>
+	{!endif}
+	</h1>
 {!else}
     {# If topic id does not exist then on homepage #}
 

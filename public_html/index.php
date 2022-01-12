@@ -452,6 +452,32 @@ $tt->set_var('topic_title', $title);
 if ($page == 1) {
     $tt->set_var('first_page', true);
 }
+
+if (!empty($current_topic) && SEC_hasRights('topic.edit') &&
+	(TOPIC_hasMultiTopicAccess('topic', $current_topic) == 3)) {
+	$editUrl = $_CONF['site_admin_url'] . '/topic.php?mode=edit&amp;tid=' . $current_topic;
+	$linkIcon = rtrim($_CONF['path_layout'], '/')  . '/images/edit.' . $_IMAGE_TYPE;
+	$sizeAttributes = COM_getImgSizeAttributes($linkIcon);					
+	$editiconhtml = '<img ' . $sizeAttributes . 'src="' . $_CONF['layout_url']
+		. '/images/edit.' . $_IMAGE_TYPE . '" alt="' . $LANG01[4]
+		. '" title="' . $LANG01[4] . '"' . XHTML . '>';
+	$tt->set_var('edit_link', COM_createLink($LANG01[4], $editUrl));
+	$tt->set_var('edit_url', $editUrl);
+	$tt->set_var('lang_edit_text', $LANG01[4]);
+	$tt->set_var(
+		'edit_icon',
+		COM_createLink(
+			$editiconhtml,
+			$editUrl,
+			array(
+				'class' => 'editlink',
+				'rel'   => 'nofollow',
+			)
+		)
+	);
+	$tt->set_var('edit_image', $editiconhtml);
+}
+
 $tt->parse('output', 'topic');
 $display = $tt->finish($tt->get_var('output'));
 
