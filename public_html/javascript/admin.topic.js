@@ -1,6 +1,7 @@
 $(function() {
     var topicimg = $('.admin-topic-image'),
-        topicSelector = document.getElementById('admin-topiceditor-parent_id');
+        topicSelector = document.getElementById('admin-topiceditor-parent_id'),
+        i, elms;
 
     topicimg.mouseover(function() {
         var
@@ -42,8 +43,15 @@ $(function() {
                 elms = document.getElementsByClassName('admin-topiceditor-hidden-element');
 
             for (i = 0; i < elms.length; i++) {
-                elms[i].style.display = (ev.target.selectedIndex === 0) ? 'none':'';
+                elms[i].style.display = (ev.target.selectedIndex === 0) ? 'none' : '';
             }
         });
+
+        // When the editor is loaded first time
+        elms = document.getElementsByClassName('admin-topiceditor-hidden-element');
+
+        for (i = 0; i < elms.length; i++) {
+            elms[i].style.display = (topicSelector.selectedIndex === 0) ? 'none' : '';
+        }
     }
 });
