@@ -22,7 +22,10 @@ Options -Indexes -MultiViews
     # Directs all Geeklog requests through the site index file
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
+	# For web servers that use PHP FastCGI implementation
     RewriteRule ^(.*)$ /index.php/$1 [L]
+    # For web servers that use PHP-FPM implementation and have issues (if used, comment out line above)
+    # RewriteRule ^(.*)$ /index.php?/$1 [L]	
 </IfModule>
 
 ## Redirect 404 error to Geeklog error page
