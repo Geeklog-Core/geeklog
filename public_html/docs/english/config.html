@@ -1907,20 +1907,20 @@ the admin panel.</p>
   <td valign="top"><a name="desc_user_html">user_html</a></td>
   <td valign="top">&lt;p&gt;, &lt;b&gt;, &lt;i&gt;, &lt;a&gt;, &lt;em&gt;, &lt;br&gt;, &lt;tt&gt;, &lt;hr&gt;, &lt;ol&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;code&gt;, &lt;pre&gt;</td>
   <td valign="top">HTML tags and attributes that normal users are allowed to
-      use in article submissions and comments.</td></tr>
+      use in article submissions and comments. To add an attribute for a tag click the plus button beside it.</td></tr>
 <tr>
   <td valign="top"><a name="desc_admin_html">admin_html</a></td>
   <td valign="top">additional HTML tags, e.g. for tables</td>
   <td valign="top">HTML tags and attributes that admin users are allowed to
       use (in addition to those from user_html). Redefining a tag with
-      additional attributes will overwrite the definition from user_html.</td></tr>
+      additional attributes will overwrite the definition from user_html. To add an attribute for a tag click the plus button beside it.</td></tr>
 <tr>
   <td valign="top"><a name="desc_advanced_html">advanced_html</a></td>
   <td valign="top">additional HTML tags for use with the Advanced Editor, e.g.
       for images</td>
   <td valign="top">Additional HTML tags and attributes that users are allowed
       to use when the <a href="#desc_advanced_editor">Advanced Editor</a> is
-      enabled.</td></tr>
+      enabled. To add an attribute for a tag click the plus button beside it.</td></tr>
 <tr>
   <td valign="top"><a name="desc_skip_html_filter_for_root">skip_html_filter_for_root</a></td>
   <td valign="top">0</td>
@@ -2553,7 +2553,8 @@ The topic Id that will be used to represent the homepage is a dash "-". This is 
     route in the URL Routing screen (admin/router.php).</p>
 <p><strong>Note:</strong> This feature may not work with all web servers. It uses PHP's
     $_SERVER['PATH_INFO'] variable.  Please try it out before you go public with your site.</p>
-<p><strong>Note:</strong> If you use URL Routing but remove or disable one of the predefined routes, that route will fallback to how URL Rewrite will display the URL. The only time this is not true is with Topics. If their routes are removed or disabled the URL Rewrite will be "https://www.example.com/@topic" and for paging "https://www.example.com/@topic/@page". The "topic" text place holder will not be present (see above URL Rewrite for examples). This is a current limitation of Geeklog and the router but shouldn't cause an issue as you could change the route to reflect the URL Rewrite url if needed.</p>
+<p><strong>Note:</strong> The priority of the rules are important. For example a 301 redirect rule for an article will only get triggered if it is before other rules related to routing articles.</p>
+<p><strong>Note:</strong> If you use URL Routing but remove or disable one of the predefined routes that also supports URL Rewrite, that route will fallback to how URL Rewrite will display the URL.</p>
 <p><strong>Note:</strong> Only the Status Code "200" should be used. The other options currently do not work correctly and if used may cause unforeseen problems.</p>
 <p><strong>Advanced feature:</strong> If you use IIS as a Web server and want to remove "index.php"
     from URLs you access, you will have to create the appropriate web.config file in the same directory as lib-common.php, with the proper redirects defined.

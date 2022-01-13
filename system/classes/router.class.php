@@ -308,13 +308,6 @@ class Router
             }
         }
 
-        // when URL routing is enabled but no rules for topics have matched the pathinfo,
-        // redirect to [site_url]/index.php/topic/{topic_id}
-        if (stripos($pathInfo, '/topic/') === 0) {
-            $url = $_CONF['site_url'] . '/index.php?topic=' . substr($pathInfo, strlen('/topic/'));
-            header('Location: ' . $url);
-        }
-
         return false;
     }
 

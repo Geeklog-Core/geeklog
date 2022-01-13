@@ -617,11 +617,11 @@ function TOPIC_getList($sortcol = 0, $ignorelang = true, $title = true, $access 
  *
  * @param    string          $type      Type of object to find topic access about. If 'topic' then
  *                                      will check post array for topic selection control
- * @param    string/array    $id        ID of object to check topic access for (not requried
+ * @param    string/array    $id        ID of object to check topic access for (not required
  *                                      if $type is 'topic')
- * @param    string/array    $tid       ID of topic to check topic access for (not requried
+ * @param    string/array    $tid       ID of topic to check topic access for (not required
  *                                      and not used if $type is 'topic'). Also can just specify this
- * @param    string          $sub_type  Sub type of plugin to allow plugins to have topic assigments for more than one type of item.
+ * @param    string          $sub_type  Sub type of plugin to allow plugins to have topic assignments for more than one type of item.
  * @return   int                        returns 3 for read/edit 2 for read only 0 for no access
  */
 function TOPIC_hasMultiTopicAccess($type, $id = '', $tid = '', $sub_type = '')
@@ -668,7 +668,9 @@ function TOPIC_hasMultiTopicAccess($type, $id = '', $tid = '', $sub_type = '')
             $result = DB_query($sql);
             $A = DB_fetchArray($result);
             $nrows = DB_numRows($result);
-            $tid = $A['tid'];
+			if ($nrows > 0) {
+				$tid = $A['tid'];
+			}
         } else {
             if (is_array($tid)) {
                 $nrows = count($tid);
