@@ -148,6 +148,12 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <p>As of Geeklog 1.7.1, you now have the ability for a Static Page to use another Static Page as a template. What this allows you to do is create one template page and then have it be used by one or more other Static Pages as a base. This feature is ideal for people who have a number of similar formatted Static Pages. For example if you have a bunch of product pages that need to look the same but they have different titles, product image, and product description. For more information on how to do this and some examples please read the Geeklog Wiki about <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages">Staticpage Templates</a>.</p>
 
+<p>Please note that when using a Static Page as a template, PHP can also be directly added. Since this is evaluated through the template library and not directly by the Staticpage plugin the <a href="#php">config options that control the use of PHP in a regular Static Page</a> does not apply here.</p>
+
+<p>When using a Static Page as a template you also need to be very careful when using PHP and selecting variable names for variables you create in your code. Make sure they are unique as variables can unintentionally be overwritten if they are for example global in scope and/or are local in scope but are being used in the Geeklog Template Library function already that will be evaluating your PHP code.</p>
+
+<p>For more information on all the features of the Caching Template Library please see this <a href="http://wiki.geeklog.net/Caching_Template_Library#Introduction">Geeklog Wiki page</a>.</p>
+
 <h2><a name="config.php">Configuration</a></h2>
 
 <p>The configuration options for the Static Pages plugin can be changed from
