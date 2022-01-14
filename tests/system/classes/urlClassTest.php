@@ -12,7 +12,7 @@ class urlClass extends TestCase
      */
     private $url;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         // Assign default values
         $this->url = new Url();

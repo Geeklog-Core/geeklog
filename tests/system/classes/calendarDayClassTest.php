@@ -9,7 +9,7 @@ class calendarDayClass extends TestCase
 {
     private $cd;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         // Assign default values
         $this->cd = new CalendarDay;

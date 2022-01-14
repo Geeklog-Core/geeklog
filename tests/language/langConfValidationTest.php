@@ -1,7 +1,7 @@
 <?php
 
 use Geeklog\ConfigInterface;
-use \PHPUnit\Framework\TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 
 require_once __DIR__ . '/../../system/classes/ConfigInterface.php';
 
@@ -19,7 +19,7 @@ class langConfValidation extends TestCase
      */
     private $c;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         global $_CONF, $_CONF_VALIDATE, $_USER;
 

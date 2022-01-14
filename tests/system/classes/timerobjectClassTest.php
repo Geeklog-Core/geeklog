@@ -17,7 +17,7 @@ class timerobjectClass extends TestCase
      */
     private $prec;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->t = new timerobject;
         $this->prec = 0.001;

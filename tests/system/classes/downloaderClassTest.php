@@ -14,7 +14,7 @@ class downloaderClass extends TestCase
      */
     private $dl;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dl = new downloader();
     }

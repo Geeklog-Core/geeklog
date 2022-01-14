@@ -12,7 +12,7 @@ class pluginClass extends TestCase
      */
     private $p;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->p = new Plugin;
     }

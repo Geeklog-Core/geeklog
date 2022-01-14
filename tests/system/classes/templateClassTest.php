@@ -12,7 +12,7 @@ class templateClass extends TestCase
      */
     private $tp;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         global $_CONF, $TEMPLATE_OPTIONS, $_DEVICE;
 

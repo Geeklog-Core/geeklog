@@ -22,7 +22,7 @@ class calendarClass extends TestCase
      */
     private $langMonths;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         TimeZoneConfig::setSystemTimeZone();
         $this->c = new Calendar;

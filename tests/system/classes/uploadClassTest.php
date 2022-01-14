@@ -14,7 +14,7 @@ class uploadClass extends TestCase
      */
     private $up;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->up = new upload();
     }

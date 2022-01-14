@@ -8,7 +8,7 @@ use \PHPUnit\Framework\TestCase;
  */
 class ValidatorClassTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         require_once \Tst::$root . 'system/lib-mbyte.php';
     }

@@ -12,7 +12,7 @@ class SearchCriteriaClass extends TestCase
      */
     private $s;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->s = new SearchCriteria('createVirus', 'unleashZombies');
     }

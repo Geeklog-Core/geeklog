@@ -19,13 +19,13 @@ class logClassTest extends TestCase
      */
     private $files = ['404.log', 'access.log', 'error.log', 'spamx.log'];
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->pathToLogDir = Tst::$root . 'logs' . DIRECTORY_SEPARATOR;
         Log::init($this->pathToLogDir);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $entry = '*** dummy entry ***' . PHP_EOL;
 
