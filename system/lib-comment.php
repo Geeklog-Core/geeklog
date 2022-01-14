@@ -1238,6 +1238,11 @@ function CMT_commentForm($title, $comment, $sid, $pid, $type, $mode, $postMode, 
                 if (isset($A[CMT_USERNAME])) {
                     $name = $A[CMT_USERNAME]; // for preview
                     $name = GLText::remove4byteUtf8Chars($name);
+                } elseif (isset($_COOKIE[$_CONF['cookie_anon_name']])) {
+                    // stored as cookie, name used before
+					$name = GLText::stripTags($_COOKIE[$_CONF['cookie_anon_name']]);
+					$name = COM_checkWords($name, 'comment');
+					$name = GLText::remove4byteUtf8Chars($name);						
                 } else {
                     $name = COM_getDisplayName(1); // anonymous user
                 }
