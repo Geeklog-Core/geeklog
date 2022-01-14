@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Controls the UI and database for configuration settings                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2020 by the following authors:                         |
+// | Copyright (C) 2007-2022 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // |          Akeda Bagus       - admin AT gedex DOT web DOT id                |
@@ -730,7 +730,8 @@ class config implements ConfigInterface
         global $_USER;
 
         $theme = $this->config_array['Core']['theme'];
-        if ($this->config_array['Core']['allow_user_themes'] == 1 && !empty($_USER['theme'])) {
+        if ($this->config_array['Core']['allow_user_themes'] == 1
+                && !empty($_USER['theme']) && COM_validateTheme($_USER['theme'])) {
             $theme = $_USER['theme'];
         }
         $this->config_array['Core']['path_themes'] = $this->config_array['Core']['path_html'] . 'layout/'; // Cannot be set by admin anymore

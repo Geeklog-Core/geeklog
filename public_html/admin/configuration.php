@@ -59,26 +59,24 @@ function configmanager_select_language_helper()
  */
 function configmanager_select_theme_helper()
 {
+    global $LANG04;
+
     $themes = [];
 
-    $themeFiles = COM_getThemes(true);
-    usort($themeFiles, 'strcasecmp');
-
-    foreach ($themeFiles as $theme) {
-        $words = explode('_', $theme);
-        $bwords = [];
-
-        foreach ($words as $th) {
-            if ((strtolower($th[0]) == $th[0]) &&
-                (strtolower($th[1]) == $th[1])
-            ) {
-                $bwords[] = ucfirst($th);
-            } else {
-                $bwords[] = $th;
-            }
+    $themeInfos = COM_getThemes(true, true, true);
+    uasort(
+        $themeInfos,
+        function ($a, $b) {
+            return strcasecmp($a['theme_name'], $b['theme_name']);
         }
+    );
 
-        $themes[implode(' ', $bwords)] = $theme;
+    foreach ($themeInfos as $dirName => $themeInfo) {
+        $text = sprintf(
+            $LANG04['theme_info'],
+            $themeInfo['theme_name'], $themeInfo['theme_version'], $themeInfo['theme_gl_version']
+        );
+        $themes[$text] = $dirName;
     }
 
     return $themes;

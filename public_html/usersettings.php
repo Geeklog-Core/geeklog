@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog user settings page.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2017 by the following authors:                         |
+// | Copyright (C) 2000-2022 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,6 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\Text\Utility as TextUtility;
 use Geeklog\TwoFactorAuthentication;
 
 require_once 'lib-common.php';
@@ -602,10 +603,10 @@ function editpreferences()
     }
 
     if ($_CONF['allow_user_themes'] == 1) {
-        if (empty($_USER['theme'])) {
-            $usertheme = $_CONF['theme'];
-        } else {
+        if (!empty($_USER['theme']) && COM_validateTheme($_USER['theme'])) {
             $usertheme = $_USER['theme'];
+        } else {
+            $usertheme = $_CONF['theme'];
         }
 
         $themeFiles = COM_getThemes(false, true, true);
@@ -617,7 +618,12 @@ function editpreferences()
                 $items .= ' selected="selected"';
             }
 
-            $items .= '>' . $theme['theme_name'] . '</option>' . LB;
+            $items .= '>'
+                . sprintf(
+                    $LANG04['theme_info'],
+                    $theme['theme_name'], $theme['theme_version'], $theme['theme_gl_version']
+                )
+                . '</option>' . LB;
         }
 
         $selection = COM_createControl('type-select', array(
@@ -644,19 +650,9 @@ function editpreferences()
             }
         }
         if (empty($name)) {
-            $words = explode('_', $editor);
-            $bwords = array();
-            foreach ($words as $th) {
-                if ((strtolower($th[0]) == $th[0]) &&
-                    (strtolower($th[1]) == $th[1])
-                ) {
-                    $bwords[] = ucfirst($th);
-                } else {
-                    $bwords[] = $th;
-                }
-            }
-            $name = implode(' ', $bwords);
+            $name = TextUtility::toPascalCase($editor, ' ');
         }
+
         $preferences->set_var('adveditor_name', $name);
         if ($A['advanced_editor'] == 1) {
             $preferences->set_var('advanced_editor_checked', 'checked="checked"');
@@ -1422,6 +1418,15 @@ function savepreferences($A)
 
     if (isset($A['theme'])) {
         $A['theme'] = COM_applyFilter($A['theme']);
+
+        // @todo: proper validation required
+        if ($_CONF['allow_user_themes'] == 1) {
+            if (empty($A['theme']) || !COM_validateTheme($A['theme'])) {
+                $A['theme'] = $_CONF['theme'];
+            }
+        } else {
+            $A['theme'] = $_CONF['theme'];
+        }
     }
     if (empty($A['theme'])) {
         $A['theme'] = $_CONF['theme'];
