@@ -4740,8 +4740,8 @@ function COM_getDisplayName($uid = 0, $username = '', $fullname = '', $remoteUse
         $uid = 1;
     }
 
-    // When an anonymous user has saved his/her user name to a cookie, then use it instead
-    if (($uid === 1) && isset($_COOKIE[$_CONF['cookie_anon_name']])) {
+    // When an anonymous user (and is the current user for this check) has saved his/her user name to a cookie, then use it instead
+    if (COM_isAnonUser() && isset($_COOKIE[$_CONF['cookie_anon_name']])) {
         $username = GLText::stripTags($_COOKIE[$_CONF['cookie_anon_name']]);
         $username = COM_checkWords($username, 'comment');
         $username = GLText::remove4byteUtf8Chars($username);

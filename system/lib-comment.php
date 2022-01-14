@@ -303,29 +303,32 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
     }
 
     if ($preview) {
-        // Means array is post variables
-        // These should all have been filtered already
-        $A = $comments;
-        if (empty($A['nice_date'])) {
-            $A['nice_date'] = time();
-        }
-        if (!isset($A['cid'])) {
-            $A['cid'] = 0;
-        }
-        if (empty($A['photo'])) {
-            if (isset($_USER['photo'])) {
-                $A['photo'] = $_USER['photo'];
-            } else {
-                $A['photo'] = '';
-            }
-        }
-        if (empty($A['email'])) {
-            if (isset($_USER['email'])) {
-                $A['email'] = $_USER['email'];
-            } else {
-                $A['email'] = '';
-            }
-        }
+		// Means array is post variables
+		// These should all have been filtered already
+		$A = $comments;
+		if (empty($A['nice_date'])) {
+			$A['nice_date'] = time();
+		}
+		if (!isset($A['cid'])) {
+			$A['cid'] = 0;
+		}
+		
+		// Need to check to see if comment being edited and previewed belongs to user doing the editing
+		if (empty($A['photo']) && ($A['uid'] == $_USER['uid'])) {
+			if (isset($_USER['photo'])) {
+				$A['photo'] = $_USER['photo'];
+			} else {
+				$A['photo'] = '';
+			}
+		}
+		if (empty($A['email'])) {
+			if (isset($_USER['email'])) {
+				$A['email'] = $_USER['email'];
+			} else {
+				$A['email'] = '';
+			}
+		}
+		
         $mode = 'flat';
     } else {
         $A = DB_fetchArray($comments);
@@ -376,10 +379,9 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             if (!empty($A['fullname'])) {
                 $fullname = $A['fullname'];
             }
-            $fullname = COM_getDisplayName($A['uid'], $A['username'],
-                $fullname);
+            $fullname = COM_getDisplayName($A['uid'], $A['username'], $fullname);
             $template->set_var('author', $fullname);
-            $altText = $fullname;
+            $altText = $fullname; 
             $photo = '';
             if ($_CONF['allow_user_photo']) {
                 $photo = USER_getPhoto($A['uid'], $A['photo'], $A['email'], PLG_getThemeItem('comment-width-user-avatar', 'comment'), PLG_getThemeItem('comment-css-user-avatar', 'comment'));
@@ -1102,9 +1104,7 @@ function CMT_commentForm($title, $comment, $sid, $pid, $type, $mode, $postMode, 
                 }
 
                 if (($commentUid != 1) || empty($A[CMT_USERNAME])) {
-                    //if (!($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34])) { // Preview mode
-                        $A[CMT_USERNAME] = DB_getItem($_TABLES['users'], 'username', "uid = $commentUid");
-                    //}
+					$A[CMT_USERNAME] = DB_getItem($_TABLES['users'], 'username', "uid = $commentUid");
                 }
 
                 if (COMMENT_ON_SAME_PAGE) {
