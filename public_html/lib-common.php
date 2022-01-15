@@ -8226,12 +8226,16 @@ HTML;
                     }
 ;               }
 
-                $output .= '<pre>';
-                ob_start();
-                if ($type == 1) {
-                    var_dump($errContext);
+                // Since PHP 8.0.0, $errContext argument was dropped
+                if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+                    $output .= '<pre>';
+                    ob_start();
+                    if ($type == 1) {
+                        var_dump($errContext);
+                    }
+                    $output .= htmlspecialchars(ob_get_clean()) . '</pre></body></html>';
                 }
-                $output .= htmlspecialchars(ob_get_clean()) . '</pre></body></html>';
+
                 echo $output;
             }
             exit;
