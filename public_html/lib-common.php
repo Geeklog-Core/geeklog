@@ -8233,9 +8233,10 @@ HTML;
                     if ($type == 1) {
                         var_dump($errContext);
                     }
-                    $output .= htmlspecialchars(ob_get_clean()) . '</pre></body></html>';
+                    $output .= htmlspecialchars(ob_get_clean()) . '</pre>';
                 }
 
+                $output .= '</body></html>';
                 echo $output;
             }
             exit;
