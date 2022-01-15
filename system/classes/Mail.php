@@ -97,7 +97,7 @@ SQL;
      * @param  string|array  $to           recipients name and email address
      * @param  string        $subject      subject of the email
      * @param  string        $body         the text of the email
-     * @param  string|array  $from         (optional) sender of the the email
+     * @param  string|array  $from         (optional) sender of the email
      * @param  bool          $html         (optional) true if to be sent as HTML email
      * @param  int           $priority     (optional) add X-Priority header, if > 0
      * @param  mixed         $optional     (optional) other headers or CC:
@@ -162,11 +162,21 @@ SQL;
             if (empty($from)) {
                 $mail->setFrom($_CONF['site_mail'], $_CONF['site_name']);
             } else {
-                $mail->setFrom($from);
+                if (is_array($from)) {
+                    reset($from);
+                    $mail->setFrom(key($from), current($from));
+                } else {
+                    $mail->setFrom($from);
+                }
             }
 
-            // Set recipient(s)
-            $mail->addAddress($to);
+            // Set recipient
+            if (is_array($to)) {
+                reset($to);
+                $mail->addAddress(key($to), current($to));
+            } else {
+                $mail->addAddress($to);
+            }
 
             // Add Cc and Bcc
             if (!empty($optional) && !is_array($optional)) {
