@@ -25,7 +25,8 @@
     "mobiledetect/mobiledetectlib": "^2.8",
     "mrclay/jsmin-php": "^2.4",
     "google/recaptcha": "^1.2",
-    "ext-json": "*"
+    "ext-json": "*",
+    "phpmailer/phpmailer": "^6.5"
   },
   "repositories":
   [
