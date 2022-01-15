@@ -553,15 +553,11 @@ class XML_RPC_Base {
      * PEAR Error handling
      *
      * @return object  PEAR_Error object
+     * @throws Exception
      */
     public static function raiseError($msg, $code)
     {
-        include_once 'PEAR.php';
-        if (is_object(@$this)) {
-            return PEAR::raiseError(get_class($this) . ': ' . $msg, $code);
-        } else {
-            return PEAR::raiseError('XML_RPC: ' . $msg, $code);
-        }
+        throw new Exception(__METHOD__ . ": $msg  code: $code");
     }
 
     /**
