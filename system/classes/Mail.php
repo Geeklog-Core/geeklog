@@ -39,10 +39,11 @@ class Mail
      * Replace placeholders in the mail body with their actual values
      *
      * @param  string  $address
+     * @param  string  $subject
      * @param  string  $body
-     * @return string
+     * @return void
      */
-    private static function replacePlaceHolders($address, $body)
+    private static function replacePlaceHolders($address, &$subject, &$body)
     {
         global $_CONF, $_TABLES;
 
@@ -51,7 +52,7 @@ class Mail
           SELECT u.*, i.location, i.lastgranted, i.lastlogin FROM {$_TABLES['users']} AS u 
             LEFT JOIN {$_TABLES['userinfo']} AS i 
               ON u.uid = i.uid
-            WHERE u.email = '{$address}' 
+            WHERE u.email = '$address' 
 SQL;
         $resultSet = DB_query($sql);
 
@@ -80,11 +81,10 @@ SQL;
                     $_CONF['site_mail'], $_CONF['noreply_mail'],
                 ];
 
+                $subject = str_replace($search, $replace, $subject);
                 $body = str_replace($search, $replace, $body);
             }
         }
-
-        return $body;
     }
 
     /**
@@ -220,7 +220,9 @@ SQL;
             } else {
                 $address = $to;
             }
-            $body = self::replacePlaceHolders($address, $body);
+
+            // Replace placeholders
+            self::replacePlaceHolders($address, $subject, $body);
 
             $mail->Body = $body;
 
@@ -246,7 +248,7 @@ SQL;
             $mail->addCustomHeader('X-Mailer', 'Geeklog ' . VERSION);
 
             if (!empty(IP::getIPAddress()) && !empty($_SERVER['SERVER_ADDR'])
-                    && (IP::getIPAddress() !== $_SERVER['SERVER_ADDR'])) {
+                && (IP::getIPAddress() !== $_SERVER['SERVER_ADDR'])) {
                 $url = COM_getCurrentURL();
 
                 if (substr($url, 0, strlen($_CONF['site_admin_url'])) !== $_CONF['site_admin_url']) {
