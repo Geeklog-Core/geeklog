@@ -88,6 +88,15 @@ function MBYTE_languageList($charset = 'utf-8', $multilanguage = false)
     return $language;
 }
 
+// replacement functions for UTF-8 functions
+// $test, $enabled parameters only relevant for the PHPUnit test suite
+function MBYTE_checkEnabled($test = '', $enabled = true)
+{
+    // Always return true, since Geeklog requires PHP's mbstring extension now
+    return true;
+}
+
+
 function MBYTE_strlen($str)
 {
     return mb_strlen($str);
