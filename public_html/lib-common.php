@@ -4740,17 +4740,6 @@ function COM_getDisplayName($uid = 0, $username = '', $fullname = '', $remoteUse
         $uid = 1;
     }
 
-    // When an anonymous user has saved his/her user name to a cookie, then use it instead
-    if (($uid === 1) && isset($_COOKIE[$_CONF['cookie_anon_name']])) {
-        $username = GLText::stripTags($_COOKIE[$_CONF['cookie_anon_name']]);
-        $username = COM_checkWords($username, 'comment');
-        $username = GLText::remove4byteUtf8Chars($username);
-
-        if (!empty($username)) {
-            return $username;
-        }
-    }
-
     if (empty($username)) {
         $query = DB_query("SELECT username, fullname, remoteusername, remoteservice FROM {$_TABLES['users']} WHERE uid='$uid'");
         list($username, $fullname, $remoteUserName, $remoteService) = DB_fetchArray($query);

@@ -394,6 +394,7 @@ class Search
      * search API. Backwards compatibility has been incorporated
      * in this function to allow legacy support to plugins using
      * the old API calls defined versions prior to Geeklog 1.5.1
+	 * AS of Geeklog 2.2.2 Search API 2 required (which was introduced in Geeklog 1.5.1)
      *
      * @return string HTML output for search results
      */
@@ -486,8 +487,6 @@ class Search
         );
 
         // Loop through all plugins separating the new API from the old
-        $new_api = 0;
-        $old_api = 0;
         $num_results = 0;
 
         foreach ($result_plugins as $result) {
@@ -496,7 +495,6 @@ class Search
 
                 if ($this->_type !== 'all' && $this->_type != $result->getName()) {
                     if ($this->debug) {
-                        $new_api++;
                         COM_errorLog($debug_info . '. Skipped as type is not ' . $this->_type);
                     }
                     continue;
@@ -527,66 +525,9 @@ class Search
                 $this->_append_query[$result->getName()] = $result->isAppendQuery();
 
                 if ($this->debug) {
-                    $new_api++;
                     COM_errorLog($debug_info);
-                }
-            } elseif (is_a($result, 'Plugin') && $result->num_searchresults != 0) {
-                // Some backwards compatibility
-                if ($this->debug) {
-                    $old_api++;
-                    $debug_info = $result->plugin_name . ' using APIv1 with backwards compatibility.';
-                    $debug_info .= ' Count: ' . $result->num_searchresults;
-                    $debug_info .= ' Headings: ' . implode(',', $result->searchheading);
-                    COM_errorLog($debug_info);
-                }
-
-                // Find the column heading names that closely match what we are looking for
-                // There may be issues here on different languages, but this _should_ capture most of the data
-                $col_title = $this->_findColumn($result->searchheading, array($LANG09[16], $LANG31[4], 'Question', 'Site Page'));//Title,Subject
-                $col_desc = $this->_findColumn($result->searchheading, array($LANG09[63], 'Answer'));
-                $col_date = $this->_findColumn($result->searchheading, array($LANG09[17]));//'Date','Date Added','Last Updated','Date & Time'
-                $col_user = $this->_findColumn($result->searchheading, array($LANG09[18], 'Submited by'));
-                $col_hits = $this->_findColumn($result->searchheading, array($LANG09[50], $LANG09[23], 'Downloads', 'Clicks'));//'Hits','Views'
-
-                $label = str_replace($LANG09[59], '', $result->searchlabel);
-                $num_results += $result->num_itemssearched;
-
-                // Extract the results
-                for ($i = 0; $i < 5; $i++) {
-                    // If the plugin does not respect the $perpage parameter, then force it here.
-                    $j = ($i + ($page * 5)) - 5;
-                    if ($j >= count($result->searchresults)) {
-                        break;
-                    }
-
-                    $old_row = $result->searchresults[$j];
-                    if ($col_date != -1) {
-                        // Convert the date back to a timestamp
-                        $date = $old_row[$col_date];
-                        $date = substr($date, 0, strpos($date, '@'));
-                        $date = ($date == '' ? $old_row[$col_date] : strtotime($date));
-                    }
-
-                    $api_results = array(
-                        LF_SOURCE_NAME  => $result->plugin_name,
-                        LF_SOURCE_TITLE => $label,
-                        'title'         => $col_title == -1 ? '<i>' . $LANG09[70] . '</i>' : $old_row[$col_title],
-                        'description'   => $col_desc == -1 ? '<i>' . $LANG09[70] . '</i>' : $old_row[$col_desc],
-                        'date'          => $col_date == -1 ? '&nbsp;' : $date,
-                        'uid'           => $col_user == -1 ? '&nbsp;' : $old_row[$col_user],
-                        'hits'          => $col_hits == -1 ? '0' : str_replace(',', '', $old_row[$col_hits]),
-                    );
-                    preg_match('/href="([^"]+)"/i', $api_results['title'], $links);
-                    $api_results['url'] = empty($links) ? '#' : $links[1];
-
-                    $obj->addResult($api_results);
                 }
             }
-        }
-
-        // Find out how many plugins are on the old/new system
-        if ($this->debug) {
-            COM_errorLog('Search Plugins using APIv1: ' . $old_api . ' APIv2: ' . $new_api);
         }
 
         // Execute the queries

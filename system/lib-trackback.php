@@ -199,8 +199,7 @@ function TRB_allowDelete($sid, $type)
 
         $result = DB_query($sql);
         $A = DB_fetchArray($result);
-
-        if (SEC_hasRights('story.edit') && (SEC_hasAccess($A['owner_id'],
+        if (DB_numRows($result) == 1 && SEC_hasRights('story.edit') && (SEC_hasAccess($A['owner_id'],
                     $A['group_id'], $A['perm_owner'], $A['perm_group'],
                     $A['perm_members'], $A['perm_anon']) == 3) && TOPIC_hasMultiTopicAccess('article', $sid) == 3
         ) {
