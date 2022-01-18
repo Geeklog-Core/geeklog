@@ -9001,7 +9001,7 @@ function COM_getLangIso639Code($langName = null)
  */
 function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myEditor = '')
 {
-    global $_CONF, $_USER, $_SCRIPTS;
+    global $_CONF, $_USER, $_SCRIPTS, $LANG_ISO639_1;
 
     if (!$_CONF['advanced_editor'] || !$_USER['advanced_editor']) {
         return;
@@ -9071,6 +9071,7 @@ function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myEditor
     var geeklogEditorName = "{$name}";
     var geeklogAllowedHtml = {$html};
     var geeklogFileManager = {$geeklogFileManager};
+	var geeklogLanguage = "{$LANG_ISO639_1}";
 </script>
 HTML;
     $_SCRIPTS->setJavaScript($script);

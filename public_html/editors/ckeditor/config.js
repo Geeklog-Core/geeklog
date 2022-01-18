@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -87,10 +87,21 @@ CKEDITOR.editorConfig = function( config ) {
     // config.language = 'fr';
     // config.uiColor = '#AADC6E';
 
+	// Set Language to the same as Geeklog. This also gets passed to File Manager
+	// If not set CK Editor will determine language which may cause issue with File Manager 
+	// For example if CK Editor determines language to be "en-ca", File Manager doesn't support this language and will forever load
+	if (geeklogLanguage != '') {
+		config.language = geeklogLanguage;
+	}
+config.language = 'en';
     // Add extra plugins
     // Makes protected source sections visible and editable.
     // Especially important for [code]..[/code] and [raw]..[/raw] for Geeklog.
     config.extraPlugins = 'showprotected';
+	
+	// Plugins not needed
+	// exportpdf throws error "Error code: exportpdf-no-token-url" so remove
+	config.removePlugins = 'exportpdf';
 
     // Disable Advanced Content Filter
     config.allowedContent = true;
@@ -179,7 +190,6 @@ CKEDITOR.editorConfig = function( config ) {
         config.filebrowserBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=File';
         //	config.filebrowserBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=Media';
         config.filebrowserImageBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=Image';
-        config.filebrowserFlashBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=Flash';
     }
 };
 
