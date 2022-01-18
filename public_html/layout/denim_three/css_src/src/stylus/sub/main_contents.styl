@@ -56,9 +56,8 @@ $stage = 'main_contents'
     a
         margin-left: 5px
     // All Mobile Sizes (devices and browser)
-    // Issue #1077
-    // @media only screen and (max-width: $breakpoint-small-max)
-    //    display: none
+    @media only screen and (max-width: $breakpoint-small-max)
+        /*display: none*/
     hook-selector($stage, "" + selector())
 
 /*! Story(Date, Auther, Display no.) */

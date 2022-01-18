@@ -3063,14 +3063,14 @@ div.third-party-login {
 .story_icon a {
   margin-right: 5px;
 }
-/* Issue #1077
+
 @media only screen and (max-width: 767px) {
 
-  .story_icon {
+  /*.story_icon {
     display: none;
-  }
+  }*/
 }
-*/
+
 /* Story(Date, Auther, Display no.) */
 .story_status {
   list-style-position: outside;
