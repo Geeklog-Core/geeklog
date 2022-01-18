@@ -3414,9 +3414,9 @@ div.third-party-login {
 
 @media only screen and (max-width: 959px) {
 
-  .story_icon {
+  /*.story_icon {
     display: none;
-  }
+  }*/
 }
 
 /* Story(Date, Auther, Display no.) */
