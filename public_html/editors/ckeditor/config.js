@@ -93,7 +93,7 @@ CKEDITOR.editorConfig = function( config ) {
 	if (geeklogLanguage != '') {
 		config.language = geeklogLanguage;
 	}
-config.language = 'en';
+
     // Add extra plugins
     // Makes protected source sections visible and editable.
     // Especially important for [code]..[/code] and [raw]..[/raw] for Geeklog.
