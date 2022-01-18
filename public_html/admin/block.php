@@ -728,7 +728,7 @@ function listblocks($position = BLOCK_ALL_POSITIONS)
  */
 function cmpDynamicBlocks($a, $b)
 {
-    return $a["blockorder"] > $b["blockorder"];
+    return ($a["blockorder"] > $b["blockorder"]) ? +1 : -1;;
 }
 
 /**
