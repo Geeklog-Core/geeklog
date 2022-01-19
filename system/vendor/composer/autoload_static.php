@@ -33,6 +33,10 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
             'ReCaptcha\\' => 10,
             'RFM\\' => 4,
         ),
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
         'M' => 
         array (
             'MatthiasMullie\\PathConverter\\' => 29,
@@ -80,6 +84,10 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
         'RFM\\' => 
         array (
             0 => __DIR__ . '/..' . '/servocoder/richfilemanager-php/src',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'MatthiasMullie\\PathConverter\\' => 
         array (
