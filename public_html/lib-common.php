@@ -520,6 +520,10 @@ if (setlocale(LC_ALL, $_CONF['locale']) === false) {
     setlocale(LC_TIME, $_CONF['locale']);
 }
 
+$_LOCALE = new \Geeklog\Locale($LANG_MONTH, $LANG_MONTH_SHORT, $LANG_WEEK, $LANG_WEEK_SHORT, $LANG_AMPM);
+$_LOCALE->setTimezone(TimeZoneConfig::getTimezone());
+$_LOCALE->setLocale($LANG_ISO639_1);
+
 // Override language items (since v2.1.2)
 Language::init();
 $language_overrides = array(
@@ -9277,6 +9281,37 @@ function COM_handleEval($code, $type = 1, $embeddedPHP = false)
     }
 
     return $retarray;
+}
+
+/**
+ *  Format a GMT/UTC time/date according to locale settings
+ *
+ * @param  string    $format     format string as in gmstrftime
+ * @param  int|null  $timestamp  local timestamp, null = current timestamp
+ * @return false|string          formatted date and time as GMT, false when $format is empty or contains
+ *                               unsupported conversion specifiers
+ * @note  substitute function for gmstrftime.
+ */
+function COM_gmstrftime($format, $timestamp = null)
+{
+    global $_LOCALE;
+
+    return $_LOCALE->strftime($format, $timestamp);
+}
+/**
+ *  Format a local time/date according to locale settings
+ *
+ * @param  string    $format     format string as in strftime
+ * @param  int|null  $timestamp  local timestamp, null = current timestamp
+ * @return false|string          formatted local date and time, false when $format is empty or contains
+ *                               unsupported conversion specifiers
+ * @note  substitute function for strftime.
+ */
+function COM_strftime($format, $timestamp = null)
+{
+    global $_LOCALE;
+
+    return $_LOCALE->strftime($format, $timestamp);
 }
 
 // Check and see if any plugins (or custom functions)

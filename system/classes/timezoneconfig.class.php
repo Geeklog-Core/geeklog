@@ -38,6 +38,11 @@
 class TimeZoneConfig
 {
     /**
+     * @var string
+     */
+    private static $timezone = 'UTC';
+
+    /**
      * Set the system's timezone
      *
      * @param    string $tz timezone to set; use $_CONF['timezone'] if empty
@@ -68,6 +73,8 @@ class TimeZoneConfig
             $system_timezone = @date_default_timezone_get();
             date_default_timezone_set($system_timezone);
         }
+
+        self::$timezone = $system_timezone;
     }
 
     /**
@@ -217,5 +224,15 @@ class TimeZoneConfig
         $tz2 = implode(' ', $p2);
 
         return strcmp($tz1, $tz2);
+    }
+
+    /**
+     * Return system timezone
+     *
+     * @return string
+     */
+    public static function getTimezone()
+    {
+        return self::$timezone;
     }
 }
