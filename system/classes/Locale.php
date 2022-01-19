@@ -235,7 +235,7 @@ class Locale
                     break;
 
                 case 'j':  // 3-digit day of th year: '001' - '366'
-                    $replace = substr('00' . (string) ((int) date('z', $this->timestamp) + 1), -3);
+                    $replace = substr('00' . ((int) date('z', $this->timestamp) + 1), -3);
                     break;
 
                 case 'k':  // hour in 24-hour format: ' 0' - '23'

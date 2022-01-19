@@ -9297,8 +9297,9 @@ function COM_gmstrftime($format, $timestamp = null)
 {
     global $_LOCALE;
 
-    return $_LOCALE->strftime($format, $timestamp);
+    return $_LOCALE->gmstrftime($format, $timestamp);
 }
+
 /**
  *  Format a local time/date according to locale settings
  *
