@@ -3,8 +3,8 @@
 namespace Geeklog;
 
 use GLText;
-use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 /**
  * Class Mail
@@ -224,17 +224,19 @@ SQL;
             // Replace placeholders
             self::replacePlaceHolders($address, $subject, $body);
 
-            $mail->Body = $body;
+			// Ready Plain Text version of email
+			// bug #430
+			$altbody = GLText::removeAllHTMLTagsAndAttributes($body);
+			// bug #1000
+			// Need to do this since htmLawed not only strips the tags it converts html special chars to entities which we do not want
+			$altbody = htmlspecialchars_decode($altbody, ENT_QUOTES);
 
             if (!$html) {
-                // bug #430
-                $body = GLText::removeAllHTMLTagsAndAttributes($body);
-
-                // bug #1000
-                // Need to do this since htmLawed not only strips the tags it converts html special chars to entities which we do not want
-                $body = htmlspecialchars_decode($body, ENT_QUOTES);
-                $mail->AltBody = $body;
-            }
+				$mail->Body = $altbody;
+            } else {
+				$mail->Body = $body;
+				$mail->AltBody = $body; // Only include this for HTML emails
+			}
 
             // Set subject
             $mail->Subject = $subject;
