@@ -161,7 +161,7 @@ geeklog.datetimepicker = {
         this.options.buttonImage = imgUrl;
         this.options.buttonText = toolTip;
         this.options.timeFormat = (geeklog.hour_mode == 12) ? 'hh:mm tt' : 'HH:mm';
-        this.options.minDate = '-1y';
+        // this.options.minDate = '-1y'; // Removed as datepicker doesn't work on items published older than a year (since this script is used on edit and new items)
         this.options.maxDate = '+5y';
 
         // Creates an invisible input field for a datetimepicker
