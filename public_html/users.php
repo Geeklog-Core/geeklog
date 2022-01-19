@@ -113,9 +113,11 @@ function USER_requestPassword($username)
     if ($numRows == 1) {
         $A = DB_fetchArray($result);
         if (($_CONF['usersubmission'] == 1) && ($A['status'] == USER_ACCOUNT_AWAITING_APPROVAL)) {
+			COM_updateSpeedlimit('password');
             COM_redirect($_CONF['site_url'] . '/index.php?msg=48');
         } elseif (($_CONF['usersubmission'] == 0) && ($A['status'] != USER_ACCOUNT_ACTIVE && $A['status'] != USER_ACCOUNT_AWAITING_APPROVAL)) {
             // Don't send password for these accounts with statuses of Locked, Disabled, New Email, New Password
+			COM_updateSpeedlimit('password');
             COM_redirect($_CONF['site_url'] . '/index.php?msg=47');
         }
         $reqid = substr(md5(uniqid(rand(), 1)), 1, 16);
@@ -146,7 +148,9 @@ function USER_requestPassword($username)
         COM_redirect($redirect);
     } else {
         // Username not found so error out
-        COM_redirect($_CONF['site_url'] . "/users.php?mode=getpassword&msg=46");
+		COM_updateSpeedlimit('password');
+		COM_redirect($_CONF['site_url'] . '/index.php?msg=46');
+        //COM_redirect($_CONF['site_url'] . "/users.php?mode=getpassword&msg=46");
     }
 
     return $retval;
@@ -938,8 +942,8 @@ switch ($mode) {
             if ($msg > 0) {
                 $display .= COM_showMessage($msg);
             }
-
-            $display .= USER_getPasswordForm();
+			
+			$display .= USER_getPasswordForm();
         }
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[25]));
         break;
@@ -1093,7 +1097,10 @@ switch ($mode) {
                 if (!empty($username)) {
                     $display .= USER_requestPassword($username);
                 } else {
-                    COM_redirect($_CONF['site_url'] . '/users.php?mode=getpassword');
+					// Username for email not found so error out
+					COM_updateSpeedlimit('password');
+					COM_redirect($_CONF['site_url'] . '/index.php?msg=46');
+					//COM_redirect($_CONF['site_url'] . "/users.php?mode=getpassword&msg=46");
                 }
             }
         }

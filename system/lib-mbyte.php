@@ -111,7 +111,9 @@ function MBYTE_substr($str, $start, $length = null)
 
 function MBYTE_strpos($haystack, $needle, $offset = null)
 {
-    return mb_strpos($haystack, $needle, $offset);
+    return ($offset === null)
+        ? mb_strpos($haystack, $needle)
+        : mb_strpos($haystack, $needle, $offset);	
 }
 
 function MBYTE_strrpos($haystack, $needle, $offset = null)
