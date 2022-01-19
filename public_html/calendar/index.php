@@ -518,14 +518,14 @@ switch ($view) {
         $cal_templates->set_var('year', $year);
         $prevstamp = mktime(0, 0, 0, $month, $day - 1, $year);
         $nextstamp = mktime(0, 0, 0, $month, $day + 1, $year);
-        $cal_templates->set_var('prevmonth', strftime('%m', $prevstamp));
-        $cal_templates->set_var('prevday', strftime('%d', $prevstamp));
-        $cal_templates->set_var('prevyear', strftime('%Y', $prevstamp));
-        $cal_templates->set_var('nextmonth', strftime('%m', $nextstamp));
-        $cal_templates->set_var('nextday', strftime('%d', $nextstamp));
-        $cal_templates->set_var('nextyear', strftime('%Y', $nextstamp));
+        $cal_templates->set_var('prevmonth', COM_strftime('%m', $prevstamp));
+        $cal_templates->set_var('prevday', COM_strftime('%d', $prevstamp));
+        $cal_templates->set_var('prevyear', COM_strftime('%Y', $prevstamp));
+        $cal_templates->set_var('nextmonth', COM_strftime('%m', $nextstamp));
+        $cal_templates->set_var('nextday', COM_strftime('%d', $nextstamp));
+        $cal_templates->set_var('nextyear', COM_strftime('%Y', $nextstamp));
 
-        $cal_templates->set_var('currentday', strftime('%A, %x', mktime(0, 0, 0, $month, $day, $year)));
+        $cal_templates->set_var('currentday', COM_strftime('%A, %x', mktime(0, 0, 0, $month, $day, $year)));
         if ($mode === 'personal') {
             $cal_templates->set_var('calendar_title', '[' . $LANG_CAL_2[28] . ' ' . COM_getDisplayName());
             $cal_templates->set_var('calendar_toggle', '|&nbsp;'
@@ -546,7 +546,7 @@ switch ($view) {
 
         // Set week number
         $theDate = COM_getUserDateTimeFormat(mktime(0, 0, 0, $month, $day, $year));
-        $cal_templates->set_var('week_num', strftime('%V', $theDate[1]));
+        $cal_templates->set_var('week_num', COM_strftime('%V', $theDate[1]));
 
         if ($mode === 'personal') {
             $calsql = "SELECT eid,title,datestart,dateend,timestart,timeend,allday,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['personal_events']} "
@@ -665,39 +665,39 @@ switch ($view) {
         // Get data for previous week
         $prevstamp = mktime(0, 0, 0, $month, $day - 7, $year);
         $nextstamp = mktime(0, 0, 0, $month, $day + 7, $year);
-        $cal_templates->set_var('prevmonth', strftime('%m', $prevstamp));
+        $cal_templates->set_var('prevmonth', COM_strftime('%m', $prevstamp));
         $cal_templates->set_var('prevday', date('j', $prevstamp));
-        $cal_templates->set_var('prevyear', strftime('%Y', $prevstamp));
-        $cal_templates->set_var('nextmonth', strftime('%m', $nextstamp));
+        $cal_templates->set_var('prevyear', COM_strftime('%Y', $prevstamp));
+        $cal_templates->set_var('nextmonth', COM_strftime('%m', $nextstamp));
         $cal_templates->set_var('nextday', date('j', $nextstamp));
-        $cal_templates->set_var('nextyear', strftime('%Y', $nextstamp));
+        $cal_templates->set_var('nextyear', COM_strftime('%Y', $nextstamp));
         $cal_templates->set_var('lang_day', $LANG_CAL_2[39]);
         $cal_templates->set_var('lang_week', $LANG_CAL_2[40]);
         $cal_templates->set_var('lang_month', $LANG_CAL_2[41]);
         if ($_CONF['week_start'] == 'Mon') {
             $time_day1 = mktime(0, 0, 0, $month, $day + 1, $year);
             $time_day7 = mktime(0, 0, 0, $month, $day + 7, $year);
-            $start_mname = strftime('%B', $time_day1);
+            $start_mname = COM_strftime('%B', $time_day1);
             // Check for Windows to find and replace the %e
             if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                $eday = strftime('%#d', $time_day7);
+                $eday = COM_strftime('%#d', $time_day7);
             } else {
-                $eday = strftime('%e', $time_day7);
+                $eday = COM_strftime('%e', $time_day7);
             }
-            $end_mname = strftime('%B', $time_day7);
-            $end_ynum = strftime('%Y', $time_day7);
-            $date_range = $start_mname . ' ' . strftime('%e', $time_day1);
+            $end_mname = COM_strftime('%B', $time_day7);
+            $end_ynum = COM_strftime('%Y', $time_day7);
+            $date_range = $start_mname . ' ' . COM_strftime('%e', $time_day1);
         } else {
-            $start_mname = strftime('%B', mktime(0, 0, 0, $month, $day, $year));
+            $start_mname = COM_strftime('%B', mktime(0, 0, 0, $month, $day, $year));
             $time_day6 = mktime(0, 0, 0, $month, $day + 6, $year);
             // Check for Windows to find and replace the %e
             if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-                $eday = strftime('%#d', $time_day6);
+                $eday = COM_strftime('%#d', $time_day6);
             } else {
-                $eday = strftime('%e', $time_day6);
+                $eday = COM_strftime('%e', $time_day6);
             }
-            $end_mname = strftime('%B', $time_day6);
-            $end_ynum = strftime('%Y', $time_day6);
+            $end_mname = COM_strftime('%B', $time_day6);
+            $end_ynum = COM_strftime('%Y', $time_day6);
             $date_range = $start_mname . ' ' . $day;
         }
         if ($year != $end_ynum) {
@@ -735,7 +735,7 @@ switch ($view) {
             }
             $monthname = $cal->getMonthName($monthnum);
             $cal_templates->set_var('day' . $i, $dayname . ', '
-                . COM_createLink(strftime('%x', $thedate[1]),
+                . COM_createLink(COM_strftime('%x', $thedate[1]),
                     $_CONF['site_url'] . '/calendar/index.php?' . addMode($mode)
                     . "view=day&amp;day$daynum&amp;month=$monthnum&amp;year=$yearnum")
             );

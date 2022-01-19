@@ -205,13 +205,13 @@ function phpblock_calendar($help = '', $title = '')
                     // Start Date strings...
                     $startDate = $theEvent['datestart'];
                     $theTime1 = strtotime($startDate);
-                    $dayName1 = strftime('%A', $theTime1);
+                    $dayName1 = COM_strftime('%A', $theTime1);
                     list($abbrDate1,) = COM_getUserDateTimeFormat($theTime1, 'dateonly');
 
                     // End Date strings...
                     $endDate = $theEvent['dateend'];
                     $theTime2 = strtotime($endDate);
-                    $dayName2 = strftime('%A', $theTime2);
+                    $dayName2 = COM_strftime('%A', $theTime2);
                     list($abbrDate2,) = COM_getUserDateTimeFormat($theTime2, 'dateonly');
 
                     $todaysEvent = false;

@@ -250,7 +250,7 @@ function sendNotification($table, $story)
     $topic = TOPIC_getTopicAdminColumn('article', $story->getSid());
     $mailbody = "$LANG08[31]: {$title}\n"
         . "$LANG24[7]: {$storyauthor}\n"
-        . "$LANG08[32]: " . strftime($_CONF['date']) . "\n"
+        . "$LANG08[32]: " . COM_strftime($_CONF['date']) . "\n"
         . "{$LANG_ADMIN['topic']}: {$topic}\n\n";
 
     if ($_CONF['emailstorieslength'] > 0) {

@@ -10,7 +10,7 @@ class Locale
 {
     const DEFAULT_LOCALE = 'en';
 
-    // All keys must be in lower-case
+    // Locales supported by Geeklog.  All keys must be in lower-case
     const SUPPORTED_LOCALES = [
         'af',       // Afrikaans
         'bs',       // Bosnian
@@ -137,7 +137,7 @@ class Locale
     /**
      * @var string $timezone e.g. 'UTC', 'Europe/London', 'Asia/Tokyo'
      */
-    protected $timezone;
+    private $timezone;
 
     /**
      * @var string  ISO639-1 code, e.g. en for English, fr for French
@@ -146,13 +146,13 @@ class Locale
     private $locale = self::DEFAULT_LOCALE;
 
     /**
-     * Locale constructor
+     * Locale class constructor
      *
-     * @param  array  $monthNames
-     * @param  array  $shortMonthNames
-     * @param  array  $dayNames
-     * @param  array  $shortDayNames
-     * @param  array  $amPm
+     * @param  array  $monthNames       full month names like $LANG_MONTH
+     * @param  array  $shortMonthNames  abbreviated month names like $LANG_MONTH_SHORT
+     * @param  array  $dayNames         full day names like $LANG_WEEK
+     * @param  array  $shortDayNames    abbreviated day names like $LANG_WEEK_SHORT
+     * @param  array  $amPm             'am' and 'pm' like $LANG_AMPM
      */
     public function __construct(array $monthNames, array $shortMonthNames, array $dayNames, array $shortDayNames, array $amPm)
     {
@@ -178,164 +178,209 @@ class Locale
     }
 
     /**
-     * Callback function for self::strftime
+     * Format a local time/date according to locale settings
      *
-     * @param  array  $matches
-     * @return string
-     */
-    public function convertDateTime(array $matches)
-    {
-        $spec = $matches[0];
-
-        switch ($spec) {
-            case '%a':  // 'Sun' - 'Sat'
-                return $this->shortDayNames[(int) date('w', $this->timestamp) + 1];
-
-            case '%b':  // 'Jan' - 'Dec'
-            case '%h':  // an alias of %b
-                return $this->shortMonthNames[(int) date('n', $this->timestamp)];
-
-            case '%c':  // 'Tue Feb 5 00:45:10 2009
-                $day = $this->shortDayNames[(int) date('w', $this->timestamp) + 1];
-                $month = $this->shortMonthNames[(int) date('n', $this->timestamp)];
-
-                return $day . ' ' . $month . date(' j H:i:s Y', $this->timestamp);
-
-            case '%d':  // day of the month: '01' - '31'
-                return date('d', $this->timestamp);
-
-            case '%e':  // day of the month: '01' - '31'
-            case '%#d':
-                return date('j', $this->timestamp);
-
-            case '%g':  // 2-digit year (ISO-8601:1988): '09' for 2009
-                return date('y', $this->timestamp); // FIXME
-
-            case '%j':  // 3-digit day of th year: '001' - '366'
-                return substr('00' . (string) ((int) date('z', $this->timestamp) + 1), -3);
-
-            case '%k':  // hour in 24-hour format: ' 0' - '23'
-                return substr(' ' . date('G', $this->timestamp), -2);
-
-            case '%l':  // hour in 12-hour format: ' 1' - '12'
-                return substr(' ' . date('g', $this->timestamp), -2);
-
-            case '%m':  // 2-digit month: '01' - '12'
-                return date('m', $this->timestamp);
-
-            case '%n':  // new line character
-                return "\n";
-
-            case '%p':  // lower case 'am', 'pm'
-                return $this->amPm['am_pm'][date('a', $this->timestamp)];
-
-            case '%r':  // Same as "%I:%M:%S %p"
-                return date('h:i:s a', $this->timestamp);  // FIXME
-
-            case '%s':  // Unix Epoch Time timestamp same as time()
-                return (string) $this->timestamp;
-
-            case '%t':  // tab character
-                return "\t";
-
-            case '%u':  // day of the week: 1 (Mon) - 7 (Sun)
-                return date('N', $this->timestamp);
-
-            case '%w':  // day of the week: 0 (Sun) - 6 (Sat)
-                return date('w', $this->timestamp);
-
-            case '%x':  // Preferred date representation: '02/05/09' for February 5, 2009
-                return date('m/d/y', $this->timestamp); // FIXME
-
-            case '%y':  // two-digit year: '00' - '99'
-                return date('y', $this->timestamp);
-
-            case '%z':  // time zone offset: -0500 for EST
-                return date('O', $this->timestamp);
-
-            case '%A':  // 'Sunday' - 'Saturday'
-                return $this->dayNames[(int) date('w', $this->timestamp) + 1];
-
-            case '%B':  // 'January' - 'December'
-                return $this->monthNames[(int) date('n', $this->timestamp)];
-
-            case '%C':  // two-digit century: '19' for the 20th century
-                return (string) floor((int) date('Y', $this->timestamp) / 100);
-
-            case '%D':  // Same as "%m/%d/%y": '02/05/09' for February 5, 2009
-                return date('m/d/y', $this->timestamp);
-
-            case '%F':  // Same as "%Y-%m-%d"
-                return date('Y-m-d', $this->timestamp);
-
-            case '%G':  // four-digit year (ISO-8601:1988)
-                return date('Y', $this->timestamp); // FIXME
-
-            case '%H':  // two-digit hour in 24-hour format: '00' - '23'
-                return date('H', $this->timestamp);
-
-            case '%I':  // two-digit hour in 12-hour format: '01' - '12'
-                return date('h', $this->timestamp);
-
-            case '%M':  // two-digit minute: '00' - '59'
-                return date('i', $this->timestamp);
-
-            case '%P':  // upper-case 'AM', 'PM'
-                return $this->amPm['AM_PM'][date('a', $this->timestamp)];
-
-            case '%R':  // Same as "%H:%M"
-                return date('H:i', $this->timestamp);
-
-            case '%S':  // two-digit second: '00' - '59'
-                return date('s', $this->timestamp);
-
-            case '%T':  // Same as "%H:%M:%S"
-                return date('H:i:s', $this->timestamp);
-
-            case '%U':  // Week number of the given year, starting with the firstSunday as the first week
-                return date('W', $this->timestamp); // FIXME
-
-            case '%V':  // Week number of the given year, starting with the firstSunday as the first week (ISO-8601:1988)
-                return date('W', $this->timestamp);
-
-            case '%W':  // A numeric representation of the week of the year, starting with the first Monday as the first week
-                return date('W', $this->timestamp); // FIXME
-
-            case '%X':  // Preferred time representation based on locale, without the date
-                return date('H:i:s', $this->timestamp); // FIXME
-
-            case '%Y':  // four-digit year
-                return date('Y', $this->timestamp);
-
-            case '%Z':  // time zone abbreviation: 'EST'
-                return date('T', $this->timestamp);
-
-            case '%%':  // percent character
-                return '%';
-
-            default:
-                // Ignore unsupported specifier
-                return '';
-        }
-    }
-
-    /**
-     * @param  string    $format
-     * @param  int|null  $timestamp  local time
-     * @return string                Formatted date and time in local time
+     * @param  string        $format
+     * @param  int|null      $timestamp  local time
+     * @return string|false              Formatted date and time in local time, false on error
      */
     public function strftime($format, $timestamp = null)
     {
+        $retval = '';
+
         $this->timestamp = ($timestamp === null) ? time() : $timestamp;
 
-        $retval = $format;
-        $retval = preg_replace_callback(
-            '/%(#d|[abcdeghjklmnprstxuwyzABCDFGHIMPRSTUVWXYZ%])/',
-            [$this, 'convertDateTime'],
-            $retval
-        );
+        while (($p = strpos($format, '%')) !== false) {
+            if ($p > 0) {
+                $retval .= substr($format, 0, $p);
+                $format = substr($format, $p);
+            }
 
-        return ($retval === null) ? false : $retval;
+            if (strpos($format, '%#d') === 0) {
+                $retval .= date('j', $this->timestamp);
+                $format = substr($format, 3);
+                continue;
+            }
+
+            $spec = substr($format, 1, 1);
+            $format = substr($format, 2);
+
+            switch ($spec) {
+                case 'a':  // 'Sun' - 'Sat'
+                    $replace = $this->shortDayNames[(int) date('w', $this->timestamp) + 1];
+                    break;
+
+                case 'b':  // 'Jan' - 'Dec'
+                case 'h':  // an alias of %b
+                    $replace = $this->shortMonthNames[(int) date('n', $this->timestamp)];
+                    break;
+
+                case 'c':  // 'Tue Feb 5 00:45:10 2009
+                    $day = $this->shortDayNames[(int) date('w', $this->timestamp) + 1];
+                    $month = $this->shortMonthNames[(int) date('n', $this->timestamp)];
+
+                    $replace = $day . ' ' . $month . date(' j H:i:s Y', $this->timestamp);
+                    break;
+
+                case 'd':  // day of the month: '01' - '31'
+                    $replace = date('d', $this->timestamp);
+                    break;
+
+                case 'e':  // day of the month: '01' - '31'
+                    $replace = date('j', $this->timestamp);
+                    break;
+
+                case 'g':  // 2-digit year (ISO-8601:1988): '09' for 2009
+                    $replace = date('y', $this->timestamp); // FIXME
+                    break;
+
+                case 'j':  // 3-digit day of th year: '001' - '366'
+                    $replace = substr('00' . (string) ((int) date('z', $this->timestamp) + 1), -3);
+                    break;
+
+                case 'k':  // hour in 24-hour format: ' 0' - '23'
+                    $replace = substr(' ' . date('G', $this->timestamp), -2);
+                    break;
+
+                case 'l':  // hour in 12-hour format: ' 1' - '12'
+                    $replace = substr(' ' . date('g', $this->timestamp), -2);
+                    break;
+
+                case 'm':  // 2-digit month: '01' - '12'
+                    $replace = date('m', $this->timestamp);
+                    break;
+
+                case 'n':  // new line character
+                    $replace = "\n";
+                    break;
+
+                case 'p':  // lower case 'am', 'pm'
+                    $replace = $this->amPm['am_pm'][date('a', $this->timestamp)];
+                    break;
+
+                case 'r':  // Same as "%I:%M:%S %p"
+                    $replace = date('h:i:s a', $this->timestamp);  // FIXME
+                    break;
+
+                case 's':  // Unix Epoch Time timestamp same as time()
+                    $replace = (string) $this->timestamp;
+                    break;
+
+                case 't':  // tab character
+                    $replace = "\t";
+                    break;
+
+                case 'u':  // day of the week: 1 (Mon) - 7 (Sun)
+                    $replace = date('N', $this->timestamp);
+                    break;
+
+                case 'w':  // day of the week: 0 (Sun) - 6 (Sat)
+                    $replace = date('w', $this->timestamp);
+                    break;
+
+                case 'x':  // Preferred date representation: '02/05/09' for February 5, 2009
+                    $replace = date('m/d/y', $this->timestamp); // FIXME
+                    break;
+
+                case 'y':  // two-digit year: '00' - '99'
+                    $replace = date('y', $this->timestamp);
+                    break;
+
+                case 'z':  // time zone offset: -0500 for EST
+                    $replace = date('O', $this->timestamp);
+                    break;
+
+                case 'A':  // 'Sunday' - 'Saturday'
+                    $replace = $this->dayNames[(int) date('w', $this->timestamp) + 1];
+                    break;
+
+                case 'B':  // 'January' - 'December'
+                    $replace = $this->monthNames[(int) date('n', $this->timestamp)];
+                    break;
+
+                case 'C':  // two-digit century: '19' for the 20th century
+                    $replace = (string) floor((int) date('Y', $this->timestamp) / 100);
+                    break;
+
+                case 'D':  // Same as "%m/%d/%y": '02/05/09' for February 5, 2009
+                    $replace = date('m/d/y', $this->timestamp);
+                    break;
+
+                case 'F':  // Same as "%Y-%m-%d"
+                    $replace = date('Y-m-d', $this->timestamp);
+                    break;
+
+                case 'G':  // four-digit year (ISO-8601:1988)
+                    $replace = date('Y', $this->timestamp); // FIXME
+                    break;
+
+                case 'H':  // two-digit hour in 24-hour format: '00' - '23'
+                    $replace = date('H', $this->timestamp);
+                    break;
+
+                case 'I':  // two-digit hour in 12-hour format: '01' - '12'
+                    $replace = date('h', $this->timestamp);
+                    break;
+
+                case 'M':  // two-digit minute: '00' - '59'
+                    $replace = date('i', $this->timestamp);
+                    break;
+
+                case 'P':  // upper-case 'AM', 'PM'
+                    $replace = $this->amPm['AM_PM'][date('a', $this->timestamp)];
+                    break;
+
+                case 'R':  // Same as "%H:%M"
+                    $replace = date('H:i', $this->timestamp);
+                    break;
+
+                case 'S':  // two-digit second: '00' - '59'
+                    $replace = date('s', $this->timestamp);
+                    break;
+
+                case 'T':  // Same as "%H:%M:%S"
+                    $replace = date('H:i:s', $this->timestamp);
+                    break;
+
+                case 'U':  // Week number of the given year, starting with the firstSunday as the first week
+                    $replace = date('W', $this->timestamp); // FIXME
+                    break;
+
+                case 'V':  // Week number of the given year, starting with the firstSunday as the first week (ISO-8601:1988)
+                    $replace = date('W', $this->timestamp);
+                    break;
+
+                case 'W':  // A numeric representation of the week of the year, starting with the first Monday as the first week
+                    $replace = date('W', $this->timestamp); // FIXME
+                    break;
+
+                case 'X':  // Preferred time representation based on locale, without the date
+                    $replace = date('H:i:s', $this->timestamp); // FIXME
+                    break;
+
+                case 'Y':  // four-digit year
+                    $replace = date('Y', $this->timestamp);
+                    break;
+
+                case 'Z':  // time zone abbreviation: 'EST'
+                    $replace = date('T', $this->timestamp);
+                    break;
+
+                case '%':  // percent character
+                    $replace = '%';
+                    break;
+
+                default:
+                    // Unsupported specifier
+                    return false;
+            }
+
+            $retval .= $replace;
+        }
+
+        $retval .= $format;
+
+        return $retval;
     }
 
     /**

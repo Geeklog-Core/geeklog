@@ -816,10 +816,10 @@ function ADMIN_getListField_users($fieldName, $fieldValue, $A, $icon_arr)
         case 'lastlogin':
             if ($fieldValue < 1) {
                 // if the user never logged in, show the registration date
-                $regdate = strftime($_CONF['shortdate'], strtotime($A['regdate']));
+                $regdate = COM_strftime($_CONF['shortdate'], strtotime($A['regdate']));
                 $retval = "({$LANG28[36]}, {$LANG28[53]} $regdate)";
             } else {
-                $retval = strftime($_CONF['shortdate'], $fieldValue);
+                $retval = COM_strftime($_CONF['shortdate'], $fieldValue);
             }
             break;
 
@@ -853,10 +853,10 @@ function ADMIN_getListField_users($fieldName, $fieldValue, $A, $icon_arr)
         case 'lastlogin_short':
             if ($fieldValue < 1) {
                 // if the user never logged in, show the registration date
-                $regdate = strftime($_CONF['shortdate'], strtotime($A['regdate']));
+                $regdate = COM_strftime($_CONF['shortdate'], strtotime($A['regdate']));
                 $retval = "({$LANG28[36]})";
             } else {
-                $retval = strftime($_CONF['shortdate'], $fieldValue);
+                $retval = COM_strftime($_CONF['shortdate'], $fieldValue);
             }
             break;
 
@@ -879,7 +879,7 @@ function ADMIN_getListField_users($fieldName, $fieldValue, $A, $icon_arr)
             break;
 
         case 'regdate':
-            $retval = strftime($_CONF['shortdate'], strtotime($fieldValue));
+            $retval = COM_strftime($_CONF['shortdate'], strtotime($fieldValue));
             break;
 
         case $_TABLES['users'] . '.uid':
@@ -924,7 +924,7 @@ function ADMIN_getListField_stories($fieldName, $fieldValue, $A, $icon_arr)
     switch ($fieldName) {
         case 'unixdate':
             $currentTime = COM_getUserDateTimeFormat($A['unixdate']);
-            $retval = strftime($_CONF['daytime'], $currentTime[1]);
+            $retval = COM_strftime($_CONF['daytime'], $currentTime[1]);
             break;
 
         case 'title':
@@ -1276,7 +1276,7 @@ function ADMIN_getListField_moderation($fieldName, $fieldValue, $A, $icon_arr)
             break;
 
         case 'day':
-            $retval = strftime($_CONF['daytime'], $A['day']);
+            $retval = COM_strftime($_CONF['daytime'], $A['day']);
             break;
 
         case 'tid':

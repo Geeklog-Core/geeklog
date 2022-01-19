@@ -1140,7 +1140,7 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
             }
             break;
         case "unixdate":
-            $retval = strftime ($_CONF['daytime'], $A['unixdate']);
+            $retval = COM_strftime($_CONF['daytime'], $A['unixdate']);
             break;
         default:
             $retval = $fieldvalue;

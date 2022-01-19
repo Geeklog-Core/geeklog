@@ -1762,7 +1762,7 @@ function SEC_getTokenExpiryNotice($token, $extra_msg = '')
             $tcc = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'controls'));
             $tcc->set_file('expiry_message', 'expiry_message.thtml');
 
-            $tcc->set_var('lang_token_expiry', sprintf($LANG_ADMIN['token_expiry'], strftime($_CONF['timeonly'], $expirytime)));
+            $tcc->set_var('lang_token_expiry', sprintf($LANG_ADMIN['token_expiry'], COM_strftime($_CONF['timeonly'], $expirytime)));
             $tcc->set_var('lang_extra_msg', $extra_msg);
 
             $retval = $tcc->finish($tcc->parse('output', 'expiry_message'));

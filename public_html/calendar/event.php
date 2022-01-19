@@ -92,8 +92,8 @@ function adduserevent($eid)
             $cal_template->set_var('event_start', $thestart[0]);
             $cal_template->set_var('event_end', $theend[0]);
         } else {
-            $cal_template->set_var('event_start', strftime($_CONF['shortdate'], $thestart[1]));
-            $cal_template->set_var('event_end', strftime($_CONF['shortdate'], $theend[1]));
+            $cal_template->set_var('event_start', COM_strftime($_CONF['shortdate'], $thestart[1]));
+            $cal_template->set_var('event_end', COM_strftime($_CONF['shortdate'], $theend[1]));
         }
 
         $cal_template->set_var('lang_where', $LANG_CAL_1[4]);
@@ -454,7 +454,7 @@ switch ($action) {
                 $day = date('j', $currentTime);
             }
 
-            $pagetitle = $LANG_CAL_2[10] . ' ' . strftime($_CONF['shortdate'],
+            $pagetitle = $LANG_CAL_2[10] . ' ' . COM_strftime($_CONF['shortdate'],
                     mktime(0, 0, 0, $month, $day, $year));
             $display .= COM_startBlock($pagetitle);
 
@@ -502,11 +502,11 @@ switch ($action) {
                 if (SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
                         $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0
                 ) {
-                    if (strftime('%B', strtotime($A['datestart'])) != $currentmonth) {
-                        $str_month = $cal->getMonthName(strftime('%m', strtotime($A['datestart'])));
+                    if (COM_strftime('%B', strtotime($A['datestart'])) != $currentmonth) {
+                        $str_month = $cal->getMonthName(COM_strftime('%m', strtotime($A['datestart'])));
                         $cal_templates->set_var('lang_month', $str_month);
-                        $cal_templates->set_var('event_year', strftime('%Y', strtotime($A['datestart'])));
-                        $currentmonth = strftime('%B', strtotime($A['datestart']));
+                        $cal_templates->set_var('event_year', COM_strftime('%Y', strtotime($A['datestart'])));
+                        $currentmonth = COM_strftime('%B', strtotime($A['datestart']));
                     }
 
                     $event_title = stripslashes($A['title']);
@@ -558,12 +558,12 @@ switch ($action) {
                         }
                         $cal_templates->set_var('event_end', $thedatetime[0]);
                     } elseif ($A['allday'] == 1 && $A['datestart'] != $A['dateend']) {
-                        $thedatetime1 = strftime('%A, ' . $_CONF['shortdate'], strtotime($A['datestart']));
+                        $thedatetime1 = COM_strftime('%A, ' . $_CONF['shortdate'], strtotime($A['datestart']));
                         $cal_templates->set_var('event_start', $thedatetime1);
-                        $thedatetime2 = strftime('%A, ' . $_CONF['shortdate'], strtotime($A['dateend']));
+                        $thedatetime2 = COM_strftime('%A, ' . $_CONF['shortdate'], strtotime($A['dateend']));
                         $cal_templates->set_var('event_end', $thedatetime2 . ' ' . $LANG_CAL_2[26]);
                     } else {
-                        $thedatetime = strftime('%A, ' . $_CONF['shortdate'], strtotime($A['datestart']));
+                        $thedatetime = COM_strftime('%A, ' . $_CONF['shortdate'], strtotime($A['datestart']));
                         $cal_templates->set_var('event_start', $thedatetime);
                         $cal_templates->set_var('event_end', $LANG_CAL_2[26]);
                     }

@@ -143,7 +143,7 @@ abstract class Log
     public static function setTimeStampFormat($format)
     {
         // On Windows, strftime() could return false if you specify an invalid format
-        if (@strftime($format) !== false) {
+        if (@COM_strftime($format) !== false) {
             self::$timeStampFormat = $format;
         }
     }
@@ -171,7 +171,7 @@ abstract class Log
             $timestamp = time();
         }
 
-        return strftime(self::$timeStampFormat, $timestamp);
+        return COM_strftime(self::$timeStampFormat, $timestamp);
     }
 
     /**

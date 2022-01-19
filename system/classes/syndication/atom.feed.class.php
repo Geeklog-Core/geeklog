@@ -101,7 +101,7 @@ class Atom10 extends FeedParserBase
         $start = strpos($url, '/') + 2;
         $end = strpos($url, '/', $start);
         $tag = 'tag:' . substr($url, $start, $end - $start)
-            . strftime(',%Y-%m-%d', $date) . ':' . substr($url, $end);
+            . COM_strftime(',%Y-%m-%d', $date) . ':' . substr($url, $end);
 
         return $tag;
     }

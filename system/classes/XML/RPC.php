@@ -1893,15 +1893,9 @@ class XML_RPC_Value extends XML_RPC_Base
 function XML_RPC_iso8601_encode($timet, $utc = 0)
 {
     if (!$utc) {
-        $t = strftime('%Y%m%dT%H:%M:%S', $timet);
+        $t = COM_strftime('%Y%m%dT%H:%M:%S', $timet);
     } else {
-        if (function_exists('gmstrftime')) {
-            // gmstrftime doesn't exist in some versions
-            // of PHP
-            $t = gmstrftime('%Y%m%dT%H:%M:%S', $timet);
-        } else {
-            $t = strftime('%Y%m%dT%H:%M:%S', $timet - date('Z'));
-        }
+        $t = COM_gmstrftime('%Y%m%dT%H:%M:%S', $timet);
     }
     return $t;
 }

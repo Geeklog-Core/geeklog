@@ -336,7 +336,7 @@ function SPAMX_log ($logentry)
         $logentry = str_replace( array( '<?', '?>' ), array( '(@', '@)' ),
                                  $logentry );
 
-        $timestamp = strftime ('%c');
+        $timestamp = COM_strftime('%c');
         $logfile = $_CONF['path_log'] . 'spamx.log';
 
         if (!$file = fopen ($logfile, 'a')) {

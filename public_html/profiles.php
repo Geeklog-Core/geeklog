@@ -367,7 +367,7 @@ function mailstory($sid, $to, $toEmail, $from, $fromEmail, $shortMessage)
     $mailText .= '------------------------------------------------------------'
               . LB . LB
               . COM_undoSpecialChars($story->displayElements('title')) . LB
-              . strftime($_CONF['date'], $story->DisplayElements('unixdate')) . LB;
+              . COM_strftime($_CONF['date'], $story->DisplayElements('unixdate')) . LB;
 
     if ($_CONF['contributedbyline'] == 1) {
         $author = COM_getDisplayName($story->displayElements('uid'));

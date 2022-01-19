@@ -50,7 +50,7 @@ class LogView extends BaseAdmin {
         $display .= "<input type=\"submit\" name=\"action\" value=\"{$LANG_SX00['clearlog']}\"" . XHTML . ">";
         $display .= "</div></form>";
         if ($action == $LANG_SX00['clearlog']) {
-            $timestamp = strftime("%c");
+            $timestamp = COM_strftime("%c");
             $fd = fopen($_CONF['path_log'] . $log, "w");
             fputs($fd, "$timestamp {$LANG_SX00['logcleared']} \n");
             fclose($fd);

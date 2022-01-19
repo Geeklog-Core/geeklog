@@ -1021,7 +1021,7 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
                 }
                 break;
             case 'unixdate':
-                $retval = strftime ($_CONF['daytime'], $A['unixdate']);
+                $retval = COM_strftime($_CONF['daytime'], $A['unixdate']);
                 break;
             case 'topic':
                 if (($A['hideresults'] == 0) ||

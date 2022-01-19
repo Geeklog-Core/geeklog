@@ -251,7 +251,7 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
     $username = DB_escapeString($username);
     $email = DB_escapeString($email);
 
-    $regdate = strftime('%Y-%m-%d %H:%M:%S', time());
+    $regdate = COM_strftime('%Y-%m-%d %H:%M:%S', time());
     $fields = 'username,email,regdate,cookietimeout';
     $values = "'$username','$email','$regdate','{$_CONF['default_perm_cookie_timeout']}'";
 
@@ -356,7 +356,7 @@ function USER_sendNotification($userName, $email, $uid, $mode = 'inactive')
 
     $mailBody = "$LANG04[2]: $userName\n"
         . "$LANG04[5]: $email\n"
-        . "$LANG28[14]: " . strftime($_CONF['date']) . "\n\n";
+        . "$LANG28[14]: " . COM_strftime($_CONF['date']) . "\n\n";
 
     if ($mode === 'inactive') {
         // user needs admin approval

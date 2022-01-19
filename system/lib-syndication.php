@@ -517,7 +517,7 @@ function SYND_updateFeed($fid)
                 $feed->feedlogo = $_CONF['site_url'] . $A['feedlogo'];
             }
             $feed->sitelink = $link;
-            $feed->copyright = 'Copyright ' . strftime('%Y') . ' '
+            $feed->copyright = 'Copyright ' . COM_strftime('%Y') . ' '
                 . $_CONF['site_name'];
             $feed->sitecontact = $_CONF['site_mail'];
             $feed->system = 'Geeklog';

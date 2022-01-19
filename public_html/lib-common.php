@@ -1393,7 +1393,7 @@ function COM_createHTMLDocument($content = '', $information = array())
     $page->set_var('datetime', $currentTime[0]);
     $page->set_var('site_logo', $_CONF['layout_url'] . '/images/logo.' . $_IMAGE_TYPE);
     $page->set_var('theme', $_CONF['theme']);
-    $page->set_var('datetime_html5', strftime('%FT%T', $currentTime[1]));
+    $page->set_var('datetime_html5', COM_strftime('%FT%T', $currentTime[1]));
 
     $page->set_var('charset', COM_getCharset());
     $page->set_var('direction', $LANG_DIRECTION);
@@ -2335,7 +2335,7 @@ function COM_errorLog($logEntry, $actionId = '')
 
     if (!empty($logEntry)) {
         $logEntry = str_replace(array('<?', '?>'), array('(@', '@)'), $logEntry);
-        $timestamp = @strftime('%c');
+        $timestamp = @COM_strftime('%c');
         $remoteAddress = \Geeklog\IP::getIPAddress();
 
         if (!isset($_CONF['path_layout']) && (($actionId == 2) || empty($actionId))) {
@@ -4053,7 +4053,7 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '', $cssId =
 
         for ($i = 0; $i < $numRows; $i++) {
             $A = DB_fetchArray($result);
-            $dayCheck = strftime('%A', $A['day']);
+            $dayCheck = COM_strftime('%A', $A['day']);
 
             if ($day != $dayCheck) {
                 if ($day !== 'noday') {
@@ -4874,7 +4874,7 @@ function COM_emailUserTopics()
         return;
     }
 
-    $subject = GLText::stripTags($_CONF['site_name'] . $LANG08[30] . strftime('%Y-%m-%d', time()));
+    $subject = GLText::stripTags($_CONF['site_name'] . $LANG08[30] . COM_strftime('%Y-%m-%d', time()));
     $authors = array();
 
     // Get users who want stories emailed to them
@@ -5672,7 +5672,7 @@ function COM_getUserDateTimeFormat($date = '', $format = 'date')
     if ($isWindows && $hasMbStringFunctions) {
         $dateFormat = mb_convert_encoding($dateFormat, 'shift_jis', $_CONF['default_charset']);
     }
-    $date = strftime($dateFormat, $stamp);
+    $date = COM_strftime($dateFormat, $stamp);
 
     // Additional fix for Japanese users and so on
     switch ($locale) {

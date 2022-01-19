@@ -499,7 +499,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                     $C = DB_fetchArray($result);
 
                     $recent_comment_info = $LANG01[27] . ': '
-                        . strftime($_CONF['daytime'], $C['day']) . ' '
+                        . COM_strftime($_CONF['daytime'], $C['day']) . ' '
                         . $LANG01[104] . ' ' . COM_getDisplayName($C['cuid'],
                             $C['username'], $C['fullname']);
                     $article->set_var('recent_comment_info', $recent_comment_info);

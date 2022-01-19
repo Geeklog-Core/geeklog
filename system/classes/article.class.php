@@ -1872,12 +1872,12 @@ class Article
                 break;
 
             case 'shortdate':
-                $return = strftime($_CONF['shortdate'], $this->_date);
+                $return = COM_strftime($_CONF['shortdate'], $this->_date);
 
                 break;
 
             case 'dateonly':
-                $return = strftime($_CONF['dateonly'], $this->_date);
+                $return = COM_strftime($_CONF['dateonly'], $this->_date);
 
                 break;
 
@@ -1900,7 +1900,7 @@ class Article
                 break;
 
             case 'datetime':
-                $return = strftime('%FT%T', $this->_date);
+                $return = COM_strftime('%FT%T', $this->_date);
 
                 break;
 

@@ -198,14 +198,14 @@ function phpblock_calendar( $help='', $title='' )
                     // Start Date strings...
                     $startDate = $theEvent['datestart'];
                     $theTime1 = strtotime( $startDate );
-                    $dayName1 = strftime( '%A', $theTime1 );
-                    $abbrDate1 = strftime( $dateonly, $theTime1 );
+                    $dayName1 = COM_strftime( '%A', $theTime1 );
+                    $abbrDate1 = COM_strftime( $dateonly, $theTime1 );
 
                     // End Date strings...
                     $endDate = $theEvent['dateend'];
                     $theTime2 = strtotime( $endDate );
-                    $dayName2 = strftime( '%A', $theTime2 );
-                    $abbrDate2 = strftime( $dateonly, $theTime2 );
+                    $dayName2 = COM_strftime( '%A', $theTime2 );
+                    $abbrDate2 = COM_strftime( $dateonly, $theTime2 );
 
                     $todaysEvent = false;
                     if( date( 'Ymd', $theTime1 ) == date( 'Ymd', time())) {
@@ -1049,7 +1049,7 @@ function CALENDAR_sendNotification ($table, $A)
     $description = stripslashes ($A['description']);
 
     $mailbody = "$LANG09[16]: $title\n"
-              . "$LANG09[17]: " . strftime ($_CONF['date'],
+              . "$LANG09[17]: " . COM_strftime($_CONF['date'],
                 strtotime ($A['datestart'] . ' ' . $A['timestart']));
     if ($A['allday']) {
         $mailbody .= ' (' . $LANG_CAL_2[26] . ')';
