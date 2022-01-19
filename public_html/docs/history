@@ -8,9 +8,16 @@ Explanation of list item:
 For more in-depth explanation of the issues below see: https://github.com/Geeklog-Core/geeklog/milestone/48?closed=1
 
 - [Improvement] [#1042] Removed support for old Search API (pre Geeklog 1.5.1) [Tom]
+- [Bug] [NA] Fixed language issue with File Manager when Browsing images on server [Tom]
 - 
 - 
-- 
+
+The following items are Libraries that have been updated that are not handled by Composer.
+
+- [Update] UIkit 3 framework to version 3.10.0 [Mystralkk] [Tom]
+- [Update] jQuery to version 3.6.0 [Mystralkk]
+- [Update] jQuery UI to version 1.13.0 [Tom]
+- [Update] CKEditor to 4.17.1 (Full Package) [Tom]
 
 The following items are all current Geeklog API, functions, and/or global variables that are planned to be either required or depreciated by a current Geeklog version. Plugin and Theme developers please take note of these changes in case they affect you.
 
