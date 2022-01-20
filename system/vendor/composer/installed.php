@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '17142ece4350d3c34bcca911031af5cc0414ed79',
+        'reference' => '32b62dcb23ab9bf6ea9f877a344b765f834a98e5',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '17142ece4350d3c34bcca911031af5cc0414ed79',
+            'reference' => '32b62dcb23ab9bf6ea9f877a344b765f834a98e5',
             'dev_requirement' => false,
         ),
         'doctrine/inflector' => array(
@@ -248,15 +248,6 @@
             'install_path' => __DIR__ . '/../splitbrain/php-archive',
             'aliases' => array(),
             'reference' => '211a2198b73b233d7d2b6159462e11cd9a91348a',
-            'dev_requirement' => false,
-        ),
-        'swiftmailer/swiftmailer' => array(
-            'pretty_version' => 'v5.4.12',
-            'version' => '5.4.12.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../swiftmailer/swiftmailer',
-            'aliases' => array(),
-            'reference' => '181b89f18a90f8925ef805f950d47a7190e9b950',
             'dev_requirement' => false,
         ),
         'symfony/event-dispatcher' => array(
