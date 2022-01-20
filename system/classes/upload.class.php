@@ -668,6 +668,10 @@ class Upload
                 $this->printErrors();
                 exit;
             } else {
+                if (empty($newSize)) {
+                    $newSize = '?';
+                }
+
                 $this->_addDebugMsg('Image, ' . $this->_currentFile['name'] . ' was resized from ' . $imageInfo['width'] . 'x' . $imageInfo['height'] . ' to ' . $newSize);
             }
         }

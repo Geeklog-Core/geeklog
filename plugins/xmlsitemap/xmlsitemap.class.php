@@ -376,7 +376,7 @@ class XMLSitemap
         if ($retval === null) {
             if (isset($_CONF['timezone'])) {
                 try {
-                    $now = new DateTime(null, new DateTimeZone($_CONF['timezone']));
+                    $now = new DateTime('now', new DateTimeZone($_CONF['timezone']));
                     $offset = $now->getOffset();
 
                     if ($offset >= 0) {
