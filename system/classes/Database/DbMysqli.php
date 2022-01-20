@@ -32,6 +32,7 @@
 
 namespace Geeklog\Database;
 
+use Exception;
 use InvalidArgumentException;
 use Mysqli;
 use mysqli_result;
@@ -506,12 +507,18 @@ class DbMysqli
         $sql = $this->fixCreateSQL($sql);
 
         // Run query
-        if ($ignore_errors) {
-            $result = @$this->_db->query($sql);
-        } else {
-            $result = @$this->_db->query($sql);
+        try {
+            if ($ignore_errors) {
+                $result = @$this->_db->query($sql);
+            } else {
+                $result = @$this->_db->query($sql);
 
-            if ($result === false) {
+                if ($result === false) {
+                    trigger_error($this->dbError($sql), E_USER_ERROR);
+                }
+            }
+        } catch (Exception $exception) {
+            if (!$ignore_errors) {
                 trigger_error($this->dbError($sql), E_USER_ERROR);
             }
         }

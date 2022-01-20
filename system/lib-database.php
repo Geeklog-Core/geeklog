@@ -148,12 +148,12 @@ if (!class_exists('Geeklog\\Autoload')) {
 
 if ($_DB_dbms === 'mysql') {
     if (class_exists('MySQLi')) {
-        $_DB = new Geeklog\Database\DbMysqli($_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, 'COM_errorLog', $_DB_charset);
+        $_DB = new Geeklog\Database\DbMysqli($_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, '\COM_errorLog', $_DB_charset);
     } else {
-        $_DB = new Geeklog\Database\DbMysql($_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, 'COM_errorLog', $_DB_charset);
+        $_DB = new Geeklog\Database\DbMysql($_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, '\COM_errorLog', $_DB_charset);
     }
 } elseif ($_DB_dbms === 'pgsql') {
-    $_DB = new Geeklog\Database\DbPgsql($_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, 'COM_errorLog', $_DB_charset);
+    $_DB = new Geeklog\Database\DbPgsql($_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, '\COM_errorLog', $_DB_charset);
 } else {
     throw new InvalidArgumentException(sprintf('Unknown database driver "%s" was specified', $_DB_dbms));
 }

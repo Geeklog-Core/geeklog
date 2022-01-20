@@ -8060,34 +8060,18 @@ function COM_handleGeeklogError($errCode, $errStr)
 }
 
 /**
- * Handle errors.
- * This function will handle all PHP errors thrown at it, without exposing
- * paths, and hopefully, providing much more information to Root Users than
- * the default white error page.
- * This function will call out to CUSTOM_handleError if it exists, but, be
- * advised, only override this function with a very, very stable function. I'd
- * suggest one that outputs some static, basic HTML.
- * The PHP feature that allows us to do so is documented here:
- * http://uk2.php.net/manual/en/function.set-error-handler.php
+ * Convert a combination of error numbers to a string
  *
- * @param  int    $errNo      Error Number.
- * @param  string $errStr     Error Message.
- * @param  string $errFile    The file the error was raised in.
- * @param  int    $errLine    The line of the file that the error was raised at.
- * @param  array  $errContext An array that points to the active symbol table at the point the error occurred.
-* @param  int    $type        Geeklog Error Type - 1 = PHP, 2 = Geeklog Specific
+ * @param  int     $errNo
+ * @return string
  */
-function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errContext = array(), $type = 1)
+function COM_convertErrorNumberToString($errNo)
 {
-    global $_CONF, $_USER, $LANG01;
-
-    // Handle @ operator
-    if (error_reporting() == 0) {
-        return;
-    }
+    $errNo = (int) $errNo;
+    $temp = [];
 
     // Table of error code and error type
-    $errorTypes = array(
+    $errorTypes = [
         0     => 'E_SYNTAX',            // Since Geeklog 2.2.0 - Handles syntax errors. Used when Developer Mode is on and PHP is set to show all errors
         1     => 'E_ERROR',
         2     => 'E_WARNING',
@@ -8104,7 +8088,51 @@ function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errConte
         4096  => 'E_RECOVERABLE_ERROR', // Since PHP-5.2.0
         8192  => 'E_DEPRECATED',        // Since PHP-5.3.0
         16384 => 'E_USER_DEPRECATED',   // Since PHP-5.3.0
-    );
+    ];
+
+    if ($errNo === 0) {
+        return $errorTypes[0];
+    }
+
+    foreach ($errorTypes as $key => $value) {
+        if ($key > 0) {
+            if (($errNo & $key) === $key) {
+                $temp[] = $value;
+            }
+        }
+    }
+
+    return implode(', ', $temp);
+}
+
+/**
+ * Handle errors.
+ * This function will handle all PHP errors thrown at it, without exposing
+ * paths, and hopefully, providing much more information to Root Users than
+ * the default white error page.
+ * This function will call out to CUSTOM_handleError if it exists, but, be
+ * advised, only override this function with a very, very stable function. I'd
+ * suggest one that outputs some static, basic HTML.
+ * The PHP feature that allows us to do so is documented here:
+ * http://uk2.php.net/manual/en/function.set-error-handler.php
+ *
+ * @param  int    $errNo       Error Number.
+ * @param  string $errStr      Error Message.
+ * @param  string $errFile     The file the error was raised in.
+ * @param  int    $errLine     The line of the file that the error was raised at.
+ * @param  array  $errContext  An array that points to the active symbol table at the point the error occurred.
+ * @param  int    $type        Geeklog Error Type - 1 = PHP, 2 = Geeklog Specific
+ */
+function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errContext = array(), $type = 1)
+{
+    global $_CONF, $_USER, $LANG01;
+
+    // Handle @ operator
+    if (error_reporting() == 0) {
+        return;
+    }
+
+    $hasPHP8 = version_compare(PHP_VERSION, '8.0.0', '>=');
 
     /*
      * If we have a root user, then output detailed error message:
@@ -8150,7 +8178,7 @@ HTML;
             }
 
             if ($type == 1) {
-                $output .= "<p>$errorTypes[$errNo]($errNo) - $errStr @ $errFile line $errLine</p>";
+                $output .= '<p>' . COM_convertErrorNumberToString($errNo) . "($errNo) - $errStr @ $errFile line $errLine</p>";
             } else {
                 $output .= $errStr;
             }
@@ -8158,7 +8186,9 @@ HTML;
 			if ($type == 1) {
 				if (!function_exists('SEC_inGroup') || !SEC_inGroup('Root')) {
 					if ('force' != '' . $_CONF['rootdebug']) {
-						$errContext = COM_rootDebugClean($errContext);
+                        if (!$hasPHP8) {
+                            $errContext = COM_rootDebugClean($errContext);
+                        }
 					} else {
 						$output .= <<<HTML
 <h2 style="color: red;">Root Debug is set to "force", this means that passwords and session cookies are exposed in this message!!!</h2>
@@ -8169,7 +8199,8 @@ HTML;
 
             if (@ini_get('xdebug.default_enable') == 1) {
                 ob_start();
-                if ($type == 1) {
+                // Since PHP 8.0.0, $errContext argument was dropped
+                if (!$hasPHP8 && ($type == 1)) {
 					var_dump($errContext);
                 }
                 $output .= ob_get_clean() . PHP_EOL . '</body></html>';
@@ -8231,7 +8262,7 @@ HTML;
 ;               }
 
                 // Since PHP 8.0.0, $errContext argument was dropped
-                if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+                if (!$hasPHP8) {
                     $output .= '<pre>';
                     ob_start();
                     if ($type == 1) {
@@ -8256,7 +8287,11 @@ HTML;
                 require_once $_CONF['path_system'] . 'lib-custom.php';
             }
             if (function_exists('CUSTOM_handleError')) {
-                CUSTOM_handleError($errNo, $errStr, $errFile, $errLine, $errContext);
+                if ($hasPHP8) {
+                    CUSTOM_handleError($errNo, $errStr, $errFile, $errLine);
+                } else {
+                    CUSTOM_handleError($errNo, $errStr, $errFile, $errLine, $errContext);
+                }
                 exit;
             }
         }
@@ -8264,7 +8299,7 @@ HTML;
 
     // if we do not throw the error back to an admin, still log it in the error.log
     if ($type == 1) {
-        COM_errorLog("$errorTypes[$errNo]($errNo) - $errStr @ $errFile line $errLine", 1);
+        COM_errorLog(COM_convertErrorNumberToString($errNo) . "($errNo) - $errStr @ $errFile line $errLine", 1);
     } else {
         COM_errorLog("$errNo - $errStr", 1);
     }
