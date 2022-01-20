@@ -166,6 +166,10 @@ class TimeZoneConfig
         foreach ($T as $tzId => $entries) {
             $shortName = strtoupper($tzId);
             foreach ($entries as $data) {
+                if (empty($data['timezone_id'])) {
+                    continue;
+                }
+
                 $tzCheck = explode('/', $data['timezone_id']);
                 if (!in_array($tzCheck[0], $useOnly)) {
                     continue;

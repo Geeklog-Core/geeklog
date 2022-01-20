@@ -77,7 +77,9 @@ class GLText
             $text = self::_displayEscape($text);
         } else {
             // latest version
-            $text = htmlspecialchars($text, ENT_QUOTES, COM_getEncodingt());
+            if (!empty($text)) {
+                $text = htmlspecialchars($text, ENT_QUOTES, COM_getEncodingt());
+            }
         }
 
         return $text;
