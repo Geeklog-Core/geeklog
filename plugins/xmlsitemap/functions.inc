@@ -348,11 +348,12 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
 
     // Set types
     $types = $_XMLSMAP_CONF['types'];
-    if ($include !== null) {
+    if ($include !== null && (($index = array_search($include, $types)) === false)) { // Only include it if not already in types array
         if (($index = array_search($exclude, $types)) === false) {
             $types[] = $include;
         }
     }
+
     if ($exclude !== null) {
         if (($index = array_search($exclude, $types)) !== false) {
             unset($types[$index]);
