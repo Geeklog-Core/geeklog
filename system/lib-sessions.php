@@ -459,9 +459,8 @@ function SESS_getUserDataFromId($userId)
         );
     }
 
-    $sql = "SELECT *,format FROM {$_TABLES['dateformats']},{$_TABLES['users']},{$_TABLES['userprefs']} "
-        . "WHERE {$_TABLES['dateformats']}.dfid = {$_TABLES['userprefs']}.dfid AND "
-        . "{$_TABLES['userprefs']}.uid = $userId AND {$_TABLES['users']}.uid = {$userId}";
+    $sql = "SELECT * FROM {$_TABLES['users']},{$_TABLES['userprefs']} "
+        . "WHERE {$_TABLES['userprefs']}.uid = $userId AND {$_TABLES['users']}.uid = {$userId}";
 
     if ((!$result = DB_query($sql)) || (!$myRow = DB_fetchArray($result, false))) {
         return array(
@@ -470,6 +469,9 @@ function SESS_getUserDataFromId($userId)
             'error'    => '1',
         );
     }
+
+    // Get date time format from the Locale class
+    $myRow['format'] = \Geeklog\Locale::dateFormatIdToString($myRow['dfid']);
 
     // Need to store auto login key this time so it can be reused for current session
     if (isset($_USER['auto_login']) && $_USER['auto_login']) {

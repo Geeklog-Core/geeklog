@@ -125,6 +125,32 @@ class Locale
     ];
 
     /**
+     * @var string[]
+     */
+    private static $dateFormats = [
+        // dfid	=> format
+        0  => '',
+        1  => '%A %B %d, %Y @%I:%M%p',
+        2  => '%A %b %d, %Y @%H:%M',
+        4  => '%A %b %d @%H:%M',
+        5  => '%H:%M %d %B %Y',
+        6  => '%H:%M %A %d %B %Y',
+        7  => '%I:%M%p - %A %B %d %Y',
+        8  => '%a %B %d, %I:%M%p',
+        9  => '%a %B %d, %H:%M',
+        10 => '%m-%d-%y %H:%M',
+        11 => '%d-%m-%y %H:%M',
+        12 => '%m-%d-%y %I:%M%p',
+        13 => '%I:%M%p  %B %e, %Y',
+        14 => '%a %b %d, \'%y %I:%M%p',
+        15 => "Day %j, %I ish",
+        16 => '%y-%m-%d %I:%M',
+        17 => '%d/%m/%y %H:%M',
+        18 => '%a %d %b %I:%M%p',
+        19 => '%Y-%m-%d %H:%M',
+    ];
+
+    /**
      * @var int
      */
     private $timestamp = 0;
@@ -153,8 +179,9 @@ class Locale
      * @param  array  $dayNames         full day names like $LANG_WEEK
      * @param  array  $shortDayNames    abbreviated day names like $LANG_WEEK_SHORT
      * @param  array  $amPm             'am' and 'pm' like $LANG_AMPM
+     * @param  array  $defaultDateFormat
      */
-    public function __construct(array $monthNames, array $shortMonthNames, array $dayNames, array $shortDayNames, array $amPm)
+    public function __construct(array $monthNames, array $shortMonthNames, array $dayNames, array $shortDayNames, array $amPm, array $defaultDateFormat)
     {
         if (!empty($monthNames)) {
             $this->monthNames = $monthNames;
@@ -175,13 +202,17 @@ class Locale
         if (!empty($amPm)) {
             $this->amPm = $amPm;
         }
+
+        if (!empty($defaultDateFormat)) {
+            self::$dateFormats[0] = $defaultDateFormat[0];
+        }
     }
 
     /**
      * Format a local time/date according to locale settings
      *
-     * @param  string        $format
-     * @param  int|null      $timestamp  local time
+     * @param  string    $format
+     * @param  int|null  $timestamp  local time
      * @return string|false              Formatted date and time in local time, false on error
      */
     public function strftime($format, $timestamp = null)
@@ -495,5 +526,42 @@ class Locale
     public function setTimestamp($timestamp)
     {
         $this->timestamp = (int) $timestamp;
+    }
+
+    /**
+     * Convert the date time format ID to the string representing the format
+     *
+     * @param  int  $dfId
+     * @return string
+     */
+    public static function dateFormatIdToString($dfId)
+    {
+        $dfId = (int) $dfId;
+
+        return array_key_exists($dfId, self::$dateFormats) ? self::$dateFormats[$dfId] : '';
+    }
+
+    /**
+     * Return an array of options elements to use in the date format selector
+     *
+     * @param  int   $selectedDfId  date format ID currently selected
+     * @param  bool  $asArray       true if return the result as an array, false as a string
+     * @return array|string
+     */
+    public function getDateFormatOptions($selectedDfId, $asArray = false)
+    {
+        $selectedDfId = (int) $selectedDfId;
+        $now = time();
+        $options = [];
+
+        foreach (self::$dateFormats as $dfId => $format) {
+            $electedStr = ($selectedDfId === $dfId) ? ' selected="selected"' : '';
+            $options[] = '<option value="' . $dfId . '"' . $electedStr . '>'
+                . $this->strftime($format, $now)
+                . '</option>';
+        }
+
+
+        return $asArray ? $options : implode("\n", $options) . "\n";
     }
 }

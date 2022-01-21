@@ -520,7 +520,9 @@ if (setlocale(LC_ALL, $_CONF['locale']) === false) {
     setlocale(LC_TIME, $_CONF['locale']);
 }
 
-$_LOCALE = new \Geeklog\Locale($LANG_MONTH, $LANG_MONTH_SHORT, $LANG_WEEK, $LANG_WEEK_SHORT, $LANG_AMPM);
+$_LOCALE = new \Geeklog\Locale(
+    $LANG_MONTH, $LANG_MONTH_SHORT, $LANG_WEEK, $LANG_WEEK_SHORT, $LANG_AMPM, $LANG_dateformats
+);
 $_LOCALE->setTimezone(TimeZoneConfig::getTimezone());
 $_LOCALE->setLocale($LANG_ISO639_1);
 
@@ -1931,7 +1933,6 @@ function COM_optionList($table, $selection, $selected = '', $sortCol = 1, $where
         return COM_optionListFromLangVariables($LangTableName, $selected);
     }
 
-    // Currently, this is the case with $_TABLES['dateformats']
     global $$LangTableName;
 
     $retval = '';

@@ -437,7 +437,7 @@ function deleteUserAccount($form_reqid)
  */
 function editpreferences()
 {
-    global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG04;
+    global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG04, $_LOCALE;
 
     $result = DB_query("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes,emailfromadmin,emailfromuser,showonline,advanced_editor FROM {$_TABLES['userprefs']},{$_TABLES['userindex']} WHERE {$_TABLES['userindex']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']}");
 
@@ -682,11 +682,10 @@ function editpreferences()
 
     $preferences->set_var('maxstories_value', $A['maxstories']);
 
-    $items = COM_optionList($_TABLES['dateformats'], 'dfid,description', $A['dfid']);
     $selection = COM_createControl('type-select', array(
         'id' => 'dfid',
         'name' => 'dfid',
-        'select_items' => $items
+        'select_items' => $_LOCALE->getDateFormatOptions($A['dfid'])
     ));
     $preferences->set_var('dateformat_selector', $selection);
     $preferences->parse('display_block', 'display', true);
