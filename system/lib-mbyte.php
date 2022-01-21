@@ -29,63 +29,32 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\LocaleData;
+
 if (stripos($_SERVER['PHP_SELF'], 'lib-mbyte.php') !== false) {
     die('This file can not be used on its own!');
 }
 
-// This function is supposed to display only language files in selection drop-
-// downs that are utf-8
+/**
+ * Return an array of dropdowns to select a language
+ *
+ * @param  string  $charset           the default charset of your site, e.g. $_CONF['default_charset']
+ * @param  bool    $multilanguage     true in case of a multi-language site
+ * @return array                      an array of ['language_file_name' => 'language name']
+ * @note   This function is supposed to display only language files in selection dropdowns that are utf-8
+ */
 function MBYTE_languageList($charset = 'utf-8', $multilanguage = false)
 {
     global $_CONF;
 
-    if (strcasecmp($charset, 'utf-8') !== 0) {
-        $charset = '';
-    }
+    $localeData = new LocaleData();
 
-    $language = [];
-    $fd = opendir($_CONF['path_language']);
-
-    while (($file = @readdir($fd)) !== false) {
-        if ((substr($file, 0, 1) !== '.') && preg_match('/\.php$/i', $file)
-            && is_file($_CONF['path_language'] . $file)
-            && ((empty($charset) && (strstr($file, '_utf-8') === false))
-                || (($charset === 'utf-8') && strstr($file, '_utf-8')))) {
-            clearstatcache();
-            $file = str_replace('.php', '', $file);
-            $langfile = str_replace('_utf-8', '', $file);
-            $uscore = strpos($langfile, '_');
-            if ($uscore === false) {
-                $lngname = ucfirst($langfile);
-            } else {
-                $lngname = ucfirst(substr($langfile, 0, $uscore));
-                $lngadd = substr($langfile, $uscore + 1);
-                $lngadd = str_replace('utf-8', '', $lngadd);
-                $lngadd = str_replace('_', ', ', $lngadd);
-                $word = explode(' ', $lngadd);
-                $lngadd = '';
-                foreach ($word as $w) {
-                    if (preg_match('/[0-9]+/', $w)) {
-                        $lngadd .= strtoupper($w) . ' ';
-                    } else {
-                        $lngadd .= ucfirst($w) . ' ';
-                    }
-                }
-                $lngname .= ' (' . trim($lngadd) . ')';
-            }
-            // Multi language content
-            if ($multilanguage) {
-                if (in_array($file, $_CONF['language_files'])) {
-                    $language[$file] = $lngname;
-                }
-            } else {
-                $language[$file] = $lngname;
-            }
-        }
-    }
-    asort($language);
-
-    return $language;
+    return $localeData->getLanguageList(
+        $_CONF['path_language'],
+        $charset,
+        $multilanguage,
+        (empty($_CONF['language_files']) ? [] : $_CONF['language_files'])
+    );
 }
 
 // replacement functions for UTF-8 functions
