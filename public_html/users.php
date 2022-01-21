@@ -131,13 +131,7 @@ function USER_requestPassword($username)
         $mailtext .= "{$_CONF['site_url']}\n";
 
         $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
-        if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
-            $mailfrom = $_CONF['noreply_mail'];
-            $mailtext .= LB . LB . $LANG04[159];
-        } else {
-            $mailfrom = $_CONF['site_mail'];
-        }
-        if (COM_mail($A['email'], $subject, $mailtext, $mailfrom)) {
+        if (COM_mail($A['email'], $subject, $mailtext)) {
             $msg = 55; // message sent
         } else {
             $msg = 85; // problem sending the email

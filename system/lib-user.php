@@ -174,14 +174,8 @@ function USER_createAndSendPassword($username, $useremail, $uid, $email_type = '
         $mailtext .= $_CONF['site_url'] . "\n";
     }
     $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
-    if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
-        $mailfrom = $_CONF['noreply_mail'];
-        $mailtext .= LB . LB . $LANG04[159];
-    } else {
-        $mailfrom = $_CONF['site_mail'];
-    }
 
-    return COM_mail($useremail, $subject, $mailtext, $mailfrom);
+    return COM_mail($useremail, $subject, $mailtext);
 }
 
 /**
@@ -213,14 +207,8 @@ function USER_sendActivationEmail($userName, $userEmail)
         $mailText .= $_CONF['site_url'] . "\n";
     }
     $subject = $_CONF['site_name'] . ': ' . $LANG04[120];
-    if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
-        $mailFrom = $_CONF['noreply_mail'];
-        $mailText .= LB . LB . $LANG04[159];
-    } else {
-        $mailFrom = $_CONF['site_mail'];
-    }
 
-    return COM_mail($userEmail, $subject, $mailText, $mailFrom);
+    return COM_mail($userEmail, $subject, $mailText);
 }
 
 /**
@@ -1484,13 +1472,8 @@ function USER_emailConfirmation($email)
             $mailtext .= "{$_CONF['site_url']}\n";
 
             $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
-            if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
-                $mailfrom = $_CONF['noreply_mail'];
-                $mailtext .= LB . LB . $LANG04[159];
-            } else {
-                $mailfrom = $_CONF['site_mail'];
-            }
-            if (COM_mail($email, $subject, $mailtext, $mailfrom)) {
+
+            if (COM_mail($email, $subject, $mailtext)) {
                 if ($A['status'] == USER_ACCOUNT_ACTIVE) {
                     // Being called by usersettings.php so just return true on success
                     return true;

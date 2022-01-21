@@ -113,6 +113,12 @@ SQL;
 
             return false;
         }
+		
+        if (empty($from)) {
+            COM_errorLog(__METHOD__ . ": From address was empty.", 1);
+
+            return false;
+        }		
 
         // Remove new lines
         $to = self::stripControlCharacters($to);
@@ -159,16 +165,12 @@ SQL;
             }
 
             // Set sender
-            if (empty($from)) {
-                $mail->setFrom($_CONF['site_mail'], $_CONF['site_name']);
-            } else {
-                if (is_array($from)) {
-                    reset($from);
-                    $mail->setFrom(key($from), current($from));
-                } else {
-                    $mail->setFrom($from);
-                }
-            }
+			if (is_array($from)) {
+				reset($from);
+				$mail->setFrom(key($from), current($from));
+			} else {
+				$mail->setFrom($from);
+			}
 
             // Set recipient
             if (is_array($to)) {

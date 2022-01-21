@@ -8,6 +8,7 @@ Explanation of list item:
 For more in-depth explanation of the issues below see: https://github.com/Geeklog-Core/geeklog/milestone/48?closed=1
 
 - [Improvement] [#1042] Removed support for old Search API (pre Geeklog 1.5.1) [Tom]
+- [Improvement] [#1086] Geeklog Core now sends email only using site_mail or noreply_mail and does not spoof user email addresses [Tom]
 - [Bug] [NA] Fixed language issue with File Manager when Browsing images on server [Tom]
 - 
 - 

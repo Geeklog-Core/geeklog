@@ -128,14 +128,15 @@ function contactemail($uid, $cc, $author, $authorEmail, $subject, $message)
             }
             $from = array($authorEmail => $author);
 
-            $sent = COM_mail($to, $subject, $message, $from);
+			$messageUpdated = sprintf($LANG08[45], COM_getDisplayName($uid, $author, $authorEmail), $authorEmail) . LB			
+				. LB . "------------------------------------------------------------" . LB . LB . $message;
+            $sent = COM_mail($to, $subject, $messageUpdated);
 
             if ($sent && $_CONF['mail_cc_enabled'] && (Geeklog\Input::post('cc') === 'on')) {
-                $ccmessage = sprintf($LANG08[38], COM_getDisplayName($uid, $A['username'], $A['fullname'])) . "\n"
-                           . $LANG08[45]
-                           . "\n------------------------------------------------------------\n\n" . $message;
+                $ccmessage = sprintf($LANG08[38], COM_getDisplayName($uid, $A['username'], $A['fullname'])) . LB
+					. LB . "------------------------------------------------------------" . LB . LB . $message;
 
-                $sent = COM_mail($from, $subject, $ccmessage, $_CONF['noreply_mail']);
+                $sent = COM_mail($from, $subject, $ccmessage);
             }
 
             COM_updateSpeedlimit('mail');
@@ -403,14 +404,13 @@ function mailstory($sid, $to, $toEmail, $from, $fromEmail, $shortMessage)
     $mailfrom = array($fromEmail => $from);
     $subject = 'Re: ' . COM_undoSpecialChars(GLText::stripTags($story->DisplayElements('title')));
 
-    $sent = COM_mail($mailto, $subject, $mailText, $mailfrom);
+    $sent = COM_mail($mailto, $subject, $mailText);
 
     if ($sent && $_CONF['mail_cc_enabled'] && (Geeklog\Input::post('cc') === 'on')) {
-        $ccmessage = sprintf($LANG08[38], $to) . "\n"
-                   . $LANG08[45]
-                   . "\n------------------------------------------------------------\n\n" . $mailText;
+		$ccmessage = sprintf($LANG08[38], $to) . LB
+			. LB . "------------------------------------------------------------" . LB . LB . $mailText;
 
-        $sent = COM_mail($mailfrom, $subject, $ccmessage, $_CONF['noreply_mail']);
+        $sent = COM_mail($mailfrom, $subject, $ccmessage);
     }
 
     COM_updateSpeedlimit('mail');

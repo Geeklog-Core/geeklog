@@ -434,7 +434,7 @@ $LANG04 = array(
     156 => 'Delete Account',
     157 => 'Delete Option',
     158 => 'Time Zone',
-    159 => 'This email was generated automatically. Please do not reply to this email.',
+    159 => 'The address used to send this email is not monitored. Please do not reply to this email.',
     160 => '(max. %d x %d pixels, %d bytes; %s)',
     161 => 'will be scaled down',
     162 => 'will not be scaled',
@@ -540,7 +540,7 @@ $LANG08 = array(
     20 => 'From Name',
     21 => 'From Email Address',
     22 => 'All fields are required',
-    23 => "This email was sent to you by %s at %s because they thought you might be interested in this article from {$_CONF['site_url']}.  This is not SPAM and the email addresses involved in this transaction were not saved to a list or stored for later use.",
+    23 => "This email was sent to you by %s (%s) because they thought you might be interested in this article from {$_CONF['site_name']} at {$_CONF['site_url']}. Please note that the email address involved in this messages are not saved.",
     24 => 'Comment on this article at',
     25 => 'You must be logged in to user this feature.  By having you log in, it helps us prevent misuse of the system',
     26 => 'This form will allow you to send an email to the selected user.  All fields are required.',
@@ -555,14 +555,14 @@ $LANG08 = array(
     35 => 'Sorry, this user prefers not to receive any emails.',
     36 => 'Copy:',
     37 => 'Send me a copy of this email',
-    38 => "This is a copy of the email that you sent to %s from <{$_CONF['site_url']}>:",
+    38 => "This is a copy of the email that you sent to %s from: {$_CONF['site_url']}",
     39 => 'Your last message was ',
     40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages",
     41 => "This user doesn't exist.",
     42 => "This users email address doesn't exist. This most likely means is is an OAuth user account.",
     43 => 'This users email address is invalid.',
     44 => 'This users status is set to something other than Active or New Password therefore the email address is assumed bad.',
-    45 => 'Please do not reply to this message since it was sent by Geeklog.'
+    45 => "This is a message sent from {$_CONF['site_name']} by %s. Any replies will need to be sent to the email address: %s"
 );
 
 ###############################################################################

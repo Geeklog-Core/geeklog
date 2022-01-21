@@ -3870,6 +3870,10 @@ function COM_formatEmailAddress($name, $address)
  * @param    string       $subject     subject of the email
  * @param    string       $message     the text of the email
  * @param    string|array $from        (optional) sender's email address | array(email address > sender's name)
+ * 									   		Defaults to $_CONF['noreply_mail'] if exist else $_CONF['site_mail']
+ *									    	In most cases should send email using defaults as mail settings used are 
+ *											those found in the Geeklog Configuration (and spoofing other email
+ * 											addresses will most likely be considered as SPAM)		
  * @param    bool         $html        (optional) true if to be sent as HTML email
  * @param    int          $priority    (optional) add X-Priority header, if > 0
  * @param    mixed        $optional    (optional) other headers or CC:
@@ -3878,7 +3882,7 @@ function COM_formatEmailAddress($name, $address)
  */
 function COM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = array())
 {
-    global $_TABLES, $_CONF;
+    global $_TABLES, $_CONF, $LANG04;
 
     // NOTE: If emails are not being sent as HTML all HTML tags (including broken and bad tags) will be removed.
     // Make sure BEFORE using COM_mail that your message doesn't contain any HTML. Remember this includes any HTML
@@ -3893,6 +3897,16 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
     } else {
         $email = $to;
     }
+	
+	if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
+		$from = $_CONF['noreply_mail'];
+		if (!$html) {
+			$message .= LB . "------------------------------------------------------------" . LB;
+			$message .= LB . $LANG04[159];
+		}
+	} else {
+		$from = [$_CONF['site_mail'] => $_CONF['site_name']];
+	}
 
     // If no status exists then assume no user account and email is being sent to someone else (which is fine and should be sent like to new users)
     $status = DB_getItem($_TABLES['users'], 'status', "email = '$email'");
@@ -4990,13 +5004,7 @@ function COM_emailUserTopics()
 
         $mailTo = array($U['email'] => $U['username']);
 
-        if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
-            $mailFrom = $_CONF['noreply_mail'];
-            $mailText .= LB . LB . $LANG04[159];
-        } else {
-            $mailFrom = $_CONF['site_mail'];
-        }
-        COM_mail($mailTo, $subject, $mailText, $mailFrom);
+        COM_mail($mailTo, $subject, $mailText);
     }
 
     DB_query("UPDATE {$_TABLES['vars']} SET value = NOW() WHERE name = 'lastemailedstories'");

@@ -853,14 +853,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
                 . $_CONF['site_name'] . "\n"
                 . $_CONF['site_url'] . "\n";
 
-            if (!empty($_CONF['noreply_mail']) && ($_CONF['site_mail'] !== $_CONF['noreply_mail'])) {
-                $mailFrom = $_CONF['noreply_mail'];
-                $mailText .= "\n\n\n\n" . $LANG04[159];
-            } else {
-                $mailFrom = $_CONF['site_mail'];
-            }
-
-            if (!COM_mail($emailData['email'], $subject, $mailText, $mailFrom)) {
+            if (!COM_mail($emailData['email'], $subject, $mailText)) {
                 COM_errorLog(sprintf('failed to send a new password to user (uid: %d)', $uid));
             }
         }
@@ -1188,14 +1181,8 @@ function batchreminders()
 
             }
             $subject = sprintf($LANG28[81], $_CONF['site_name']);
-            if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
-                $mailfrom = $_CONF['noreply_mail'];
-                $mailtext .= LB . LB . $LANG04[159];
-            } else {
-                $mailfrom = $_CONF['site_mail'];
-            }
 
-            if (COM_mail($useremail, $subject, $mailtext, $mailfrom)) {
+            if (COM_mail($useremail, $subject, $mailtext)) {
                 DB_query("UPDATE {$_TABLES['users']} SET num_reminders=num_reminders+1 WHERE uid=$userid");
                 $c++;
             } else {
