@@ -1363,7 +1363,7 @@ $LANG31 = array(
     17 => "<a href={$_CONF['site_admin_url']}/mail.php>別のメッセージを送る</a>",
     18 => '送信先',
     19 => '補足: 登録者全員に送信するには、送信先のドロップダウンメニューから「Logged-in Users」を選択してください。',
-    20 => "<successcount> 件のメッセージの送信に成功し、<failcount> 件のメッセージの送信には失敗しました。個別のメッセージの送信状態は次のとおりです。<a href=\"{$_CONF['site_admin_url']}/mail.php\">別のメッセージを送信</a>するか、<a href=\"{$_CONF['site_admin_url']}/moderation.php\">管理画面に戻る</a>ことができます",
+	20 => "<p><successcount> messages was sent successfully and <failcount> messages failed to send.</p><p>The details of the message attempts are below:</p>",
     21 => '送信に失敗',
     22 => '送信に成功',
     23 => '失敗した送信先はありません',

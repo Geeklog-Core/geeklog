@@ -16,7 +16,7 @@
       <dd><input type="text" value="{site_name}" size="40" name="fra" class="text" id="admin-mailform-fra"{xhtml}></dd>
 
       <dt><label for="admin-mailform-fraepost">{lang_replyto}</label></dt>
-      <dd><input type="text" value="{site_mail}" size="40" name="fraepost" class="text" id="admin-mailform-fraepost"{xhtml}></dd>
+      <dd><input type="text" value="{site_mail}" size="40" name="fraepost" class="text" id="admin-mailform-fraepost" readonly="readonly"{xhtml}></dd>
 
       <dt><label for="admin-mailform-subject">{lang_subject}</label></dt>
       <dd><input type="text" value="{subject}" size="40" name="subject" class="text" id="admin-mailform-subject"{xhtml}></dd>

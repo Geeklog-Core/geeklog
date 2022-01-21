@@ -58,6 +58,8 @@ if (! SEC_hasRights('user.mail')) {
     exit;
 }
 
+require_once $_CONF['path_system'] . 'lib-admin.php';
+
 /**
 * Shows the form the admin uses to send Geeklog members a message. Right now
 * you can only email an entire group.
@@ -70,8 +72,6 @@ function display_mailform($vars = array())
 {
     global $_CONF, $LANG31, $LANG_ADMIN, $_IMAGE_TYPE;
 
-    require_once $_CONF['path_system'] . 'lib-admin.php';
-
     $retval = COM_startBlock($LANG31[1], '',
                         COM_getBlockTemplate('_admin_block', 'header'));
 
@@ -80,7 +80,7 @@ function display_mailform($vars = array())
               'text' => $LANG_ADMIN['admin_home'])
     );
 
-    $desc = '<p>' . $LANG31[19] . '</p>';
+    $desc = $LANG31[19];
     $icon = $_CONF['layout_url'] . '/images/icons/mail.' . $_IMAGE_TYPE;
     $retval .= ADMIN_createMenu($menu_arr, $desc, $icon);
 
@@ -182,7 +182,7 @@ function display_mailform($vars = array())
 */
 function send_messages(array $vars)
 {
-    global $_CONF, $_TABLES, $LANG31;
+    global $_CONF, $_TABLES, $LANG31, $LANG_ADMIN, $_IMAGE_TYPE;
 
     require_once $_CONF['path_system'] . 'lib-user.php';
 
@@ -198,9 +198,8 @@ function send_messages(array $vars)
 
     $to_group = COM_applyFilter($vars['to_group'], true);
     if ($to_group > 0) {
-        $group_name = DB_getItem($_TABLES['groups'], 'grp_name',
-                                 "grp_id = $to_group");
-        if (! SEC_inGroup($group_name)) {
+        $group_name = DB_getItem($_TABLES['groups'], 'grp_name', "grp_id = $to_group");
+        if (!SEC_inGroup($group_name)) {
             COM_redirect($_CONF['site_admin_url'] . '/mail.php');
         }
     } else {
@@ -229,7 +228,8 @@ function send_messages(array $vars)
     $result = DB_query($sql);
     $numRows = DB_numRows($result);
 
-    $from = array($vars['fraepost'] => $vars['fra']);
+    //$from = array($vars['fraepost'] => $vars['fra']);
+	$from = array($vars['fraepost'] => $_CONF['site_mail']);
     $subject = $vars['subject'];
     $subject = GLText::stripTags($subject);
     $message = $vars['message'];
@@ -264,39 +264,64 @@ function send_messages(array $vars)
 
         $tempTo = is_array($to) ? implode('', array_keys($to)) : $to;
         
-		if (! COM_mail($to, $subject, $message, $from, $html, $priority)) {
+		if (!COM_mail($to, $subject, $message, $from, $html, $priority)) {
 			$failures[] = htmlspecialchars($tempTo);
 		} else {
 			$successes[] = htmlspecialchars($tempTo);
 		}
     }
 
-    $retval .= COM_startBlock($LANG31[1]);
+    $mail_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/mail'));
+    $mail_templates->set_file(array('form' => 'mailsent.thtml'));
+	$mail_templates->set_block('form', 'display_email');
+	
+    $mail_templates->set_var('start_block_mailusers', COM_startBlock($LANG31[1], '', COM_getBlockTemplate('_admin_block', 'header')));
+	$mail_templates->set_var('end_block_mailusers', COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')),);
+	
+    $mail_templates->set_var('start_block_failures', COM_startBlock($LANG31[21], '', 'blockheader-child.thtml'));
+    $mail_templates->set_var('end_block_failures', COM_endBlock(COM_getBlockTemplate('-child', 'footer')));	
+
+    $mail_templates->set_var('start_block_successes', COM_startBlock($LANG31[22], '', 'blockheader-child.thtml'));
+    $mail_templates->set_var('end_block_successes', COM_endBlock(COM_getBlockTemplate('-child', 'footer')));	
+						
+    $menu_arr = array(
+        array('url'  => $_CONF['site_admin_url'] . '/mail.php',
+              'text' => $LANG31[1]), 	
+        array('url'  => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $desc = $LANG31[19];
+    $icon = $_CONF['layout_url'] . '/images/icons/mail.' . $_IMAGE_TYPE;
+    $mail_templates->set_var('admin_menu', ADMIN_createMenu($menu_arr, $desc, $icon));
 
     $failCount = count($failures);
     $successCount = count($successes);
     $mailResult = str_replace('<successcount>', $successCount, $LANG31[20]);
-    $retval .= str_replace('<failcount>', $failCount, $mailResult);
-    $retval .= '<h2>' . $LANG31[21] . '</h2>';
-
+    $mailResult = str_replace('<failcount>', $failCount, $mailResult);
+    $mail_templates->set_var('lang_mail_results', $mailResult);
+	
     for ($i = 0; $i < count($failures); $i++) {
-        $retval .= current($failures) . '<br' . XHTML . '>';
+		$mail_templates->set_var('email_address', current($failures));
+		$mail_templates->parse('display_failures', 'display_email', true);
         next($failures);
     }
     if (count($failures) === 0) {
-        $retval .= $LANG31[23];
+		$mail_templates->set_var('lang_no_failure_message', $LANG31[23]);
     }
 
-    $retval .= '<h2>' . $LANG31[22] . '</h2>';
     for ($i = 0; $i < count($successes); $i++) {
-        $retval .= current($successes) . '<br' . XHTML . '>';
+		$mail_templates->set_var('email_address', current($successes));
+		$mail_templates->parse('display_successes', 'display_email', true);
+		
         next($successes);
     }
     if (count($successes) === 0) {
-        $retval .= $LANG31[24];
+		$mail_templates->set_var('lang_no_success_message', $LANG31[24]);
     }
-
-    $retval .= COM_endBlock();
+	
+    $mail_templates->parse('output', 'form');
+    $retval .= $mail_templates->finish($mail_templates->get_var('output'));
 
     return $retval;
 }
