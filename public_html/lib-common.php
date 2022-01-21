@@ -8965,14 +8965,15 @@ function COM_escHTML($str, $flags = ENT_QUOTES, $isDoubleEncode = true, $encodin
  */
 function COM_nl2br($string)
 {
-    if (!defined('XHTML')) {
-        define('XHTML', '');
+    if (empty($string)) {
+        return $string;
+    } else {
+        if (!defined('XHTML')) {
+            define('XHTML', '');
+        }
+
+        return str_replace(["\r\n", "\n\r", "\r", "\n"], '<br' . XHTML . '>', $string);
     }
-
-    $replace = '<br' . XHTML . '>';
-    $find = array("\r\n", "\n\r", "\r", "\n");
-
-    return str_replace($find, $replace, $string);
 }
 
 /**

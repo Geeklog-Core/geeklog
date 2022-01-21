@@ -345,7 +345,7 @@ function edituser()
         'about_value',
         GLText::getEditText($A['about'], $postMode, GLTEXT_LATEST_VERSION)
     );
-    $preferences->set_var('pgpkey_value', htmlspecialchars($A['pgpkey']));
+    $preferences->set_var('pgpkey_value', !empty($A['pgpkey']) ? htmlspecialchars($A['pgpkey']) : '');
     $preferences->set_var(array(
         'plaintext_selected' => (($postMode === 'plaintext') ? ' selected="selected"' : ''),
         'html_selected'      => (($postMode === 'html') ? ' selected="selected"' : ''),
