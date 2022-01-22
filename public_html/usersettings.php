@@ -265,7 +265,7 @@ function edituser()
         $preferences->set_var('username_option', '');
     }
 
-    $items = COM_optionList($_TABLES['cookiecodes'], 'cc_value,cc_descr', $A['cookietimeout'], 0);
+    $items = COM_simpleOptionList(COM_getCookieCodes(), $A['cookietimeout']);
     $selection = COM_createControl('type-select', array(
         'id' => 'cooktime',
         'name' => 'cooktime',

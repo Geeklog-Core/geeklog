@@ -9361,6 +9361,54 @@ function COM_strftime($format, $timestamp = null)
     return $_LOCALE->strftime($format, $timestamp);
 }
 
+/**
+ * Return an  array of cookie codes
+ *
+ * @return array  array of [the cookie life span (in seconds), the label].  The label will be replaced by
+ *                $LANG_cookiecodes in Configuration
+ * @since  Geeklog 2.2.2
+ */
+function COM_getCookieCodes()
+{
+    global $LANG_cookiecodes;
+
+    return [
+        // cc_value cc_descr
+        [      0, $LANG_cookiecodes[0]],
+        [   3600, $LANG_cookiecodes[3600]],
+        [   7200, $LANG_cookiecodes[7200]],
+        [  10800, $LANG_cookiecodes[10800]],
+        [  28800, $LANG_cookiecodes[28800]],
+        [  86400, $LANG_cookiecodes[86400]],
+        [ 604800, $LANG_cookiecodes[604800]],
+        [2678400, $LANG_cookiecodes[2678400]],
+    ];
+}
+
+/**
+ * Build a string/an array of HTML option elements
+ *
+ * @param  array  $pairs  array of (value => label)
+ * @param  mixed  $selectedValue
+ * @param  bool   $asArray
+ * @return array|string
+ * @since  Geeklog 2.2.2
+ */
+function COM_simpleOptionList(array $pairs, $selectedValue, $asArray = false)
+{
+    $retval = [];
+
+    foreach ($pairs as $pair) {
+        list($value, $text) = $pair;
+        $selectedText = ($value == $selectedValue) ? ' selected="selected"' : '';
+        $retval[] = '<option value="' . COM_escHTML($value) . '"' . $selectedText . '>'
+            . COM_escHTML($text)
+            . '</option>';
+    }
+
+    return $asArray ? $retval : implode("\n", $retval) . "\n";
+}
+
 // Check and see if any plugins (or custom functions)
 // have scheduled tasks to perform
 if (!isset($_VARS['last_scheduled_run']) || !is_numeric($_VARS['last_scheduled_run'])) {

@@ -62,7 +62,6 @@ $_TABLES['commentnotifications'] = $_DB_table_prefix . 'commentnotifications';
 $_TABLES['comments'] = $_DB_table_prefix . 'comments';
 $_TABLES['commentsubmissions'] = $_DB_table_prefix . 'commentsubmissions';
 $_TABLES['conf_values'] = $_DB_table_prefix . 'conf_values';
-$_TABLES['cookiecodes'] = $_DB_table_prefix . 'cookiecodes';
 $_TABLES['features'] = $_DB_table_prefix . 'features';
 $_TABLES['group_assignments'] = $_DB_table_prefix . 'group_assignments';
 $_TABLES['groups'] = $_DB_table_prefix . 'groups';

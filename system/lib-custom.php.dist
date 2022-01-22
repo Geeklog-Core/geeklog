@@ -272,7 +272,7 @@ function CUSTOM_userEdit($uid)
     $var = "Value from custom table";
     $cookietimeout = DB_getitem($_TABLES['users'], 'cookietimeout', $uid);
     $selection = '<select name="cooktime">' . LB;
-    $selection .= COM_optionList($_TABLES['cookiecodes'], 'cc_value,cc_descr', $cookietimeout, 0);
+    $selection .= COM_simpleOptionList(COM_getCookieCodes(), $cookietimeout);
     $selection .= '</select>';
     $retval .= '<tr>
         <td align="right">Remember user for:</td>

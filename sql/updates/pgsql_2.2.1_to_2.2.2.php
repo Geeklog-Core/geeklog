@@ -3,7 +3,8 @@
 // Add missing route into routing table for articles that have page breaks (issue #746)
 $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid/@page', '/article.php?story=@sid&page=@page', 1000)"; // Priority should default to 120 but we need to mage sure it comes after the route for article print
 
-// Drop $_TABLES['dateformats']
+// Drop $_tables
+$_SQL[] = "DROP TABLE {$_TABLES['cookiecodes']}";
 $_SQL[] = "DROP TABLE {$_TABLES['dateformats']}";
 
 /**
