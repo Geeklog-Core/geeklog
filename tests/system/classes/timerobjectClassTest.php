@@ -34,7 +34,7 @@ class timerobjectClass extends TestCase
     {
         $time = microtime(true);
         $this->t->startTimer();
-        $this->assertEquals($time, $this->t->getStartTime(), '', $this->prec);
+        $this->assertTrue(abs($time - $this->t->getStartTime()) <= $this->prec);
     }
 
     public function testStartTimerReturnsFloat()
@@ -48,7 +48,7 @@ class timerobjectClass extends TestCase
     {
         $time = microtime(true);
         $this->t->stopTimer();
-        $this->assertEquals($time, $this->t->getEndTime(), '', $this->prec);
+        $this->assertTrue(abs($time - $this->t->getEndTime()) <= $this->prec);
     }
 
     public function testStopTimerReturnsCorrectDefaultDegreeOfPrecision()
@@ -82,7 +82,7 @@ class timerobjectClass extends TestCase
     {
         $this->t->restart();
         $time = microtime(true);
-        $this->assertEquals($time, $this->t->getStartTime(), '', $this->prec);
+        $this->assertTrue(abs($time - $this->t->getStartTime()) <= $this->prec);
     }
 
     public function testGetElapsedTimeReturnsDefaultDegreeOfPrecision()

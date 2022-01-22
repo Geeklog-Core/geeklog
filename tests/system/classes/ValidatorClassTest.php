@@ -49,7 +49,7 @@ class ValidatorClassTest extends TestCase
         $this->assertEquals(true, $validator->between('Geeklog', 1, 16));
         $this->assertEquals(true, $validator->between('日本', 1, 10));
         $this->assertEquals(false, $validator->between('Geeklog', 1, 5));
-        $this->assertEquals(false, $validator->between('アメリカ合衆国', 1, 15));
+        $this->assertEquals(false, $validator->between('アメリカ合衆国', 1, 5));
     }
 
     /**
