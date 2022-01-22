@@ -7001,21 +7001,25 @@ function COM_getCurrentURL()
 function COM_onFrontpage()
 {
     global $_CONF, $page;
+    static $onFrontPage = null; // Cache the result since this function is called many times
 
-	// Some plugin may still be using Global $topic variable so check and update $_USER array as needed
-	_depreciatedCheckGlobalTopicVariableUsed();
+    // Some plugin may still be using Global $topic variable so check and update $_USER array as needed
+    _depreciatedCheckGlobalTopicVariableUsed();
 
-    // Note: We can't use $PHP_SELF here since the site may not be in the DocumentRoot
-    $onFrontPage = false;
+    if ($onFrontPage === null) {
+        // Note: We can't use $PHP_SELF here since the site may not be in the DocumentRoot
+        $onFrontPage = false;
 
-    $current_topic = TOPIC_currentTopic();
+        $current_topic = TOPIC_currentTopic();
 
-    $scriptName = empty($_SERVER['PATH_INFO']) ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PATH_INFO'];
-    preg_match('/\/\/[^\/]*(.*)/', $_CONF['site_url'], $pathonly);
-    if (($scriptName == $pathonly[1] . '/index.php') &&
-        empty($current_topic) && (empty($page) || ($page == 1))
-    ) {
-        $onFrontPage = true;
+        $scriptName = empty($_SERVER['PATH_INFO']) ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PATH_INFO'];
+        $posDoubleSlashes = strpos($_CONF['site_url'], '//');
+        $posSlash = strpos($_CONF['site_url'], '/', $posDoubleSlashes + 2);
+        $pathOnly = substr($_CONF['site_url'], $posSlash);
+
+        if (($scriptName == $pathOnly . '/index.php') && empty($current_topic) && (empty($page) || ($page == 1))) {
+            $onFrontPage = true;
+        }
     }
 
     return $onFrontPage;
