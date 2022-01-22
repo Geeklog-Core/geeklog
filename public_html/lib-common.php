@@ -120,6 +120,7 @@ if (defined('GL_INSTALL_ACTIVE')) {
     global $_RIGHTS; // For Geeklog install when lib-common included  SEC_getUserPermissions fails as $_RIGHTS doesn't get loaded
     global $_USER; // For Geeklog install when lib-common included when current user may already be logged an error happens because of $_USER not retrieved when SESS_sessionCheck is called
     global $TEMPLATE_OPTIONS; // For Geeklog install when lib-common included - COM_rdfUpToDateCheck is called when the template class is used an error happens because of $TEMPLATE_OPTIONS being empty.
+    global $_LOCALE; // For Geeklog install (during Migrate and maybe elsewhere) when lib-common included functions.inc of plugin which called plugin_getheadercode_foo which included a $_SCRIPTS call
     global $_TOPICS; // For Geeklog install when lib-common included - TOPIC_getIndex errors as $_TOPIC is not an array
 	global $_SCRIPTS; // For Geeklog install (during Migrate and maybe elsewhere) when lib-common included functions.inc of plugin which called plugin_getheadercode_foo which included a $_SCRIPTS call
 	global $_STRUCT_DATA; // For Geeklog install (during Migrate and maybe elsewhere) when lib-common included functions.inc of plugin and it uses Geeklog's built in Structured Data support where plugin_getstructureddatatypes_foo gets called
