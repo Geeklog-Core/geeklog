@@ -1335,7 +1335,7 @@ $LANG29 = array(
 # admin/mail.php
 
 $LANG31 = array(
-    1 => "{$_CONF['site_name']} Mail Utility",
+    1 => "Mail Users",
     2 => 'From Name',
     3 => 'From Email Address',
     4 => 'Subject',
@@ -1353,8 +1353,8 @@ $LANG31 = array(
     16 => 'Successfully sent messages to: ',
     17 => "<a href=\"{$_CONF['site_admin_url']}/mail.php\">Send another message</a>",
     18 => 'To',
-    19 => 'NOTE: if you wish to send a message to all site members, select the Logged-in Users group from the drop down.',
-    20 => "Successfully sent <successcount> messages and unsuccessfully sent <failcount> messages.  If you need them, the details of each message attempts is below.  Otherwise you can <a href=\"{$_CONF['site_admin_url']}/mail.php\">Send another message</a> or you can <a href=\"{$_CONF['site_admin_url']}/moderation.php\">go back to the administration page</a>.",
+    19 => 'If you wish to send a message to all site members, select the Logged-in Users group from the drop down. Please note that some email hosts may limit the number of emails you can send in a certain time period.',
+	20 => "<p><successcount> messages was sent successfully and <failcount> messages failed to send.</p><p>The details of the message attempts are below:</p>",
     21 => 'Failures',
     22 => 'Successes',
     23 => 'No failures',

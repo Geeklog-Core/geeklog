@@ -1,0 +1,34 @@
+{# start {templatelocation} #}
+
+{start_block_mailusers}
+	{admin_menu}
+	
+	{lang_mail_results}
+
+	{start_block_failures}
+		{!if lang_no_failure_message}
+		<p>{lang_no_failure_message}</p>
+		{!else}
+		<ul>
+			{display_failures}
+		</ul>
+		{!endif}
+	{end_block_failures}
+
+	{start_block_successes}
+		{!if lang_no_success_message}
+		<p>{lang_no_success_message}</p>
+		{!else}
+		<ul>
+			{display_successes}
+		</ul>
+		{!endif}		
+	{end_block_successes}
+
+{end_block_mailusers}
+
+<!-- BEGIN display_email -->
+	<li>{email_address}</li>
+<!-- END display_email -->
+
+{# end {templatelocation} #}
