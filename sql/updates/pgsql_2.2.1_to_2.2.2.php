@@ -6,6 +6,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALU
 // Drop $_tables
 $_SQL[] = "DROP TABLE {$_TABLES['cookiecodes']}";
 $_SQL[] = "DROP TABLE {$_TABLES['dateformats']}";
+$_SQL[] = "DROP TABLE {$_TABLES['maillist']}";
 
 /**
  * Add/Edit/Delete config options for new version

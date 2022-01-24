@@ -198,15 +198,6 @@ CREATE TABLE {$_TABLES['likes']} (
 )
 ";
 
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['maillist']} (
-  code SERIAL,
-  name varchar(32) default NULL,
-  PRIMARY KEY (code)
-)
-";
-
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pingservice']} (
   pid SERIAL,
@@ -771,9 +762,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_g
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')), 'Filemanager Admin', 'Has full access to File Manager', 1);";
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')), 'Language Admin', 'Has full access to language', 1);";
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')), 'Theme Admin', 'Has full access to themes', 1);";
-
-$_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES ((SELECT nextval('{$_TABLES['maillist']}_code_seq')),'Don''t Email') ";
-$_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES ((SELECT nextval('{$_TABLES['maillist']}_code_seq')),'Email Headlines Each Night') ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url, method, is_enabled) VALUES ((SELECT nextval('{$_TABLES['pingservice']}_pid_seq')), 'Ping-O-Matic', 'http://pingomatic.com/', 'http://rpc.pingomatic.com/', 'weblogUpdates.ping', 1)";
 
