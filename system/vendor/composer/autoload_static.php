@@ -34,6 +34,7 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
         ),
         'P' => 
         array (
+            'Psr\\Container\\' => 14,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
         'M' => 
@@ -83,6 +84,10 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
         'RFM\\' => 
         array (
             0 => __DIR__ . '/..' . '/servocoder/richfilemanager-php/src',
+        ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
         ),
         'PHPMailer\\PHPMailer\\' => 
         array (

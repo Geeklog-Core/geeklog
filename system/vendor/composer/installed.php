@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '32b62dcb23ab9bf6ea9f877a344b765f834a98e5',
+        'reference' => 'cb86914728409afd85f3bf65a13478be8324e63f',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '32b62dcb23ab9bf6ea9f877a344b765f834a98e5',
+            'reference' => 'cb86914728409afd85f3bf65a13478be8324e63f',
             'dev_requirement' => false,
         ),
         'doctrine/inflector' => array(
@@ -215,6 +215,15 @@
             'install_path' => __DIR__ . '/../phpmailer/phpmailer',
             'aliases' => array(),
             'reference' => 'baeb7cde6b60b1286912690ab0693c7789a31e71',
+            'dev_requirement' => false,
+        ),
+        'psr/container' => array(
+            'pretty_version' => '1.0.0',
+            'version' => '1.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/container',
+            'aliases' => array(),
+            'reference' => 'b7ce3b176482dbbc1245ebf52b181af44c2cf55f',
             'dev_requirement' => false,
         ),
         'robthree/twofactorauth' => array(
