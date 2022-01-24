@@ -50,6 +50,9 @@ For New Version of Geeklog Core Plugin in Development
 
 */
 
+// Since Geeklog 2.2.1 - Should set this now in case Geeklog has issues loading page
+define('GL_INSTALL_ACTIVE', true);
+
 require_once '../../lib-common.php';
 
 // For Root users only
@@ -73,6 +76,33 @@ function update_DatabaseFor222()
     // ***************************************
     // Add database Geeklog Core updates here.
     // NOTE: Cannot use ones found in normal upgrade script as no checks are performed to see if already done.
+
+
+	// Move IP addresses to the new 'ip_addresses' table
+	// Check if table exists (Works only for MYSQL)
+    $result = DB_query("SHOW TABLES LIKE '{$_TABLES['ip_addresses']}'");
+    if ( DB_numRows($result) == 0 ) {
+		/* DOES NOT WORK - when lib-common is included above around line 286, the function SESS_sessionCheck is called which requires the IP address. The code for this does not support the older table structure where IPs are stored with the session data and not in its own ip_addresses table
+		$geeklog_sqlfile_upgrade = $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.2.1_to_2.2.2.php';
+		if (file_exists ($geeklog_sqlfile_upgrade)) {
+			require_once($geeklog_sqlfile_upgrade);
+			
+			update_TablesContainingIPAddresses222();
+		}
+		*/
+	}
+	
+	// Add missing route into routing table for articles that have page breaks (issue #746)
+    if (DB_count($_TABLES['routes'], 'route', '/article/@sid/@page') == 0) {
+		$_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid/@page', '/article.php?story=@sid&page=@page', 1000)"; // Priority should default to 120 but we need to mage sure it comes after the route for article print
+	}
+
+	// Drop tables
+	$_TABLES['dateformats'] = $_DB_table_prefix . 'dateformats';
+	$_SQL[] = "DROP TABLE {$_TABLES['dateformats']}";
+	$_TABLES['cookiecodes'] = $_DB_table_prefix . 'cookiecodes';
+	$_SQL[] = "DROP TABLE {$_TABLES['cookiecodes']}";
+
 
     // ***************************************
     // Core Plugin Updates Here (including version update)

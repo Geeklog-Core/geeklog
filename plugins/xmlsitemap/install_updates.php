@@ -35,6 +35,8 @@ function xmlsitemap_update_ConfValues_1_0_1()
         3, 1, 100, true, $me, 3);
     $c->add('ping_bing', $_XMLSMAP_DEFAULT['ping_bing'], 'select', 0,
         3, 1, 110, true, $me, 3);
+		
+	return true;
 }
 
 function xmlsitemap_update_ConfValues_2_0_2()
@@ -58,6 +60,8 @@ function xmlsitemap_update_ConfValues_2_0_2()
     // Add homepage to sitemap
     $c->add('include_homepage', $_XMLSMAP_DEFAULT['include_homepage'],
         'select', 0, 0, 1, 25, true, $me, 0);
+		
+	return true;
 }
 
 function xmlsitemap_update_ConfValues_2_0_3()
@@ -71,4 +75,6 @@ function xmlsitemap_update_ConfValues_2_0_3()
 
     // Drop $_XMLSMAP_CONF['exclude']
     $c->del('exclude', $me);
+	
+	return true;
 }
