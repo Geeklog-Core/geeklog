@@ -4909,7 +4909,7 @@ function COM_emailUserTopics()
         $U = DB_fetchArray($users);
 
         $storySql = array();
-        $storySql['mysql'] = "SELECT sid,uid,date AS day,title,introtext,bodytext";
+        $storySql['mysql'] = "SELECT sid,uid,date AS day,title,introtext,postmode";
         $storySql['pgsql'] = "SELECT sid,uid,date AS day,title,introtext,postmode";
 
         $commonSql = " FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
