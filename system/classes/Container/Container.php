@@ -43,10 +43,11 @@ class Container implements ContainerInterface
      * @param  string  $id
      * @param  mixed   $item
      * @return void
+     * @note           You can set variables more than once, but can only set objects once.
      */
     public function set($id, $item)
     {
-        if ($this->has($id)) {
+        if ($this->has($id) && is_object($this->data[$id])) {
             throw new InvalidArgumentException(__METHOD__ . ": item named '$id' already exists");
         } else {
             $this->data[$id] = $item;
