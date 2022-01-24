@@ -23,6 +23,13 @@ class logClassTest extends TestCase
     {
         $this->pathToLogDir = Tst::$root . 'logs' . DIRECTORY_SEPARATOR;
         Log::init($this->pathToLogDir);
+
+        if (!is_callable('COM_strftime')) {
+            function COM_strftime($format, $timestamp = null)
+            {
+                return strftime($format, $timestamp);
+            }
+        }
     }
 
     public function tearDown(): void

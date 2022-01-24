@@ -3,8 +3,6 @@
 use Geeklog\ConfigInterface;
 use PHPUnit\Framework\TestCase as TestCase;
 
-require_once __DIR__ . '/../../system/classes/ConfigInterface.php';
-
 /**
  * There is now a dependency between the entries for dropdown menus in
  * $LANG_configselects and $_CONF_VALIDATE. If you accidentally translate
