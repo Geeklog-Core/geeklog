@@ -4,9 +4,6 @@
         <testsuite name="System">
             <directory>tests/system</directory>
         </testsuite>
-        <testsuite name="Language">
-            <directory>tests/language</directory>
-        </testsuite>
         <!--
         <testsuite name="Public_Html">
             <directory>tests/public_html</directory>

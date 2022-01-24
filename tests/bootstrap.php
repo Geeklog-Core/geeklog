@@ -111,3 +111,19 @@ if (!defined('VERSION')) {
 
 require_once $_CONF['path_system'] . 'classes/Autoload.php';
 Autoload::initialize();
+Autoload::register(function ($className) {
+    $className = str_replace('\\', '/', $className);
+
+    if (stripos($className, 'Geeklog\\Test\\') === 0) {
+        $className = __DIR__ . '/system/classes/' . str_ireplace('Geeklog\\Test\\', '', $className);
+        $path = $className . '.php';
+        if (is_readable($path)) {
+            include $className . '.php';
+        } else {
+            $path = lcfirst($className) . '.class.php';
+            if (is_readable($path)) {
+                include $path;
+            }
+        }
+    }
+});
