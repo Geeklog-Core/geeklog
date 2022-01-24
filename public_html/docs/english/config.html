@@ -1883,7 +1883,8 @@ the admin panel.</p>
   <td valign="top"><a name="desc_emailstories">emailstories</a></td>
   <td valign="top">0</td>
   <td valign="top">Let users get articles e-mailed to them (0=no, 1=yes), aka Daily Digest.
-    Please note that this requires cron and the use of PHP as a shell script.</td></tr>
+    Please note that this requires cron and the use of PHP as a shell script.<br />
+    See the section on <a href="#url-cron">Cron Jobs</a> and Daily Digest below.</td></tr>
 <tr>
   <td valign="top"><a name="desc_emailstorieslength">emailstorieslength</a></td>
   <td valign="top">1</td>
@@ -2689,6 +2690,36 @@ href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www
   <li><span class="tt">%Z - time zone or name or abbreviation</span></li>
   <li><span class="tt">%% - a literal `%' character</span></li>
 </ul>
+
+	
+<h2><a name="url-cron">Cron Jobs</a></h2>	
+
+<p>The cron command-line utility, also known as cron job is a job scheduler. You can schedule jobs to run ever minute, hourly, daily, or monthly. Most web hosts offer the ability to create cron jobs from their web hosting control panel (usually found under Cron Jobs or Crontab Manager).<p> 
+
+<p>Geeklog has 2 cron job scripts available. These cron job scripts are not required for Geeklog to function. For them to work you must have compiled PHP so it can also be used as a shell scripting language. You should call these script from your crontab (man crontab). You will also need to set the executable flags for these files.</p>
+
+<p>The cron job scripts filenames start with "cron-" and can be found in the root directory. It is recommended to keep these files located here as you do not want them in a location where anyone that visits your website can run them.</p>
+
+<p>The PHP in these cron job scripts also have some code you will need to update including the path to the "lib-common.php" file. For full instructions on the changes you can do, see the comments in the cron job scripts.</p>
+
+<p>If you're not familiar with the crontab syntax: You will need to add a line to your cron job in your web host control panel that looks like this:</p>
+
+<pre>30 2 * * * /path/to/geeklog/cron-emailgeeklogdailydigest</pre>
+
+<p>This would call the cron-emailgeeklogdailydigest) script every day at 2:30am. In some cases (like with cPanel) the scheduling of the job may be done through the user interface instead of the command line. Make sure that the script is executable, i.e. do a chmod 775 (or similar) on it.</p>
+	
+<h3><a name="cron_daily_digest">Daily Digest</a></h3>
+
+<p>The file "cron-emailgeeklogdailydigest" (formerly called emailgeeklogstories) will email new articles to any user that signs up for the Daily Digest. To use this feature the Daily Digest must be enabled in the Geeklog Configuration.</p>
+
+<p>A word of warning: The first time you activate this, all articles in your Geeklog database are considered new - so the first email may be quite large. This only happens the very first time you activate this feature on your site, not for every new user subscribing to the Daily Digest (they will only get the new articles since the last time the digest was sent). For the first time, if you want to only send articles from a certain date, you could set the "lastemailedstories" record found in the Geeklog "gl_vars" table to the date and time you wish (e.g. 2021-10-05 12:00:00). This would mean that only articles published after this time will be sent out with the next digest.</p>
+
+<h3><a name="cron_emailed_database_backup">Emailed Database Backup</a></h3>	
+
+<p>The file "cron-emailgeeklogdatabasebackup" will email a backup of the Geeklog database to a specified email address. Configuration options can be found in the Geeklog Database Administration and the Geeklog Configuration. The recipient of the email can be set either directly in the cron job script file or by adding (or updating if it exists) a "db_backup_sendto" record in the Geeklog "gl_vars" table.</p>
+
+<p>This cron script should only be run when the site is not busy (like early in the morning) and only as often as needed (usually weekly or for a site that has content updated often, daily). If you have a large  database you will need to make sure the email address the backup is being sent to allows for large file attachments or the email will be rejected.</p>
+
 
 <div class="footer">
     <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br />

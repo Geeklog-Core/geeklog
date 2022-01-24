@@ -1788,6 +1788,7 @@ $LANG_ACCESS = array(
 $LANG_DB_BACKUP = array(
     'database_admin' => 'データベース管理',
     'last_ten_backups' => 'バックアップしたファイル',
+	'site_db_backup' => "{$_CONF['site_name']} Database Backup",
     'create_backup' => 'データベースのバックアップ',
     'do_backup' => 'バックアップの実行',
     'backup_successful' => 'データベースのバックアップを完了しました。',

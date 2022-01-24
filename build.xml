@@ -115,7 +115,8 @@
         <!-- Change permissions -->
         <echo msg="Changing directory and file permissions..."/>
         <chmod file="${dstDir}/db-config.php" mode="${perm_file_w}"/>
-        <chmod file="${dstDir}/emailgeeklogstories" mode="${perm_file_x}"/>
+        <chmod file="${dstDir}/cron-emailgeeklogdailydigest" mode="${perm_file_x}"/>
+		<chmod file="${dstDir}/cron-emailgeeklogdatabasebackup" mode="${perm_file_x}"/>
         <chmod file="${dstDir}/backups" mode="${perm_dir_w}"/>
         <chmod file="${dstDir}/data" mode="${perm_dir_w}"/>
         <chmod file="${dstDir}/data/layout_cache" mode="${perm_dir_w}"/>

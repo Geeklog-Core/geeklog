@@ -1,0 +1,34 @@
+#!/usr/local/bin/php -q 
+<?php
+// This code snippet is responsible for emailing a backup of the Geeklog 
+// database to a specified email address. Configuration options can be 
+// found in the Geeklog Database Administration and the Geeklog Configuration.
+// Backups only work for MYSQL Servers.
+//
+// PLEASE NOTE: The ib-common.php file path below must be updated and 
+// $recipient variable should be set. 
+//
+// For this script to work you must have compiled PHP so it can also be
+// used as a shell scripting language. You should call this script from
+// your crontab (man crontab). You will also need to set the executable
+// flags for this file.
+
+// Change this path to point to your lib-common.php file
+include('/path/to/geeklog/lib-common.php');
+
+global $_CONF, $_DB_dbms;
+
+// Add the email address you wish to send a Database Backup to below.
+// Else db_backup_sendto variable from vars table in Geeklog database will be used.
+$recipient = "";
+
+// Currently, database feature is supported with MySQL only
+if ($_DB_dbms == 'mysql') {
+	require_once $_CONF['path_system'] . 'classes/dbbackup.class.php';
+
+	$backup = new dbBackup(true); // set to true for cron backup job
+	$backup->getBackupFilename();
+	$backup->getTableList();	
+	$backup->cron_backup($recipient);
+}
+?>

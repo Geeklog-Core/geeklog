@@ -1783,6 +1783,7 @@ $LANG_ACCESS = array(
 $LANG_DB_BACKUP = array(
     'database_admin'      => 'Database Administration',
     'last_ten_backups'    => 'Database Backups',
+	'site_db_backup'      => "{$_CONF['site_name']} Database Backup",
     'create_backup'       => 'Backup Database',
     'do_backup'           => 'Do Backup',
     'backup_successful'   => 'Database back up was successful.',

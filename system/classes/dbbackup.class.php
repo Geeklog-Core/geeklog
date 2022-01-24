@@ -557,21 +557,25 @@ class dbBackup
      * the backup admin interface.
      *
      * @param  string  $filename
+	 * @param  string  $recipient
      * @return bool
      */
-    private function deliver_backup($filename = '')
+    private function deliver_backup($filename = '', $recipient = '')
     {
-        global $_VARS, $_CONF;
+        global $_VARS, $_CONF, $LANG_DB_BACKUP;
 
         if ($filename == '' || !$filename) return false;
         $diskfile = $this->backupDir . $filename;
-        $recipient = $_VARS['_dbback_sendto'];
-
         if (!file_exists($diskfile)) {
             COM_errorLog("dbBackup: File $diskfile does not exist");
 
             return false;
-        }
+        }		
+		
+		// If recipient passed is empty check "db_backup_sendto" variable from vars table in database
+		if (empty($recipient) && isset($_VARS['db_backup_sendto'])) {
+			$recipient = $_VARS['db_backup_sendto'];
+		}
 
         if (!COM_isEmail($recipient)) {
             COM_errorLog("$recipient is not a valid email address");
@@ -585,8 +589,8 @@ class dbBackup
         );
 
         return $this->sendMail(
-            $recipient,
-            $_CONF['site_name'] . ' ' . 'Database Backup',
+            $recipient, 
+			$LANG_DB_BACKUP['site_db_backup'],
             $message, '', false, 0, '', '',
             [$diskfile]);
     }
@@ -596,16 +600,17 @@ class dbBackup
      *
      * E-mails the backup file to the configured address, if any.
      *
+	 * @param  string  $recipient
      * @return bool Status from deliver_backup, or false on backup failure.
      */
-    public function cron_backup()
+    public function cron_backup($recipient = '')
     {
         $backup_file = $this->backupDB();
         $this->save_backup_time();
         if (false !== $backup_file) {
             $this->purge();     // Remove old files
 
-            return $this->deliver_backup($backup_file);
+            return $this->deliver_backup($backup_file, $recipient);
         } else {
             return false;
         }

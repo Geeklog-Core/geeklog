@@ -1,7 +1,11 @@
 #!/usr/local/bin/php -q 
 <?php
-// This code snippet is responsible for emailing Geeklog stories to users 
-// for the topics they select.
+// This code snippet is for the Daily Digest and is responsible for 
+// emailing Geeklog Articles to users for the topics they select 
+// (found in User Settings). Remember to update the Daily Digest 
+// Geeklog Configuration. 
+//
+// PLEASE NOTE: The ib-common.php file path below must be updated.
 //
 // For this script to work you must have compiled PHP so it can also be
 // used as a shell scripting language. You should call this script from
