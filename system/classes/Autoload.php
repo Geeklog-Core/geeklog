@@ -41,7 +41,6 @@ class Autoload
             $path = __DIR__ . self::DS . $className . '.php';
 
             if (file_exists($path)) {
-                /** @noinspection PhpIncludeInspection */
                 include $path;
             }
         } else {
@@ -49,7 +48,6 @@ class Autoload
             $path = __DIR__ . self::DS . strtolower($className) . '.class.php';
 
             if (file_exists($path)) {
-                /** @noinspection PhpIncludeInspection */
                 include $path;
             } else {
                 if (stripos($className, 'timerobject') === 0) {
