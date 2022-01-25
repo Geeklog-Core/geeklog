@@ -134,12 +134,6 @@ function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = ar
     if ($nrows > 0) {
         // Figure out if any excluded topics
         $excluded_tids = '';
-        if (!COM_isAnonUser()) {
-            $excluded_tids = DB_getItem($_TABLES['userindex'], 'tids', "uid = '{$_USER['uid']}'");
-            if (!empty($excluded_tids)) {
-                $excluded_tids = "'" . str_replace(' ', "','", $excluded_tids) . "'";
-            }
-        }
 
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
@@ -153,11 +147,6 @@ function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = ar
             $tree_array[$total_topic]['inherit'] = $A['inherit'];
             $tree_array[$total_topic]['hidden'] = $A['hidden'];
             $tree_array[$total_topic]['exclude'] = 0;
-            if (!empty($excluded_tids)) {
-                if (MBYTE_strpos($excluded_tids, $A['tid']) !== false) {
-                    $tree_array[$total_topic]['exclude'] = 1;
-                }
-            }
             $tree_array[$total_topic]['access'] = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']); // Current User Access
             $tree_array[$total_topic]['owner_id'] = $A['owner_id'];
             $tree_array[$total_topic]['group_id'] = $A['group_id'];

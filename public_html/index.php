@@ -208,7 +208,7 @@ if (!empty($displayBlock)) {
 if (COM_isAnonUser()) {
     $U['maxstories'] = 0;
 } else {
-    $result = DB_query("SELECT maxstories,tids,aids FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'");
+    $result = DB_query("SELECT maxstories FROM {$_TABLES['user_attributes']} WHERE uid = '{$_USER['uid']}'");
     $U = DB_fetchArray($result);
 }
 
@@ -289,15 +289,6 @@ if (strtolower($current_topic) != strtolower($archiveTid)) {
 }
 
 $sql .= COM_getPermSQL('AND', 0, 2, 's');
-
-if (!empty($U['aids'])) {
-    $sql .= " AND s.uid NOT IN (" . str_replace(' ', ",", $U['aids']) . ") ";
-}
-
-if (!empty($U['tids'])) {
-    $sql .= " AND ta.tid NOT IN ('" . str_replace(' ', "','", $U['tids']) . "') ";
-}
-
 $sql .= COM_getTopicSQL('AND', 0, 'ta') . ' ';
 
 $offset = ($page - 1) * $limit;

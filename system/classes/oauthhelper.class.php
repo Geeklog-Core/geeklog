@@ -513,7 +513,7 @@ class OAuthConsumer
 		// Location field returned by several Oauth Providers
 		// About field was returned by Facebook but not anymore. Left in for now in case in future we can set it again or by another OAuth provider
         if (!empty($userInfo['about']) || !empty($userInfo['location'])) {
-            $sql = "UPDATE {$_TABLES['userinfo']} SET";
+            $sql = "UPDATE {$_TABLES['user_attributes']} SET";
             $sql .= !empty($userInfo['about']) ? " about = '" . DB_escapeString($userInfo['about']) . "'" : "";
             $sql .= (!empty($userInfo['about']) && !empty($userInfo['location'])) ? "," : "";
             $sql .= !empty($userInfo['location']) ? " location = '" . DB_escapeString($userInfo['location']) . "'" : "";

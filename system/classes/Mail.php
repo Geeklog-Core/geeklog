@@ -50,7 +50,7 @@ class Mail
         $address = DB_escapeString($address);
         $sql = <<<SQL
           SELECT u.*, i.location, i.lastgranted, i.lastlogin FROM {$_TABLES['users']} AS u 
-            LEFT JOIN {$_TABLES['userinfo']} AS i 
+            LEFT JOIN {$_TABLES['user_attributes']} AS i 
               ON u.uid = i.uid
             WHERE u.email = '$address' 
 SQL;

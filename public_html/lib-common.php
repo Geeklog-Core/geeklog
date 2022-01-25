@@ -4141,7 +4141,7 @@ function COM_showBlock($name, $help = '', $title = '', $position = '', $cssId = 
     if (!isset($_USER['noboxes'])) {
         $_USER['noboxes'] = COM_isAnonUser()
             ? 0
-            : DB_getItem($_TABLES['userindex'], 'noboxes', "uid = {$_USER['uid']}");
+            : DB_getItem($_TABLES['user_attributes'], 'noboxes', "uid = {$_USER['uid']}");
     }
 
     switch ($name) {
@@ -4198,13 +4198,12 @@ function COM_showBlocks($location)
     $retval = '';
 
     // Get user preferences on blocks
-    if (!isset($_USER['noboxes']) || !isset($_USER['boxes'])) {
+    if (!isset($_USER['noboxes'])) {
         if (!COM_isAnonUser()) {
-            $result = DB_query("SELECT boxes,noboxes FROM {$_TABLES['userindex']} "
+            $result = DB_query("SELECT noboxes FROM {$_TABLES['user_attributes']} "
                 . "WHERE uid = '{$_USER['uid']}'");
-            list($_USER['boxes'], $_USER['noboxes']) = DB_fetchArray($result);
+            list($_USER['noboxes']) = DB_fetchArray($result);
         } else {
-            $_USER['boxes'] = '';
             $_USER['noboxes'] = 0;
         }
     }
@@ -4251,11 +4250,6 @@ function COM_showBlocks($location)
         } else {
             $commonSql .= " AND (ta.tid = '" . TOPIC_ALL_OPTION . "')";
         }
-    }
-
-    if (!empty($_USER['boxes'])) {
-        $BOXES = str_replace(' ', ',', $_USER['boxes']);
-        $commonSql .= " AND (bid NOT IN ($BOXES) OR bid = '-1')";
     }
 
     $commonSql .= " GROUP BY bid, is_enabled, name, b.type, b.location, b.css_id, b.css_classes, title, blockorder, device, content, "
@@ -4895,9 +4889,9 @@ function COM_emailUserTopics()
 
     // Get users who want stories emailed to them
     $userSql = "SELECT username,email,etids,{$_TABLES['users']}.uid AS uuid "
-        . "FROM {$_TABLES['users']}, {$_TABLES['userindex']} "
-        . "WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['userindex']}.uid = {$_TABLES['users']}.uid AND "
-        . "(etids <> '-' OR etids IS NULL) "
+        . "FROM {$_TABLES['users']}, {$_TABLES['user_attributes']} "
+        . "WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['user_attributes']}.uid = {$_TABLES['users']}.uid AND "
+        . "(etids <> '-' OR etids = '') "
         . "ORDER BY {$_TABLES['users']}.uid";
 
     $users = DB_query($userSql);
@@ -5747,10 +5741,10 @@ function phpblock_whosonline()
     }
 
     $sql = "SELECT DISTINCT {$_TABLES['sessions']}.uid,{$byName},photo,showonline
-            FROM {$_TABLES['sessions']},{$_TABLES['users']},{$_TABLES['userprefs']}
+            FROM {$_TABLES['sessions']},{$_TABLES['users']},{$_TABLES['user_attributes']}
             WHERE {$_TABLES['users']}.uid = {$_TABLES['sessions']}.uid
             AND {$_TABLES['sessions']}.whos_online = 1
-            AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND start_time >= $expire_time
+            AND {$_TABLES['users']}.uid = {$_TABLES['user_attributes']}.uid AND start_time >= $expire_time
             AND {$_TABLES['sessions']}.uid <> 1 ORDER BY {$byName}";
 
     $result = DB_query($sql);

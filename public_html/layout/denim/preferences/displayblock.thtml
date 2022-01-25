@@ -18,9 +18,6 @@
       {language_selection}
       {theme_selection}
 
-      <dt><label for="displayprefs-noicons">{lang_noicons}</label></dt>
-      <dd class="controls_text"><label><input type="checkbox" {noicons_checked} name="noicons" id="displayprefs-noicons"{xhtml}>{lang_noicons_text}</label></dd>
-
       <dt><label for="displayprefs-maxstories">{lang_maxstories}</label></dt>
       <dd><input type="text" maxlength="3" value="{maxstories_value}" name="maxstories" id="displayprefs-maxstories" class="size1"{xhtml}></dd>
 

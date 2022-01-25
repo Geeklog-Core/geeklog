@@ -373,8 +373,7 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
             if (empty($_USER['uid']) || ($_USER['uid'] == 1)) {
                 $_USER['noboxes'] = 0;
             } else {
-                $_USER['noboxes'] = DB_getItem($_TABLES['userindex'],
-                                        'noboxes', "uid = '{$_USER['uid']}'");
+                $_USER['noboxes'] = DB_getItem($_TABLES['user_attributes'], 'noboxes', "uid = '{$_USER['uid']}'");
             }
         }
 

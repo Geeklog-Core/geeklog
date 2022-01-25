@@ -366,7 +366,7 @@ function SESS_newSession($userId, $remote_ip)
 
     if ($_CONF['lastlogin']) {
         // Update userinfo record to record the date and time as lastlogin
-        DB_query("UPDATE {$_TABLES['userinfo']} SET lastlogin = UNIX_TIMESTAMP() WHERE uid = {$userId}");
+        DB_query("UPDATE {$_TABLES['user_attributes']} SET lastlogin = UNIX_TIMESTAMP() WHERE uid = {$userId}");
     }
     if ($_SESS_VERBOSE) {
         COM_errorLog("Assigned the following session id: {$sessId}", 1);
@@ -459,8 +459,8 @@ function SESS_getUserDataFromId($userId)
         );
     }
 
-    $sql = "SELECT * FROM {$_TABLES['users']},{$_TABLES['userprefs']} "
-        . "WHERE {$_TABLES['userprefs']}.uid = $userId AND {$_TABLES['users']}.uid = {$userId}";
+    $sql = "SELECT * FROM {$_TABLES['users']},{$_TABLES['user_attributes']} "
+        . "WHERE {$_TABLES['user_attributes']}.uid = $userId AND {$_TABLES['users']}.uid = {$userId}";
 
     if ((!$result = DB_query($sql)) || (!$myRow = DB_fetchArray($result, false))) {
         return array(

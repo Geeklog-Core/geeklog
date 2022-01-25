@@ -3750,8 +3750,7 @@ span.warning em {
   My Account Page
 --------------------------------------*/
 
-#exclude_topic > .checkboxes-list > li,
-#boxesblock > .checkboxes-list > li {
+#exclude_topic > .checkboxes-list > li {
   /* display: inline */
   margin-left: .5em;
 }

@@ -63,7 +63,7 @@ function contactemail($uid, $cc, $author, $authorEmail, $subject, $message)
     }
 
     // check for correct 'to' user preferences
-    $result = DB_query("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['userprefs']} WHERE uid = '$uid'");
+    $result = DB_query("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['user_attributes']} WHERE uid = '$uid'");
     $P = DB_fetchArray($result);
     $isAdmin = SEC_inGroup('Root') || SEC_hasRights('user.mail');
     if ((($P['emailfromadmin'] != 1) && $isAdmin) ||
@@ -215,7 +215,7 @@ function contactform($uid, $cc = false, $subject = '', $message = '')
         
         // Check if User wants mail from someone
         if ($continue) {
-            $result = DB_query("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['userprefs']} WHERE uid = '$uid'");
+            $result = DB_query("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['user_attributes']} WHERE uid = '$uid'");
             $P = DB_fetchArray($result);
             
             if ($continue && ((($P['emailfromadmin'] == 1) && $isAdmin) || (($P['emailfromuser'] == 1) && !$isAdmin))) {

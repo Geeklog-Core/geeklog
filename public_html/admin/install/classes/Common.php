@@ -1600,6 +1600,7 @@ abstract class Common
                         $this->updateDB($_SQL, $progress);
                         update_ConfValuesFor222();
                         update_TablesContainingIPAddresses222();
+                        update_CombineUserTables222();
                     }
 
                     $currentGlVersion = '2.2.2';

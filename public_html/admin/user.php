@@ -112,7 +112,7 @@ function edituser($uid = 0, $msg = 0)
 
             return $retval;
         }
-        $resultB = DB_query("SELECT about, pgpkey, location FROM {$_TABLES['userinfo']} WHERE uid = $uid");
+        $resultB = DB_query("SELECT about, pgpkey, location FROM {$_TABLES['user_attributes']} WHERE uid = $uid");
         $B = DB_fetchArray($resultB);
         $newuser = false;
         $A['about'] = $B['about'];
@@ -120,7 +120,7 @@ function edituser($uid = 0, $msg = 0)
         $A['location'] = $B['location'];
 
         $curtime = COM_getUserDateTimeFormat($A['regdate']);
-        $lastlogin = DB_getItem($_TABLES['userinfo'], 'lastlogin', "uid = '$uid'");
+        $lastlogin = DB_getItem($_TABLES['user_attributes'], 'lastlogin', "uid = '$uid'");
         $lasttime = COM_getUserDateTimeFormat($lastlogin);
     } else {
         $newuser = true;
@@ -539,7 +539,7 @@ function listusers()
     $join_userinfo = '';
     $select_userinfo = '';
     if ($_CONF['lastlogin']) {
-        $join_userinfo .= "LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
+        $join_userinfo .= "LEFT JOIN {$_TABLES['user_attributes']} ON {$_TABLES['users']}.uid={$_TABLES['user_attributes']}.uid ";
         $select_userinfo .= ",lastlogin";
     }
     if ($_CONF['user_login_method']['openid'] ||
@@ -706,7 +706,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
 
             $uid = USER_createAccount($username, $email, $passwd, $fullname, $homepage);
             DB_query("UPDATE {$_TABLES['users']} SET sig = '$signature' WHERE uid = $uid");
-            DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
+            DB_query("UPDATE {$_TABLES['user_attributes']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
 
             if ($uid > 1) {
                 DB_query("UPDATE {$_TABLES['users']} SET status = $userstatus WHERE uid = $uid");
@@ -753,7 +753,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             }
 
             DB_query("UPDATE {$_TABLES['users']} SET username = '{$escUserName}', fullname = '{$escFullName}', email = '$email', homepage = '$homepage', sig = '$signature', photo = '$curphoto', status = '$userstatus' $sql_enable_twofactorauth WHERE uid = {$uid}");
-            DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
+            DB_query("UPDATE {$_TABLES['user_attributes']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
             if ($passwd_changed && !empty($passwd)) {
                 SEC_updateUserPassword($passwd, $uid);
             }
@@ -1050,7 +1050,7 @@ function batchdelete()
         'direction' => 'ASC',
     );
 
-    $join_userinfo = "LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
+    $join_userinfo = "LEFT JOIN {$_TABLES['user_attributes']} ON {$_TABLES['users']}.uid={$_TABLES['user_attributes']}.uid ";
     $select_userinfo = ", lastlogin as lastlogin_short $list_sql ";
 
     $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate,num_reminders$select_userinfo "
@@ -1155,7 +1155,7 @@ function batchreminders()
             $userid = (int) $delitem;
             $useremail = DB_getItem($_TABLES['users'], 'email', "uid = '{$userid}'");
             $username = DB_getItem($_TABLES['users'], 'username', "uid = '{$userid}'");
-            $lastlogin = DB_getItem($_TABLES['userinfo'], 'lastlogin', "uid = '{$userid}'");
+            $lastlogin = DB_getItem($_TABLES['user_attributes'], 'lastlogin', "uid = '{$userid}'");
             $lasttime = COM_getUserDateTimeFormat($lastlogin);
             if (file_exists($_CONF['path_data'] . 'reminder_email.txt')) {
                 $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_data']));

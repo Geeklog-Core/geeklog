@@ -416,7 +416,7 @@ function CUSTOM_showBlocks($showblocks)
 
     if (!isset($_USER['noboxes'])) {
         if (!empty($_USER['uid'])) {
-            $noboxes = DB_getItem($_TABLES['userindex'], 'noboxes', "uid = {$_USER['uid']}");
+            $noboxes = DB_getItem($_TABLES['user_attributes'], 'noboxes', "uid = {$_USER['uid']}");
         } else {
             $noboxes = 0;
         }

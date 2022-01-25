@@ -72,10 +72,10 @@ class UserAttributeDAO
     {
         $sql = <<<SQL
 INSERT INTO $this->table (uid, commentmode, commentorder, commentlimit, etids, noboxes, maxstories, 
-  about, location, pgpkey, tokens, totlcomments, lastgranted, lastlogin, dfid, 
+  about, location, pgpkey, tokens, totalcomments, lastgranted, lastlogin, dfid, 
   advanced_editor, tzid, emailfromadmin, emailfromuser, showonline) 
   VALUES (:uid, ':commentmode', ':commentorder', :commentlimit, ':etids', :noboxes, :maxstories, 
-  ':about', ':location', ':pgpkey', :tokens, :totlcomments, :lastgranted, ':lastlogin', :dfid,
+  ':about', ':location', ':pgpkey', :tokens, :totalcomments, :lastgranted, ':lastlogin', :dfid,
   :advanced_editor, ':tzid', :emailfromadmin, :emailfromuser, :showonline)
 SQL;
         foreach ($entity->toArray() as $key => $value) {
@@ -96,7 +96,7 @@ SQL;
         $sql=<<<SQL
 UPDATE $this->table SET commentmode = ':commentmode', commentorder = ':commentorder', 
   commentlimit = :commentlimit, etids = ':etids', noboxes = :noboxes, maxstories = :maxstories,
-  about = ':about', location = ':location', pgpkey = ':pgpkey', tokens = :tokens, totlcomments = :totlcomments,
+  about = ':about', location = ':location', pgpkey = ':pgpkey', tokens = :tokens, totalcomments = :totalcomments,
   lastgranted = :lastgranted, lastlogin = ':lastlogin', dfid = :dfid, advanced_editor = :advanced_editor, 
   tzid = ':tzid', emailfromadmin = :emailfromadmin, emailfromuser = :emailfromuser, showonline = :showonline
   WHERE (uid = :uid)

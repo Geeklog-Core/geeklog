@@ -707,7 +707,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
     $retval = '';
 
     if (!COM_isAnonUser()) {
-        $result = DB_query("SELECT commentorder,commentmode,commentlimit FROM {$_TABLES['usercomment']} WHERE uid = '{$_USER['uid']}'");
+        $result = DB_query("SELECT commentorder,commentmode,commentlimit FROM {$_TABLES['user_attributes']} WHERE uid = '{$_USER['uid']}'");
         $U = DB_fetchArray($result);
         if (empty($order)) {
             $order = $U['commentorder'];
@@ -938,7 +938,7 @@ function CMT_commentForm($title, $comment, $sid, $pid, $type, $mode, $postMode, 
             if (COM_isAnonUser()) {
                 $format = $_CONF['comment_mode'];
             } else {
-                $format = DB_getItem($_TABLES['usercomment'], 'commentmode', "uid = {$uid}");
+                $format = DB_getItem($_TABLES['user_attributes'], 'commentmode', "uid = {$uid}");
             }
         }
     }
@@ -2906,7 +2906,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
         if (COM_isAnonUser()) {
             $format = $_CONF['comment_mode'];
         } else {
-            $format = DB_getItem($_TABLES['usercomment'], 'commentmode', "uid = {$_USER['uid']}");
+            $format = DB_getItem($_TABLES['user_attributes'], 'commentmode', "uid = {$_USER['uid']}");
         }
     }
 

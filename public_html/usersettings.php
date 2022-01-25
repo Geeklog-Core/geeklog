@@ -58,9 +58,10 @@ function edituser()
            $LANG_confignames, $LANG_configselects, $LANG_postmodes, $_SCRIPTS;
 
     $result = DB_query(
-        "SELECT fullname,cookietimeout,email,emailtoconfirm,emailconfirmid,homepage,sig,emailstories,about,location,pgpkey,photo,remoteservice,postmode "
-        . "FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} "
-        . "WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} AND {$_TABLES['userinfo']}.uid = {$_USER['uid']}"
+        "SELECT fullname, cookietimeout, email, emailtoconfirm, emailconfirmid, homepage, sig, about, "
+        . "location, pgpkey, photo, remoteservice, postmode "
+        . "FROM {$_TABLES['users']}, {$_TABLES['user_attributes']} "
+        . "WHERE ({$_TABLES['users']}.uid = {$_USER['uid']}) AND ({$_TABLES['user_attributes']}.uid = {$_USER['uid']})"
     );
     $A = DB_fetchArray($result);
     $postMode = $A['postmode'];
@@ -338,7 +339,7 @@ function edituser()
         $preferences->set_var('delete_account_option', '');
     }
 
-    $result = DB_query("SELECT about,pgpkey FROM {$_TABLES['userinfo']} WHERE uid = {$_USER['uid']}");
+    $result = DB_query("SELECT about,pgpkey FROM {$_TABLES['user_attributes']} WHERE uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
 
     $preferences->set_var(
@@ -439,7 +440,10 @@ function editpreferences()
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG04, $_LOCALE;
 
-    $result = DB_query("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes,emailfromadmin,emailfromuser,showonline,advanced_editor FROM {$_TABLES['userprefs']},{$_TABLES['userindex']} WHERE {$_TABLES['userindex']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']}");
+    $result = DB_query(
+        "SELECT dfid, tzid, noboxes, maxstories, emailfromadmin, emailfromuser, showonline, advanced_editor "
+        . "FROM {$_TABLES['user_attributes']} "
+        . "WHERE {$_TABLES['user_attributes']}.uid = {$_USER['uid']}");
 
     $A = DB_fetchArray($result);
 
@@ -457,9 +461,7 @@ function editpreferences()
     $preferences->set_file(array(
         'prefs'    => 'displayprefs.thtml',
         'display'  => 'displayblock.thtml',
-        'exclude'  => 'excludeblock.thtml',
         'digest'   => 'digestblock.thtml',
-        'boxes'    => 'boxesblock.thtml',
         'comment'  => 'commentblock.thtml',
         'language' => 'language.thtml',
         'theme'    => 'theme.thtml',
@@ -477,8 +479,6 @@ function editpreferences()
     $preferences->set_var('lang_misc_title', $LANG04[138]);
     $preferences->set_var('lang_misc_help_title', $LANG04[139]);
     $preferences->set_var('lang_misc_help', $LANG04[140]);
-    $preferences->set_var('lang_noicons', $LANG04[40]);
-    $preferences->set_var('lang_noicons_text', $LANG04[49]);
     $preferences->set_var('lang_maxstories', $LANG04[43]);
     if (strpos($LANG04[52], '%d') === false) {
         $maxtext = $LANG04[52] . ' ' . $_CONF['limitnews'];
@@ -487,19 +487,9 @@ function editpreferences()
     }
     $preferences->set_var('lang_maxstories_text', $maxtext);
     $preferences->set_var('lang_dateformat', $LANG04[42]);
-    $preferences->set_var('lang_excluded_items_title', $LANG04[137]);
-    $preferences->set_var('lang_excluded_items', $LANG04[54]);
-    $preferences->set_var('lang_exclude_title', $LANG04[136]);
-    $preferences->set_var('lang_topics', $LANG04[48]);
     $preferences->set_var('lang_emailedtopics', $LANG04[76]);
     $preferences->set_var('lang_digest_top_header', $LANG04[131]);
     $preferences->set_var('lang_digest_help_header', $LANG04[132]);
-    $preferences->set_var('lang_boxes_title', $LANG04[144]);
-    $preferences->set_var('lang_boxes_help_title', $LANG04[143]);
-    $preferences->set_var('lang_noboxes', $LANG04[44]);
-    $preferences->set_var('lang_noboxes_text', $LANG04[51]);
-    $preferences->set_var('lang_boxes', $LANG04[55]);
-    $preferences->set_var('lang_blocks', $LANG04[151]);
     $preferences->set_var('lang_displaymode', $LANG04[57]);
     $preferences->set_var('lang_displaymode_text', $LANG04[60]);
     $preferences->set_var('lang_sortorder', $LANG04[58]);
@@ -522,11 +512,6 @@ function editpreferences()
 
     $display_name = COM_getDisplayName($_USER['uid']);
 
-    $preferences->set_var('lang_authors_exclude', $LANG04[46]);
-    $preferences->set_var('lang_boxes_exclude', $LANG04[47]);
-
-    $preferences->set_var('start_block_display',
-        COM_startBlock($LANG04[45] . ' ' . $display_name));
     $preferences->set_var('start_block_digest',
         COM_startBlock($LANG04[75] . ' ' . $display_name));
     $preferences->set_var('start_block_comment',
@@ -535,18 +520,9 @@ function editpreferences()
         COM_startBlock($LANG04[99] . ' ' . $display_name));
     $preferences->set_var('end_block', COM_endBlock());
 
-    $preferences->set_var('display_headline',
-        $LANG04[45] . ' ' . $display_name);
-    $preferences->set_var('exclude_headline',
-        $LANG04[46] . ' ' . $display_name);
-    $preferences->set_var('digest_headline',
-        $LANG04[75] . ' ' . $display_name);
-    $preferences->set_var('boxes_headline',
-        $LANG04[47] . ' ' . $display_name);
-    $preferences->set_var('comment_headline',
-        $LANG04[64] . ' ' . $display_name);
-    $preferences->set_var('privacy_headline',
-        $LANG04[99] . ' ' . $display_name);
+    $preferences->set_var('digest_headline', $LANG04[75] . ' ' . $display_name);
+    $preferences->set_var('comment_headline', $LANG04[64] . ' ' . $display_name);
+    $preferences->set_var('privacy_headline', $LANG04[99] . ' ' . $display_name);
 
     // display preferences block
     if ($_CONF['allow_user_language'] == 1) {
@@ -673,13 +649,6 @@ function editpreferences()
 
     $preferences->set_var('timezone_selector', $selection);
     $preferences->set_var('lang_timezone', $LANG04[158]);
-
-    if (isset($A['noicons']) && $A['noicons'] == '1') {
-        $preferences->set_var('noicons_checked', 'checked="checked"');
-    } else {
-        $preferences->set_var('noicons_checked', '');
-    }
-
     $preferences->set_var('maxstories_value', $A['maxstories']);
 
     $selection = COM_createControl('type-select', array(
@@ -709,57 +678,9 @@ function editpreferences()
     PLG_profileVariablesEdit($_USER['uid'], $preferences);
     $preferences->parse('privacy_block', 'privacy', true);
 
-    // excluded items block
-    $preferences->set_var('exclude_topic_checklist', TOPIC_checkList($A['tids'], 'topics'));
-
-    if (($_CONF['contributedbyline'] == 1) &&
-        ($_CONF['hide_author_exclusion'] == 0)
-    ) {
-        $preferences->set_var('lang_authors', $LANG04[56]);
-        $sql = "SELECT DISTINCT story.uid, users.username,users.fullname FROM {$_TABLES['stories']} story, {$_TABLES['users']} users WHERE story.uid = users.uid";
-        if ($_CONF['show_fullname'] == 1) {
-            $sql .= ' ORDER BY users.fullname';
-        } else {
-            $sql .= ' ORDER BY users.username';
-        }
-        $query = DB_query($sql);
-        $nrows = DB_numRows($query);
-        $authors = explode(' ', $A['aids']);
-
-        $selauthors = '';
-        for ($i = 0; $i < $nrows; $i++) {
-            $B = DB_fetchArray($query);
-            $selauthors .= '<option value="' . $B['uid'] . '"';
-            if (in_array(sprintf('%d', $B['uid']), $authors)) {
-                $selauthors .= ' selected="selected"';
-            }
-            $selauthors .= '>' . COM_getDisplayName($B['uid'], $B['username'],
-                    $B['fullname'])
-                . '</option>' . LB;
-        }
-
-        if ($nrows > 0 AND $nrows <= 15) {
-            $Selboxsize = $nrows;
-        } else {
-            $Selboxsize = 15;
-        }
-        $exclude_author_checklist = COM_createControl('type-select', array(
-            'name'         => 'selauthors[]',
-            'multiple'     => true,
-            'select_items' => $selauthors,
-            'size'   => $Selboxsize
-        ));
-        $preferences->set_var('exclude_author_checklist', $exclude_author_checklist);
-    } else {
-        $preferences->set_var('lang_authors', '');
-        $preferences->set_var('exclude_author_checklist', '');
-    }
-    $preferences->parse('exclude_block', 'exclude', true);
-
     // daily digest block
     if ($_CONF['emailstories'] == 1) {
-        $user_etids = DB_getItem($_TABLES['userindex'], 'etids',
-            "uid = {$_USER['uid']}");
+        $user_etids = DB_getItem($_TABLES['user_attributes'], 'etids', "uid = {$_USER['uid']}");
         if (empty($user_etids)) { // an empty string now means "all topics"
             $etids = USER_getAllowedTopics();
             $user_etids = implode(' ', $etids);
@@ -780,31 +701,8 @@ function editpreferences()
         $preferences->set_var('noboxes_checked', '');
     }
 
-    // boxes block
-    $selectedblocks = '';
-    if (strlen($A['boxes']) > 0) {
-        $blockresult = DB_query("SELECT bid FROM {$_TABLES['blocks']} WHERE bid NOT IN (" . str_replace(' ', ',', $A['boxes']) . ")");
-        for ($x = 1; $x <= DB_numRows($blockresult); $x++) {
-            $row = DB_fetchArray($blockresult);
-            $selectedblocks .= $row['bid'];
-            if ($x != DB_numRows($blockresult)) {
-                $selectedblocks .= ' ';
-            }
-        }
-    }
-    $whereblock = '';
-    if (!empty($permissions)) {
-        $whereblock .= $permissions . ' AND ';
-    }
-    $whereblock .= "((type != 'gldefault' AND is_enabled = 1) OR "
-        . "(type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','older_stories'))) "
-        . "ORDER BY onleft desc,blockorder,title";
-    $preferences->set_var('boxes_checklist', COM_checkList($_TABLES['blocks'],
-        'bid,title,type', $whereblock, $selectedblocks, 'blocks'));
-    $preferences->parse('boxes_block', 'boxes', true);
-
     // comment preferences block
-    $result = DB_query("SELECT commentmode,commentorder,commentlimit FROM {$_TABLES['usercomment']} WHERE uid = {$_USER['uid']}");
+    $result = DB_query("SELECT commentmode,commentorder,commentlimit FROM {$_TABLES['user_attributes']} WHERE uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
 
     if (empty($A['commentmode'])) {
@@ -1231,7 +1129,7 @@ function saveuser(array $A)
         }
 
         DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A['fullname']}',homepage='{$A['homepage']}',sig='{$A['sig']}',cookietimeout={$A['cooktime']},photo='$filename'{$sql_emailconfirm},postmode='{$A['postmode']}' WHERE uid={$_USER['uid']}");
-        DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='{$A['pgpkey']}',about='{$A['about']}',location='{$A['location']}' WHERE uid={$_USER['uid']}");
+        DB_query("UPDATE {$_TABLES['user_attributes']} SET pgpkey='{$A['pgpkey']}',about='{$A['about']}',location='{$A['location']}' WHERE uid={$_USER['uid']}");
 
         // Call custom registration save function if enabled and exists
         if ($_CONF['custom_registration'] && (function_exists('CUSTOM_userSave'))) {
@@ -1289,11 +1187,6 @@ function savepreferences($A)
 {
     global $_CONF, $_TABLES, $_USER;
 
-    if (isset($A['noicons']) && ($A['noicons'] === 'on')) {
-        $A['noicons'] = 1;
-    } else {
-        $A['noicons'] = 0;
-    }
     if (isset($A['willing']) && ($A['willing'] === 'on')) {
         $A['willing'] = 1;
     } else {
@@ -1323,8 +1216,7 @@ function savepreferences($A)
     } else {
         // when Advanced Editor is not enabled, make sure we don't overwrite
         // the user's current setting
-        $A['advanced_editor'] = DB_getItem($_TABLES['userprefs'],
-            'advanced_editor', "uid = {$_USER['uid']}");
+        $A['advanced_editor'] = DB_getItem($_TABLES['user_attributes'], 'advanced_editor', "uid = {$_USER['uid']}");
     }
 
     $A['maxstories'] = COM_applyFilter($A['maxstories'], true);
@@ -1469,26 +1361,26 @@ function savepreferences($A)
 
     $A['dfid'] = COM_applyFilter($A['dfid'], true);
 
-    DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A['willing']}', dfid='{$A['dfid']}', tzid='{$A['tzid']}', emailfromadmin='{$A['emailfromadmin']}', emailfromuser='{$A['emailfromuser']}', showonline='{$A['showonline']}', advanced_editor='{$A['advanced_editor']}' WHERE uid='{$_USER['uid']}'");
+    DB_query(
+        "UPDATE {$_TABLES['user_attributes']} SET dfid='{$A['dfid']}', tzid='{$A['tzid']}', "
+        . "emailfromadmin='{$A['emailfromadmin']}', emailfromuser='{$A['emailfromuser']}', showonline='{$A['showonline']}', advanced_editor='{$A['advanced_editor']}' "
+        . "WHERE uid='{$_USER['uid']}'"
+    );
 
     if (empty($etids)) {
         $etids = '-';
     }
 
-    $tids = DB_escapeString($tids);
     $etids = DB_escapeString($etids);
-    $aids = DB_escapeString($aids);
     $boxes = DB_escapeString($selectedblocks);
 
-    if (DB_count($_TABLES['userindex'], 'uid', $_USER['uid']) > 0) {
-        $sql = "UPDATE {$_TABLES['userindex']} SET tids = '{$tids}', etids = '{$etids}', "
-            . "aids = '{$aids}', boxes = '{$boxes}', noboxes = {$A['noboxes']}, "
+    if (DB_count($_TABLES['user_attributes'], 'uid', $_USER['uid']) > 0) {
+        $sql = "UPDATE {$_TABLES['user_attributes']} SET etids = '{$etids}', noboxes = {$A['noboxes']}, "
             . "maxstories = {$A['maxstories']} "
             . "WHERE uid = {$_USER['uid']} ";
     } else {
-        $sql = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) "
-            . "VALUES ({$_USER['uid']}, '{$tids}', '{$etids}', '{$aids}', '{$boxes}', "
-            . "{$A['noboxes']}, {$A['maxstories']})";
+        $sql = "INSERT INTO {$_TABLES['user_attributes']} (uid, etids, noboxes, maxstories) "
+            . "VALUES ({$_USER['uid']}, '{$etids}', '{$boxes}', {$A['noboxes']}, {$A['maxstories']})";
     }
 
     DB_query($sql);
@@ -1513,12 +1405,12 @@ function savepreferences($A)
     $commentMode = DB_escapeString($A['commentmode']);
     $commentOrder = DB_escapeString($A['commentorder']);
 
-    if (DB_count($_TABLES['usercomment'], 'uid', $_USER['uid']) > 0) {
-        $sql = "UPDATE {$_TABLES['usercomment']} SET commentmode = '{$commentMode}', "
+    if (DB_count($_TABLES['user_attributes'], 'uid', $_USER['uid']) > 0) {
+        $sql = "UPDATE {$_TABLES['user_attributes']} SET commentmode = '{$commentMode}', "
             . "commentorder = '{$commentOrder}', commentlimit = {$A['commentlimit']} "
             . "WHERE uid = {$_USER['uid']} ";
     } else {
-        $sql = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) "
+        $sql = "INSERT INTO {$_TABLES['user_attributes']} (uid, commentmode, commentorder, commentlimit) "
             . "VALUES ({$_USER['uid']}, '{$commentMode}', '{$commentOrder}', {$A['commentlimit']})";
     }
 

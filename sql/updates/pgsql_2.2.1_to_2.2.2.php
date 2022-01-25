@@ -1,5 +1,8 @@
 <?php
 
+use Geeklog\DAO\UserAttributeDAO;
+use Geeklog\Entity\UserAttributeEntity;
+
 // Add missing route into routing table for articles that have page breaks (issue #746)
 $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid/@page', '/article.php?story=@sid&page=@page', 1000)"; // Priority should default to 120 but we need to mage sure it comes after the route for article print
 
@@ -98,4 +101,100 @@ CREATE TABLE {$_TABLES['ip_addresses']} (
     }
 
     return true;
+}
+
+/**
+ * Combine user tables into one
+ *
+ * Collect data from $_TABLES['usercomment'], $_TABLES['userindex'], $_TABLES['userinfo'] and $_TABLES['userprefs']
+ * and insert them into $_TABLES['user_attributes']
+ *
+ * @return bool
+ */
+function update_CombineUserTables222()
+{
+    global $_TABLES;
+
+    $sql1 = "
+CREATE TABLE {$_TABLES['user_attributes']} (
+  uid SMALLINT NOT NULL DEFAULT 1,
+  commentmode VARCHAR(10) NOT NULL DEFAULT 'nested',
+  commentorder VARCHAR(4) NOT NULL DEFAULT 'ASC',
+  commentlimit SMALLINT NOT NULL DEFAULT 100,
+  etids TEXT NOT NULL,
+  noboxes SMALLINT NOT NULL DEFAULT 0,
+  maxstories SMALLINT NOT NULL DEFAULT 0,
+  about TEXT NOT NULL,
+  location VARCHAR(96) NOT NULL DEFAULT '',
+  pgpkey TEXT NOT NULL,
+  tokens SMALLINT NOT NULL DEFAULT 0,
+  totalcomments SMALLINT NOT NULL DEFAULT 0,
+  lastgranted SMALLINT NOT NULL DEFAULT 0,
+  lastlogin VARCHAR(10) NOT NULL DEFAULT '0',
+  dfid SMALLINT NOT NULL DEFAULT 0,
+  advanced_editor SMALLINT NOT NULL DEFAULT 1,
+  tzid VARCHAR(125) NOT NULL DEFAULT '',
+  emailfromadmin SMALLINT NOT NULL DEFAULT 1,
+  emailfromuser SMALLINT NOT NULL DEFAULT 1,
+  showonline SMALLINT NOT NULL DEFAULT 1,
+  PRIMARY KEY (uid)
+);";
+
+    $sql2 = <<<SQL
+INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit)
+  VALUES (1, 'nested', 'ASC', 100)
+SQL;
+
+    $sql3 = <<<SQL
+SELECT c.*, x.*, f.*, p.* 
+  FROM {$_TABLES['usercomment']} AS c 
+    LEFT JOIN {$_TABLES['userindex']} AS x ON c.uid = x.uid
+    LEFT JOIN {$_TABLES['userinfo']} AS f ON c.uid = f.uid
+    LEFT JOIN {$_TABLES['userprefs']} AS p ON c.uid = p.uid
+SQL;
+
+    // With PostgreSQL, we can use transaction
+    if (DB_beginTransaction()) {
+        // Create $_TABLES['user_attributes'] table
+        DB_query($sql1);
+        if (DB_error()) {
+            DB_rollBack();
+
+            return false;
+        }
+
+        // Insert dummy data for the guest user beforehand, to prevent column values becoming NULL
+        DB_query($sql2);
+        if (DB_error()) {
+            DB_rollBack();
+
+            return false;
+        }
+
+        // Collect data from old tables
+        $result = DB_query($sql3);
+        if (DB_error()) {
+            DB_rollBack();
+
+            return false;
+        }
+
+        $userAttributeDAO = new UserAttributeDAO($_TABLES['user_attributes']);
+
+        // Insert the collected data into a new table
+        while (!empty($A = DB_fetchArray($result, false))) {
+            $entity = UserAttributeEntity::fromArray($A);
+            $userAttributeDAO->create($entity);
+        }
+
+        // Drop old tables
+        DB_query("DROP TABLE {$_TABLES['usercomment']}");
+        DB_query("DROP TABLE {$_TABLES['userindex']}");
+        DB_query("DROP TABLE {$_TABLES['userinfo']}");
+        DB_commit();
+
+        return true;
+    } else{
+        return false;
+    }
 }

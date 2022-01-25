@@ -42,7 +42,7 @@ class UserAttributeEntity extends EntityBase
     /**
      * @var int
      */
-    private $maxstories = 10;   // Originally null
+    private $maxstories = 0;   // Originally null
 
     // Columns from $_TABLES['userinfo']
 
@@ -455,7 +455,7 @@ class UserAttributeEntity extends EntityBase
         $this->setLastlogin('0');
 
         $this->setDfid(0);
-        $this->setAbout(1);
+        $this->setAdvancedEditor(1);
         $this->setTzid('');
         $this->setEmailfromadmin(1);
         $this->setEmailfromuser(1);
@@ -531,7 +531,7 @@ class UserAttributeEntity extends EntityBase
         $entity = new self();
 
         if ($fromDatabase) {
-            foreach ($A as $key => &$value) {
+            foreach ($A as &$value) {
                 $value = self::stripSlashes($value);
             }
             unset($value);

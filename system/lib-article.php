@@ -189,7 +189,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
     // Topic Icon is user configurable so do not cache
     $topicname = $story->DisplayElements('topic');
     $topicurl = TOPIC_getUrl($story->DisplayElements('tid'));
-    if ((!isset($_USER['noicons']) || ($_USER['noicons'] != 1)) && $story->DisplayElements('show_topic_icon') == 1) {
+    if ($story->DisplayElements('show_topic_icon') == 1) {
         $imageurl = $story->DisplayElements('imageurl');
         if (!empty($imageurl)) {
             $imageurl = COM_getTopicImageUrl($imageurl);

@@ -219,9 +219,9 @@ function send_messages(array $vars)
         $sql .= " AND {$_TABLES['users']}.status = " . USER_ACCOUNT_ACTIVE . " AND ((email IS NOT NULL) and (email != ''))";
         $sql .= " AND {$_TABLES['users']}.uid = ug_uid AND ug_main_grp_id IN ({$groupList})";
     } else {
-        $sql = "SELECT DISTINCT username,fullname,email,emailfromadmin FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['group_assignments']} WHERE {$_TABLES['users']}.uid > 1";
+        $sql = "SELECT DISTINCT username,fullname,email,emailfromadmin FROM {$_TABLES['users']},{$_TABLES['user_attributes']},{$_TABLES['group_assignments']} WHERE {$_TABLES['users']}.uid > 1";
         $sql .= " AND {$_TABLES['users']}.status = " . USER_ACCOUNT_ACTIVE . " AND ((email IS NOT NULL) and (email != ''))";
-        $sql .= " AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND emailfromadmin = 1";
+        $sql .= " AND {$_TABLES['users']}.uid = {$_TABLES['user_attributes']}.uid AND emailfromadmin = 1";
         $sql .= " AND ug_uid = {$_TABLES['users']}.uid AND ug_main_grp_id IN ({$groupList})";
     }
 

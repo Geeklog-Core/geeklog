@@ -301,21 +301,14 @@ function changetopicid($tid, $old_tid)
     DB_change($_TABLES['topics'], 'parent_id', $tid, 'parent_id', $old_tid);
     DB_change($_TABLES['syndication'], 'header_tid', $tid, 'header_tid', $old_tid);
 
-    $result = DB_query("SELECT uid,tids,etids FROM {$_TABLES['userindex']} WHERE tids LIKE '%{$old_tid}%' OR etids LIKE '%{$old_tid}%'");
+    $result = DB_query(
+        "SELECT uid, etids FROM {$_TABLES['user_attributes']} "
+        . "WHERE etids LIKE '%{$old_tid}%'"
+    );
     $num_users = DB_numRows($result);
     for ($i = 0; $i < $num_users; $i++) {
         $changed = false;
-        list($uid, $tids, $etids) = DB_fetchArray($result);
-        // check list of excluded topics
-        $t = explode(' ', $tids);
-        if (count($t) > 0) {
-            $found = array_search($old_tid, $t);
-            if ($found !== false) {
-                $t[$found] = $tid;
-                $tids = implode(' ', $t);
-                $changed = true;
-            }
-        }
+        list($uid, $etids) = DB_fetchArray($result);
 
         // check topics for the Daily Digest
         if (!empty($etids) && ($etids !== '-')) {
@@ -331,12 +324,7 @@ function changetopicid($tid, $old_tid)
         }
 
         if ($changed) {
-            // etids can be both NULL and "", so special handling required
-            if ($etids === null) {
-                DB_change($_TABLES['userindex'], 'tids', $tids, 'uid', $uid);
-            } else {
-                DB_query("UPDATE {$_TABLES['userindex']} SET tids = '{$tids}', etids = '{$etids}' WHERE uid = $uid");
-            }
+            DB_query("UPDATE {$_TABLES['user_attributes']} SET etids = '{$etids}' WHERE uid = $uid");
         }
     }
 }

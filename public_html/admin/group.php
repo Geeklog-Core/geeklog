@@ -899,7 +899,7 @@ function listusers($grp_id)
     $join_userinfo = '';
     $select_userinfo = '';
     if ($_CONF['lastlogin']) {
-        $join_userinfo = "LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
+        $join_userinfo = "LEFT JOIN {$_TABLES['user_attributes']} ON {$_TABLES['users']}.uid={$_TABLES['user_attributes']}.uid ";
         $select_userinfo = ",lastlogin ";
     }
 

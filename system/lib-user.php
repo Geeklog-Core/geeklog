@@ -32,6 +32,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\DAO\UserAttributeDAO;
+use Geeklog\Entity\UserAttributeEntity;
 use Geeklog\Session;
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-user.php') !== false) {
@@ -91,10 +93,7 @@ function USER_deleteAccount($uid)
     DB_delete($_TABLES['group_assignments'], 'ug_uid', $uid);
 
     // remove user information and preferences
-    DB_delete($_TABLES['userprefs'], 'uid', $uid);
-    DB_delete($_TABLES['userindex'], 'uid', $uid);
-    DB_delete($_TABLES['usercomment'], 'uid', $uid);
-    DB_delete($_TABLES['userinfo'], 'uid', $uid);
+    DB_delete($_TABLES['user_attributes'], 'uid', $uid);
     DB_delete($_TABLES['backup_codes'], 'uid', $uid);
     DB_delete($_TABLES['likes'], 'uid', $uid);
 
@@ -306,15 +305,14 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
         DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($def_grp, $uid)");
     }
 
-    DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
-    if ($_CONF['emailstoriesperdefault'] == 1) {
-        DB_query("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid,'')");
-    } else {
-        DB_query("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid, '-')");
-    }
-
-    DB_query("INSERT INTO {$_TABLES['usercomment']} (uid,commentmode,commentorder,commentlimit) VALUES ($uid,'{$_CONF['comment_mode']}','{$_CONF['comment_order']}','{$_CONF['comment_limit']}')");
-    DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
+    $entity = new UserAttributeEntity();
+    $entity->setUid($uid);
+    $entity->setEtids(($_CONF['emailstoriesperdefault'] == 1) ? '' : '-');
+    $entity->setCommentmode($_CONF['comment_mode']);
+    $entity->setCommentorder($_CONF['comment_order']);
+    $entity->setCommentlimit($_CONF['comment_limit']);
+    $userAttributeDAO = new UserAttributeDAO($_TABLES['user_attributes']);
+    $userAttributeDAO->create($entity);
 
     // Call plugins back on user creation
     PLG_createUser($uid);
@@ -928,8 +926,7 @@ function USER_subscribeToTopic($tid)
         return;
     }
 
-    $user_etids = DB_getItem($_TABLES['userindex'], 'etids',
-        "uid = {$_USER['uid']}");
+    $user_etids = DB_getItem($_TABLES['user_attributes'], 'etids', "uid = {$_USER['uid']}");
     if (empty($user_etids)) {
         return; // already subscribed to all topics
     }
@@ -946,7 +943,7 @@ function USER_subscribeToTopic($tid)
     }
     $user_etids = DB_escapeString($user_etids);
 
-    DB_query("UPDATE {$_TABLES['userindex']} SET etids = '{$user_etids}' WHERE uid = {$_USER['uid']}");
+    DB_query("UPDATE {$_TABLES['user_attributes']} SET etids = '{$user_etids}' WHERE uid = {$_USER['uid']}");
 }
 
 /**
@@ -967,7 +964,7 @@ function USER_unsubscribeFromTopic($tid)
     }
 
     // no check for SEC_hasTopicAccess here to unsubscribe user "just in case"
-    $user_etids = DB_getItem($_TABLES['userindex'], 'etids', "uid = {$_USER['uid']}");
+    $user_etids = DB_getItem($_TABLES['user_attributes'], 'etids', "uid = {$_USER['uid']}");
     if ($user_etids == '-') {
         return; // not subscribed to any topics
     }
@@ -993,7 +990,7 @@ function USER_unsubscribeFromTopic($tid)
     }
     $user_etids = DB_escapeString($user_etids);
 
-    DB_query("UPDATE {$_TABLES['userindex']} SET etids = '$user_etids' WHERE uid = {$_USER['uid']}");
+    DB_query("UPDATE {$_TABLES['user_attributes']} SET etids = '$user_etids' WHERE uid = {$_USER['uid']}");
 }
 
 /**
@@ -1018,8 +1015,7 @@ function USER_isSubscribedToTopic($tid)
         return false;
     }
 
-    $user_etids = DB_getItem($_TABLES['userindex'], 'etids',
-        "uid = {$_USER['uid']}");
+    $user_etids = DB_getItem($_TABLES['user_attributes'], 'etids', "uid = {$_USER['uid']}");
     if (empty($user_etids)) {
         return true; // subscribed to all topics
     } elseif ($user_etids == '-') {
@@ -1074,7 +1070,7 @@ function USER_isCanSendMail($toUid = 0)
     $toUid = (int) $toUid;
 
     if ($toUid > 1) {
-        $sql = "SELECT emailfromadmin, emailfromuser FROM {$_TABLES['userprefs']} "
+        $sql = "SELECT emailfromadmin, emailfromuser FROM {$_TABLES['user_attributes']} "
             . "WHERE (uid = {$toUid})";
         $result = DB_query($sql);
 
@@ -1111,7 +1107,11 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
         return $retval;
     }
 
-    $result = DB_query("SELECT {$_TABLES['users']}.uid,username,fullname,regdate,homepage,about,location,pgpkey,photo,email,status,postmode FROM {$_TABLES['userinfo']},{$_TABLES['users']} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $uid");
+    $result = DB_query(
+        "SELECT {$_TABLES['users']}.uid, username, fullname, regdate, homepage, about, location, pgpkey, "
+        . "photo, email, status, postmode FROM {$_TABLES['user_attributes']}, {$_TABLES['users']} "
+        . "WHERE {$_TABLES['user_attributes']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $uid"
+    );
     $numRows = DB_numRows($result);
     if ($numRows == 0) { // no such user
         COM_handle404();

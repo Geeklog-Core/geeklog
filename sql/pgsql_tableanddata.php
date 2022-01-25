@@ -421,62 +421,32 @@ CREATE TABLE {$_TABLES['trackback']} (
   CREATE INDEX {$_TABLES['trackback']}_date ON {$_TABLES['trackback']}(date);
 ";
 
+// Since Geeklog-2.2.2, $_TABLES['usercomment'], $_TABLES['userindex'], $_TABLES['userinfo'], and $_TABLES['userprefs']
+// tables are combined into $_TABLES['user_attributes'] table.
 $_SQL[] = "
-CREATE TABLE {$_TABLES['usercomment']} (
-  uid smallint NOT NULL default '1',
-  commentmode varchar(10) NOT NULL default 'nested',
-  commentorder varchar(4) NOT NULL default 'ASC',
-  commentlimit smallint NOT NULL default '100',
+CREATE TABLE {$_TABLES['user_attributes']} (
+  uid SMALLINT NOT NULL DEFAULT 1,
+  commentmode VARCHAR(10) NOT NULL DEFAULT 'nested',
+  commentorder VARCHAR(4) NOT NULL DEFAULT 'ASC',
+  commentlimit SMALLINT NOT NULL DEFAULT 100,
+  etids TEXT NOT NULL,
+  noboxes SMALLINT NOT NULL DEFAULT 0,
+  maxstories SMALLINT NOT NULL DEFAULT 0,
+  about TEXT NOT NULL,
+  location VARCHAR(96) NOT NULL DEFAULT '',
+  pgpkey TEXT NOT NULL,
+  tokens SMALLINT NOT NULL DEFAULT 0,
+  totalcomments SMALLINT NOT NULL DEFAULT 0,
+  lastgranted SMALLINT NOT NULL DEFAULT 0,
+  lastlogin VARCHAR(10) NOT NULL DEFAULT '0',
+  dfid SMALLINT NOT NULL DEFAULT 0,
+  advanced_editor SMALLINT NOT NULL DEFAULT 1,
+  tzid VARCHAR(125) NOT NULL DEFAULT '',
+  emailfromadmin SMALLINT NOT NULL DEFAULT 1,
+  emailfromuser SMALLINT NOT NULL DEFAULT 1,
+  showonline SMALLINT NOT NULL DEFAULT 1,
   PRIMARY KEY (uid)
-)
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['userindex']} (
-  uid smallint NOT NULL default '1',
-  tids varchar(255) NOT NULL default '',
-  etids text,
-  aids varchar(255) NOT NULL default '0',
-  boxes varchar(255) NOT NULL default '0',
-  noboxes smallint NOT NULL default '0',
-  maxstories smallint default NULL,
-  PRIMARY KEY (uid)
-);
-  CREATE INDEX {$_TABLES['userindex']}_uid ON {$_TABLES['userindex']}(uid);
-  CREATE INDEX {$_TABLES['userindex']}_noboxes ON {$_TABLES['userindex']}(noboxes);
-  CREATE INDEX {$_TABLES['userindex']}_maxstories ON {$_TABLES['userindex']}(maxstories);
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['userinfo']} (
-  uid smallint NOT NULL default '1',
-  about text,
-  location varchar(96) NOT NULL default '',
-  pgpkey text,
-  userspace varchar(255) NOT NULL default '',
-  tokens smallint NOT NULL default '0',
-  totalcomments smallint NOT NULL default '0',
-  lastgranted smallint NOT NULL default '0',
-  lastlogin VARCHAR(10) NOT NULL default '0',
-  PRIMARY KEY (uid)
-)
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['userprefs']} (
-  uid smallint NOT NULL default '1',
-  noicons smallint NOT NULL default '0',
-  willing smallint NOT NULL default '1',
-  dfid smallint NOT NULL default '0',
-  advanced_editor smallint NOT NULL default '1',
-  tzid varchar(125) NOT NULL default '',
-  emailstories smallint NOT NULL default '1',
-  emailfromadmin smallint NOT NULL default '1',
-  emailfromuser smallint NOT NULL default '1',
-  showonline smallint NOT NULL default '1',
-  PRIMARY KEY (uid)
-)
-";
+);";
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['userautologin']} (
@@ -795,16 +765,17 @@ $_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit,
 $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('General','General News','/images/topics/topic_news.png','A topic that contains general news related posts.','News, Post, Information',1,10,6,2,3,2,2,2)";
 $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('Geeklog','Geeklog','/images/topics/topic_gl.png','A topic that contains posts about Geeklog.','Geeklog, Posts, Information',2,10,6,2,3,2,2,2)";
 
-$_DATA[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (2,'nested','ASC',100) ";
+// For guest user
+$_DATA[] = "INSERT INTO {$_TABLES['user_attributes']} 
+    (uid, etids, about, pgpkey, advanced_editor, emailfromadmin, emailfromuser) 
+    VALUES (1, '', '', '', 0, 0, 0) 
+";
 
-$_DATA[] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (1,'','-','0','0',0,0) ";
-$_DATA[] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (2,'','','0','0',0,0) ";
-
-$_DATA[] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (1,NULL,NULL,'',0,0,0) ";
-$_DATA[] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (2,NULL,NULL,'',0,0,0) ";
-
-$_DATA[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tzid, emailstories) VALUES (1,0,0,0,'',0) ";
-$_DATA[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tzid, emailstories) VALUES (2,0,1,0,'',1) ";
+// For Root user
+$_DATA[] = "INSERT INTO {$_TABLES['user_attributes']} 
+    (uid, etids, about, pgpkey, advanced_editor, emailfromadmin, emailfromuser) 
+    VALUES (2, '', '', '', 1, 1, 1) 
+";
 
 #
 # Dumping data for table 'users'
