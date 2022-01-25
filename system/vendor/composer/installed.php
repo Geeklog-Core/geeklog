@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'cb86914728409afd85f3bf65a13478be8324e63f',
+        'reference' => 'ea2524cfe6516fe7e64e56fb7b0f9bb1b50148a9',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'cb86914728409afd85f3bf65a13478be8324e63f',
+            'reference' => 'ea2524cfe6516fe7e64e56fb7b0f9bb1b50148a9',
             'dev_requirement' => false,
         ),
         'doctrine/inflector' => array(
@@ -92,12 +92,12 @@
             'dev_requirement' => false,
         ),
         'mlocati/ip-lib' => array(
-            'pretty_version' => '1.14.0',
-            'version' => '1.14.0.0',
+            'pretty_version' => '1.18.0',
+            'version' => '1.18.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../mlocati/ip-lib',
             'aliases' => array(),
-            'reference' => '882bc0e115970a536b13bcfa59f312783fce08c8',
+            'reference' => 'c77bd0b1f3e3956c7e9661e75cb1f54ed67d95d2',
             'dev_requirement' => false,
         ),
         'mobiledetect/mobiledetectlib' => array(
@@ -164,12 +164,12 @@
             'dev_requirement' => false,
         ),
         'pear/pear-core-minimal' => array(
-            'pretty_version' => 'v1.10.10',
-            'version' => '1.10.10.0',
+            'pretty_version' => 'v1.10.11',
+            'version' => '1.10.11.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/pear-core-minimal',
             'aliases' => array(),
-            'reference' => '625a3c429d9b2c1546438679074cac1b089116a7',
+            'reference' => '68d0d32ada737153b7e93b8d3c710ebe70ac867d',
             'dev_requirement' => false,
         ),
         'pear/pear_exception' => array(
@@ -191,8 +191,8 @@
             'dev_requirement' => false,
         ),
         'phpclasses/oauth-api' => array(
-            'pretty_version' => '1.0.111',
-            'version' => '1.0.111.0',
+            'pretty_version' => '1.0.115',
+            'version' => '1.0.115.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpclasses/oauth-api',
             'aliases' => array(),
@@ -227,18 +227,18 @@
             'dev_requirement' => false,
         ),
         'robthree/twofactorauth' => array(
-            'pretty_version' => '1.8.0',
-            'version' => '1.8.0.0',
+            'pretty_version' => '1.8.1',
+            'version' => '1.8.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../robthree/twofactorauth',
             'aliases' => array(),
-            'reference' => '30a38627ae1e7c9399dae67e265063cd6ec5276c',
+            'reference' => '5afcb45282f1c75562a48d479ecd1732c9bdb11b',
             'dev_requirement' => false,
         ),
         'rsky/pear-core-min' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v1.10.10',
+                0 => 'v1.10.11',
             ),
         ),
         'servocoder/richfilemanager-php' => array(

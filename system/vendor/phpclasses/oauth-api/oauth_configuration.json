@@ -1,5 +1,5 @@
 {
-	"version": "$Id: oauth_configuration.json,v 1.44 2021/01/13 22:43:51 mlemos Exp $",
+	"version": "$Id: oauth_configuration.json,v 1.47 2021/09/22 08:48:40 mlemos Exp $",
 	"comments": [
 		"The servers entry should be an object with a list of object",
 		"entries, one for each server type. The server object entry name is",
@@ -182,9 +182,9 @@
 		"Garmin":
 		{
 			"oauth_version": "1.0a",
-			"request_token_url": "http://connectapitest.garmin.com/oauth-service-1.0/oauth/request_token",
-			"dialog_url": "http://connecttest.garmin.com/oauthConfirm",
-			"access_token_url": "http://connectapitest.garmin.com/oauth-service-1.0/oauth/access_token"
+			"request_token_url": "https://connectapi.garmin.com/oauth-service-1.0/oauth/request_token",
+			"dialog_url": "https://connect.garmin.com/oauthConfirm?oauth_callback={REDIRECT_URI}&step=3",
+			"access_token_url": "https://connectapi.garmin.com/oauth-service-1.0/oauth/access_token"
 		},
 
 		"Garmin2Legged":

@@ -453,17 +453,17 @@
         },
         {
             "name": "mlocati/ip-lib",
-            "version": "1.14.0",
-            "version_normalized": "1.14.0.0",
+            "version": "1.18.0",
+            "version_normalized": "1.18.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mlocati/ip-lib.git",
-                "reference": "882bc0e115970a536b13bcfa59f312783fce08c8"
+                "reference": "c77bd0b1f3e3956c7e9661e75cb1f54ed67d95d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mlocati/ip-lib/zipball/882bc0e115970a536b13bcfa59f312783fce08c8",
-                "reference": "882bc0e115970a536b13bcfa59f312783fce08c8",
+                "url": "https://api.github.com/repos/mlocati/ip-lib/zipball/c77bd0b1f3e3956c7e9661e75cb1f54ed67d95d2",
+                "reference": "c77bd0b1f3e3956c7e9661e75cb1f54ed67d95d2",
                 "shasum": ""
             },
             "require": {
@@ -471,10 +471,9 @@
             },
             "require-dev": {
                 "ext-pdo_sqlite": "*",
-                "phpunit/dbunit": "^1.4 || ^2 || ^3 || ^4",
-                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5"
+                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5 || ^7.5 || ^8.5 || ^9.5"
             },
-            "time": "2020-12-31T11:30:02+00:00",
+            "time": "2022-01-13T18:05:33+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -512,7 +511,7 @@
             ],
             "support": {
                 "issues": "https://github.com/mlocati/ip-lib/issues",
-                "source": "https://github.com/mlocati/ip-lib/tree/1.14.0"
+                "source": "https://github.com/mlocati/ip-lib/tree/1.18.0"
             },
             "funding": [
                 {
@@ -938,17 +937,17 @@
         },
         {
             "name": "pear/pear-core-minimal",
-            "version": "v1.10.10",
-            "version_normalized": "1.10.10.0",
+            "version": "v1.10.11",
+            "version_normalized": "1.10.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/pear-core-minimal.git",
-                "reference": "625a3c429d9b2c1546438679074cac1b089116a7"
+                "reference": "68d0d32ada737153b7e93b8d3c710ebe70ac867d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/625a3c429d9b2c1546438679074cac1b089116a7",
-                "reference": "625a3c429d9b2c1546438679074cac1b089116a7",
+                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/68d0d32ada737153b7e93b8d3c710ebe70ac867d",
+                "reference": "68d0d32ada737153b7e93b8d3c710ebe70ac867d",
                 "shasum": ""
             },
             "require": {
@@ -958,7 +957,7 @@
             "replace": {
                 "rsky/pear-core-min": "self.version"
             },
-            "time": "2019-11-19T19:00:24+00:00",
+            "time": "2021-08-10T22:31:03+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -981,6 +980,10 @@
                 }
             ],
             "description": "Minimal set of PEAR core files to be used as composer dependency",
+            "support": {
+                "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=PEAR",
+                "source": "https://github.com/pear/pear-core-minimal"
+            },
             "install-path": "../pear/pear-core-minimal"
         },
         {
@@ -1068,8 +1071,8 @@
         },
         {
             "name": "phpclasses/oauth-api",
-            "version": "1.0.111",
-            "version_normalized": "1.0.111.0",
+            "version": "1.0.115",
+            "version_normalized": "1.0.115.0",
             "dist": {
                 "type": "zip",
                 "url": "https://www.phpclasses.org/install/package/oauth-api.zip"
@@ -1253,17 +1256,17 @@
         },
         {
             "name": "robthree/twofactorauth",
-            "version": "1.8.0",
-            "version_normalized": "1.8.0.0",
+            "version": "1.8.1",
+            "version_normalized": "1.8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobThree/TwoFactorAuth.git",
-                "reference": "30a38627ae1e7c9399dae67e265063cd6ec5276c"
+                "reference": "5afcb45282f1c75562a48d479ecd1732c9bdb11b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobThree/TwoFactorAuth/zipball/30a38627ae1e7c9399dae67e265063cd6ec5276c",
-                "reference": "30a38627ae1e7c9399dae67e265063cd6ec5276c",
+                "url": "https://api.github.com/repos/RobThree/TwoFactorAuth/zipball/5afcb45282f1c75562a48d479ecd1732c9bdb11b",
+                "reference": "5afcb45282f1c75562a48d479ecd1732c9bdb11b",
                 "shasum": ""
             },
             "require": {
@@ -1277,7 +1280,7 @@
                 "bacon/bacon-qr-code": "Needed for BaconQrCodeProvider provider",
                 "endroid/qr-code": "Needed for EndroidQrCodeProvider"
             },
-            "time": "2021-03-09T18:24:05+00:00",
+            "time": "2021-10-20T12:19:55+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {

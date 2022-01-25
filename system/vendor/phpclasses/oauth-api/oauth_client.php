@@ -2,7 +2,7 @@
 /*
  * oauth_client.php
  *
- * @(#) $Id: oauth_client.php,v 1.170 2021/01/13 22:47:12 mlemos Exp $
+ * @(#) $Id: oauth_client.php,v 1.173 2021/09/15 15:54:27 mlemos Exp $
  *
  */
 
@@ -28,7 +28,7 @@ class oauth_session_value_class
 
 	<package>net.manuellemos.oauth</package>
 
-	<version>@(#) $Id: oauth_client.php,v 1.170 2021/01/13 22:47:12 mlemos Exp $</version>
+	<version>@(#) $Id: oauth_client.php,v 1.173 2021/09/15 15:54:27 mlemos Exp $</version>
 	<copyright>Copyright © (C) Manuel Lemos 2012</copyright>
 	<title>OAuth client</title>
 	<author>Manuel Lemos</author>
@@ -1184,7 +1184,7 @@ class oauth_client_class
 {/metadocument}
 */
 	var $http_arguments = array();
-	var $oauth_user_agent = 'PHP-OAuth-API (http://www.phpclasses.org/oauth-api $Revision: 1.170 $)';
+	var $oauth_user_agent = 'PHP-OAuth-API (http://www.phpclasses.org/oauth-api $Revision: 1.173 $)';
 
 	var $response_time = 0;
 	var $session = '';
@@ -1319,6 +1319,9 @@ class oauth_client_class
 			if($this->debug)
 				$this->OutputDebug('it was returned the request state error '.$_GET['error']);
 			$state = null;
+			$this->error = $_GET['error'];
+			if(IsSet($_GET['error_description']))
+				$this->error .= ': '.$_GET['error_description'];
 			return false;
 		}
 		$check = (strlen($this->append_state_to_redirect_uri) ? $this->append_state_to_redirect_uri : 'state');
@@ -2063,6 +2066,8 @@ class oauth_client_class
 					$values = array(
 						'grant_type'=>'client_credentials'
 					);
+					if($this->scope !== '')
+						$values['scope'] = $this->scope;
 					$authentication = 'Basic';
 					break;
 				default:
@@ -2875,7 +2880,9 @@ class oauth_client_class
 					if(!$this->StoreAccessToken($access_token))
 						return false;
 				}
-				if(!$this->GetDialogURL($url))
+				if(!$this->GetRedirectURI($redirect_uri))
+					return false;
+				if(!$this->GetDialogURL($url, $redirect_uri))
 					return false;
 				switch($url)
 				{
