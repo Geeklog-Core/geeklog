@@ -3,6 +3,16 @@
 use Geeklog\DAO\UserAttributeDAO;
 use Geeklog\Entity\UserAttributeEntity;
 
+global $_DB_table_prefix, $_TABLES;
+
+// The following entries are no longer defined in 'lib-database.php', so define them here
+$_TABLES['cookiecodes'] = $_DB_table_prefix . 'cookiecodes';
+$_TABLES['dateformats'] = $_DB_table_prefix . 'dateformats';
+$_TABLES['usercomment'] = $_DB_table_prefix . 'usercomment';
+$_TABLES['userindex'] = $_DB_table_prefix . 'userindex';
+$_TABLES['userinfo'] = $_DB_table_prefix . 'userinfo';
+$_TABLES['userprefs'] = $_DB_table_prefix . 'userprefs';
+
 // Add missing route into routing table for articles that have page breaks (issue #746)
 $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid/@page', '/article.php?story=@sid&page=@page', 1000)"; // Priority should default to 120 but we need to mage sure it comes after the route for article print
 

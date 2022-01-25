@@ -540,7 +540,7 @@ class UserAttributeEntity extends EntityBase
         $entity->setUid($A['uid']);
         $entity->setCommentmode($A['commentmode']);
         $entity->setCommentorder($A['commentorder']);
-        $entity->setCommentlimit($A['commetlimit']);
+        $entity->setCommentlimit($A['commentlimit']);
 
         $entity->setEtids($A['etids']);
         $entity->setNoboxes($A['noboxes']);
