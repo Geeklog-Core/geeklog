@@ -7852,7 +7852,6 @@ function COM_getTooltip($hoverOver = '', $text = '', $link = '', $title = '', $t
     $tooltip->set_var('title', $title);
     $tooltip->set_var('plaintitle', GLText::stripTags($title));
     if ($link == '') {
-        $link = 'javascript:void(0);';
         $cursor = 'help';
     } else {
         $cursor = 'pointer';
