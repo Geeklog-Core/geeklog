@@ -204,14 +204,6 @@ CREATE TABLE {$_TABLES['likes']} (
 ";
 
 $_SQL[] = "
-CREATE TABLE {$_TABLES['maillist']} (
-  code int(1) NOT NULL default '0',
-  name char(32) default NULL,
-  PRIMARY KEY  (code)
-) ENGINE=MyISAM
-";
-
-$_SQL[] = "
 CREATE TABLE {$_TABLES['pingservice']} (
   pid smallint(5) unsigned NOT NULL auto_increment,
   name varchar(128) default NULL,
@@ -757,9 +749,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_g
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (17, 'Filemanager Admin', 'Has full access to File Manager', 1);";
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (18, 'Language Admin', 'Has full access to language', 1);";
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (19, 'Theme Admin', 'Has full access to themes', 1);";
-
-$_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (0,'Don\'t Email') ";
-$_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (1,'Email Headlines Each Night') ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url, method, is_enabled) VALUES (1, 'Ping-O-Matic', 'http://pingomatic.com/', 'http://rpc.pingomatic.com/', 'weblogUpdates.ping', 1)";
 
