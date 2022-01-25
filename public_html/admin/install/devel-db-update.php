@@ -102,6 +102,8 @@ function update_DatabaseFor222()
 	$_SQL[] = "DROP TABLE {$_TABLES['dateformats']}";
 	$_TABLES['cookiecodes'] = $_DB_table_prefix . 'cookiecodes';
 	$_SQL[] = "DROP TABLE {$_TABLES['cookiecodes']}";
+	$_TABLES['maillist'] = $_DB_table_prefix . 'maillist';
+	$_SQL[] = "DROP TABLE {$_TABLES['maillist']}";
 
 
     // ***************************************
