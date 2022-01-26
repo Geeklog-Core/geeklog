@@ -69,6 +69,20 @@ if (!SEC_inGroup('Root')) {
     exit;
 }
 
+// Currently, database feature is supported with MySQL only
+if ($_DB_dbms !== 'mysql') {
+    $display = COM_showMessageText($MESSAGE[31], $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
+    if (isset($_USER['username'])) {
+        $username = $_USER['username'];
+    } else {
+        $username = '';
+    }
+    COM_errorLog("Someone has tried to access the Geeklog Development Database Upgrade Routine which is not supported by our {$_DB_dbms} database server .  User id: {$_USER['uid']}, Username: $username, IP: " . $_SERVER['REMOTE_ADDR'],1);
+    COM_output($display);
+    exit;
+}
+
 function update_DatabaseFor222()
 {
     global $_TABLES, $_CONF, $_PLUGINS, $use_innodb, $_DB_table_prefix, $gl_devel_version;
@@ -96,14 +110,32 @@ function update_DatabaseFor222()
     if (DB_count($_TABLES['routes'], 'route', '/article/@sid/@page') == 0) {
 		$_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid/@page', '/article.php?story=@sid&page=@page', 1000)"; // Priority should default to 120 but we need to mage sure it comes after the route for article print
 	}
-
-	// Drop tables
-	$_TABLES['dateformats'] = $_DB_table_prefix . 'dateformats';
-	$_SQL[] = "DROP TABLE {$_TABLES['dateformats']}";
+	
+	// The following entries are no longer defined in 'lib-database.php', so define them here
 	$_TABLES['cookiecodes'] = $_DB_table_prefix . 'cookiecodes';
+	$_TABLES['dateformats'] = $_DB_table_prefix . 'dateformats';
+	$_TABLES['usercomment'] = $_DB_table_prefix . 'usercomment';
+	$_TABLES['userindex'] = $_DB_table_prefix . 'userindex';
+	$_TABLES['userinfo'] = $_DB_table_prefix . 'userinfo';
+	$_TABLES['userprefs'] = $_DB_table_prefix . 'userprefs';
+	
+	// Drop tables
+	$_SQL[] = "DROP TABLE {$_TABLES['dateformats']}";
 	$_SQL[] = "DROP TABLE {$_TABLES['cookiecodes']}";
-	$_TABLES['maillist'] = $_DB_table_prefix . 'maillist';
 	$_SQL[] = "DROP TABLE {$_TABLES['maillist']}";
+	
+	// Combine user tables into one and delete old tables
+    $result = DB_query("SHOW TABLES LIKE '{$_TABLES['user_attributes']}'");
+    if ( DB_numRows($result) == 0 ) {
+		/* DOES NOT WORK - when lib-common is included above around line 286, the function SESS_sessionCheck is called which requires the IP address. The code for this does not support the older table structure where IPs are stored with the session data and not in its own ip_addresses table
+		$geeklog_sqlfile_upgrade = $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.2.1_to_2.2.2.php';
+		if (file_exists ($geeklog_sqlfile_upgrade)) {
+			require_once($geeklog_sqlfile_upgrade);
+			
+			update_CombineUserTables222();
+		}
+		*/
+	}	
 
 
     // ***************************************

@@ -41,16 +41,6 @@ global $_DB_dbms, $_TABLES, $_USER;
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
 
-// Currently, database feature is supported with MySQL only
-if ($_DB_dbms !== 'mysql') {
-    COM_redirect($_CONF['site_url']);
-}
-
-require_once $_CONF['path_system'] . 'classes/dbbackup.class.php';
-
-$display = '';
-$page = '';
-
 // If user isn't a root user, bail.
 if (!SEC_inGroup('Root')) {
     $display = COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
@@ -60,7 +50,25 @@ if (!SEC_inGroup('Root')) {
     exit;
 }
 
+// Currently, database feature is supported with MySQL only
+if ($_DB_dbms !== 'mysql') {
+    $display = COM_showMessageText($MESSAGE[31], $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
+    if (isset($_USER['username'])) {
+        $username = $_USER['username'];
+    } else {
+        $username = '';
+    }
+    COM_errorLog("Someone has tried to access the Geeklog Development Database Upgrade Routine which is not supported by our {$_DB_dbms} database server .  User id: {$_USER['uid']}, Username: $username, IP: " . $_SERVER['REMOTE_ADDR'],1);
+    COM_output($display);
+    exit;
+}
+
 require_once $_CONF['path_system'] . 'lib-admin.php';
+require_once $_CONF['path_system'] . 'classes/dbbackup.class.php';
+
+$display = '';
+$page = '';
 
 /**
  * List all backups, i.e. all files ending in .sql
