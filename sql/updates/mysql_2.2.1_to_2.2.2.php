@@ -189,6 +189,7 @@ SQL;
     DB_query("DROP TABLE {$_TABLES['usercomment']}");
     DB_query("DROP TABLE {$_TABLES['userindex']}");
     DB_query("DROP TABLE {$_TABLES['userinfo']}");
+    DB_query("DROP TABLE {$_TABLES['userprefs']}");
 
     return true;
 }
