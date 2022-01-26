@@ -127,7 +127,7 @@ function update_DatabaseFor222()
 	// Combine user tables into one and delete old tables
     $result = DB_query("SHOW TABLES LIKE '{$_TABLES['user_attributes']}'");
     if ( DB_numRows($result) == 0 ) {
-		/* DOES NOT WORK - when lib-common is included above around line 286, the function SESS_sessionCheck is called which requires the IP address. The code for this does not support the older table structure where IPs are stored with the session data and not in its own ip_addresses table
+		/* DOES NOT WORK - when lib-common is included above around line 286, the function SESS_sessionCheck is called which requires user information from a new table that hasn't been created yet or populated with data from old user tables. The code for this does not support the older table structure
 		$geeklog_sqlfile_upgrade = $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.2.1_to_2.2.2.php';
 		if (file_exists ($geeklog_sqlfile_upgrade)) {
 			require_once($geeklog_sqlfile_upgrade);
