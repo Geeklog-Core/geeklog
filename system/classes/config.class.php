@@ -1313,7 +1313,7 @@ class config implements ConfigInterface
                  */
                 $t->set_var('value', str_replace(',', '.', $val));
             } else {
-                $t->set_var('value', empty($val) ? '' : htmlspecialchars($val));
+                $t->set_var('value', ($val === null || $val === '') ? '' : htmlspecialchars($val));
             }
         }
 
