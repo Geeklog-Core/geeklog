@@ -69,11 +69,6 @@ class UserAttributeEntity extends EntityBase
     /**
      * @var int
      */
-    private $totalcomments = 0;
-
-    /**
-     * @var int
-     */
     private $lastgranted = 0;
 
     /**
@@ -291,22 +286,6 @@ class UserAttributeEntity extends EntityBase
     /**
      * @return int
      */
-    public function getTotalcomments()
-    {
-        return $this->totalcomments;
-    }
-
-    /**
-     * @param  int  $totalcomments
-     */
-    public function setTotalcomments($totalcomments)
-    {
-        $this->totalcomments = $totalcomments;
-    }
-
-    /**
-     * @return int
-     */
     public function getLastgranted()
     {
         return $this->lastgranted;
@@ -450,7 +429,6 @@ class UserAttributeEntity extends EntityBase
         $this->setLocation('');
         $this->setPgpkey('');
         $this->setTokens(0);
-        $this->setTotalcomments(0);
         $this->setLastgranted(0);
         $this->setLastlogin('0');
 
@@ -483,7 +461,6 @@ class UserAttributeEntity extends EntityBase
                 'location'        => self::escapeForDatabase(self::addSlashes($this->getLocation())),
                 'pgpkey'          => self::escapeForDatabase(self::addSlashes($this->getPgpkey())),
                 'tokens'          => $this->getTokens(),
-                'totalcomments'   => $this->getTotalcomments(),
                 'lastgranted'     => $this->getLastgranted(),
                 'lastlogin'       => self::escapeForDatabase(self::addSlashes($this->getLastlogin())),
                 'dfid'            => $this->getDfid(),
@@ -506,7 +483,6 @@ class UserAttributeEntity extends EntityBase
                 'location'        => $this->getLocation(),
                 'pgpkey'          => $this->getPgpkey(),
                 'tokens'          => $this->getTokens(),
-                'totalcomments'   => $this->getTotalcomments(),
                 'lastgranted'     => $this->getLastgranted(),
                 'lastlogin'       => $this->getLastlogin(),
                 'dfid'            => $this->getDfid(),
@@ -550,7 +526,6 @@ class UserAttributeEntity extends EntityBase
         $entity->setLocation($A['location']);
         $entity->setPgpkey($A['pgpkey']);
         $entity->setTokens($A['tokens']);
-        $entity->setTotalcomments($A['totalcomments']);
         $entity->setLastgranted($A['lastgranted']);
         $entity->setLastlogin($A['lastlogin']);
 
