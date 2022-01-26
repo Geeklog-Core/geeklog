@@ -68,7 +68,6 @@ $_TABLES['groups'] = $_DB_table_prefix . 'groups';
 $_TABLES['ip_addresses'] = $_DB_table_prefix . 'ip_addresses';
 $_TABLES['language_items'] = $_DB_table_prefix . 'language_items';
 $_TABLES['likes'] = $_DB_table_prefix . 'likes'; // As of Geeklog 2.2.1
-$_TABLES['maillist'] = $_DB_table_prefix . 'maillist';
 $_TABLES['pingservice'] = $_DB_table_prefix . 'pingservice';
 $_TABLES['plugins'] = $_DB_table_prefix . 'plugins';
 $_TABLES['routes'] = $_DB_table_prefix . 'routes';
