@@ -195,7 +195,9 @@ CREATE TABLE {$_TABLES['likes']} (
   action smallint NOT NULL,
   created timestamp NOT NULL,
   PRIMARY KEY (lid)
-)
+);
+CREATE INDEX {$_TABLES['likes']}_type ON {$_TABLES['likes']} (type,subtype,id);
+CREATE INDEX {$_TABLES['likes']}type_2 ON {$_TABLES['likes']} (type,id);
 ";
 
 $_SQL[] = "
@@ -374,7 +376,10 @@ CREATE TABLE {$_TABLES['topic_assignments']} (
   inherit smallint NOT NULL default '1',
   tdefault smallint NOT NULL default '0',
   PRIMARY KEY (tid,type,subtype,id)
-)
+);
+CREATE INDEX {$_TABLES['topic_assignments']}_tid ON {$_TABLES['topic_assignments']}(tid, type, id);
+CREATE INDEX {$_TABLES['topic_assignments']}_type ON {$_TABLES['topic_assignments']}(type, subtype, id);
+CREATE INDEX {$_TABLES['topic_assignments']}_type_2 ON {$_TABLES['topic_assignments']}(type, id);
 ";
 
 $_SQL[] = "
