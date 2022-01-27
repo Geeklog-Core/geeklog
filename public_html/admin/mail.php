@@ -279,10 +279,10 @@ function send_messages(array $vars)
 	$mail_templates->set_var('end_block_mailusers', COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')),);
 	
     $mail_templates->set_var('start_block_failures', COM_startBlock($LANG31[21], '', 'blockheader-child.thtml'));
-    $mail_templates->set_var('end_block_failures', COM_endBlock(COM_getBlockTemplate('-child', 'footer')));	
+    $mail_templates->set_var('end_block_failures', COM_endBlock('blockfooter-child.thtml'));	
 
     $mail_templates->set_var('start_block_successes', COM_startBlock($LANG31[22], '', 'blockheader-child.thtml'));
-    $mail_templates->set_var('end_block_successes', COM_endBlock(COM_getBlockTemplate('-child', 'footer')));	
+    $mail_templates->set_var('end_block_successes', COM_endBlock('blockfooter-child.thtml'));	
 						
     $menu_arr = array(
         array('url'  => $_CONF['site_admin_url'] . '/mail.php',

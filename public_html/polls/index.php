@@ -67,6 +67,8 @@ function polllist()
     ) {
         $retval .= SEC_loginRequiredForm();
     } else {
+		$retval .= COM_startBlock($LANG_POLLS['pollstitle']);
+		
         require_once($_CONF['path_system'] . 'lib-admin.php');
         $header_arr = array(    // display 'text' and use table field 'field'
             array('text' => $LANG25[9], 'field' => 'topic', 'sort' => true),
@@ -79,7 +81,8 @@ function polllist()
 
         $text_arr = array(
             'has_menu' => false,
-            'title'    => $LANG_POLLS['pollstitle'], 'instructions' => "",
+            // 'title'    => $LANG_POLLS['pollstitle'], 
+			'instructions' => "",
             'icon'     => '',
             'form_url' => $_CONF['site_url'] . '/polls/index.php',
         );
@@ -94,6 +97,8 @@ function polllist()
         );
 
         $retval .= ADMIN_list('polls', 'plugin_getListField_polls', $header_arr, $text_arr, $query_arr, $defsort_arr);
+		
+		$retval .= COM_endBlock();
     }
 
     return $retval;

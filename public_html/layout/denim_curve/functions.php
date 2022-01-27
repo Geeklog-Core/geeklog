@@ -333,6 +333,9 @@ function theme_init_denim_curve()
     $_BLOCK_TEMPLATE['whats_related_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
     $_BLOCK_TEMPLATE['articles_related_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
     $_BLOCK_TEMPLATE['story_options_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
+	
+	// Block used to display admin lists (including simple)
+	$_BLOCK_TEMPLATE['_admin_list'] = 'blockheader-child.thtml,blockfooter.thtml';
 
     // Define the blocks that are a list of links styled as an unordered list - using class="blocklist"
     $_BLOCK_TEMPLATE['admin_block'] = 'blockheader-list.thtml,blockfooter-list.thtml';
@@ -341,6 +344,12 @@ function theme_init_denim_curve()
     if (!COM_isAnonUser()) {
         $_BLOCK_TEMPLATE['user_block'] = 'blockheader-list.thtml,blockfooter-list.thtml';
     }
+	
+	// Available Blocks not used currently by theme
+	// $_BLOCK_TEMPLATE['_admin_block'] // Main Block for Page used by Admin
+	// $_BLOCK_TEMPLATE['_staticpages_block'] // Main Block to wrap Static Page
+	// $_BLOCK_TEMPLATE['older_stories_block'] // Block to wrap Older Stories Block
+	// $_BLOCK_TEMPLATE['whats_new_block'] // Block to wrap What's New Block	
 }
 
 /**

@@ -2,7 +2,12 @@
 
 <article class="storytext archivestorytext">
   <header>
+    {# In topic view use h2 for article title. In full article view use h1. n = Full display of article. p = 'Preview' mode. Else y = introtext only. #}
+    {!!if {display_type} == 'n' OR {display_type} == 'p' !!}
+    <h1 class="story_title">{story_title_link}</h1>
+    {!else}
     <h2 class="story_title">{story_title_link}</h2>
+    {!endif}	
 
     <div class="story_icon">
       {!if email_icon}<a title="{lang_email_story}" href="{email_story_url}" class="uk-icon-link" uk-tooltip="{lang_email_story}" uk-icon="mail" aria-label="{lang_email_story}"></a>{!endif}

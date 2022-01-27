@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | stats.php                                                                 |
 // |                                                                           |
@@ -47,11 +47,14 @@ if (COM_isAnonUser() &&
 
 // MAIN
 
+
+$display .= COM_startBlock($LANG10[5]);
+
 // Overall Site Statistics
 
 $header_arr = array(
     array(
-        'text'         => $LANG10[1],
+        'text'         => $LANG10[4],
         'field'        => 'title',
         'header_class' => 'stats-header-title',
     ),
@@ -374,6 +377,7 @@ if ($_CONF['likes_enabled'] != 0 AND $_CONF['likes_articles'] != 0) {
 
 // Now show stats for any plugins that want to be included
 $display .= PLG_getPluginStats(2);
+$display .= COM_endBlock();
 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG10[1]));
 
 COM_output($display);

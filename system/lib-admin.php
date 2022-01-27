@@ -195,14 +195,11 @@ function ADMIN_simpleList($fieldFunction, $header_arr, $text_arr,
     $admin_templates->parse('output', 'list');
 
     if (!empty($title)) {
-        $retval .= COM_startBlock(
-            $title, $help_url,
-            COM_getBlockTemplate('_admin_block', 'header')
-        );
+        $retval .= COM_startBlock($title, $help_url, COM_getBlockTemplate('_admin_list', 'header'));
     }
     $retval .= $admin_templates->finish($admin_templates->get_var('output'));
     if (!empty($title)) {
-        $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+        $retval .= COM_endBlock(COM_getBlockTemplate('_admin_list', 'footer'));
     }
 
     return $retval;
@@ -616,11 +613,11 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
     // Do the actual output
     if (!empty($title)) {
         $retval .= COM_startBlock($title, $help_url,
-            COM_getBlockTemplate('_admin_block', 'header'));
+            COM_getBlockTemplate('_admin_list', 'header'));
     }
     $retval .= $admin_templates->finish($admin_templates->get_var('output'));
     if (!empty($title)) {
-        $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+        $retval .= COM_endBlock(COM_getBlockTemplate('_admin_list', 'footer'));
     }
 
     return $retval;

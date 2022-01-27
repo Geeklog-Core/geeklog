@@ -18,7 +18,7 @@
       <!-- #header { -->
       <div id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
         <div id="header-content">
-          <h1 class="site_name" itemprop="name"><a href="{site_url}" itemprop="url"><img src="{site_logo}" width="226" height="80" alt="{site_name}"{xhtml}></a></h1>
+          <div class="site_name" itemprop="name"><a href="{site_url}" itemprop="url"><img src="{site_logo}" width="226" height="80" alt="{site_name}"{xhtml}></a></div>
          <p class="site_slogan">{site_slogan}</p>
         </div>
       </div>

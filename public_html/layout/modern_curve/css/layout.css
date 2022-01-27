@@ -76,7 +76,7 @@ div#container div#header div#header-content {
 }
 
 /*  Site Name */
-div#container div#header h1.site_name {
+div#container div#header div.site_name {
   display: inline;  /* For Win IE 6(Float Left Right Margin is too wide) */
   margin: 20px 16px 0;
   padding: 0;

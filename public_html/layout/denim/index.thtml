@@ -31,7 +31,7 @@
       <div id="header-content">
         <a class="tm-toggle uk-navbar-toggle uk-visible-small" href="#offcanvas" data-uk-offcanvas="{mode:'reveal'}"></a>
         <div class="nameplate">
-          <h1 class="site_name" itemprop="name"><a href="{site_url}" title="{site_name}" itemprop="url">{site_name}</a></h1>
+          <div class="site_name" itemprop="name"><a href="{site_url}" title="{site_name}" itemprop="url">{site_name}</a></div>
           <p class="site_slogan">{site_slogan}</p>
         </div>
       </div>

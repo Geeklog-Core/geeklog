@@ -1238,7 +1238,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
 
 
     $user_templates->set_var('start_block_postingstats', COM_startBlock($LANG04[83] . ' ' . $display_name, '', 'blockheader-child.thtml'));
-	$user_templates->set_var('end_block_postingstats', COM_endBlock(COM_getBlockTemplate('-child', 'footer')));
+	$user_templates->set_var('end_block_postingstats', COM_endBlock('blockfooter-child.thtml'));
     $user_templates->set_var('lang_title', $LANG09[16]);
     $user_templates->set_var('lang_date', $LANG09[17]);
 
@@ -1265,7 +1265,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     }
 
     $user_templates->set_var('start_block_last10', COM_startBlock($LANG04[82] . ' ' . $display_name, '', 'blockheader-child.thtml'));
-    $user_templates->set_var('end_block_last10', COM_endBlock(COM_getBlockTemplate('-child', 'footer')));
+    $user_templates->set_var('end_block_last10', COM_endBlock('blockfooter-child.thtml'));
     if ($numRows > 0) {
         for ($i = 0; $i < $numRows; $i++) {
             $C = DB_fetchArray($result);
@@ -1296,7 +1296,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $user_templates->parse('last10_blocks', 'last10_block', true);
 
     $user_templates->set_var('start_block_last10', COM_startBlock($LANG04[10] . ' ' . $display_name, '', 'blockheader-child.thtml'));
-    $user_templates->set_var('end_block_last10', COM_endBlock(COM_getBlockTemplate('-child', 'footer')));
+    $user_templates->set_var('end_block_last10', COM_endBlock('blockfooter-child.thtml'));
     // list of last 10 comments by this user
     $new_plugin_comments = PLG_getWhatsNewComment('', 10, $uid);
 

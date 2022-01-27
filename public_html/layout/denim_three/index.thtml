@@ -32,7 +32,7 @@
         <a class="header-toggle uk-hidden@m" uk-navbar-toggle-icon uk-toggle="target: #offcanvas" href="#"></a>
         <a class="header-toggle-right uk-hidden@m" uk-search-icon uk-toggle="target: #navsearch" href="#"></a>
         <div class="nameplate">
-          <h1 class="site_name" itemprop="name"><a href="{site_url}" title="{site_name}" itemprop="url">{site_name}</a></h1>
+          <div class="site_name" itemprop="name"><a href="{site_url}" title="{site_name}" itemprop="url">{site_name}</a></div>
           <p class="site_slogan">{site_slogan}</p>
         </div>
       </div>
