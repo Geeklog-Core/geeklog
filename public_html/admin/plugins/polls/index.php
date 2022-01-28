@@ -476,7 +476,7 @@ function editpoll($pid = '')
     $poll_templates->set_var('noscript', COM_getNoScript(false, ''));
 
     // Add JavaScript
-    // Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it
+    // Hide the Advanced Editor as JavaScript is required. If JS is enabled then the JS below will un-hide it
     $js = 'document.getElementById("advanced_editor").style.display="";';
     $_SCRIPTS->setJavaScript($js, true);
     $_SCRIPTS->setJavaScriptFile('polls_editor', '/polls/polls_editor.js');
