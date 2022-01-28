@@ -214,7 +214,8 @@ $LANG01 = array(
     'terms_of_service' => '利用規約',
     'privacy_policy' => 'プライバシーポリシー',
     'about_cookies' => 'クッキーについて',
-    'parse_php_error' => 'PHPをパース中にエラーが発生しました: %s'
+    'parse_php_error' => 'PHPをパース中にエラーが発生しました: %s',
+	'error_title' => 'An Error Occurred'
 );
 
 ###############################################################################
@@ -1792,6 +1793,7 @@ $LANG_DB_BACKUP = array(
     'create_backup' => 'データベースのバックアップ',
     'do_backup' => 'バックアップの実行',
     'backup_successful' => 'データベースのバックアップを完了しました。',
+	'backup_error'   	  => 'Error performing database backup.',	
     'db_explanation' => 'サイトのデータベースのバックアップを新しく作成するには「バックアップの実行」をクリックしてください。バックアップファイルをダウンロードするには、下記の一覧でファイル名をクリックしてください。',
     'backup_instructions' => 'サイトのデータベースのバックアップを新しく作成するには下の「バックアップの実行」を選択してください。現在のGeeklogテーブルをバックアップします。データベース管理画面からバックアップしたファイルをダウンロードすることができます。',
     'zero_size' => 'バックアップ失敗: ファイルの大きさが0バイトです。',
@@ -1842,7 +1844,8 @@ $LANG_DB_BACKUP = array(
     'disable_purge' => '(無制限に保持するには"0"を指定)',
     'use_gzip' => '可能なら圧縮する(GZip)',
     'configure' => 'コンフィギュレーション',
-    'config_instructions' => 'バックアップしたくないテーブルを選択してください。その他のオプションはコンフィギュレーションのGeeklog - データベースタブにあります。'
+    'config_instructions' => 'バックアップしたくないテーブルを選択してください。その他のオプションはコンフィギュレーションのGeeklog - データベースタブにあります。',
+	'config_successful'   => 'Tables to Backup list was saved successfully.'
 );
 
 ###############################################################################

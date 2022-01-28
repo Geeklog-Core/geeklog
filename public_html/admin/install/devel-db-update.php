@@ -135,7 +135,15 @@ function update_DatabaseFor222()
 			update_CombineUserTables222();
 		}
 		*/
-	}	
+	}
+	
+	// Old VARS table variables for Database Backup that are not used anymore (but could still get created in some cases)
+	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_files'";
+	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_gzip'";
+	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_allstructs'";
+	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'db_backup_interval'";
+	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_cron'";
+	
 
 
     // ***************************************

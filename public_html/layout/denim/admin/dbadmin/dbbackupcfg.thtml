@@ -4,7 +4,8 @@
 
 {admin_menu}
 
-<div class="uk-panel uk-panel-box uk-container-center">
+{noscript}
+<div class="uk-panel uk-panel-box uk-container-center" id="admin-dbconfig" style="display:none;">
 	<form class="uk-form uk-form-horizontal" action="{site_admin_url}/database.php" method="post">
 		<input type="hidden" name="saveconfig" value="x">
 		<input type="hidden" name="groupmembers">

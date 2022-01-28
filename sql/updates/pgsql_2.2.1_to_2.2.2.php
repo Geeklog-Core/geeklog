@@ -21,6 +21,13 @@ $_SQL[] = "DROP TABLE {$_TABLES['cookiecodes']}";
 $_SQL[] = "DROP TABLE {$_TABLES['dateformats']}";
 $_SQL[] = "DROP TABLE {$_TABLES['maillist']}";
 
+// Old VARS table variables for Database Backup that are not used anymore (but could still get created in some cases)
+$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_files'";
+$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_gzip'";
+$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_allstructs'";
+$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'db_backup_interval'";
+$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_cron'";
+
 /**
  * Add/Edit/Delete config options for new version
  */

@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-global $_DB_dbms, $_TABLES, $_USER;
+global $_DB_dbms, $_TABLES, $_USER, $LANG01;
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -279,7 +279,7 @@ function DBADMIN_backupCompleteAjax()
  */
 function DBADMIN_backupTableAjax()
 {
-    global $_VARS;
+    global $_CONF;
 
     if (!COM_isAjax()) {
         die();
@@ -287,8 +287,8 @@ function DBADMIN_backupTableAjax()
 
     $retval = [];
 
-    if (!isset($_VARS['_dbback_allstructs'])) {
-        $_VARS['_dbback_allstructs'] = 0;
+    if (!isset($_CONF['dbdump_tables_only'])) {
+        $_CONF['dbdump_tables_only'] = 0;
     }
 
     $filename = Geeklog\Input::post('backup_filename', '');
@@ -301,7 +301,7 @@ function DBADMIN_backupTableAjax()
 
     $backup = new dbBackup();
     $backup->setBackupFilename($filename);
-    list ($rc, $sessionCounter, $recordCounter) = $backup->backupTable($table, $_VARS['_dbback_allstructs'], $start);
+    list ($rc, $sessionCounter, $recordCounter) = $backup->backupTable($table, $_CONF['dbdump_tables_only'], $start);
 
     switch ($rc) {
         case 1:
@@ -398,9 +398,9 @@ function DBADMIN_backupPrompt()
             ]);
         }
 
-        if (isset($_VARS['_dbback_allstructs']) && $_VARS['_dbback_allstructs']) {
-            $T->set_var('struct_warning', $LANG_DB_BACKUP['backup_warning']);
-        }
+		if (isset($_CONF['dbdump_tables_only']) && $_CONF['dbdump_tables_only']) {
+			$T->set_var('struct_warning', $LANG_DB_BACKUP['backup_warning']);
+		}
 
         $T->set_var([
             'action'                   => 'backup',
@@ -434,11 +434,21 @@ function DBADMIN_backupPrompt()
  */
 function DBADMIN_backup()
 {
-    $backup = new dbBackup();
-    $backup->performBackUp();
-    $backup->purge();
+	global $LANG_DB_BACKUP, $LANG01;
+	
+    $page = '';
+	
+	$backup = new dbBackup();
+    if ($backup->performBackUp()) {
+		$page .= COM_showMessageText($LANG_DB_BACKUP['backup_successful']);
+	} else {
+		$page .= COM_showMessageText($LANG_DB_BACKUP['backup_error'], $LANG01['error_title']);
+	}
+	$backup->purge();
 
-    return DBADMIN_list();
+	$page .= DBADMIN_list();
+	
+    return $page;
 }
 
 /**
@@ -1121,7 +1131,6 @@ function DBADMIN_configBackup()
 
     $T = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/dbadmin'));
     $T->set_file('page', 'dbbackupcfg.thtml');
-    $_SCRIPTS->setJavaScriptFile('move_users', '/javascript/moveusers.js');
     $T->set_var(
         'start_block',
         COM_startBlock($LANG_DB_BACKUP['database_admin'], '',
@@ -1136,15 +1145,17 @@ function DBADMIN_configBackup()
         )
     );
 
-    $include_tables = array_diff($_TABLES, $exclude_tables);
-
-    foreach ($include_tables as $key => $name) {
-        $included .= "<option value=\"$name\">$name</option>\n";
+    foreach ($_TABLES as $key => $name) {
+		if (!in_array($name, $exclude_tables)) { // Only include actual tables that are not excluded
+			$included .= "<option value=\"$name\">$name</option>\n";
+		}
     }
     foreach ($exclude_tables as $key => $name) {
-        $excluded .= "<option value=\"$name\">$name</option>\n";
+		if (in_array($name, $_TABLES)) { // Only include actual tables that exist now in exclude
+			$excluded .= "<option value=\"$name\">$name</option>\n";
+		}
     }
-
+	
     $T->set_var([
         'lang_tables_to_backup' => $LANG_DB_BACKUP['tables_to_backup'],
         'lang_include'          => $LANG_DB_BACKUP['include'],
@@ -1152,8 +1163,15 @@ function DBADMIN_configBackup()
         'lang_save'             => $LANG_ADMIN['save'],
         'included_tables'       => $included,
         'excluded_tables'       => $excluded,
+		'noscript'       		=> COM_getNoScript(false), // JavaScript is required
     ]);
     $T->set_var('end_block', COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
+
+    // Add JavaScript
+    // Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it
+    $js = 'document.getElementById("admin-dbconfig").style.display="";';
+    $_SCRIPTS->setJavaScript($js, true);
+	$_SCRIPTS->setJavaScriptFile('admin-dbconfig', '/javascript/moveusers.js');
 
     $T->parse('output', 'page');
     $retval .= $T->finish($T->get_var('output'));
@@ -1234,7 +1252,7 @@ switch ($action) {
         if (DBADMIN_supported_engine('MyISAM')) {
             $page .= DBADMIN_myisam();
         } else {
-            $page .= COM_showMessageText($LANG_DB_BACKUP['no_myisam'], 'error');
+            $page .= COM_showMessageText($LANG_DB_BACKUP['no_myisam'], $LANG01['error_title']);
         }
         break;
 
@@ -1243,7 +1261,7 @@ switch ($action) {
         if (DBADMIN_supported_engine('InnoDB')) {
             $page .= DBADMIN_innodb();
         } else {
-            $page .= COM_showMessageText($LANG_DB_BACKUP['no_innodb'], 'error');
+            $page .= COM_showMessageText($LANG_DB_BACKUP['no_innodb'], $LANG01['error_title']);
         }
         break;
 
@@ -1258,12 +1276,12 @@ switch ($action) {
                 if ($num_errors == 0) {
                     $page .= COM_showMessageText($LANG_DB_BACKUP['innodb_success']);
                 } else {
-                    $page .= COM_showMessageText($LANG_DB_BACKUP['innodb_success'] . ' ' . $LANG_DB_BACKUP['table_issues'], 'error');
+                    $page .= COM_showMessageText($LANG_DB_BACKUP['innodb_success'] . ' ' . $LANG_DB_BACKUP['table_issues'], $LANG01['error_title']);
                 }
                 $page .= DBADMIN_list();
             }
         } else {
-            $page .= COM_showMessageText($LANG_DB_BACKUP['no_innodb'], 'error');
+            $page .= COM_showMessageText($LANG_DB_BACKUP['no_innodb'], $LANG01['error_title']);
         }
         break;
 
@@ -1278,12 +1296,12 @@ switch ($action) {
                 if ($num_errors == 0) {
                     $page .= COM_showMessageText($LANG_DB_BACKUP['myisam_success']);
                 } else {
-                    $page .= COM_showMessageText($LANG_DB_BACKUP['myisam_success'] . ' ' . $LANG_DB_BACKUP['table_issues'], 'error');
+                    $page .= COM_showMessageText($LANG_DB_BACKUP['myisam_success'] . ' ' . $LANG_DB_BACKUP['table_issues'], $LANG01['error_title']);
                 }
                 $page .= DBADMIN_list();
             }
         } else {
-            $page .= COM_showMessageText($LANG_DB_BACKUP['no_innodb'], 'error');
+            $page .= COM_showMessageText($LANG_DB_BACKUP['no_innodb'], $LANG01['error_title']);
         }
         break;
 
@@ -1303,7 +1321,7 @@ switch ($action) {
             } else {
                 $page .= COM_showMessageText(
                     $LANG_DB_BACKUP['optimize_success'] . ' ' . $LANG_DB_BACKUP['table_issues'],
-                    'error'
+                    $LANG01['error_title']
                 );
             }
             $page .= DBADMIN_list();
@@ -1313,22 +1331,12 @@ switch ($action) {
     case 'saveconfig':
         $items = [];
 
+		// Code taken from Geeklog Group Members. Uses same javascript so that is why it has these variable names
+        $exclude_tables = explode('|', Geeklog\Input::post('groupmembers'));
+		// Make sure tables exist that can be excluded
+		$exclude_tables = array_intersect($exclude_tables, $_TABLES);
         // Get the excluded tables into a serialized string
-        $tables = explode('|', Geeklog\Input::post('groupmembers'));
-        $items['_dbback_exclude'] = DB_escapeString(@serialize($tables));
-        $items['_dbback_files'] = (int) Geeklog\Input::post('db_backup_maxfiles', 0);
-
-        /* ---
-                if (isset($_POST['disable_cron'])) {
-                    $str = '-1';
-                } else {
-                    $str = (int)$_POST['db_backup_interval'];
-                }
-                $items['_dbback_cron'] = $str;
-        --- */
-
-        $items['_dbback_gzip'] = isset($_POST['use_gzip']) ? 1 : 0;
-        $items['_dbback_allstructs'] = isset($_POST['allstructs']) ? 1 : 0;
+		$items['_dbback_exclude'] = DB_escapeString(@serialize($exclude_tables));
 
         foreach ($items as $name => $value) {
             $sql = "INSERT INTO {$_TABLES['vars']} (name, value)
@@ -1337,7 +1345,9 @@ switch ($action) {
             DB_query($sql);
         }
 
-        $page = DBADMIN_list();
+		$page .= COM_showMessageText($LANG_DB_BACKUP['config_successful']);
+
+        $page .= DBADMIN_list();
         break;
 
     case 'mode':

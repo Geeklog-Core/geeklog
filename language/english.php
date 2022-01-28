@@ -206,7 +206,8 @@ $LANG01 = array(
     'terms_of_service' => 'Terms of Service',
     'privacy_policy' => 'Privacy Policy',
     'about_cookies' => 'About Cookies',
-    'parse_php_error' => 'There was an error parsing your PHP code: %s'
+    'parse_php_error' => 'There was an error parsing your PHP code: %s',
+	'error_title' => 'An Error Occurred'
 );
 
 ###############################################################################
@@ -1786,7 +1787,8 @@ $LANG_DB_BACKUP = array(
 	'site_db_backup'      => "{$_CONF['site_name']} Database Backup",
     'create_backup'       => 'Backup Database',
     'do_backup'           => 'Do Backup',
-    'backup_successful'   => 'Database back up was successful.',
+    'backup_successful'   => 'Database backup was successful.',
+	'backup_error'   	  => 'Error performing database backup.',
     'db_explanation'      => 'To create a new backup of your site\'s database, select the "Backup Database" option above. To download a backup, click on the filename from the list below.',
     'backup_instructions' => 'To create a new backup of your site database, select the "Do Backup" button below. This will backup all current Geeklog tables. You can download a copy of the backup from the main Database Administration Screen.',
     'zero_size'           => 'Backup Failed: Filesize was 0 bytes',
@@ -1838,6 +1840,7 @@ $LANG_DB_BACKUP = array(
     'use_gzip'            => 'Use GZip if available',
     'configure'           => 'Configure',
     'config_instructions' => 'Select any tables you wish to exclude from the backup. Other options can be found in the Geeklog Configuration under the Database tab.',
+	'config_successful'   => 'Tables to Backup list was saved successfully.'
 );
 
 ###############################################################################
