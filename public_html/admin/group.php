@@ -1088,7 +1088,7 @@ function grp_selectUsers($group_id, $listtype = 0)
 function editusers($group)
 {
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG_ADMIN, $LANG28,
-           $_IMAGE_TYPE;
+           $_IMAGE_TYPE, $_SCRIPTS;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
@@ -1139,9 +1139,16 @@ function editusers($group)
 
     $retval .= ADMIN_createMenu($menu_arr, $LANG_ACCESS['editgroupmsg'],
         $_CONF['layout_url'] . '/images/icons/group.' . $_IMAGE_TYPE);
+		
+    // Add JavaScript
+    // Hide the Advanced Editor as JavaScript is required. If JS is enabled then the JS below will un-hide it
+    $js = 'document.getElementById("admin-groupmembers").style.display="";';
+    $_SCRIPTS->setJavaScript($js, true);
+	$_SCRIPTS->setJavaScriptFile('admin-groupmembers', '/javascript/moveusers.js');		
 
     $groupmembers = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/group'));
     $groupmembers->set_file(array('groupmembers' => 'groupmembers.thtml'));
+	$groupmembers->set_var('noscript', COM_getNoScript(false));
     $groupmembers->set_var('group_listing_url', $group_listing_url);
     $groupmembers->set_var('phpself', $_CONF['site_admin_url'] . '/group.php');
     $groupmembers->set_var('lang_adminhome', $LANG_ACCESS['adminhome']);
