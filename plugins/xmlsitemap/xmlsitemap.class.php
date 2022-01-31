@@ -753,7 +753,7 @@ class XMLSitemap
                     // Title
                     $sitemap .= '      <news:title>' . $entry['title'] . '</news:title>' . self::LB;
 
-                    $sitemap .= '    </news:news>';
+                    $sitemap .= '    </news:news>' . self::LB;
 
                     $sitemap .= '  </url>' . self::LB;
                     $numEntries++;
@@ -920,7 +920,7 @@ class XMLSitemap
         }
 
         // Get file names
-        list ($filename, $mobileFilename,) = $this->getFileNames();
+        list ($filename, $mobileFilename, $newsFilename) = $this->getFileNames();
 
         if (!empty($filename)) {
             $retval = $retval && $this->patchFile($filename, $this->items);
@@ -937,6 +937,14 @@ class XMLSitemap
                 $this->sendPing($pingTargets, $mobileFilename);
             }
         }
+		
+        if (!empty($newsFilename)) {
+            $retval = $retval && $this->patchFile($newsFilename, $this->items);
+
+            if ($retval)  {
+                $this->sendPing($pingTargets, $newsFilename);
+            }
+        }		
 
         // Empty the queue
         $this->items = [];

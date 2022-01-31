@@ -418,9 +418,9 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
 function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
 {
     global $_XMLSMAP_CONF;
-
-    // Make sure type is setup in the arrays and $id is set
-    if (empty($type) || empty($_XMLSMAP_CONF['types'][$type]) || empty($id)) {
+    
+	// Make sure type is setup in the arrays and $id is set
+    if (empty($type) || !in_array($type, $_XMLSMAP_CONF['types']) || empty($id)) {
         return;
     }
 
@@ -429,10 +429,13 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
     require_once __DIR__ . '/xmlsitemap.class.php';
 
     $sitemap = new XMLSitemap(COM_getCharset());
+    $sitemap_file = isset($_XMLSMAP_CONF['sitemap_file']) ? $_XMLSMAP_CONF['sitemap_file'] : '';
+    $mobile_sitemap_file = isset($_XMLSMAP_CONF['mobile_sitemap_file']) ? $_XMLSMAP_CONF['mobile_sitemap_file'] : '';
+    $news_sitemap_file = isset($_XMLSMAP_CONF['news_sitemap_file']) ? $_XMLSMAP_CONF['news_sitemap_file'] : '';
     $sitemap->setFileNames(
-        @$_XMLSMAP_CONF['sitemap_file'],
-        @$_XMLSMAP_CONF['mobile_sitemap_file'],
-        @$_XMLSMAP_CONF['news_sitemap_file']
+        $sitemap_file,
+        $mobile_sitemap_file,
+        $news_sitemap_file
     );
     $newItem = PLG_getItemInfo($type, $id, 'url,date-modified', 1);
 
