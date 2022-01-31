@@ -85,6 +85,11 @@ function edituser()
     include $_CONF['path_system'] . 'classes/navbar.class.php';
     $navbar = new navbar;
     $cnt = 0;
+	
+	// Don't need Content Tab if Daily Digest is disabled since it is the only thing on the tab.
+	if ($_CONF['emailstories'] != 1) {
+		unset($LANG_MYACCOUNT['pe_content']);
+	}
     foreach ($LANG_MYACCOUNT as $id => $label) {
         $navbar->add_menuitem($label, 'showhideProfileEditorDiv("' . $id . '",' . $cnt . ');return false;', true);
         $cnt++;

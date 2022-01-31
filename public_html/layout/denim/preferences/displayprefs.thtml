@@ -6,9 +6,7 @@
 </div>
 
 <div id="pe_content" class="jsenabled_hide">
-  {exclude_block}
   {digest_block}
-  {boxes_block}
 </div>
 
 <div id="pe_privacy" class="jsenabled_hide">
