@@ -4,3 +4,8 @@
 #centerblocks div.block-child-center {
   margin: 0 0 1.25em 0;
 }
+
+/* Used to better match other article related blocks */
+.block-trackback-content {
+    border-bottom: 0px;
+}
