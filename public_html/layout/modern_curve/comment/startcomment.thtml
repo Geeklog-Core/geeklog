@@ -1,6 +1,10 @@
 {# begin {templatelocation} #}
 
 <div id="{area_id}">
+  {!if is_comment_only_page}
+  <h1>{comment_page_title}</h1>
+  {!endif}
+  
   <div id="comments" class="comments">
     {commentbar}
     {comments}

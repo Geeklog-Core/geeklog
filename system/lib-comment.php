@@ -702,9 +702,11 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
  */
 function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = '', $pid = 0, $page = 1, $cid = false, $delete_option = false, $commentCode = 0)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG03;
 
     $retval = '';
+	
+	$is_comment_page = CMT_isCommentPage();
 
     if (!COM_isAnonUser()) {
         $result = DB_query("SELECT commentorder,commentmode,commentlimit FROM {$_TABLES['user_attributes']} WHERE uid = '{$_USER['uid']}'");
@@ -754,6 +756,8 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
     $template->set_var('sid', $sid);
     $template->set_var('comment_type', $type);
     $template->set_var('area_id', 'commentarea');
+	$template->set_var('is_comment_only_page', $is_comment_page); // Tell template if comment is display on own page
+	$template->set_var('comment_page_title', sprintf($LANG03['comment_page_title'], stripslashes($title)));
 
     if ($mode === 'nested' || $mode === 'threaded' || $mode === 'flat') {
         // build query
@@ -851,7 +855,6 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
 
         // Pagination
         $tot_pages = ceil($count / $limit);
-        $is_comment_page = CMT_isCommentPage();
         if ($is_comment_page) {
             $pLink[0] = "comment.php?sid=$sid&amp;type=$type"; // need type here as on comment.php and need to figure out where sid is from
             $pLink[0] .= "&amp;order=$order&amp;format=$mode";
@@ -1213,21 +1216,23 @@ function CMT_commentForm($title, $comment, $sid, $pid, $type, $mode, $postMode, 
 
             if (COMMENT_ON_SAME_PAGE) {
                 $formUrl = CMT_getCommentUrlId($type, $sid) . "#commentpreview";
+				$commentBlockTemplate = 'blockheader-child.thtml';
             } else {
                 $formUrl = $_CONF['site_url'] . '/comment.php#commentpreview'; // commentpreview needed for when showing replies on the same page
+				$commentBlockTemplate = 'blockheader.thtml';
             }
 
             if ($mode === 'edit' || $mode === $LANG03[28]) { //edit modes
                 $comment_template->set_var('start_block_postacomment',
-                    COM_startBlock($LANG03[32]));
+                    COM_startBlock($LANG03[32], '', $commentBlockTemplate));
                 $comment_template->set_var('cid', '<input type="hidden" name="' . CMT_CID . '" value="' . $cid . '"' . XHTML . '>');
             } elseif ($mode == 'editsubmission' || $mode == $LANG03[34]) {
                 $comment_template->set_var('start_block_postacomment',
-                    COM_startBlock($LANG03[33]));
+                    COM_startBlock($LANG03[33], '', $commentBlockTemplate));
                 $comment_template->set_var('cid', '<input type="hidden" name="' . CMT_CID . '" value="' . $cid . '"' . XHTML . '>');
             } else {
                 $comment_template->set_var('start_block_postacomment',
-                    COM_startBlock($LANG03[1]));
+                    COM_startBlock($LANG03[1], '', $commentBlockTemplate));
                 $comment_template->set_var('cid', '');
             }
             $comment_template->set_var('form_url', $formUrl);
