@@ -323,7 +323,7 @@ class config implements ConfigInterface
             $tab = 'tab_' . $tab;
         }
 
-        if (isset($this->conf_tab_arr[$group])) {
+        if (isset($this->conf_tab_arr[$group]) && is_array($this->conf_tab_arr[$group])) {
             foreach ($this->conf_tab_arr[$group] as $itemGroups) {
                 foreach ($itemGroups as $tabName => $values) {
                     if ($tab === $tabName) {
@@ -356,7 +356,7 @@ class config implements ConfigInterface
     {
         $retval = [];
 
-        if (isset($this->conf_tab_arr[$group])) {
+        if (isset($this->conf_tab_arr[$group]) && is_array($this->conf_tab_arr[$group])) {
             foreach ($this->conf_tab_arr[$group] as $itemGroups) {
                 foreach ($itemGroups as $tabName => $values) {
                     $retval[] = str_replace('tab_', '', $tabName);
@@ -887,7 +887,7 @@ class config implements ConfigInterface
             return self::UI_perm_denied();
         }
 
-        if (!isset($sg) || empty($sg)) {
+        if (empty($sg)) {
             $sg = '0';
 
             // get default subgroup for non Root user
@@ -1134,7 +1134,7 @@ class config implements ConfigInterface
         if (empty($this->validationErrors)) {
             if (($changes != null) && ($changes !== [])) {
                 foreach ($changes as $param_name => $success) {
-                    if (isset($this->changedArray[$group][$param_name])) {
+                    if (isset($this->changedArray[$group][$param_name]) && is_array($this->changedArray[$group][$param_name])) {
                         foreach ($this->changedArray[$group][$param_name] as $_param_name => $_success) {
                             $anchors[] = ' <a href="#' . $param_name . '[' . $_param_name . ']' .
                                 '" class="select_config"' .
