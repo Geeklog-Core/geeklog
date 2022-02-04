@@ -437,28 +437,30 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
         $mobile_sitemap_file,
         $news_sitemap_file
     );
-    $newItem = PLG_getItemInfo($type, $id, 'url,date-modified', 1);
+    $newItem = PLG_getItemInfo($type, $id, 'url,date-modified,date-created,title', 1);
 
     if (!empty($newItem)) {
+        $sitemap->beginUpdate();
+
         if (!empty($old_id) && ($id !== $old_id)) {
             // Item updated
 
             // PLG_getItemInfo doesn't work here, since the item has already been deleted from database
             $oldUrl = PLG_idToURL($type, $sub_type, $old_id);
-            $sitemap->beginUpdate();
-            $sitemap->deleteItem($oldUrl);
+            $sitemap->deleteItem($type, $oldUrl);
             $sitemap->addItem(
-                $newItem[0], $newItem[1],
+                $type, $id, $newItem[0], $newItem[1], $newItem[2], $newItem[3],
                 @$_XMLSMAP_CONF['priorities'][$type], @$_XMLSMAP_CONF['frequencies'][$type]
             );
-            $result = $sitemap->endUpdate();
         } else {
             // Item created
-            $result = $sitemap->addItem(
-                $newItem[0], $newItem[1],
+            $sitemap->addItem(
+                $type, $id, $newItem[0], $newItem[1], $newItem[2], $newItem[3],
                 @$_XMLSMAP_CONF['priorities'][$type], @$_XMLSMAP_CONF['frequencies'][$type]
             );
         }
+
+        $result = $sitemap->endUpdate();
     }
 
     if (!$result) {
@@ -506,7 +508,7 @@ function plugin_itemdeleted_xmlsitemap($id, $type, $sub_type)
         // PLG_getItemInfo doesn't work here, since the item has already been deleted from database
         $oldUrl = PLG_idToURL($type, $sub_type, $id);
 
-        if (!$sitemap->deleteItem($oldUrl)) {
+        if (!$sitemap->deleteItem($type, $oldUrl)) {
             XMLSMAP_update($type);
         }
     }

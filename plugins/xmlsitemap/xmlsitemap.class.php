@@ -63,6 +63,11 @@ class XMLSitemap
     const PING_INTERVAL = 3600;       // 1 hour
     const LB = "\n";
 
+    // Sitemap types
+    const TYPE_REGULAR = 1;     // Regular sitemap
+    const TYPE_MOBILE = 2;      // Mobile sitemap
+    const TYPE_NEWS = 3;        // News Sitemap
+    
     /**
      * @var string
      */
@@ -498,6 +503,10 @@ class XMLSitemap
     {
         static $timezone = null;
 
+        if ($timezone === null) {
+            $timezone = $this->getTimezoneStr();
+        }
+
         if (empty($url)) {
             return '';
         }
@@ -508,11 +517,7 @@ class XMLSitemap
 
         // Last modified time
         if (!empty($lastModified)) {
-            if ($timezone === null) {
-                $timezone = $this->getTimezoneStr();
-            }
-
-            if ($timezone !== false) {
+            if (!empty($timezone)) {
 				$date = date('c', $lastModified); // Want date format for time zone like 2012-11-28T10:53:17+01:00
             } else {
 				$date = date('Y-m-d', $lastModified);
@@ -533,6 +538,81 @@ class XMLSitemap
                 . '</changefreq>' . self::LB;
         }
 
+        $retval .= '  </url>' . self::LB;
+
+        return $retval;
+    }
+
+    /**
+     * Escape special characters not allowed in XML
+     *
+     * @param  string  $str
+     * @return string
+     */
+    protected function escapeString($str)
+    {
+        return COM_escHTML($str, ENT_QUOTES | ENT_SUBSTITUTE | ENT_XML1);
+    }
+
+    /**
+     * Format an entry for news sitemap
+     *
+     * @param  array   $entry
+     * @param  string  $site_lang_id
+     * @param  bool    $multi_lang
+     * @return string
+     */
+    protected function formatEntryForNewsSitemap(array $entry, $site_lang_id, $multi_lang)
+    {
+        global $_CONF;
+
+        static $timezone = null;
+
+        if ($timezone === null) {
+            $timezone = $this->getTimezoneStr();
+        }
+
+        // Check URL, date is under max age, and appropriate topics
+        if (empty($entry['url']) || ((int) $entry['date-created'] < time() - $this->getNewsAge())) {
+            // <loc> element is mandatory for the sitemap.  So, when no url is provided, or the entry is too old,
+            // we simply have to skip the item silently.
+            return '';
+        }
+
+        $url = $this->normalizeURL($entry['url']);
+        $retval = '  <url>' . self::LB
+            . '    <loc>' . $url . '</loc>' . self::LB;
+
+        // Start News Specific tags
+        $retval .= '    <news:news>' . self::LB;
+
+        // Publication
+        $retval .= '      <news:publication>' . self::LB;
+        $retval .= '        <news:name>' . $this->escapeString($_CONF['site_name']) . '</news:name>' . self::LB;
+
+        // Language
+        if ($multi_lang) {
+            $lang_id = COM_getLanguageIdForObject($entry['id']);
+            if (empty($lang_id)) {
+                // if no lang id then assume site default lang
+                $lang_id = $site_lang_id;
+            }
+        } else {
+            $lang_id = $site_lang_id;
+        }
+        $retval .= '        <news:language>' . $lang_id . '</news:language>' . self::LB;
+        $retval .= '      </news:publication>' . self::LB;
+
+        // Time stamp
+        $date = date('Y-m-d', $entry['date-created']);
+        if (!empty($timezone)) {
+            $date .= 'T' . date('H:i:s', $entry['date-created']) . $timezone;
+        }
+        $retval .= '      <news:publication_date>' . $date . '</news:publication_date>' . self::LB;
+
+        // Title
+        $retval .= '      <news:title>' . $this->escapeString($entry['title']) . '</news:title>' . self::LB;
+        $retval .= '    </news:news>' . self::LB;
         $retval .= '  </url>' . self::LB;
 
         return $retval;
@@ -676,9 +756,6 @@ class XMLSitemap
                 $site_lang_id = $LANG_ISO639_1;
             }
 
-            // See if timezone is set
-            $timezone = $this->getTimezoneStr();
-
             // Retrieve complete topic list including inherited ones
             $topic_list = '';
             $newstopics = $this->getNewsTopics();
@@ -708,54 +785,7 @@ class XMLSitemap
 
             if (is_array($result) && (count($result) > 0)) {
                 foreach ($result as $entry) {
-                    // Check URL ,date is under max age, and appropriate topics
-                    if (isset($entry['url']) && (true)) {
-
-                        $url = $this->normalizeURL($entry['url']);
-                        $sitemap .= '  <url>' . self::LB
-                            . '    <loc>' . $url . '</loc>' . self::LB;
-                    } else {
-                        /**
-                         * <loc> element is mandatory for the sitemap.  So,
-                         * when no url is provided, we simply have to skip
-                         * the item silently.
-                         */
-                        continue;
-                    }
-
-                    // Start News Specific tags
-                    $sitemap .= '    <news:news>' . self::LB;
-
-                    // Publication
-                    $sitemap .= '      <news:publication>' . self::LB;
-                    $sitemap .= '        <news:name>' . $_CONF['site_name'] . '</news:name>' . self::LB;
-                    // Language
-                    if ($multi_lang) {
-                        $lang_id = COM_getLanguageIdForObject($entry['id']);
-                        if (empty($lang_id)) {
-                            // if no lang id then assume site default lang
-                            $lang_id = $site_lang_id;
-                        }
-                    } else {
-                        $lang_id = $site_lang_id;
-                    }
-                    $sitemap .= '        <news:language>' . $lang_id . '</news:language>' . self::LB;
-
-                    $sitemap .= '      </news:publication>' . self::LB;
-
-                    // Time stamp
-                    $date = date('Y-m-d', $entry['date-created']);
-                    if ($timezone !== false) {
-                        $date .= 'T' . date('H:i:s', $entry['date-created']) . $timezone;
-                    }
-                    $sitemap .= '      <news:publication_date>' . $date . '</news:publication_date>' . self::LB;
-
-                    // Title
-                    $sitemap .= '      <news:title>' . $entry['title'] . '</news:title>' . self::LB;
-
-                    $sitemap .= '    </news:news>' . self::LB;
-
-                    $sitemap .= '  </url>' . self::LB;
+                    $sitemap .= $this->formatEntryForNewsSitemap($entry, $site_lang_id, $multi_lang);
                     $numEntries++;
                 }
             }
@@ -797,63 +827,113 @@ class XMLSitemap
     /**
      * Add  to the queue an item to add to sitemap files
      *
+     * @param  string  $type          item type, e.g. 'article'
+     * @param  string  $id
      * @param  string  $url
-     * @param  int     $lastModified
+     * @param  int     $dateModified
+     * @param  int     $dateCreated
+     * @param  string  $title
      * @param  float   $priority
      * @param  string  $frequency
-     * @return bool    true on success, false otherwise
+     * @return void
      */
-    public function addItem($url, $lastModified = null, $priority = null, $frequency = null)
+    public function addItem($type, $id, $url, $dateModified = null, $dateCreated = null, $title = null, $priority = null, $frequency = null)
     {
-        $retval = true;
-
-        if (!empty($url)) {
-            $this->items[] = ['+', $this->formatItem($url, $lastModified, $priority, $frequency)];
-
-            if (!$this->updating) {
-                // Update sitemap files immediately
-                $retval = $this->endUpdate();
-            }
-        } else {
-            $retval = false;
+        if ($this->updating && !empty($url)) {
+            $this->items[] = [
+                '+', [
+                    'type'          => $type,
+                    'id'            => $id,
+                    'url'           => $url,
+                    'date-modified' => $dateModified,
+                    'date-created'  => $dateCreated,
+                    'title'         => $title,
+                    'priority'      => $priority,
+                    'frequency'     => $frequency,
+                ]
+            ];
         }
-
-        return $retval;
     }
 
     /**
      * Add to the queue an item to delete from sitemap files
      *
+     * @param  string  $type  item type, e.g. 'article'
      * @param  string  $url
-     * @return bool    true on success, false otherwise
+     * @return void
      */
-    public function deleteItem($url)
+    public function deleteItem($type, $url)
     {
-        $retval = true;
+        if ($this->updating && !empty($url)) {
+            $this->items[] = [
+                '-', [
+                    'type' => $type,
+                    'url'  => $url,
+                ]
+            ];
+        }
+    }
 
-        if (!empty($url)) {
-            $this->items[] = ['-', $url];
-
-            if (!$this->updating) {
-                // Update sitemap files immediately
-                $retval = $this->endUpdate();
-            }
-        } else {
-            $retval = false;
+    /**
+     * Return if the entry is valid as a news sitemap item
+     *
+     * @param  array  $entry
+     * @return bool
+     */
+    protected function isValidNewsItem(array $entry)
+    {
+        if ($entry['type'] === 'article') {
+            return false;
         }
 
-        return $retval;
+        $what = 'url,date-created,id,title';
+        $uid = 1;   // anonymous user
+        $options = [];
+
+        // Retrieve complete topic list including inherited ones
+        $topicList = '';
+        $newsTopics = $this->getNewsTopics();
+
+        if (!empty($newsTopics)) {
+            foreach ($newsTopics as $tid) {
+                $tids = TOPIC_getChildList($tid, $uid);
+
+                if (!empty($tids)) {
+                    if (!empty($topicList)) {
+                        $topicList = $topicList . "," . $tids;
+                    } else {
+                        $topicList = $tids;
+                    }
+                }
+            }
+        }
+
+        if (!empty($topicList)) {
+            $options['filter']['topic-ids'] = $topicList;
+        }
+
+        // Figure out max age
+        if ($this->getNewsAge() > 0) {
+            $options['filter']['date-created'] = strtotime("-{$this->getNewsAge()} seconds");
+        }
+
+        $result = PLG_getItemInfo('article', $entry['id'], $what, $uid, $options);
+
+        return is_array($result) && (count($result) > 0);
     }
 
     /**
      * Patch a sitemap file
      *
+     * @param  int     $type   sitemap type: one of XMLSitemap::TYPE_REGULAR, XMLSitemap::TYPE_MOBILE and XMLSitemap::TYPE_NEWS
      * @param  string  $path   full path to the sitemap file
      * @param  array   $items  to add to and/or delete from the sitemap file
      * @return bool            true on success, false otherwise
      */
-    protected function patchFile($path, array $items)
+    protected function patchFile($type, $path, array $items)
     {
+        global $LANG_ISO639_1;
+
         $sitemap = @file_get_contents($path);
         if ($sitemap === false) {
             return false;
@@ -861,20 +941,47 @@ class XMLSitemap
 
         $updated = false;
 
+        // Figure out language id
+        $isMultiLang = COM_isMultiLanguageEnabled();
+        if ($isMultiLang) {
+            // default language for multi language site
+            $siteLangId = COM_getLanguageId();
+        } else {
+            // Just one default language
+            $siteLangId = $LANG_ISO639_1;
+        }
+
         foreach ($items as $item) {
-            list($action, $content) = $item;
+            list($action, $data) = $item;
 
             if ($action === '+') {
-                // Append an item
-                $pos = strpos($sitemap, '</urlset>');
+                $formattedItem = '';
 
-                if ($pos !== false) {
-                    $sitemap = substr($sitemap, 0, $pos) . $content . '</urlset>' . self::LB;
-                    $updated = true;
+                if (($type === self::TYPE_REGULAR) || ($type == self::TYPE_MOBILE)) {
+                    $formattedItem = $this->formatItem($data['url'], $data['date-modified'], $data['priority'], $data['frequency']);
+                } else {
+                    // News sitemap
+                    if ($this->isValidNewsItem($data)) {
+                        $formattedItem = $this->formatEntryForNewsSitemap($data, $siteLangId, $isMultiLang);
+                    }
+                }
+
+                // Append an item
+                if (!empty($formattedItem)) {
+                    $pos = strpos($sitemap, '</urlset>');
+
+                    if ($pos !== false) {
+                        $sitemap = substr($sitemap, 0, $pos) . $formattedItem . '</urlset>' . self::LB;
+                        $updated = true;
+                    }
                 }
             } elseif ($action === '-') {
+                if (($type === self::TYPE_NEWS) && ($data['type'] !== 'article')) {
+                    continue;
+                }
+
                 // Delete an existing item
-                $target = '  <url>' . self::LB . '    <loc>' . $this->normalizeURL($content) . '</loc>' . self::LB;
+                $target = '  <url>' . self::LB . '    <loc>' . $this->normalizeURL($data['url']) . '</loc>' . self::LB;
                 $pos = strpos($sitemap, $target);
 
                 if ($pos !== false) {
@@ -905,7 +1012,7 @@ class XMLSitemap
         $this->updating = false;
 
         if (count($this->items) === 0) {
-            return $retval;
+            return true;
         }
 
         // Send ping to search engines
@@ -923,7 +1030,7 @@ class XMLSitemap
         list ($filename, $mobileFilename, $newsFilename) = $this->getFileNames();
 
         if (!empty($filename)) {
-            $retval = $retval && $this->patchFile($filename, $this->items);
+            $retval = $this->patchFile(self::TYPE_REGULAR, $filename, $this->items);
 
             if ($retval) {
                 $this->sendPing($pingTargets, $filename);
@@ -931,7 +1038,7 @@ class XMLSitemap
         }
 
         if (!empty($mobileFilename)) {
-            $retval = $retval && $this->patchFile($mobileFilename, $this->items);
+            $retval = $retval && $this->patchFile(self::TYPE_MOBILE, $mobileFilename, $this->items);
 
             if ($retval)  {
                 $this->sendPing($pingTargets, $mobileFilename);
@@ -939,7 +1046,7 @@ class XMLSitemap
         }
 		
         if (!empty($newsFilename)) {
-            $retval = $retval && $this->patchFile($newsFilename, $this->items);
+            $retval = $retval && $this->patchFile(self::TYPE_NEWS, $newsFilename, $this->items);
 
             if ($retval)  {
                 $this->sendPing($pingTargets, $newsFilename);
