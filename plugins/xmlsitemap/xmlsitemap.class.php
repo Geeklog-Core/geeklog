@@ -493,13 +493,14 @@ class XMLSitemap
     /**
      * Format an item
      *
+	 * @param  int     $type   sitemap type: one of XMLSitemap::TYPE_REGULAR or XMLSitemap::TYPE_MOBILE
      * @param  string  $url
      * @param  int     $lastModified
      * @param  float   $priority
      * @param  string  $frequency
      * @return string
      */
-    protected function formatItem($url, $lastModified = null, $priority = null, $frequency = null)
+    protected function formatItem($type, $url, $lastModified = null, $priority = null, $frequency = null)
     {
         static $timezone = null;
 
@@ -537,6 +538,11 @@ class XMLSitemap
             $retval .= '    <changefreq>' . $frequency
                 . '</changefreq>' . self::LB;
         }
+		
+        // Mobile Sitemap
+        if ($type == self::TYPE_MOBILE) {
+            $retval .= '    <mobile:mobile />' . self::LB;
+        }
 
         $retval .= '  </url>' . self::LB;
 
@@ -571,7 +577,7 @@ class XMLSitemap
         if ($timezone === null) {
             $timezone = $this->getTimezoneStr();
         }
-
+		
         // Check URL, date is under max age, and appropriate topics
         if (empty($entry['url']) || ((int) $entry['date-created'] < time() - $this->getNewsAge())) {
             // <loc> element is mandatory for the sitemap.  So, when no url is provided, or the entry is too old,
@@ -647,7 +653,7 @@ class XMLSitemap
 
             // Prepend the homepage (feature #997)
             if (isset($_XMLSMAP_CONF['include_homepage']) && $_XMLSMAP_CONF['include_homepage']) {
-                $sitemap .= $this->formatItem($_CONF['site_url']);
+                $sitemap .= $this->formatItem(self::TYPE_REGULAR, $_CONF['site_url']);
             }
 
             foreach ($types as $type) {
@@ -685,7 +691,7 @@ class XMLSitemap
                             ? $entry['priority']
                             : $this->getPriority($type);
 
-                        $sitemap .= $this->formatItem($url, $lastModified, $priority, $frequency);
+                        $sitemap .= $this->formatItem(self::TYPE_REGULAR, $url, $lastModified, $priority, $frequency);
                         $numEntries++;
                     }
                 }
@@ -724,6 +730,8 @@ class XMLSitemap
                         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0">',
                         $sitemap
                     );
+					
+					// Convert regular sitemap now to mobile 
                     $sitemap = str_replace(
                         '  </url>',
                         '    <mobile:mobile />' . self::LB . '  </url>',
@@ -883,34 +891,34 @@ class XMLSitemap
     protected function isValidNewsItem(array $entry)
     {
         if ($entry['type'] === 'article') {
-            return false;
+            //return false;
         }
 
         $what = 'url,date-created,id,title';
         $uid = 1;   // anonymous user
         $options = [];
 
-        // Retrieve complete topic list including inherited ones
-        $topicList = '';
-        $newsTopics = $this->getNewsTopics();
 
-        if (!empty($newsTopics)) {
-            foreach ($newsTopics as $tid) {
-                $tids = TOPIC_getChildList($tid, $uid);
 
-                if (!empty($tids)) {
-                    if (!empty($topicList)) {
-                        $topicList = $topicList . "," . $tids;
-                    } else {
-                        $topicList = $tids;
-                    }
-                }
-            }
-        }
+		// Retrieve complete topic list including inherited ones
+		$topic_list = '';
+		$newstopics = $this->getNewsTopics();
 
-        if (!empty($topicList)) {
-            $options['filter']['topic-ids'] = $topicList;
-        }
+		if (!empty($newstopics)) {
+			foreach ($newstopics as $tid) {
+				$tids = TOPIC_getChildList($tid, $uid);
+				if (!empty($tids)) {
+					if (!empty($topic_list)) {
+						$topic_list = $topic_list . "," . $tids;
+					} else {
+						$topic_list = $tids;
+					}
+				}
+			}
+		}
+		if (!empty($topic_list)) {
+			$options['filter']['topic-ids'] = $topic_list;
+		}
 
         // Figure out max age
         if ($this->getNewsAge() > 0) {
@@ -958,7 +966,7 @@ class XMLSitemap
                 $formattedItem = '';
 
                 if (($type === self::TYPE_REGULAR) || ($type == self::TYPE_MOBILE)) {
-                    $formattedItem = $this->formatItem($data['url'], $data['date-modified'], $data['priority'], $data['frequency']);
+                    $formattedItem = $this->formatItem($type, $data['url'], $data['date-modified'], $data['priority'], $data['frequency']);
                 } else {
                     // News sitemap
                     if ($this->isValidNewsItem($data)) {
@@ -981,6 +989,7 @@ class XMLSitemap
                 }
 
                 // Delete an existing item
+				// Note may not even exist in sitemap so let $updated = true anyways even if not found and removed
                 $target = '  <url>' . self::LB . '    <loc>' . $this->normalizeURL($data['url']) . '</loc>' . self::LB;
                 $pos = strpos($sitemap, $target);
 
@@ -990,9 +999,10 @@ class XMLSitemap
                     if ($pos2 !== false) {
                         $sitemap = substr($sitemap, 0, $pos)
                             . substr($sitemap, $pos2 + strlen('</url>' . self::LB));
-                        $updated = true;
                     }
                 }
+				
+				$updated = true;
             }
         }
 

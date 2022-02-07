@@ -418,7 +418,7 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
 function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
 {
     global $_XMLSMAP_CONF;
-    
+
 	// Make sure type is setup in the arrays and $id is set
     if (empty($type) || !in_array($type, $_XMLSMAP_CONF['types']) || empty($id)) {
         return;
@@ -437,35 +437,45 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
         $mobile_sitemap_file,
         $news_sitemap_file
     );
+	
+    // News Sitemap settings
+    if (isset($_XMLSMAP_CONF['news_sitemap_file']) && !empty($_XMLSMAP_CONF['news_sitemap_file'])) {
+        // Article topics to include
+        if (isset($_XMLSMAP_CONF['news_sitemap_topics']) && $_XMLSMAP_CONF['news_sitemap_topics']) {
+            $sitemap->setNewsTopics($_XMLSMAP_CONF['news_sitemap_topics']);
+        }
+        // Max article age in seconds
+        if (isset($_XMLSMAP_CONF['news_sitemap_age']) && $_XMLSMAP_CONF['news_sitemap_age']) {
+            $sitemap->setNewsAge($_XMLSMAP_CONF['news_sitemap_age']);
+        }
+    }	
+	
     $newItem = PLG_getItemInfo($type, $id, 'url,date-modified,date-created,title', 1);
 
-    if (!empty($newItem)) {
-        $sitemap->beginUpdate();
+	$sitemap->beginUpdate();
 
-        if (!empty($old_id) && ($id !== $old_id)) {
-            // Item updated
-
-            // PLG_getItemInfo doesn't work here, since the item has already been deleted from database
-            $oldUrl = PLG_idToURL($type, $sub_type, $old_id);
-            $sitemap->deleteItem($type, $oldUrl);
-            $sitemap->addItem(
-                $type, $id, $newItem[0], $newItem[1], $newItem[2], $newItem[3],
-                @$_XMLSMAP_CONF['priorities'][$type], @$_XMLSMAP_CONF['frequencies'][$type]
-            );
-        } else {
-            // Item created
-            $sitemap->addItem(
-                $type, $id, $newItem[0], $newItem[1], $newItem[2], $newItem[3],
-                @$_XMLSMAP_CONF['priorities'][$type], @$_XMLSMAP_CONF['frequencies'][$type]
-            );
-        }
-
-        $result = $sitemap->endUpdate();
+	if (!empty($old_id) && ($id !== $old_id)) {
+		// Item updated
+		$Url = PLG_idToURL($type, $sub_type, $old_id);
+	} else {
+		$Url = PLG_idToURL($type, $sub_type, $id); 
     }
+	// Always need to delete as item may exist already in sitemap but needs to be changed
+	$sitemap->deleteItem($type, $Url); 
+	
+	if (!empty($newItem)) { 
+		// Item created
+		$sitemap->addItem(
+			$type, $id, $newItem[0], $newItem[1], $newItem[2], $newItem[3],
+			@$_XMLSMAP_CONF['priorities'][$type], @$_XMLSMAP_CONF['frequencies'][$type]
+		);
+	}				
+	
+	$result = $sitemap->endUpdate();
 
     if (!$result) {
-        // Tried to update sitemap files partially, but failed.  Let's use the old way
-        XMLSMAP_update($type);
+		// Tried to update sitemap files partially, but failed.  Let's use the old way
+		XMLSMAP_update($type);
     }
 }
 
@@ -504,11 +514,28 @@ function plugin_itemdeleted_xmlsitemap($id, $type, $sub_type)
         $mobileSitemapFile = isset($_XMLSMAP_CONF['mobile_sitemap_file']) ? $_XMLSMAP_CONF['mobile_sitemap_file'] : '';
         $newsSitemapFile = isset($_XMLSMAP_CONF['news_sitemap_file']) ? $_XMLSMAP_CONF['news_sitemap_file'] : '';
         $sitemap->setFileNames($sitemapFile, $mobileSitemapFile, $newsSitemapFile);
+		
+		// News Sitemap settings
+		if (isset($_XMLSMAP_CONF['news_sitemap_file']) && !empty($_XMLSMAP_CONF['news_sitemap_file'])) {
+			// Article topics to include
+			if (isset($_XMLSMAP_CONF['news_sitemap_topics']) && $_XMLSMAP_CONF['news_sitemap_topics']) {
+				$sitemap->setNewsTopics($_XMLSMAP_CONF['news_sitemap_topics']);
+			}
+			// Max article age in seconds
+			if (isset($_XMLSMAP_CONF['news_sitemap_age']) && $_XMLSMAP_CONF['news_sitemap_age']) {
+				$sitemap->setNewsAge($_XMLSMAP_CONF['news_sitemap_age']);
+			}
+		}		
+		
+		$sitemap->beginUpdate();
 
         // PLG_getItemInfo doesn't work here, since the item has already been deleted from database
         $oldUrl = PLG_idToURL($type, $sub_type, $id);
+		$sitemap->deleteItem($type, $oldUrl);
+		
+		$result = $sitemap->endUpdate();
 
-        if (!$sitemap->deleteItem($type, $oldUrl)) {
+        if (!$result) {
             XMLSMAP_update($type);
         }
     }
