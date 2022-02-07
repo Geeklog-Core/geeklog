@@ -1398,18 +1398,27 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
     $groupBySQL = '';
     $filter_flag = false;
     if ($sid === '*') {
-        // Check options to see if filters enabled
-        if (isset($options['filter']['date-created'])) {
-            $filter_flag = true;
-            $where .= " AND (date >= '" . date('c', $options['filter']['date-created']) . "')";
-        }
-        if (isset($options['filter']['topic-ids']) && !empty($options['filter']['topic-ids'])) {
-            $filter_flag = true;
-            $where .= " AND (ta.tid IN (" . $options['filter']['topic-ids'] . "))";
-        }
+
     } else {
         $where .= " AND (sid = '" . DB_escapeString($sid) . "')";
     }
+
+	// *********************************
+	// Moved out of $sid === '*' if statement above since XML Sitemap needs to filter even when it knows an ID
+	// Assuming this doesn't mess anything else up??? See issue #1050
+	
+	// Check options to see if filters enabled
+	if (isset($options['filter']['date-created'])) {
+		$filter_flag = true;
+		// $where .= " AND (date >= '" . date('c', $options['filter']['date-created']) . "')";
+		$where .= " AND (date >= '" . date('Y-m-d H:i:s', $options['filter']['date-created']) . "')";
+	}
+
+	if (isset($options['filter']['topic-ids']) && !empty($options['filter']['topic-ids'])) {
+		$filter_flag = true;
+		$where .= " AND (ta.tid IN (" . $options['filter']['topic-ids'] . "))";
+	}
+	// *********************************************
 
     if (!SEC_hasRights('story.edit', 'AND', $uid)) {
         $where .= ' AND (draft_flag = 0) AND (date <= NOW())';
