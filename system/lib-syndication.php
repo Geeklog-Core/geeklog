@@ -41,6 +41,8 @@ if ($_CONF['trackback_enabled']) {
 
 require_once $_CONF['path_system'] . 'lib-article.php';
 
+require_once __DIR__ . '/classes/htmLawed/htmLawed.php';
+
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
 
@@ -267,6 +269,13 @@ function SYND_getFeedContentPerTopic($tid, $limit, &$link, &$update, $contentLen
 
             $storytitle = stripslashes($row['title']);
             $fulltext = stripslashes($story->DisplayElements('introtext') . "\n" . $story->DisplayElements('bodytext'));
+			if ($row['postmode'] == 'html') {
+				// Use htmLawed to fix any missing tags incase html does not validate
+				$config = [
+					'keep_bad' => 0,
+				];
+				$fulltext = htmLawed($fulltext, $config);			
+			}			
             $storytext = ($contentLength == 1) ? $fulltext : COM_truncateHTML($fulltext, $contentLength, ' ...');
             $fulltext = trim($fulltext);
             $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
@@ -396,6 +405,13 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
         $storytitle = stripslashes($row['title']);
 
         $fulltext = stripslashes($story->DisplayElements('introtext') . "\n" . $story->DisplayElements('bodytext'));
+		if ($row['postmode'] == 'html') {
+			// Use htmLawed to fix any missing tags incase html does not validate
+			$config = [
+				'keep_bad' => 0,
+			];
+			$fulltext = htmLawed($fulltext, $config);			
+		}
         $storytext = ($contentLength == 1) ? $fulltext : COM_truncateHTML($fulltext, $contentLength, ' ...');
         $fulltext = trim($fulltext);
         $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
@@ -492,19 +508,30 @@ function SYND_updateFeed($fid)
                 /** @noinspection PhpUndefinedVariableInspection */
                 $content = PLG_getFeedContent($A['type'], $fid, $link, $data, $format[0], $format[1]);
 
-                // can't randomly change the api to send a max length, so
-                // fix it here:
-                if ($A['content_length'] != 1) {
-                    $count = count($content);
-                    for ($i = 0; $i < $count; $i++) {
-                        if (isset($content[$i]['text'])) {
-                            $content[$i]['summary'] = ($A['content_length'] == 1) ? $content[$i]['text'] : COM_truncateHTML($content[$i]['text'], $A['content_length'], ' ...');
-                        } else {
-                            $content[$i]['summary'] = '';
-                        }
-                    }
-                }
+                // Can't randomly change the api to send a max length, so fix it here
+				// Also use htmLawed to fix any missing tags incase html does not validate
+				$config = [
+					'keep_bad' => 0,
+				];
+				$count = count($content);
+				for ($i = 0; $i < $count; $i++) {
+					if (isset($content[$i]['summary'])) {
+						$content[$i]['summary'] = htmLawed($content[$i]['summary'], $config);
+					}	
+					if (isset($content[$i]['text'])) {
+						$content[$i]['text'] = htmLawed($content[$i]['text'], $config);
+					}
+					
+					if ($A['content_length'] != 1) {		
+						if (isset($content[$i]['text'])) {
+							$content[$i]['summary'] = ($A['content_length'] == 1) ? $content[$i]['text'] : COM_truncateHTML($content[$i]['text'], $A['content_length'], ' ...');
+						} else {
+							$content[$i]['summary'] = '';
+						}
+					}
+				}
             }
+			
             if (empty($link)) {
                 $link = $_CONF['site_url'];
             }
@@ -550,7 +577,7 @@ function SYND_updateFeed($fid)
             }
 
             /* Inject the namespace for Atom into RSS feeds. Illogical?
-             * Well apparantly not:
+             * Well apparently not:
              * http://feedvalidator.org/docs/warning/MissingAtomSelfLink.html
              */
             if ($format[0] == 'RSS') {
