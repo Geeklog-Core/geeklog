@@ -713,7 +713,7 @@ function SP_printPage($page, $A)
 	}			
 	*/
 	
-	$display = COM_createHTMLPrintedDocument(
+	$display = COM_createHTMLPrintableDocument(
 		$A['sp_content'],
 		array(
 			'itemURL'   	=> $sp_url,

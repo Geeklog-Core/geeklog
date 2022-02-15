@@ -1201,7 +1201,7 @@ function COM_renderMenu($header, $plugin_menu)
  *														Used mainly for comment info.
  * @return string              Formatted HTML document
  */
-function COM_createHTMLPrintedDocument($content = '', $information = array())
+function COM_createHTMLPrintableDocument($content = '', $information = array())
 {
     global $_CONF, $LANG01, $LANG_DIRECTION, $_SCRIPTS;
 		   

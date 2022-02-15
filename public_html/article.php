@@ -239,7 +239,7 @@ if ($A['count'] > 0) {
 			$itemModified = sprintf($LANG01[6], $article->displayElements('modified'));
         }		
 				
-        $display = COM_createHTMLPrintedDocument(
+        $display = COM_createHTMLPrintableDocument(
             $fulltext_no_br,
             array(
                 'itemURL'   	=> $articleUrl,
