@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="{charset}"{xhtml}>
-<meta name="robots" content="NOINDEX">
+<meta name="robots" content="NOINDEX"{xhtml}>
 <title>{page_title}</title>
 
 <!-- Mobile Specific Metas -->
