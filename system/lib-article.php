@@ -86,8 +86,8 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
     }
 
     // Change article template file with the topic (feature request #275)
-    $templateDir = $_CONF['path_layout'];
-    $topicDir = $templateDir . 'topics/' . $story->DisplayElements('tid') . '/';
+    $templateDir = $_CONF['path_layout'] . 'article/';
+    $topicDir = $_CONF['path_layout'] . 'topics/' . $story->DisplayElements('tid') . '/';
 
     if (is_dir($topicDir) && file_exists($topicDir . $storyTpl)) {
         $templateDir = $topicDir;

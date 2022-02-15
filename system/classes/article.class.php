@@ -1281,7 +1281,7 @@ class Article
             $storyTpl = 'articletext.thtml';
         }
 
-        $article = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
+        $article = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'article/'));
         $article->set_file(array(
             'article'          => $article_filevar
         ));
