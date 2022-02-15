@@ -187,94 +187,6 @@ if ($A['count'] > 0) {
     } elseif ($output == STORY_INVALID_SID) {
         COM_handle404();
     } elseif (($mode === 'print') && ($_CONF['hideprintericon'] == 0)) {
-        $articleTemplate = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'article'));
-        $articleTemplate->set_file('article', 'printable.thtml');
-        if (XHTML != '') {
-            $articleTemplate->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
-        }
-        $articleTemplate->set_var('direction', $LANG_DIRECTION);
-
-        global $_SCRIPTS;
-        $printCssPath = PLG_getThemeItem('core-file-print-css', 'core');
-        if (empty($printCssPath)) {
-            // Depreciated. Article should not depend on hardcoded file locations for print.css for a theme. Use PLG_getThemeItem('core-file-print-css', 'core'); instead
-            COM_deprecatedLog(__FILE__, '2.2.1sr1', '3.0.0', 'Use PLG_getThemeItem with \'core-file-print-css\' instead to retrieve themes print.css file');
-
-            $theme = $_CONF['theme'];
-            $dir = isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl') ? 'rtl' : 'ltr';
-            $paths = array(
-                'denim'        => 'layout/' . $theme . '/css_' . $dir . '/print.css',
-                'professional' => 'layout/' . $theme . '/print.css',
-                'other'        => 'layout/' . $theme . '/css/print.css',
-            );
-
-            foreach ($paths as $path) {
-                if (file_exists($_CONF['path_html'] . $path)) {
-                    $_SCRIPTS->setCssFile('print', '/' . $path, true, array('media' => 'print'));
-                }
-            }
-        } else {
-            if (file_exists($_CONF['path_html'] . $printCssPath)) {
-                $_SCRIPTS->setCssFile('print', '/' . $printCssPath, true, array('media' => 'print'));
-            }
-        }
-
-		// Override style for <a> tags
-        $_SCRIPTS->setCSS('a { color: blue !important; text-decoration: underline !important; }');
-
-		// Add Cookie Consent ( https://cookieconsent.osano.com )
-        if (isset($_CONF['cookie_consent']) && $_CONF['cookie_consent']) {
-            $_SCRIPTS->setCssFile(
-                'cookiconsent', 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css',
-                true, array(), 100
-            );
-            $_SCRIPTS->setJavaScriptFile(
-                'cookie_consent', 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js',
-                false, 100, false,
-                array('data-cfasync' => 'false')
-            );
-
-            if (isset($_CONF['cookie_consent_theme_customization']) && $_CONF['cookie_consent_theme_customization']) {
-                // Theme should have already set customizations in functions.php
-
-            } else {
-                $_SCRIPTS->setJavaScriptFile(
-                    'cookie_consent_config', '/javascript/cookie_consent.js',
-                    true, 110
-                );
-            }
-        }
-
-        $articleTemplate->set_var('plg_headercode', $_SCRIPTS->getHeader());
-
-		$articleTemplate->set_var('plg_footercode', $_SCRIPTS->getFooter());
-
-        $page_title = $article->DisplayElements('page_title');
-        if (empty($page_title)) {
-            $page_title = $_CONF['site_name'] . ' - ' . $article->DisplayElements('title');
-        }
-        $articleTemplate->set_var('page_title', $page_title);
-
-        $articleTemplate->set_var('story_title', $article->DisplayElements('title'));
-        header('Content-Type: text/html; charset=' . COM_getCharset());
-        header('X-XSS-Protection: 1; mode=block');
-        header('X-Content-Type-Options: nosniff');
-
-        if (!empty($_CONF['frame_options'])) {
-            header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);
-        }
-
-        $articleTemplate->set_var('story_date', $article->displayElements('date'));
-        $articleTemplate->set_var('story_modified', $article->displayElements('modified'));
-
-        if ($_CONF['contributedbyline'] == 1) {
-            $articleTemplate->set_var('lang_contributedby', $LANG01[1]);
-            $authorname = COM_getDisplayName($article->displayElements('uid'));
-            $articleTemplate->set_var('author', $authorname);
-            $articleTemplate->set_var('story_author', $authorname);
-            $articleTemplate->set_var('story_author_username', $article->DisplayElements('username'));
-        }
-
         $introtext = $article->DisplayElements('introtext');
         $bodytext = $article->DisplayElements('bodytext');
 
@@ -296,43 +208,16 @@ if ($A['count'] > 0) {
             $fulltext = '<p>' . $fulltext . '</p>';
             $fulltext_no_br = '<p>' . $fulltext_no_br . '</p>';
         }
-
-        $links = extractExternalLinks($fulltext_no_br);
-        $externalLinks = array();
-        $i = 1;
-        foreach ($links as $url => $tag) {
-            $marker = '[*' . $i . '] ';
-            $externalLinks[] = $marker . $url;
-            $fulltext_no_br = str_replace($tag, $tag . $marker, $fulltext_no_br);
-            $i++;
-        }
-
-        if (count($externalLinks) > 0) {
-            $externalLinks = '<p>' . implode('<br' . XHTML . '>' . PHP_EOL, $externalLinks) . PHP_EOL . '</p>';
-        } else {
-            $externalLinks = '';
-        }
-        $articleTemplate->set_var('external_links', $externalLinks);
-
-        $articleTemplate->set_var('story_introtext', $introtext);
-        $articleTemplate->set_var('story_bodytext', $bodytext);
-        $articleTemplate->set_var('story_text', $fulltext);
-        $articleTemplate->set_var('story_text_no_br', $fulltext_no_br);
-        $articleTemplate->set_var('site_name', $_CONF['site_name']);
-        $articleTemplate->set_var('site_slogan', $_CONF['site_slogan']);
-        $articleTemplate->set_var('story_id', $article->getSid());
+	
         $articleUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $article->getSid());
 
+        $printableURL = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $article->getSid() . '&amp;mode=print');
+
+		$comments_with_count = "";
         if ($article->DisplayElements('commentcode') >= 0) {
             $commentsUrl = $articleUrl . '#comments';
             $comments = $article->DisplayElements('comments');
             $numComments = COM_numberFormat($comments);
-            $articleTemplate->set_var('story_comments', $numComments);
-            $articleTemplate->set_var('comments_url', $commentsUrl);
-            $articleTemplate->set_var('comments_text',
-                $numComments . ' ' . $LANG01[3]);
-            $articleTemplate->set_var('comments_count', $numComments);
-            $articleTemplate->set_var('lang_comments', $LANG01[3]);
 
             if ($numComments > 1) {
                 $comments_with_count = sprintf($LANG01[121], $numComments);
@@ -344,18 +229,28 @@ if ($A['count'] > 0) {
                 $comments_with_count = COM_createLink($comments_with_count,
                     $commentsUrl);
             }
-            $articleTemplate->set_var('comments_with_count',
-                $comments_with_count);
         }
-        $articleTemplate->set_var('lang_full_article', $LANG08[33]);
-        $articleTemplate->set_var('article_url', $articleUrl);
-        $printable = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
-            . $article->getSid() . '&amp;mode=print');
-        $articleTemplate->set_var('printable_url', $printable);
-        COM_setLangIdAndAttribute($articleTemplate);
-
-        $articleTemplate->parse('output', 'article');
-        $display = $articleTemplate->finish($articleTemplate->get_var('output'));
+		
+		$itemByline = "";
+		$itemModified = "";
+        if ($_CONF['contributedbyline'] == 1) {
+			$authorname = COM_getDisplayName($article->displayElements('uid'));
+			$itemByline = sprintf($LANG01[5], $authorname, $article->displayElements('date'));
+			$itemModified = sprintf($LANG01[6], $article->displayElements('modified'));
+        }		
+				
+        $display = COM_createHTMLPrintedDocument(
+            $fulltext_no_br,
+            array(
+                'itemURL'   	=> $articleUrl,
+				'printableURL'  => $printableURL,
+                'itemtitle' 	=> $article->DisplayElements('title'),
+				'itembyline' 	=> $itemByline,
+				'itemmodified' 	=> $itemModified,
+				'itemextras' 	=> $comments_with_count
+            )
+        );		
+		
     } else {
         // Set page title
         $pagetitle = $article->DisplayElements('page_title');

@@ -259,6 +259,11 @@ function theme_getThemeItem_modern_curve($item)
     $retval = '';
 
     switch ($item) {
+        case 'core-file-print-css': // Return Common CSS file to be used for print pages - New item as of GL v2.2.1sr1
+            global  $_CONF;
+            $retval = 'layout/' . $_CONF['theme'] . '/css/print.css';
+            break;
+			
         // ***************************
         // Item names used for lists created by COM_makeList
         // These original list items css classes which were defined way back in Geeklog 1.3. Most are not in use anymore by any updated theme
@@ -289,7 +294,6 @@ function theme_getThemeItem_modern_curve($item)
         case 'article-css-list-related-articles': // Return 1 or more CSS Classes - For Article Page You might also like - New item as of GL v2.2.1sr1
         case 'article-css-list-older':  // Return 1 or more CSS Classes - For Older Articles Block - replacing "list-older-stories"
         case 'topic-css-list-related': // Return 1 or more CSS Classes - For Autotags Related Topic items list - New item as of GL v2.2.1
-        case 'core-file-print-css': // Return Common CSS file to be used for print pages - New item as of GL v2.2.1sr1
 
         // If any other items requested return empty string
         default:

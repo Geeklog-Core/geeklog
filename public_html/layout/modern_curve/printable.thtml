@@ -1,0 +1,61 @@
+{doctype}
+<html{lang_attribute}{xmlns}>
+
+<head>
+<meta charset="{charset}"{xhtml}>
+<meta name="robots" content="NOINDEX">
+<title>{page_title}</title>
+
+<!-- Mobile Specific Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"{xhtml}>
+
+<!-- Favicons -->
+<link rel="shortcut icon" href="{layout_url}/images/favicon.ico"{xhtml}>
+
+<!-- <meta http-equiv="Pragma" content="no-cache"{xhtml}> -->
+<link rel="start contents" href="{site_url}"{xhtml}>
+{rel_links}
+{plg_headercode}
+
+<!--[if lt IE 8]><link rel="stylesheet" type="text/css" href="{layout_url}/css_{direction}/ie8.css"{xhtml}><![endif]-->
+<!--[if lt IE 9]><script type="text/javascript" src="{layout_url}/javascript/respond.min.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body id="print" dir="{direction}">
+{# begin {templatelocation} #}
+
+  <div id="print_wrapper">
+    <div id="print_header">
+      <h1>{item_title}</h1>
+	  {!if item_byline}
+      <p>{item_byline}</p>
+	  {!endif}
+	  {!if item_modified}
+	  <p>{item_modified}</p>
+	  {!endif}
+    </div>
+
+    <div id="print_item">
+      {item_content}
+    </div>
+	
+	{!if item_extras}
+    <div id="print_item_extras">
+      {item_extras}
+    </div>	
+	{!endif}
+
+    <div id="print_footer">
+      <p>{page_title}<br>{item_url}</p>
+	  {!if external_links}
+      <p>{external_links}</p>
+	  {!endif}
+    </div>
+  </div>
+  
+  {plg_footercode}
+  
+{# end {templatelocation} #}
+</body>
+</html>

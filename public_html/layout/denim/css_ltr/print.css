@@ -150,7 +150,7 @@ th {
   width: 100%;
 }
 
-#print div#print_header h2 {
+#print div#print_header h1 {
   font-size: 1.5em;
   font-weight: bold;
   line-height: 1.5em;
@@ -161,7 +161,7 @@ th {
 }
 
 @media print {
-  #print div#print_header h2 {
+  #print div#print_header h1 {
     border-top: 1px solid #000;
     border-bottom: 1px solid #000;
   }
@@ -173,11 +173,11 @@ th {
   padding: 2px 0;
 }
 
-#print div#print_story {
+#print div#print_item {
   padding: 1em 0;
 }
 
-#print div#print_story:after {
+#print div#print_item:after {
   content: "";
   display: block;
   clear: both;

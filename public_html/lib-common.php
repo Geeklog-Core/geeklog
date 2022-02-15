@@ -1187,6 +1187,210 @@ function COM_renderMenu($header, $plugin_menu)
 }
 
 /**
+ * Create and return the HTML document that is designed to be printed
+ *
+ * @param  string $content      Main content for the page to be printed as HTML
+ * @param  array  $information  An array defining variables to be used when creating the output
+ *                              string  'headercode'    Optional code to go into the page's <head> boolean
+ *                              string  'itemURL'    	Required URL of page 
+ *                              string  'printableURL' 	Required URL of print page 
+ *                              string  'itemtitle' 	Required title of content 
+ *                              string  'itembyline' 	Optional author and created date
+ *                              string  'itemModified' 	Optional last modified date
+ *                              string  'itemExtras' 	Optional extra html content at bottom of page. 
+ *														Used mainly for comment info.
+ * @return string              Formatted HTML document
+ */
+function COM_createHTMLPrintedDocument($content = '', $information = array())
+{
+    global $_CONF, $LANG01, $LANG_DIRECTION, $_SCRIPTS;
+		   
+    // Retrieve required variables from information array
+	$itemURL = isset($information['itemURL']) ? $information['itemURL'] : '';
+	$printableURL = isset($information['printableURL']) ? $information['printableURL'] : '';
+	$itemTitle = isset($information['itemtitle']) ? $information['itemtitle'] : '';	
+	$itemByline = isset($information['itembyline']) ? $information['itembyline'] : '';	
+	$itemModified = isset($information['itemmodified']) ? $information['itemmodified'] : '';	
+	$itemExtras = isset($information['itemextras']) ? $information['itemextras'] : '';	
+    $headerCode = isset($information['headercode']) ? $information['headercode'] : '';
+	
+    // If the theme implemented this for us then call their version instead.
+    $function = $_CONF['theme'] . '_createHTMLPrintedDocument';
+    if (function_exists($function)) {
+        return $function($content, $information);
+    }
+
+    // If we reach here then either we have the default theme OR
+    // the current theme only needs the default variable substitutions
+    switch ($_CONF['doctype']) {
+        case 'html401transitional':
+            $docType = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
+            break;
+
+        case 'html401strict':
+            $docType = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
+            break;
+
+        case 'xhtml10transitional':
+            $docType = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+            break;
+
+        case 'xhtml10strict':
+            $docType = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+            break;
+
+        case 'html5':
+        case 'xhtml5':
+            $docType = '<!DOCTYPE html>';
+            break;
+
+        default: // fallback: HTML 4.01 Transitional w/o system identifier
+            $docType = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
+            break;
+    }		   
+		   
+	$printTemplate= COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
+	$printTemplate->set_file('print', 'printable.thtml');
+	if (XHTML != '') {
+		$printTemplate->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
+	}
+	$printTemplate->set_var('direction', $LANG_DIRECTION);
+
+	$printCssPath = PLG_getThemeItem('core-file-print-css', 'core');
+	if (empty($printCssPath)) {
+		// Depreciated. Article should not depend on hardcoded file locations for print.css for a theme. Use PLG_getThemeItem('core-file-print-css', 'core'); instead
+		COM_deprecatedLog(__FILE__, '2.2.1sr1', '3.0.0', 'Use PLG_getThemeItem with \'core-file-print-css\' instead to retrieve themes print.css file');
+
+		$theme = $_CONF['theme'];
+		$dir = isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl') ? 'rtl' : 'ltr';
+		$paths = array(
+			'denim'        => 'layout/' . $theme . '/css_' . $dir . '/print.css',
+			'professional' => 'layout/' . $theme . '/print.css',
+			'other'        => 'layout/' . $theme . '/css/print.css',
+		);
+
+		foreach ($paths as $path) {
+			if (file_exists($_CONF['path_html'] . $path)) {
+				$_SCRIPTS->setCssFile('print', '/' . $path, true, array('media' => 'print'));
+			}
+		}
+	} else {
+		if (file_exists($_CONF['path_html'] . $printCssPath)) {
+			$_SCRIPTS->setCssFile('print', '/' . $printCssPath, true, array('media' => 'print'));
+		}
+	}
+
+	// Override style for <a> tags
+	$_SCRIPTS->setCSS('a { color: blue !important; text-decoration: underline !important; }');
+
+	// Add Cookie Consent ( https://cookieconsent.osano.com )
+	if (isset($_CONF['cookie_consent']) && $_CONF['cookie_consent']) {
+		$_SCRIPTS->setCssFile(
+			'cookiconsent', 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css',
+			true, array(), 100
+		);
+		$_SCRIPTS->setJavaScriptFile(
+			'cookie_consent', 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js',
+			false, 100, false,
+			array('data-cfasync' => 'false')
+		);
+
+		if (isset($_CONF['cookie_consent_theme_customization']) && $_CONF['cookie_consent_theme_customization']) {
+			// Theme should have already set customizations in functions.php
+
+		} else {
+			$_SCRIPTS->setJavaScriptFile(
+				'cookie_consent_config', '/javascript/cookie_consent.js',
+				true, 110
+			);
+		}
+	}
+
+	header('Content-Type: text/html; charset=' . COM_getCharset());
+	header('X-XSS-Protection: 1; mode=block');
+	header('X-Content-Type-Options: nosniff');
+
+	if (!empty($_CONF['frame_options'])) {
+		header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);
+	}
+	
+	$printTemplate->set_var('doctype', $docType . LB);
+	
+	$relLinks['canonical'] = '<link rel="canonical" href="' . $_CONF['site_url'] . '/"' . XHTML . '>';
+    
+	$loggedInUser = !COM_isAnonUser();
+    if ($loggedInUser || (($_CONF['loginrequired'] == 0) && ($_CONF['searchloginrequired'] == 0))) {
+        if ((substr($_SERVER['PHP_SELF'], -strlen('/search.php')) !== '/search.php') || isset($_GET['mode'])) {
+            $relLinks['search'] = '<link rel="search" href="' . $_CONF['site_url'] . '/search.php" title="'
+                . $LANG01[75] . '"' . XHTML . '>';
+        }
+    }
+    $printTemplate->set_var('rel_links', implode(LB, $relLinks));
+	
+	// External Links
+	// Extract external links
+	$links = [];
+	$matches = [];
+    if (preg_match_all('@<a\s.*?href="(https?://.+?)".*?>.+?</a>@im', $content, $matches, PREG_SET_ORDER)) {
+        foreach ($matches as $match) {
+            if (stripos($match[1], $_CONF['site_url']) !== 0) {
+                $links[$match[1]] = $match[0];
+            }
+        }
+    }	
+	
+	// Mark external links in content
+	$externalLinks = [];
+	$i = 1;
+	foreach ($links as $url => $tag) {
+		$marker = '[*' . $i . '] ';
+		$externalLinks[] = $marker . $url;
+		$content = str_replace($tag, $tag . $marker, $content);
+		$i++;
+	}
+
+	if (count($externalLinks) > 0) {
+		$externalLinks = implode('<br' . XHTML . '>' . PHP_EOL, $externalLinks) . PHP_EOL;
+	} else {
+		$externalLinks = '';
+	}
+	
+	$printTemplate->set_var('external_links', $externalLinks);	
+	$page_title = $_CONF['site_name'] . ' - ' . $itemTitle;
+	$printTemplate->set_var('page_title', $page_title);	
+    $printTemplate->set_var('site_name', $_CONF['site_name']);
+	$printTemplate->set_var('item_url', $itemURL);	
+	$printTemplate->set_var('printable_url', $printableURL);	
+	$printTemplate->set_var('item_title', $itemTitle);
+	$printTemplate->set_var('item_byline', $itemByline); // Author and Date
+	$printTemplate->set_var('item_modified', $itemModified); // Modified Date
+	$printTemplate->set_var('item_content', $content); // Main content 
+	$printTemplate->set_var('item_extras', $itemExtras); // Usually comment info		
+	
+    // All scripts and css should be set now
+    $headerCode = $_SCRIPTS->getHeader() . $headerCode;
+    $printTemplate->set_var('plg_headercode', $headerCode);
+
+    // Call to plugins to set template variables in the footer
+    PLG_templateSetVars('footer', $printTemplate);
+
+    // Call any plugin that may want to include extra JavaScript functions
+    $pluginFooterCode = PLG_getFooterCode();
+    // Retrieve any JavaScript libraries, variables and functions
+    $footerCode = $_SCRIPTS->getFooter();
+    // $_SCRIPTS code should be placed before plugin_footer_code but plugin_footer_code should still be allowed to set $_SCRIPTS
+    $footerCode .= $pluginFooterCode;
+    $printTemplate->set_var('plg_footercode', $footerCode);
+
+    $printTemplate->set_var('content', $content);
+
+    // Actually parse the template and make variable substitutions
+    $printTemplate->parse('index', 'print');
+
+    return $printTemplate->finish($printTemplate->get_var('index'));
+}
+
+/**
  * Create and return the HTML document
  *
  * @param  string $content      Main content for the page
