@@ -666,132 +666,23 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
  */
 function SP_printPage($page, $A)
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG_STATIC, $LANG_DIRECTION,
-           $_IMAGE_TYPE, $_SCRIPTS;
+    global $_CONF, $_TABLES, $LANG01;
 
-    $print = COM_newTemplate(CTL_plugin_templatePath('staticpages'));
-    $print->set_file(array('print' => 'printable.thtml'));
-    $print->set_var('site_slogan', $_CONF['site_slogan']);
-
-
-	// Add Cookie Consent ( https://cookieconsent.osano.com )
-	if (isset($_CONF['cookie_consent']) && $_CONF['cookie_consent']) {
-		$_SCRIPTS->setCssFile(
-			'cookiconsent', 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css',
-			true, array(), 100
-		);
-		$_SCRIPTS->setJavaScriptFile(
-			'cookie_consent', 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js',
-			false, 100, false,
-			array('data-cfasync' => 'false')
-		);
-
-		if (isset($_CONF['cookie_consent_theme_customization']) && $_CONF['cookie_consent_theme_customization']) {
-			// Theme should have already set customizations in functions.php
-
-		} else {
-			$_SCRIPTS->setJavaScriptFile(
-				'cookie_consent_config', '/javascript/cookie_consent.js',
-				true, 110
-			);
-		}
-	}
-
-	$print->set_var('plg_headercode', $_SCRIPTS->getHeader());
-
-	$print->set_var('plg_footercode', $_SCRIPTS->getFooter());
-
-    $print->set_var('direction', $LANG_DIRECTION);
-    COM_setLangIdAndAttribute($print);
-
-    $page_title = stripslashes($A['sp_page_title']);
-    if (empty($page_title)) {
-        $page_title = $_CONF['site_name'] . ' - ' . stripslashes($A['sp_title']);
-    }
-    $print->set_var('page_title', $page_title);
-
-
-    $print->set_var('sp_id', $page);
     $sp_url = COM_buildURL($_CONF['site_url']
         . '/staticpages/index.php?page=' . $page);
-    $print->set_var('sp_url', $sp_url);
-    $print->set_var('sp_title', stripslashes($A['sp_title']));
-	$print->set_var('sp_inblock', $A['sp_inblock']);
-    $print->set_var('sp_content', $A['sp_content']);
 
-    $author_name = COM_getDisplayName($A['owner_id']);
-    $author_username = DB_getItem($_TABLES['users'], 'username',
-        "uid = {$A['owner_id']}");
-    $print->set_var('author_id', $A['owner_id']);
-    $print->set_var('author', $author_name);
-    $print->set_var('author_name', $author_name);
-    $print->set_var('author_username', $author_username);
-
-    if ($A['owner_id'] > 1) {
-        $profile_link = $_CONF['site_url']
-            . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
-        $authorNameTag = COM_getProfileLink($A['owner_id'], $author_username, $author_name, '');
-        $print->set_var('start_author_anchortag', $authorNameTag);
-        $print->set_var('end_author_anchortag', '');
-        $print->set_var('author_link', $authorNameTag);
-
-        $photo = '';
-        if ($_CONF['allow_user_photo']) {
-            require_once $_CONF['path_system'] . 'lib-user.php';
-
-            $photo = DB_getItem($_TABLES['users'], 'photo',
-                "uid = {$A['owner_id']}");
-            $photo = USER_getPhoto($A['owner_id'], $photo);
-            if (!empty($photo)) {
-                $print->set_var('author_photo', $photo);
-                $camera_icon = '<img src="' . $_CONF['layout_url']
-                    . '/images/smallcamera.' . $_IMAGE_TYPE
-                    . '" alt=""' . XHTML . '>';
-                $print->set_var('camera_icon',
-                    COM_createLink($camera_icon, $profile_link));
-            }
-        }
-        if (empty($photo)) {
-            $print->set_var('author_photo', '');
-            $print->set_var('camera_icon', '');
-        }
-    } else {
-        $print->set_var('start_author_anchortag', '');
-        $print->set_var('end_author_anchortag', '');
-        $print->set_var('author_link', $author_name);
-    }
-
-    $num_hits = COM_numberFormat($A['sp_hits']);
-    $hits = $LANG_STATIC['hits'] . ': ' . $num_hits;
-    $print->set_var('lang_hits', $LANG_STATIC['hits']);
-    $print->set_var('hits_number', $num_hits);
-    $print->set_var('sp_hits', $num_hits);
-    $print->set_var('hits', $hits);
-
-    $curtime = COM_getUserDateTimeFormat($A['modified']);
-    $lastupdate = $LANG_STATIC['lastupdated'] . ': ' . $curtime[0];
-    $print->set_var('lang_updated', $LANG_STATIC['lastupdated']);
-    $print->set_var('updated_date', $curtime[0]);
-    $print->set_var('lastupdate', $lastupdate);
-
-    $printable = COM_buildURL($_CONF['site_url']
+    $printableURL = COM_buildURL($_CONF['site_url']
         . '/staticpages/index.php?page=' . $page
         . '&amp;disp_mode=print');
-    $print->set_var('printable_url', $printable);
+		
+    // $num_hits = COM_numberFormat($A['sp_hits']);
 
+	$comments_with_count = "";
     if ($A['commentcode'] >= 0) {
         $commentsUrl = $sp_url . '#comments';
         $comments = DB_count($_TABLES['comments'],
             array('sid', 'type'), array($page, 'staticpages'));
         $numComments = COM_numberFormat($comments);
-        $print->set_var('story_comments', $numComments);
-        $print->set_var('comments_url', $commentsUrl);
-        $comments_text = $numComments . ' ' . $LANG01[3];
-        $print->set_var('comments_text', $comments_text);
-        $print->set_var('comments_text_in_brackets',
-            '(' . $comments_text . ')');
-        $print->set_var('comments_count', $numComments);
-        $print->set_var('lang_comments', $LANG01[3]);
 
         if ($numComments > 1) {
             $comments_with_count = sprintf($LANG01[121], $numComments);
@@ -803,11 +694,38 @@ function SP_printPage($page, $A)
             $comments_with_count = COM_createLink($comments_with_count,
                 $commentsUrl);
         }
-        $print->set_var('comments_with_count', $comments_with_count);
     }
-    $print->parse('output', 'print');
+	
+	$itemTitle = "";
+	$itemTitle = stripslashes($A['sp_title']);
+	$itemByline = "";
+	$itemModified = "";
+	if ($A['sp_onlastupdate']) {
+		$curtime = COM_getUserDateTimeFormat($A['modified']);
+		$itemModified = sprintf($LANG01[6], $curtime[0]);
+	}
+	/*
+	if ($_CONF['contributedbyline'] == 1) {
+		$curtime = COM_getUserDateTimeFormat($A['created']);
+		$authorname = COM_getDisplayName($A['owner_id']);
+		$itemByline = sprintf($LANG01[5], $authorname, $curtime[0]);
 
-    return $print->finish($print->get_var('output'));
+	}			
+	*/
+	
+	$display = COM_createHTMLPrintedDocument(
+		$A['sp_content'],
+		array(
+			'itemURL'   	=> $sp_url,
+			'printableURL'  => $printableURL,
+			'itemtitle' 	=> $itemTitle,
+			'itembyline' 	=> $itemByline,
+			'itemmodified' 	=> $itemModified,
+			'itemextras' 	=> $comments_with_count
+		)
+	);
+	
+	return $display;
 }
 
 /**
