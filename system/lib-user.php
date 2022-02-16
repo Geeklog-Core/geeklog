@@ -1134,13 +1134,6 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
         if ($msg > 0) {
             $retval .= COM_showMessage($msg, $plugin);
         }
-
-        $systemMessages = COM_getSystemMessages();
-        foreach ($systemMessages as $systemMessage) {
-            if (!empty($systemMessage)) {
-                $retval .= COM_showMessageText($systemMessage);
-            }
-        }
     }
 
     // format date/time to user preference
