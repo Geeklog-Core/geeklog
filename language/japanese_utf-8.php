@@ -2756,6 +2756,7 @@ $LANG_VALIDATION = array(
     'default' => 'このフィールドは許可していない値を含んでいます',
     'notEmpty' => 'このフィールドの入力は必須です',
     'alphaNumeric' => 'このフィールドは半角英数です。',
+	'alphaNumericOrEmpty' => 'This field must be alpha numeric or empty',
     'between' => 'このフィールドは特定の範囲内の値を入れなければなりません',
     'blank' => 'このフィールドは空でなければなりません',
     'comparison' => 'このフィールドは比較操作に適合していません',

@@ -2774,6 +2774,7 @@ $LANG_VALIDATION = array(
     'default' => 'This field contains an invalid value',
     'notEmpty' => 'This field cannot be empty',
     'alphaNumeric' => 'This field must be alpha numeric',
+	'alphaNumericOrEmpty' => 'This field must be alpha numeric or empty',
     'between' => 'This field must be in a specified range',
     'blank' => 'This field must be blank',
     'comparison' => 'This field does not match the comparison operation',

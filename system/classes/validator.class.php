@@ -206,6 +206,34 @@ class Validator
 
         return $_this->_check();
     }
+	
+    /**
+     * Checks that a string contains only integer or letters, or nothing
+     * Returns true if string contains only integer or letters, or nothing
+     * $check can be passed as an array:
+     * array('check' => 'valueToCheck');
+     *
+     * @param  mixed $check Value to check
+     * @return boolean Success
+     */
+    public function alphaNumericOrEmpty($check)
+    {
+        $_this = Validator::getInstance();
+        $_this->reset();
+        $_this->check = $check;
+
+        if (is_array($check)) {
+            $_this->_extract($check);
+        }
+
+		// Empty check
+        if (empty($_this->check) && $_this->check != '0') {
+            return true;
+        }
+        $_this->regex = '/^[\p{Ll}\p{Lm}\p{Lo}\p{Lt}\p{Lu}\p{Nd}]+$/mu';
+
+        return $_this->_check();
+    }	
 
     /**
      * Checks that a string length is within s specified range.
