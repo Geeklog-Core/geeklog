@@ -94,9 +94,19 @@
   <td>「はい」に設定すると、コンテンツを更新するたびにXMLSitemapプラグインはGoogleの検索エンジンにサイトマップファイルの更新を通知します。</td>
 </tr>
 <tr>
-  <td><a name="desc_ping_bing">Bingにpingを送信する(ping_bing)</a></td>
-  <td>いいえ</td>
-  <td>「はい」に設定すると、コンテンツを更新するたびにXMLSitemapプラグインはBingの検索エンジンにサイトマップファイルの更新を通知します。</td>
+  <td><a name="desc_indexnow">IndexNow</a></td>
+  <td>False</td>
+  <td>If you set this to true, the XMLSitemap plugin will automatically inform IndexNow by a ping that a URL and its content has been added, updated, or deleted. IndexNow will then inform search engines like Bing and Yandex of these changes.<br><br>To submit URLs, you must "prove" ownership of the website for which URLs are being submitted by hosting at least one text file within the website. Once you submit your URLs to search engines, search engines will crawl the key file to verify ownership. Only you and the search engines should know the key and your file key location.<br><br>Your key should be random numbers and letters at least 8 characters long. Create a ".txt" file with the name being your key and place it in the root directory of your website. If you choose you can specify that your key file is hosted in another folder on on your website.<br><br>For more documentation see <a href="https://www.indexnow.org/">IndexNow</a> or <a href="https://bing.com/indexnow">Bing IndexNow</a>.</td>
+</tr>
+<tr>
+  <td><a name="desc_indexnew_key">IndexNow Key</a></td>
+  <td></td>
+  <td>A key is needed to match the ownership of the domain along with submitted URLs. It should be random numbers and letters and be a minimum of 8 characters long.</td>
+</tr>
+<tr>
+  <td><a name="desc_indexnew_key">IndexNow Key Location</a></td>
+  <td></td>
+  <td>If blank, the root URL for your site is assumed as the location for the txt file which allows search engines to verify ownership. If needed you can specify a different folder within your website. The location needs to be a valid URL that includes the text file name.</td>
 </tr>
 </table>
 

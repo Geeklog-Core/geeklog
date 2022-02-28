@@ -77,7 +77,7 @@
   <!-- Note: Added multiple anchors here as a workaround so tooltip would work in Geeklog configuration for at least the default options. Unfortunately will not work for any additional plugins. -->
   <td><a name="desc_frequencies">frequencies</a><a name="desc_frequencies_article"></a><a name="desc_frequencies_polls"></a><a name="desc_frequencies_staticpages"></a><a name="desc_frequencies_calendar"></a></td>
   <td>'weekly' for staticpages, 'daily' for others</td>
-  <td>The frequency with which some type of contents are likely to be updated.  Valid values include 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', and 'never'.  This value will be used by search engine crawlers just to decide how often they should check the contents.  However, specifying 'always' doesn't mean that search engine crawlers will surely visit your site.  So, specifiying 'daily' or 'weekly' would be better in most cases. Specifiying 'hidden' means no frequency is displayed for the content.</td>
+  <td>The frequency with which some type of contents are likely to be updated.  Valid values include 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', and 'never'.  This value will be used by search engine crawlers just to decide how often they should check the contents.  However, specifying 'always' doesn't mean that search engine crawlers will surely visit your site.  So, specifying 'daily' or 'weekly' would be better in most cases. Specifying 'hidden' means no frequency is displayed for the content.</td>
 </tr>
 </table>
 
@@ -94,9 +94,19 @@
   <td>If you set this to true, the XMLSitemap plugin will automatically inform Google crawlers when you update contents. For main Sitemap file only.</td>
 </tr>
 <tr>
-  <td><a name="desc_ping_bing">ping_bing</a></td>
-  <td>True</td>
-  <td>If you set this to true, the XMLSitemap plugin will automatically inform Bing crawlers when you update contents. For main Sitemap file only.</td>
+  <td><a name="desc_indexnow">IndexNow</a></td>
+  <td>False</td>
+  <td>If you set this to true, the XMLSitemap plugin will automatically inform IndexNow by a ping that a URL and its content has been added, updated, or deleted. IndexNow will then inform search engines like Bing and Yandex of these changes.<br><br>To submit URLs, you must "prove" ownership of the website for which URLs are being submitted by hosting at least one text file within the website. Once you submit your URLs to search engines, search engines will crawl the key file to verify ownership. Only you and the search engines should know the key and your file key location.<br><br>Your key should be random numbers and letters at least 8 characters long. Create a ".txt" file with the name being your key and place it in the root directory of your website. If you choose you can specify that your key file is hosted in another folder on on your website.<br><br>For more documentation see <a href="https://www.indexnow.org/">IndexNow</a> or <a href="https://bing.com/indexnow">Bing IndexNow</a>.</td>
+</tr>
+<tr>
+  <td><a name="desc_indexnew_key">IndexNow Key</a></td>
+  <td></td>
+  <td>A key is needed to match the ownership of the domain along with submitted URLs. It should be random numbers and letters and be a minimum of 8 characters long.</td>
+</tr>
+<tr>
+  <td><a name="desc_indexnew_key">IndexNow Key Location</a></td>
+  <td></td>
+  <td>If blank, the root URL for your site is assumed as the location for the txt file which allows search engines to verify ownership. If needed you can specify a different folder within your website. The location needs to be a valid URL that includes the text file name.</td>
 </tr>
 </table>
 

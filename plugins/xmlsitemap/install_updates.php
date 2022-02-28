@@ -76,5 +76,17 @@ function xmlsitemap_update_ConfValues_2_0_3()
     // Drop $_XMLSMAP_CONF['exclude']
     $c->del('exclude', $me);
 	
+	// Drop $_XMLSMAP_CONF['ping_bing']
+	$c->del('ping_bing', $me);
+	
+	// IndexNow
+	$c->add('indexnow', $_XMLSMAP_DEFAULT['indexnow'], 'select', 0,
+		3, 1, 110, true, $me, 3);
+	$c->add('indexnow_key', $_XMLSMAP_DEFAULT['indexnow_key'], 'text', 0,
+		3, null, 111, true, $me, 3);			
+	$c->add('indexnow_key_location', $_XMLSMAP_DEFAULT['indexnow_key_location'], 'text', 0,
+		3, null, 112, true, $me, 3);			
+	
+	
 	return true;
 }

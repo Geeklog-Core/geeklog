@@ -60,7 +60,9 @@ $LANG_confignames['xmlsitemap'] = array(
     'priorities'          => 'Priority',
     'frequencies'         => 'Frequency',
     'ping_google'         => 'Send ping to Google',
-    'ping_bing'           => 'Send ping to Bing',
+	'indexnow'            => 'Enable IndexNow',
+	'indexnow_key'        => 'IndexNow Key',
+	'indexnow_key_location' => 'IndexNow Key Location',
     'news_sitemap_file'   => 'News Sitemap file name',
     'news_sitemap_topics' => 'Include Articles from these Topics',
     'news_sitemap_age'    => 'Max Age of Articles',
@@ -82,7 +84,7 @@ $LANG_fs['xmlsitemap'] = array(
     'fs_main' => 'XMLSitemap Main Settings',
     'fs_pri'  => 'Priority (default = 0.5, lowest = 0.0, highest = 1.0)',
     'fs_freq' => 'Update frequency',
-    'fs_ping' => 'Send ping on updating sitemap',
+    'fs_ping' => 'Send ping on change',
     'fs_news' => 'News Sitemap Settings',
 );
 

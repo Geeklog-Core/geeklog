@@ -86,7 +86,12 @@ $_XMLSMAP_DEFAULT['frequencies'] = [
 
 // Ping targets
 $_XMLSMAP_DEFAULT['ping_google'] = true;
-$_XMLSMAP_DEFAULT['ping_bing']   = true;
+
+// IndexNow
+$_XMLSMAP_DEFAULT['indexnow'] = false;
+$_XMLSMAP_DEFAULT['indexnow_key'] = '';
+$_XMLSMAP_DEFAULT['indexnow_key_location'] = '';
+
 
 // News Sitemap settings
 // Array of article topics for news. If none then all topics.
@@ -142,9 +147,15 @@ function plugin_initconfig_xmlsitemap()
         $c->add('fs_ping', null, 'fieldset', 0, 3, null, 0, true, $me, 3);
         $c->add('ping_google', $_XMLSMAP_DEFAULT['ping_google'], 'select', 0,
             3, 1, 100, true, $me, 3);
-        $c->add('ping_bing', $_XMLSMAP_DEFAULT['ping_bing'], 'select', 0,
+		
+		// IndexNow
+        $c->add('indexnow', $_XMLSMAP_DEFAULT['indexnow'], 'select', 0,
             3, 1, 110, true, $me, 3);
-
+		$c->add('indexnow_key', $_XMLSMAP_DEFAULT['indexnow_key'], 'text', 0,
+            3, null, 111, true, $me, 3);			
+		$c->add('indexnow_key_location', $_XMLSMAP_DEFAULT['indexnow_key_location'], 'text', 0,
+            3, null, 112, true, $me, 3);			
+		
         // News Sitemap
         $c->add('tab_news', null, 'tab', 0, 4, null, 0, true, $me, 4);
         $c->add('fs_news', null, 'fieldset', 0, 4, null, 0, true, $me, 4);
@@ -152,7 +163,7 @@ function plugin_initconfig_xmlsitemap()
             'text', 0, 4, null, 120, false, $me, 4);
         $c->add('news_sitemap_topics', $_XMLSMAP_DEFAULT['news_sitemap_topics'], '%text', 0, 4, null, 130,
             true, $me, 4);
-        $c->add('news_sitemap_age',$_XMLSMAP_DEFAULT['news_sitemap_age'],'text',0,4,NULL,140,TRUE, $me, 4);
+        $c->add('news_sitemap_age',$_XMLSMAP_DEFAULT['news_sitemap_age'], 'text', 0, 4, null, 140, true, $me, 4);
     }
 
     return true;

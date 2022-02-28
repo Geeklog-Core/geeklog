@@ -1032,10 +1032,6 @@ class XMLSitemap
             $pingTargets[] = 'google';
         }
 
-        if (isset($_XMLSMAP_CONF['ping_bing']) && $_XMLSMAP_CONF['ping_bing']) {
-            $pingTargets[] = 'bing';
-        }
-
         // Get file names
         list ($filename, $mobileFilename, $newsFilename) = $this->getFileNames();
 
@@ -1122,12 +1118,13 @@ class XMLSitemap
 
             switch ($dest) {
                 case 'google':
-                    $url = 'http://www.google.com/ping?sitemap=' . $sitemapUrl;
+                    $url = 'https://www.google.com/ping?sitemap=' . $sitemapUrl;
                     break;
-
-                case 'bing':
-                    $url = 'https://www.bing.com/ping?sitemap=' . $sitemapUrl;
-                    break;
+				
+				// See: https://github.com/Geeklog-Core/geeklog/issues/1105
+                //case 'bing':
+                //    $url = 'https://www.bing.com/ping?sitemap=' . $sitemapUrl;
+                //    break;
 
                 default:
                     $url = '';
@@ -1174,4 +1171,82 @@ class XMLSitemap
 
         return (count($destinations) === $success);
     }
+	
+    /**
+     * Submit a changed URL to IndexNow
+     *
+     * @param  string  $changedURL    the full URL to the changed page
+     * @return int                    if successful or not
+     */
+    public function submitURL($changedURL)
+    {
+        global $_CONF, $_XMLSMAP_CONF;
+
+        if (COM_isDemoMode() || !$_XMLSMAP_CONF['indexnow']) {
+            return 0;
+        }
+		
+        if (empty($_XMLSMAP_CONF['indexnow_key'])) {
+            COM_errorLog(__METHOD__ . ': IndexNow key is not set.');
+
+            return 0;
+		}
+
+        if (empty($changedURL)) {
+            COM_errorLog(__METHOD__ . ': url is not specified to ping IndexNow with.');
+
+            return 0;
+        } elseif (preg_match('@\Ahttps?://localhost/@i', $_CONF['site_url'])) {
+            // It seems that 'localhost' is not accepted
+            return 0;
+        }
+		
+		$_validator = Validator::getInstance();		
+		$ruleParams[] = $changedURL;
+		if (!$_validator->dispatchMethod("url", $ruleParams)) {
+            COM_errorLog(__METHOD__ . ': url "' . $changedURL . '" is not valid and therefore cannot be used by IndexNow.');
+
+            return 0;
+		}
+		
+		if (!empty($_XMLSMAP_CONF['indexnow_key_location'])) {
+			unset($ruleParams);
+			$ruleParams[] = $_XMLSMAP_CONF['indexnow_key_location'];
+			if (!$_validator->dispatchMethod("url", $ruleParams)) {
+				COM_errorLog(__METHOD__ . ': key location is not a valid url and therefore cannot be used with IndexNow.');
+
+				return 0;
+			}
+			
+		}
+		
+		$success = 0;
+		
+		// Build url
+		$url = 'https://api.indexnow.org/indexnow?url=' . urlencode($changedURL) . '&key=' . $_XMLSMAP_CONF['indexnow_key'];
+		if (!empty($_XMLSMAP_CONF['indexnow_key_location'])) {
+			$url .= '&keyLocation=' . urlencode($_XMLSMAP_CONF['indexnow_key_location']);
+		}
+
+		// Sends a ping to the endpoint of IndexNow
+		if (!empty($url)) {
+			$req = new HTTP_Request2($url, HTTP_Request2::METHOD_GET);
+
+			try {
+				$req->setHeader('User-Agent', 'Geeklog/' . VERSION);
+				$response = $req->send();
+				$status = $response->getStatus();
+
+				if ($status == 200 || $status == 202) {
+					$success++;
+				} else {
+					COM_errorLog(sprintf('Failed to send a ping to %s: HTTP status %d', $url, $status));
+				}
+			} catch (HTTP_Request2_Exception $e) {
+				COM_errorLog(__METHOD__ . ': ' . $e->getMessage());
+			}
+		}
+
+        return $success;
+    }	
 }

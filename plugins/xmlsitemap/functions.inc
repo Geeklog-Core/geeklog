@@ -395,10 +395,6 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
         $pingTargets[] = 'google';
     }
 
-    if (isset($_XMLSMAP_CONF['ping_bing']) && $_XMLSMAP_CONF['ping_bing']) {
-        $pingTargets[] = 'bing';
-    }
-
     foreach ($sitemap->getFileNames() as $fileName) {
         $sitemap->sendPing($pingTargets, $fileName);
     }
@@ -456,12 +452,12 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
 
 	if (!empty($old_id) && ($id !== $old_id)) {
 		// Item updated
-		$Url = PLG_idToURL($type, $sub_type, $old_id);
+		$url = PLG_idToURL($type, $sub_type, $old_id);
 	} else {
-		$Url = PLG_idToURL($type, $sub_type, $id); 
+		$url = PLG_idToURL($type, $sub_type, $id); 
     }
 	// Always need to delete as item may exist already in sitemap but needs to be changed
-	$sitemap->deleteItem($type, $Url); 
+	$sitemap->deleteItem($type, $url); 
 	
 	if (!empty($newItem)) { 
 		// Item created
@@ -472,11 +468,16 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
 	}				
 	
 	$result = $sitemap->endUpdate();
-
+	
     if (!$result) {
 		// Tried to update sitemap files partially, but failed.  Let's use the old way
 		XMLSMAP_update($type);
     }
+	
+	// Ping IndexNow for changed url. For new, updated, and delete
+	if ($_XMLSMAP_CONF['indexnow']) {
+		$sitemap->submitURL($url);
+	}
 }
 
 /**
