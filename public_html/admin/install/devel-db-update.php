@@ -114,6 +114,7 @@ function update_DatabaseFor222()
 	// The following entries are no longer defined in 'lib-database.php', so define them here
 	$_TABLES['cookiecodes'] = $_DB_table_prefix . 'cookiecodes';
 	$_TABLES['dateformats'] = $_DB_table_prefix . 'dateformats';
+	$_TABLES['maillist'] = $_DB_table_prefix . 'maillist';
 	$_TABLES['usercomment'] = $_DB_table_prefix . 'usercomment';
 	$_TABLES['userindex'] = $_DB_table_prefix . 'userindex';
 	$_TABLES['userinfo'] = $_DB_table_prefix . 'userinfo';
