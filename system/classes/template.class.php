@@ -1874,7 +1874,7 @@ class Template
         }
         $phpFile = $TEMPLATE_OPTIONS['path_cache'] . $extra_path . $baseFile . '.php';
 
-        $template_fstat = @filemtime($filename);
+        $template_fstat = is_readable($filename) ? @filemtime($filename) : 0;
         if (file_exists($phpFile)) {
             $cache_fstat = @filemtime($phpFile);
         } else {
