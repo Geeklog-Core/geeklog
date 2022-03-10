@@ -733,6 +733,28 @@ $LANG12 = [
 ];
 
 ###############################################################################
+# likes.php - likes and dislikes
+
+// @FIXME
+$LANG_LIKES = array(
+    'like'              => 'Like',
+    'unlike'            => 'Unlike',
+    'dislike'           => 'Dislike',
+    'undislike'         => 'Undislike',
+    'likes'             => 'Likes',
+    'unlikes'           => 'Unlikes',
+    'dislikes'          => 'Dislikes',
+    'undislikes'        => 'Undislikes',
+    'i_like_this'       => 'I like this',
+    'i_dislike_this'    => 'I dislike this',
+    'thanks_for_action' => 'Thanks for voting!',
+    'likes_speedlimit'  => "You last used the Likes system on an item %s seconds ago. This site requires at least %s seconds between using the Likes system",
+    'likes_ip_error'    => 'Your IP address has already performed this Likes action.',
+    'likes_uid_error'   => 'Your User account has already performed this Likes action.',
+    'own_item_error'    => 'Either you own the item or do not have permission to Like/Dislike it.'
+);
+
+###############################################################################
 # ADMIN PHRASES - These are file phrases used in admin scripts
 ###############################################################################
 
@@ -1963,6 +1985,22 @@ $LANG_MONTH = [
     12 => 'دسامبر'
 ];
 
+// @FIXME
+$LANG_MONTH_SHORT = [
+    1  => 'ژانویه',
+    2  => 'فوریه',
+    3  => 'مارس',
+    4  => 'آوریل',
+    5  => 'مه',
+    6  => 'ژوئن',
+    7  => 'جولای',
+    8  => 'آگوست',
+    9  => 'سپتامبر',
+    10 => 'اکتبر',
+    11 => 'نوامبر',
+    12 => 'دسامبر'
+];
+
 ###############################################################################
 # Weekdays
 
@@ -1975,6 +2013,32 @@ $LANG_WEEK = [
     6 => 'جمعه',
     7 => 'شنبه'
 ];
+
+// @FIXME
+$LANG_WEEK_SHORT = [
+    1 => 'یکشنبه',
+    2 => 'دوشنبه',
+    3 => 'سه شنبه',
+    4 => 'چهار شنبه',
+    5 => 'پنج شنبه',
+    6 => 'جمعه',
+    7 => 'شنبه'
+];
+
+###############################################################################
+# AM/PM
+
+// @FIXME
+$LANG_AMPM = array(
+    'am_pm' => array(
+        'am' => 'am',
+        'pm' => 'pm',
+    ),
+    'AM_PM' => array(
+        'am' => 'AM',
+        'pm' => 'PM',
+    ),
+);
 
 ###############################################################################
 # Admin - Strings
