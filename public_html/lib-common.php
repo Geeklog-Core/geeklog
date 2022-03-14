@@ -7198,24 +7198,66 @@ function COM_getCurrentURL()
  */
 function COM_onFrontpage()
 {
-    global $_CONF, $page;
+    global $_CONF, $_TABLES;
     static $onFrontPage = null; // Cache the result since this function is called many times
 
     // Some plugin may still be using Global $topic variable so check and update $_USER array as needed
     _depreciatedCheckGlobalTopicVariableUsed();
 
     if ($onFrontPage === null) {
-        // Note: We can't use $PHP_SELF here since the site may not be in the DocumentRoot
         $onFrontPage = false;
 
-        $current_topic = TOPIC_currentTopic();
+        //$current_topic = TOPIC_currentTopic();
 
-        $scriptName = empty($_SERVER['PATH_INFO']) ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PATH_INFO'];
-        $posDoubleSlashes = strpos($_CONF['site_url'], '//');
-        $posSlash = strpos($_CONF['site_url'], '/', $posDoubleSlashes + 2);
-        $pathOnly = substr($_CONF['site_url'], $posSlash);
-
-        if (($scriptName == $pathOnly . '/index.php') && empty($current_topic) && (empty($page) || ($page == 1))) {
+		$scriptName = rtrim(COM_getCurrentURL(), '/'); // get ride of slash if exist as not needed
+		// Add homepage index.php if missing
+		if ($scriptName == $_CONF['site_url']) {
+			$scriptName .= '/index.php';
+		}
+		
+		// Figure out all Homepage URLs
+		// What is homepage? 
+		// Note: Does not include any with last character being / as we will remove this if exist to make comparison easier
+		// Note: If URL Routing enabled then "topic" in URL could be something else as it can be changed in URL Routing Admin page
+		// site_url
+		// site_url/index.php
+		// site_url/index.php?page=1
+		// * URL Rewrite and URL Routing with "index.php" enabled
+		// site_url/index.php/topic/-
+		// site_url/index.php/topic/-/1
+		// * URL Routing without "index.php" enabled
+		// site_url/topic/-
+		// site_url/topic/-/1		
+		
+		$homepageURLS[] = $_CONF['site_url'] . '/index.php';
+		$homepageURLS[] = $_CONF['site_url'] . '/index.php?page=1';
+		if ($_CONF['url_rewrite']) {
+			$homepageURLS[] = $_CONF['site_url'] . '/index.php/topic/-';
+			$homepageURLS[] = $_CONF['site_url'] . '/index.php/topic/-/1';
+			
+			if ($_CONF['url_routing']) {
+				// Find rule info
+				$urlRule = DB_getItem($_TABLES['routes'], 'rule', "route = '/index.php?topic=@topic'");
+				// Strip out topic name
+				$topicRuleName = ltrim($urlRule, '/');
+				//$topicRuleName = rtrim($topicRuleName, '/@topic'); // DOESN'T WORK
+				$toRemove = '/@topic';
+				$len = strlen($toRemove);
+				if (strcmp(substr($topicRuleName, -$len, $len), $toRemove) === 0) {
+					$topicRuleName = substr($topicRuleName, 0, -$len);
+				}	
+				
+				if ($_CONF['url_routing'] == Router::ROUTING_WITH_INDEX_PHP) {
+					$homepageURLS[] = $_CONF['site_url'] . '/index.php/' . $topicRuleName . '/-';
+					$homepageURLS[] = $_CONF['site_url'] . '/index.php/' . $topicRuleName . '/-/1';
+				} elseif ($_CONF['url_routing'] == Router::ROUTING_WITHOUT_INDEX_PHP) {
+					$homepageURLS[] = $_CONF['site_url'] . '/' . $topicRuleName . '/-';
+					$homepageURLS[] = $_CONF['site_url'] . '/' . $topicRuleName . '/-/1';
+				}
+			}
+		}
+		
+		if (($pos = array_search($scriptName, $homepageURLS)) !== false) {
             $onFrontPage = true;
         }
     }
