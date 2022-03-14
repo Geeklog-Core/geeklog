@@ -142,7 +142,12 @@ manually.</p>
 <tr>
     <td valign="top"><a name="desc_ip_anonymization">ip_anonymization</a></td>
     <td valign="top"><span class="tt">-1</span></td>
-    <td valign="top">IP anonymization policy.  -1 if you don't want to anonymize IP addresses, 0 for instant anonymization.  If you set X (an integer), IP anonymization will be performed after X seconds have passed.</td></tr>
+    <td valign="top">IP anonymization policy.  -1 if you don't want to anonymize IP addresses, 0 for instant anonymization.  If you set X (an integer), IP anonymization will be performed after X seconds have passed.<br><br>
+	<b>Please note</b> that the Geeklog Cron (<a href="#desc_cron_schedule_interval">cron_schedule_interval</a>) needs to be enabled to anonymize IPs.<br><br>
+	This only anonymizes IP addresses stored in the Geeklog database (that supports this feature). To remove all IP data, the Geeklog log files and web server log files should be deleted as well.<br><br>
+	Anonymization only happens after the cron job is triggered. This means there most likely will be a delay in anonymization until the cron job is run.<br><br>
+	Setting anonymization to instant (0) or a low value may interfere with plugins and/or the functionality of Geeklog. For example, in some cases IPs are used to determine if a visitor is behaving badly by submitted spam or content to often.
+	</td></tr>
 </table>
 
 <h3><a name="site_mail">Site: Mail</a></h3>
@@ -1786,7 +1791,7 @@ the admin panel.</p>
     interval in which the code should be executed (e.g. 86400 for daily
     activation).<br />
     Please note that to trigger this action, you will need to have someone
-    visit your site at around the specified time. On a site with few visitors,
+    visit your sites homepage (or front page) at around the specified time. On a site with few visitors,
     the code may only be executed with considerable delay.<br />
     Set to 0 to disable.</td></tr>
 <tr>
