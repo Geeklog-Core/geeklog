@@ -440,9 +440,15 @@ function staticpageeditor_form(array $A)
         if (empty($sp_id) && $mode == 'edit') { // means new
             $topic_sp_id = '';
         }
-
-        $sp_template->set_var('topic_selection',
-            TOPIC_getTopicSelectionControl('staticpages', $topic_sp_id, true, false, true, true, 2));
+		
+		if ($mode == $LANG_ADMIN['save']) { // This can happen if error on save for example with missing data like title
+			// Reload from control on page		
+			$sp_template->set_var('topic_selection',
+				TOPIC_getTopicSelectionControl('staticpages', '', true, false, true, true, 2));
+		} else {
+			$sp_template->set_var('topic_selection',
+				TOPIC_getTopicSelectionControl('staticpages', $topic_sp_id, true, false, true, true, 2));
+		}
     } else {
         $sp_template->set_var('topic_selection',
             TOPIC_getTopicSelectionControl('staticpages', $A['clone_sp_id'], true, false, true, true, 2));
