@@ -687,7 +687,7 @@ function update_DatabaseFor212()
 
 $display = '<h2>Development Database Update</h2>';
 
-$gl_prev_version = "2.2.1sr1";
+$gl_prev_version = "2.2.1";
 $gl_devel_version = "2.2.2";
 
 $display .= "<p>This update is for Geeklog Core and Core Plugins. Can include changes to database structure and data, along with configuration options. All Core plugins must be installed when you run this script.</p>
@@ -713,7 +713,7 @@ if (function_exists($function)) {
         $display .= 'There was problems updating the configuration settings.';
     }
 } else {
-    $display .= 'No configuration settings found to updated.';
+    $display .= 'No configuration settings found to update.';
 }
 $display .= '</li></ul>';
 
