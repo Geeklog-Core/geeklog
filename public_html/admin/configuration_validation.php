@@ -441,6 +441,7 @@ $_CONF_VALIDATE['Core']['likes_comments'] = [
     'rule' => ['inList', [0, 1, 2], false],
 ];
 $_CONF_VALIDATE['Core']['likes_speedlimit'] = ['rule' => 'numeric'];
+$_CONF_VALIDATE['Core']['likes_users_listed'] = ['rule' => 'numeric'];
 
 // Subgroup Images, Tab Image Library
 $_CONF_VALIDATE['Core']['image_lib'] = [

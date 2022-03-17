@@ -785,7 +785,13 @@ $LANG_LIKES = array(
     'likes_speedlimit' => 'あなたは %s 秒前にお気に入りを投票しました。このサイトでは次にお気に入りの記事を投票する前に少なくとも %s 秒待つ必要があります。',
     'likes_ip_error' => 'あなたのIPアドレスから既にお気に入りは投票されています。',
     'likes_uid_error' => 'あなたのアカウントを用いて既にお気に入りは投票されています。',
-    'own_item_error' => '自分自身のアイテムに対してはお気に入りは実行できません。'
+    'own_item_error' => '自分自身のアイテムに対してはお気に入りは実行できません。', 
+	'liked_by' 			=> 'Liked by:',
+	'disliked_by' 		=> 'Disliked by:',
+	'num_anon_users' 	=> '<br>%s Anonymous Users',
+	'one_anon_users' 	=> '<br>1 Anonymous User',
+	'num_more_users' 	=> '<br>+%s more Users',
+	'username_in_likes_list' => '<br>%s'
 );
 
 ###############################################################################
@@ -2495,6 +2501,7 @@ $LANG_confignames['Core'] = array(
     'likes_articles' => '記事のLikes',
     'likes_comments' => 'コメントのLikes',
     'likes_speedlimit' => 'Likesの実行制限間隔(秒)',
+	'likes_users_listed' => 'User Listed',
     'passwordspeedlimit' => 'パスワードの取得制限間隔',
     'login_attempts' => 'ログイン試行最大回数',
     'login_speedlimit' => 'ログイン試行制限間隔',

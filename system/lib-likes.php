@@ -75,13 +75,13 @@ define('LIKES_ACTION_UNDISLIKE', 4);
 *
 * @param        string      $type               plugin name
 * @param        string      $sub_type           Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
-* @param        string      $id                 item id WARNING must be no larger that 128 characters
+* @param        string      $item_id            item id WARNING must be no larger that 128 characters
 * @param        int         $likes_setting      if 2 dislikes will not be displayed
 * @param        string      $message            language string of message to pass to user
 * @return       string      html of the likes control
 *
 */
-function LIKES_control($type, $sub_type, $id, $likes_setting, $message = '') {
+function LIKES_control($type, $sub_type, $item_id, $likes_setting, $message = '') {
     global $_USER, $_CONF, $LANG_LIKES, $_SCRIPTS;
 
     // Figure out if dislike is enabled or not
@@ -90,7 +90,7 @@ function LIKES_control($type, $sub_type, $id, $likes_setting, $message = '') {
         $dislike = false;
     }
 
-    list($num_likes, $num_dislikes) = LIKES_getLikes($type, $sub_type, $id);
+    list($num_likes, $num_dislikes) = LIKES_getLikes($type, $sub_type, $item_id);
 
     // Find likes control template file to use
     if ($type != 'article' OR $type != 'comment') {
@@ -116,18 +116,18 @@ function LIKES_control($type, $sub_type, $id, $likes_setting, $message = '') {
 
     $likes_templates->set_var('item_type', $type);
     $likes_templates->set_var('item_sub_type', $sub_type);
-    $likes_templates->set_var('item_id', $id);
+    $likes_templates->set_var('item_id', $item_id);
 
     $uid = isset($_USER['uid']) ? $_USER['uid'] : 1;
     $ip = \Geeklog\IP::getIPAddress();
 
-    $action_enabled = PLG_canUserLike($type, $sub_type, $id, $uid, $ip);
+    $action_enabled = PLG_canUserLike($type, $sub_type, $item_id, $uid, $ip);
 
     $likes_templates->set_var('dislike_enabled', $dislike);
     $likes_templates->set_var('action_enabled', $action_enabled);
 
     if ($action_enabled) {
-        $prev_action = LIKES_hasAction($type, $sub_type, $id, $uid, $ip);
+        $prev_action = LIKES_hasAction($type, $sub_type, $item_id, $uid, $ip);
         if ($prev_action == LIKES_ACTION_LIKE) {
             $likes_templates->set_var('user_liked', true);
             $likes_templates->set_var('lang_like_action', $LANG_LIKES['unlike']);
@@ -152,19 +152,89 @@ function LIKES_control($type, $sub_type, $id, $likes_setting, $message = '') {
     }
 
     // Debug
-    //$message .= " t=".$type." st=".$sub_type." i=".$id." u=".$uid." a=".$action_enabled;
+    //$message .= " t=".$type." st=".$sub_type." i=".$item_id." u=".$uid." a=".$action_enabled;
 
     $likes_templates->set_var('lang_message', $message);
 
     $likes_templates->set_var('num_of_likes', LIKES_formatNum($num_likes));
+	if ($num_likes > 0) {
+		$likes_templates->set_var('lang_num_of_likes', LIKES_numberTooltip($type, $sub_type, $item_id, LIKES_ACTION_LIKE));
+	}
     if ($dislike) {
         $likes_templates->set_var('num_of_dislikes', LIKES_formatNum($num_dislikes));
+		if ($num_dislikes > 0) {
+			$likes_templates->set_var('lang_num_of_dislikes', LIKES_numberTooltip($type, $sub_type, $item_id, LIKES_ACTION_DISLIKE));		
+		}
     }
 
     $likes_templates->parse('output', 'likes_control');
     $retval = $likes_templates->finish($likes_templates->get_var('output'));
 
     return $retval;
+}
+
+/**
+* Returns the likes/dislikes number tooltip
+*
+* @param        string      $type               plugin name
+* @param        string      $sub_type           Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
+* @param        string      $item_id            item id WARNING must be no larger that 128 characters
+* @param        int     $action    LIKES_ACTION_LIKE or LIKES_ACTION_DISLIKE
+* @return       string     tooltip text for Likes or Dislikes number
+*
+*/
+function LIKES_numberTooltip($type, $sub_type, $item_id, $action)
+{
+	global $_CONF, $LANG_LIKES, $_TABLES;
+
+	if (!($action == LIKES_ACTION_LIKE || $action == LIKES_ACTION_DISLIKE) 
+		|| (!isset($_CONF['likes_users_listed']) || $_CONF['likes_users_listed'] == 0)) {
+		return '';
+	}
+	
+    $sql = "SELECT uid FROM {$_TABLES['likes']} WHERE type='" . DB_escapeString($type) . "' AND subtype='" . DB_escapeString($sub_type) . "' AND id='" . DB_escapeString($item_id) . "' AND uid = 1 AND action = " . $action;
+    $result = DB_query($sql);
+    $num_anon_likes = DB_numRows($result);	
+	
+    $sql = "SELECT uid FROM {$_TABLES['likes']} WHERE type='" . DB_escapeString($type) . "' AND subtype='" . DB_escapeString($sub_type) . "' AND id='" . DB_escapeString($item_id) . "' AND uid > 1 AND action = " . $action . " ORDER BY created DESC";
+    $result = DB_query($sql);
+	$num_user_likes = DB_numRows($result);
+	$user_list = '';
+	$user_count = 0;
+	$num_more_users = 0;	
+		
+    while (($A = DB_fetchArray($result, false)) != false) {
+		$user_count++;
+		$user_list .= sprintf($LANG_LIKES['username_in_likes_list'], COM_getDisplayName($A['uid']));
+		if ($user_count == $_CONF['likes_users_listed']) {
+			$num_more_users = $num_user_likes - $user_count;
+			// Only stop if greater than 1 more else just go through it one more time
+			if (($user_count + 1) < $num_user_likes) {
+				break;
+			}
+		}
+	}	
+	
+	if ($action == LIKES_ACTION_LIKE) {
+		$lang_num_of_likes = $LANG_LIKES['liked_by'];
+	} else {
+		$lang_num_of_likes = $LANG_LIKES['disliked_by'];
+	}
+	
+	if ($num_anon_likes == 1) {
+		$lang_num_of_likes .= $LANG_LIKES['one_anon_users'];
+	} elseif ($num_anon_likes > 1) {
+		$lang_num_of_likes .= sprintf($LANG_LIKES['num_anon_users'], $num_anon_likes);
+	}
+	
+	$lang_num_of_likes .= $user_list;
+	
+	if (($user_count + 1) < $num_user_likes) {
+		$lang_num_of_likes .= sprintf($LANG_LIKES['num_more_users'], $num_more_users);
+	}	
+
+	return $lang_num_of_likes;
+
 }
 
 /**

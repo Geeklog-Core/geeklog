@@ -778,7 +778,13 @@ $LANG_LIKES = array(
     'likes_speedlimit'  => "You last used the Likes system on an item %s seconds ago. This site requires at least %s seconds between using the Likes system",
     'likes_ip_error'    => 'Your IP address has already performed this Likes action.',
     'likes_uid_error'   => 'Your User account has already performed this Likes action.',
-    'own_item_error'    => 'Either you own the item or do not have permission to Like/Dislike it.'
+    'own_item_error'    => 'Either you own the item or do not have permission to Like/Dislike it.', 
+	'liked_by' 			=> 'Liked by:',
+	'disliked_by' 		=> 'Disliked by:',
+	'num_anon_users' 	=> '<br>%s Anonymous Users',
+	'one_anon_users' 	=> '<br>1 Anonymous User',
+	'num_more_users' 	=> '<br>+%s more Users',
+	'username_in_likes_list' => '<br>%s'
 );
 
 ###############################################################################
@@ -2506,6 +2512,7 @@ $LANG_confignames['Core'] = array(
     'likes_articles' => 'Article Likes',
     'likes_comments' => 'Comment Likes',
     'likes_speedlimit' => 'Likes Speed Limit',
+	'likes_users_listed' => 'User Listed',
     'passwordspeedlimit' => 'Password Speed Limit',
     'login_attempts' => 'Max. Login Attempts',
     'login_speedlimit' => 'Login Speed Limit',
