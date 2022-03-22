@@ -294,6 +294,125 @@ class GLText
     }
 
     /**
+     * Fix relative URLs in HTML and make them absolute
+     *
+     * @param    string 			HTML formated text
+     * @return   string             HTML formatted text
+     */
+	 public static function htmlFixURLs($string) 
+	{
+		global $_CONF;
+		
+		// Fix Images if needed
+		$string = str_replace("src='/","src='" . $_CONF['site_url'] . "/", $string);
+		$string = str_replace('src="/','src="' . $_CONF['site_url'] . "/", $string);
+		
+		// Fix internal links if needed
+		$string = str_replace("href='/","href='" . $_CONF['site_url'] . "/", $string);
+		$string = str_replace('href="/','href="' . $_CONF['site_url'] . "/", $string);
+
+		// return the string
+		return $string;
+	} 
+
+    /**
+     * Convert HTML to plain text for emails. Attempts to keep line spacing and adds some markup
+	 * Some code used from https://github.com/RobQuistNL/SimpleHtmlToText
+     *
+     * @param    string 			HTML formatted text
+     * @return   string             Marked up plain text
+     */
+	public static function html2Text($string) 
+	{
+		global $LANG31;
+
+		//Remove HTML's whitespaces
+		$string = preg_replace('/\s+/', ' ', $string);
+		
+		//Parse images
+		$string = preg_replace('/<(img)\b[^>]*src=\"([^>"]+)\"[^>]*>/Uis', '($2)', $string);
+		
+		/* - Not needed as we are just showing URL of images instead 
+		//Parse image tags with alt
+		$string = preg_replace('/<(img)\b[^>]*alt=\"([^>"]+)\"[^>]*>/Uis', '($2)', $string);
+		// Remove image tags without alt
+		$string = preg_replace('/<(img)\b[^>][^>]*>/Uis', '', $string);
+		*/
+		
+		//Parse links
+		$string = preg_replace('/<a(.*)href=[\'"](.*)[\'"]>(.*)<\/a>/Uis', '$3 ($2)', $string);
+		//Parse lines
+		$string = preg_replace('/<hr(.*)>/Uis', "\n" . $LANG31['email_divider'] . "\n", $string);
+		//Parse breaklines
+		$string = preg_replace('/<br(.*)>/Uis', "\n", $string);
+		//Parse broken breaklines
+		$string = preg_replace('/<(.*)br>/Uis', "\n", $string);
+		//Parse alineas
+		$string = preg_replace('/<p(.*)>(.*)<\/p>/Uis', "\n$2\n", $string);
+
+		//Lists
+		$string = preg_replace('/(<ul\b[^>]*>|<\/ul>)/i', "\n\n", $string);
+		$string = preg_replace('/(<ol\b[^>]*>|<\/ol>)/i', "\n\n", $string);
+		$string = preg_replace('/(<dl\b[^>]*>|<\/dl>)/i', "\n\n", $string);
+
+		$string = preg_replace('/<li\b[^>]*>(.*?)<\/li>/i', "\t* $1\n", $string);
+		$string = preg_replace('/<dd\b[^>]*>(.*?)<\/dd>/i', "$1\n", $string);
+		$string = preg_replace('/<dt\b[^>]*>(.*?)<\/dt>/i', "\t* $1", $string);
+		$string = preg_replace('/<li\b[^>]*>/i', "\n\t* ", $string);
+
+		//Parse table columns
+		$string = preg_replace('/<tr>(.*)<\/tr>/Uis', "\n$1", $string);
+		$string = preg_replace('/<td>(.*)<\/td>/Uis', "$1\t", $string);
+		$string = preg_replace('/<th>(.*)<\/th>/Uis', "$1\t", $string);
+		
+		//Parse markedup text
+		$string = preg_replace('/<em\b[^>]*>(.*?)<\/em>/i', "$2", $string);
+		$string = preg_replace('/<b>(.*)<\/b>/Uis', '**$1**', $string);
+		$string = preg_replace('/<strong(.*)>(.*)<\/strong>/Uis', '**$2**', $string);
+		$string = preg_replace('/<i>(.*)<\/i>/Uis', '*$1*', $string);
+		$string = preg_replace('/<u>(.*)<\/u>/Uis', '_$1_', $string);
+		
+		//Headers
+		$string = preg_replace('/<h1(.*)>(.*)<\/h1>/Uis', "\n### $2 ###\n", $string);
+		$string = preg_replace('/<h2(.*)>(.*)<\/h2>/Uis', "\n## $2 ##\n", $string);
+		$string = preg_replace('/<h3(.*)>(.*)<\/h3>/Uis', "\n## $2 ##\n", $string);
+		$string = preg_replace('/<h4(.*)>(.*)<\/h4>/Uis', "\n## $2 ##\n", $string);
+		$string = preg_replace('/<h5(.*)>(.*)<\/h5>/Uis', "\n# $2 #\n", $string);
+		$string = preg_replace('/<h6(.*)>(.*)<\/h6>/Uis', "\n# $2 #\n", $string);
+		
+		//Surround tables with newlines
+		$string = preg_replace('/<table(.*)>(.*)<\/table>/Uis', "\n$2\n", $string);
+
+		// decode any entities
+		$string = html_entity_decode($string);
+
+		//Strip remaining tags
+		$string = strip_tags($string);
+
+		//Fix double whitespaces
+		$string = preg_replace('/(  *)/', ' ', $string);
+
+		//Newlines with a space behind it - don't need that. (except in some cases, in which you'll miss 1 whitespace.
+		// Well, too bad for you. File a PR <3
+		$string = preg_replace('/\n /', "\n", $string);
+		$string = preg_replace('/ \n/', "\n", $string);
+
+		//Remove tabs before newlines
+		$string = preg_replace('/\t /', "\t", $string);
+		$string = preg_replace('/\t \n/', "\n", $string);
+		$string = preg_replace('/\t\n/', "\n", $string);
+
+		//Replace all \n with \r\n because some clients prefer that
+		//$string = preg_replace('/\n/', "\r\n", $string);
+		
+		// strip any remaining HTML tags
+		$string = strip_tags($string);	
+
+		// return the string
+		return $string;
+	}
+
+    /**
      * Remove all HTML tags and attributes
      *
      * @param  string  $text

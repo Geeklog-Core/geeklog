@@ -1,0 +1,35 @@
+{!if lang_cc_email_info}
+{lang_cc_email_info}
+
+{email_divider}
+
+{!endif}
+{lang_email_sentinfo}
+
+{!if lang_email_from}
+
+{lang_email_from}
+
+
+{short_message_plaintext}
+
+{!endif}
+{email_divider}
+
+{article_title}
+
+{article_date}
+
+{lang_contributed_by} {article_author}
+
+{article_introtext_plaintext}
+
+{!if article_bodytext_plaintext}
+{article_bodytext_plaintext}
+{!endif}
+
+{email_divider}
+
+{lang_article_url}
+
+{article_url}

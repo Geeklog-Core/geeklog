@@ -1,0 +1,30 @@
+{!if lang_cc_email_info}
+<p>{lang_cc_email_info}</p>
+
+{email_divider_html}
+{!endif}
+
+<p>{lang_email_sentinfo}</p>
+
+{!if lang_email_from}
+<p>{lang_email_from}</p>
+
+{short_message_html}
+{!endif}
+
+{email_divider_html}
+
+<h2>{article_title}</h2>
+<p>{article_date}<br{XHTML}>
+{lang_contributed_by} {article_author}</p>
+
+{article_introtext_html}
+
+{!if article_bodytext_html}
+{article_bodytext_html}
+{!endif}
+
+{email_divider_html}
+
+<p>{lang_article_url}<br{XHTML}>
+{article_url}</p>

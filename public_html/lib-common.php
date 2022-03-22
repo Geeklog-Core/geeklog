@@ -4074,7 +4074,7 @@ function COM_formatEmailAddress($name, $address)
  *
  * @param    string|array $to          recipient's email address | array(email address => recipient's name)
  * @param    string       $subject     subject of the email
- * @param    string       $message     the text of the email
+ * @param    string|array $message     the text or html of the email | array $message[0] = html and $message[1] = text
  * @param    string|array $from        (optional) sender's email address | array(email address > sender's name)
  * 									   		Defaults to $_CONF['noreply_mail'] if exist else $_CONF['site_mail']
  *									    	In most cases should send email using defaults as mail settings used are 
@@ -4088,7 +4088,7 @@ function COM_formatEmailAddress($name, $address)
  */
 function COM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = array())
 {
-    global $_TABLES, $_CONF, $LANG04;
+    global $_TABLES, $_CONF, $LANG31, $LANG08;
 
     // NOTE: If emails are not being sent as HTML all HTML tags (including broken and bad tags) will be removed.
     // Make sure BEFORE using COM_mail that your message doesn't contain any HTML. Remember this includes any HTML
@@ -4104,18 +4104,56 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
         $email = $to;
     }
 	
+	// $message can be passed as array but $html has to be set to true
+	// If $message is array then first element is considered the html message, and the second plain text
+	// If $message is not an array then it is considered whatever the $html flag is set as. A plain text version of the message will then be created automatically
+    if (is_array($message) && !$html) {
+        return false;
+    }	
+		
+	// Create HTML and plaintext version of email footer 
+	$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+	$t->set_file(array('email_html' => 'email_footer-html.thtml'));
+	$t->set_file(array('email_plaintext' => 'email_footer-plaintext.thtml'));
+
+	$t->set_var('email_divider', $LANG31['email_divider']);
+	$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+	$t->set_var('LB', LB);
+	
 	if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
 		$from = $_CONF['noreply_mail'];
-		if (!$html) {
-			$message .= LB . "------------------------------------------------------------" . LB;
-			$message .= LB . $LANG04[159];
-		}
+		$t->set_var('lang_email_footer_msg_noreply', $LANG31['email_footer_msg_noreply']);
+		
 	} else {
 		$from = [$_CONF['site_mail'] => $_CONF['site_name']];
 	}
+	
+	$t->set_var('lang_email_footer_msg_content', $LANG31['email_footer_msg_content']);
+	
+	// Send IP that initiated email if email to site email
+	if ($email == $_CONF['site_mail']) {
+		$t->set_var('lang_ip_address_email', $LANG31['ip_address_email']);
+		$t->set_var('ip_address', \Geeklog\IP::getIPAddress());
+	}
+	
+	$t->set_var('lang_end_of_msg', $LANG08[34]);
+	
+	if (is_array($message)) {
+		$message[0] .= $t->parse('output', 'email_html');	
+		$message[1] .= $t->parse('output', 'email_plaintext');		
+	} else {
+		if ($html) {
+			$message .= $t->parse('output', 'email_html');	
+		} else {
+			$message .= $t->parse('output', 'email_plaintext');	
+		}
+	}
 
     // If no status exists then assume no user account and email is being sent to someone else (which is fine and should be sent like to new users)
-    $status = DB_getItem($_TABLES['users'], 'status', "email = '$email'");
+	$status = '';
+	if ($email != $_CONF['site_mail']) {
+		$status = DB_getItem($_TABLES['users'], 'status', "email = '$email'");
+	}
 
     if (!empty($status) && ($status == USER_ACCOUNT_DISABLED || $status == USER_ACCOUNT_LOCKED || $status == USER_ACCOUNT_NEW_EMAIL)) {
         return false;
@@ -4156,7 +4194,11 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
 
             if (!$html) {
                 $message = GLText::removeAllHTMLTagsAndAttributes($message);
-            }
+            } else {
+				if (is_array($message)) {
+					$message = $message[0]; // lets just use HTML version
+				}
+			}
 
             // Just in case
             //$message = htmlspecialchars($message, ENT_QUOTES, $charset); // Can't do this as it corrupts our urls in Geeklogs Notifications

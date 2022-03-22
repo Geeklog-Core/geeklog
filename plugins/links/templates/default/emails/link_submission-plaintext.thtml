@@ -1,0 +1,15 @@
+{lang_title}: {submission_title}
+
+{lang_url}: {submission_url}
+
+{lang_contributed_by} {link_contributer_name}
+
+{lang_category}: {submission_category}
+
+
+{submission_description}
+
+
+{email_divider}
+
+{lang_url_label}: {submission_url}

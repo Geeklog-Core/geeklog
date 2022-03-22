@@ -311,7 +311,7 @@ function contactform($uid, $cc = false, $subject = '', $message = '')
 */
 function mailstory($sid, $to, $toEmail, $from, $fromEmail, $shortMessage)
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG08;
+    global $_CONF, $_TABLES, $LANG01, $LANG08, $LANG31;
 
     require_once $_CONF['path_system'] . 'lib-article.php';
 
@@ -349,6 +349,8 @@ function mailstory($sid, $to, $toEmail, $from, $fromEmail, $shortMessage)
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
+	
+	// Build part of email to Check for spam first
     $mailText = sprintf($LANG08[23], $from, $fromEmail) . LB;
     if (strlen($shortMessage) > 0) {
         $mailText .= LB . sprintf($LANG08[28], $from) . $shortMessage . LB;
@@ -365,57 +367,89 @@ function mailstory($sid, $to, $toEmail, $from, $fromEmail, $shortMessage)
         COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
     }
 
-    $mailText .= '------------------------------------------------------------'
-              . LB . LB
-              . COM_undoSpecialChars($story->displayElements('title')) . LB
-              . COM_strftime($_CONF['date'], $story->DisplayElements('unixdate')) . LB;
+	// Create HTML and plaintext version of email
+    $t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+    $t->set_file(array('email_html' => 'article-html.thtml'));
+	$t->set_file(array('email_plaintext' => 'article-plaintext.thtml'));
 
-    if ($_CONF['contributedbyline'] == 1) {
-        $author = COM_getDisplayName($story->displayElements('uid'));
-        $mailText .= $LANG01[1] . ' ' . $author . LB;
+	$t->set_var('email_divider', $LANG31['email_divider']);
+	$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+	$t->set_var('LB', LB);
+
+	$emailtext = sprintf($LANG08[23], $from, $fromEmail);
+	$t->set_var('lang_email_sentinfo', $emailtext);
+    if (strlen($shortMessage) > 0) {
+		$emailtext = sprintf($LANG08[28], $from);
+		$t->set_var('lang_email_from', $emailtext);
+		$t->set_var('short_message_plaintext', $shortMessage);
+		$t->set_var('short_message_html', COM_nl2br($shortMessage));
     }
+	
+	// Articles always returned as HTML (even if set to another post mode)
+	$introtext = $story->DisplayElements('introtext');
+	$bodytext  = $story->DisplayElements('bodytext');
+	
+	// Fix links in HTML to be displayed in emails
+	$introtext = GLText::htmlFixURLs($introtext);
+	$bodytext = GLText::htmlFixURLs($bodytext);
+	
+	$t->set_var('article_introtext_html', $introtext);
+	$t->set_var('article_bodytext_html', $bodytext);
 
-    $introtext = $story->DisplayElements('introtext');
-    $bodytext  = $story->DisplayElements('bodytext');
-    $introtext = COM_undoSpecialChars(GLText::stripTags($introtext));
-    $bodytext  = COM_undoSpecialChars(GLText::stripTags($bodytext));
+	// Convert HTML to Plain Text
+	$introtext = GLText::html2Text($introtext);
+	$bodytext = GLText::html2Text($bodytext);
+	
+	// Old way of converting HTML to text
+	//$introtext = COM_undoSpecialChars(GLText::stripTags($introtext));
+	//$bodytext  = COM_undoSpecialChars(GLText::stripTags($bodytext));
 
-    $introtext = str_replace(array("\012\015", "\015"), LB, $introtext);
-    $bodytext  = str_replace(array("\012\015", "\015"), LB, $bodytext);
+	//$introtext = str_replace(array("\012\015", "\015"), LB, $introtext);
+	//$bodytext  = str_replace(array("\012\015", "\015"), LB, $bodytext);	
+	
+	$t->set_var('article_introtext_plaintext', $introtext);
+	$t->set_var('article_bodytext_plaintext', $bodytext);	
 
-    $mailText .= LB . $introtext;
-    if (! empty($bodytext)) {
-        $mailText .= LB . LB . $bodytext;
-    }
-    $mailText .= LB . LB
-        . '------------------------------------------------------------' . LB;
-
+	$t->set_var('article_title', COM_undoSpecialChars($story->displayElements('title')));
+	$t->set_var('article_date', COM_strftime($_CONF['date'], $story->DisplayElements('unixdate')));
+	if ($_CONF['contributedbyline'] == 1) {
+		$t->set_var('lang_contributed_by', $LANG01[1]);
+		$t->set_var('article_author', COM_getDisplayName($story->displayElements('uid')));
+		
+	}
+	
+	// Add link to content
     if ($story->DisplayElements('commentcode') == 0) { // comments allowed
-        $mailText .= $LANG08[24] . LB
-                  . COM_buildUrl($_CONF['site_url'] . '/article.php?story='
-                                  . $sid . '#comments');
+		$t->set_var('lang_article_url', $LANG08[24]);
+		$article_url = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $sid . '#comments');
     } else { // comments not allowed - just add the story's URL
-        $mailText .= $LANG08[33] . LB
-                  . COM_buildUrl($_CONF['site_url'] . '/article.php?story='
-                                  . $sid);
-    }
-
+		$t->set_var('lang_article_url', $LANG08[33]);
+		$article_url = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $sid);
+    }	
+	$t->set_var('article_url', $article_url);
+	
+	// Output final content
+	$message[] = $t->parse('output', 'email_html');	
+	$message[] = $t->parse('output', 'email_plaintext');
+	
     $mailto = array($toEmail => $to);
     $mailfrom = array($fromEmail => $from);
     $subject = 'Re: ' . COM_undoSpecialChars(GLText::stripTags($story->DisplayElements('title')));
 
-    $sent = COM_mail($mailto, $subject, $mailText);
+	$sent = COM_mail($mailto, $subject, $message, '', true);
 
     if ($sent && $_CONF['mail_cc_enabled'] && (Geeklog\Input::post('cc') === 'on')) {
-		$ccmessage = sprintf($LANG08[38], $to) . LB
-			. LB . "------------------------------------------------------------" . LB . LB . $mailText;
+		$t->set_var('lang_cc_email_info', sprintf($LANG08[38], $to));
 
-        $sent = COM_mail($mailfrom, $subject, $ccmessage);
+		$ccmessage[] = $t->parse('output', 'email_html');		
+		$ccmessage[] = $t->parse('output', 'email_plaintext');	
+
+        $sent = COM_mail($mailfrom, $subject, $ccmessage, '', true);
     }
 
     COM_updateSpeedlimit('mail');
 
-    // Increment numemails counter for story
+    // Increment number emails counter for story
     DB_query("UPDATE {$_TABLES['stories']} SET numemails = numemails + 1 WHERE sid = '$sid'");
 
     if ($_CONF['url_rewrite']) {

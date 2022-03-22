@@ -1,0 +1,16 @@
+{lang_title}: {submission_title}
+
+{lang_author}: {submission_author}
+
+{lang_date}: {submission_date}
+
+{lang_topic}: {submission_topic}
+
+{!if submission_content_plaintext}
+
+{submission_content_plaintext}
+
+{!endif}
+{email_divider}
+
+{lang_url_label}: {submission_url}

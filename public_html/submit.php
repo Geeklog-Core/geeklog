@@ -237,44 +237,72 @@ function submitstory()
  */
 function sendNotification($table, $story)
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG08, $LANG24, $LANG29, $LANG_ADMIN;
+    global $_CONF, $_TABLES, $LANG01, $LANG08, $LANG24, $LANG29, $LANG31, $LANG_ADMIN;
 
     $title = COM_undoSpecialChars($story->displayElements('title'));
-    $introtext = COM_undoSpecialChars($story->displayElements('introtext') . "\n" . $story->displayElements('bodytext'));
-    if ($story->_postmode === 'html') {
-        $introtext = GLText::stripTags($introtext);
-    } else {
-        $introtext = str_replace('<br' . XHTML . '>', "\n", $introtext);
-    }
     $storyauthor = COM_getDisplayName($story->displayelements('uid'));
     $topic = TOPIC_getTopicAdminColumn('article', $story->getSid());
-    $mailbody = "$LANG08[31]: {$title}\n"
-        . "$LANG24[7]: {$storyauthor}\n"
-        . "$LANG08[32]: " . COM_strftime($_CONF['date']) . "\n"
-        . "{$LANG_ADMIN['topic']}: {$topic}\n\n";
+	
+	// Create HTML and plaintext version of submission email
+	$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+	$t->set_file(array('email_html' => 'article_submission-html.thtml'));
+	$t->set_file(array('email_plaintext' => 'article_submission-plaintext.thtml'));
 
+	$t->set_var('email_divider', $LANG31['email_divider']);
+	$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+	$t->set_var('LB', LB);
+	
+	$t->set_var('lang_title', $LANG08[31]);
+	$t->set_var('submission_title', $title);
+	$t->set_var('lang_author', $LANG24[7]);
+	$t->set_var('submission_author', $storyauthor);
+	$t->set_var('lang_date', $LANG08[32]);
+	$t->set_var('submission_date', COM_strftime($_CONF['date']));
+	$t->set_var('lang_topic', $LANG_ADMIN['topic']);
+	$t->set_var('submission_topic', $topic);
+	
+	// Articles always returned as HTML (even if set to another post mode)
+	$introtext = $story->DisplayElements('introtext');
+	$bodytext  = $story->DisplayElements('bodytext');
+	
+	// Fix links in HTML to be displayed in emails
+	$introtext = GLText::htmlFixURLs($introtext);
+	$bodytext = GLText::htmlFixURLs($bodytext);
+	
+	$content_html = $introtext . $bodytext;
+
+	// Convert HTML to Plain Text
+	$content_plaintext = GLText::html2Text($introtext) . LB . GLText::html2Text($bodytext);	
+
+	// Truncate as needed
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {
-            $introtext = MBYTE_substr($introtext, 0,
-                    $_CONF['emailstorieslength']) . '...';
+			$content_plaintext = COM_truncate($content_plaintext, $_CONF['emailstorieslength'], '...');
+			$content_html = COM_truncateHTML($content_html, $_CONF['emailstorieslength'], '...');
         }
-        $mailbody .= $introtext . "\n\n";
+        $t->set_var('submission_content_plaintext', $content_plaintext);
+		$t->set_var('submission_content_html', $content_html);
     }
-    if ($table == $_TABLES['storysubmission']) {
-        $mailbody .= "$LANG01[10]: {$_CONF['site_admin_url']}/moderation.php\n";
-    } else {
-        $articleUrl = COM_buildUrl($_CONF['site_url']
-            . '/article.php?story=' . $story->getSid()
-        );
-        $mailbody .= $LANG08[33] . ': ' . $articleUrl . "\n";
-    }
-    $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[35];
-    $mailbody .= "IP: " . \Geeklog\IP::getIPAddress() . "\n\n";
-    $mailbody .= "\n------------------------------\n";
-    $mailbody .= "\n$LANG08[34]\n";
-    $mailbody .= "\n------------------------------\n";
 
-    COM_mail($_CONF['site_mail'], $mailsubject, $mailbody);
+	// Add link to content
+    if ($table == $_TABLES['storysubmission']) {
+		$t->set_var('lang_url_label', $LANG01[10]); // Submissions
+        
+		$submission_url = $_CONF['site_admin_url'] . "/moderation.php";
+    } else {
+		$t->set_var('lang_url_label', $LANG08[33]); // Read the full article at
+        
+		$submission_url = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $story->getSid());
+    }
+	$t->set_var('submission_url', $submission_url);		
+
+	// Output final content
+	$message[] = $t->parse('output', 'email_html');	
+	$message[] = $t->parse('output', 'email_plaintext');	
+	
+	$mailsubject = $_CONF['site_name'] . ' ' . $LANG29[35];
+	
+	COM_mail($_CONF['site_mail'], $mailsubject, $message, '', true);
 }
 
 /**

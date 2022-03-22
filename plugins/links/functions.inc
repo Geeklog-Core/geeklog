@@ -1203,29 +1203,50 @@ function plugin_save_submit_links($A)
 */
 function LINKS_sendNotification ($table, $A)
 {
-    global $_CONF, $_TABLES, $LANG_LINKS, $LANG_LINKS_SUBMIT, $LANG08;
+    global $_CONF, $_TABLES, $_USER, $LANG_LINKS, $LANG_LINKS_SUBMIT, $LANG08, $LANG01, $LANG31;
 
     $title = stripslashes ($A['title']);
     $description = PLG_replaceTags( stripslashes($A['description']) );
+	
+	// Create HTML and plaintext version of submission email
+	$t = COM_newTemplate(CTL_plugin_templatePath('links', 'emails'));
+	
+	$t->set_file(array('email_html' => 'link_submission-html.thtml'));
+	$t->set_file(array('email_plaintext' => 'link_submission-plaintext.thtml'));
 
-    $mailbody = "$LANG_LINKS_SUBMIT[8]: $title\n"
-              . "$LANG_LINKS_SUBMIT[9]: {$A['url']}\n"
-              . "$LANG_LINKS_SUBMIT[3]: {$A['category']}\n\n"
-              . $description . "\n"
-              . "IP: " . \Geeklog\IP::getIPAddress() . "\n\n" ;
+	$t->set_var('email_divider', $LANG31['email_divider']);
+	$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+	$t->set_var('LB', LB);
+	
+	$t->set_var('lang_title', $LANG_LINKS_SUBMIT[8]);
+	$t->set_var('submission_title', $title);
+	$t->set_var('lang_contributed_by', $LANG01[1]);
+	$t->set_var('link_contributer_name', COM_getDisplayName($_USER['uid']));	
+	$t->set_var('lang_url', $LANG_LINKS_SUBMIT[9]);
+	$t->set_var('submission_url', $A['url']);
+	$t->set_var('lang_category', $LANG_LINKS_SUBMIT[3]);
+	$t->set_var('submission_category', $A['categorydd']);
+	$t->set_var('submission_description', $description);
 
+	// Add link to content
     if ($table == $_TABLES['linksubmission']) {
-        $mailbody .= "$LANG_LINKS[10]: {$_CONF['site_admin_url']}/moderation.php\n\n";
+		$t->set_var('lang_url_label', $LANG_LINKS[10]); // Submissions
+        
+		$submission_url = $_CONF['site_admin_url'] . "/moderation.php";
     } else {
-        $mailbody .= "{$LANG_LINKS[114]}: " . COM_buildURL($_CONF['site_url'] . '/links/index.php?category=' . rawurlencode($A['category'])) . "\n\n";
+		$t->set_var('lang_url_label', $LANG_LINKS[114]); // Links
+        
+		$submission_url = COM_buildURL($_CONF['site_url'] . '/links/index.php?category=' . rawurlencode($A['categorydd']));
     }
-    $mailsubject = $_CONF['site_name'] . ' ' . $LANG_LINKS_SUBMIT[11];
+	$t->set_var('submission_url', $submission_url);		
 
-    $mailbody .= "\n------------------------------\n";
-    $mailbody .= "\n$LANG08[34]\n";
-    $mailbody .= "\n------------------------------\n";
-
-    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
+	// Output final content
+	$message[] = $t->parse('output', 'email_html');	
+	$message[] = $t->parse('output', 'email_plaintext');
+	
+	$mailsubject = $_CONF['site_name'] . ' ' . $LANG_LINKS_SUBMIT[11];
+	
+	COM_mail ($_CONF['site_mail'], $mailsubject, $message, '' , true);
 }
 
 /**

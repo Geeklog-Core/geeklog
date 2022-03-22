@@ -1,0 +1,15 @@
+{email_divider_html}
+
+{!if lang_email_footer_msg_noreply}
+<p>{lang_email_footer_msg_noreply}</p>
+{!endif}
+
+
+<p>{lang_email_footer_msg_content}</p>
+
+{!if ip_address}
+<p>{lang_ip_address_email} {ip_address}</p>
+{!endif}
+
+<p>{lang_end_of_msg}</p>
+{email_divider_html}

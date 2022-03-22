@@ -1,0 +1,19 @@
+
+{email_divider}
+
+{!if lang_email_footer_msg_noreply}
+{lang_email_footer_msg_noreply}
+{!endif}
+
+
+{lang_email_footer_msg_content}
+
+{!if ip_address}
+
+{lang_ip_address_email} {ip_address}
+
+{!endif}
+
+{lang_end_of_msg}
+
+{email_divider}

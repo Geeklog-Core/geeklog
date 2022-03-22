@@ -96,6 +96,7 @@ SQL;
      *
      * @param  string|array  $to           recipients name and email address
      * @param  string        $subject      subject of the email
+	 * @param  string|array  $body      	the text or html of the email | array $body[0] = html and $body[1] = text
      * @param  string        $body         the text of the email
      * @param  string|array  $from         (optional) sender of the email
      * @param  bool          $html         (optional) true if to be sent as HTML email
@@ -223,21 +224,30 @@ SQL;
                 $address = $to;
             }
 
-            // Replace placeholders
-            self::replacePlaceHolders($address, $subject, $body);
+			if (is_array($body)) {
+				// Then both HTML and plain text version of email is passed
+				$altbody = $body[1];
+				$body = $body[0];
+				// Replace placeholders
+				self::replacePlaceHolders($address, $subject, $body);
+				self::replacePlaceHolders($address, $subject, $altbody);
+			} else {
+				// Replace placeholders
+				self::replacePlaceHolders($address, $subject, $body);
 
-			// Ready Plain Text version of email
-			// bug #430
-			$altbody = GLText::removeAllHTMLTagsAndAttributes($body);
-			// bug #1000
-			// Need to do this since htmLawed not only strips the tags it converts html special chars to entities which we do not want
-			$altbody = htmlspecialchars_decode($altbody, ENT_QUOTES);
+				// Ready Plain Text version of email
+				// bug #430
+				$altbody = GLText::removeAllHTMLTagsAndAttributes($body);
+				// bug #1000
+				// Need to do this since htmLawed not only strips the tags it converts html special chars to entities which we do not want
+				$altbody = htmlspecialchars_decode($altbody, ENT_QUOTES);
+			}
 
             if (!$html) {
 				$mail->Body = $altbody;
             } else {
 				$mail->Body = $body;
-				$mail->AltBody = $body; // Only include this for HTML emails
+				$mail->AltBody = $altbody; // Only include this for HTML emails
 			}
 
             // Set subject

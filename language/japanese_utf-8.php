@@ -444,7 +444,6 @@ $LANG04 = array(
     156 => 'アカウントを削除',
     157 => 'アカウントの削除オプション',
     158 => 'タイムゾーン',
-    159 => 'The address used to send this email is not monitored. Please do not reply to this email.',
     160 => '(最大. %d X %d ピクセル, %d バイト; %s)',
     161 => 'リサイズされます',
     162 => 'リサイズなし',
@@ -1378,7 +1377,12 @@ $LANG31 = array(
     24 => '成功した送信先はありません',
     25 => '-- グループを選択 --',
     26 => 'すべてのフィールドに入力してください。また、グループはドロップダウンメニューから選択してください。',
-    27 => '次のテンプレート変数が<strong>件名</strong>と<strong>内容</strong>で使用できます: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}'
+    27 => '次のテンプレート変数が<strong>件名</strong>と<strong>内容</strong>で使用できます: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}',
+	'email_divider' => '------------------------------------------------------------',
+	'email_divider_html' => '<hr>',
+    'email_footer_msg_noreply' => 'The address used to send this email is not monitored. Please do not reply to this email.',
+	'email_footer_msg_content' => 'If content from the website is displayed in this email, there may be layout changes which result in formatting issues.',
+	'ip_address_email' => 'IP address that initiated email:'
 );
 
 ###############################################################################

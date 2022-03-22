@@ -1,0 +1,10 @@
+<p>{lang_title}: {submission_title}<br{XHTML}>
+{lang_url}: {submission_url}<br{XHTML}>
+{lang_contributed_by} {link_contributer_name}<br{XHTML}>
+{lang_category}: {submission_category}</p>
+
+<p>{submission_description}</p>
+
+{email_divider_html}
+
+<p>{lang_url_label}: {submission_url}</p>
