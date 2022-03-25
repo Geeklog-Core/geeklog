@@ -418,8 +418,7 @@ function SESS_endCurrentUserSession()
     Session::setUid(Session::ANON_USER_ID);
     // uid_to_check is used by CSRF token to make sure same person.
 	// Update uid_to_check back to anonymous user id since user is logging out.
-	// If do not do this then same IP address cannot log into different user accounts since session will always be tied to last successful login uid
-	Session::setVar('uid_to_check', Session::ANON_USER_ID);
+	Session::setVar('uid_to_check', Session::ANON_USER_ID); // Fix for issue #1116 (If do not do this then same IP address cannot log into different user accounts since session will always be tied to last successful login uid)
 
     return 1;
 }
