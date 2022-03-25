@@ -9,3 +9,18 @@
 .block-trackback-content {
     border-bottom: 0px;
 }
+
+/* Needed for Calendar Submit Event as address wraps and messes layout */
+.form-description {
+	white-space:nowrap;
+}
+/* Needed for Calendar Submit Event */
+.clear-right {
+	clear:right;	
+}
+.clear-left {
+	clear:left;	
+}
+.clear-both {
+	clear:both;	
+}
