@@ -649,7 +649,7 @@ function plugin_savesubmission_calendar($A)
     } elseif ($_CA_CONF['personalcalendars'] == 1) { // add to personal calendar
         if (COM_isAnonUser()) {
             // anonymous users don't have personal calendars - bail
-            COM_accessLog("Attempt to write to the personal calendar of user '{$A['uid']}'.");
+            COM_accessLog("Anonymous user attempted to write to a personal calendar which anonymous users do not have.");
             COM_redirect($_CONF['site_url'] . '/calendar/index.php');
         } else {
             DB_save($_TABLES['personal_events'],
@@ -692,7 +692,10 @@ function plugin_submit_calendar($mode = 'master')
         exit;
     }
 
-    $mode = Geeklog\Input::fPost('calendar_type', null);
+    $passed_mode = Geeklog\Input::fPost('calendar_type', null);
+	if ($passed_mode != null) {
+		$mode = $passed_mode;
+	}
 
     if ($mode !== null) {
         if (!in_array($mode, array('master', 'personal', 'quickadd'))) {
@@ -700,7 +703,7 @@ function plugin_submit_calendar($mode = 'master')
         }
     } elseif (Geeklog\Input::fRequest('mode') === 'personal') {
         $mode = 'personal';
-    }
+	}
 
     if (($_CA_CONF['personalcalendars'] == 1) && ($mode === 'quickadd')) {
         // check for missing event title field

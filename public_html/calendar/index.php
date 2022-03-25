@@ -403,14 +403,14 @@ function isWithinCurrentWindow($year, $month, $day)
 // MAIN
 $mode = Geeklog\Input::fRequest('mode', '');
 if ($mode !== 'personal' && $mode !== 'quickadd') {
-    $mode = '';
+    $mode = 'master';
 }
 
 $pagetitle = ($mode === 'personal') ? $LANG_CAL_1[42] : $LANG_CAL_1[41];
 
 // Set mode back to master if user refreshes screen after their session expires
 if (($mode === 'personal') && COM_isAnonUser()) {
-    $mode = '';
+    $mode = 'master';
 }
 
 if ($mode === 'personal' && $_CA_CONF['personalcalendars'] == 0) {

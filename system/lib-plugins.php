@@ -1231,7 +1231,7 @@ function PLG_getModerationValues($type)
 }
 
 /**
- * This function is resonsible for calling plugin_submit_<pluginname> so
+ * This function is responsible for calling plugin_submit_<pluginname> so
  * that the submission form for the plugin is displayed.
  *
  * @param        string $type Plugin to show submission form for
