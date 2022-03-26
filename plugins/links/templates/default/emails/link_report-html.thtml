@@ -1,0 +1,8 @@
+<p>{lang_link_broken_msg}</p>
+
+<p>{reported_link_title} ({reported_link})</p>
+
+<p>{lang_edit_link_msg} <br{XHTML}>
+{edit_link}</p>
+
+<p>{lang_reported_by} {reporter_author}</p>

@@ -438,15 +438,38 @@ if (($mode === 'report') && !COM_isAnonUser()) {
         $lidsl = DB_escapeString($lid);
         $result = DB_query("SELECT url, title FROM {$_TABLES['links']} WHERE lid = '$lidsl'");
         list($url, $title) = DB_fetchArray($result);
+		
+		
+		// Create HTML and plaintext version of report email
+		$t = COM_newTemplate(CTL_plugin_templatePath('links', 'emails'));
+		
+		$t->set_file(array('email_html' => 'link_report-html.thtml'));
+		$t->set_file(array('email_plaintext' => 'link_report-plaintext.thtml'));
 
-        $editurl = $_CONF['site_admin_url']
-            . '/plugins/links/index.php?mode=edit&lid=' . $lid;
-	$msg = $LANG_LINKS[119] . LB . LB . "{$title}, {$url}" . LB . LB
-            . $LANG_LINKS[120] . LB . $editurl . LB . LB
-            . $LANG_LINKS[121] . $_USER['username'] . ', IP: '
-            . \Geeklog\IP::getIPAddress();
-        COM_mail($_CONF['site_mail'], $LANG_LINKS[118], $msg);
-        $message = array($LANG_LINKS[123], $LANG_LINKS[122]);
+		$t->set_var('email_divider', $LANG31['email_divider']);
+		$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+		$t->set_var('LB', LB);
+		
+		$t->set_var('lang_link_broken_msg', $LANG_LINKS[119]); // The following link has been reported to be broken:
+		
+		$t->set_var('reported_link_title', $title);
+		$t->set_var('reported_link', $url);
+		
+		$t->set_var('lang_edit_link_msg', $LANG_LINKS[120]); // To edit the link, click her
+		$editurl = $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit&lid=' . $lid;
+		$t->set_var('edit_link', $editurl);
+
+		$t->set_var('lang_reported_by', $LANG_LINKS[121]); // The broken Link was reported by: 
+		$t->set_var('reporter_author', $_USER['username']);
+
+		// Output final content
+		$message[] = $t->parse('output', 'email_html');	
+		$message[] = $t->parse('output', 'email_plaintext');
+		
+		COM_mail($_CONF['site_mail'], $LANG_LINKS[118], $message, '' , true);		
+		COM_mail($_CONF['site_mail'], $LANG_LINKS[118], $message[1]);	
+		
+		$message = array($LANG_LINKS[123], $LANG_LINKS[122]);
     }
 }
 
