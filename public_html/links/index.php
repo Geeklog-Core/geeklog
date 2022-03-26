@@ -460,14 +460,13 @@ if (($mode === 'report') && !COM_isAnonUser()) {
 		$t->set_var('edit_link', $editurl);
 
 		$t->set_var('lang_reported_by', $LANG_LINKS[121]); // The broken Link was reported by: 
-		$t->set_var('reporter_author', $_USER['username']);
+		$t->set_var('reporter_author', COM_getDisplayName($_USER['uid']));
 
 		// Output final content
 		$message[] = $t->parse('output', 'email_html');	
 		$message[] = $t->parse('output', 'email_plaintext');
 		
 		COM_mail($_CONF['site_mail'], $LANG_LINKS[118], $message, '' , true);		
-		COM_mail($_CONF['site_mail'], $LANG_LINKS[118], $message[1]);	
 		
 		$message = array($LANG_LINKS[123], $LANG_LINKS[122]);
     }
