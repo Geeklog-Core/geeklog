@@ -7,4 +7,4 @@
 
 {email_divider_html}
 
-<p>{lang_url_label}: {submission_url}</p>
+<p>{lang_link_label}: {submission_link}</p>

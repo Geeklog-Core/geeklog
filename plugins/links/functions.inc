@@ -1230,15 +1230,15 @@ function LINKS_sendNotification ($table, $A)
 
 	// Add link to content
     if ($table == $_TABLES['linksubmission']) {
-		$t->set_var('lang_url_label', $LANG_LINKS[10]); // Submissions
+		$t->set_var('lang_link_label', $LANG_LINKS[10]); // Submissions
         
-		$submission_url = $_CONF['site_admin_url'] . "/moderation.php";
+		$submission_link = $_CONF['site_admin_url'] . "/moderation.php";
     } else {
-		$t->set_var('lang_url_label', $LANG_LINKS[114]); // Links
+		$t->set_var('lang_link_label', $LANG_LINKS[114]); // Links
         
-		$submission_url = COM_buildURL($_CONF['site_url'] . '/links/index.php?category=' . rawurlencode($A['categorydd']));
+		$submission_link = COM_buildURL($_CONF['site_url'] . '/links/index.php?category=' . rawurlencode($A['categorydd']));
     }
-	$t->set_var('submission_url', $submission_url);		
+	$t->set_var('submission_link', $submission_link);		
 
 	// Output final content
 	$message[] = $t->parse('output', 'email_html');	
@@ -1246,7 +1246,7 @@ function LINKS_sendNotification ($table, $A)
 	
 	$mailsubject = $_CONF['site_name'] . ' ' . $LANG_LINKS_SUBMIT[11];
 	
-	COM_mail ($_CONF['site_mail'], $mailsubject, $message, '' , true);
+	COM_mail($_CONF['site_mail'], $mailsubject, $message, '' , true);
 }
 
 /**
