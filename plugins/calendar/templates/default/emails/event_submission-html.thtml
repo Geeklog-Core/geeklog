@@ -1,0 +1,12 @@
+<p>{lang_title}: {submission_title}<br{XHTML}>
+{lang_datetime} {submission_datetime}{!if lang_allday} ({lang_allday}){!endif}<br{XHTML}>
+{!if submission_url}
+{lang_url}: {submission_url}<br{XHTML}>
+{!endif}
+{lang_contributed_by} {link_contributer_name}</p>
+
+<p>{submission_description_html}</p>
+
+{email_divider_html}
+
+<p>{lang_link_label}: {submission_link}</p>

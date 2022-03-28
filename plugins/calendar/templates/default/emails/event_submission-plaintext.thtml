@@ -1,0 +1,17 @@
+{lang_title}: {submission_title}
+
+{lang_datetime} {submission_datetime}{!if lang_allday} ({lang_allday}){!endif}
+
+{!if submission_url}
+{lang_url}: {submission_url}
+{!endif}
+
+{lang_contributed_by} {link_contributer_name}
+
+
+{submission_description_plaintext}
+
+
+{email_divider}
+
+{lang_link_label}: {submission_link}

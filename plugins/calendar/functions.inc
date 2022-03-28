@@ -520,7 +520,8 @@ function plugin_savesubmission_calendar($A)
 
     // Remove any autotags the user doesn't have permission to use
     $A['description'] = PLG_replaceTags($A['description'], '', true);
-    $A['description'] = DB_escapeString(htmlspecialchars(GLText::remove4byteUtf8Chars(COM_checkWords($A['description']))));
+	$A['description'] = GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['description'])));
+	$description = DB_escapeString($A['description']); // Can't escape array as that gets used after by notification and need line breaks
     $A['address1'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['address1']))));
     $A['address2'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['address2']))));
     $A['city'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['city']))));
@@ -547,6 +548,7 @@ function plugin_savesubmission_calendar($A)
         $A['allday'] = 0;
     }
 
+	$A['start_ampm'] = '';
     if (isset($A['hour_mode']) && ($A['hour_mode'] == 24)) {
         $start_hour = COM_applyFilter($A['start_hour'], true);
         if ($start_hour >= 12) {
@@ -594,6 +596,7 @@ function plugin_savesubmission_calendar($A)
     }
     $A['timestart'] = $A['start_hour'] . ':' . $A['start_minute'] . ':00';
     $A['timeend'] = $A['end_hour'] . ':' . $A['end_minute'] . ':00';
+	
     if ($A['calendar_type'] == 'master') { // add to site calendar
         if (($_CA_CONF['eventsubmission'] == 1) &&
             !SEC_hasRights('calendar.submit')
@@ -606,7 +609,7 @@ function plugin_savesubmission_calendar($A)
 
             DB_save($_TABLES['eventsubmission'],
                 'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id',
-                "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',{$uid}");
+                "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','$description',{$uid}");
 
             if (isset($_CA_CONF['notification']) &&
                 ($_CA_CONF['notification'] == 1)
@@ -632,7 +635,7 @@ function plugin_savesubmission_calendar($A)
 
             DB_save($_TABLES['events'],
                 'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
-                "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id,{$A['group_id']},{$A['perm_owner']},{$A['perm_group']},{$A['perm_members']},{$A['perm_anon']}");
+                "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','$description',$owner_id,{$A['group_id']},{$A['perm_owner']},{$A['perm_group']},{$A['perm_members']},{$A['perm_anon']}");
 
             PLG_itemSaved($A['eid'], 'calendar');
 
@@ -654,7 +657,7 @@ function plugin_savesubmission_calendar($A)
         } else {
             DB_save($_TABLES['personal_events'],
                 'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',
-                "{$_USER['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
+                "{$_USER['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','$description'");
             COM_redirect($_CONF['site_url'] . '/calendar/index.php?mode=personal&amp;msg=17');
         }
     } else { // personal calendars are disabled
@@ -1092,34 +1095,66 @@ function CALENDAR_listevents()
  */
 function CALENDAR_sendNotification($table, $A)
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG08, $LANG09, $LANG_CAL_1, $LANG_CAL_2;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG08, $LANG09, $LANG_CAL_1, $LANG_CAL_2, $LANG31;
 
-    $title = stripslashes($A['title']);
-    $description = stripslashes($A['description']);
     list($dateTime, ) = COM_getUserDateTimeFormat(strtotime($A['datestart'] . ' ' . $A['timestart']), 'date');
-    $mailBody = sprintf("%s: %s\n%s: %s", $LANG09[16], $title, $LANG09[17], $dateTime);
+	
+	// Create HTML and plaintext version of submission email
+	$t = COM_newTemplate(CTL_plugin_templatePath('calendar', 'emails'));
+	
+	$t->set_file(array('email_html' => 'event_submission-html.thtml'));
+	$t->set_file(array('email_plaintext' => 'event_submission-plaintext.thtml'));
+
+	$t->set_var('email_divider', $LANG31['email_divider']);
+	$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+	$t->set_var('LB', LB);
+	
+	$t->set_var('lang_title', $LANG09[16]);
+	$t->set_var('submission_title', $A['title']);
+	$t->set_var('lang_datetime', $LANG09[17]);
+	$t->set_var('submission_datetime', $dateTime);
     if ($A['allday']) {
-        $mailBody .= ' (' . $LANG_CAL_2[26] . ')';
-    }
-    $mailBody .= "\n";
-    if (!empty($A['url']) && ($A['url'] !== 'http://') && ($A['url'] !== 'https://')) {
-        $mailBody .= "$LANG09[33]: " . $A['url'] . "\n";
-    }
-    $mailBody .= "\n" . $description . "\n"
-        . "IP: " . \Geeklog\IP::getIPAddress() . "\n\n";
+		$t->set_var('lang_allday', $LANG_CAL_2[26]);
+    }	
+	if (!empty($A['url']) && ($A['url'] !== 'http://') && ($A['url'] !== 'https://')) {
+		$t->set_var('lang_url', $LANG09[33]);
+		$t->set_var('submission_url', $A['url']);	
+	}
+	$t->set_var('lang_contributed_by', $LANG01[1]);
+	$t->set_var('link_contributer_name', COM_getDisplayName($_USER['uid']));	
 
+	$description = PLG_replaceTags($A['description']);
+	// Just like comments, event description really should a postmode that is saved with the description (ie store either 'html' or 'plaintext') OR just remove HTML but they don't so lets figure out if description is html by searching for html tags. This is done during displaying of links as well
+	// Needs to be done after autotags incase they insert HTML
+	if (preg_match('/<.*>/', $description) == 0) {
+		$description_plaintext = $description;
+		$description_html = COM_nl2br($description);
+	} else {	
+		$description_html = GLText::htmlFixURLs($description);
+		$description_plaintext = GLText::html2Text($description_html);
+	}
+	$t->set_var('submission_description_plaintext', $description_plaintext);
+	$t->set_var('submission_description_html', $description_html);	
+	
+	// Add link to content
     if ($table == $_TABLES['eventsubmission']) {
-        $mailBody .= "$LANG01[10]: {$_CONF['site_admin_url']}/moderation.php\n\n";
+		$t->set_var('lang_link_label', $LANG01[10]); // Submissions
+        
+		$submission_link = $_CONF['site_admin_url'] . "/moderation.php";
     } else {
-        $mailBody .= "$LANG_CAL_1[12]: {$_CONF['site_url']}/calendar/event.php?eid={$A['eid']}\n\n";
+		$t->set_var('lang_link_label', $LANG_CAL_1[12]); // Event
+        
+		$submission_link = COM_buildURL($_CONF['site_url'] . "/calendar/event.php?eid={$A['eid']}");
     }
-    $mailSubject = $_CONF['site_name'] . ' ' . $LANG_CAL_2[43];
+	$t->set_var('submission_link', $submission_link);		
 
-    $mailBody .= "\n------------------------------\n";
-    $mailBody .= "\n$LANG08[34]\n";
-    $mailBody .= "\n------------------------------\n";
-
-    COM_mail($_CONF['site_mail'], $mailSubject, $mailBody);
+	// Output final content
+	$message[] = $t->parse('output', 'email_html');	
+	$message[] = $t->parse('output', 'email_plaintext');	
+	
+	$mailSubject = $_CONF['site_name'] . ' ' . $LANG_CAL_2[43];
+	
+	COM_mail ($_CONF['site_mail'], $mailSubject, $message, '' , true);
 }
 
 /**
