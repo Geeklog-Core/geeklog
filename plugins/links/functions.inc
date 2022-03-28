@@ -1145,7 +1145,10 @@ function plugin_save_submit_links($A)
     $A['cid'] = DB_escapeString($A['cid']);
     // Remove any autotags the user doesn't have permission to use
     $A['description'] = PLG_replaceTags($A['description'], '', true);
-    $A['description'] = DB_escapeString(htmlspecialchars(COM_checkWords($A['description'])));
+	$A['description'] = GLText::remove4byteUtf8Chars($A['description']);
+	$A['description'] = GLText::stripTags(COM_checkWords($A['description']));
+	$description = DB_escapeString($A['description']); // Can't escape array as that gets used after by notification and need line breaks
+	$A['title'] = GLText::remove4byteUtf8Chars($A['title']);
     $A['title'] = DB_escapeString(GLText::stripTags(COM_checkWords($A['title'])));
     $A['url'] = DB_escapeString(COM_sanitizeUrl($A['url']));
     $A['lid'] = DB_escapeString(COM_makeSid());
@@ -1160,7 +1163,7 @@ function plugin_save_submit_links($A)
     if (($_LI_CONF['linksubmission'] == 1) && !SEC_hasRights('links.submit')) {
         DB_save(
             $_TABLES['linksubmission'], 'lid,cid,url,description,title,date,owner_id',
-    "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id"
+    "{$A['lid']},'{$A['cid']}','{$A['url']}','$description','{$A['title']}',NOW(),$owner_id"
         );
 
         if ($_LI_CONF['notification'] == 1) {
@@ -1179,7 +1182,7 @@ function plugin_save_submit_links($A)
 
         DB_save(
             $_TABLES['links'], 'lid,cid,url,description,title,date,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
-    "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id,{$A['group_id']},{$A['perm_owner']},{$A['perm_group']},{$A['perm_members']},{$A['perm_anon']}"
+    "{$A['lid']},'{$A['cid']}','{$A['url']}','$description','{$A['title']}',NOW(),$owner_id,{$A['group_id']},{$A['perm_owner']},{$A['perm_group']},{$A['perm_members']},{$A['perm_anon']}"
         );
 
         PLG_itemSaved($A['lid'], 'links');
@@ -1205,9 +1208,6 @@ function LINKS_sendNotification ($table, $A)
 {
     global $_CONF, $_TABLES, $_USER, $LANG_LINKS, $LANG_LINKS_SUBMIT, $LANG08, $LANG01, $LANG31;
 
-    $title = stripslashes ($A['title']);
-    $description = PLG_replaceTags( stripslashes($A['description']) );
-	
 	// Create HTML and plaintext version of submission email
 	$t = COM_newTemplate(CTL_plugin_templatePath('links', 'emails'));
 	
@@ -1219,14 +1219,28 @@ function LINKS_sendNotification ($table, $A)
 	$t->set_var('LB', LB);
 	
 	$t->set_var('lang_title', $LANG_LINKS_SUBMIT[8]);
-	$t->set_var('submission_title', $title);
+	$t->set_var('submission_title', $A['title']);
 	$t->set_var('lang_contributed_by', $LANG01[1]);
 	$t->set_var('link_contributer_name', COM_getDisplayName($_USER['uid']));	
 	$t->set_var('lang_url', $LANG_LINKS_SUBMIT[9]);
 	$t->set_var('submission_url', $A['url']);
 	$t->set_var('lang_category', $LANG_LINKS_SUBMIT[3]);
 	$t->set_var('submission_category', $A['categorydd']);
-	$t->set_var('submission_description', $description);
+	
+	$description = PLG_replaceTags($A['description']);
+	// Just like comments, link description really should a postmode that is saved with the description (ie store either 'html' or 'plaintext') OR just remove HTML but they don't so lets figure out if description is html by searching for html tags. This is done during displaying of links as well
+	// Needs to be done after autotags incase they insert HTML
+	if (preg_match('/<.*>/', $description) == 0) {
+		$htmlFound = false;
+		$description_plaintext = $description;
+		$description_html = COM_nl2br($description);
+	} else {	
+		$htmlFound = true;
+		$description_html = GLText::htmlFixURLs($description);
+		$description_plaintext = GLText::html2Text($description_html);
+	}
+	$t->set_var('submission_description_plaintext', $description_plaintext);
+	$t->set_var('submission_description_html', $description_html);
 
 	// Add link to content
     if ($table == $_TABLES['linksubmission']) {

@@ -374,8 +374,14 @@ function prepare_link_item($A, &$template)
     $template->set_var('link_name', $title);
     $template->set_var('link_name_encoded', rawurlencode($title));
     $template->set_var('link_hits', COM_numberFormat($A['hits']));
-    $template->set_var('link_description',
-        PLG_replaceTags(COM_nl2br(stripslashes($A['description']))));
+	
+	$description = PLG_replaceTags(stripslashes($A['description']));
+	// Just like comments, link description really should a postmode that is saved with the description (ie store either 'html' or 'plaintext') OR just remove HTML but they don't so lets figure out if description is html by searching for html tags. This is done in links notification email as well
+	// Needs to be done after autotags incase they insert HTML
+	if (preg_match('/<.*>/', $description) == 0) {
+		$description = COM_nl2br($description);
+	}	
+    $template->set_var('link_description', $description);
 
     $attr = array('title' => $actualUrl);
     if (substr($actualUrl, 0, strlen($_CONF['site_url'])) != $_CONF['site_url']) {

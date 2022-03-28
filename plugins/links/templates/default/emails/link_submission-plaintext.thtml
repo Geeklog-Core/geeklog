@@ -7,7 +7,7 @@
 {lang_category}: {submission_category}
 
 
-{submission_description}
+{submission_description_plaintext}
 
 
 {email_divider}

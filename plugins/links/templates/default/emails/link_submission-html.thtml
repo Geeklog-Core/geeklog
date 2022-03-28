@@ -3,7 +3,7 @@
 {lang_contributed_by} {link_contributer_name}<br{XHTML}>
 {lang_category}: {submission_category}</p>
 
-<p>{submission_description}</p>
+<p>{submission_description_html}</p>
 
 {email_divider_html}
 
