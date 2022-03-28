@@ -1228,14 +1228,12 @@ function LINKS_sendNotification ($table, $A)
 	$t->set_var('submission_category', $A['categorydd']);
 	
 	$description = PLG_replaceTags($A['description']);
-	// Just like comments, link description really should a postmode that is saved with the description (ie store either 'html' or 'plaintext') OR just remove HTML but they don't so lets figure out if description is html by searching for html tags. This is done during displaying of links as well
+	// Just like comments, link description really should have a postmode that is saved with the description (ie store either 'html' or 'plaintext') OR just remove HTML but they don't so lets figure out if description is html by searching for html tags. This is done during displaying of links as well
 	// Needs to be done after autotags incase they insert HTML
 	if (preg_match('/<.*>/', $description) == 0) {
-		$htmlFound = false;
 		$description_plaintext = $description;
 		$description_html = COM_nl2br($description);
 	} else {	
-		$htmlFound = true;
 		$description_html = GLText::htmlFixURLs($description);
 		$description_plaintext = GLText::html2Text($description_html);
 	}
