@@ -8,6 +8,7 @@ global $_DB_table_prefix, $_TABLES;
 // The following entries are no longer defined in 'lib-database.php', so define them here
 $_TABLES['cookiecodes'] = $_DB_table_prefix . 'cookiecodes';
 $_TABLES['dateformats'] = $_DB_table_prefix . 'dateformats';
+$_TABLES['maillist'] = $_DB_table_prefix . 'maillist';
 $_TABLES['usercomment'] = $_DB_table_prefix . 'usercomment';
 $_TABLES['userindex'] = $_DB_table_prefix . 'userindex';
 $_TABLES['userinfo'] = $_DB_table_prefix . 'userinfo';
@@ -42,6 +43,12 @@ function update_ConfValuesFor222()
 
     // Add IP anonymization policy
     $c->add('ip_anonymization', \Geeklog\IP::POLICY_NEVER_ANONYMIZE, 'text', 0, 0, null, 2070, true, $me, 0);
+	
+    // Add Likes System Tab and config options
+    $sg  =  4;      // subgroup
+    $fs  = 51;      // fieldset
+    $tab = 51;      // tab
+    $c->add('likes_users_listed', 5, 'text', $sg, $fs, NULL, 1740, TRUE, $me, $tab);
 
     return true;
 }
