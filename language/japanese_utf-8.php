@@ -555,7 +555,7 @@ $LANG08 = array(
     26 => 'このフォームでメールを送ります。',
     27 => 'メッセージ',
     28 => '%s さんからのメッセージ: ',
-    29 => "今日の{$_CONF['site_name']} に関するダイジェストです。宛先:",
+	29 => "This is the daily digest from {$_CONF['site_name']} for %s. Listed below are the latest published articles since the last time this email was sent.",
     30 => ' 今日のニュースレターです。宛先: ',
     31 => 'タイトル',
     32 => '日付',
@@ -571,7 +571,8 @@ $LANG08 = array(
     42 => 'このユーザーのメールアドレスは存在しません。おそらくOAuthユーザーのアカウントでしょう。',
     43 => 'このユーザーのメールアドレスは無効です。',
     44 => 'このユーザーのステータスは、「アクティブ」または「新しいパスワード」以外に設定されているため、メールアドレスは無効とみなされます。',
-    45 => ''
+    45 => '',
+	46 => "To unsubscribe from the Daily Digest, login to {$_CONF['site_name']} at {$_CONF['site_url']}. Then visit the user settings page at {$_CONF['site_url']}/usersettings.php and view the Content Tab. You can then unsubscribe to the Daily Digest by deselecting all topics and saving your profile."
 );
 
 ###############################################################################

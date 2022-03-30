@@ -1,0 +1,19 @@
+<p>{lang_info_msg}</p>
+
+<p>{lang_unsubscribe_msg}</p>
+
+{articles_html}
+
+<!-- BEGIN article_html -->
+
+{email_divider_html}
+
+<p>{lang_title}: {article_title}<br{XHTML}>
+{!if article_author}{lang_author}: {article_author}<br{XHTML}>{!endif}
+{lang_date}: {article_date}</p>
+
+{content_html}
+
+<p>{lang_url_label}: {article_url}</p>
+
+<!-- END article_html -->

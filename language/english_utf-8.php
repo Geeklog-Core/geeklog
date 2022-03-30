@@ -547,7 +547,7 @@ $LANG08 = array(
     26 => 'This form will allow you to send an email to the selected user.  All fields are required.',
     27 => 'Short message',
     28 => '%s wrote: ',
-    29 => "This is the daily digest from {$_CONF['site_name']} for ",
+    29 => "This is the daily digest from {$_CONF['site_name']} for %s. Listed below are the latest published articles since the last time this email was sent.",
     30 => ' Daily Newsletter for ',
     31 => 'Title',
     32 => 'Date',
@@ -563,7 +563,8 @@ $LANG08 = array(
     42 => "This users email address doesn't exist. This most likely means is is an OAuth user account.",
     43 => 'This users email address is invalid.',
     44 => 'This users status is set to something other than Active or New Password therefore the email address is assumed bad.',
-    45 => "This is a message sent from {$_CONF['site_name']} by %s. Any replies will need to be sent to the email address: %s"
+    45 => "This is a message sent from {$_CONF['site_name']} by %s. Any replies will need to be sent to the email address: %s",
+	46 => "To unsubscribe from the Daily Digest, login to {$_CONF['site_name']} at {$_CONF['site_url']}. Then visit the user settings page at {$_CONF['site_url']}/usersettings.php and view the Content Tab. You can then unsubscribe to the Daily Digest by deselecting all topics and saving your profile."
 );
 
 ###############################################################################

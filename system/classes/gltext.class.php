@@ -301,16 +301,11 @@ class GLText
      */
 	 public static function htmlFixURLs($string) 
 	{
-		global $_CONF;
-		
-		// Fix Images if needed
-		$string = str_replace("src='/","src='" . $_CONF['site_url'] . "/", $string);
-		$string = str_replace('src="/','src="' . $_CONF['site_url'] . "/", $string);
-		
 		// Fix internal links if needed
-		$string = str_replace("href='/","href='" . $_CONF['site_url'] . "/", $string);
-		$string = str_replace('href="/','href="' . $_CONF['site_url'] . "/", $string);
-
+		$string = preg_replace_callback('/<a\s+.*?href="(.*?)".*?>/i', 'COM_emailUserTopicsUrlRewriter', $string);
+		// Fix Images if needed
+		$string = preg_replace_callback('/<img\s+.*?src="(.*?)".*?>/i', 'COM_emailUserTopicsUrlRewriter', $string);		
+		
 		// return the string
 		return $string;
 	} 

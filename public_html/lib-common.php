@@ -1663,7 +1663,7 @@ function COM_createHTMLDocument($content = '', $information = array())
     SESS_setVariable('topic_id', $current_topic);
 
     // Call any plugin that may want to include extra Meta tags
-    // or Javascript functions
+    // or JavaScript functions
     $headerCode .= PLG_getHeaderCode();
 
     // Meta Tags
@@ -5116,15 +5116,18 @@ function COM_emailUserTopicsUrlRewriter(array $matches)
 }
 
 /**
+ * Daily Digest
  * This will email new stories in the topics that the user is interested in
  * In account information the user can specify which topics for which they
- * will receive any new article for in a daily digest.
+ * will receive any new article for in a daily digest. This function should be
+ * called by a cron job. See the file cron-emailgeeklogdailydigest and config docs
+ * for more information
  *
  * @return   void
  */
 function COM_emailUserTopics()
 {
-    global $_CONF, $_VARS, $_TABLES, $LANG04, $LANG08, $LANG24;
+    global $_CONF, $_VARS, $_TABLES, $LANG04, $LANG08, $LANG24, $LANG31;
 
     if ($_CONF['emailstories'] == 0) {
         return;
@@ -5137,7 +5140,7 @@ function COM_emailUserTopics()
     $userSql = "SELECT username,email,etids,{$_TABLES['users']}.uid AS uuid "
         . "FROM {$_TABLES['users']}, {$_TABLES['user_attributes']} "
         . "WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['user_attributes']}.uid = {$_TABLES['users']}.uid AND "
-        . "(etids <> '-' OR etids = '') "
+        . "(etids <> '-' OR etids = '') AND {$_TABLES['users']}.status=" . USER_ACCOUNT_ACTIVE . " "
         . "ORDER BY {$_TABLES['users']}.uid";
 
     $users = DB_query($userSql);
@@ -5148,9 +5151,10 @@ function COM_emailUserTopics()
     for ($x = 0; $x < $numRows; $x++) {
         $U = DB_fetchArray($users);
 
+		// Only load sid as will use article class to access content since best way to convert it to HTMl and deal with images, etc...
         $storySql = array();
-        $storySql['mysql'] = "SELECT sid,uid,date AS day,title,introtext,postmode";
-        $storySql['pgsql'] = "SELECT sid,uid,date AS day,title,introtext,postmode";
+        $storySql['mysql'] = "SELECT sid";
+        $storySql['pgsql'] = "SELECT sid";
 
         $commonSql = " FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastRun}'
@@ -5196,57 +5200,78 @@ function COM_emailUserTopics()
             // If no new articles where pulled for this user, continue with next
             continue;
         }
-
+	
+		// Create HTML and plaintext version of submission email
+		$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+		$t->set_file(array('email_html' => 'daily_digest-html.thtml'));
+		$t->set_file(array('email_plaintext' => 'daily_digest-plaintext.thtml'));
+		$t->set_block('email_html', 'article_html');
+		$t->set_block('email_plaintext', 'article_plaintext');
+		
+		$t->set_var('email_divider', $LANG31['email_divider']);
+		$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+		$t->set_var('LB', LB);
+		
         list($date,) = COM_getUserDateTimeFormat(time(), 'shortdate');
-        $mailText = $LANG08[29] . $date . "\n";
+		$t->set_var('lang_info_msg', sprintf($LANG08[29], $date)); // This is the daily digest from site_name for %s
+		
+		$t->set_var('lang_unsubscribe_msg', $LANG08[46]); // To unsubscribe from the Daily Digest ...
 
         for ($y = 0; $y < $numArticles; $y++) {
             // Loop through stories building the requested email message
             $S = DB_fetchArray($stories);
-
-            $mailText .= "\n------------------------------\n\n";
-            $mailText .= "$LANG08[31]: "
-                . COM_undoSpecialChars(stripslashes($S['title'])) . "\n";
-            if ($_CONF['contributedbyline'] == 1) {
-                if (empty($authors[$S['uid']])) {
-                    $articleAuthor = COM_getDisplayName($S['uid']);
-                    $authors[$S['uid']] = $articleAuthor;
-                } else {
-                    $articleAuthor = $authors[$S['uid']];
-                }
-                $mailText .= "$LANG24[7]: " . $articleAuthor . "\n";
-            }
-
-            list($date,) = COM_getUserDateTimeFormat(strtotime($S['day']), 'date');
-            $mailText .= "$LANG08[32]: " . $date . "\n\n";
-
-            if ($_CONF['emailstorieslength'] > 0) {
-                if ($S['postmode'] === 'wikitext') {
-                    $articleText = COM_undoSpecialChars(GLText::stripTags(PLG_replaceTags(COM_renderWikiText(stripslashes($S['introtext'])), '', false, 'article', $S['sid'])));
-                } else {
-                    $articleText = COM_undoSpecialChars(GLText::stripTags(PLG_replaceTags(stripslashes($S['introtext']), '', false, 'article', $S['sid'])));
-                }
-
-                if ($_CONF['emailstorieslength'] > 1) {
-                    $articleText = COM_truncate($articleText, $_CONF['emailstorieslength'], '...');
-                }
-
-                $articleText = preg_replace_callback('/<a\s+.*?href="(.*?)".*?>/i', 'COM_emailUserTopicsUrlRewriter', $articleText);
-                $articleText = preg_replace_callback('/<img\s+.*?src="(.*?)".*?>/i', 'COM_emailUserTopicsUrlRewriter', $articleText);
-                $mailText .= $articleText . "\n\n";
-            }
-
-            $mailText .= $LANG08[33] . ' ' . COM_buildURL($_CONF['site_url']
-                    . '/article.php?story=' . $S['sid']) . "\n";
+			
+			$story = new Article();
+			$result = $story->loadFromDatabase($S['sid'], 'view');
+			if ($result == STORY_LOADED_OK) {
+				$t->set_var('lang_title', $LANG08[31]);	
+				$t->set_var('article_title', COM_undoSpecialChars($story->displayElements('title')));
+				$t->set_var('lang_date', $LANG08[32]);
+				$t->set_var('article_date', COM_strftime($_CONF['date'], $story->DisplayElements('unixdate')));
+				if ($_CONF['contributedbyline'] == 1) {
+					$t->set_var('lang_author', $LANG24[7]);
+					$t->set_var('article_author', COM_getDisplayName($story->displayElements('uid')));
+					
+				}
+				
+				if ($_CONF['emailstorieslength'] > 0) {
+					// Articles always returned as HTML (even if set to another post mode)
+					$article_html = $story->DisplayElements('introtext');
+					
+					// Fix links in HTML to be displayed in emails
+					$article_html = GLText::htmlFixURLs($article_html);
+					
+					// Convert HTML to Plain Text
+					$article_plaintext = GLText::html2Text($article_html);
+				
+					if ($_CONF['emailstorieslength'] > 1) {
+						$article_plaintext = COM_truncate($article_plaintext, $_CONF['emailstorieslength'], '...');
+						$article_html = COM_truncateHTML($article_html, $_CONF['emailstorieslength'], '...');
+					}
+					
+					$t->set_var('content_plaintext', $article_plaintext);
+					$t->set_var('content_html', $article_html);				
+				}
+				
+				$t->set_var('lang_url_label', $LANG08[33]); // Read the full article at
+				$t->set_var('article_url', COM_buildURL($_CONF['site_url']
+						. '/article.php?story=' . $S['sid']));
+						
+				$t->parse('articles_html', 'article_html', true);
+				$t->parse('articles_plaintext', 'article_plaintext', true);				
+			} else {
+				// Shouldn't happen ...
+				
+			}
         }
 
-        $mailText .= "\n------------------------------\n";
-        $mailText .= "\n$LANG08[34]\n";
-        $mailText .= "\n------------------------------\n";
+		// Output final content
+		$message[] = $t->parse('output', 'email_html');	
+		$message[] = $t->parse('output', 'email_plaintext');	
 
         $mailTo = array($U['email'] => $U['username']);
 
-        COM_mail($mailTo, $subject, $mailText);
+		COM_mail($mailTo, $subject, $message, '' , true);
     }
 
     DB_query("UPDATE {$_TABLES['vars']} SET value = NOW() WHERE name = 'lastemailedstories'");
