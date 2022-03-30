@@ -1651,9 +1651,6 @@ function COM_createHTMLDocument($content = '', $information = array())
         }
     }
 
-    // Call to plugins to set template variables in the header
-    PLG_templateSetVars('header', $page);
-
     // Set last topic session variable
 	// Since TOPIC_getTopic may not get called by the page being visited if it doesn't care about topics.
 	// lib-common sets the topic initially to all topics
@@ -1661,69 +1658,6 @@ function COM_createHTMLDocument($content = '', $information = array())
         $current_topic = ''; // Nothing means all topics
     }
     SESS_setVariable('topic_id', $current_topic);
-
-    // Call any plugin that may want to include extra Meta tags
-    // or JavaScript functions
-    $headerCode .= PLG_getHeaderCode();
-
-    // Meta Tags
-    // 0 = Disabled, 1 = Enabled, 2 = Enabled but default just for homepage
-    if ($_CONF['meta_tags'] > 0) {
-        $meta_description = '';
-        $meta_keywords = '';
-        $no_meta_description = 1;
-        $no_meta_keywords = 1;
-
-        // Find out if the meta tag description or keywords already exist in the headercode
-        if ($headerCode != '') {
-            $pattern = '/<meta ([^>]*)name="([^"\'>]*)"([^>]*)/im';
-            if (preg_match_all($pattern, $headerCode, $matches, PREG_SET_ORDER)) {
-                // Loop through all meta tags looking for description and keywords
-                for ($i = 0; $i < count($matches) && (($no_meta_description == 1) || ($no_meta_keywords == 1)); $i++) {
-                    $str_matches = strtolower($matches[$i][0]);
-                    $pos = strpos($str_matches, 'name=');
-                    if (!(is_bool($pos) && !$pos)) {
-                        $name = trim(substr($str_matches, $pos + 5), '"');
-                        $pos = strpos($name, '"');
-                        $name = substr($name, 0, $pos);
-
-                        if (strcasecmp('description', $name) === 0) {
-                            $pos = strpos($str_matches, 'content=');
-                            if (!(is_bool($pos) && !$pos)) {
-                                $no_meta_description = 0;
-                            }
-                        }
-                        if (strcasecmp('keywords', $name) === 0) {
-                            $pos = strpos($str_matches, 'content=');
-                            if (!(is_bool($pos) && !$pos)) {
-                                $no_meta_keywords = 0;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if ($isOnFrontPage && ($_CONF['meta_tags'] == 2)) { // Display default meta tags only on home page
-            if ($no_meta_description) {
-                $meta_description = $_CONF['meta_description'];
-            }
-            if ($no_meta_keywords) {
-                $meta_keywords = $_CONF['meta_keywords'];
-            }
-        } elseif ($_CONF['meta_tags'] == 1) { // Display default meta tags anywhere there are no tags
-            if ($no_meta_description) {
-                $meta_description = $_CONF['meta_description'];
-            }
-            if ($no_meta_keywords) {
-                $meta_keywords = $_CONF['meta_keywords'];
-            }
-        }
-
-        if ($no_meta_description || $no_meta_keywords) {
-            $headerCode .= COM_createMetaTags($meta_description, $meta_keywords);
-        }
-    }
 
     $page->set_var('breadcrumb_trail', $breadcrumbs);
 
@@ -1905,7 +1839,82 @@ function COM_createHTMLDocument($content = '', $information = array())
     }
     $page->set_var('layout_columns', $layout_columns);
 
-    // All blocks, autotags, template files, etc, now have been rendered (since can be done in footer) so all scripts and css should be set now
+	// ************************************************
+    // All blocks, autotags, template files, main content, etc, now have been rendered 
+	// So all $_SCRIPTS (css and javascript files) should be set now so lets deal with creating header and footer
+	// This way if plugin wants to determine if script file is needed or not plugin_getheadercode_foo is one of 
+	// the last things run
+	// Note: Autotags in template files are always run and not cached even if rest of template is cached
+	// Note: Autotags in content like articles are always run when viewed unless content has been cached, 
+	// 		 then autotag only run when cache is regenerated (so not ideal if asset file needs to be set in $_SCRIPTS
+	// Note: For more info see Github issue #1118
+	// ************************************************
+    // Call to plugins to set template variables in the header
+    PLG_templateSetVars('header', $page);
+
+    // Call any plugin that may want to include extra Meta tags
+    // or JavaScript functions
+    $headerCode .= PLG_getHeaderCode();
+
+    // Meta Tags
+    // 0 = Disabled, 1 = Enabled, 2 = Enabled but default just for homepage
+    if ($_CONF['meta_tags'] > 0) {
+        $meta_description = '';
+        $meta_keywords = '';
+        $no_meta_description = 1;
+        $no_meta_keywords = 1;
+
+        // Find out if the meta tag description or keywords already exist in the headercode
+        if ($headerCode != '') {
+            $pattern = '/<meta ([^>]*)name="([^"\'>]*)"([^>]*)/im';
+            if (preg_match_all($pattern, $headerCode, $matches, PREG_SET_ORDER)) {
+                // Loop through all meta tags looking for description and keywords
+                for ($i = 0; $i < count($matches) && (($no_meta_description == 1) || ($no_meta_keywords == 1)); $i++) {
+                    $str_matches = strtolower($matches[$i][0]);
+                    $pos = strpos($str_matches, 'name=');
+                    if (!(is_bool($pos) && !$pos)) {
+                        $name = trim(substr($str_matches, $pos + 5), '"');
+                        $pos = strpos($name, '"');
+                        $name = substr($name, 0, $pos);
+
+                        if (strcasecmp('description', $name) === 0) {
+                            $pos = strpos($str_matches, 'content=');
+                            if (!(is_bool($pos) && !$pos)) {
+                                $no_meta_description = 0;
+                            }
+                        }
+                        if (strcasecmp('keywords', $name) === 0) {
+                            $pos = strpos($str_matches, 'content=');
+                            if (!(is_bool($pos) && !$pos)) {
+                                $no_meta_keywords = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($isOnFrontPage && ($_CONF['meta_tags'] == 2)) { // Display default meta tags only on home page
+            if ($no_meta_description) {
+                $meta_description = $_CONF['meta_description'];
+            }
+            if ($no_meta_keywords) {
+                $meta_keywords = $_CONF['meta_keywords'];
+            }
+        } elseif ($_CONF['meta_tags'] == 1) { // Display default meta tags anywhere there are no tags
+            if ($no_meta_description) {
+                $meta_description = $_CONF['meta_description'];
+            }
+            if ($no_meta_keywords) {
+                $meta_keywords = $_CONF['meta_keywords'];
+            }
+        }
+
+        if ($no_meta_description || $no_meta_keywords) {
+            $headerCode .= COM_createMetaTags($meta_description, $meta_keywords);
+        }
+    }
+	
     $headerCode = $_STRUCT_DATA->toScript() . $headerCode;
     $headerCode = $_SCRIPTS->getHeader() . $headerCode;
     $page->set_var('plg_headercode', $headerCode);
