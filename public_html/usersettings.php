@@ -1035,6 +1035,10 @@ function saveuser(array $A)
     $A['fullname'] = GLText::stripTags(GLText::remove4byteUtf8Chars($A['fullname']));
     $A['location'] = GLText::stripTags(GLText::remove4byteUtf8Chars($A['location']));
 
+	// Remove any autotags the user doesn't have permission to use
+	$A['sig'] = PLG_replaceTags($A['sig'], '', true);
+	$A['about'] = PLG_replaceTags($A['about'], '', true);
+
     if ($A['postmode'] === 'html') {
         // HTML
         $A['sig'] = GLText::checkHTML(GLText::remove4byteUtf8Chars($A['sig']), '');
