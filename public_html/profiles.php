@@ -110,8 +110,6 @@ function contactemail($uid, $cc, $author, $authorEmail, $subject, $message)
             $subject = GLText::stripTags($subject);
             $subject = substr($subject, 0, strcspn($subject, "\r\n"));
 			
-			
-			
 			// Create HTML and plaintext version of email
 			$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
 			$t->set_file(array('email_html' => 'contact-html.thtml'));

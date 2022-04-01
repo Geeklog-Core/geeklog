@@ -20,7 +20,7 @@
 
 <!-- BEGIN comment_signature -->
 <div class="comment-sig">
-    ---<br{xhtml}>
+	{signature_divider_html}
     {user_signature}
 </div>
 <!-- END comment_signature -->

@@ -268,7 +268,7 @@ function CMT_commentBar($sid, $title, $type, $order, $mode, $commentCode = 0)
 function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false, $preview = false, $commentCode = 0,
                         $commentPage = 1)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG03, $LANG_ADMIN, $MESSAGE, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG03, $LANG31, $LANG_ADMIN, $MESSAGE, $_IMAGE_TYPE;
 
     $indent = 0;  // begin with 0 indent
     $retval = ''; // initialize return value
@@ -627,15 +627,14 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
 
         // Check for User Signature and add first
         // Get signature of comment owner
-        if ($A['uid'] > 1) {
-            $sig = DB_getItem($_TABLES['users'], 'sig', "uid = {$A['uid']}");
-            if (!empty($sig)) {
-                $template->set_var('user_signature', COM_nl2br($sig));
-                $template->parse('comment_signature', 'comment_signature');
-            } else {
-                $template->set_var('user_signature', '');
-                $template->set_var('comment_signature', '');
-            }
+        if ($A['uid'] > 1 && !empty($A['sig'])) {
+			$template->set_var('signature_divider_html', $LANG31['sig_divider_html']);
+
+			// Converts to HTML, fixes links, and executes autotags
+			$sig_html = GLText::getDisplayText(stripslashes($A['sig']), $A['postmode'], GLTEXT_LATEST_VERSION);
+			
+			$template->set_var('user_signature', $sig_html);
+			$template->parse('comment_signature', 'comment_signature');
         } else {
             $template->set_var('user_signature', '');
             $template->set_var('comment_signature', '');
@@ -766,7 +765,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
                 if ($cid) {
                     $count = 1;
 
-                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, "
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, u.sig, u.postmode, "
                         . "UNIX_TIMESTAMP(c.date) AS nice_date "
                         . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
                         . "WHERE c.uid = u.uid AND c.cid = $pid AND type='{$type}'";
@@ -774,7 +773,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
                     $count = DB_count($_TABLES['comments'],
                         array('sid', 'type'), array($sid, $type));
 
-                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, "
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, u.sig, u.postmode, "
                         . "UNIX_TIMESTAMP(c.date) AS nice_date "
                         . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
                         . "WHERE c.uid = u.uid AND c.sid = '$sid' AND type='{$type}' "
@@ -802,7 +801,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
                     $result = DB_query($q2);
                     list($count) = DB_fetchArray($result);
 
-                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, c2.indent AS pindent, "
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, u.sig, u.postmode, c2.indent AS pindent, "
                         . "UNIX_TIMESTAMP(c.date) AS nice_date "
                         . "FROM {$_TABLES['comments']} AS c, {$_TABLES['comments']} AS c2, "
                         . "{$_TABLES['users']} AS u "
@@ -815,7 +814,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
                         $count = DB_count($_TABLES['comments'],
                             array('sid', 'type'), array($sid, $type));
 
-                        $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, 0 AS pindent, "
+                        $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, u.sig, u.postmode, 0 AS pindent, "
                             . "UNIX_TIMESTAMP(c.date) AS nice_date "
                             . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
                             . "WHERE c.sid = '$sid' AND c.uid = u.uid  AND type='{$type}' "
@@ -829,7 +828,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
                         $result = DB_query($q2);
                         list($count) = DB_fetchArray($result);
 
-                        $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, c2.indent + 1 AS pindent, "
+                        $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, u.sig, u.postmode, c2.indent + 1 AS pindent, "
                             . "UNIX_TIMESTAMP(c.date) AS nice_date "
                             . "FROM {$_TABLES['comments']} AS c, {$_TABLES['comments']} AS c2, "
                             . "{$_TABLES['users']} AS u "
@@ -1025,11 +1024,6 @@ function CMT_commentForm($title, $comment, $sid, $pid, $type, $mode, $postMode, 
                 } elseif (empty($postMode)) {
                     $postMode = $_CONF['postmode'];
                 }
-            }
-
-            $sig = '';
-            if ($uid > 1) {
-                $sig = DB_getItem($_TABLES['users'], 'sig', "uid = '$uid'");
             }
 
             // Note:
