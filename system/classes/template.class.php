@@ -1499,9 +1499,9 @@ class Template
             return $ret;
         }
         if ($this->unknowns == 'comment') {
-            return '<!-- Template variable ' . htmlspecialchars($val) . ' undefined -->';
+			return '<!-- Template variable ' . $val . ' undefined -->'; // Do not need to use htmlspecialchars on $ val as in html comment
         } elseif ($this->unknowns == 'keep') {
-            return '{' . htmlspecialchars($val . $modifier) . '}';
+			return '{' . htmlspecialchars($val . $modifier) . '}';
         }
 
         return '';
@@ -1525,11 +1525,11 @@ class Template
                 }
             }
             if (is_scalar($var)) {
-                return htmlspecialchars($var);
+				return $var; // Changed from "return htmlspecialchars($var);" as lang should translate exactly. If need entities then should be that way in language string
             }
         }
         if ($this->unknowns == 'comment') {
-            return '<!-- Language variable ' . htmlspecialchars($val) . ' undefined -->';
+			return '<!-- Language variable ' . $val . ' undefined -->'; // Do not need to use htmlspecialchars on $ val as in html comment
         } elseif ($this->unknowns == 'keep') {
             return '{' . htmlspecialchars($val) . '}';
         }
