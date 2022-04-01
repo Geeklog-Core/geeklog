@@ -78,7 +78,7 @@ if (!SEC_hasRights('user.edit')) {
  */
 function edituser($uid = 0, $msg = 0)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG28, $LANG04, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE, $LANG_configselects, $LANG_confignames;
+    global $_CONF, $_TABLES, $_USER, $LANG28, $LANG04, $LANG12, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE, $LANG_configselects, $LANG_confignames, $LANG_postmodes;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
@@ -131,9 +131,10 @@ function edituser($uid = 0, $msg = 0)
         $lasttime = '';
         $A['status'] = USER_ACCOUNT_ACTIVE;
         $A['location'] = '';
-        $A['pgpkey'] = '';
+		$A['postmode'] = 'plaintext';
         $A['sig'] = '';
         $A['about'] = '';
+		$A['pgpkey'] = '';
     }
 
     // POST data can override, in case there was an error while editing a user
@@ -152,14 +153,28 @@ function edituser($uid = 0, $msg = 0)
     if (isset($_POST['location'])) {
         $A['location'] = GLText::stripTags($_POST['location']);
     }
-    if (isset($_POST['sig'])) {
-        $A['sig'] = GLText::stripTags($_POST['sig']);
-    }
+    if (isset($_POST['postmode'])) {
+		$A['postmode'] = ($A['postmode']=== 'html') ? 'html' : 'plaintext';
+	}
+    if ($A['postmode'] === 'html') {
+        // HTML
+		if (isset($_POST['sig'])) {
+			$A['sig'] = GLText::checkHTML(GLText::remove4byteUtf8Chars($_POST['sig']), '');
+		}
+		if (isset($_POST['about'])) {
+			$A['about'] = GLText::checkHTML(GLText::remove4byteUtf8Chars($_POST['about']), '');
+		}
+    } else {
+        // Plaintext
+		if (isset($_POST['sig'])) {
+			$A['sig'] = GLText::stripTags(GLText::remove4byteUtf8Chars($_POST['sig']));
+		}
+		if (isset($_POST['about'])) {
+			$A['about'] = GLText::stripTags(GLText::remove4byteUtf8Chars($_POST['about']));
+		}
+    }	
     if (isset($_POST['pgpkey'])) {
         $A['pgpkey'] = GLText::stripTags($_POST['pgpkey']);
-    }
-    if (isset($_POST['about'])) {
-        $A['about'] = GLText::stripTags($_POST['about']);
     }
     if (isset($_POST['userstatus'])) {
         $A['status'] = COM_applyFilter($_POST['userstatus'], true);
@@ -306,12 +321,27 @@ function edituser($uid = 0, $msg = 0)
 
     $user_templates->set_var('lang_location', $LANG04[106]);
     $user_templates->set_var('user_location', htmlspecialchars($A['location']));
+	$user_templates->set_var('lang_postmode', $LANG12[36]);
+    $user_templates->set_var('lang_plaintext', $LANG_postmodes['plaintext']);
+    $user_templates->set_var('lang_html', $LANG_postmodes['html']);
+    $user_templates->set_var('lang_postmode_text', $LANG04[171]);
+	$postMode = $A['postmode'];
+    $user_templates->set_var(array(
+        'plaintext_selected' => (($postMode === 'plaintext') ? ' selected="selected"' : ''),
+        'html_selected'      => (($postMode === 'html') ? ' selected="selected"' : ''),
+    ));
     $user_templates->set_var('lang_signature', $LANG04[32]);
-    $user_templates->set_var('user_signature', htmlspecialchars($A['sig']));
+    $user_templates->set_var(
+        'user_signature',
+        GLText::getEditText($A['sig'], $postMode, GLTEXT_LATEST_VERSION)
+    );	
+    $user_templates->set_var('lang_about', $LANG04[7]);
+    $user_templates->set_var(
+        'user_about',
+        GLText::getEditText($A['about'], $postMode, GLTEXT_LATEST_VERSION)
+    );	
     $user_templates->set_var('lang_pgpkey', $LANG04[8]);
     $user_templates->set_var('user_pgpkey', htmlspecialchars($A['pgpkey']));
-    $user_templates->set_var('lang_about', $LANG04[130]);
-    $user_templates->set_var('user_about', htmlspecialchars($A['about']));
 
     $statusarray = array(
         USER_ACCOUNT_ACTIVE              => $LANG28[45],
@@ -578,7 +608,7 @@ function listusers()
  * @param    string $convert_remote  Convert remote account to local if 'on'
  * @return   string                  HTML redirect or error message
  */
-function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $location, $signature, $pgpkey, $about, $groups, $delete_photo = '', $convert_remote = '', $userstatus = 3, $oldstatus = 3, $enable_twofactorauth = 0)
+function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $location, $postmode, $signature, $pgpkey, $about, $groups, $delete_photo = '', $convert_remote = '', $userstatus = 3, $oldstatus = 3, $enable_twofactorauth = 0)
 {
     global $_CONF, $_TABLES, $_USER, $LANG04, $LANG28, $_USER_VERBOSE;
 
@@ -680,15 +710,26 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
         // basic filtering only (same as in usersettings.php)
         $fullname = GLText::stripTags(GLText::remove4byteUtf8Chars($fullname));
         $location = GLText::stripTags(GLText::remove4byteUtf8Chars($location));
-        $signature = GLText::stripTags(GLText::remove4byteUtf8Chars($signature));
-        $about = GLText::stripTags(GLText::remove4byteUtf8Chars($about));
+        //$signature = GLText::stripTags(GLText::remove4byteUtf8Chars($signature));
+        //$about = GLText::stripTags(GLText::remove4byteUtf8Chars($about));
+		$postmode = ($postmode === 'html') ? 'html' : 'plaintext';
+		if ($postmode === 'html') {
+			// HTML
+			$A['sig'] = GLText::checkHTML(GLText::remove4byteUtf8Chars($signature), '');
+			$A['about'] = GLText::checkHTML(GLText::remove4byteUtf8Chars($about), '');
+		} else {
+			// Plaintext
+			$A['sig'] = GLText::stripTags(GLText::remove4byteUtf8Chars($signature));
+			$A['about'] = GLText::stripTags(GLText::remove4byteUtf8Chars($about));
+		}
         $pgpkey = GLText::stripTags(GLText::remove4byteUtf8Chars($pgpkey));
 
         // Escape these here since used both in new and updates
         $location = DB_escapeString($location);
+		$postmode = DB_escapeString($postmode);
         $signature = DB_escapeString($signature);
-        $pgpkey = DB_escapeString($pgpkey);
         $about = DB_escapeString($about);
+		$pgpkey = DB_escapeString($pgpkey);
 
         $emailData = array(
             'username' => $username,
@@ -705,7 +746,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             }
 
             $uid = USER_createAccount($username, $email, $passwd, $fullname, $homepage);
-            DB_query("UPDATE {$_TABLES['users']} SET sig = '$signature' WHERE uid = $uid");
+            DB_query("UPDATE {$_TABLES['users']} SET sig = '$signature', postmode='$postmode' WHERE uid = $uid");
             DB_query("UPDATE {$_TABLES['user_attributes']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
 
             if ($uid > 1) {
@@ -752,7 +793,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
                 $sql_enable_twofactorauth = ""; // Only allowed to disable
             }
 
-            DB_query("UPDATE {$_TABLES['users']} SET username = '{$escUserName}', fullname = '{$escFullName}', email = '$email', homepage = '$homepage', sig = '$signature', photo = '$curphoto', status = '$userstatus' $sql_enable_twofactorauth WHERE uid = {$uid}");
+            DB_query("UPDATE {$_TABLES['users']} SET username = '{$escUserName}', fullname = '{$escFullName}', email = '$email', homepage = '$homepage', sig = '$signature', postmode='$postmode', photo = '$curphoto', status = '$userstatus' $sql_enable_twofactorauth WHERE uid = {$uid}");
             DB_query("UPDATE {$_TABLES['user_attributes']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
             if ($passwd_changed && !empty($passwd)) {
                 SEC_updateUserPassword($passwd, $uid);
@@ -1443,6 +1484,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) { // dele
             Geeklog\Input::post('regdate'),
             Geeklog\Input::post('homepage'),
             Geeklog\Input::post('location'),
+			Geeklog\Input::post('postmode'),
             Geeklog\Input::post('sig'),
             Geeklog\Input::post('pgpkey'),
             Geeklog\Input::post('about'),

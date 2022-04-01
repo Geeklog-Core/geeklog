@@ -55,6 +55,15 @@
       <dt><label for="admin-edituser-location">{lang_location}</label></dt>
       <dd><input type="text" size="60" maxlength="96" value="{user_location}" name="location" id="admin-edituser-location" class="text"{xhtml}></dd>
       <dd class="description">{lang_location_text}</dd>
+	  
+	  <dt><label for="admin-edituser-postmode">{lang_postmode}</label></dt>
+	  <dd>
+	    <select id="admin-edituser-postmode" name="postmode">
+		  <option value="plaintext"{plaintext_selected}>{lang_plaintext}</option>
+		  <option value="html"{html_selected}>{lang_html}</option>
+	    </select>
+	  </dd>
+	  <dd class="description" id="desc-admin-edituser-postmode">{lang_postmode_text}</dd>	  
 
       <dt><label for="admin-edituser-sig">{lang_signature}</label></dt>
       <dd><textarea cols="45" rows="4" name="sig" id="admin-edituser-sig">{user_signature}</textarea></dd>
