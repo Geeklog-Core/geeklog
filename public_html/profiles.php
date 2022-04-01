@@ -127,19 +127,17 @@ function contactemail($uid, $cc, $author, $authorEmail, $subject, $message)
 			
             $sig = '';
 			$sig_html = '';
-            if (!COM_isAnonUser()) {
+			if ($uid > 1 && !empty(trim($A['sig']))) {
 				// Converts to HTML, fixes links, and executes autotags
-				$sig_html = GLText::getDisplayText(isset($A['sig']) ? stripslashes($A['sig']) : '', $A['postmode'], GLTEXT_LATEST_VERSION);
+				$sig_html = GLText::getDisplayText(stripslashes($A['sig']), $A['postmode'], GLTEXT_LATEST_VERSION);
 				// Convert to plaintext
 				$sig = GLText::html2Text($sig_html);
 
-                if (!empty($sig)) {
-					$t->set_var('signature', $sig);
-					$t->set_var('signature_html', $sig_html);					
-					
-					$t->set_var('signature_divider_html', $LANG31['sig_divider_html']);
-					$t->set_var('signature_divider', $LANG31['sig_divider']);
-                }
+				$t->set_var('signature', $sig);
+				$t->set_var('signature_html', $sig_html);					
+				
+				$t->set_var('signature_divider_html', $LANG31['sig_divider_html']);
+				$t->set_var('signature_divider', $LANG31['sig_divider']);
             }			
 
 			// Output final content

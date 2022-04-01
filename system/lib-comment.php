@@ -627,7 +627,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
 
         // Check for User Signature and add first
         // Get signature of comment owner
-        if ($A['uid'] > 1 && !empty($A['sig'])) {
+        if ($A['uid'] > 1 && !empty(trim($A['sig']))) {
 			$template->set_var('signature_divider_html', $LANG31['sig_divider_html']);
 
 			// Converts to HTML, fixes links, and executes autotags
