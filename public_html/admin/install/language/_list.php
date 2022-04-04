@@ -45,10 +45,4 @@ return [
         'english'  => 'Japanese',
         'charset'  => 'utf-8',
     ],
-    'polish_utf-8.php'              => [
-        'langCode' => 'pl',
-        'langName' => 'polski',
-        'english'  => 'Polish',
-        'charset'  => 'iso-8859-2',
-    ],
 ];
