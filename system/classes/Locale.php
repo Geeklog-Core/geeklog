@@ -12,38 +12,14 @@ class Locale
 
     // Locales supported by Geeklog.  All keys must be in lower-case
     const SUPPORTED_LOCALES = [
-        'af',       // Afrikaans
-        'bs',       // Bosnian
-        'bg',       // Bulgarian
-        'ca',       // Catalan
-        'cs',       // Czech
-        'da',       // Danish
         'de',       // German
-        'el',       // Hellenic
         'en',       // English
         'es',       // Spanish
-        'et',       // Estonian
         'fa',       // Persian (rtl)
-        'fi',       // Finnish
         'fr',       // French
         'he',       // Hebrew (rtl)
-        'hr',       // Croatian
-        'id',       // Indonesian
-        'it',       // Italian
         'ja',       // Japanese
-        'ko',       // Korean
-        'nl',       // Dutch
-        'no',       // Norwegian
-        'pl',       // Polish
-        'pt',       // Portuguese
-        'ro',       // Romanian
         'ru',       // Russian
-        'sk',       // Slovakian
-        'sl',       // Slovenian
-        'sr',       // Serbian
-        'sv',       // Swedish
-        'tr',       // Turkish
-        'uk',       // Ukrainian
         'zh-hans',  // Chinese simplified
         'zh-hant',  // Chinese traditional
     ];
