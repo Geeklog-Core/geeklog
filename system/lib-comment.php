@@ -964,7 +964,7 @@ function CMT_commentForm($title, $comment, $sid, $pid, $type, $mode, $postMode, 
     $table = '';
     $edit_comment = false;
     $edit_comment_submission = false; // flag if in edit submission (not regular edit of comment)
-    if ($mode === 'edit' || $mode === $LANG03[28]) {
+    if ($mode === 'edit' || $mode === $LANG03[28]) { // 28 = Preview Changes
         $table = $_TABLES['comments'];
         $edit_comment = true;
     } elseif ($mode === 'editsubmission' || $mode == $LANG03[34]) {
@@ -1060,9 +1060,8 @@ function CMT_commentForm($title, $comment, $sid, $pid, $type, $mode, $postMode, 
             $_POST['comment'] = $newComment;
 
             $errorComment = false;
-            // Preview mode:
+            // Different Preview mode: Admin Edit existing live comment, Submission Edit, New Comment Preview
             if (($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34])) {
-            //if (($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34]) && !empty($title) && !empty($comment)) {
                 $start = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'comment'));
                 $start->set_file(array('comment' => 'startcomment.thtml'));
                 $start->set_var('hide_if_preview', 'style="display:none"');
@@ -1086,22 +1085,25 @@ function CMT_commentForm($title, $comment, $sid, $pid, $type, $mode, $postMode, 
                 }
                 // Since these are past in the array below lets make sure if in POST for preview that we make them equal to empty
                 // They have no reason to be in POST but could be injected in
-                $A['nice_date'] = '';
                 $A['photo'] = '';
                 $A['email'] = '';
+				$A['sig'] = '';
+				$A['postmode'] = 'plaintext';
+
+				if (!COM_isAnonUser($commentUid)) {
+					$uresult = DB_query("SELECT username, fullname, email, sig, postmode, photo FROM {$_TABLES['users']} WHERE uid = $commentUid");
+					$A = array_merge($A, DB_fetchArray($uresult));
+				}
+
                 // correct time and username for edit preview
-                if (($mode == $LANG03[28]) || ($mode == $LANG03[34])) {
-                    $A['nice_date'] = DB_getItem($table, 'UNIX_TIMESTAMP(date)', "cid = '" . DB_escapeString($cid) . "'");
-                    if ($_USER['uid'] != $commentUid) {
-                        if (!COM_isAnonUser($commentUid)) {
-                            $uresult = DB_query("SELECT username, fullname, email, photo FROM {$_TABLES['users']} WHERE uid = $commentUid");
-                            $A = array_merge($A, DB_fetchArray($uresult));
-                        }
-                    }
-                }
+				if (!empty($table)) {
+					$A['nice_date'] = DB_getItem($table, 'UNIX_TIMESTAMP(date)', "cid = '" . DB_escapeString($cid) . "'");
+				} else {
+					$A['nice_date'] = time();
+				}				
 
                 if (($commentUid != 1) || empty($A[CMT_USERNAME])) {
-					$A[CMT_USERNAME] = DB_getItem($_TABLES['users'], 'username', "uid = $commentUid");
+					$A[CMT_USERNAME] = COM_getDisplayName($commentUid);
                 }
 
                 if (COMMENT_ON_SAME_PAGE) {
@@ -1127,7 +1129,6 @@ function CMT_commentForm($title, $comment, $sid, $pid, $type, $mode, $postMode, 
                     . COM_endBlock();
 
                 // Add in error check for missing content during preview
-                //if ($mode == $LANG03[14] && (empty($title) || empty($comment))) {
                 if (empty($title) || empty($comment)) {
                     $retval .= COM_showMessageText($LANG03[12], $LANG03[17]);
                     $errorComment = true;
@@ -1925,7 +1926,7 @@ function CMT_reportAbusiveComment($cid)
     $result = DB_query("SELECT uid,type,sid,pid,title,comment,UNIX_TIMESTAMP(date) AS nice_date FROM {$_TABLES['comments']} WHERE cid = $cid");
     $A = DB_fetchArray($result);
 
-    $result = DB_query("SELECT username,fullname,photo,email FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
+    $result = DB_query("SELECT username, fullname, photo, email, sig, postmode, FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
     $B = DB_fetchArray($result);
 
     // prepare data for comment preview
@@ -1934,6 +1935,8 @@ function CMT_reportAbusiveComment($cid)
     $A['fullname'] = $B['fullname'];
     $A['photo'] = $B['photo'];
     $A['email'] = $B['email'];
+	$A['sig'] = $B['sig'];
+	$A['postmode'] = $B['postmode'];
     $A['indent'] = 0;
     $A['pindent'] = 0;
 
