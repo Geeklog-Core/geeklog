@@ -1652,7 +1652,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 }
 
 /**
- * Send an email notification for a new comment submission.
+ * Send an email notification for a new comment submission or report comment abuse.
  *
  * @param    $title      string      comment title
  * @param    $comment    string      text of the comment
@@ -1662,11 +1662,13 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
  * @param    $type       string      type of comment ('article', 'polls', ...)
  * @param    $sid        string      id of type
  * @param    $cid        int         comment id (or 0 when in submission queue)
+ * @param    $reporter 	 string      If not empty then Comment Abuse Report and this is the username of the reporter
+ * @param    $date 	 	 int   	 	 For Comment Abuse Report. Date of comment
  * @return               boolean     true if successfully sent, otherwise false
  */
-function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $type, $sid, $cid)
+function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $type, $sid, $cid, $reporter = '', $date = null)
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG03, $LANG08, $LANG09, $LANG29;
+    global $_CONF, $LANG01, $LANG03, $LANG08, $LANG09, $LANG29, $LANG31;
 
     // sanity check
     if (($username == \Geeklog\IP::getIPAddress()) &&
@@ -1684,8 +1686,12 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
 
     // strip HTML if posted in HTML mode
     if (preg_match('/<.*>/', $comment) != 0) {
-        $comment = GLText::stripTags($comment);
-    }
+		$content_html = GLText::htmlFixURLs($comment);
+        $content_plaintext = GLText::html2Text($content_html);
+    } else {
+		$content_plaintext = $comment;
+		$content_html = COM_nl2br($content_plaintext);
+	}
 
     if ($uid < 1) {
         $uid = 1;
@@ -1695,44 +1701,75 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
     } else {
         $author = COM_getDisplayName($uid);
     }
-    if (($uid == 1) && !empty($ipaddress)) {
-        // add IP address for anonymous posters
-        $author .= ' (' . $ipaddress . ')';
-    }
+	
+	// Create HTML and plaintext version of submission email
+	$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+	
+	$t->set_file(array('email_html' => 'comment_submission-html.thtml'));
+	$t->set_file(array('email_plaintext' => 'comment_submission-plaintext.thtml'));
 
-    $mailbody = "$LANG03[16]: $title\n"
-        . "$LANG03[5]: $author\n";
-
-    $mailbody .= "$LANG09[5]: $type\n";
-
+	$t->set_var('email_divider', $LANG31['email_divider']);
+	$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+	$t->set_var('LB', LB);
+	
+	$t->set_var('lang_title', $LANG03[16]); // Title
+	$t->set_var('submission_title', $title);
+	$t->set_var('lang_author', $LANG03[5]); // Username
+	$t->set_var('submission_author', $author);
+	$t->set_var('lang_date', $LANG08[32]);
+	$t->set_var('lang_type', $LANG09[5]); // Type
+	$t->set_var('submission_type', $type);	
+	
+	// Truncate as needed
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {
-            $comment = COM_truncate($comment, $_CONF['emailstorieslength'], '...');
+			$content_plaintext = COM_truncate($content_plaintext, $_CONF['emailstorieslength'], '...');
+			$content_html = COM_truncateHTML($content_html, $_CONF['emailstorieslength'], '...');
         }
-        $comment = htmlspecialchars_decode($comment);
+        $t->set_var('submission_content_plaintext', $content_plaintext);
+		$t->set_var('submission_content_html', $content_html);
+    }	
 
-        $mailbody .= $comment . "\n\n";
-    }
+	if (!empty($reporter)) {
+		// This is a Comment Abuse Report notification
+		$t->set_var('submission_date', $date);
+		
+		$mailsubject = $_CONF['site_name'] . ' ' . $LANG03[27]; // Abuse Report
+		
+		$t->set_var('lang_abuse_comment_msg', sprintf($LANG03[26], $reporter)); // %s reported the following abusive comment post:
+		
+		$t->set_var('lang_url_label', $LANG03['read_comment'] ); // Read the full comment at
+		
+		$submission_url = $_CONF['site_url'] . '/comment.php?mode=view&cid=' . $cid;
+	} else {
+		// This is a new Comment Submission notification
+		$t->set_var('submission_date', COM_strftime($_CONF['date']));
+		
+		if ($cid == 0) {
+			$mailsubject = $_CONF['site_name'] . ' ' . $LANG29[41]; // Comment Submissions
+			
+			$t->set_var('lang_url_label', $LANG01[10]); // Submissions
+			
+			$submission_url = $_CONF['site_admin_url'] . "/moderation.php";
+		} else {
+			$mailsubject = $_CONF['site_name'] . ' ' . $LANG03[9]; // Comment
+			
+			$t->set_var('lang_url_label', $LANG03[39]); // You may view the comment thread at the following address
+			
+			$submission_url = $_CONF['site_url'] . '/comment.php?mode=view&cid=' . $cid;
+		}
+	}
+	$t->set_var('submission_url', $submission_url);	
 
-    if ($cid == 0) {
-        $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[41];
-        $mailbody .= $LANG01[10] . ': ' . $_CONF['site_admin_url']
-            . "/moderation.php\n\n";
-    } else {
-        $mailsubject = $_CONF['site_name'] . ' ' . $LANG03[9];
-        $mailbody .= $LANG03[39] . ': ' . $_CONF['site_url']
-            . '/comment.php?mode=view&cid=' . $cid . "\n\n";
-    }
+	$pluginItemUrl = CMT_getCommentUrlId($type, $sid);
+	$t->set_var('lang_item_url', $LANG03['comment_for']); // The above comment is for the following item
+	$t->set_var('item_url', $pluginItemUrl);	
 
-    $pluginItemUrl = CMT_getCommentUrlId($type, $sid);
-    $mailbody .= $LANG03['comment_for'] . ': ' . $pluginItemUrl . "\n";
-    $mailbody .= "IP: " . \Geeklog\IP::getIPAddress() . "\n\n";
-    $mailbody .= "\n------------------------------\n";
-    $mailbody .= "\n$LANG08[34]\n";
-    $mailbody .= "\n------------------------------\n";
-
-
-    return COM_mail($_CONF['site_mail'], $mailsubject, $mailbody);
+	// Output final content
+	$message[] = $t->parse('output', 'email_html');	
+	$message[] = $t->parse('output', 'email_plaintext');	
+	
+	return COM_mail($_CONF['site_mail'], $mailsubject, $message, '', true);
 }
 
 /**
@@ -1926,7 +1963,7 @@ function CMT_reportAbusiveComment($cid)
     $result = DB_query("SELECT uid,type,sid,pid,title,comment,UNIX_TIMESTAMP(date) AS nice_date FROM {$_TABLES['comments']} WHERE cid = $cid");
     $A = DB_fetchArray($result);
 
-    $result = DB_query("SELECT username, fullname, photo, email, sig, postmode, FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
+    $result = DB_query("SELECT username, fullname, photo, email, sig, postmode FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
     $B = DB_fetchArray($result);
 
     // prepare data for comment preview
@@ -1968,61 +2005,25 @@ function CMT_sendReport($cid)
         exit;
     }
 
-    $username = DB_getItem($_TABLES['users'], 'username',
-        "uid = {$_USER['uid']}");
     $result = DB_query(
-        "SELECT c.uid, c.title, c.comment, c.type, c.sid, i.ipaddress FROM {$_TABLES['comments']} AS c "
+        "SELECT c.uid, c.title, c.comment, c.type, c.sid, UNIX_TIMESTAMP(c.date) AS nice_date, i.ipaddress FROM {$_TABLES['comments']} AS c "
         . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
         . "ON c.seq = i.seq "
         . "WHERE c.cid = $cid"
     );
     $A = DB_fetchArray($result);
+	
 
-    $title = stripslashes($A['title']);
-    $comment = stripslashes($A['comment']);
-
-    // strip HTML if posted in HTML mode
-    if (preg_match('/<.*>/', $comment) != 0) {
-        $comment = GLText::stripTags($comment);
-    }
-
-    $comment = PLG_replaceTags($comment, '', false, 'comment', $cid);
-
-    $author = COM_getDisplayName($A['uid']);
-    if (($A['uid'] <= 1) && !empty($A['ipaddress'])) {
-        // add IP address for anonymous posters
-        $author .= ' (' . $A['ipaddress'] . ')';
-    }
-
-    $mailBody = sprintf($LANG03[26], $username);
-    $mailBody .= "\n\n"
-        . "$LANG03[16]: $title\n"
-        . "$LANG03[5]: $author\n"
-        . "$LANG09[5]: {$A['type']}\n";
-
-    if ($_CONF['emailstorieslength'] > 0) {
-        if ($_CONF['emailstorieslength'] > 1) {
-            $comment = COM_truncate($comment, $_CONF['emailstorieslength'], '...');
-        }
-        $comment = htmlspecialchars_decode($comment);
-
-        $mailBody .= $comment . "\n\n";
-    }
-
-    $mailBody .= $LANG03['read_comment'] . ': ' . $_CONF['site_url']
-        . '/comment.php?mode=view&cid=' . $cid . "\n\n";
-
-    $pluginItemUrl = CMT_getCommentUrlId($A['type'], $A['sid']);
-    $mailBody .= $LANG03['comment_for'] . ': ' . $pluginItemUrl . "\n";
-    $mailBody .= "IP: " . \Geeklog\IP::getIPAddress() . "\n\n";
-
-    $mailBody .= "\n------------------------------\n";
-    $mailBody .= "\n$LANG08[34]\n";
-    $mailBody .= "\n------------------------------\n";
-
-    $mailsubject = $_CONF['site_name'] . ' ' . $LANG03[27];
-
-    if (COM_mail($_CONF['site_mail'], $mailsubject, $mailBody)) {
+    $title = $A['title']; // stripslashes($A['title']);
+    $comment = $A['comment']; // stripslashes($A['comment']);
+	$username = ''; // retrieved in notification email function COM_getDisplayName($A['uid']);
+	$ipaddress = $A['ipaddress'];
+	$type = $A['type'];
+	$sid = $A['sid'];
+	list($date, ) = COM_getUserDateTimeFormat($A['nice_date'], 'date');
+	$reporter = COM_getDisplayName($_USER['uid']);
+	
+	if (CMT_sendNotification($title, $comment, $A['uid'], $username, $ipaddress, $type, $sid, $cid, $reporter, $date)) {
         COM_setSystemMessage($MESSAGE[27]);
     } else {
         COM_setSystemMessage($MESSAGE[85]);
@@ -2030,6 +2031,7 @@ function CMT_sendReport($cid)
 
     COM_updateSpeedlimit('mail');
 
+	$pluginItemUrl = CMT_getCommentUrlId($type, $sid);
     COM_redirect($pluginItemUrl);
 }
 
@@ -2123,7 +2125,7 @@ function CMT_handleEditSubmit($mode = null)
         if (!COM_isAnonUser()) {
             $nice_date = DB_getItem($table, 'UNIX_TIMESTAMP(date)', "cid = $cid");
             if ((time() - $nice_date) < $_CONF['comment_edittime']) {
-                // ALl is good continue on
+                // All is good continue on
             } else {
                 if ($_COMMENT_DEBUG) {
                     COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to edit his own comment $cid after the comment edit time limit had expired.");
@@ -2410,26 +2412,47 @@ function CMT_approveModeration($cid)
  */
 function CMT_sendReplyNotification($A, $send_self = false)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG03;
+    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG31;
 
     if (($_USER['uid'] != $A['uid']) || $send_self) {
+        $result = DB_query("SELECT email, status FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
+        $nrows = DB_numRows($result);                                     
 
-        $name = COM_getDisplayName($A['uid']);
-        $title = DB_getItem($_TABLES['comments'], 'title', "cid = {$A['cid']}");
-        $commentUrl = $_CONF['site_url'] . '/comment.php';
-        $mailSubject = $_CONF['site_name'] . ': ' . $LANG03[37];
+        if ($nrows == 1) {
+            $B = DB_fetchArray($result);
+            
+            if ($B['status'] == USER_ACCOUNT_ACTIVE && !empty($B['email'])) {
+				// Create HTML and plaintext version of submission email
+				$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+				
+				$t->set_file(array('email_html' => 'comment_reply-html.thtml'));
+				$t->set_file(array('email_plaintext' => 'comment_reply-plaintext.thtml'));
 
-        $mailBody = sprintf($LANG03[41], $name) . LB . LB;
-        $mailBody .= sprintf($LANG03[38], $title) . LB . LB;
-        $mailBody .= $LANG03[39] . LB . $commentUrl . '?mode=view&cid='
-            . $A['cid'] . '&format=nested' . LB . LB;
-        $mailBody .= $LANG03[40] . LB . $commentUrl
-            . '?mode=unsubscribe&key=' . $A['deletehash'] . LB;
+				$t->set_var('email_divider', $LANG31['email_divider']);
+				$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+				$t->set_var('LB', LB);
+				
+				
+				$name = COM_getDisplayName($A['uid']);
+				$title = DB_getItem($_TABLES['comments'], 'title', "cid = {$A['cid']}");
+				$commentUrl = $_CONF['site_url'] . '/comment.php';
+				
+				$t->set_var('lang_hello_name', sprintf($LANG03[41], $name)); // Hello %s
+				$t->set_var('lang_new_comment_msg', sprintf($LANG03[38], $title)); // A reply has been made to your comment ...
+				$t->set_var('lang_url_label', $LANG03[39]); // You may view the comment thread at the following address
+				$t->set_var('submission_url', $commentUrl . '?mode=view&cid=' . $A['cid'] . '&format=nested');
+				$t->set_var('lang_unsubscribe_url', $LANG03[40]); // If you wish to receive no further notifications of replies, visit the following link
+				$t->set_var('unsubscribe_url', $commentUrl . '?mode=unsubscribe&key=' . $A['deletehash']); 
 
-        $email = DB_getItem($_TABLES['users'], 'email', "uid = {$A['uid']}");
-        if (!empty($email)) {
-            COM_mail($email, $mailSubject, $mailBody);
-        }
+				// Output final content
+				$message[] = $t->parse('output', 'email_html');	
+				$message[] = $t->parse('output', 'email_plaintext');	
+				
+				$mailSubject = $_CONF['site_name'] . ': ' . $LANG03[37]; // New Comment Reply
+				
+				COM_mail($B['email'], $mailSubject, $message, '', true);
+			}
+		}
     }
 }
 
