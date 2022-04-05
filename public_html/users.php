@@ -103,7 +103,7 @@ function USER_emailPassword($username, $msg = 0)
  */
 function USER_requestPassword($username)
 {
-    global $_CONF, $_TABLES, $LANG04;
+    global $_CONF, $_TABLES, $LANG04, $LANG31;
 
     $retval = '';
 
@@ -123,20 +123,40 @@ function USER_requestPassword($username)
         $reqid = substr(md5(uniqid(rand(), 1)), 1, 16);
         DB_change($_TABLES['users'], 'pwrequestid', "$reqid",
             'uid', $A['uid']);
+			
+			
+			
+				
+		// Create HTML and plaintext version of email
+		$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+		
+		$t->set_file(array('email_html' => 'user_password-html.thtml'));
+		$t->set_file(array('email_plaintext' => 'user_password-plaintext.thtml'));
 
-        $mailtext = sprintf($LANG04[88], $username);
-        $mailtext .= $_CONF['site_url'] . '/users.php?mode=newpwd&uid=' . $A['uid'] . '&rid=' . $reqid . "\n\n";
-        $mailtext .= $LANG04[89];
-        $mailtext .= "{$_CONF['site_name']}\n";
-        $mailtext .= "{$_CONF['site_url']}\n";
-
-        $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
-        if (COM_mail($A['email'], $subject, $mailtext)) {
+		$t->set_var('email_divider', $LANG31['email_divider']);
+		$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+		$t->set_var('LB', LB);
+		
+		$t->set_var('lang_user_request_msg', sprintf($LANG04[88], $username)); 
+		$t->set_var('lang_user_action_msg', $LANG04['user_password_action_msg']); 
+		$t->set_var('new_password_url', $_CONF['site_url'] . '/users.php?mode=newpwd&uid=' . $A['uid'] . '&rid=' . $reqid);
+		$t->set_var('lang_ignore_request_msg', $LANG04[89]);
+		$t->set_var('site_name', $_CONF['site_name']);
+		$t->set_var('site_url', $_CONF['site_url']);
+		$t->set_var('site_slogan', $_CONF['site_slogan']);
+		
+		// Output final content
+		$message[] = $t->parse('output', 'email_html');	
+		$message[] = $t->parse('output', 'email_plaintext');	
+		
+		$mailSubject = $_CONF['site_name'] . ': ' . $LANG04[16];
+		
+        if (COM_mail($A['email'], $mailSubject, $message, '', true)) {
             $msg = 55; // message sent
         } else {
             $msg = 85; // problem sending the email
         }
-
+		
         $redirect = $_CONF['site_url'] . "/index.php?msg=$msg";
         COM_updateSpeedlimit('password');
         COM_redirect($redirect);

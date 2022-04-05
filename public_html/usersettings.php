@@ -885,8 +885,6 @@ function notifyAdminOfUserUpdate(array $A)
     global $_CONF, $LANG04, $LANG08, $LANG29, $LANG31;
 
     if (in_array('user_update', $_CONF['notification'])) {
-		
-	
 		// Create HTML and plaintext version of submission email
 		$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
 		

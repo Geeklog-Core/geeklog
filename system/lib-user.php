@@ -139,75 +139,43 @@ function USER_deleteAccount($uid)
  */
 function USER_createAndSendPassword($username, $useremail, $uid, $email_type = '')
 {
-    global $_CONF, $LANG04;
+    global $_CONF, $LANG04, $LANG31;
 
     $passwd = null;
     SEC_updateUserPassword($passwd, $uid);
 
-    if ($email_type == '' && file_exists($_CONF['path_data'] . 'welcome_email.txt')) {
-        $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_data']));
-        $template->set_file(array('mail' => 'welcome_email.txt'));
-        $template->set_var('auth_info',
-            "$LANG04[2]: $username\n$LANG04[4]: $passwd");
-        $template->set_var('site_name', $_CONF['site_name']);
-        $template->set_var('site_slogan', $_CONF['site_slogan']);
-        $template->set_var('lang_text1', $LANG04[15]);
-        $template->set_var('lang_text2', $LANG04[14]);
-        $template->set_var('lang_username', $LANG04[2]);
-        $template->set_var('lang_password', $LANG04[4]);
-        $template->set_var('username', $username);
-        $template->set_var('password', $passwd);
-        $template->set_var('name', COM_getDisplayName($uid));
-        $template->parse('output', 'mail');
-        $mailtext = $template->get_var('output');
-    } else {
-        if ($email_type == 'convert_remote') {
-            $mailtext = $LANG04['email_convert_remote'] . "\n\n";
-        } else {
-            $mailtext = $LANG04[15] . "\n\n";
-        }
-        $mailtext .= $LANG04[2] . ": $username\n";
-        $mailtext .= $LANG04[4] . ": $passwd\n\n";
-        $mailtext .= $LANG04[14] . "\n\n";
-        $mailtext .= $_CONF['site_name'] . "\n";
-        $mailtext .= $_CONF['site_url'] . "\n";
-    }
-    $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
+	// Create HTML and plaintext version of email
+	$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+	
+	$t->set_file(array('email_html' => 'user_info-html.thtml'));
+	$t->set_file(array('email_plaintext' => 'user_info-plaintext.thtml'));
 
-    return COM_mail($useremail, $subject, $mailtext);
-}
+	$t->set_var('email_divider', $LANG31['email_divider']);
+	$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+	$t->set_var('LB', LB);
+	
+	if ($email_type == 'convert_remote') {
+		$t->set_var('lang_user_info_msg', $LANG04['email_convert_remote']); 
+	} else {
+		$t->set_var('lang_user_info_msg', $LANG04[15]); 
+	}		
+	$t->set_var('lang_username', $LANG04[2]); 
+	$t->set_var('username', $username);
+	$t->set_var('name', COM_getDisplayName($uid));
+	$t->set_var('lang_password', $LANG04[4]);
+	$t->set_var('password', $passwd);
+	$t->set_var('lang_password_msg', $LANG04[14]);
+	$t->set_var('site_name', $_CONF['site_name']);
+	$t->set_var('site_url', $_CONF['site_url']);
+	$t->set_var('site_slogan', $_CONF['site_slogan']);
 
-/**
- * Inform a user their account has been activated.
- *
- * @param    string $userName  user's login name
- * @param    string $userEmail user's email address
- * @return   boolean           true = success, false = an error occurred
- */
-function USER_sendActivationEmail($userName, $userEmail)
-{
-    global $_CONF, $LANG04;
-
-    if (file_exists($_CONF['path_data'] . 'activation_email.txt')) {
-        $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_data']));
-        $template->set_file(array('mail' => 'activation_email.txt'));
-        $template->set_var('site_name', $_CONF['site_name']);
-        $template->set_var('site_slogan', $_CONF['site_slogan']);
-        $template->set_var('lang_text1', $LANG04[15]);
-        $template->set_var('lang_text2', $LANG04[14]);
-        $template->parse('output', 'mail');
-        $mailText = $template->get_var('output');
-    } else {
-        $mailText = str_replace("<username>", $userName, $LANG04[118]) . "\n\n";
-        $mailText .= $_CONF['site_url'] . "\n\n";
-        $mailText .= $LANG04[119] . "\n\n";
-        $mailText .= $_CONF['site_url'] . "/users.php?mode=getpassword\n\n";
-        $mailText .= $_CONF['site_name'] . "\n";
-        $mailText .= $_CONF['site_url'] . "\n";
-    }
-    $subject = $_CONF['site_name'] . ': ' . $LANG04[120];
-
-    return COM_mail($userEmail, $subject, $mailText);
+	// Output final content
+	$message[] = $t->parse('output', 'email_html');	
+	$message[] = $t->parse('output', 'email_plaintext');	
+	
+	$mailSubject = $_CONF['site_name'] . ': ' . $LANG04[16];
+	
+	return COM_mail($useremail, $mailSubject, $message, '', true);		
 }
 
 /**
@@ -338,28 +306,42 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
  */
 function USER_sendNotification($userName, $email, $uid, $mode = 'inactive')
 {
-    global $_CONF, $LANG01, $LANG04, $LANG08, $LANG28, $LANG29;
+    global $_CONF, $LANG01, $LANG04, $LANG08, $LANG28, $LANG29, $LANG31;
 
-    $mailBody = "$LANG04[2]: $userName\n"
-        . "$LANG04[5]: $email\n"
-        . "$LANG28[14]: " . COM_strftime($_CONF['date']) . "\n\n";
+	// Create HTML and plaintext version of submission email
+	$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+	
+	$t->set_file(array('email_html' => 'user_new-html.thtml'));
+	$t->set_file(array('email_plaintext' => 'user_new-plaintext.thtml'));
 
+	$t->set_var('email_divider', $LANG31['email_divider']);
+	$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+	$t->set_var('LB', LB);
+	
+	$t->set_var('lang_username', $LANG04[2]); 
+	$t->set_var('username', $userName);
+	$t->set_var('lang_email', $LANG04[5]);
+	$t->set_var('email', $email);
+	$t->set_var('lang_date', $LANG28[14]);
+	$t->set_var('date', COM_strftime($_CONF['date']));		
+	
     if ($mode === 'inactive') {
         // user needs admin approval
-        $mailBody .= "{$LANG01[10]}: {$_CONF['site_admin_url']}/moderation.php\n";
+		$t->set_var('lang_profile_url_label', $LANG01[10]);
+		$t->set_var('profile_url', "{$_CONF['site_admin_url']}/moderation.php");		
     } else {
         // user has been created, or has activated themselves:
-        $mailBody .= "{$LANG29[4]}: {$_CONF['site_url']}/users.php?mode=profile&uid={$uid}\n";
+		$t->set_var('lang_profile_url_label', $LANG29[4]);
+		$t->set_var('profile_url', "{$_CONF['site_url']}/users.php?mode=profile&uid={$uid}");		
     }
 
-    $mailBody .= "IP: " . \Geeklog\IP::getIPAddress() . "\n\n";
-    $mailBody .= "\n------------------------------\n";
-    $mailBody .= "\n{$LANG08[34]}\n";
-    $mailBody .= "\n------------------------------\n";
-
-    $mailSubject = $_CONF['site_name'] . ' ' . $LANG29[40];
-
-    return COM_mail($_CONF['site_mail'], $mailSubject, $mailBody);
+	// Output final content
+	$message[] = $t->parse('output', 'email_html');	
+	$message[] = $t->parse('output', 'email_plaintext');	
+	
+	$mailSubject = $_CONF['site_name'] . ' ' . $LANG29[40];
+	
+	return COM_mail($_CONF['site_mail'], $mailSubject, $message, '', true);
 }
 
 /**
