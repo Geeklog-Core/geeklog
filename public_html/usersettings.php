@@ -954,6 +954,12 @@ function saveuser(array $A)
     if ($A['cooktime'] < 0) { // note that == 0 is allowed!
         $A['cooktime'] = $_USER['cookietimeout'];
     }
+	
+    if (isset($A['delete_emailtoconfirm']) && ($A['delete_emailtoconfirm'] === 'on')) {
+        $A['delete_emailtoconfirm'] = 1;
+    } else {
+        $A['delete_emailtoconfirm'] = '';
+    }	
 
     // to change the password, email address, or cookie timeout,
     // we need the user's current password
