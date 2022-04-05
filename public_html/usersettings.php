@@ -882,21 +882,40 @@ function handlePhotoUpload($deletePhoto = '')
  */
 function notifyAdminOfUserUpdate(array $A)
 {
-    global $_CONF, $LANG04, $LANG08, $LANG29;
+    global $_CONF, $LANG04, $LANG08, $LANG29, $LANG31;
 
     if (in_array('user_update', $_CONF['notification'])) {
-        $body = "{$LANG04[169]}\n\n"
-            . "{$LANG04[2]}: {$A['username']}\n"
-            . "{$LANG04[5]}: {$A['email']}\n"
-            . "{$LANG04[6]}: {$A['homepage']}\n\n"
-            . "{$LANG29[4]}: {$_CONF['site_url']}/users.php?mode=profile&uid={$A['uid']}\n"
-            . "IP: " . \Geeklog\IP::getIPAddress() . "\n\n"
-            . "\n------------------------------\n"
-            . "\n{$LANG08[34]}\n"
-            . "\n------------------------------\n";
-        $subject = $_CONF['site_name'] . ' ' . $LANG29[46];
+		
+	
+		// Create HTML and plaintext version of submission email
+		$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+		
+		$t->set_file(array('email_html' => 'user_update-html.thtml'));
+		$t->set_file(array('email_plaintext' => 'user_update-plaintext.thtml'));
 
-        return COM_mail($_CONF['site_mail'], $subject, $body);
+		$t->set_var('email_divider', $LANG31['email_divider']);
+		$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+		$t->set_var('LB', LB);
+		
+		$t->set_var('lang_user_update_msg', $LANG04[169]); // User has updated his/her profile
+		
+		$t->set_var('lang_username', $LANG04[2]); 
+		$t->set_var('username', $A['username']);
+		$t->set_var('lang_email', $LANG04[5]);
+		$t->set_var('email', $A['email']);
+		$t->set_var('lang_homepage', $LANG04[6]);
+		$t->set_var('homepage', $A['homepage']);		
+		
+		$t->set_var('lang_profile_url_label', $LANG29[4]);
+		$t->set_var('profile_url', "{$_CONF['site_url']}/users.php?mode=profile&uid={$A['uid']}");		
+
+		// Output final content
+		$message[] = $t->parse('output', 'email_html');	
+		$message[] = $t->parse('output', 'email_plaintext');	
+		
+		$mailSubject = $_CONF['site_name'] . ' ' . $LANG29[46];
+		
+		return COM_mail($_CONF['site_mail'], $mailSubject, $message, '', true);
     } else {
         return true;
     }
