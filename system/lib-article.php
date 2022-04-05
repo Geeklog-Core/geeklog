@@ -138,7 +138,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
 
                     // Need to close and recreate template class since issues arise when theme templates are cached
                     unset($article); // Close template class
-                    $article = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
+                    $article = COM_newTemplate(CTL_core_templatePath($templateDir));
                     $article->set_file(array(
                         'article'          => $storyTpl,
                         'bodytext'         => 'articlebodytext.thtml',
@@ -160,7 +160,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
 
         // Now find structured data cache if required
         // Structured Data is cached by itself. Need to cache in case structured data autotags exist in page.
-        // Since autotags are executed when the page is rendered therefore we have to cache structred data if page is cached.
+        // Since autotags are executed when the page is rendered therefore we have to cache structured data if page is cached.
         // Only cache and use structured data on full article view
         if ($index == 'n' && !empty($story->DisplayElements('structured_data_type')) && $cache_found) {
             if (!$_STRUCT_DATA->get_cachedScript('article', $story->getSid(), $cache_time)) {
