@@ -124,14 +124,11 @@ function USER_requestPassword($username)
         DB_change($_TABLES['users'], 'pwrequestid', "$reqid",
             'uid', $A['uid']);
 			
-			
-			
-				
 		// Create HTML and plaintext version of email
 		$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
 		
-		$t->set_file(array('email_html' => 'user_password-html.thtml'));
-		$t->set_file(array('email_plaintext' => 'user_password-plaintext.thtml'));
+		$t->set_file(array('email_html' => 'user_request_password-html.thtml'));
+		$t->set_file(array('email_plaintext' => 'user_request_password-plaintext.thtml'));
 
 		$t->set_var('email_divider', $LANG31['email_divider']);
 		$t->set_var('email_divider_html', $LANG31['email_divider_html']);
