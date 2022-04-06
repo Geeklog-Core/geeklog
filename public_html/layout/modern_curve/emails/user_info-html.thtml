@@ -1,0 +1,9 @@
+<p>{lang_user_info_msg}</p>
+
+<p>{lang_username}: {username}<br{XHTML}>
+{lang_password}: {password}</p>
+
+<p>{lang_password_msg}</p>
+
+<p>{site_name}{!if site_slogan} - {site_slogan}{!endif}<br{XHTML}>
+<a href="{site_url}">{site_url}</a></p>

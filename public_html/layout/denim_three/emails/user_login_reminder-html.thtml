@@ -1,0 +1,8 @@
+<p>{lang_account_access_msg}</p>
+
+<p>{lang_login_info_msg}</p>
+
+<p>{lang_retrieve_password_msg} <a href="{new_password_url}">{new_password_url}</a></p>
+
+<p>{site_name}{!if site_slogan} - {site_slogan}{!endif}<br{XHTML}>
+<a href="{site_url}">{site_url}</a></p>

@@ -1,0 +1,8 @@
+<p>{lang_username}: {username}<br{XHTML}>
+{lang_email}: {email}</p>
+
+<p>{lang_max_invalid_login_msg}</p>
+
+{email_divider_html}
+
+<p>{lang_profile_url_label}: {profile_url}</p>

@@ -610,7 +610,7 @@ function listusers()
  */
 function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $location, $postmode, $signature, $pgpkey, $about, $groups, $delete_photo = '', $convert_remote = '', $userstatus = 3, $oldstatus = 3, $enable_twofactorauth = 0)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG04, $LANG28, $_USER_VERBOSE;
+    global $_CONF, $_TABLES, $_USER, $LANG04, $LANG28, $LANG31, $_USER_VERBOSE;
 
     $retval = '';
     $userChanged = false;
@@ -625,6 +625,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
     $service = DB_getItem($_TABLES['users'], 'remoteservice', "uid = $uid");
     // If remote service then assume blank password
     if (!empty($service)) {
+		$passwd_changed = false;
         $passwd = '';
         $passwd_conf = '';
 
@@ -632,17 +633,25 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
         if ($userstatus == USER_ACCOUNT_NEW_PASSWORD) {
              $userstatus = USER_ACCOUNT_ACTIVE;
         }
-    }
-
-    $passwd_changed = true;
-    if (empty($service) && (SEC_encryptUserPassword($passwd, $uid) === 0) && ($passwd_conf === '')) {
-        $passwd_changed = false;
-    }
-
-    if ($passwd_changed && ($passwd != $passwd_conf)) { // passwords don't match
-        return edituser($uid, 67);
-    }
-
+    } else {
+		$passwd_changed = true;
+		if ((SEC_encryptUserPassword($passwd, $uid) === 0) && ($passwd_conf === '')) {
+			$passwd_changed = false;
+		}
+		
+		if ($passwd_changed && ($passwd != $passwd_conf)) { // passwords don't match
+			return edituser($uid, 67);
+		}
+		
+		if ($passwd_changed && !SEC_checkPasswordStrength($passwd)) { // Strong Passwords
+			return edituser($uid, 504);
+		}
+		
+		if ($passwd_changed && empty($passwd)) { // no empty passwords
+			$passwd_changed = false;
+		}
+	}
+	
     $nameAndEmailOkay = true;
     if (empty($username)) {
         $nameAndEmailOkay = false;
@@ -710,8 +719,6 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
         // basic filtering only (same as in usersettings.php)
         $fullname = GLText::stripTags(GLText::remove4byteUtf8Chars($fullname));
         $location = GLText::stripTags(GLText::remove4byteUtf8Chars($location));
-        //$signature = GLText::stripTags(GLText::remove4byteUtf8Chars($signature));
-        //$about = GLText::stripTags(GLText::remove4byteUtf8Chars($about));
 		$postmode = ($postmode === 'html') ? 'html' : 'plaintext';
 		if ($postmode === 'html') {
 			// HTML
@@ -795,7 +802,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
 
             DB_query("UPDATE {$_TABLES['users']} SET username = '{$escUserName}', fullname = '{$escFullName}', email = '$email', homepage = '$homepage', sig = '$signature', postmode='$postmode', photo = '$curphoto', status = '$userstatus' $sql_enable_twofactorauth WHERE uid = {$uid}");
             DB_query("UPDATE {$_TABLES['user_attributes']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
-            if ($passwd_changed && !empty($passwd)) {
+            if ($passwd_changed) {
                 SEC_updateUserPassword($passwd, $uid);
             }
             if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userSave'))) {
@@ -882,21 +889,36 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
         }
 
         // Send password to the user
-        if (!empty($uid) && ($uid > 1) &&
-            (Input::fPost('send_passwd') === 'on') &&
-            ($emailData['is_new_user'] || $passwd_changed)) {
-            $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
-            $mailText = $emailData['is_new_user'] ? $LANG04[15] : $LANG04[170];
-            $mailText .= "\n\n"
-                . $LANG04[2] . ": {$emailData['username']}\n"
-                . $LANG04[4] . ": {$emailData['password']}\n\n"
-                . $LANG04[14] . "\n\n"
-                . $_CONF['site_name'] . "\n"
-                . $_CONF['site_url'] . "\n";
+        if (!empty($uid) && ($uid > 1) && (Input::fPost('send_passwd') === 'on') && ($emailData['is_new_user'] || $passwd_changed)) {
+			// Create HTML and plaintext version of email
+			$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+			
+			$t->set_file(array('email_html' => 'user_send_password-html.thtml'));
+			$t->set_file(array('email_plaintext' => 'user_send_password-plaintext.thtml'));
 
-            if (!COM_mail($emailData['email'], $subject, $mailText)) {
+			$t->set_var('email_divider', $LANG31['email_divider']);
+			$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+			$t->set_var('LB', LB);
+			
+			$t->set_var('lang_user_password_msg', $emailData['is_new_user'] ? $LANG04[15] : $LANG04[170]);
+			$t->set_var('lang_username', $LANG04[2]);
+			$t->set_var('username', $username);			
+			$t->set_var('lang_new_password', $LANG04[4]);
+			$t->set_var('password', $emailData['password']);			
+			$t->set_var('lang_password_msg', $LANG04[14]);
+			$t->set_var('site_name', $_CONF['site_name']);
+			$t->set_var('site_url', $_CONF['site_url']);
+			$t->set_var('site_slogan', $_CONF['site_slogan']);			
+
+			// Output final content
+			$message[] = $t->parse('output', 'email_html');	
+			$message[] = $t->parse('output', 'email_plaintext');
+			
+			$mailSubject = $_CONF['site_name'] . ': ' . $LANG04[16];
+			
+			if (!COM_mail($emailData['email'], $mailSubject, $message, '', true)) {			
                 COM_errorLog(sprintf('failed to send a new password to user (uid: %d)', $uid));
-            }
+            }			
         }
 
         if ($userChanged) {
@@ -1181,7 +1203,7 @@ function batchdeleteexec()
  */
 function batchreminders()
 {
-    global $_CONF, $_TABLES, $LANG04, $LANG28;
+    global $_CONF, $_TABLES, $LANG04, $LANG28, $LANG31;
 
     $msg = '';
     $user_list = Geeklog\Input::fPost('delitem', array());
@@ -1198,32 +1220,41 @@ function batchreminders()
             $username = DB_getItem($_TABLES['users'], 'username', "uid = '{$userid}'");
             $lastlogin = DB_getItem($_TABLES['user_attributes'], 'lastlogin', "uid = '{$userid}'");
             $lasttime = COM_getUserDateTimeFormat($lastlogin);
-            if (file_exists($_CONF['path_data'] . 'reminder_email.txt')) {
-                $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_data']));
-                $template->set_file(array('mail' => 'reminder_email.txt'));
-                $template->set_var('site_name', $_CONF['site_name']);
-                $template->set_var('site_slogan', $_CONF['site_slogan']);
-                $template->set_var('lang_username', $LANG04[2]);
-                $template->set_var('username', $username);
-                $template->set_var('name', COM_getDisplayName($userid));
-                $template->set_var('lastlogin', $lasttime[0]);
+			
+			// Create HTML and plaintext version of email
+			$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+			
+			$t->set_file(array('email_html' => 'user_login_reminder-html.thtml'));
+			$t->set_file(array('email_plaintext' => 'user_login_reminder-plaintext.thtml'));
 
-                $template->parse('output', 'mail');
-                $mailtext = $template->finish($template->get_var('output'));
-            } else {
-                if ($lastlogin == 0) {
-                    $mailtext = $LANG28[83] . "\n\n";
-                } else {
-                    $mailtext = sprintf($LANG28[82], $lasttime[0]) . "\n\n";
-                }
-                $mailtext .= sprintf($LANG28[84], $username) . "\n";
-                $mailtext .= sprintf($LANG28[85], $_CONF['site_url']
-                        . '/users.php?mode=getpassword') . "\n\n";
+			$t->set_var('email_divider', $LANG31['email_divider']);
+			$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+			$t->set_var('LB', LB);
+			
+			if ($lastlogin == 0) {
+				$t->set_var('lang_account_access_msg', $LANG28[83]); 
+			} else {
+				$t->set_var('lang_account_access_msg', sprintf($LANG28[82], $lasttime[0])); 
+			}			
+			$t->set_var('lang_login_info_msg', sprintf($LANG28[84], $username)); 
+			$t->set_var('lang_retrieve_password_msg', $LANG28[85]);
+			$t->set_var('new_password_url', $_CONF['site_url'] . '/users.php?mode=getpassword'); 
 
-            }
-            $subject = sprintf($LANG28[81], $_CONF['site_name']);
+			$t->set_var('lang_username', $LANG04[2]);
+			$t->set_var('username', $username);
+			$t->set_var('name', COM_getDisplayName($userid));
+			
+			$t->set_var('site_name', $_CONF['site_name']);
+			$t->set_var('site_url', $_CONF['site_url']);
+			$t->set_var('site_slogan', $_CONF['site_slogan']);			
 
-            if (COM_mail($useremail, $subject, $mailtext)) {
+			// Output final content
+			$message[] = $t->parse('output', 'email_html');	
+			$message[] = $t->parse('output', 'email_plaintext');
+			
+			$mailSubject = sprintf($LANG28[81], $_CONF['site_name']);
+			
+			if (COM_mail($useremail, $mailSubject, $message, '', true)) {
                 DB_query("UPDATE {$_TABLES['users']} SET num_reminders=num_reminders+1 WHERE uid=$userid");
                 $c++;
             } else {

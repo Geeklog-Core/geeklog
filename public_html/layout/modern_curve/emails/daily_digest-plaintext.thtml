@@ -1,0 +1,24 @@
+{lang_info_msg}
+
+
+{lang_unsubscribe_msg}
+
+{articles_plaintext}
+
+<!-- BEGIN article_plaintext -->
+
+{email_divider}
+
+{lang_title}: {article_title}
+
+{!if article_author}{lang_author}: {article_author}{!endif}
+
+{lang_date}: {article_date}
+
+
+{content_plaintext}
+
+
+{lang_url_label}: {article_url}
+
+<!-- END article_plaintext -->

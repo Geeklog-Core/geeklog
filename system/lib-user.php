@@ -350,30 +350,39 @@ function USER_sendNotification($userName, $email, $uid, $mode = 'inactive')
  * @param  string $userName Username of the new user
  * @param  string $email    Email address of the new user
  * @param  int    $uid      User id of the new user
- * @param  string $mode     Mode user was added at.
  * @return boolean             true = success, false = an error occurred
  */
-function USER_sendInvalidLoginAlert($userName, $email, $uid, $mode = 'inactive')
+function USER_sendInvalidLoginAlert($username, $email, $uid)
 {
-    global $_CONF, $LANG04, $LANG08, $LANG29;
+    global $_CONF, $LANG04, $LANG08, $LANG29, $LANG31;
+	
+	$remoteAddress = \Geeklog\IP::getIPAddress();
+	
+	// Create HTML and plaintext version of email
+	$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+	
+	$t->set_file(array('email_html' => 'user_invalid_logins-html.thtml'));
+	$t->set_file(array('email_plaintext' => 'user_invalid_logins-plaintext.thtml'));
 
-    $remoteAddress = \Geeklog\IP::getIPAddress();
+	$t->set_var('email_divider', $LANG31['email_divider']);
+	$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+	$t->set_var('LB', LB);
+	
+	$t->set_var('lang_username', $LANG04[2]); 
+	$t->set_var('username', $username);
+	$t->set_var('lang_email', $LANG04[5]);
+	$t->set_var('email', $email);
+	$t->set_var('lang_max_invalid_login_msg', sprintf($LANG29['max_invalid_login_msg'], $remoteAddress));
+	$t->set_var('lang_profile_url_label', $LANG29[4]);
+	$t->set_var('profile_url', "{$_CONF['site_url']}/users.php?mode=profile&uid={$uid}");
 
-    $mailBody = "$LANG04[2]: $userName\n"
-        . "$LANG04[5]: $email\n";
-
-    $mailBody .= sprintf($LANG29['max_invalid_login_msg'] . "\n\n", $remoteAddress);
-
-    $mailBody .= "{$LANG29[4]}: {$_CONF['site_url']}/users.php?mode=profile&uid={$uid}\n";
-    $mailBody .= "IP: " . \Geeklog\IP::getIPAddress() . "\n\n";
-
-    $mailBody .= "\n------------------------------\n";
-    $mailBody .= "\n{$LANG08[34]}\n";
-    $mailBody .= "\n------------------------------\n";
-
-    $mailSubject = $_CONF['site_name'] . ' ' . $LANG29['max_invalid_login'];
-
-    return COM_mail($_CONF['site_mail'], $mailSubject, $mailBody);
+	// Output final content
+	$message[] = $t->parse('output', 'email_html');	
+	$message[] = $t->parse('output', 'email_plaintext');	
+	
+	$mailSubject = $_CONF['site_name'] . ' ' . $LANG29['max_invalid_login'];
+	
+	return COM_mail($_CONF['site_mail'], $mailSubject, $message, '', true);
 }
 
 /**
@@ -1422,7 +1431,7 @@ function plugin_autotags_user($op, $content = '', $autotag = array())
  */
 function USER_emailConfirmation($email)
 {
-    global $_CONF, $_TABLES, $LANG04, $_USER;
+    global $_CONF, $_TABLES, $LANG04, $LANG31, $_USER;
 
     $retval = '';
 
@@ -1439,16 +1448,32 @@ function USER_emailConfirmation($email)
             $emailconfirmid = substr(md5(uniqid(rand(), 1)), 1, 16);
             DB_change($_TABLES['users'], 'emailconfirmid', "$emailconfirmid", 'uid', $uid);
             DB_change($_TABLES['users'], 'emailtoconfirm', "$email", 'uid', $uid);
+			
+			// Create HTML and plaintext version of email
+			$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+			
+			$t->set_file(array('email_html' => 'user_update_email-html.thtml'));
+			$t->set_file(array('email_plaintext' => 'user_update_email-plaintext.thtml'));
 
-            $mailtext = sprintf($LANG04['email_msg_email_status_1'], $_USER['username']);
-            $mailtext .= $_CONF['site_url'] . '/users.php?mode=newemailstatus&uid=' . $uid . '&ecid=' . $emailconfirmid . "\n\n";
-            $mailtext .= $LANG04['email_msg_email_status_2'];
-            $mailtext .= "{$_CONF['site_name']}\n";
-            $mailtext .= "{$_CONF['site_url']}\n";
+			$t->set_var('email_divider', $LANG31['email_divider']);
+			$t->set_var('email_divider_html', $LANG31['email_divider_html']);
+			$t->set_var('LB', LB);
+			
+			$t->set_var('lang_email_updated_msg', sprintf($LANG04['email_msg_email_status_1'], $_USER['username']));
+			$t->set_var('lang_verify_msg', $LANG04['email_msg_verify']); 
+			$t->set_var('verify_url', $_CONF['site_url'] . '/users.php?mode=newemailstatus&uid=' . $uid . '&ecid=' . $emailconfirmid); 
+			$t->set_var('lang_not_verify_msg', $LANG04['email_msg_email_status_2']); 
+			$t->set_var('site_name', $_CONF['site_name']); 
+			$t->set_var('site_slogan', $_CONF['site_slogan']); 
+			$t->set_var('site_url', $_CONF['site_url']); 
 
-            $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
-
-            if (COM_mail($email, $subject, $mailtext)) {
+			// Output final content
+			$message[] = $t->parse('output', 'email_html');	
+			$message[] = $t->parse('output', 'email_plaintext');	
+			
+			$mailSubject = $_CONF['site_name'] . ': ' . $LANG04[16];
+			
+            if (COM_mail($email, $mailSubject, $message, '', true)) {	
                 if ($A['status'] == USER_ACCOUNT_ACTIVE) {
                     // Being called by usersettings.php so just return true on success
                     return true;

@@ -1,0 +1,17 @@
+{!if lang_cc_email_info}
+<p>{lang_cc_email_info}</p>
+
+{email_divider_html}
+{!endif}
+
+<p>{lang_email_sentinfo}</p>
+
+{email_divider_html}
+
+{message_html}
+
+{!if signature_html}
+<br{XHTML}>
+{signature_divider_html}
+{signature_html}
+{!endif}

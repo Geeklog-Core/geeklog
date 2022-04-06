@@ -190,11 +190,12 @@
     module has the value 8. So to activate both modules, add 128 + 8 = 136 and
     enter that in the Configuration admin panel.</p>
 
-<p>The SLV Examine module is complemented by a <strong>SLV Action</strong>
-    module that ensures that SLV is notified of spam posts caught by other examine
-    modules. It "piggybacks" on the Delete Action module, i.e. when you activate
-    the Delete Action module, you'll also enable the SLV Action module.</p>
-
+<p>Modules like the SNL Examine module (Spam Number of Links) is complemented by a <strong>SNL Action</strong>
+    module that ensures that SNL is notified of spam posts caught by other examine
+    modules. These modules can be enabled or disabled in the Spam-X configuration.</p> 
+	
+<p>Some modules may "piggyback" on the Delete Action module, i.e. when you activate
+    the Delete Action module, you'll also enable these relevant Action module.</p>
 
 <h2><a name="admin">Admin Modules</a></h2>
 
@@ -202,13 +203,6 @@
         href="#ip">IP Filter</a>, <a href="#ipofurl">IP of URL Filter</a>, and <a
         href="#header">HTTP Header Filter</a> modules provide you with a form to add
     new entries. To delete an existing entry, simply click on it.</p>
-
-<p>With the <strong>SLV Whitelist</strong> admin module you can add URLs that
-    you don't want to be reported to SLV. This is useful when posts on your site
-    happen to contain certain URLs quite often but you don't want those to be
-    considered spam by SLV.<br/>Note that your site's URL (i.e. <a
-            href="config.html#desc_site_url">$_CONF['site_url']</a>) is automatically
-    whitelisted, so you don't need to add it here.</p>
 
 <p>The <strong>Log View</strong> module lets you inspect and clear the Spam-X
     logfile. The logfile contains additional information about the spam posts, e.g.
@@ -273,7 +267,7 @@
     <tr>
         <td><a name="desc_timeout">timeout</a></td>
         <td>5</td>
-        <td>Timeout (in seconds) for contacting external services such as SLV and SFS.</td>
+        <td>Timeout (in seconds) for contacting external services such as Akismet and SFS.</td>
     </tr>
     <tr>
         <td><a name="desc_notification_email">notification_email</a></td>
@@ -294,8 +288,7 @@
     <tr>
         <td><a name="desc_max_age">max_age</a></td>
         <td>0</td>
-        <td>The max age in days to keep Spam-X records since there last update (0 = infinite). SLV Whitelist records
-            will not be deleted.
+        <td>The max age in days to keep Spam-X records since there last update (0 = infinite).
         </td>
     </tr>
     <tr>
