@@ -1,0 +1,9 @@
+<p>{lang_hello_name}</p>
+
+<p>{lang_new_comment_msg}</p>
+
+{email_divider_html}
+
+<p>{lang_url_label}: {submission_url}</p>
+
+<p>{lang_unsubscribe_url}: {unsubscribe_url}</p>

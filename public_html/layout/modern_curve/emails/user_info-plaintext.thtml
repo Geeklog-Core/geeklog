@@ -1,0 +1,14 @@
+{lang_user_info_msg}
+
+
+{lang_username}: {username}
+
+{lang_password}: {password}
+
+
+{lang_password_msg}
+
+
+{site_name}{!if site_slogan} - {site_slogan}{!endif}
+
+{site_url}

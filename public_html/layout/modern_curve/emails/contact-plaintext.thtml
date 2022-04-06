@@ -1,0 +1,18 @@
+{!if lang_cc_email_info}
+{lang_cc_email_info}
+
+{email_divider}
+
+{!endif}
+{lang_email_sentinfo}
+
+{email_divider}
+
+
+{message_plaintext}
+
+{!if signature}
+{signature_divider}
+
+{signature}
+{!endif}
