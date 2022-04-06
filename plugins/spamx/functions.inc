@@ -561,8 +561,7 @@ function plugin_spamaction_spamx($comment, $action)
     if ($dir = @opendir($spamx_path)) {
         while (($file = readdir($dir)) !== false) {
             if (is_file($spamx_path . $file)) {
-                if ((substr($file, -17) === '.Action.class.php') &&
-                    (stripos($file, 'SLVreport.') !== 0)) {
+                if (substr($file, -17) === '.Action.class.php') {
                     $sfile = str_replace('.Action.class.php', '', $file);
                     require_once $spamx_path . $file;
                     $CM = new $sfile;
