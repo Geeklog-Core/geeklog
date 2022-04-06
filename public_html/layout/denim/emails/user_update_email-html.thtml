@@ -1,0 +1,10 @@
+<p>{lang_email_updated_msg}</p>
+
+<p>{lang_verify_msg}</p>
+
+<p><a href="{verify_url}">{verify_url}</a></p>
+
+<p>{lang_not_verify_msg}</p>
+
+<p>{site_name}{!if site_slogan} - {site_slogan}{!endif}<br{XHTML}>
+<a href="{site_url}">{site_url}</a></p>
