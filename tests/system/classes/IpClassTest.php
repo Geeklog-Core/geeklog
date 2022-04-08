@@ -1,6 +1,9 @@
 <?php
 
-use \PHPUnit\Framework\TestCase;
+namespace Geeklog\Test;
+
+use Geeklog\IP;
+use PHPUnit\Framework\TestCase;
 
 class IpClassTest extends TestCase
 {
@@ -20,7 +23,7 @@ class IpClassTest extends TestCase
         $CIDR = '204.0.113.1/18';
 
         foreach ($data as $ip => $expected) {
-            $got = \Geeklog\IP::matchCIDR($ip, $CIDR);
+            $got = IP::matchCIDR($ip, $CIDR);
             $this->assertEquals(
                 $expected,
                 $got,
@@ -43,7 +46,7 @@ class IpClassTest extends TestCase
         $CIDR = '2001:4860:4860::8888/32';
 
         foreach ($data as $ip => $expected) {
-            $got = \Geeklog\IP::matchCIDR($ip, $CIDR);
+            $got = IP::matchCIDR($ip, $CIDR);
             $this->assertEquals(
                 $expected,
                 $got,
@@ -67,7 +70,7 @@ class IpClassTest extends TestCase
         $ipToCheck = '100.0.113.0';
 
         foreach ($data as $range => $expected) {
-            $got = \Geeklog\IP::matchRange($ipToCheck, $range);
+            $got = IP::matchRange($ipToCheck, $range);
             $this->assertEquals(
                 $expected,
                 $got,
@@ -82,7 +85,7 @@ class IpClassTest extends TestCase
         $ipToCheck = '2001:4860:4860:0000:0000:0000:1000:8888';
 
         foreach ($data as $range => $expected) {
-            $got = \Geeklog\IP::matchRange($ipToCheck, $range);
+            $got = IP::matchRange($ipToCheck, $range);
             $this->assertEquals(
                 $expected,
                 $got,
@@ -105,7 +108,7 @@ class IpClassTest extends TestCase
         ];
 
         foreach ($data as $ip => $expected) {
-            $got = \Geeklog\IP::isValidIP($ip);
+            $got = IP::isValidIP($ip);
             $this->assertEquals(
                 $expected,
                 $got,
@@ -129,7 +132,7 @@ class IpClassTest extends TestCase
         ];
 
         foreach ($data as $ip => $expected) {
-            $got = \Geeklog\IP::isValidIPv4($ip);
+            $got = IP::isValidIPv4($ip);
             $this->assertEquals(
                 $expected,
                 $got,
@@ -151,7 +154,7 @@ class IpClassTest extends TestCase
         ];
 
         foreach ($data as $ip => $expected) {
-            $got = \Geeklog\IP::isValidIPv6($ip);
+            $got = IP::isValidIPv6($ip);
             $this->assertEquals(
                 $expected,
                 $got,

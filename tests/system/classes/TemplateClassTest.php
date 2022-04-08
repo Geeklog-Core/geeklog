@@ -1,11 +1,16 @@
 <?php
 
-use \PHPUnit\Framework\TestCase;
+namespace Geeklog\Test;
+
+use Mobile_Detect;
+use PHPUnit\Framework\TestCase;
+use Template;
+use Tst;
 
 /**
  * Simple tests for the Template class
  */
-class templateClass extends TestCase
+class TemplateClassTest extends TestCase
 {
     /**
      * @var Template

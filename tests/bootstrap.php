@@ -76,6 +76,13 @@ if (!is_callable('COM_isEnableDeveloperModeLog')) {
 
 }
 
+if (!is_callable('COM_strftime')) {
+    function COM_strftime($format, $timestamp = null)
+    {
+        return strftime($format, $timestamp);
+    }
+}
+
 // To disable your site quickly, simply set this flag to false
 $_CONF['site_enabled'] = true;
 

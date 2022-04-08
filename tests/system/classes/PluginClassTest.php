@@ -1,11 +1,14 @@
 <?php
 
-use \PHPUnit\Framework\TestCase;
+namespace Geeklog\Test;
+
+use PHPUnit\Framework\TestCase;
+use Plugin;
 
 /**
  * Simple tests for plugin.class.php
  */
-class pluginClass extends TestCase
+class PluginClassTest extends TestCase
 {
     /**
      * @var Plugin

@@ -1,13 +1,16 @@
 <?php
 
-use \PHPUnit\Framework\TestCase;
+namespace Geeklog\Test;
+
+use PHPUnit\Framework\TestCase;
+use upload;
 
 /**
  * Simple tests for the upload class
  * Obviously, we can't really test the upload functionality. So test at least
  * the getter / setter methods.
  */
-class uploadClass extends TestCase
+class UploadClassTest extends TestCase
 {
     /**
      * @var upload

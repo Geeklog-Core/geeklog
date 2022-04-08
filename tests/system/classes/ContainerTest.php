@@ -1,9 +1,12 @@
 <?php
 
+namespace Geeklog\Test;
+
 use Geeklog\Container\Container;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
+use StdClass;
 
 class ContainerTest extends TestCase
 {
@@ -14,7 +17,7 @@ class ContainerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->container = new Geeklog\Container\Container();
+        $this->container = new Container();
         $this->container->set('foo', 1);
     }
 

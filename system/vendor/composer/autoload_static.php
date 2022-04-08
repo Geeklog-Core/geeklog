@@ -50,6 +50,10 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
             'Illuminate\\Config\\' => 18,
             'IPLib\\' => 6,
         ),
+        'G' => 
+        array (
+            'Geeklog\\Test\\' => 13,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -120,6 +124,10 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
         'IPLib\\' => 
         array (
             0 => __DIR__ . '/..' . '/mlocati/ip-lib/src',
+        ),
+        'Geeklog\\Test\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/../tests/system/classes',
         ),
     );
 

@@ -1,13 +1,16 @@
 <?php
 
-use \PHPUnit\Framework\TestCase;
+namespace Geeklog\Test;
+
+use downloader;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Simple tests for the downloader class
  * Obviously, we can't really test the download functionality. So test at least
  * the getter / setter methods.
  */
-class downloaderClass extends TestCase
+class DownloaderClassTest extends TestCase
 {
     /**
      * @var downloader

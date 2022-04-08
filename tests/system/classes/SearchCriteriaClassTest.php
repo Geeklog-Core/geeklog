@@ -1,11 +1,14 @@
 <?php
 
+namespace Geeklog\Test;
+
 use \PHPUnit\Framework\TestCase;
+use SearchCriteria;
 
 /**
  * Simple tests for plugin.class.php
  */
-class SearchCriteriaClass extends TestCase
+class SearchCriteriaClassTest extends TestCase
 {
     /**
      * @var SearchCriteria

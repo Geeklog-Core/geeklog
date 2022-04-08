@@ -1,11 +1,14 @@
 <?php
 
-use \PHPUnit\Framework\TestCase;
+namespace Geeklog\Test;
+
+use PHPUnit\Framework\TestCase;
+use Url;
 
 /**
  * Simple tests for the url class
  */
-class urlClass extends TestCase
+class UrlClassTest extends TestCase
 {
     /**
      * @var Url

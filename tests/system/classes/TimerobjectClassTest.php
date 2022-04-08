@@ -1,11 +1,14 @@
 <?php
 
-use \PHPUnit\Framework\TestCase;
+namespace Geeklog\Test;
+
+use PHPUnit\Framework\TestCase;
+use timerobject;
 
 /**
  * Simple tests for timerobjectClassTest
  */
-class timerobjectClass extends TestCase
+class TimerobjectClassTest extends TestCase
 {
     /**
      * @var timerobject

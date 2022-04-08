@@ -1,6 +1,9 @@
 <?php
 
-use \PHPUnit\Framework\TestCase;
+namespace Geeklog\Test;
+
+use PHPUnit\Framework\TestCase;
+use Validator;
 
 /**
  * Class ValidatorClassTest

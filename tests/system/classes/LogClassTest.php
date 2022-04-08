@@ -1,13 +1,16 @@
 <?php
 
+namespace Geeklog\Test;
+
 use Geeklog\Log;
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
+use Tst;
 
 /**
  * Class logClassTest
  * @package system\classes
  */
-class logClassTest extends TestCase
+class LogClassTest extends TestCase
 {
     /**
      * @var string
@@ -23,13 +26,6 @@ class logClassTest extends TestCase
     {
         $this->pathToLogDir = Tst::$root . 'logs' . DIRECTORY_SEPARATOR;
         Log::init($this->pathToLogDir);
-
-        if (!is_callable('COM_strftime')) {
-            function COM_strftime($format, $timestamp = null)
-            {
-                return strftime($format, $timestamp);
-            }
-        }
     }
 
     public function tearDown(): void
@@ -57,7 +53,7 @@ class logClassTest extends TestCase
 
         foreach ($data as $datum) {
             Log::setTimeStampFormat($datum);
-            $this->assertEquals($datum, Geeklog\Log::getTimeStampFormat());
+            $this->assertEquals($datum, Log::getTimeStampFormat());
         }
     }
 

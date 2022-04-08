@@ -1,11 +1,14 @@
 <?php
 
-use \PHPUnit\Framework\TestCase;
+namespace Geeklog\Test;
+
+use CalendarDay;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Simple tests for the CalendarDay class
  */
-class calendarDayClass extends TestCase
+class CalendarDayClassTest extends TestCase
 {
     private $cd;
 

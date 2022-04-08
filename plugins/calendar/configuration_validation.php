@@ -44,7 +44,7 @@ $_CONF_VALIDATE['calendar']['upcomingeventsrange'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['calendar']['hour_mode'] = array(
     'rule' => array('inList', array('12', '24'), true)
 );
-$_CONF_VALIDATE['calendar']['event_types'] = array('stringOrEmpty');
+$_CONF_VALIDATE['calendar']['event_types'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['calendar']['notification'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['calendar']['delete_event'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['calendar']['aftersave'] = array(

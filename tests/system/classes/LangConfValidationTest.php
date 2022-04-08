@@ -1,7 +1,11 @@
 <?php
 
+namespace Geeklog\Test;
+
+use config;
 use Geeklog\ConfigInterface;
 use PHPUnit\Framework\TestCase as TestCase;
+use Tst;
 
 /**
  * There is now a dependency between the entries for dropdown menus in
@@ -10,7 +14,7 @@ use PHPUnit\Framework\TestCase as TestCase;
  * These tests ensure that all selection list entries match their equivalent
  * in the list of to-be-validated entries.
  */
-class langConfValidation extends TestCase
+class LangConfValidationTest extends TestCase
 {
     /**
      * @var config
@@ -19,7 +23,7 @@ class langConfValidation extends TestCase
 
     protected function setUp(): void
     {
-        global $_CONF, $_CONF_VALIDATE, $_USER;
+        global $_CONF, $_CONF_VALIDATE, $_USER, $_DB_dbms;
 
         // set dummy values for the $_CONF options used in the language files
         $_CONF = array();
@@ -101,7 +105,7 @@ class langConfValidation extends TestCase
      */
     protected function checkForMissingEntries($type, $lang = '')
     {
-        global $_CONF_VALIDATE, $LANG_configselects;
+        global $_CONF_VALIDATE, $LANG_configselects, $LANG_VALIDATION;
 
         // loop through validation rules
         foreach ($_CONF_VALIDATE[$type] as $key => $val) {
@@ -131,7 +135,7 @@ class langConfValidation extends TestCase
                                 $this->assertEquals(count($ref), count($values));
                                 foreach ($values as $v) {
                                     $this->assertTrue(
-                                        (array_search($v, $ref) !== false),
+                                        (in_array($v, $ref)),
                                         "$lang: '$key' missing '$v'"
                                     );
                                 }
@@ -186,7 +190,7 @@ class langConfValidation extends TestCase
      */
     public function testCoreLanguages()
     {
-        global $_CONF, $_CONF_VALIDATE, $LANG32, $_DB_mysqldump_path, $LANG_configselects;
+        global $_CONF, $_CONF_VALIDATE, $LANG32, $_DB_dbms, $_DB_mysqldump_path, $LANG_configselects;
 
         $basePath = Tst::$root . 'language/';
 
@@ -198,10 +202,11 @@ class langConfValidation extends TestCase
 
     public function testCalendarPluginLanguages()
     {
-        global $_CONF, $_CONF_VALIDATE, $_USER, $_DB_mysqldump_path, $LANG_configselects;
+        global $_CONF, $_CONF_VALIDATE, $_USER, $_DB_dbms, $_DB_mysqldump_path, $LANG32, $LANG_configselects;
 
         $basePath = Tst::$root . 'plugins/calendar/';
 
+        include Tst::$root . 'language/english.php';
         include $basePath . 'configuration_validation.php';
 
         foreach (glob($basePath . 'language/*.php') as $file) {
@@ -268,10 +273,11 @@ class langConfValidation extends TestCase
 
     public function testXMLSitemapPluginLanguages()
     {
-        global $_CONF, $_CONF_VALIDATE, $_DB_mysqldump_path, $LANG_configselects;
+        global $_CONF, $_CONF_VALIDATE, $_DB_dbms, $_DB_mysqldump_path, $LANG_configselects, $LANG_VALIDATION;
 
         $basePath = Tst::$root . 'plugins/xmlsitemap/';
 
+        include Tst::$root . 'language/english.php';
         include $basePath . 'configuration_validation.php';
 
         foreach (glob($basePath . 'language/*.php') as $file) {

@@ -1,11 +1,16 @@
 <?php
 
-use \PHPUnit\Framework\TestCase;
+namespace Geeklog\Test;
+
+use Calendar;
+use CalendarDay;
+use PHPUnit\Framework\TestCase;
+use TimeZoneConfig;
 
 /**
  * Simple tests for calendarClassTest
  */
-class calendarClass extends TestCase
+class CalendarClassTest extends TestCase
 {
     /**
      * @var Calendar

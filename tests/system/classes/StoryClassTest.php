@@ -1,13 +1,16 @@
 <?php
 
-use \PHPUnit\Framework\TestCase;
+namespace Geeklog\Test;
+
+use Article;
+use PHPUnit\Framework\TestCase;
 
 /**
  * (Very) Simple tests for the Story Class
  * There isn't much we can test without a database or lib-common.php, but
  * try it anyway ...
  */
-class storyClass extends TestCase
+class StoryClassTest extends TestCase
 {
     protected function setUp(): void
     {
