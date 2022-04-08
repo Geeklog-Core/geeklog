@@ -45,8 +45,8 @@ $LANG01 = array(
     2 => 'ver m�s',
     3 => 'comentarios',
     4 => 'Editar',
-    5 => '',
-    6 => '',
+    5 => 'Contributed by: %s on %s',
+    6 => 'Last modified on %s',
     7 => '',
     8 => '',
     9 => 'Funciones del Administrador:',
@@ -203,7 +203,8 @@ $LANG01 = array(
     'terms_of_service' => 'Terms of Service',
     'privacy_policy' => 'Privacy Policy',
     'about_cookies' => 'About Cookies',
-    'parse_php_error' => 'There was an error parsing your PHP code: %s'
+    'parse_php_error' => 'There was an error parsing your PHP code: %s',
+    'error_title' => 'An Error Occurred'
 );
 
 ###############################################################################
@@ -269,7 +270,8 @@ $LANG03 = array(
     'anon_user_name' => '%s (Anonymous User)',
     'comments_closed_msg' => 'Comments are closed and no new posts are allowed.',
     'read_comment' => 'Read the full comment at',
-    'comment_for' => 'The above comment is for the following item'
+    'comment_for' => 'The above comment is for the following item',
+    'comment_page_title' => 'Comments for %s'
 );
 
 ###############################################################################
@@ -316,22 +318,11 @@ $LANG04 = array(
     37 => 'Aplicado a tus comentarios',
     38 => '�Todo sobre Ud.! Todos van a poder leer esto.',
     39 => 'Su clave p�blica de PGP para compartir',
-    40 => 'No hay �conos en Secciones',
-    41 => 'Deseando moderar',
     42 => 'Formato de fecha',
     43 => 'Cantidad m�xima de Notas',
-    44 => 'Sin recuadros',
-    45 => 'Mostrar las preferencias de',
-    46 => 'Items excluidos para',
-    47 => 'Configuraci�n de Noticias para',
     48 => 'Secciones',
-    49 => 'Sin �conos en las notas',
-    50 => 'No seleccione esto si no est� interesado',
-    51 => 'S�lo las notas nuevas',
     52 => 'El valor por defecto es',
     53 => 'Recibir cada noche las notas del d�a',
-    54 => 'Seleccione las Secciones y Autores que no desea ver.',
-    55 => 'Si no selecciona ninguna significa que desea la selecci�n por defecto. De seleccionar, seleccione todas las de su inter�s ya que las opciones por defecto ya no ser�n tomadas en cuenta. Las opciones por defecto se muestran resaltadas.',
     56 => 'Autores',
     57 => 'Modo de Presentaci�n',
     58 => 'Orden',
@@ -366,6 +357,7 @@ $LANG04 = array(
     86 => 'Encontrar todas las noticias de',
     87 => 'Your login name',
     88 => "Someone (possibly you) has requested a new password for your account \"%s\" on {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nIf you really want this action to be taken, please click on the following link:\n\n",
+    'user_password_action_msg' => 'If you really want this action to be taken, please click on the following link:',
     89 => "If you do not want this action to be taken, simply ignore this message and the request will be disregarded (your password will remain unchanged).\n\n",
     90 => 'You can enter a new password for your account below. Please note that your old password is still valid until you submit this form.',
     91 => 'Set New Password',
@@ -394,8 +386,8 @@ $LANG04 = array(
     115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
     116 => 'Account Awaiting Activation',
     117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
-    118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
-    119 => 'If you have forgotten your password, you may request a new one at this url:',
+    118 => '',
+    119 => '',
     120 => 'Account Activated',
     121 => 'Service',
     122 => 'Sorry, new user registration is disabled',
@@ -412,26 +404,20 @@ $LANG04 = array(
     133 => 'Comment Display',
     134 => 'Comment Options',
     135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
-    136 => 'Exclude Topics and Authors',
-    137 => 'Filter Article Content',
     138 => 'Misc Settings',
     139 => 'Layout and Language',
     140 => '<li>No Topic Icons if checked will not display the article topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics</li><li>Set the maximum number of articles to show per page</li><li>Set your theme, timezone and preferred date format</li>',
     141 => 'Privacy Settings',
     142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
-    143 => 'Filter Block Content',
-    144 => 'Show & hide boxes',
     145 => 'Your Public Profile',
     146 => 'Password and email',
     147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
     148 => 'User Information',
     149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
     150 => '',
-    151 => 'Blocks',
     156 => 'Delete Account',
     157 => 'Delete Option',
     158 => 'Time Zone',
-    159 => 'This email was generated automatically. Please do not reply to this email.',
     160 => '(max. %d x %d pixels, %d bytes; %s)',
     161 => 'will be scaled down',
     162 => 'will not be scaled',
@@ -446,6 +432,8 @@ $LANG04 = array(
     171 => 'Post mode for "Signature" and "Bio".',
     'user_login' => 'User Login',
     'user_login_message' => 'Please login below. You must enter both a username and password.',
+    'user_remote_login_desc_long' => 'Click on one of the button(s) below to login and/or register via an account you have on another supported remote service. Please note, you must have an account on the remote service. If you are creating a new account on this website, then the remote service may ask you to give this website permissions to access information like your name, email address, and profile photo.',
+    'remote_register_instructions' => "<strong>Please note:</strong> To register and create an account via Remote Login, please visit the <a href=\"{$_CONF['site_url']}/users.php\" rel=\"nofollow\">User Login</a>.",
     'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?",
     'user_max_login_attempts' => 'Max Login Attempts and Speed Limit Reached',
     'tfa_two_factor_auth' => 'Two Factor Authentication',
@@ -472,12 +460,14 @@ $LANG04 = array(
     'enter_new_email' => 'Enter New Email',
     'desc_new_email_status' => 'You are required to enter a new email address for your account. You can enter a new email for your account below. <em>Please note you will not be able to do anything with your account until your email is updated and verified.</em>',
     'email_msg_email_status_1' => "You have updated your email address for your account \"%s\" on {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nPlease click on the following link to verify this email address:\n\n",
+    'email_msg_verify' => 'Please click on the following link to verify this email address:',
     'email_msg_email_status_2' => "If you do not verify this email address and you log into your account you will be required to enter a new email address and go through this email verification process again.\n\n",
     'email_verify' => 'New Email to be Verified',
     'email_verify_delete' => 'Delete email to be verified',
     'email_verify_msg' => "You have previously updated your email address for your account but it still needs to be verified. Please check your email account for an email from {$_CONF['site_name']} that contains a verification link. Once you click on that link your new email address will be verified and your account will be updated to use it.<br" . XHTML . "><br" . XHTML . ">If you wish you may update the new email to be verified with the email fields above or you can delete it.",
     'remove_account_msg' => 'To remove your account from our database, enter your current password into the above "Current Password", check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
-    'remove_remote_account_msg' => 'To remove your remote account from our database, check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".'
+    'remove_remote_account_msg' => 'To remove your remote account from our database, check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
+    'theme_info' => '%1$s %2$s (requires Geeklog %3$s)'
 );
 
 ###############################################################################
@@ -555,7 +545,9 @@ $LANG08 = array(
     41 => 'This user doesn\'t exist.',
     42 => 'This users email address doesn\'t exist. This most likely means is is an OAuth user account.',
     43 => 'This users email address is invalid.',
-    44 => 'This users status is set to something other than Active or New Password therefore the email address is assumed bad.'
+    44 => 'This users status is set to something other than Active or New Password therefore the email address is assumed bad.',
+    45 => "This is a message sent from {$_CONF['site_name']} by %s. Any replies will need to be sent to the email address: %s",
+    46 => "To unsubscribe from the Daily Digest, login to {$_CONF['site_name']} at {$_CONF['site_url']}. Then visit the user settings page at {$_CONF['site_url']}/usersettings.php and view the Content Tab. You can then unsubscribe to the Daily Digest by deselecting all topics and saving your profile."
 );
 
 ###############################################################################
@@ -645,8 +637,8 @@ $LANG10 = array(
     1 => 'Estad�sticas del sitio',
     2 => 'Total de accesos al sistema',
     3 => 'Notas(Comentarios) en el sistema',
-    4 => '',
-    5 => '',
+    4 => 'Site Statistic',
+    5 => "Overall Site Statistics for {$_CONF['site_name']}",
     6 => '',
     7 => 'Las 10 Notas m�s vistas',
     8 => 'T�tulo de la Nota',
@@ -768,7 +760,13 @@ $LANG_LIKES = array(
     'likes_speedlimit' => 'You last used the Likes system on an item %s seconds ago. This site requires at least %s seconds between using the Likes system',
     'likes_ip_error' => 'Your IP address has already performed this Likes action.',
     'likes_uid_error' => 'Your User account has already performed this Likes action.',
-    'own_item_error' => 'Either you own the item or do not have permission to Like/Dislike it.'
+    'own_item_error' => 'Either you own the item or do not have permission to Like/Dislike it.',
+    'liked_by' => 'Liked by:',
+    'disliked_by' => 'Disliked by:',
+    'num_anon_users' => '<br' . XHTML . '>%s Anonymous Users',
+    'one_anon_users' => '<br' . XHTML . '>1 Anonymous User',
+    'num_more_users' => '<br' . XHTML . '>+%s more Users',
+    'username_in_likes_list' => '<br' . XHTML . '>%s'
 );
 
 ###############################################################################
@@ -859,7 +857,8 @@ $LANG_ENVCHECK = array(
     'showhide_phpinfo' => 'Show/Hide Full PHP Info',
     'view_online' => 'Click here %s to view online',
     'no_new_items' => 'No New Items',
-    'max_execution_time' => 'Geeklog recommends the PHP default value of 30 seconds as a minimum, but plugin uploads and other operations may take longer than this depending upon your hosting environment.  If safe_mode (above) is Off, you may be able to increase this by modifying the value of <b>max_execution_time</b> in your php.ini file.'
+    'max_execution_time' => 'Geeklog recommends the PHP default value of 30 seconds as a minimum, but plugin uploads and other operations may take longer than this depending upon your hosting environment.  If safe_mode (above) is Off, you may be able to increase this by modifying the value of <b>max_execution_time</b> in your php.ini file.',
+    'phpinfo_disabled' => 'In order to view the current php settings, you will have to contact your host and enable access to the phpinfo() function.'
 );
 
 ###############################################################################
@@ -1354,7 +1353,14 @@ $LANG31 = array(
     24 => 'No hubo env�os exitosos',
     25 => '-- Selecciona Grupo --',
     26 => 'Por favor, rellena todos los campos del formulario y selecciona un grupo de usuarios de la lista desplegable.',
-    27 => 'The following template variables are available in <strong>Subject</strong> and <strong>Message</strong>: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}'
+    27 => 'The following template variables are available in <strong>Subject</strong> and <strong>Message</strong>: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}',
+    'email_divider' => '------------------------------------------------------------',
+    'email_divider_html' => '<hr' . XHTML . '>',
+    'sig_divider' => '---',
+    'sig_divider_html' => '---<br' . XHTML . '>',
+    'email_footer_msg_noreply' => 'The address used to send this email is not monitored. Please do not reply to this email.',
+    'email_footer_msg_content' => 'If content from the website is displayed in this email, there may be layout changes which result in formatting issues.',
+    'ip_address_email' => 'IP address that initiated email:'
 );
 
 ###############################################################################
@@ -1375,6 +1381,7 @@ $LANG32 = array(
     12 => 'no fue dado un nombre de plugin a la funci�n plugineditor()',
     13 => 'Editor de Plugins',
     14 => 'Nuevo Plug-in',
+    'installed_plugins' => 'Installed Plugins',
     15 => 'P�gina de Inicio - Administrador',
     16 => 'Plug-in Name',
     17 => 'Versi�n',
@@ -1430,6 +1437,10 @@ $LANG32 = array(
     67 => 'The directory "%s" is not writable.',
     68 => 'You do not have the required permissions to install plugins.',
     69 => 'You do not have the required permissions to upload plugins.',
+    'delete' => 'Delete',
+    'delete_plugin' => 'Delete Plugin and all of its files?',
+    'click_to_delete_msg' => 'Click to Delete this Plugin files',
+    'really_delete_msg' => 'Really Delete %s Plugin files?',
     99 => 'An unknown error occurred',
     100 => 'Ok.',
     101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
@@ -1580,7 +1591,7 @@ $MESSAGE = array(
     28 => 'El Plug-In fue grabado con �xito',
     29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged',
     30 => 'Acceso Denegado',
-    31 => '',
+    31 => 'Sorry, This feature is not supported by the  database server this website is using.  Please note that all attempts to access unsupported features are logged.',
     32 => '',
     33 => '',
     34 => '',
@@ -1677,6 +1688,8 @@ $MESSAGE = array(
     151 => 'Failed to delete some files and directories used during the installation.  Please remove them manually.',
     152 => 'All the files and directories used during the installation are left as they are.  It is dangerous to keep them on the server, so please don\'t forget to remove them manually.',
     153 => 'You last emailed an article %1$d seconds ago.  This site requires at least %2$d seconds between emailing articles.',
+    160 => 'The plugin files was successfully deleted.',
+    161 => 'The archive includes a file whose name includes an unsafe character.',
     400 => 'Not all required fields have been passed validation',
     401 => 'Please enter Fullname',
     500 => 'The Template Cache has been successfully cleared.',
@@ -1765,9 +1778,11 @@ $LANG_ACCESS = array(
 $LANG_DB_BACKUP = array(
     'database_admin' => 'Database Administration',
     'last_ten_backups' => '�ltimos 10 Back-ups',
+    'site_db_backup' => "{$_CONF['site_name']} Database Backup",
     'create_backup' => 'Backup Database',
     'do_backup' => 'Hacer un Backup',
     'backup_successful' => 'El back up de la base se ha realizado con �xito.',
+    'backup_error' => 'Error performing database backup.',
     'db_explanation' => 'Para crear un backup del sistema utilice el bot�n de abajo',
     'backup_instructions' => 'To create a new backup of your site database, select the "Do Backup" button below. This will backup all current Geeklog tables. You can download a copy of the backup from the main Database Administration Screen.',
     'zero_size' => 'Fallo de Backup: El tama�o era de 0 bytes',
@@ -1818,7 +1833,8 @@ $LANG_DB_BACKUP = array(
     'disable_purge' => '("0" to disable purging.)',
     'use_gzip' => 'Use GZip if available',
     'configure' => 'Configure',
-    'config_instructions' => 'Select any tables you wish to exclude from the backup. Other options can be found in the Geeklog Configuration under the Database tab.'
+    'config_instructions' => 'Select any tables you wish to exclude from the backup. Other options can be found in the Geeklog Configuration under the Database tab.',
+    'config_successful' => 'Tables to Backup list was saved successfully.'
 );
 
 ###############################################################################
@@ -2428,6 +2444,7 @@ $LANG_confignames['Core'] = array(
     'likes_articles' => 'Article Likes',
     'likes_comments' => 'Comment Likes',
     'likes_speedlimit' => 'Likes Speed Limit',
+    'likes_users_listed' => 'User Listed',
     'passwordspeedlimit' => 'Password Speed Limit',
     'login_attempts' => 'Max. Login Attempts',
     'login_speedlimit' => 'Login Speed Limit',
@@ -2518,7 +2535,8 @@ $LANG_confignames['Core'] = array(
     'cookie_consent' => 'Enable Cookie Consent',
     'terms_of_use_link' => 'Terms of Use Link',
     'privacy_policy_link' => 'Privacy Policy Link',
-    'about_cookies_link' => 'About Cookies Consent Link'
+    'about_cookies_link' => 'About Cookies Consent Link',
+    'ip_anonymization' => 'IP Anonymization'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2688,6 +2706,7 @@ $LANG_VALIDATION = array(
     'default' => 'This field contains an invalid value',
     'notEmpty' => 'This field cannot be empty',
     'alphaNumeric' => 'This field must be in alpha numeric',
+    'alphaNumericOrEmpty' => 'This field must be alpha numeric or empty',
     'between' => 'This field must be in specified range',
     'blank' => 'This field must be blank',
     'comparison' => 'This field does not match the comparison operation',

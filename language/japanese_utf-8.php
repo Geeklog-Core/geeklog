@@ -169,8 +169,8 @@ $LANG01 = array(
     115 => '-',
     116 => 'トラックバック',
     117 => '記事一覧',
-    118 => '',
-    119 => '',
+    118 => 'Multi-page Article Navigation:',
+    119 => "Lost your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">password</a>?",
     120 => 'このコメントへのパーマリンク',
     121 => 'コメント (%d件)',
     122 => 'トラックバック (%d件)',
@@ -215,7 +215,7 @@ $LANG01 = array(
     'privacy_policy' => 'プライバシーポリシー',
     'about_cookies' => 'クッキーについて',
     'parse_php_error' => 'PHPをパース中にエラーが発生しました: %s',
-	'error_title' => 'An Error Occurred'
+    'error_title' => 'An Error Occurred'
 );
 
 ###############################################################################
@@ -282,7 +282,7 @@ $LANG03 = array(
     'comments_closed_msg' => 'コメントの新規受付は終了しています。',
     'read_comment' => 'すべてのコメントを読む',
     'comment_for' => '上記のコメントは次のアイテムのものです',
-	'comment_page_title' => 'Comments for %s'
+    'comment_page_title' => 'Comments for %s'
 );
 
 ###############################################################################
@@ -329,22 +329,11 @@ $LANG04 = array(
     37 => 'あなたのコメントに使用します。',
     38 => 'あなたの紹介文です。公開します。',
     39 => 'あなたの公開PGP鍵',
-//    40 => '話題アイコンを表示しない',
-//    41 => '修正を受け入れる',
     42 => '日時のフォーマット',
     43 => '記事の表示最大数',
-//    44 => 'ブロックを表示しない',
-//    45 => '表示設定',
-//    46 => '次のアイテムを除外',
-//    47 => 'ニュースボックスの設定',
     48 => '話題',
-//    49 => '記事に話題アイコンを表示しない',
-//    50 => '興味がなければチェックをはずしてください',
-//    51 => 'メインコンテンツだけを表示する',
     52 => 'デフォルト:',
     53 => 'その日の記事を毎晩メールで受け取る。',
-//    54 => '読みたくない投稿者名と話題をチェックしてください。',
-//    55 => 'すべてのチェックをはずした場合は、デフォルトを選択したことになります。1つでもチェックすると、このデフォルトの選択は関係なくなりますので、読みたいものを全部チェックするようにしてください。 デフォルトの話題は強調表示しています。',
     56 => '投稿者',
     57 => '表示モード',
     58 => '並べ替えの順序',
@@ -379,7 +368,7 @@ $LANG04 = array(
     86 => 'すべての投稿を検索:',
     87 => 'あなたのログイン名',
     88 => "Someone (possibly you) has requested a new password for your account \"%s\" on {$_CONF['site_name']}, {$_CONF['site_url']}.",
-	'user_password_action_msg' => "If you really want this action to be taken, please click on the following link:",
+    'user_password_action_msg' => 'If you really want this action to be taken, please click on the following link:',
     89 => "パスワードを変えたくない場合はこのメッセージを無視してください。\n(パスワードは変わりません。)",
     90 => '新しいパスワードを入力して「再設定」ボタンを押してください。',
     91 => '再設定',
@@ -408,8 +397,8 @@ $LANG04 = array(
     115 => 'アカウントが無効になりましたのでログインできません。管理者に連絡してください。',
     116 => 'アカウントが有効になるのを待機しています',
     117 => 'あなたのアカウントは管理者が有効にするのを待っています。管理者が承認するまでログインできません。',
-    118 => "{$_CONF['site_name']} のあなたのアカウントを有効にしました。以下のリンクから、あなたのユーザー名(<username>)とメールで送られてきたパスワードでログインできます。",
-    119 => 'パスワードを紛失した場合、以下のリンクから新しいパスワードを再設定できます。',
+    118 => '',
+    119 => '',
     120 => 'アカウントを有効にしました。',
     121 => 'サービス',
     122 => 'ユーザーの新規登録はただ今停止中です。',
@@ -426,22 +415,17 @@ $LANG04 = array(
     133 => 'コメントを表示',
     134 => 'コメントオプション',
     135 => '<li>表示モードのデフォルトを設定してください。</li><li>コメントを表示する際の並べ替えの順序のデフォルトを設定してください。</li><li>表示するコメントの最大数を設定してください。デフォルトは100件です。</li>',
-//    136 => '話題と投稿者の除外',
-//    137 => '記事のフィルタリング',
     138 => 'その他の設定',
     139 => 'レイアウトと言語',
     140 => '<li>1ページに表示する記事の最大数を設定してください。</li><li>テーマと好みの日時のフォーマットを設定してください。</li>',
     141 => 'プライバシーの設定',
     142 => 'デフォルトでは、他のユーザーや管理者があなたにメールを送ることができ、オンラインかどうかを表示するようになっています。プライバシーを保護するには、対応するオプションのチェックを外してください。',
-//    143 => 'ブロックのフィルタリング',
-//    144 => 'ボックスの表示の設定',
     145 => '公開プロフィール',
     146 => 'パスワードとメールアドレス',
     147 => 'パスワード、メールアドレス、自動ログイン機能を編集します。パスワードとメールアドレスは確認のため、2回入力する必要があります。',
     148 => '個人情報',
     149 => '他のユーザーに表示する個人情報を編集します。<ul><li>「署名」はコメントや掲示板の投稿に付加します。自動タグを使うことができます。</li><li>「自己紹介」は他のユーザーにも読める短い自己紹介です。自動タグを使うことができます。</li><li>「PGP公開鍵」を共有しましょう。</li></ul>',
     150 => '',
-//    151 => 'ブロック',
     156 => 'アカウントを削除',
     157 => 'アカウントの削除オプション',
     158 => 'タイムゾーン',
@@ -460,8 +444,8 @@ $LANG04 = array(
     'user_login' => 'ユーザーログイン',
     'user_login_message' => 'ログインしてください。ユーザー名とパスワードの両方を入力してください。',
     'user_remote_login_desc_long' => 'Click on one of the button(s) below to login and/or register via an account you have on another supported remote service. Please note, you must have an account on the remote service. If you are creating a new account on this website, then the remote service may ask you to give this website permissions to access information like your name, email address, and profile photo.',
-	'remote_register_instructions' => "<strong>Please note:</strong> To register and create an account via Remote Login, please visit the <a href=\"{$_CONF['site_url']}/users.php\" rel=\"nofollow\">User Login</a>.",
-	'user_logged_in_message' => "すでにログインしています。<a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">ログアウト</a>しますか?",
+    'remote_register_instructions' => "<strong>Please note:</strong> To register and create an account via Remote Login, please visit the <a href=\"{$_CONF['site_url']}/users.php\" rel=\"nofollow\">User Login</a>.",
+    'user_logged_in_message' => "すでにログインしています。<a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">ログアウト</a>しますか?",
     'user_max_login_attempts' => 'ログインの試行回数の上限を超えました、',
     'tfa_two_factor_auth' => '2段階認証',
     'tfa_help1' => '2段階認証を有効にする前に、Google認証システムのアプリケーションをモバイル端末にインストールしてください。',
@@ -487,8 +471,8 @@ $LANG04 = array(
     'enter_new_email' => 'メールアドレスの入力',
     'desc_new_email_status' => 'アカウントのメールアドレスを入力する必要があります。以下にアカウントのメールアドレスを入力してください。<em>メールアドレスが更新され、検証されるまで、あなたのアカウントは使用できません。</em>',
     'email_msg_email_status_1' => "{$_CONF['site_name']}<{$_CONF['site_url']}> のアカウント \"%s\" のメールアドレスは更新されました。",
-	'email_msg_verify' => "このメールアドレスを検証するため、次のリンクをクリックしてください:",
-    'email_msg_email_status_2' => "このメールアドレスを検証せずにアカウントへログインすると、新しいメールアドレスの入力と検証のプロセスが再度必要になります。",
+    'email_msg_verify' => 'このメールアドレスを検証するため、次のリンクをクリックしてください:',
+    'email_msg_email_status_2' => 'このメールアドレスを検証せずにアカウントへログインすると、新しいメールアドレスの入力と検証のプロセスが再度必要になります。',
     'email_verify' => '検証対象のメールアドレス',
     'email_verify_delete' => '検証対象のメールアドレスを削除',
     'email_verify_msg' => "あなたのアカウントのメールアドレスは更新されていますが、検証が必要です。{$_CONF['site_name']}から送信された検証用のリンクを含むメールを確認してください。あなたがそのリンクをクリックし、メールアドレスが検証されると、アカウントが有効になります。<br" . XHTML . "><br" . XHTML . ">あなたの希望により、上の入力欄でメールアドレスを更新するか、削除することができます。",
@@ -557,7 +541,7 @@ $LANG08 = array(
     26 => 'このフォームでメールを送ります。',
     27 => 'メッセージ',
     28 => '%s さんからのメッセージ: ',
-	29 => "This is the daily digest from {$_CONF['site_name']} for %s. Listed below are the latest published articles since the last time this email was sent.",
+    29 => "This is the daily digest from {$_CONF['site_name']} for %s. Listed below are the latest published articles since the last time this email was sent.",
     30 => ' 今日のニュースレターです。宛先: ',
     31 => 'タイトル',
     32 => '日付',
@@ -573,8 +557,8 @@ $LANG08 = array(
     42 => 'このユーザーのメールアドレスは存在しません。おそらくOAuthユーザーのアカウントでしょう。',
     43 => 'このユーザーのメールアドレスは無効です。',
     44 => 'このユーザーのステータスは、「アクティブ」または「新しいパスワード」以外に設定されているため、メールアドレスは無効とみなされます。',
-    45 => '',
-	46 => "To unsubscribe from the Daily Digest, login to {$_CONF['site_name']} at {$_CONF['site_url']}. Then visit the user settings page at {$_CONF['site_url']}/usersettings.php and view the Content Tab. You can then unsubscribe to the Daily Digest by deselecting all topics and saving your profile."
+    45 => "This is a message sent from {$_CONF['site_name']} by %s. Any replies will need to be sent to the email address: %s",
+    46 => "To unsubscribe from the Daily Digest, login to {$_CONF['site_name']} at {$_CONF['site_url']}. Then visit the user settings page at {$_CONF['site_url']}/usersettings.php and view the Content Tab. You can then unsubscribe to the Daily Digest by deselecting all topics and saving your profile."
 );
 
 ###############################################################################
@@ -787,13 +771,13 @@ $LANG_LIKES = array(
     'likes_speedlimit' => 'あなたは %s 秒前にお気に入りを投票しました。このサイトでは次にお気に入りの記事を投票する前に少なくとも %s 秒待つ必要があります。',
     'likes_ip_error' => 'あなたのIPアドレスから既にお気に入りは投票されています。',
     'likes_uid_error' => 'あなたのアカウントを用いて既にお気に入りは投票されています。',
-    'own_item_error' => '自分自身のアイテムに対してはお気に入りは実行できません。', 
-	'liked_by' 			=> 'Liked by:',
-	'disliked_by' 		=> 'Disliked by:',
-	'num_anon_users' 	=> '<br>%s Anonymous Users',
-	'one_anon_users' 	=> '<br>1 Anonymous User',
-	'num_more_users' 	=> '<br>+%s more Users',
-	'username_in_likes_list' => '<br>%s'
+    'own_item_error' => '自分自身のアイテムに対してはお気に入りは実行できません。',
+    'liked_by' => 'Liked by:',
+    'disliked_by' => 'Disliked by:',
+    'num_anon_users' => '<br' . XHTML . '>%s Anonymous Users',
+    'one_anon_users' => '<br' . XHTML . '>1 Anonymous User',
+    'num_more_users' => '<br' . XHTML . '>+%s more Users',
+    'username_in_likes_list' => '<br' . XHTML . '>%s'
 );
 
 ###############################################################################
@@ -885,7 +869,7 @@ $LANG_ENVCHECK = array(
     'view_online' => 'オンライン表示はここ %s をクリック',
     'no_new_items' => '新アイテムはありません',
     'max_execution_time' => 'Geeklogは最少値として30秒を要求していますが、プラグインアップロードなどを行う場合、サーバー環境によってはそれ以上を要求します。php.iniで<b>max_execution_time</b> を増やすことで対応できます。',
-    'phpinfo_disabled'   => '現在のPHPの設定を見るには、ホスティング会社に連絡してphpinfo()関数を有効にする必要があります。'
+    'phpinfo_disabled' => '現在のPHPの設定を見るには、ホスティング会社に連絡してphpinfo()関数を有効にする必要があります。'
 );
 
 ###############################################################################
@@ -1373,7 +1357,7 @@ $LANG31 = array(
     17 => "<a href={$_CONF['site_admin_url']}/mail.php>別のメッセージを送る</a>",
     18 => '送信先',
     19 => '補足: 登録者全員に送信するには、送信先のドロップダウンメニューから「Logged-in Users」を選択してください。',
-	20 => "<p><successcount> messages was sent successfully and <failcount> messages failed to send.</p><p>The details of the message attempts are below:</p>",
+    20 => '<p><successcount> messages was sent successfully and <failcount> messages failed to send.</p><p>The details of the message attempts are below:</p>',
     21 => '送信に失敗',
     22 => '送信に成功',
     23 => '失敗した送信先はありません',
@@ -1381,13 +1365,13 @@ $LANG31 = array(
     25 => '-- グループを選択 --',
     26 => 'すべてのフィールドに入力してください。また、グループはドロップダウンメニューから選択してください。',
     27 => '次のテンプレート変数が<strong>件名</strong>と<strong>内容</strong>で使用できます: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}',
-	'email_divider' => '------------------------------------------------------------',
-	'email_divider_html' => '<hr>',
-	'sig_divider' => '---',
-	'sig_divider_html' => '---<br' . XHTML . '>',	
+    'email_divider' => '------------------------------------------------------------',
+    'email_divider_html' => '<hr' . XHTML . '>',
+    'sig_divider' => '---',
+    'sig_divider_html' => '---<br' . XHTML . '>',
     'email_footer_msg_noreply' => 'The address used to send this email is not monitored. Please do not reply to this email.',
-	'email_footer_msg_content' => 'If content from the website is displayed in this email, there may be layout changes which result in formatting issues.',
-	'ip_address_email' => 'IP address that initiated email:'
+    'email_footer_msg_content' => 'If content from the website is displayed in this email, there may be layout changes which result in formatting issues.',
+    'ip_address_email' => 'IP address that initiated email:'
 );
 
 ###############################################################################
@@ -1404,11 +1388,11 @@ $LANG32 = array(
     8 => 'プラグインの互換性チェックに失敗しました。',
     9 => 'このプラグインはより新しいバージョンのGeeklogに対応しています。<a href="https://www.geeklog.jp">Geeklog</a>をアップグレードしてください。(訳註: または、Geeklogに対応しているバージョンのプラグインを入手してください。)',
     10 => '<br' . XHTML . '><strong>インストールしているプラグインはありません。</strong><br' . XHTML . '><br' . XHTML . '>',
-	11 => 'Click on the info icon below in the <b>Installed Plugins</b> list to show the plugin details including the authors\'s website. In the list, the plugin load order can be changed along with enabling or disabling it. The plugin can also be uninstalled which will remove all of its data from the database. If new files have been updated for the plugin but it yet has to be updated in the database, then this will be shown under the Plugin Version column along with the option to update it. Both the current installed version and the version returned from the plugin\'s code are shown.<br><br>In the <b>Uninstalled Plugins</b> list you can install plugins that have been uploaded (if you have install permissions) and delete the files of uninstalled plugins (if you have upload permissions). Please note that deleting the files of a plugin will delete directories and files it has under its default plugin folders found in the Plugins, Public HTML, and the Admin directories only. Any files that the plugin has outside these default directories will not be deleted (and will have to be done manually).',
+    11 => 'Click on the info icon below in the <b>Installed Plugins</b> list to show the plugin details including the authors\'s website. In the list, the plugin load order can be changed along with enabling or disabling it. The plugin can also be uninstalled which will remove all of its data from the database. If new files have been updated for the plugin but it yet has to be updated in the database, then this will be shown under the Plugin Version column along with the option to update it. Both the current installed version and the version returned from the plugin\'s code are shown.<br' . XHTML . '><br' . XHTML . '>In the <b>Uninstalled Plugins</b> list you can install plugins that have been uploaded (if you have install permissions) and delete the files of uninstalled plugins (if you have upload permissions). Please note that deleting the files of a plugin will delete directories and files it has under its default plugin folders found in the Plugins, Public HTML, and the Admin directories only. Any files that the plugin has outside these default directories will not be deleted (and will have to be done manually).',
     12 => 'plugineditor()にプラグイン名が渡されませんでした',
     13 => 'プラグイン情報センター',
     14 => 'インストールしていないプラグイン',
-	'installed_plugins' => 'Installed Plugins',
+    'installed_plugins' => 'Installed Plugins',
     15 => '管理画面',
     16 => 'プラグイン名',
     17 => 'プラグインのバージョン',
@@ -1464,8 +1448,8 @@ $LANG32 = array(
     67 => 'ディレクトリ "%s" は書き込みできません。',
     68 => 'あなたにはプラグインをインストールする権限はありません。',
     69 => 'あなたにはプラグインをアップロードする権限はありません。',
-	'delete' => 'Delete',
-	'delete_plugin' => 'Delete Plugin and all of its files?',
+    'delete' => 'Delete',
+    'delete_plugin' => 'Delete Plugin and all of its files?',
     'click_to_delete_msg' => 'Click to Delete this Plugin files',
     'really_delete_msg' => 'Really Delete %s Plugin files?',
     99 => '不明なエラーが発生しました。',
@@ -1618,7 +1602,7 @@ $MESSAGE = array(
     28 => 'プラグインを保存しました',
     29 => 'あなたはこの管理ページにアクセスできません。権限のない機能へのアクセスはすべて記録しています。',
     30 => 'アクセスできません',
-    31 => "Sorry, This feature is not supported by the {$_DB_dbms} database server this website is using.  Please note that all attempts to access unsupported features are logged.",
+    31 => 'Sorry, This feature is not supported by the  database server this website is using.  Please note that all attempts to access unsupported features are logged.',
     32 => '',
     33 => '',
     34 => '',
@@ -1715,7 +1699,7 @@ $MESSAGE = array(
     151 => 'インストール時に使用したファイルとディレクトリを削除しようとしましたが、一部を削除できませんでした。お手数ですが、手動で削除してください。',
     152 => 'インストール時に使用したすべてのファイルとディレクトリはそのまま残っています。このまま残しておくのは危険なので、お手数ですが、手動で削除してください。',
     153 => 'あなたは %1$d 秒前に友だちに記事を送信しています。次に送信する前に %2$d 秒以上あけてください。',
-	160 => 'プラグインのファイルを削除しました。',
+    160 => 'プラグインのファイルを削除しました。',
     161 => '圧縮ファイルの中に不適切なファイル名を持つファイルが含まれています。',
     400 => '検証に通っていない必須のフィールドがあります。',
     401 => '氏名を入力してください。',
@@ -1805,11 +1789,11 @@ $LANG_ACCESS = array(
 $LANG_DB_BACKUP = array(
     'database_admin' => 'データベース管理',
     'last_ten_backups' => 'バックアップしたファイル',
-	'site_db_backup' => "{$_CONF['site_name']} Database Backup",
+    'site_db_backup' => "{$_CONF['site_name']} Database Backup",
     'create_backup' => 'データベースのバックアップ',
     'do_backup' => 'バックアップの実行',
     'backup_successful' => 'データベースのバックアップを完了しました。',
-	'backup_error'   	  => 'Error performing database backup.',	
+    'backup_error' => 'Error performing database backup.',
     'db_explanation' => 'サイトのデータベースのバックアップを新しく作成するには「バックアップの実行」をクリックしてください。バックアップファイルをダウンロードするには、下記の一覧でファイル名をクリックしてください。',
     'backup_instructions' => 'サイトのデータベースのバックアップを新しく作成するには下の「バックアップの実行」を選択してください。現在のGeeklogテーブルをバックアップします。データベース管理画面からバックアップしたファイルをダウンロードすることができます。',
     'zero_size' => 'バックアップ失敗: ファイルの大きさが0バイトです。',
@@ -1861,7 +1845,7 @@ $LANG_DB_BACKUP = array(
     'use_gzip' => '可能なら圧縮する(GZip)',
     'configure' => 'コンフィギュレーション',
     'config_instructions' => 'バックアップしたくないテーブルを選択してください。その他のオプションはコンフィギュレーションのGeeklog - データベースタブにあります。',
-	'config_successful'   => 'Tables to Backup list was saved successfully.'
+    'config_successful' => 'Tables to Backup list was saved successfully.'
 );
 
 ###############################################################################
@@ -2068,21 +2052,6 @@ $LANG_MONTH = array(
     12 => '12月'
 );
 
-$LANG_MONTH_SHORT = array(
-    1 => ' 1月',
-    2 => ' 2月',
-    3 => ' 3月',
-    4 => ' 4月',
-    5 => ' 5月',
-    6 => ' 6月',
-    7 => ' 7月',
-    8 => ' 8月',
-    9 => ' 9月',
-    10 => '10月',
-    11 => '11月',
-    12 => '12月'
-);
-
 ###############################################################################
 # Weekdays
 
@@ -2094,30 +2063,6 @@ $LANG_WEEK = array(
     5 => '木曜日',
     6 => '金曜日',
     7 => '土曜日'
-);
-
-$LANG_WEEK_SHORT = array(
-    1 => '日',
-    2 => '月',
-    3 => '火',
-    4 => '水',
-    5 => '木',
-    6 => '金',
-    7 => '土'
-);
-
-###############################################################################
-# AM/PM
-
-$LANG_AMPM = array(
-    'am_pm' => array(
-        'am' => 'am',
-        'pm' => 'pm',
-    ),
-    'AM_PM' => array(
-        'am' => 'AM',
-        'pm' => 'PM',
-    ),
 );
 
 ###############################################################################
@@ -2510,7 +2455,7 @@ $LANG_confignames['Core'] = array(
     'likes_articles' => '記事のLikes',
     'likes_comments' => 'コメントのLikes',
     'likes_speedlimit' => 'Likesの実行制限間隔(秒)',
-	'likes_users_listed' => 'User Listed',
+    'likes_users_listed' => 'User Listed',
     'passwordspeedlimit' => 'パスワードの取得制限間隔',
     'login_attempts' => 'ログイン試行最大回数',
     'login_speedlimit' => 'ログイン試行制限間隔',
@@ -2772,7 +2717,7 @@ $LANG_VALIDATION = array(
     'default' => 'このフィールドは許可していない値を含んでいます',
     'notEmpty' => 'このフィールドの入力は必須です',
     'alphaNumeric' => 'このフィールドは半角英数です。',
-	'alphaNumericOrEmpty' => 'This field must be alpha numeric or empty',
+    'alphaNumericOrEmpty' => 'This field must be alpha numeric or empty',
     'between' => 'このフィールドは特定の範囲内の値を入れなければなりません',
     'blank' => 'このフィールドは空でなければなりません',
     'comparison' => 'このフィールドは比較操作に適合していません',
@@ -2816,3 +2761,4 @@ $LANG_VALIDATION = array(
     'config_setting_lang_array' => 'それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください',
     'config_setting_lang_array_element_req' => '少なくとも1つキーを指定してください。それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください'
 );
+

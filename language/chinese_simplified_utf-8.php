@@ -50,8 +50,8 @@ $LANG01 = array(
     2 => '读整文',
     3 => '个评论',
     4 => '编辑',
-    5 => '',
-    6 => '',
+    5 => 'Contributed by: %s on %s',
+    6 => 'Last modified on %s',
     7 => '',
     8 => '',
     9 => '管理者功能︰',
@@ -208,7 +208,8 @@ $LANG01 = array(
     'terms_of_service' => 'Terms of Service',
     'privacy_policy' => 'Privacy Policy',
     'about_cookies' => 'About Cookies',
-    'parse_php_error' => 'There was an error parsing your PHP code: %s'
+    'parse_php_error' => 'There was an error parsing your PHP code: %s',
+    'error_title' => 'An Error Occurred'
 );
 
 ###############################################################################
@@ -274,7 +275,8 @@ $LANG03 = array(
     'anon_user_name' => '%s (Anonymous User)',
     'comments_closed_msg' => 'Comments are closed and no new posts are allowed.',
     'read_comment' => 'Read the full comment at',
-    'comment_for' => 'The above comment is for the following item'
+    'comment_for' => 'The above comment is for the following item',
+    'comment_page_title' => 'Comments for %s'
 );
 
 ###############################################################################
@@ -321,22 +323,11 @@ $LANG04 = array(
     37 => '将会附加在你发表的评论上',
     38 => '你的简介',
     39 => '你的公共 PGP 钥匙',
-    40 => '没有主题图示',
-    41 => '愿意主持',
     42 => '日期格式',
     43 => '文章限度',
-    44 => '没有组件',
-    45 => '显示设定',
-    46 => '不包括的',
-    47 => '新组件配置为',
     48 => '主题',
-    49 => '文章里没有图像',
-    50 => '不要打钩如果你不感兴趣',
-    51 => '只是新文章',
     52 => '预设值的是',
     53 => '每晚接收当日的文章',
-    54 => '打钩如果你不看这些主题或作者。',
-    55 => '如果你没有选择，这意味你要用预设的组件。如果你选择组件，所有预设的箱将被忽略。预设的东西会用粗笔画显示。',
     56 => '作者',
     57 => '显示方式',
     58 => '排序方式',
@@ -371,6 +362,7 @@ $LANG04 = array(
     86 => '寻找所有发表过的文章︰',
     87 => '你的登入名',
     88 => "有人(也许是你)要了新密码 \"%s\" 于 {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\n若你真的要这样作, 请你点击以下联结:\n\n",
+    'user_password_action_msg' => 'If you really want this action to be taken, please click on the following link:',
     89 => "你若不想要这样作, 请忽视这信息。这项事就将会被抛弃，而你的密码就保持原有.\n\n",
     90 => '你可在下面输入一个新的密码。请注意你的旧密码任然有效直到你将此表提交。',
     91 => '设定新密码',
@@ -399,8 +391,8 @@ $LANG04 = array(
     115 => '你的账户已被中止, 你不能继续登入. 请跟管理员联络.',
     116 => '等待启动的账户',
     117 => '你的账户现在等待管理员的启动. 在账户未批准以前, 你还不能登入.',
-    118 => "你的 {$_CONF['site_name']} 账户已被启动. 你可通过以下的url 用先前以电信寄给你的用户名 (<username>) 和密码来登入.",
-    119 => '你若已忘记了你的密码你可通过此 url 来要求一个新密码',
+    118 => '',
+    119 => '',
     120 => '帐户已被启动',
     121 => '服务',
     122 => '对不起, 目前禁止新用户登记',
@@ -417,26 +409,20 @@ $LANG04 = array(
     133 => '评论显示',
     134 => '评论选项',
     135 => '<li>显示评论的默认模式</li><li>显示评论的默认次序</li><li>设定显示评论的极大数字 – 默认数字是 100</li>',
-    136 => '排除标题和作者',
-    137 => '过滤文章内容',
     138 => '其他设定',
     139 => '版面和语言',
     140 => '<li>不要标题的图标：勾此处就不会显示标题的图标</li><li>不要组件：勾了此处就不会显示组件，只会显示管理菜单，用户菜单，和主题菜单<li>设定每页显示的极大文章数字</li><li>设定你的版面主题和喜欢的日期格式</li>',
     141 => '隐私设定',
     142 => '默认设定的是让用户和管理员们彼此可用电信交通而显示你的在线状态。取消这设定可保护你的隐私权.',
-    143 => '过滤组件内容',
-    144 => '显示或隐藏组件',
     145 => '你的公开简介',
     146 => '密码和电信',
     147 => '修改你的用户密码，电信，和自动登入作用。你需要输入你的密码或电信地址两次来避免错误。',
     148 => '用户信息',
     149 => '修改要显示给其他用户的你的用户信息.<li>你的签名会显示在你的评论或论坛标语的下面</li><li>个人简历是用来分享你自己的简介</li><li>分享你得 PGP 钥匙</li>',
     150 => '',
-    151 => 'Blocks',
     156 => '删除用户',
     157 => '删除选项',
     158 => '时区',
-    159 => '这电邮是自动产生的。请不要回信。',
     160 => '(max. %d x %d pixels, %d bytes; %s)',
     161 => 'will be scaled down',
     162 => 'will not be scaled',
@@ -451,6 +437,8 @@ $LANG04 = array(
     171 => 'Post mode for "Signature" and "Bio".',
     'user_login' => 'User Login',
     'user_login_message' => 'Please login below. You must enter both a username and password.',
+    'user_remote_login_desc_long' => 'Click on one of the button(s) below to login and/or register via an account you have on another supported remote service. Please note, you must have an account on the remote service. If you are creating a new account on this website, then the remote service may ask you to give this website permissions to access information like your name, email address, and profile photo.',
+    'remote_register_instructions' => "<strong>Please note:</strong> To register and create an account via Remote Login, please visit the <a href=\"{$_CONF['site_url']}/users.php\" rel=\"nofollow\">User Login</a>.",
     'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?",
     'user_max_login_attempts' => 'Max Login Attempts and Speed Limit Reached',
     'tfa_two_factor_auth' => 'Two Factor Authentication',
@@ -477,12 +465,14 @@ $LANG04 = array(
     'enter_new_email' => 'Enter New Email',
     'desc_new_email_status' => 'You are required to enter a new email address for your account. You can enter a new email for your account below. <em>Please note you will not be able to do anything with your account until your email is updated and verified.</em>',
     'email_msg_email_status_1' => "You have updated your email address for your account \"%s\" on {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nPlease click on the following link to verify this email address:\n\n",
+    'email_msg_verify' => 'Please click on the following link to verify this email address:',
     'email_msg_email_status_2' => "If you do not verify this email address and you log into your account you will be required to enter a new email address and go through this email verification process again.\n\n",
     'email_verify' => 'New Email to be Verified',
     'email_verify_delete' => 'Delete email to be verified',
     'email_verify_msg' => "You have previously updated your email address for your account but it still needs to be verified. Please check your email account for an email from {$_CONF['site_name']} that contains a verification link. Once you click on that link your new email address will be verified and your account will be updated to use it.<br" . XHTML . "><br" . XHTML . ">If you wish you may update the new email to be verified with the email fields above or you can delete it.",
     'remove_account_msg' => 'To remove your account from our database, enter your current password into the above "Current Password", check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
-    'remove_remote_account_msg' => 'To remove your remote account from our database, check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".'
+    'remove_remote_account_msg' => 'To remove your remote account from our database, check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
+    'theme_info' => '%1$s %2$s (requires Geeklog %3$s)'
 );
 
 ###############################################################################
@@ -560,7 +550,9 @@ $LANG08 = array(
     41 => 'This user doesn\'t exist.',
     42 => 'This users email address doesn\'t exist. This most likely means is is an OAuth user account.',
     43 => 'This users email address is invalid.',
-    44 => 'This users status is set to something other than Active or New Password therefore the email address is assumed bad.'
+    44 => 'This users status is set to something other than Active or New Password therefore the email address is assumed bad.',
+    45 => "This is a message sent from {$_CONF['site_name']} by %s. Any replies will need to be sent to the email address: %s",
+    46 => "To unsubscribe from the Daily Digest, login to {$_CONF['site_name']} at {$_CONF['site_url']}. Then visit the user settings page at {$_CONF['site_url']}/usersettings.php and view the Content Tab. You can then unsubscribe to the Daily Digest by deselecting all topics and saving your profile."
 );
 
 ###############################################################################
@@ -650,8 +642,8 @@ $LANG10 = array(
     1 => '本站统计数据',
     2 => '系统点击总数',
     3 => '文章(评论)总数',
-    4 => '',
-    5 => '',
+    4 => 'Site Statistic',
+    5 => "Overall Site Statistics for {$_CONF['site_name']}",
     6 => '',
     7 => '采样数最高的十个文章',
     8 => '文章标题',
@@ -773,7 +765,13 @@ $LANG_LIKES = array(
     'likes_speedlimit' => 'You last used the Likes system on an item %s seconds ago. This site requires at least %s seconds between using the Likes system',
     'likes_ip_error' => 'Your IP address has already performed this Likes action.',
     'likes_uid_error' => 'Your User account has already performed this Likes action.',
-    'own_item_error' => 'Either you own the item or do not have permission to Like/Dislike it.'
+    'own_item_error' => 'Either you own the item or do not have permission to Like/Dislike it.',
+    'liked_by' => 'Liked by:',
+    'disliked_by' => 'Disliked by:',
+    'num_anon_users' => '<br' . XHTML . '>%s Anonymous Users',
+    'one_anon_users' => '<br' . XHTML . '>1 Anonymous User',
+    'num_more_users' => '<br' . XHTML . '>+%s more Users',
+    'username_in_likes_list' => '<br' . XHTML . '>%s'
 );
 
 ###############################################################################
@@ -864,7 +862,8 @@ $LANG_ENVCHECK = array(
     'showhide_phpinfo' => 'Show/Hide Full PHP Info',
     'view_online' => 'Click here %s to view online',
     'no_new_items' => 'No New Items',
-    'max_execution_time' => 'Geeklog recommends the PHP default value of 30 seconds as a minimum, but plugin uploads and other operations may take longer than this depending upon your hosting environment.  If safe_mode (above) is Off, you may be able to increase this by modifying the value of <b>max_execution_time</b> in your php.ini file.'
+    'max_execution_time' => 'Geeklog recommends the PHP default value of 30 seconds as a minimum, but plugin uploads and other operations may take longer than this depending upon your hosting environment.  If safe_mode (above) is Off, you may be able to increase this by modifying the value of <b>max_execution_time</b> in your php.ini file.',
+    'phpinfo_disabled' => 'In order to view the current php settings, you will have to contact your host and enable access to the phpinfo() function.'
 );
 
 ###############################################################################
@@ -1359,7 +1358,14 @@ $LANG31 = array(
     24 => '全部失败',
     25 => '-- 请选小组 --',
     26 => '请填写所有表格上的栏位和选择一个小组。',
-    27 => 'The following template variables are available in <strong>Subject</strong> and <strong>Message</strong>: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}'
+    27 => 'The following template variables are available in <strong>Subject</strong> and <strong>Message</strong>: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}',
+    'email_divider' => '------------------------------------------------------------',
+    'email_divider_html' => '<hr' . XHTML . '>',
+    'sig_divider' => '---',
+    'sig_divider_html' => '---<br' . XHTML . '>',
+    'email_footer_msg_noreply' => 'The address used to send this email is not monitored. Please do not reply to this email.',
+    'email_footer_msg_content' => 'If content from the website is displayed in this email, there may be layout changes which result in formatting issues.',
+    'ip_address_email' => 'IP address that initiated email:'
 );
 
 ###############################################################################
@@ -1380,6 +1386,7 @@ $LANG32 = array(
     12 => 'plugineditor() 找不到插件名',
     13 => '插件编辑器',
     14 => '新插件',
+    'installed_plugins' => 'Installed Plugins',
     15 => '管理员首页',
     16 => '插件名字',
     17 => '插件版本',
@@ -1435,6 +1442,10 @@ $LANG32 = array(
     67 => 'The directory "%s" is not writable.',
     68 => 'You do not have the required permissions to install plugins.',
     69 => 'You do not have the required permissions to upload plugins.',
+    'delete' => 'Delete',
+    'delete_plugin' => 'Delete Plugin and all of its files?',
+    'click_to_delete_msg' => 'Click to Delete this Plugin files',
+    'really_delete_msg' => 'Really Delete %s Plugin files?',
     99 => 'An unknown error occurred',
     100 => 'Ok.',
     101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
@@ -1585,7 +1596,7 @@ $MESSAGE = array(
     28 => '插件已被保存了。',
     29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged',
     30 => '存取被拒绝',
-    31 => '',
+    31 => 'Sorry, This feature is not supported by the  database server this website is using.  Please note that all attempts to access unsupported features are logged.',
     32 => '',
     33 => '',
     34 => '',
@@ -1682,6 +1693,8 @@ $MESSAGE = array(
     151 => 'Failed to delete some files and directories used during the installation.  Please remove them manually.',
     152 => 'All the files and directories used during the installation are left as they are.  It is dangerous to keep them on the server, so please don\'t forget to remove them manually.',
     153 => 'You last emailed an article %1$d seconds ago.  This site requires at least %2$d seconds between emailing articles.',
+    160 => 'The plugin files was successfully deleted.',
+    161 => 'The archive includes a file whose name includes an unsafe character.',
     400 => 'Not all required fields have been passed validation',
     401 => 'Please enter Fullname',
     500 => 'The Template Cache has been successfully cleared.',
@@ -1770,9 +1783,11 @@ $LANG_ACCESS = array(
 $LANG_DB_BACKUP = array(
     'database_admin' => 'Database Administration',
     'last_ten_backups' => '最後十个备份',
+    'site_db_backup' => "{$_CONF['site_name']} Database Backup",
     'create_backup' => 'Backup Database',
     'do_backup' => '做备份',
     'backup_successful' => '资料库备份完成。',
+    'backup_error' => 'Error performing database backup.',
     'db_explanation' => '要做新的志乐备份，点击以下的按钮',
     'backup_instructions' => 'To create a new backup of your site database, select the "Do Backup" button below. This will backup all current Geeklog tables. You can download a copy of the backup from the main Database Administration Screen.',
     'zero_size' => '备份失败︰档案是 0 大小',
@@ -1823,7 +1838,8 @@ $LANG_DB_BACKUP = array(
     'disable_purge' => '("0" to disable purging.)',
     'use_gzip' => 'Use GZip if available',
     'configure' => 'Configure',
-    'config_instructions' => 'Select any tables you wish to exclude from the backup. Other options can be found in the Geeklog Configuration under the Database tab.'
+    'config_instructions' => 'Select any tables you wish to exclude from the backup. Other options can be found in the Geeklog Configuration under the Database tab.',
+    'config_successful' => 'Tables to Backup list was saved successfully.'
 );
 
 ###############################################################################
@@ -2433,6 +2449,7 @@ $LANG_confignames['Core'] = array(
     'likes_articles' => 'Article Likes',
     'likes_comments' => 'Comment Likes',
     'likes_speedlimit' => 'Likes Speed Limit',
+    'likes_users_listed' => 'User Listed',
     'passwordspeedlimit' => '密码速度限定',
     'login_attempts' => '最多登入企图次数',
     'login_speedlimit' => '登入速度限定',
@@ -2523,7 +2540,8 @@ $LANG_confignames['Core'] = array(
     'cookie_consent' => 'Enable Cookie Consent',
     'terms_of_use_link' => 'Terms of Use Link',
     'privacy_policy_link' => 'Privacy Policy Link',
-    'about_cookies_link' => 'About Cookies Consent Link'
+    'about_cookies_link' => 'About Cookies Consent Link',
+    'ip_anonymization' => 'IP Anonymization'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2693,6 +2711,7 @@ $LANG_VALIDATION = array(
     'default' => 'This field contains an invalid value',
     'notEmpty' => 'This field cannot be empty',
     'alphaNumeric' => 'This field must be in alpha numeric',
+    'alphaNumericOrEmpty' => 'This field must be alpha numeric or empty',
     'between' => 'This field must be in specified range',
     'blank' => 'This field must be blank',
     'comparison' => 'This field does not match the comparison operation',

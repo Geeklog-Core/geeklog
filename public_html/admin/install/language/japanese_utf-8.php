@@ -210,7 +210,7 @@ $LANG_SUCCESS = array(
     25 => 'いいえ、後で自分で削除します。',
     26 => '注意: <code>public_html/siteconfig.php</code>内の設定でサイトを無効にしている場合、再び有効にするまではサイトを使用できません。',
     27 => 'すべてのプラグインを更新しました。',
-    28 => '更新できなかったプラグインを無効にしました。',
+    28 => '更新できなかったプラグインを無効にしました。'
 );
 
 // +---------------------------------------------------------------------------+
@@ -433,28 +433,8 @@ $LANG_HELP = array(
     'plugin_upload' => 'アップロードするプラグインの圧縮ファイル(.zip, .tar.gz, .tgzファーマット)を選んでインストールしてください。'
 );
 
-// which texts to use as labels, so they don't have to be translated again
-$LANG_LABEL = array(
-    'site_name'      => $LANG_INSTALL[32],
-    'site_slogan'    => $LANG_INSTALL[33],
-    'db_type'        => $LANG_INSTALL[34],
-    'db_host'        => $LANG_INSTALL[39],
-    'db_name'        => $LANG_INSTALL[40],
-    'db_user'        => $LANG_INSTALL[41],
-    'db_pass'        => $LANG_INSTALL[42],
-    'db_prefix'      => $LANG_INSTALL[43],
-    'site_url'       => $LANG_INSTALL[45],
-    'site_admin_url' => $LANG_INSTALL[47],
-    'site_mail'      => $LANG_INSTALL[48],
-    'noreply_mail'   => $LANG_INSTALL[49],
-    'utf8'           => $LANG_INSTALL[92],
-	'charactersets'  => $LANG_INSTALL[123],
-    'migrate_file'   => $LANG_MIGRATE[6],
-    'plugin_upload'  => $LANG_PLUGINS[10]
-);
-
 // +---------------------------------------------------------------------------+
-// Emergency Rescue Tool
+// rescue.php
 
 $LANG_RESCUE = array(
     0 => 'ログインに成功しました。',
@@ -503,4 +483,25 @@ $LANG_RESCUE = array(
     43 => 'Geeklogのroot/adminパスワードをリセットできます。',
     44 => 'パスワードをメールで送信する',
     45 => 'Geeklogのデータベースにコア情報がないため、Geeklogは未インストールまたはインストールが正常に完了していないようです。したがって、このレスキューツールを使用することはできません。'
+);
+
+
+// which texts to use as labels, so they don't have to be translated again
+$LANG_LABEL = array(
+    'site_name'      => $LANG_INSTALL[32],
+    'site_slogan'    => $LANG_INSTALL[33],
+    'db_type'        => $LANG_INSTALL[34],
+    'db_host'        => $LANG_INSTALL[39],
+    'db_name'        => $LANG_INSTALL[40],
+    'db_user'        => $LANG_INSTALL[41],
+    'db_pass'        => $LANG_INSTALL[42],
+    'db_prefix'      => $LANG_INSTALL[43],
+    'site_url'       => $LANG_INSTALL[45],
+    'site_admin_url' => $LANG_INSTALL[47],
+    'site_mail'      => $LANG_INSTALL[48],
+    'noreply_mail'   => $LANG_INSTALL[49],
+    'utf8'           => $LANG_INSTALL[92],
+	'charactersets'  => $LANG_INSTALL[123],
+    'migrate_file'   => $LANG_MIGRATE[6],
+    'plugin_upload'  => $LANG_PLUGINS[10]
 );
