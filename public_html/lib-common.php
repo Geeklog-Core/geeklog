@@ -7779,7 +7779,7 @@ function _getLanguageInfoFromURL()
         // $c->add('langurl_staticpages',array('staticpages', 'index.php', 'page'),'@hidden',7,31,1,1830,TRUE, 'Core', 31);
 
         // ***************************
-        // Addtional Notes for Debugging
+        // Additional Notes for Debugging
         // For some reason this function gets called 2 times on a page load for the default URLs and URL_Rewrite URLs. It gets called 3 times if URL_Routing is enabled.
         // Because of this after the first call to this function the $_SERVER['REQUEST_URI'] reverts back to the default URL for some unknown reason (I think it has to do with the URL Class)
         // So that is why with URL_Routing enabled we check it just the same way as the default url.

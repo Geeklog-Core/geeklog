@@ -1154,7 +1154,7 @@ function CALENDAR_sendNotification($table, $A)
 	
 	$mailSubject = $_CONF['site_name'] . ' ' . $LANG_CAL_2[43];
 	
-	COM_mail ($_CONF['site_mail'], $mailSubject, $message, '' , true);
+	COM_mail($_CONF['site_mail'], $mailSubject, $message, '' , true);
 }
 
 /**
