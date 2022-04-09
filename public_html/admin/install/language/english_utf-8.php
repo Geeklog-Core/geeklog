@@ -147,7 +147,6 @@ $LANG_INSTALL = array(
     89 => 'Current Version:',
     90 => 'Empty database?',
     91 => 'It appears that either your database is empty or the database credentials you entered are incorrect. Or maybe you wanted to perform a New Install (instead of an Upgrade)? Please go back and try again.',
-    92 => 'Use UTF-8',
     93 => 'SUCCESS',
     94 => 'Here are some hints to find the correct path:',
     95 => 'The complete path to this file (the install script) is:',
@@ -175,7 +174,6 @@ $LANG_INSTALL = array(
     117 => 'Cancel',
     118 => 'Change Language',
     119 => 'Copyright © 2020 <a href="https://www.geeklog.net/">Geeklog</a>',
-    120 => '(Make sure your current database collation supports UTF-8. See <a href="help.php#charactersets">Help for more information</a>.)',
     121 => 'Home',
     122 => 'Help',
     123 => 'Character Sets and Database Collations'
@@ -449,7 +447,6 @@ $LANG_LABEL = array(
     'site_admin_url' => $LANG_INSTALL[47],
     'site_mail'      => $LANG_INSTALL[48],
     'noreply_mail'   => $LANG_INSTALL[49],
-    'utf8'           => $LANG_INSTALL[92],
     'charactersets'  => $LANG_INSTALL[123],
     'migrate_file'   => $LANG_MIGRATE[6],
     'plugin_upload'  => $LANG_PLUGINS[10]

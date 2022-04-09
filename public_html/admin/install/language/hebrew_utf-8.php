@@ -136,7 +136,6 @@ $LANG_INSTALL = array(
     89 => 'גירסה נוכחית:',
     90 => 'מאגר מידע ריק?',
     91 => 'נראה שמאגר המידע שלכם ריק או שהגדרות ההזדהות שציינתם בשבילו אינן נכונות. או שאולי התכוונתם לבצע התקנה חדשה (ולא שידרוג)? אנא חיזרו ונסו שוב.',
-    92 => 'שימוש ב-UTF-8',
     93 => 'הצלחה',
     94 => 'הנה כמה טיפים למצוא את הנתיב הנכון:',
     95 => 'הנתיב המלא לקובץ זה (סקריפט ההתקנה) הוא:',
@@ -164,7 +163,6 @@ $LANG_INSTALL = array(
     117 => 'Cancel',
     118 => 'Change Language',
     119 => 'Copyright © 2020 <a href="https://www.geeklog.net/">Geeklog</a>',
-    120 => '(Make sure your current database collation supports UTF-8. See <a href="help.php#charactersets">Help for more information</a>.)',
     121 => 'Home',
     122 => 'Help',
     123 => 'Character Sets and Database Collations'
@@ -492,7 +490,6 @@ $LANG_LABEL = array(
     'site_admin_url' => $LANG_INSTALL[47],
     'site_mail'      => $LANG_INSTALL[48],
     'noreply_mail'   => $LANG_INSTALL[49],
-    'utf8'           => $LANG_INSTALL[92],
 	'charactersets'  => $LANG_INSTALL[123],
     'migrate_file'   => $LANG_MIGRATE[6],
     'plugin_upload'  => $LANG_PLUGINS[10]

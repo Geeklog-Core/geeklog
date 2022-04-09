@@ -81,12 +81,6 @@
         </div>
 
         {% if new_install %}
-        <div class="uk-margin">
-            <label class="uk-form-label" for="utf8">{{ LANG.INSTALL.92 }} {{ help_utf8 }}</label>
-            <div class="uk-form-controls uk-form-controls-text">
-                <input type="checkbox" id="utf8" name="utf8" {% if utf8 %} checked="checked" {% endif %} class="uk-checkbox"> <span>{{ LANG.INSTALL.120 }}</span>
-            </div>
-        </div>
         {% else %}
         <div class="uk-alert-warning" uk-alert>
             <p><span class="uk-label uk-label-warning">{{ LANG.INSTALL.59 }}</span> {{ LANG.INSTALL.116 }}</p>

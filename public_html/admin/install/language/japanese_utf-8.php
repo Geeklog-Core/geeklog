@@ -144,7 +144,6 @@ $LANG_INSTALL = array(
     89 => '現在のバージョン:',
     90 => 'データベースは空?',
     91 => 'データベースが空のままか、入力してデータベースの情報が不正確なようです。ひょっとすると、アップグレードではなく、新規インストールするつもりだったのではないでしょうか?　戻ってやり直してください。',
-    92 => 'UTF-8を使用する',
     93 => '成功',
     94 => 'パスのヒント:',
     95 => 'インストールスクリプトファイルへの完全なパスはこちらです:',
@@ -172,7 +171,6 @@ $LANG_INSTALL = array(
     117 => 'キャンセル',
     118 => '言語を選択する',
     119 => 'Copyright © 2020 <a href="https://www.geeklog.net/">Geeklog</a>',
-    120 => '(データベースがUTF-8の照合順序をサポートしていることを確認してください。<a href="help.php#charactersets">詳しくはこちら</a>をご覧ください。)',
     121 => 'ホーム',
     122 => 'ヘルプ',
     123 => '文字セットとデータベースの照合順序'
@@ -500,7 +498,6 @@ $LANG_LABEL = array(
     'site_admin_url' => $LANG_INSTALL[47],
     'site_mail'      => $LANG_INSTALL[48],
     'noreply_mail'   => $LANG_INSTALL[49],
-    'utf8'           => $LANG_INSTALL[92],
 	'charactersets'  => $LANG_INSTALL[123],
     'migrate_file'   => $LANG_MIGRATE[6],
     'plugin_upload'  => $LANG_PLUGINS[10]

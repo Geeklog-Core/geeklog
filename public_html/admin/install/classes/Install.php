@@ -176,7 +176,7 @@ class Install extends Common
 
     public function step3($retval, $_DB_dbms, $installPlugins, $nextLink, $gl_path)
     {
-        global $_CONF, $_DEVICE, $_URL, $_TABLES;
+        global $_CONF, $_DEVICE, $_LOCALE, $_URL, $_TABLES;
         global $LANG01, $LANG03, $LANG04, $LANG05, $LANG08, $LANG09, $LANG10, $LANG11, $LANG12, $LANG20, $LANG21;
         global $LANG23, $LANG24, $LANG27, $LANG28, $LANG29, $LANG31, $LANG32, $LANG33, $MESSAGE;
 

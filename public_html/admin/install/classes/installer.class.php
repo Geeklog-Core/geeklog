@@ -916,7 +916,7 @@ class Installer extends Common
                 $site_admin_url = $this->post('site_admin_url');
                 $site_mail = $this->post('site_mail');
                 $noreply_mail = $this->post('noreply_mail');
-                $utf8 = ($this->post('utf8') === 'on');
+                $utf8 = ($installType === 'install') || ($this->post('utf8') === 'on');
                 $installPlugins = ($this->post('install_plugins') !== null);
                 $DB = [
                     'type'         => $this->post('db_type'),

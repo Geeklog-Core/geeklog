@@ -37,7 +37,7 @@
 
 // +---------------------------------------------------------------------------+
 
-$LANG_CHARSET = 'iso-8859-15';
+$LANG_CHARSET = 'utf-8';
 
 // +---------------------------------------------------------------------------+
 // | Array Format:                                                             |
@@ -142,7 +142,6 @@ $LANG_INSTALL = array(
     89 => 'Aktuelle Version:',
     90 => 'Leere Datenbank?',
     91 => 'Entweder ist die Datenbank leer oder die Zugangsdaten f&uuml;r die Datenbank sind nicht korrekt. Oder wolltest Du eigentlich eine Neuinstallation durchf&uuml;hren (statt eines Updates)? Bitte noch einmal probieren.',
-    92 => 'Benutze UTF-8',
     93 => 'Fertig',
     94 => 'Hier sind einige Hinweise, um den richtigen Pfad zu ermitteln:',
     95 => 'Der komplette Pfad zu dieser Datei (dem Installations-Skript) ist:',
@@ -170,7 +169,6 @@ $LANG_INSTALL = array(
     117 => 'Cancel',
     118 => 'Change Language',
     119 => 'Copyright © 2020 <a href="https://www.geeklog.net/">Geeklog</a>',
-    120 => '(Make sure your current database collation supports UTF-8. See <a href="help.php#charactersets">Help for more information</a>.)',
     121 => 'Home',
     122 => 'Help',
     123 => 'Character Sets and Database Collations'
@@ -498,7 +496,6 @@ $LANG_LABEL = array(
     'site_admin_url' => $LANG_INSTALL[47],
     'site_mail'      => $LANG_INSTALL[48],
     'noreply_mail'   => $LANG_INSTALL[49],
-    'utf8'           => $LANG_INSTALL[92],
 	'charactersets'  => $LANG_INSTALL[123],
     'migrate_file'   => $LANG_MIGRATE[6],
     'plugin_upload'  => $LANG_PLUGINS[10]

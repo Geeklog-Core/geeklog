@@ -13,7 +13,6 @@
     <input type="hidden" name="site_admin_url" value="{! site_admin_url !}">
     <input type="hidden" name="site_mail" value="{! site_mail !}">
     <input type="hidden" name="noreply_mail" value="{! noreply_mail !}">
-    <input type="hidden" name="utf8" value="{{ utf8_string }}">
     <button type="submit" class="uk-button uk-button-primary uk-margin-small" value="{{ LANG.INSTALL.61 }}">{{ icon_arrow_prev }}&nbsp;&nbsp;{{ LANG.INSTALL.61 }}</button>
 </form>
     
