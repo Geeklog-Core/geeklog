@@ -64,17 +64,13 @@ class Upgrade extends Common
             $config->set('path_html', $path_html);
         }
 
-        // Functions.php is the only file required for a theme
-        if (!file_exists($_CONF['path_themes'] . $_CONF['theme']
-            . '/functions.php')
-        ) {
-            $config->set('path_themes', $path_html . 'layout/');
+        $config->set('path_themes', $path_html . 'layout/');
 
-            if (!file_exists($path_html . 'layout/' . $_CONF['theme']
-                . '/functions.php')
-            ) {
-                $config->set('theme', self::DEFAULT_THEME);
-            }
+        // Check if the theme is valid
+        require_once $path_html . 'lib-common.php';
+
+        if (!COM_validateTheme($_CONF['theme'])) {
+            $config->set('theme', $_CONF['theme_geeklog_default']);
         }
 
         if (!file_exists($_CONF['path_images'] . 'articles')) {

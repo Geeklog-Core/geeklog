@@ -777,24 +777,6 @@ HTML;
             $_CONF['cookiesecure'] = 0;
         }
 
-        // check the default theme
-        if (empty($_CONF['theme'])) {
-            // try old conf value
-            $theme = $_OLD_CONF['theme'];
-        } else {
-            $theme = $_CONF['theme'];
-        }
-
-        // All themes require a functions.php (ie child themes don't require any template files) so check for that
-        // At some point could actually check for min geeklog version of theme theme_gl_version which was introduced in Geeklog v2.2.1
-        if (!file_exists($_CONF['path_themes'] . $theme . '/functions.php')) {
-            // make sure default theme exists before setting config
-            if (file_exists($_CONF['path_themes'] . self::DEFAULT_THEME . '/index.thtml')) {
-                $config->set('theme', self::DEFAULT_THEME);
-                $_CONF['theme'] = self::DEFAULT_THEME;
-            }
-        }
-
         // set noreply_mail when updating from an old version
         if (empty($_CONF['noreply_mail']) && !empty($_CONF['site_mail'])) {
             $_CONF['noreply_mail'] = $_CONF['site_mail'];
@@ -919,6 +901,19 @@ HTML;
         // did the site URL change?
         if ((!empty($_OLD_CONF['site_url'])) & (!empty($_CONF['site_url'])) && ($_OLD_CONF['site_url'] != $_CONF['site_url'])) {
             self::updateSiteUrl($_OLD_CONF['site_url'], $_CONF['site_url']);
+        }
+
+        // check the default theme
+        if (empty($_CONF['theme'])) {
+            // try old conf value
+            $theme = $_OLD_CONF['theme'];
+        } else {
+            $theme = $_CONF['theme'];
+        }
+
+        if (!COM_validateTheme($theme)) {
+            $_CONF['theme'] = $_CONF['theme_geeklog_default'];
+            $config->set('theme', $_CONF['theme_geeklog_default']);
         }
 
         /**
