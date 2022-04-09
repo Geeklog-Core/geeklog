@@ -496,6 +496,7 @@ $LANG_LABEL = array(
     'site_admin_url' => $LANG_INSTALL[47],
     'site_mail'      => $LANG_INSTALL[48],
     'noreply_mail'   => $LANG_INSTALL[49],
+    'utf8'           => $LANG_INSTALL[92],
 	'charactersets'  => $LANG_INSTALL[123],
     'migrate_file'   => $LANG_MIGRATE[6],
     'plugin_upload'  => $LANG_PLUGINS[10]
