@@ -26,6 +26,8 @@ class Upgrade extends Common
      */
     private function fixPathsAndUrls($path, $path_html, $site_url, $site_admin_url)
     {
+        global $_TABLES;
+
         require_once $path . 'system/classes/ConfigInterface.php';
         require_once $path . 'system/classes/config.class.php';
 

@@ -212,6 +212,7 @@ $LANG_SUCCESS = array(
     26 => 'Remember, if you have disabled your site in <code>public_html/siteconfig.php</code>, you will need to reenable it again before you can use your site.',
     27 => 'Successfully upgraded all plugins.',
     28 => 'Failed to upgrade some plugins.  They are disabled now.',
+    29 => 'The language file "%s" you were using is no longer supported with the current version, so we are using "english.php" instead.',
 );
 
 // +---------------------------------------------------------------------------+

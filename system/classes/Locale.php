@@ -157,7 +157,7 @@ class Locale
      * @param  array  $amPm             'am' and 'pm' like $LANG_AMPM
      * @param  array  $defaultDateFormat
      */
-    public function __construct(array $monthNames, array $shortMonthNames, array $dayNames, array $shortDayNames, array $amPm, array $defaultDateFormat)
+    public function __construct(array $monthNames = [], array $shortMonthNames = [], array $dayNames = [], array $shortDayNames = [], array $amPm = [], array $defaultDateFormat = [])
     {
         if (!empty($monthNames)) {
             $this->monthNames = $monthNames;

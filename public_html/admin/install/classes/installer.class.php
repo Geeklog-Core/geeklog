@@ -732,7 +732,7 @@ class Installer extends Common
      */
     private function installEngine($installType, $installStep)
     {
-        global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, $_DEVICE, $_URL;
+        global $_CONF, $_LOCALE, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, $_DEVICE, $_URL;
 
         $retval = '';
 
@@ -1052,6 +1052,7 @@ class Installer extends Common
                             'msg'      => ($numFailures === 0) ? 27 : 28,
                         ]);
                     header('Location: ' . $nextLink);
+                    exit();
                 }
 
                 $installPlugins = ($this->get('install_plugins') === 'true');
@@ -1076,7 +1077,8 @@ class Installer extends Common
      */
     public function run()
     {
-        global $_CONF, $_TABLES, $_VARS, $_URL, $_DEVICE, $_SCRIPTS, $_IMAGE_TYPE, $TEMPLATE_OPTIONS, $_GROUPS, $_RIGHTS, $_USER, $_DB_dbms, $_DB_table_prefix;
+        global $_CONF, $_LOCALE, $_TABLES, $_VARS, $_URL, $_DEVICE, $_SCRIPTS, $_IMAGE_TYPE, $TEMPLATE_OPTIONS;
+        global $_GROUPS, $_RIGHTS, $_USER, $_DB_dbms, $_DB_table_prefix;
 
         Common::$env['html_path'] = $this->getHtmlPath();
         Common::$env['siteconfig_path'] = Common::$env['html_path'] . 'siteconfig.php';

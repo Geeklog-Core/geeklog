@@ -9660,7 +9660,13 @@ function COM_handleEval($code, $type = 1, $embeddedPHP = false)
  */
 function COM_gmstrftime($format, $timestamp = null)
 {
-    global $_LOCALE;
+    global $_LOCALE, $LANG_ISO639_1;
+
+    if (defined('GL_INSTALL_ACTIVE') && empty($_LOCALE)) {
+        $_LOCALE = new \Geeklog\Locale();
+        $_LOCALE->setTimezone(TimeZoneConfig::getTimezone());
+        $_LOCALE->setLocale(empty($LANG_ISO639_1) ? \Geeklog\Locale::DEFAULT_LOCALE : $LANG_ISO639_1);
+    }
 
     return $_LOCALE->gmstrftime($format, $timestamp);
 }
@@ -9676,7 +9682,13 @@ function COM_gmstrftime($format, $timestamp = null)
  */
 function COM_strftime($format, $timestamp = null)
 {
-    global $_LOCALE;
+    global $_LOCALE, $LANG_ISO639_1;
+
+    if (defined('GL_INSTALL_ACTIVE') && empty($_LOCALE)) {
+        $_LOCALE = new \Geeklog\Locale();
+        $_LOCALE->setTimezone(TimeZoneConfig::getTimezone());
+        $_LOCALE->setLocale(empty($LANG_ISO639_1) ? \Geeklog\Locale::DEFAULT_LOCALE : $LANG_ISO639_1);
+    }
 
     return $_LOCALE->strftime($format, $timestamp);
 }

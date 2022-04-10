@@ -38,6 +38,7 @@
 define('GL_INSTALL_ACTIVE', true);
 
 use Geeklog\Input;
+use Geeklog\LocaleData;
 
 require_once '../../lib-common.php';
 
@@ -158,6 +159,15 @@ if ($type === 'install') {
     }
 } else {
     $message = $LANG_SUCCESS[22];
+}
+
+// Check if the language the user is using is supported, and show a warning if necessary
+if (!LocaleData::isLanguageSupported($language)) {
+    if (!empty($msg)) {
+        $msg .= '<br>';
+    }
+
+    $msg .= sprintf($LANG_SUCCESS[29], $language);
 }
 
 $T->set_var([
