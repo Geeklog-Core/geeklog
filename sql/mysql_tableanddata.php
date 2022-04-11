@@ -257,10 +257,11 @@ CREATE TABLE {$_TABLES['sessions']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['speedlimit']} (
   id int(10) unsigned NOT NULL auto_increment,
-  seq INT NOT NULL DEFAULT 0,
+  ipaddress varchar(39) NOT NULL default '',
   date int(10) unsigned default NULL,
   type varchar(30) NOT NULL default 'submit',
   PRIMARY KEY (id),
+  KEY type_ipaddress (type,ipaddress),
   KEY date (date)
 ) ENGINE=MyISAM
 ";

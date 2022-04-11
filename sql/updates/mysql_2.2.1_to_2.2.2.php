@@ -79,7 +79,6 @@ CREATE TABLE {$_TABLES['ip_addresses']} (
         'commentsubmissions' => ['cid', 'ipaddress'],
         'likes'              => ['lid', 'ipaddress'],
         'sessions'           => ['sess_id', 'remote_ip'],
-        'speedlimit'         => ['id', 'ipaddress'],
         'trackback'          => ['cid', 'ipaddress'],
     ];
 
@@ -114,11 +113,6 @@ CREATE TABLE {$_TABLES['ip_addresses']} (
             } else {
                 DB_query("UPDATE $_TABLES[$table] SET seq = $seq WHERE $primaryKeyColumn = $primaryKeyValue");
             }
-        }
-
-        // Drop key related to IP addresses
-        if ($table === 'speedlimit') {
-            DB_query("ALTER TABLE $_TABLES[$table] DROP KEY type_ipaddress");
         }
 
         // Drop column 'ipaddress'
