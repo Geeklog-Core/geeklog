@@ -1,12 +1,9 @@
-{lang_hello_name}
-
-
-{lang_new_comment_msg}
-
-
-{email_divider}
-
-{lang_url_label}: {submission_url}
-
-
-{lang_unsubscribe_url}: {unsubscribe_url}
+{lang_hello_name}{LB}
+{LB}
+{lang_new_comment_msg}{LB}
+{LB}
+{email_divider}{LB}
+{LB}
+{lang_url_label}: {submission_url}{LB}
+{LB}
+{lang_unsubscribe_url}: {unsubscribe_url}{LB}

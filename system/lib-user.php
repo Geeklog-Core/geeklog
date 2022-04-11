@@ -148,6 +148,8 @@ function USER_createAndSendPassword($username, $useremail, $uid, $email_type = '
 	$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
 	
 	$t->set_file(array('email_html' => 'user_info-html.thtml'));
+	// Remove line feeds from plain text templates since required to use {LB} template variable
+	$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on
 	$t->set_file(array('email_plaintext' => 'user_info-plaintext.thtml'));
 
 	$t->set_var('email_divider', $LANG31['email_divider']);
@@ -315,6 +317,8 @@ function USER_sendNotification($userName, $email, $uid, $mode = 'inactive')
 	$t->set_file(array('email_plaintext' => 'user_new-plaintext.thtml'));
 
 	$t->set_var('email_divider', $LANG31['email_divider']);
+	// Remove line feeds from plain text templates since required to use {LB} template variable
+	$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on
 	$t->set_var('email_divider_html', $LANG31['email_divider_html']);
 	$t->set_var('LB', LB);
 	
@@ -362,6 +366,8 @@ function USER_sendInvalidLoginAlert($username, $email, $uid)
 	$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
 	
 	$t->set_file(array('email_html' => 'user_invalid_logins-html.thtml'));
+	// Remove line feeds from plain text templates since required to use {LB} template variable
+	$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on
 	$t->set_file(array('email_plaintext' => 'user_invalid_logins-plaintext.thtml'));
 
 	$t->set_var('email_divider', $LANG31['email_divider']);
@@ -1451,8 +1457,10 @@ function USER_emailConfirmation($email)
 			
 			// Create HTML and plaintext version of email
 			$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
-			
+
 			$t->set_file(array('email_html' => 'user_update_email-html.thtml'));
+			// Remove line feeds from plain text templates since required to use {LB} template variable
+			$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on
 			$t->set_file(array('email_plaintext' => 'user_update_email-plaintext.thtml'));
 
 			$t->set_var('email_divider', $LANG31['email_divider']);

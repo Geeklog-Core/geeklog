@@ -128,6 +128,8 @@ function USER_requestPassword($username)
 		$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
 		
 		$t->set_file(array('email_html' => 'user_request_password-html.thtml'));
+		// Remove line feeds from plain text templates since required to use {LB} template variable
+		$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on		
 		$t->set_file(array('email_plaintext' => 'user_request_password-plaintext.thtml'));
 
 		$t->set_var('email_divider', $LANG31['email_divider']);

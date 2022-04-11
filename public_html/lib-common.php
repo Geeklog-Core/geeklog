@@ -4123,6 +4123,8 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
 	// Create HTML and plaintext version of email footer 
 	$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
 	$t->set_file(array('email_html' => 'email_footer-html.thtml'));
+	// Remove line feeds from plain text templates since required to use {LB} template variable
+	$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on
 	$t->set_file(array('email_plaintext' => 'email_footer-plaintext.thtml'));
 
 	$t->set_var('email_divider', $LANG31['email_divider']);
@@ -5213,6 +5215,8 @@ function COM_emailUserTopics()
 		// Create HTML and plaintext version of submission email
 		$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
 		$t->set_file(array('email_html' => 'daily_digest-html.thtml'));
+		// Remove line feeds from plain text templates since required to use {LB} template variable
+		$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on		
 		$t->set_file(array('email_plaintext' => 'daily_digest-plaintext.thtml'));
 		$t->set_block('email_html', 'article_html');
 		$t->set_block('email_plaintext', 'article_plaintext');

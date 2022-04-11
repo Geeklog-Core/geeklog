@@ -885,12 +885,7 @@ class Template
             // Lets try to error gracefully if we need too when evaluating PHP
             // Cannot use COM_handleEval as that is an outside function as the code we need to evaluate contains references to the template class ($this->...)
             // This code gets executed when the template class function set_view is used (like in the staticpages plugin when a page is used as a template)
-			
             $errorMessage = '';
-			
-			// Need to add space after PHP code if PHP code right at the end of line (with no characters after). If not then a line feed gets removed when template file is evaluate. It is needed for plain text email templates
-			$templateCode = str_replace(array("?>" . PHP_EOL), '?> ' . PHP_EOL, $templateCode);
-			
             $templateCode = '?>' . $templateCode . '<?php ';
             ob_start();
             if (version_compare(PHP_VERSION, '7.0.0', '<')) {
@@ -1777,9 +1772,6 @@ class Template
         // clean up concatenation.
         $tmplt = str_replace('?' . '><' . '?php ', "\n", $tmplt); // makes the cache file easier on the eyes (need the concat to avoid PHP interpreting the ? >< ?php incorrectly)
 		
-		// Need to add space after PHP code if PHP code right at the end of line (with no characters after). If not then a line feed gets removed when template file is evaluate. It is needed for plain text email templates
-		$tmplt = str_replace(array("?>" . PHP_EOL), '?> ' . PHP_EOL, $tmplt);		
-
         if ($this->debug & 4) {
             printf("<b>cache_write:</b> opening $filename<br>\n");
         }

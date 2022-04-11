@@ -1,24 +1,17 @@
-{lang_info_msg}
-
-
-{lang_unsubscribe_msg}
-
+{lang_info_msg}{LB}
+{LB}
+{lang_unsubscribe_msg}{LB}
 {articles_plaintext}
 
 <!-- BEGIN article_plaintext -->
-
-{email_divider}
-
-{lang_title}: {article_title}
-
-{!if article_author}{lang_author}: {article_author}{!endif}
-
-{lang_date}: {article_date}
-
-
-{content_plaintext}
-
-
-{lang_url_label}: {article_url}
-
+{LB}
+{email_divider}{LB}
+{LB}
+{lang_title}: {article_title}{LB}
+{!if article_author}{lang_author}: {article_author}{LB}{!endif}
+{lang_date}: {article_date}{LB}
+{LB}
+{content_plaintext}{LB}
+{LB}
+{lang_url_label}: {article_url}{LB}
 <!-- END article_plaintext -->

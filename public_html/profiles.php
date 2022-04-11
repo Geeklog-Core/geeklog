@@ -113,6 +113,8 @@ function contactemail($uid, $cc, $author, $authorEmail, $subject, $message)
 			// Create HTML and plaintext version of email
 			$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
 			$t->set_file(array('email_html' => 'contact-html.thtml'));
+			// Remove line feeds from plain text templates since required to use {LB} template variable
+			$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on				
 			$t->set_file(array('email_plaintext' => 'contact-plaintext.thtml'));
 
 			$t->set_var('email_divider', $LANG31['email_divider']);
@@ -395,6 +397,8 @@ function mailstory($sid, $to, $toEmail, $from, $fromEmail, $shortMessage)
 	// Create HTML and plaintext version of email
     $t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
     $t->set_file(array('email_html' => 'article-html.thtml'));
+	// Remove line feeds from plain text templates since required to use {LB} template variable
+	$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on		
 	$t->set_file(array('email_plaintext' => 'article-plaintext.thtml'));
 
 	$t->set_var('email_divider', $LANG31['email_divider']);

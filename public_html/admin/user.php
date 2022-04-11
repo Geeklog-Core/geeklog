@@ -894,6 +894,8 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
 			$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
 			
 			$t->set_file(array('email_html' => 'user_send_password-html.thtml'));
+			// Remove line feeds from plain text templates since required to use {LB} template variable
+			$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on		
 			$t->set_file(array('email_plaintext' => 'user_send_password-plaintext.thtml'));
 
 			$t->set_var('email_divider', $LANG31['email_divider']);
@@ -1225,6 +1227,8 @@ function batchreminders()
 			$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
 			
 			$t->set_file(array('email_html' => 'user_login_reminder-html.thtml'));
+			// Remove line feeds from plain text templates since required to use {LB} template variable
+			$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on		
 			$t->set_file(array('email_plaintext' => 'user_login_reminder-plaintext.thtml'));
 
 			$t->set_var('email_divider', $LANG31['email_divider']);

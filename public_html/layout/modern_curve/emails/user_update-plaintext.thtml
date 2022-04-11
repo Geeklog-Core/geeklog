@@ -1,13 +1,9 @@
-{lang_user_update_msg}
-
-
-{lang_username}: {username}
-
-{lang_email}: {email}
-
-{lang_homepage}: {homepage}
-
-
-{email_divider}
-
-{lang_profile_url_label}: {profile_url}
+{lang_user_update_msg}{LB}
+{LB}
+{lang_username}: {username}{LB}
+{lang_email}: {email}{LB}
+{lang_homepage}: {homepage}{LB}
+{LB}
+{email_divider}{LB}
+{LB}
+{lang_profile_url_label}: {profile_url}{LB}

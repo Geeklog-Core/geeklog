@@ -1,18 +1,16 @@
 {!if lang_cc_email_info}
-{lang_cc_email_info}
-
-{email_divider}
-
+{lang_cc_email_info}{LB}
+{LB}
+{email_divider}{LB}
+{LB}
 {!endif}
-{lang_email_sentinfo}
-
-{email_divider}
-
-
-{message_plaintext}
-
+{lang_email_sentinfo}{LB}
+{LB}
+{email_divider}{LB}
+{LB}
+{message_plaintext}{LB}
 {!if signature}
-{signature_divider}
-
-{signature}
+{signature_divider}{LB}
+{LB}
+{signature}{LB}
 {!endif}

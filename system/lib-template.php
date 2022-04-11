@@ -450,6 +450,17 @@ function CTL_plugin_setTemplatesFunctions($plugin)
     }
 }
 
+/**
+ * Used for when setting preprocess_fn of the template class for templates files that
+ * are meant to be displayed as plain text (like for emails)
+ *
+ * @param    string $templateStr	Template string
+ */
+function CTL_removeLineFeeds($templateStr) {
+	
+	return str_replace(["\r", "\n"], "", $templateStr);
+}
+
 /*
  * Implement *some* of the Plugin API functions for templates. While templates
  * aren't a plugin (and likely never will be), implementing some of the API

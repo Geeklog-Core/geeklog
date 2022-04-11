@@ -1,25 +1,20 @@
 {!if lang_abuse_comment_msg}
-{lang_abuse_comment_msg}
-
-{email_divider}
-
+{lang_abuse_comment_msg}{LB}
+{LB}
+{email_divider}{LB}
+{LB}
 {!endif}
-{lang_title}: {submission_title}
-
-{lang_author}: {submission_author}
-
-{lang_date}: {submission_date}
-
-{lang_type}: {submission_type}
-
+{lang_title}: {submission_title}{LB}
+{lang_author}: {submission_author}{LB}
+{lang_date}: {submission_date}{LB}
+{lang_type}: {submission_type}{LB}
 {!if submission_content_plaintext}
-
-{submission_content_plaintext}
-
+{LB}
+{submission_content_plaintext}{LB}
 {!endif}
-{email_divider}
-
-{lang_url_label}: {submission_url}
-
-
-{lang_item_url}: {item_url}
+{LB}
+{email_divider}{LB}
+{LB}
+{lang_url_label}: {submission_url}{LB}
+{LB}
+{lang_item_url}: {item_url}{LB}

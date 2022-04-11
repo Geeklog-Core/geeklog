@@ -1,19 +1,16 @@
-
-{email_divider}
-
+{LB} 
+{email_divider}{LB}
+{LB}
 {!if lang_email_footer_msg_noreply}
-{lang_email_footer_msg_noreply}
+{lang_email_footer_msg_noreply}{LB}
 {!endif}
-
-
-{lang_email_footer_msg_content}
-
+{LB}
+{lang_email_footer_msg_content}{LB}
+{LB}
 {!if ip_address}
-
-{lang_ip_address_email} {ip_address}
-
+{lang_ip_address_email} {ip_address}{LB}
+{LB}
 {!endif}
-
-{lang_end_of_msg}
-
-{email_divider}
+{lang_end_of_msg}{LB}
+{LB}
+{email_divider}{LB}

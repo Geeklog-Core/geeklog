@@ -1,10 +1,7 @@
-{lang_username}: {username}
-
-{lang_email}: {email}
-
-{lang_date}: {date}
-
-
-{email_divider}
-
-{lang_profile_url_label}: {profile_url}
+{lang_username}: {username}{LB}
+{lang_email}: {email}{LB}
+{lang_date}: {date}{LB}
+{LB}
+{email_divider}{LB}
+{LB}
+{lang_profile_url_label}: {profile_url}{LB}

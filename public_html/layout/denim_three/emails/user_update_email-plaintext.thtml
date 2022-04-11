@@ -1,15 +1,10 @@
-{lang_email_updated_msg}
-
-
-{lang_verify_msg}
-
-
-{verify_url}
-
-
-{lang_not_verify_msg}
-
-
-{site_name}{!if site_slogan} - {site_slogan}{!endif}
-
-{site_url}
+{lang_email_updated_msg}{LB}
+{LB}
+{lang_verify_msg}{LB}
+{LB}
+{verify_url}{LB}
+{LB}
+{lang_not_verify_msg}{LB}
+{LB}
+{site_name}{!if site_slogan} - {site_slogan}{!endif}{LB}
+{site_url}{LB}

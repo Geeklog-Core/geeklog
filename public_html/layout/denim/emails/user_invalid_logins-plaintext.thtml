@@ -1,10 +1,7 @@
 {lang_username}: {username}
-
 {lang_email}: {email}
 
-
 {lang_max_invalid_login_msg}
-
 
 {email_divider}
 

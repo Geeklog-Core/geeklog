@@ -1,35 +1,29 @@
 {!if lang_cc_email_info}
-{lang_cc_email_info}
-
-{email_divider}
-
+{lang_cc_email_info}{LB}
+{LB}
+{email_divider}{LB}
+{LB}
 {!endif}
-{lang_email_sentinfo}
-
+{lang_email_sentinfo}{LB}
+{LB}
 {!if lang_email_from}
-
-{lang_email_from}
-
-
+{lang_email_from}{LB}
+{LB}
 {short_message_plaintext}
-
 {!endif}
-{email_divider}
-
-{article_title}
-
-{article_date}
-
-{lang_contributed_by} {article_author}
-
+{LB}
+{email_divider}{LB}
+{LB}
+{article_title}{LB}
+{article_date}{LB}
+{lang_contributed_by} {article_author}{LB}
+{LB}
 {article_introtext_plaintext}
-
 {!if article_bodytext_plaintext}
 {article_bodytext_plaintext}
 {!endif}
-
-{email_divider}
-
-{lang_article_url}
-
-{article_url}
+{LB}
+{email_divider}{LB}
+{LB}
+{lang_article_url}{LB}
+{article_url}{LB}

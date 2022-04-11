@@ -1706,6 +1706,8 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
 	$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
 	
 	$t->set_file(array('email_html' => 'comment_submission-html.thtml'));
+	// Remove line feeds from plain text templates since required to use {LB} template variable
+	$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on		
 	$t->set_file(array('email_plaintext' => 'comment_submission-plaintext.thtml'));
 
 	$t->set_var('email_divider', $LANG31['email_divider']);
@@ -2426,6 +2428,8 @@ function CMT_sendReplyNotification($A, $send_self = false)
 				$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
 				
 				$t->set_file(array('email_html' => 'comment_reply-html.thtml'));
+				// Remove line feeds from plain text templates since required to use {LB} template variable
+				$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on						
 				$t->set_file(array('email_plaintext' => 'comment_reply-plaintext.thtml'));
 
 				$t->set_var('email_divider', $LANG31['email_divider']);
