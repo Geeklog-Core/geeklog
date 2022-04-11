@@ -288,7 +288,7 @@ abstract class IP
     /**
      * Scan the 'ip_addresses' table and anonymize IP addresses if necessary
      *
-     * @note This method is intended to called from within PLG_runScheduledTask() or at the end of "lib-common.php"
+     * @note This method is intended to be called from within PLG_runScheduledTask() or at the end of "lib-common.php"
      */
     public static function updateIPAddressesTable()
     {
