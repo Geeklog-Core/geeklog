@@ -63,7 +63,7 @@ abstract class IP
             }
             self::$anonymizationPolicy = $anonymizationPolicy;
 
-            self::$originalIpAddress = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.01';
+            self::$originalIpAddress = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
 //            $_SERVER['REMOTE_ADDR'] = '0.0.0.0';  // some time in the future
             self::$isInitialized = true;
         }
@@ -78,8 +78,8 @@ abstract class IP
      */
     public static function matchCIDR($ipAddressToCheck, $CIDR)
     {
-        $address = Factory::addressFromString($ipAddressToCheck);
-        $range = Factory::rangeFromString($CIDR);
+        $address = Factory::parseAddressString($ipAddressToCheck);
+        $range = Factory::parseRangeString($CIDR);
 
         if ((!$address instanceof AddressInterface) || (!$range instanceof RangeInterface)) {
             return false;
@@ -129,13 +129,13 @@ abstract class IP
     private static function matchRangeIPv6($ipAddress, $range)
     {
         $ips = explode('-', $range, 2);
-        $from = Factory::addressFromString($ips[0]);
-        $to = Factory::addressFromString($ips[1]);
+        $from = Factory::parseAddressString($ips[0]);
+        $to = Factory::parseAddressString($ips[1]);
         if ((!$from instanceof AddressInterface) || (!$to instanceof AddressInterface)) {
             throw new InvalidArgumentException(__METHOD__ . ': an IP in the range was invalid as IPv6 address');
         }
 
-        $address = Factory::addressFromString($ipAddress);
+        $address = Factory::parseAddressString($ipAddress);
         if (!$address instanceof AddressInterface) {
             throw new InvalidArgumentException(__METHOD__ . ': IP was invalid as IPv6 address');
         }
@@ -207,12 +207,12 @@ abstract class IP
         if ($anonymizationPolicy >= 0) {
             if (self::isValidIPv4($ipAddress)) {
                 // Change the least significant byte to zero
-                $bytes = IPv4::fromString($ipAddress)->getBytes();
+                $bytes = IPv4::parseString($ipAddress)->getBytes();
                 $bytes[3] = 0;
                 $ipAddress = IPv4::fromBytes($bytes)->toString();
             } elseif (self::isValidIPv6($ipAddress)) {
                 // Change the last 80 bits to zeros
-                $bytes = IPv6::fromString($ipAddress)->getBytes();
+                $bytes = IPv6::parseString($ipAddress)->getBytes();
 
                 for ($i = 6; $i <= 15; $i++) {
                     $bytes[$i] = 0;
