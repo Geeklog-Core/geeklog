@@ -272,7 +272,7 @@ function DB_delete($table, $id, $value, $return_page = '')
  * @param        string $selection    Where clause to use in SQL
  * @param        mixed  $defaultValue will be returned when there is no row in the dataset
  * @return       mixed                Returns value sought
- * @note         $defaultValue argument since Geeklog 2,2,1
+ * @note         $defaultValue argument since Geeklog 2.2.1
  */
 function DB_getItem($table, $what, $selection = '', $defaultValue = false)
 {

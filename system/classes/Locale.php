@@ -538,6 +538,6 @@ class Locale
         }
 
 
-        return $asArray ? $options : implode("\n", $options) . "\n";
+        return $asArray ? $options : implode(PHP_EOL, $options) . PHP_EOL;
     }
 }
