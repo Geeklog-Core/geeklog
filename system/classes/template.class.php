@@ -1770,8 +1770,7 @@ class Template
         $tmplt = $this->replace_vars($tmplt);
 
         // clean up concatenation.
-        $tmplt = str_replace('?' . '><' . '?php ', // makes the cache file easier on the eyes (need the concat to avoid PHP interpreting the ? >< ?php incorrectly
-            "\n", $tmplt);
+        $tmplt = str_replace('?' . '><' . '?php ', "\n", $tmplt); // makes the cache file easier on the eyes (need the concat to avoid PHP interpreting the ? >< ?php incorrectly)
 
         if ($this->debug & 4) {
             printf("<b>cache_write:</b> opening $filename<br>\n");
@@ -1951,8 +1950,7 @@ class Template
         $tmplt = $this->replace_vars($tmplt);
 
         // clean up concatenation.
-        $tmplt = str_replace('?' . '><' . '?php ', // makes the cache file easier on the eyes (need the concat to avoid PHP interpreting the ? >< ?php incorrectly
-            "\n", $tmplt);
+        $tmplt = str_replace('?' . '><' . '?php ', "\n", $tmplt); // makes the cache file easier on the eyes (need the concat to avoid PHP interpreting the ? >< ?php incorrectly)
 
         $this->blocks[$parent[1]] = $tmplt;
     }
@@ -2014,8 +2012,7 @@ class Template
         $tmplt = $this->replace_vars($tmplt);
 
         // clean up concatenation.
-        $tmplt = str_replace('?' . '><' . '?php ', // makes the cache file easier on the eyes (need the concat to avoid PHP interpreting the ? >< ?php incorrectly
-            "\n", $tmplt);
+        $tmplt = str_replace('?' . '><' . '?php ', "\n", $tmplt); // makes the cache file easier on the eyes (need the concat to avoid PHP interpreting the ? >< ?php incorrectly)
 
         return $tmplt;
     }
