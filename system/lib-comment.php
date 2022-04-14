@@ -1005,7 +1005,7 @@ function CMT_commentForm($title, $comment, $sid, $pid, $type, $mode, $postMode, 
             && $mode != $LANG03[28] && $mode != $LANG03[34]
         ) {
             // not edit mode or preview changes
-            $last = COM_checkSpeedlimit('comment');
+            $last = COM_checkSpeedlimit('comment', SPEED_LIMIT_MAX_COMMENT);
         }
 
         if ($last > 0) {
@@ -1430,7 +1430,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 
     // Check for people breaking the speed limit
     COM_clearSpeedlimit($_CONF['commentspeedlimit'], 'comment');
-    $last = COM_checkSpeedlimit('comment');
+    $last = COM_checkSpeedlimit('comment', SPEED_LIMIT_MAX_COMMENT);
     if ($last > 0) {
         if ($_COMMENT_DEBUG) {
             COM_errorLog("CMT_saveComment: $uid from " . \Geeklog\IP::getIPAddress() . " tried to submit a comment before the speed limit expired.");
@@ -1945,7 +1945,7 @@ function CMT_reportAbusiveComment($cid)
     $retval = '';
 
     COM_clearSpeedlimit($_CONF['speedlimit'], 'mail');
-    $last = COM_checkSpeedlimit('mail');
+    $last = COM_checkSpeedlimit('mail', SPEED_LIMIT_MAX_MAIL);
     if ($last > 0) {
         $retval .= COM_showMessageText($LANG12[30] . $last . $LANG12[31], $LANG12[26]);
 
@@ -1999,7 +1999,7 @@ function CMT_sendReport($cid)
     global $_CONF, $_TABLES, $_USER, $LANG03, $LANG08, $LANG09, $LANG12, $MESSAGE;
 
     COM_clearSpeedlimit($_CONF['speedlimit'], 'mail');
-    $last = COM_checkSpeedlimit('mail');
+    $last = COM_checkSpeedlimit('mail', SPEED_LIMIT_MAX_MAIL);
     if ($last > 0) {
         $content = COM_showMessageText($LANG08[39] . $last . $LANG08[40], $LANG12[26]);
         $display = COM_createHTMLDocument($content);

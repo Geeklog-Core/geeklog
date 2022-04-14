@@ -59,7 +59,7 @@ function submissionform($type = 'story', $mode = '')
     $retval = '';
 
     COM_clearSpeedlimit($_CONF['speedlimit'], 'submit');
-    $last = COM_checkSpeedlimit('submit');
+    $last = COM_checkSpeedlimit('submit', SPEED_LIMIT_MAX_SUBMIT);
 
     if ($last > 0) {
         $retval .= COM_showMessageText($LANG12[30] . $last . $LANG12[31], $LANG12[26]);
@@ -384,7 +384,7 @@ function savesubmission($type, $A)
     global $_CONF, $LANG12;
 
     COM_clearSpeedlimit($_CONF['speedlimit'], 'submit');
-    $last = COM_checkSpeedlimit('submit');
+    $last = COM_checkSpeedlimit('submit', SPEED_LIMIT_MAX_SUBMIT);
 
     if ($last > 0) {
         $retval = COM_showMessageText($LANG12[30] . $last . $LANG12[31], $LANG12[26]);

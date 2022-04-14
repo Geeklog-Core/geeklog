@@ -41,6 +41,9 @@ global $_TABLES;
 // MAIN
 COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
 if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
+    COM_clearSpeedlimit(SPEED_LIMIT_WINDOW_ERROR_403, 'error-403');
+    COM_checkSpeedlimit('error-403', SPEED_LIMIT_MAX_ERROR_403);
+
     COM_displayMessageAndAbort(82, '', 403, 'Access denied');
 }
 

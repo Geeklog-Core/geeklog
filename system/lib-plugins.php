@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file implements plugin support in Geeklog.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2019 by the following authors:                         |
+// | Copyright (C) 2000-2022 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -73,6 +73,23 @@ define('RECAPTCHA_SUPPORT_V2_INVISIBLE', 2);
 // Supported since v1.2.4 (Geeklog 2.2.2)
 define('RECAPTCHA_SUPPORT_V3', 4);
 define('RECAPTCHA_DEFAULT_SCORE_THRESHOLD', 0.5);
+
+// Constants for the max number of allowed tries within speed limit (since Geeklog 2.2.2)
+const SPEED_LIMIT_MAX_COMMENT = 1;
+const SPEED_LIMIT_MAX_ERROR_403 = 1;    // Illegal access to admin screen
+const SPEED_LIMIT_MAX_ERROR_404 = 5;
+const SPEED_LIMIT_MAX_ERROR_SPAM = 1;
+const SPEED_LIMIT_MAX_LIKES = 1;
+const SPEED_LIMIT_MAX_MAIL = 1;
+const SPEED_LIMIT_MAX_PASSWORD = 1;
+const SPEED_LIMIT_MAX_PINGBACK = 1;
+const SPEED_LIMIT_MAX_SUBMIT = 1;
+const SPEED_LIMIT_MAX_TRACKBACK = 1;
+
+// Constants for the window used in COM_clearSpeedlimit
+const SPEED_LIMIT_WINDOW_ERROR_403 = 60;
+const SPEED_LIMIT_WINDOW_ERROR_404 = 60;
+const SPEED_LIMIT_WINDOW_ERROR_SPAM = 60;
 
 // buffer for function names for the center block API
 $PLG_bufferCenterAPI = [];
@@ -2425,9 +2442,10 @@ function PLG_checkForSpam($comment, $action = -1, $permanentLink = null,
             );
 
             if ($result > PLG_SPAM_NOT_FOUND) { // Plugin found a match for spam
-                $result = PLG_spamAction($comment, $action);
+                COM_clearSpeedlimit(SPEED_LIMIT_WINDOW_ERROR_SPAM);
+                COM_checkSpeedlimit('error-spam', SPEED_LIMIT_MAX_ERROR_SPAM);
 
-                return $result;
+                return PLG_spamAction($comment, $action);
             }
         }
     }
@@ -2437,9 +2455,10 @@ function PLG_checkForSpam($comment, $action = -1, $permanentLink = null,
         $result = $function($comment, $action);
 
         if ($result > PLG_SPAM_NOT_FOUND) { // Plugin found a match for spam
-            $result = PLG_spamAction($comment, $action);
+            COM_clearSpeedlimit(SPEED_LIMIT_WINDOW_ERROR_SPAM);
+            COM_checkSpeedlimit('error-spam', SPEED_LIMIT_MAX_ERROR_SPAM);
 
-            return $result;
+            return PLG_spamAction($comment, $action);
         }
     }
 
@@ -4208,4 +4227,34 @@ function PLG_idToURL($type, $sub_type, $item_id)
     $function = 'plugin_idToURL_' . $type;
 
     return PLG_callFunctionForOnePlugin($function, $args);
+}
+
+/**
+ * Gives plugins a chance to handle the user's speeding
+ *
+ * @param  string  $type      speeding type e.g.  'login', 'submit', 'error-404', 'error-spam'
+ * @param  string  $property  in most cases, the real IP address (not anonymized) of the user
+ * @param  int     $last      seconds since last speeding.  -1 means  previous speeding for the type is unknown
+ * @return void
+ * @since  Geeklog 2.2.2
+ */
+function PLG_onSpeeding($type, $property = '', $last = -1)
+{
+    global $_PLUGINS;
+
+    if (empty($property)) {
+        $property = \Geeklog\IP::getIPAddress();
+    }
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_onSpeeding' . $pi_name;
+        if (function_exists($function)) {
+            $function($type, $property, $last);
+        }
+    }
+
+    $function = 'CUSTOM_onSpeeding';
+    if (function_exists($function)) {
+        $function($type, $property, $last);
+    }
 }

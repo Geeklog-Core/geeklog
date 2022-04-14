@@ -73,7 +73,7 @@ function contactemail($uid, $cc, $author, $authorEmail, $subject, $message)
 
     // check mail speedlimit
     COM_clearSpeedlimit($_CONF['speedlimit'], 'mail');
-    $last = COM_checkSpeedlimit('mail');
+    $last = COM_checkSpeedlimit('mail', SPEED_LIMIT_MAX_MAIL);
     if ($last > 0) {
         $retval = COM_showMessageText($LANG08[39] . $last . $LANG08[40], $LANG12[26]);
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[81]));
@@ -363,7 +363,7 @@ function mailstory($sid, $to, $toEmail, $from, $fromEmail, $shortMessage)
 
     // check mail speedlimit
     COM_clearSpeedlimit($_CONF['speedlimit'], 'mail');
-    $speedLimit = COM_checkSpeedlimit('mail');
+    $speedLimit = COM_checkSpeedlimit('mail', SPEED_LIMIT_MAX_MAIL);
     if ($speedLimit > 0) {
         $redirect .= '&amp;speedlimit=' . $speedLimit;
         COM_redirect($redirect);

@@ -944,7 +944,7 @@ switch ($mode) {
             $_CONF['passwordspeedlimit'] = 300; // 5 minutes
         }
         COM_clearSpeedlimit($_CONF['passwordspeedlimit'], 'password');
-        $last = COM_checkSpeedlimit('password');
+        $last = COM_checkSpeedlimit('password', SPEED_LIMIT_MAX_PASSWORD);
         if ($last > 0) {
             $display .= COM_showMessageText(
                 sprintf($LANG04[93], $last, $_CONF['passwordspeedlimit']),
@@ -1085,7 +1085,7 @@ switch ($mode) {
             $_CONF['passwordspeedlimit'] = 300; // 5 minutes
         }
         COM_clearSpeedlimit($_CONF['passwordspeedlimit'], 'password');
-        $last = COM_checkSpeedlimit('password');
+        $last = COM_checkSpeedlimit('password', SPEED_LIMIT_MAX_PASSWORD);
         if ($last > 0) {
             $display .= COM_showMessageText(
                 sprintf($LANG04[93], $last, $_CONF['passwordspeedlimit']),

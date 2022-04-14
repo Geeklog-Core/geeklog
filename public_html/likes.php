@@ -180,7 +180,7 @@ if ($action_enabled) {
     }
 
     COM_clearSpeedlimit($_CONF['likes_speedlimit'],'likes');
-    $last = COM_checkSpeedlimit('likes');
+    $last = COM_checkSpeedlimit('likes', SPEED_LIMIT_MAX_LIKES);
     if ( $last > 0 ) {
         $speedlimiterror = 1;
         $status = 2;

@@ -6398,16 +6398,19 @@ function COM_makeList($listOfItems, $className = '')
 /**
  * Check if speed limit applies
  *
- * @param    string $type     type of speed limit, e.g. 'submit', 'comment'
- * @param    int    $max      max number of allowed tries within speed limit
- * @param    string $property IP address or other identifiable property
- * @return   int              0: does not apply, else: seconds since last post
+ * @param    string $type        type of speed limit, e.g. 'submit', 'comment'
+ * @param    int    $max         max number of allowed tries within speed limit
+ * @param    string $property    IP address or other identifiable property
+ * @param    bool   $isSpeeding  this variable is set to true if the number of speeding exceeds $max
+ * @return   int                 0: does not apply, else: seconds since last post
+ * @note     $isSpeeding was introduced since Geeklog 2.2.2
  */
-function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '')
+function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '', &$isSpeeding = false)
 {
     global $_TABLES;
 
     $last = 0;
+    $isSpeeding = false;
 
     // Allow some admins to bypass speed check
     if (SEC_inGroup('Root')) {
@@ -6446,6 +6449,12 @@ function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '')
             $last = 1;
         }
     }
+
+    // Since Geeklog 2.2.2
+    // Set the $isSpeeding variable and call PLG_onSpeeding() to let the plugins and custom function (CUSTOM_onSpeeding)
+    // know that the user is speeding
+    $isSpeeding = true;
+    PLG_onSpeeding($type, $property, $last);
 
     return $last;
 }
@@ -8294,6 +8303,9 @@ function COM_getCharset()
 function COM_handle404($alternate_url = '')
 {
     global $_CONF, $_USER, $LANG_404;
+
+    COM_clearSpeedlimit(SPEED_LIMIT_WINDOW_ERROR_404, 'error-404');
+    COM_checkSpeedlimit('error-404', SPEED_LIMIT_MAX_ERROR_404);
 
     if (function_exists('CUSTOM_handle404')) {
         CUSTOM_handle404($alternate_url);

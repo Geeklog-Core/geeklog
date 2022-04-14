@@ -553,7 +553,7 @@ function TRB_handleTrackbackPing($sid, $type = 'article')
         $speedlimit = $_CONF['commentspeedlimit'];
     }
     COM_clearSpeedlimit($speedlimit, 'trackback');
-    $last = COM_checkSpeedlimit('trackback');
+    $last = COM_checkSpeedlimit('trackback', SPEED_LIMIT_MAX_TRACKBACK);
     if ($last > 0) {
         TRB_sendTrackbackResponse(1, sprintf($TRB_ERROR['speedlimit'],
             $last, $speedlimit), 403, 'Forbidden');

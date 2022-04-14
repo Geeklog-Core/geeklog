@@ -84,7 +84,7 @@ function PNB_handlePingback($id, $type, $url, $oururl)
 
     COM_clearSpeedlimit($_CONF['commentspeedlimit'], 'pingback');
     if (!$skip_speedlimit) {
-        $last = COM_checkSpeedlimit('pingback');
+        $last = COM_checkSpeedlimit('pingback', SPEED_LIMIT_MAX_PINGBACK);
         if ($last > 0) {
             return new XML_RPC_Response(0, 49,
                 sprintf($PNB_ERROR['speedlimit'], $last,
