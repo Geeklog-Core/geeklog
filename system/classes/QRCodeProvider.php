@@ -5,8 +5,8 @@ namespace Geeklog;
 use HTTP_Request2;
 use HTTP_Request2_Exception;
 use HTTP_Request2_LogicException;
-use QRException;
 use RobThree\Auth\Providers\Qr\IQRCodeProvider;
+use RobThree\Auth\Providers\Qr\QRException;
 
 /**
  * Class QRCodeProvider
@@ -119,7 +119,7 @@ class QRCodeProvider implements IQRCodeProvider
     /**
      * @param $qrtext
      * @param $size
-     * @return mixed
+     * @return bool|string
      */
     public function getQRCodeImage($qrtext, $size)
     {
