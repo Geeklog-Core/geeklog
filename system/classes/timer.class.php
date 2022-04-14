@@ -107,7 +107,7 @@ class timerobject
     /**
      * Stops the timer
      *
-     * @return   float   elapsed time to degree of precision specified
+     * @return   string   formatted elapsed time to degree of precision specified
      */
     public function stopTimer()
     {
