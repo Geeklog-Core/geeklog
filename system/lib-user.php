@@ -422,7 +422,7 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0, $cssClass
         }
 
         $img = '';
-
+		$sizeAttributes = [];
         if ($uid == 1) {
             // For anonymous users
             if (!empty($_CONF['default_photo'])) {
@@ -486,10 +486,14 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0, $cssClass
                 } else {
                     $img = $_CONF['site_url'] . '/getimage.php?mode=userphotos&amp;image=' . $photo;
                 }
+				
+				$sizeAttributes = COM_getImgSizeAttributes($_CONF['path_images'] . 'userphotos/' . $photo, false);	
             }
 
             if (empty($img) && !empty($_CONF['default_photo'])) {
                 $img = $_CONF['default_photo'];
+				
+				$sizeAttributes = COM_getImgSizeAttributes($_CONF['path_images'] . 'userphotos/' . $photo, false);	
             }
         }
 
@@ -498,7 +502,15 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0, $cssClass
             $userPhoto = '<img src="' . $img . '"';
             if ($width > 0) {
                 $userPhoto .= ' width="' . $width . '"';
-            }
+				if (isset($sizeAttributes['height'])) {
+					// figure out height ratio
+					$ratio = $width / $sizeAttributes['width'];
+					$userPhoto .= ' height="' . ($sizeAttributes['height'] * $ratio)  . '"';
+				}
+            } else {
+				$userPhoto .= ' width="' . $sizeAttributes['width'] . '" height="' . $sizeAttributes['height'] . '"';
+			}
+			
             $userPhoto .= ' alt="" title="' . $displayName . '" class="' . $cssClasses . '"' . XHTML . '>';
         } else {
             $userPhoto = USER_generateUserICON($uid, $width, $cssClasses, $anonName);
