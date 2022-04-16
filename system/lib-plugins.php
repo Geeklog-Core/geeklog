@@ -2442,8 +2442,12 @@ function PLG_checkForSpam($comment, $action = -1, $permanentLink = null,
             );
 
             if ($result > PLG_SPAM_NOT_FOUND) { // Plugin found a match for spam
+                $ipAddress = \Geeklog\IP::getIPAddress();
                 COM_clearSpeedlimit(SPEED_LIMIT_WINDOW_ERROR_SPAM);
-                COM_checkSpeedlimit('error-spam', SPEED_LIMIT_MAX_ERROR_SPAM);
+                COM_checkSpeedlimit('error-spam', SPEED_LIMIT_MAX_ERROR_SPAM, $ipAddress, $isSpeeding);
+                if (!$isSpeeding) {
+                    COM_updateSpeedlimit('error-spam', $ipAddress);
+                }
 
                 return PLG_spamAction($comment, $action);
             }

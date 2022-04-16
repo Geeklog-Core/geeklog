@@ -8304,8 +8304,12 @@ function COM_handle404($alternate_url = '')
 {
     global $_CONF, $_USER, $LANG_404;
 
+    $ipAddress = \Geeklog\IP::getIPAddress();
     COM_clearSpeedlimit(SPEED_LIMIT_WINDOW_ERROR_404, 'error-404');
-    COM_checkSpeedlimit('error-404', SPEED_LIMIT_MAX_ERROR_404);
+    COM_checkSpeedlimit('error-404', SPEED_LIMIT_MAX_ERROR_404, $ipAddress, $isSpeeding);
+    if (!$isSpeeding) {
+        COM_updateSpeedlimit('error-404', $ipAddress);
+    }
 
     if (function_exists('CUSTOM_handle404')) {
         CUSTOM_handle404($alternate_url);
