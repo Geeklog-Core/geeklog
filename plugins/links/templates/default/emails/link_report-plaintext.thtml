@@ -1,10 +1,8 @@
-{lang_link_broken_msg}
-
-
-{reported_link_title} ({reported_link})
-
-{lang_edit_link_msg} 
-{edit_link}
-
-
-{lang_reported_by} {reporter_author}
+{lang_link_broken_msg}{LB}
+{LB}
+{reported_link_title} ({reported_link}){LB}
+{LB}
+{lang_edit_link_msg}{LB}
+{edit_link}{LB}
+{LB}
+{lang_reported_by} {reporter_author}{LB}

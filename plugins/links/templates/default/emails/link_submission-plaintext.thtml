@@ -1,15 +1,10 @@
-{lang_title}: {submission_title}
-
-{lang_url}: {submission_url}
-
-{lang_contributed_by} {link_contributer_name}
-
-{lang_category}: {submission_category}
-
-
-{submission_description_plaintext}
-
-
-{email_divider}
-
-{lang_link_label}: {submission_link}
+{lang_title}: {submission_title}{LB}
+{lang_url}: {submission_url}{LB}
+{lang_contributed_by} {link_contributer_name}{LB}
+{lang_category}: {submission_category}{LB}
+{LB}
+{submission_description_plaintext}{LB}
+{LB}
+{email_divider}{LB}
+{LB}
+{lang_link_label}: {submission_link}{LB}

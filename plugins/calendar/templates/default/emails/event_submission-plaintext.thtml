@@ -1,17 +1,12 @@
-{lang_title}: {submission_title}
-
-{lang_datetime} {submission_datetime}{!if lang_allday} ({lang_allday}){!endif}
-
+{lang_title}: {submission_title}{LB}
+{lang_datetime} {submission_datetime}{!if lang_allday} ({lang_allday}){!endif}{LB}
 {!if submission_url}
-{lang_url}: {submission_url}
+{lang_url}: {submission_url}{LB}
 {!endif}
-
-{lang_contributed_by} {link_contributer_name}
-
-
-{submission_description_plaintext}
-
-
-{email_divider}
-
-{lang_link_label}: {submission_link}
+{lang_contributed_by} {link_contributer_name}{LB}
+{LB}
+{submission_description_plaintext}{LB}
+{LB}
+{email_divider}{LB}
+{LB}
+{lang_link_label}: {submission_link}{LB}
