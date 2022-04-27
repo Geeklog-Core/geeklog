@@ -86,7 +86,7 @@ const SPEED_LIMIT_MAX_PINGBACK = 1;
 const SPEED_LIMIT_MAX_SUBMIT = 1;
 const SPEED_LIMIT_MAX_TRACKBACK = 1;
 
-// Constants for the window used in COM_clearSpeedlimit
+// Constants for the time window used in COM_clearSpeedlimit (in seconds)
 const SPEED_LIMIT_WINDOW_ERROR_403 = 60;
 const SPEED_LIMIT_WINDOW_ERROR_404 = 60;
 const SPEED_LIMIT_WINDOW_ERROR_SPAM = 60;
@@ -4190,9 +4190,9 @@ function PLG_collectRecaptchaInfo()
 }
 
 /**
- * Gives plugins a chance to specify their own Strutured Data Types
+ * Gives plugins a chance to specify their own Structured Data Types
  *
- * @return   array   Returns Strutured Data Types from plugins
+ * @return   array   Returns Structured Data Types from plugins
  */
 function PLG_getStructuredDataTypes()
 {
@@ -4251,7 +4251,7 @@ function PLG_onSpeeding($type, $property = '', $last = -1)
     }
 
     foreach ($_PLUGINS as $pi_name) {
-        $function = 'plugin_onSpeeding' . $pi_name;
+        $function = 'plugin_onSpeeding_' . $pi_name;
         if (function_exists($function)) {
             $function($type, $property, $last);
         }
