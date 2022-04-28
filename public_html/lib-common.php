@@ -4255,7 +4255,7 @@ function COM_getSystemMessages() {
 }
 
 /**
- * Sets a system message (which can be stacked) which then will be diplayed by COM_createHTMLDocument
+ * Sets a system message (which can be stacked) which then will be displayed by COM_createHTMLDocument
  * Uses the Session variable system-msg to story an array of Messages
  * Works not only with the current page but on page loads
  *
@@ -8305,8 +8305,8 @@ function COM_handle404($alternate_url = '')
     global $_CONF, $_USER, $LANG_404;
 
     $ipAddress = \Geeklog\IP::getIPAddress();
-    COM_clearSpeedlimit(SPEED_LIMIT_WINDOW_ERROR_404, 'error-404');
-    COM_checkSpeedlimit('error-404', SPEED_LIMIT_MAX_ERROR_404, $ipAddress, $isSpeeding);
+    COM_clearSpeedlimit($_CONF['speedlimit_window_error-404'], 'error-404');
+    COM_checkSpeedlimit('error-404', $_CONF['speedlimit_max_error-404'], $ipAddress, $isSpeeding);
     if (!$isSpeeding) {
         COM_updateSpeedlimit('error-404', $ipAddress);
     }

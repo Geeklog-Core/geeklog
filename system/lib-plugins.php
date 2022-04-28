@@ -43,7 +43,7 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
-global $_TABLES;
+global $_TABLES, $_CONF;
 
 /**
  * Response codes for the service invocation PLG_invokeService(). Note that
@@ -76,9 +76,6 @@ define('RECAPTCHA_DEFAULT_SCORE_THRESHOLD', 0.5);
 
 // Constants for the max number of allowed tries within speed limit (since Geeklog 2.2.2)
 const SPEED_LIMIT_MAX_COMMENT = 1;
-const SPEED_LIMIT_MAX_ERROR_403 = 1;    // Illegal access to admin screen
-const SPEED_LIMIT_MAX_ERROR_404 = 5;
-const SPEED_LIMIT_MAX_ERROR_SPAM = 1;
 const SPEED_LIMIT_MAX_LIKES = 1;
 const SPEED_LIMIT_MAX_MAIL = 1;
 const SPEED_LIMIT_MAX_PASSWORD = 1;
@@ -86,10 +83,15 @@ const SPEED_LIMIT_MAX_PINGBACK = 1;
 const SPEED_LIMIT_MAX_SUBMIT = 1;
 const SPEED_LIMIT_MAX_TRACKBACK = 1;
 
-// Constants for the time window used in COM_clearSpeedlimit (in seconds)
-const SPEED_LIMIT_WINDOW_ERROR_403 = 60;
-const SPEED_LIMIT_WINDOW_ERROR_404 = 60;
-const SPEED_LIMIT_WINDOW_ERROR_SPAM = 60;
+// Error Limits (since Geeklog 2.2.2)
+// Config Options for the max number of allowed tries within speed limit (from 1 to ...)
+$_CONF['speedlimit_max_error-403'] = 3; // Illegal access to admin screen
+$_CONF['speedlimit_max_error-404'] = 10;
+$_CONF['speedlimit_max_error-spam'] = 3; // All types of SPAM included
+// Config Options for the time window used in COM_clearSpeedlimit (in seconds)
+$_CONF['speedlimit_window_error-403'] = 60;
+$_CONF['speedlimit_window_error-404'] = 60;
+$_CONF['speedlimit_window_error-spam'] = 60;
 
 // buffer for function names for the center block API
 $PLG_bufferCenterAPI = [];
@@ -2431,7 +2433,7 @@ function PLG_checkForSpam($comment, $action = -1, $permanentLink = null,
                           $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
                           $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
 {
-    global $_PLUGINS;
+    global $_PLUGINS, $_CONF;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_checkforSpam_' . $pi_name;
@@ -2443,8 +2445,8 @@ function PLG_checkForSpam($comment, $action = -1, $permanentLink = null,
 
             if ($result > PLG_SPAM_NOT_FOUND) { // Plugin found a match for spam
                 $ipAddress = \Geeklog\IP::getIPAddress();
-                COM_clearSpeedlimit(SPEED_LIMIT_WINDOW_ERROR_SPAM);
-                COM_checkSpeedlimit('error-spam', SPEED_LIMIT_MAX_ERROR_SPAM, $ipAddress, $isSpeeding);
+                COM_clearSpeedlimit($_CONF['speedlimit_window_error-spam']);
+                COM_checkSpeedlimit('error-spam', $_CONF['speedlimit_max_error-spam'], $ipAddress, $isSpeeding);
                 if (!$isSpeeding) {
                     COM_updateSpeedlimit('error-spam', $ipAddress);
                 }
@@ -2459,8 +2461,8 @@ function PLG_checkForSpam($comment, $action = -1, $permanentLink = null,
         $result = $function($comment, $action);
 
         if ($result > PLG_SPAM_NOT_FOUND) { // Plugin found a match for spam
-            COM_clearSpeedlimit(SPEED_LIMIT_WINDOW_ERROR_SPAM);
-            COM_checkSpeedlimit('error-spam', SPEED_LIMIT_MAX_ERROR_SPAM);
+            COM_clearSpeedlimit($_CONF['speedlimit_window_error-spam']);
+            COM_checkSpeedlimit('error-spam', $_CONF['speedlimit_max_error-spam']);
 
             return PLG_spamAction($comment, $action);
         }

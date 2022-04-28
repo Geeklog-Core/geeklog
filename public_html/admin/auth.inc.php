@@ -43,8 +43,8 @@ COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
 $ipAddress = \Geeklog\IP::getIPAddress();
 
 if (COM_checkSpeedlimit('login', $_CONF['login_attempts'], $ipAddress) > 0) {
-    COM_clearSpeedlimit(SPEED_LIMIT_WINDOW_ERROR_403, 'error-403');
-    COM_checkSpeedlimit('error-403', SPEED_LIMIT_MAX_ERROR_403, $ipAddress, $isSpeeding);
+    COM_clearSpeedlimit($_CONF['speedlimit_window_error-403'], 'error-403');
+    COM_checkSpeedlimit('error-403', $_CONF['speedlimit_max_error-403'], $ipAddress, $isSpeeding);
     if (!$isSpeeding) {
         COM_updateSpeedlimit('error-403', $ipAddress);
     }
