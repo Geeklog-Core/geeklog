@@ -75,6 +75,7 @@ define('RECAPTCHA_SUPPORT_V3', 4);
 define('RECAPTCHA_DEFAULT_SCORE_THRESHOLD', 0.5);
 
 // Constants for the max number of allowed tries within speed limit (since Geeklog 2.2.2)
+// Types in Geeklog core include: comment, likes, mail, password, pingback, submit, trackback
 const SPEED_LIMIT_MAX_COMMENT = 1;
 const SPEED_LIMIT_MAX_LIKES = 1;
 const SPEED_LIMIT_MAX_MAIL = 1;
@@ -83,15 +84,37 @@ const SPEED_LIMIT_MAX_PINGBACK = 1;
 const SPEED_LIMIT_MAX_SUBMIT = 1;
 const SPEED_LIMIT_MAX_TRACKBACK = 1;
 
-// Error Limits (since Geeklog 2.2.2)
+/*
+Error Limits (since Geeklog 2.2.2)
+Types in Geeklog core include: 
+	error-403
+		For Illegal access to admin screen.
+		This only gets triggered after 'login_attempts' config option has been reached.
+		
+	error-404
+		All 404 errors included.
+		Remember to consider search engine bots as they may generate 404 errors. This should happen at a slow pace though.
+		
+	error-spam
+		All types of SPAM included.
+		All speedlimits should be the same so this error limit can work correctly.
+
+	error-speedlimit
+		All speedlimits reached included.
+		All speedlimits should be the same so this error limit can work correctly.
+		Need to consider not only speedlimits but also 'error-spam'.
+		
+*/
 // Config Options for the max number of allowed tries within speed limit (from 1 to ...)
-$_CONF['speedlimit_max_error-403'] = 3; // Illegal access to admin screen
-$_CONF['speedlimit_max_error-404'] = 10;
-$_CONF['speedlimit_max_error-spam'] = 3; // All types of SPAM included
+$_CONF['speedlimit_max_error-403'] = 3; 
+$_CONF['speedlimit_max_error-404'] = 20;
+$_CONF['speedlimit_max_error-spam'] = 5;
+$_CONF['speedlimit_max_error-speedlimit'] = 10;
 // Config Options for the time window used in COM_clearSpeedlimit (in seconds)
-$_CONF['speedlimit_window_error-403'] = 60;
-$_CONF['speedlimit_window_error-404'] = 60;
-$_CONF['speedlimit_window_error-spam'] = 60;
+$_CONF['speedlimit_window_error-403'] = 60; 
+$_CONF['speedlimit_window_error-404'] = 120;
+$_CONF['speedlimit_window_error-spam'] = 270; // Based on anonymous users and all speedlimits (comment, likes, etc.) enabled and set to 45 seconds. 
+$_CONF['speedlimit_window_error-speedlimit'] = 540; // Based on 'error-spam' settings
 
 // buffer for function names for the center block API
 $PLG_bufferCenterAPI = [];

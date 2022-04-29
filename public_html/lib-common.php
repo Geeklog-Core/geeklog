@@ -6398,7 +6398,8 @@ function COM_makeList($listOfItems, $className = '')
 /**
  * Check if speed limit applies
  *
- * @param    string $type        type of speed limit, e.g. 'submit', 'comment'
+ * @param    string $type        type of speed limit or error limit 
+ *								 e.g. 'submit', 'comment', 'error-404', 'error-spam'
  * @param    int    $max         max number of allowed tries within speed limit
  * @param    string $property    IP address or other identifiable property
  * @param    bool   $isSpeeding  this variable is set to true if the number of speeding exceeds $max
@@ -6407,7 +6408,7 @@ function COM_makeList($listOfItems, $className = '')
  */
 function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '', &$isSpeeding = false)
 {
-    global $_TABLES;
+    global $_TABLES, $_CONF;
 
     $last = 0;
     $isSpeeding = false;
@@ -6429,10 +6430,10 @@ function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '', &$isSpe
         $property = \Geeklog\IP::getIPAddress();
     }
 
-    $type = DB_escapeString($type);
-    $property = DB_escapeString($property);
+    $esc_type = DB_escapeString($type);
+    $esc_property = DB_escapeString($property);
 
-    $res = DB_query("SELECT date FROM {$_TABLES['speedlimit']} WHERE (type = '$type') AND (ipaddress = '$property') ORDER BY date");
+    $res = DB_query("SELECT date FROM {$_TABLES['speedlimit']} WHERE (type = '$esc_type') AND (ipaddress = '$esc_property') ORDER BY date");
 
     // If the number of allowed tries has not been reached,
     // return 0 (didn't hit limit)
@@ -6449,12 +6450,23 @@ function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '', &$isSpe
             $last = 1;
         }
     }
-
+	
     // Since Geeklog 2.2.2
     // Set the $isSpeeding variable and call PLG_onSpeeding() to let the plugins and custom function (CUSTOM_onSpeeding)
     // know that the user is speeding
     $isSpeeding = true;
     PLG_onSpeeding($type, $property, $last);
+	
+	// Check if to many speedlimits being hit all at once
+    if ($last > 0 && $type != 'error-speedlimit') {
+		// Can't check itself for speedlimit ('error-speedlimit')
+		// Remember multiple speedlimits could be triggered on one page request. For example a comment posting has a speedlimit and also spam has an error limit. So if a comment was posted to soon after the last posting that was also considered spam, this one comment posting would generate 2 of these error types
+		COM_clearSpeedlimit($_CONF['speedlimit_window_error-speedlimit'], 'error-speedlimit');
+		COM_checkSpeedlimit('error-speedlimit', $_CONF['speedlimit_max_error-speedlimit'], $property, $isSpeeding);
+		if (!$isSpeeding) {
+			COM_updateSpeedlimit('error-speedlimit', $property);
+		}        	
+	}	
 
     return $last;
 }
