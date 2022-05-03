@@ -538,12 +538,13 @@ function PLG_getCommentUrlId($type, $id = '')
 /**
  * Return the comment code to this plugin item. This is based not only the code of the actual plugin item but the access the user has to the item
  *
- * @param   string $type Plugin of comment
- * @param   string $id   Item id to which $cid belongs
+ * @param   string  $type Plugin of comment
+ * @param   string	$id   Item id to which $cid belongs
+ * @param   int		$uid  user id (0 for current user)
  * @return  int    Return a CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
  * @since    Geeklog v2.2.1
  */
-function PLG_commentEnabled($type, $id)
+function PLG_commentEnabled($type, $id, $uid = 0)
 {
     global $_CONF;
 
@@ -2542,6 +2543,7 @@ function PLG_spamAction($content, $action = -1)
  * - 'id'            - ID of the item, e.g. sid for articles
  * - 'title'         - title of the item
  * - 'url'           - URL of the item
+ * - 'likes'         - Likes setting for item (F
  * 'excerpt' and 'description' may return the same value. Properties should be
  * returned in the order they are listed in $what. Properties that are not
  * available should return an empty string.
@@ -2568,6 +2570,12 @@ function PLG_getItemInfo($type, $id, $what, $uid = 0, $options = array())
 
         $type = 'story';
     }
+	
+    if ($type == 'comment') {
+        global $_CONF;
+
+        require_once $_CONF['path_system'] . 'lib-comment.php';
+    }	
 
     $args = array(
         1 => $id,
@@ -3032,9 +3040,11 @@ function PLG_getBlockLocations()
 function PLG_getBlocks($side, $topic = '')
 {
     global $_PLUGINS;
+	
+	$all_plugins = array_merge($_PLUGINS, array('likes'));
 
     $ret = array();
-    foreach ($_PLUGINS as $pi_name) {
+    foreach ($all_plugins as $pi_name) {
         $function = 'plugin_getBlocks_' . $pi_name;
         if (function_exists($function)) {
             $items = $function($side, $topic);
@@ -3067,9 +3077,11 @@ function PLG_getBlocks($side, $topic = '')
 function PLG_getBlocksConfig($side, $topic = '')
 {
     global $_PLUGINS;
+	
+	$all_plugins = array_merge($_PLUGINS, array('likes'));
 
     $ret = array();
-    foreach ($_PLUGINS as $pi_name) {
+    foreach ($all_plugins as $pi_name) {
         $function = 'plugin_getBlocksConfig_' . $pi_name;
         if (function_exists($function)) {
             $items = $function($side, $topic);
@@ -4005,13 +4017,14 @@ function PLG_getLanguageOverrides()
 /**
 * See if Likes system enabled for a plugin
 *
-* @param    string  $type           plugin name
-* @param    string  $sub_type Sub   type of plugin to allow plugins to have likes for more than one type of item (not required)
-* @return   int                     0 = disabled, 1 = Likes and Dislikes, 2 = Likes only
+* @param    string  $type      	plugin name
+* @param    string  $sub_type	Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
+* @param   string $id       	Item id for which like is for (not required)
+* @return   int                 0 = disabled, 1 = Likes and Dislikes, 2 = Likes only
 * @since    Geeklog 2.2.1
 *
 */
-function PLG_typeLikesEnabled($type, $sub_type)
+function PLG_typeLikesEnabled($type, $sub_type, $id)
 {
     global $_CONF;
 

@@ -104,11 +104,11 @@ if (!$error_data) {
 }
 
 if (!$error_data) {
-    $likes_setting = PLG_typeLikesEnabled($type, $sub_type);
+    $likes_setting = PLG_typeLikesEnabled($type, $sub_type, $id);
     if (!($likes_setting == 1 OR $likes_setting == 2)) {
         $error_data = true;
     	if ($_LIKES_DEBUG) {
-            COM_errorLog("Likes System Error: Likes System not enabled for this type", 1);
+            COM_errorLog("Likes System Error: Likes System not enabled for this type and/or id", 1);
     	}
     }
 }

@@ -1373,6 +1373,12 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
                 $fields[] = 'title';
                 $groupby_fields[] = 'title';
                 break;
+				
+            case 'likes':
+				// Likes article setting is a global variable and not an item per item setting
+                $fields[] = $_CONF['likes_articles'] . ' AS likes';
+                $groupby_fields[] = 'likes';
+                break;					
 
             case 'url':
                 // needed for $sid == '*', but also in case we're only requesting
@@ -1499,6 +1505,10 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
                 case 'title':
                     $props['title'] = stripslashes($A['title']);
                     break;
+					
+                case 'likes':
+                    $props['likes'] = $A['likes'];
+                    break;					
 
                 case 'url':
                     if (empty($A['sid'])) {
@@ -1806,9 +1816,10 @@ function plugin_autotags_article($op, $content = '', $autotag = array())
  * Return the comment code to this plugin item. This is based not only the code of the actual plugin item but the access the user has to the item
  *
  * @param   string $id   Item id to which $cid belongs
+ * @param   int    $uid  user id or 0 = current user 
  * @return  int    Return a CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
  */
-function plugin_commentenabled_article($id)
+function plugin_commentenabled_article($id, $uid = 0)
 {
     global $_CONF, $_TABLES;
 
@@ -1816,10 +1827,10 @@ function plugin_commentenabled_article($id)
     $commentCode = COMMENT_CODE_DISABLED;
 
     $sql = "SELECT sid, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon FROM {$_TABLES['stories']}";
-    $sql .= " WHERE sid = '" . DB_escapeString($id) . "' " . COM_getPermSQL('AND');
+    $sql .= " WHERE sid = '" . DB_escapeString($id) . "' " . COM_getPermSQL('AND', $uid);
     if (!SEC_hasRights('story.edit')) {
         $sql .= "AND (draft_flag = 0) AND (date <= NOW())";
-    }
+    } 
     $result = DB_query($sql);
     $A = DB_fetchArray($result);
     if (DB_numRows($result) == 1 && TOPIC_hasMultiTopicAccess('article', $id) > 0) { // Need read access of topics to post comment
@@ -1827,10 +1838,10 @@ function plugin_commentenabled_article($id)
         if ($A['commentcode'] == COMMENT_CODE_ENABLED) {
             $commentCode = COMMENT_CODE_ENABLED;
         } elseif ($A['commentcode'] == COMMENT_CODE_CLOSED) { // Closed but still visible so give admins access
-            if (SEC_hasRights('story.edit') &&
+            if (SEC_hasRights('story.edit', 'AND', $uid) &&
                 (SEC_hasAccess($A['owner_id'], $A['group_id'],
                         $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                        $A['perm_anon']) == 3)) {
+                        $A['perm_anon'], $uid) == 3)) {
                 $commentCode = COMMENT_CODE_ENABLED; // If Admin then treat comment like enabled
             } else {
                 $commentCode = COMMENT_CODE_CLOSED;
@@ -2207,7 +2218,7 @@ function plugin_usercontributed_article($uid)
  *
  * @return   int    0 = disabled, 1 = Likes and Dislikes, 2 = Likes only
  */
-function plugin_likesenabled_article($sub_type)
+function plugin_likesenabled_article($sub_type, $id)
 {
     global $_CONF;
 

@@ -190,9 +190,10 @@ function plugin_displaycomment_staticpages($id, $cid, $title, $order, $format, $
  * Return the comment code to this plugin item. This is based not only the code of the actual plugin item but the access the user has to the item
  *
  * @param   string $id   Item id to which $cid belongs
+ * @param   int    $uid  user id or 0 = current user
  * @return  int    Return a CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
  */
-function plugin_commentenabled_staticpages($id)
+function plugin_commentenabled_staticpages($id, $uid = 0)
 {
     global $_CONF, $_TABLES;
 
@@ -200,20 +201,20 @@ function plugin_commentenabled_staticpages($id)
     $commentCode = COMMENT_CODE_DISABLED;
 
     $sql = "SELECT sp_id, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon FROM {$_TABLES['staticpage']}";
-    $sql .= " WHERE (template_flag = 0) AND sp_id = '" . DB_escapeString($id) . "' " . COM_getPermSQL('AND');
+    $sql .= " WHERE (template_flag = 0) AND sp_id = '" . DB_escapeString($id) . "' " . COM_getPermSQL('AND', $uid);
     if (!SEC_hasRights('staticpages.edit')) {
         $sql .= ' AND (draft_flag = 0)';
     }
     $result = DB_query($sql);
     $A = DB_fetchArray($result);
-    if (DB_numRows($result) == 1) {
+    if (DB_numRows($result) == 1 && TOPIC_hasMultiTopicAccess('staticpages', $id) > 0) { // Need read access of topics to post comment
         if ($A['commentcode'] == COMMENT_CODE_ENABLED) {
             $commentCode = COMMENT_CODE_ENABLED;
         } elseif ($A['commentcode'] == COMMENT_CODE_CLOSED) { // Closed but still visible so give admins access
-            if (SEC_hasRights('staticpages.edit') &&
+            if (SEC_hasRights('staticpages.edit', 'AND', $uid) &&
                 (SEC_hasAccess($A['owner_id'], $A['group_id'],
                         $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                        $A['perm_anon']) == 3)) {
+                        $A['perm_anon'], $uid) == 3)) {
                 $commentCode = COMMENT_CODE_ENABLED; // If Admin then treat comment like enabled
             } else {
                 $commentCode = COMMENT_CODE_CLOSED;

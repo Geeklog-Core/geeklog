@@ -462,3 +462,150 @@ function LIKES_getStats($action, $type = '', $sub_type = '', $item_ids = array()
         return 0;
     }
 }
+
+/**
+ * Gets config information for dynamic blocks from plugins
+ * Returns data for blocks on a given side and, potentially, for
+ * a given topic.
+ *
+ * @param    string $side  Side to get blocks for (right or left for now)
+ * @param    string $topic Only get blocks for this topic
+ * @return   array           array of block data
+ * @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+ */
+function plugin_getBlocksConfig_likes($side, $topic = '')
+{
+    global $_TABLES, $_CONF, $_CA_CONF, $LANG_CAL_1;
+
+    $retval = array();
+
+	/*
+    $owner_id = SEC_getDefaultRootUser();
+
+    // Check permissions first
+    if (SEC_hasAccess($owner_id, $_CA_CONF['block_group_id'], $_CA_CONF['block_permissions'][0], $_CA_CONF['block_permissions'][1], $_CA_CONF['block_permissions'][2], $_CA_CONF['block_permissions'][3])) {
+        if (($side == 'left' && $_CA_CONF['block_isleft'] == 1) || ($side == 'right' && $_CA_CONF['block_isleft'] == 0)) {
+            $retval[] = array(
+                'plugin'         => $LANG_CAL_1[16],
+                'name'           => 'events',
+                'title'          => $LANG_CAL_1[50],
+                'type'           => 'dynamic',
+                'onleft'         => $_CA_CONF['block_isleft'],
+                'blockorder'     => $_CA_CONF['block_order'],
+                'allow_autotags' => false,
+                'help'           => '',
+                'enable'         => $_CA_CONF['block_enable'],
+                'topic_option'   => $_CA_CONF['block_topic_option'],
+                'topic'          => $_CA_CONF['block_topic'],
+                'inherit'        => array(),
+            );
+        }
+    }
+	*/
+
+    return $retval;
+}
+
+/**
+* Gets Geeklog blocks from plugins
+*
+* Returns data for blocks on a given side and, potentially, for
+* a given topic.
+*
+* @param    string  $side   Side to get blocks for (right or left for now)
+* @param    string  $topic  Only get blocks for this topic
+* @return   array           array of block data
+* @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+*
+*/
+function plugin_getBlocks_likes($side, $topic = '')
+{
+    global $_TABLES, $_CONF, $CONF_FORUM, $LANG_GF01, $FORUM_CSS;
+
+    $retval = array();
+	return $retval;
+	/*
+	// Needs to be cached
+	$cacheInstance = 'likes__likesblock_' . CACHE_security_hash() . '_' . $_CONF['theme'];
+	$retval = CACHE_check_instance($cacheInstance);
+	if ($retval) {
+		return $retval;
+	}	
+	*/
+
+	// Likes Block
+	// Last X Seconds
+	// Show Likes and/or Dislikes
+	// Show only for users that can see Likes
+	// Show for only content that has likes enabled
+	// SHow newest first
+	
+	// Read access to content like is for?
+	// loop through the list and then check permissions with something like PLG_getItemInfo so caching would be required.
+	
+	// Figure out cutoff date
+	// 1 day = 86400
+	// 1 week = 604800
+	// 4 weeks = 2419200
+	// 12 weeks = 7257600
+	$_CONF['likes_block_include_time'] = 7257600;
+	$_CONF['likes_block_max_items'] = 10;
+
+	$likesDate = DateTime::createFromFormat('U.u', microtime(true));
+	$likesDate->sub(new DateInterval('PT' . $_CONF['likes_block_include_time'] . 'S')); // minus number of seconds
+	$includeLikesDate = $likesDate->format("Y-m-d H:i:s"); 
+	
+	$display  = '';
+	$options = [];
+
+	
+	// We do not know permissions of items being returned that has likes (or if likes enabled for item) so cannot limit number of rows since some items may not have read permissions for user
+	$sql = "SELECT COUNT(lid) actioncount, type, subtype, id, MAX(created) latestdate FROM {$_TABLES['likes']} 
+		WHERE action = " . LIKES_ACTION_LIKE ." 
+		AND created > '{$includeLikesDate}'
+		GROUP BY type, subtype, id
+		ORDER BY latestdate  DESC";
+	
+	$result = DB_Query($sql);
+	$nrows = DB_numRows($result);
+
+	$listCount = 0;
+	for ($i = 0; $i < $nrows; $i++) {
+		$A = DB_fetchArray($result);
+		
+		$options['sub_type'] = $A['subtype'];
+		$info = PLG_getItemInfo($A['type'], $A['id'], 'url,title,likes', 0, $options);
+		
+		// If info returned then user has permission to view item
+		// If the item type, subtype, id have likes currently enabled
+		if (!empty($info[2]) && $info[2] > 0) {
+			$display .= '<a href="' . $info[0] . '">' . $info[1] . "</a> - {$A['actioncount']} - {$A['latestdate']}<br>";
+			
+			++$listCount;
+			if ($listCount == $_CONF['likes_block_max_items']) {
+				break;
+			}
+		} else {
+			// User does not have read access to item or doesn't support PLG_getItemInfo
+			$display .= "{$A['type']} {$A['id']} - {$A['actioncount']} - {$A['latestdate']}<br>";
+		}
+	}
+	
+
+	// CACHE_create_instance($cacheInstance, $display);
+
+	
+	$retval[] = array('name'           => 'likes_most',
+					  'type'           => 'dynamic',
+					  'onleft'         => true,
+					  'title'          => 'Likes Block',
+					  'blockorder'     => 2,
+					  'content'        => $display,
+					  'allow_autotags' => false,
+					  'convert_newlines' => false,
+					  'css_id' 		   => 'gl-blockLikes', // Used to jump to block position
+					  'help'           => '');	
+	
+	
+	return $retval;
+}

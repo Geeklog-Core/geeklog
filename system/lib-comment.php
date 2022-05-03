@@ -3415,7 +3415,7 @@ function plugin_usercontributed_comment($uid)
  *
  * @return   int    0 = disabled, 1 = Likes and Dislikes, 2 = Likes only
  */
-function plugin_likesenabled_comment($sub_type)
+function plugin_likesenabled_comment($sub_type, $id)
 {
     global $_CONF;
 
@@ -3526,6 +3526,182 @@ function plugin_getItemLikeURL_comment($sub_type, $id)
                 }
             }
         }
+    }
+
+    return $retval;
+}
+
+/**
+ * Return information for a comment
+ *
+ * @param    string $cid		comment ID or '*'
+ * @param    string $what    	comma-separated list of properties
+ * @param    int    $uid     	user ID or 0 = current user
+ * @param    array  $options 	(reserved for future extensions)
+ * @return   mixed              string or array of strings with the information
+ */
+function plugin_getiteminfo_comment($cid, $what, $uid = 0, $options = array())
+{
+    global $_CONF, $_TABLES;
+
+    // parse $what to see what we need to pull from the database
+    $properties = explode(',', $what);
+    $fields = [];
+	$fields[] = 'cid';
+	$fields[] = 'type';
+	$fields[] = 'sid AS itemID';
+    foreach ($properties as $p) {
+        switch ($p) {
+            case 'date-created':
+                $fields[] = 'UNIX_TIMESTAMP(created) AS c_unixdate';
+                break;
+
+            case 'description':
+            case 'excerpt':
+                $fields[] = 'comment';
+                break;
+
+            case 'id':
+                // Already grabbing it
+                break;
+
+            case 'title':
+                $fields[] = 'title';
+                break;
+				
+            case 'likes':
+				// Likes comment setting is a global variable and not an item per item setting
+                $fields[] = $_CONF['likes_comments'] . ' AS likes';
+                $groupby_fields[] = 'likes';
+                break;	
+
+            case 'url':
+                // needed for $cid == '*', but also in case we're only requesting
+                // the URL (so that $fields isn't empty)
+                $fields[] = 'cid';
+                break;
+
+            default:
+                // nothing to do
+                break;
+        }
+    }
+
+    $fields = array_unique($fields);
+
+    if (count($fields) == 0) {
+        $retval = array();
+
+        return $retval;
+    }
+
+    // prepare SQL request
+	$where = "";
+    if ($cid != '*') {
+        $where = " WHERE (cid = '" . DB_escapeString($cid) . "')";
+    }
+
+    $sql = "SELECT " . implode(',', $fields)
+        . " FROM {$_TABLES['comments']}" . $where;
+    if ($cid != '*') {
+        $sql .= ' LIMIT 1';
+    }
+
+    $result = DB_query($sql);
+    $numRows = DB_numRows($result);
+
+    $retval = array();
+    for ($i = 0; $i < $numRows; $i++) {
+        $A = DB_fetchArray($result);
+		
+		// Can't check permission in above SQL for read access to item of comment and if comment is enabled so do it now
+		// check item for read permissions and comments enabled for it
+		$commentAccess = COMMENT_CODE_DISABLED;
+		$type = $A['type'];
+		$function = 'plugin_commentenabled_' . $type;
+		if (function_exists($function)) {
+			// CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
+			$commentAccess = PLG_commentEnabled($type, $A['itemID'], $uid);
+		} else {
+			COM_deprecatedLog('plugin_getiteminfo_' . $type, '2.2.1', '3.0.0', 'plugin_commentenabled_' . $type . " is now required to check if comments are enabled for a plugin item.");
+			// This way will be depreciated as of Geeklog v3.0.0
+			// check item for read permissions at least
+			if (!empty(PLG_getItemInfo($type, $A['itemID'], 'url', $uid))) {
+				$commentAccess = COMMENT_CODE_ENABLED;
+			}
+		}
+
+		// CommentCode: COMMENT_CODE_ENABLED (0), COMMENT_CODE_DISABLED (-1), COMMENT_CODE_CLOSED (1)
+		if ($commentAccess != COMMENT_CODE_DISABLED) { // enabled and closed is allowed since readable
+			$props = array();
+			foreach ($properties as $p) {
+				switch ($p) {
+					case 'date-created':
+						$props['date'] = $A['c_unixdate'];
+						break;
+
+					case 'description':
+					case 'excerpt':
+						// Comments really should a postmode that is saved with the comment (ie store either 'html' or 'plaintext') but they don't so lets figure out if comment is html by searching for html tags
+						if (preg_match('/<.*>/', $A['comment']) == 0) {
+							$A['comment'] = COM_nl2br($A['comment']);
+						}
+
+						$A['comment'] = str_replace('$', '&#36;', $A['comment']);
+						$A['comment'] = str_replace('{', '&#123;', $A['comment']);
+						$A['comment'] = str_replace('}', '&#125;', $A['comment']);
+
+						// Replace any plugin autotags
+						$A['comment'] = PLG_replaceTags($A['comment'], '', false, 'comment', $A['cid']);
+						
+						$props[$p] = $A['comment'];
+						break;
+
+					case 'id':
+						$props['id'] = $A['cid'];
+						break;
+
+					case 'title':
+						$props['title'] = stripslashes($A['title']);
+						break;
+						
+					case 'likes':
+						$props['likes'] = $A['likes'];
+						break;						
+
+					case 'url':
+						$props['url'] = $_CONF['site_url'] . "/comment.php?mode=view&cid={$A['cid']}";
+						break;
+
+					default:
+						// return empty string for unknown properties
+						$props[$p] = '';
+						break;
+				}
+			}
+
+			$mapped = array();
+			foreach ($props as $key => $value) {
+				if ($cid == '*') {
+					if ($value != '') {
+						$mapped[$key] = $value;
+					}
+				} else {
+					$mapped[] = $value;
+				}
+			}
+
+			if ($cid == '*') {
+				$retval[] = $mapped;
+			} else {
+				$retval = $mapped;
+				break;
+			}
+		}
+    }
+
+    if (($cid != '*') && (count($retval) == 1)) {
+        $retval = $retval[0];
     }
 
     return $retval;
