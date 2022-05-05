@@ -4037,6 +4037,7 @@ function PLG_typeLikesEnabled($type, $sub_type, $id)
 
     if ($_CONF['likes_enabled']) {
         $args[1] = $sub_type;
+		$args[2] = $id;
         $function = 'plugin_likesenabled_' . $type;
 
         $retval = PLG_callFunctionForOnePlugin($function,$args);
