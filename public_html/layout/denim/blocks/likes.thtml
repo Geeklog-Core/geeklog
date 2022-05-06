@@ -1,0 +1,25 @@
+{# begin {templatelocation} #}
+
+{!if lang_action_time_span}
+<h3>{lang_action_time_span}</h3>
+{!endif}
+
+{!if lang_no_items}
+{lang_no_items}<br{xhtml}>
+{!else}
+<ul>
+    {items}
+</ul>
+{!endif}
+
+<!-- BEGIN item -->
+<li class="listitem">
+ <a href="{item-link}" title="{item-title}">{item-title}</a>
+ {!!if {item-likes} >= 0 !!}&nbsp;&nbsp;<span class="uk-icon-thumbs-o-up uk-icon-small" data-uk-tooltip title="{lang_num_of_likes_in_time_limit}"></span>&nbsp;{item-likes}
+ {!endif}
+ {!!if {item-dislikes} >= 0 !!}&nbsp;&nbsp;<span class="uk-icon-thumbs-o-down uk-icon-small" data-uk-tooltip title="{lang_num_of_dislikes_in_time_limit}"></span>&nbsp;{item-dislikes}
+ {!endif}
+</li>
+<!-- END item -->
+
+{# end {templatelocation} #}

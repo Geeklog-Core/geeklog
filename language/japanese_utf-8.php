@@ -777,7 +777,42 @@ $LANG_LIKES = array(
     'num_anon_users' => '<br' . XHTML . '>%s Anonymous Users',
     'one_anon_users' => '<br' . XHTML . '>1 Anonymous User',
     'num_more_users' => '<br' . XHTML . '>+%s more Users',
-    'username_in_likes_list' => '<br' . XHTML . '>%s'
+    'username_in_likes_list' => '<br' . XHTML . '>%s',
+	// Likes Block Tooltips
+    'num_likes_in_time_limit'		=> 'The last number of Likes this item received within the time specified.',
+	'num_dislikes_in_time_limit'   	=> 'The last number of Dislikes this item received within the time specified.',
+	'num_likes_total'   			=> 'The total number of Likes this item has received.',
+	'num_dislikes_total'   			=> 'The total number of Dislikes this item has received.',
+	// Likes Block time msg
+	'likes_time_span'   			=> 'Most Likes in the last %t %s',
+	'dislikes_time_span'   			=> 'Most Dislikes in the last %t %s',
+	'all_time_span'					=> 'Most engaging in the last %t %s',
+	// Likes Block Title
+	'whats_liked'   				=> 'Whats Liked',
+	'whats_recently_liked' 			=> 'Whats Recently Liked',
+	'whats_disliked'   				=> 'Whats Disliked',
+	'whats_recently_disliked' 		=> 'Whats Recently Disliked',
+	'whats_popular' 				=> 'Whats Popular',
+	'whats_recently_popular' 		=> 'Whats Recently Popular',
+	// Likes Block Title for type
+	'whats_liked_type'   			=> 'Liked %s',
+	'whats_recently_liked_type'		=> 'Recently Liked %s',
+	'whats_disliked_type'			=> 'Disliked %s',
+	'whats_recently_disliked_type'	=> 'Recently Disliked %s',
+	'whats_popular_type' 			=> 'Popular %s',
+	'whats_recently_popular_type'	=> 'Recently Popular %s',	
+	// Likes Block - No Items
+	'no_liked_items_in_time_limit'  => 'There have been no Likes during the time specified.',
+	'no_disliked_items_in_time_limit'  => 'There have been no Dislikes during the time specified.',
+	'no_action_items_in_time_limit' => 'There have been no Likes or Dislikes during the time specified.',
+	'no_liked_items'   				=> 'There are no Liked items.',
+	'no_disliked_items'   			=> 'There are no Disliked items.',
+	'no_action_items'   			=> 'There are no Liked or Disliked items.',
+	// Likes Block Core Supported Plurals
+	'articles'   					=> 'Articles',
+	'comments'   					=> 'Comments',
+	'pages'   						=> 'Pages',
+	'polls'   						=> 'Polls'
 );
 
 ###############################################################################

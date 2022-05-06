@@ -2214,6 +2214,24 @@ function plugin_usercontributed_article($uid)
 }
 
 /**
+ * Find out Likes plural label for item
+ *
+ * @return   string 	Plural name of item that can be liked or disliked
+ */
+function plugin_likeslabel_article($sub_type)
+{
+    global $_CONF, $LANG_LIKES;
+
+    $retval = false;
+
+    if ($_CONF['likes_articles'] > 0) {
+		$retval = $LANG_LIKES['articles'];
+    }
+
+    return $retval;
+}
+
+/**
  * Is Likes system enabled for articles
  *
  * @return   int    0 = disabled, 1 = Likes and Dislikes, 2 = Likes only

@@ -4024,7 +4024,7 @@ function PLG_getLanguageOverrides()
 * @since    Geeklog 2.2.1
 *
 */
-function PLG_typeLikesEnabled($type, $sub_type, $id)
+function PLG_typeLikesEnabled($type, $sub_type, $id = '')
 {
     global $_CONF;
 
@@ -4039,6 +4039,36 @@ function PLG_typeLikesEnabled($type, $sub_type, $id)
         $args[1] = $sub_type;
 		$args[2] = $id;
         $function = 'plugin_likesenabled_' . $type;
+
+        $retval = PLG_callFunctionForOnePlugin($function,$args);
+    }
+
+    return $retval;
+}
+
+/**
+* Find out Likes plural label for item
+*
+* @param    string  $type      	plugin name
+* @param    string  $sub_type	Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
+* @return   string              Plural name of item that can be liked or disliked
+* @since    Geeklog 2.2.2
+*
+*/
+function PLG_typeLikesLabel($type, $sub_type)
+{
+    global $_CONF;
+
+    $retval = '';
+
+    // ensure that we're picking up the comment library as it is not always loaded
+    if ($type == 'comment') {
+        require_once $_CONF['path_system'] . 'lib-comment.php';
+    }
+
+    if ($_CONF['likes_enabled']) {
+        $args[1] = $sub_type;
+        $function = 'plugin_likeslabel_' . $type;
 
         $retval = PLG_callFunctionForOnePlugin($function,$args);
     }

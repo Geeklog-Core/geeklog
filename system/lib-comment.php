@@ -3411,6 +3411,24 @@ function plugin_usercontributed_comment($uid)
 }
 
 /**
+ * Find out Likes plural label for item
+ *
+ * @return   string 	Plural name of item that can be liked or disliked
+ */
+function plugin_likeslabel_comment($sub_type)
+{
+    global $_CONF, $LANG_LIKES;
+
+    $retval = false;
+
+    if ($_CONF['likes_comments'] > 0) {
+		$retval = $LANG_LIKES['comments'];
+    }
+
+    return $retval;
+}
+
+/**
  * Is Likes system enabled for comments
  *
  * @return   int    0 = disabled, 1 = Likes and Dislikes, 2 = Likes only

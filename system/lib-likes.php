@@ -61,14 +61,20 @@ $_LIKES_DEBUG = COM_isEnableDeveloperModeLog('like');
 // Plugins that support this must also support PLG_getItemInfo and returning url (based on permissions)
 
 /**
- * Constants used for storing Likes actions
+ * Constants used for storing Likes actions in DB table
  */
-
 define('LIKES_ACTION_NONE', 0); // Also considered a delete by PLG_itemLike
 define('LIKES_ACTION_LIKE', 1);
 define('LIKES_ACTION_DISLIKE', 2);
 define('LIKES_ACTION_UNLIKE', 3);
 define('LIKES_ACTION_UNDISLIKE', 4);
+
+/**
+ * Constants used for Likes Block
+ */
+const LIKES_BLOCK_DISPLAY_LIKE = 1;
+const LIKES_BLOCK_DISPLAY_DISLIKE = 2;
+const LIKES_BLOCK_DISPLAY_ALL = 3;
 
 /**
 * Returns the Likes Control
@@ -310,11 +316,11 @@ function LIKES_hasAction($type, $sub_type, $item_id, $uid, $ip)
     if (DB_numRows($result) > 0) {
         $A = DB_fetchArray($result);
         $prev_action = $A['action'];
+		
+		if ($_LIKES_DEBUG) {
+			COM_errorLog("Likes Previous Action Detected = $prev_action for type '$type' and sub type '$sub_type' with id '$item_id' for user id $uid", 1);
+		}
     }
-
-	if ($_LIKES_DEBUG) {
-		COM_errorLog("Likes Previous Action Detected = $prev_action for type '$type' with id '$item_id' for user id $uid", 1);
-	}
 
     return $prev_action;
 }
@@ -520,85 +526,296 @@ function plugin_getBlocksConfig_likes($side, $topic = '')
 */
 function plugin_getBlocks_likes($side, $topic = '')
 {
-    global $_TABLES, $_CONF, $CONF_FORUM, $LANG_GF01, $FORUM_CSS;
+    global $_TABLES, $_CONF, $LANG_LIKES;
 
-    $retval = array();
-	return $retval;
-	/*
-	// Needs to be cached
-	$cacheInstance = 'likes__likesblock_' . CACHE_security_hash() . '_' . $_CONF['theme'];
-	$retval = CACHE_check_instance($cacheInstance);
-	if ($retval) {
+	return;
+
+		// To Do
+		// Needs Autotag like polls block
+		// Needs to work as a phpblock_likes and as a dynamic block
+		// Needs likes block template for all themes
+		
+
+		// Likes Block
+		// Last X Seconds
+		// Show Likes and/or Dislikes
+		// Show only for users that can see Likes
+		// Show for only content that has likes enabled
+		// Show most actions first
+		
+		
+		// Figure out cutoff date
+		// 1 day = 86400
+		// 1 week = 604800
+		// 4 weeks = 2419200
+		// 12 weeks = 7257600
+		
+
+
+	// Config Options
+	$_CONF['likes_block_cache_time'] = 0;
+	$_CONF['likes_block_include_time'] = 7257600; // 7257600
+	$_CONF['likes_block_max_items'] = 10;
+	$_CONF['likes_block_displayed_actions'] = 3; // Liked, Disliked, All Actions
+	$_CONF['likes_block_type'] = ''; // All or one (comment, article, forum - post)
+	$_CONF['likes_block_subtype'] = ''; // Can only be used if type specified
+	
+	
+
+
+    $retval = [];
+	$display  = '';
+	$useCache = false;
+	
+	// Figure out if likes system actually enabled for user (anonoymous or regular user)
+	if (!$_CONF['likes_enabled'] || (COM_isAnonUser() && $_CONF['likes_enabled'] == 2)) {
 		return $retval;
 	}	
-	*/
 
-	// Likes Block
-	// Last X Seconds
-	// Show Likes and/or Dislikes
-	// Show only for users that can see Likes
-	// Show for only content that has likes enabled
-	// SHow newest first
-	
-	// Read access to content like is for?
-	// loop through the list and then check permissions with something like PLG_getItemInfo so caching would be required.
-	
-	// Figure out cutoff date
-	// 1 day = 86400
-	// 1 week = 604800
-	// 4 weeks = 2419200
-	// 12 weeks = 7257600
-	$_CONF['likes_block_include_time'] = 7257600;
-	$_CONF['likes_block_max_items'] = 10;
-
-	$likesDate = DateTime::createFromFormat('U.u', microtime(true));
-	$likesDate->sub(new DateInterval('PT' . $_CONF['likes_block_include_time'] . 'S')); // minus number of seconds
-	$includeLikesDate = $likesDate->format("Y-m-d H:i:s"); 
-	
-	$display  = '';
-	$options = [];
-
-	
-	// We do not know permissions of items being returned that has likes (or if likes enabled for item) so cannot limit number of rows since some items may not have read permissions for user
-	$sql = "SELECT COUNT(lid) actioncount, type, subtype, id, MAX(created) latestdate FROM {$_TABLES['likes']} 
-		WHERE action = " . LIKES_ACTION_LIKE ." 
-		AND created > '{$includeLikesDate}'
-		GROUP BY type, subtype, id
-		ORDER BY latestdate  DESC";
-	
-	$result = DB_Query($sql);
-	$nrows = DB_numRows($result);
-
-	$listCount = 0;
-	for ($i = 0; $i < $nrows; $i++) {
-		$A = DB_fetchArray($result);
-		
-		$options['sub_type'] = $A['subtype'];
-		$info = PLG_getItemInfo($A['type'], $A['id'], 'url,title,likes', 0, $options);
-		
-		// If info returned then user has permission to view item
-		// If the item type, subtype, id have likes currently enabled
-		if (!empty($info[2]) && $info[2] > 0) {
-			$display .= '<a href="' . $info[0] . '">' . $info[1] . "</a> - {$A['actioncount']} - {$A['latestdate']}<br>";
-			
-			++$listCount;
-			if ($listCount == $_CONF['likes_block_max_items']) {
-				break;
-			}
+	// Check if enabled and get label
+	if (!empty($_CONF['likes_block_type'])) {
+		if (PLG_typeLikesEnabled($_CONF['likes_block_type'], $_CONF['likes_block_subtype'])) {
+			$likesLabel = PLG_typeLikesLabel($_CONF['likes_block_type'], $_CONF['likes_block_subtype']);
 		} else {
-			// User does not have read access to item or doesn't support PLG_getItemInfo
-			$display .= "{$A['type']} {$A['id']} - {$A['actioncount']} - {$A['latestdate']}<br>";
+			// Type doesn't exist or is not enabled
+			return $retval;
+		}
+	}	
+	
+	// Figure out language labels for block based on different settings
+    switch ($_CONF['likes_block_displayed_actions']) {
+        case LIKES_BLOCK_DISPLAY_DISLIKE: 
+            $sql_action = " AND action = " . LIKES_ACTION_DISLIKE ." ";
+            
+			$lang_action_time_span = $LANG_LIKES['dislikes_time_span'];
+			if ($_CONF['likes_block_include_time'] > 0) {
+				if (!empty($likesLabel)) {
+					$lang_block_title = sprintf($LANG_LIKES['whats_recently_disliked_type'], $likesLabel);
+				} else {
+					$lang_block_title = $LANG_LIKES['whats_recently_disliked'];
+				}
+			} else {
+				if (!empty($likesLabel)) {
+					$lang_block_title = sprintf($LANG_LIKES['whats_disliked_type'], $likesLabel);
+				} else {
+					$lang_block_title = $LANG_LIKES['whats_disliked'];
+				}
+			}
+			if ($_CONF['likes_block_include_time'] > 0) {
+				$lang_no_items = $LANG_LIKES['no_disliked_items_in_time_limit'];
+			} else {
+				$lang_no_items = $LANG_LIKES['no_disliked_items'];
+			}			
+			
+			break;
+        case LIKES_BLOCK_DISPLAY_ALL:  
+			$sql_action = "";
+			
+			$lang_action_time_span = $LANG_LIKES['all_time_span'];
+			if ($_CONF['likes_block_include_time'] > 0) {
+				if (!empty($likesLabel)) {
+					$lang_block_title = sprintf($LANG_LIKES['whats_recently_popular_type'], $likesLabel);
+				} else {
+					$lang_block_title = $LANG_LIKES['whats_recently_popular'];
+				}
+				
+			} else {
+				if (!empty($likesLabel)) {
+					$lang_block_title = sprintf($LANG_LIKES['whats_popular_type'], $likesLabel);
+				} else {
+					$lang_block_title = $LANG_LIKES['whats_popular'];
+				}
+			}
+			if ($_CONF['likes_block_include_time'] > 0) {
+				$lang_no_items = $LANG_LIKES['no_action_items_in_time_limit'];
+			} else {
+				$lang_no_items = $LANG_LIKES['no_action_items'];
+			}	
+			
+            break;
+		case LIKES_BLOCK_DISPLAY_LIKE: 
+        default:
+			$sql_action = " AND action = " . LIKES_ACTION_LIKE ." ";
+			
+			$lang_action_time_span = $LANG_LIKES['likes_time_span'];
+			if ($_CONF['likes_block_include_time'] > 0) {
+				if (!empty($likesLabel)) {
+					$lang_block_title = sprintf($LANG_LIKES['whats_recently_liked_type'], $likesLabel);
+				} else {
+					$lang_block_title = $LANG_LIKES['whats_recently_liked'];
+				}
+			} else {
+				if (!empty($likesLabel)) {
+					$lang_block_title = sprintf($LANG_LIKES['whats_liked_type'], $likesLabel);
+				} else {
+					$lang_block_title = $LANG_LIKES['whats_liked'];
+				}
+			}
+			if ($_CONF['likes_block_include_time'] > 0) {
+				$lang_no_items = $LANG_LIKES['no_liked_items_in_time_limit'];
+			} else {
+				$lang_no_items = $LANG_LIKES['no_liked_items'];
+			}				
+            
+            break;
+    }
+	
+	$blockname = "likesblock";
+	$blockname .= '_' . $_CONF['likes_block_displayed_actions'];
+	if (!empty($_CONF['likes_block_type'])) {
+		$blockname .= '_' . $_CONF['likes_block_type'];
+		if (!empty($_CONF['likes_block_subtype'])) {
+			$blockname .= '_' . $_CONF['likes_block_subtype'];
+		}		
+	}
+	
+    if ($_CONF['likes_block_cache_time'] > 0) {
+        $cacheInstance = $blockname . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
+        $display = CACHE_check_instance($cacheInstance);
+        if ($display) {
+            $lu = CACHE_get_instance_update($cacheInstance);
+            $now = time();
+            if (($now - $lu) < $_CONF['likes_block_cache_time']) {
+                $useCache = true;
+            }
+        }
+    }
+
+	if (!$useCache) {
+		$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'blocks/'));
+		$t->set_file(array('likesblock' => 'likes.thtml'));	
+		$t->set_block('likesblock', 'item');
+		
+		if ($_CONF['likes_block_include_time'] > 0) {
+			$t->set_var('lang_action_time_span', COM_formatTimeString($lang_action_time_span, $_CONF['likes_block_include_time']));
+		}
+
+		$likesDate = DateTime::createFromFormat('U.u', microtime(true));
+		$likesDate->setTimeZone(new DateTimeZone(TimeZoneConfig::getTimezone()));
+		$likesDate->sub(new DateInterval('PT' . $_CONF['likes_block_include_time'] . 'S')); // minus number of seconds
+		$includeLikesDate = $likesDate->format("Y-m-d H:i:s"); 
+		
+		$options = [];
+
+		$sql_daterange = "";
+		if ($_CONF['likes_block_include_time'] > 0) {
+			$sql_daterange = " AND created > '{$includeLikesDate}'";
+		}
+		
+		$sql_type = "";
+		if (!empty($_CONF['likes_block_type'])) {
+			$sql_type = " AND type = '{$_CONF['likes_block_type']}' AND subtype = '{$_CONF['likes_block_subtype']}'";
+		}		
+		
+		// We do not know permissions of items being returned that has likes (or if likes enabled for item) so cannot limit number of rows since some items may not have read permissions for user
+		$sql = "SELECT COUNT(lid) actioncount, type, subtype, id, MAX(created) latestdate FROM {$_TABLES['likes']} 
+			WHERE 1=1 
+			{$sql_type}
+			{$sql_action}
+			{$sql_daterange}
+			GROUP BY type, subtype, id 
+			ORDER BY actioncount  DESC";
+		
+		$result = DB_Query($sql);
+		$nrows = DB_numRows($result);
+
+		$listCount = 0;
+		$likeItems = array();
+		for ($i = 0; $i < $nrows; $i++) {
+			$A = DB_fetchArray($result);
+			
+			// Some items may not be set depending on current permissions set
+			// Ie at some point dislikes allowed but currently disabled so do not want to display old ones
+			$itemSet = false;
+			
+			$options['sub_type'] = $A['subtype'];
+			$info = PLG_getItemInfo($A['type'], $A['id'], 'url,title,likes', 0, $options);
+			
+			// If info returned then user has permission to view item
+			// If the item type, subtype, id have likes currently enabled
+			if (!empty($info[2]) && $info[2] > 0) {
+				switch ($_CONF['likes_block_displayed_actions']) {
+					case LIKES_BLOCK_DISPLAY_DISLIKE: 
+						if ($info[2] == 1) {
+							// Likes and dislikes enabled for this item
+							$t->set_var('item-dislikes', $A['actioncount']);
+							$itemSet = true;
+						}
+						
+						break;
+					case LIKES_BLOCK_DISPLAY_ALL: 
+						$sql_id = " type = '{$A['type']}' AND subtype = '{$A['subtype']}' AND id = '{$A['id']}'";
+						
+						$sql_action = " AND action = " . LIKES_ACTION_DISLIKE ." ";						
+						$dislikeCount = DB_getItem($_TABLES['likes'], 'COUNT(lid) dislikecount', $sql_id . $sql_action .$sql_daterange);
+					
+						$sql_action = " AND action = " . LIKES_ACTION_LIKE ." ";
+						$likeCount = DB_getItem($_TABLES['likes'], 'COUNT(lid) likecount', $sql_id . $sql_action . $sql_daterange);
+						
+						if ($info[2] == 1) {
+							// Likes and Dislikes allowed for items
+							$t->set_var('item-dislikes', $dislikeCount);						
+							$t->set_var('item-likes', $likeCount);
+							$itemSet = true;
+						} elseif ($info[2] == 2) {
+							// Only Likes
+							if ($likeCount > 0) {
+								$t->set_var('item-likes', $likeCount);
+								$t->set_var('item-dislikes', '');
+								$itemSet = true;
+							}
+						}
+						
+						break;
+					case LIKES_BLOCK_DISPLAY_LIKE:
+					default:
+						$t->set_var('item-likes', $A['actioncount']);
+						$itemSet = true;
+						
+						break;
+				}
+				
+				if ($itemSet) {
+					$t->set_var('item-link', $info[0]);
+					$t->set_var('item-title', $info[1]);
+					$t->set_var('item-title', $info[1]);				
+					
+					if ($_CONF['likes_block_include_time'] > 0) {
+						$t->set_var('lang_num_of_likes_in_time_limit', $LANG_LIKES['num_likes_in_time_limit']);
+						$t->set_var('lang_num_of_dislikes_in_time_limit', $LANG_LIKES['num_dislikes_in_time_limit']);
+					} else {
+						$t->set_var('lang_num_of_likes_in_time_limit', $LANG_LIKES['num_likes_total']);
+						$t->set_var('lang_num_of_dislikes_in_time_limit', $LANG_LIKES['num_dislikes_total']);
+					}
+
+					$t->parse('items', 'item', true);
+					
+					++$listCount;
+					if ($listCount == $_CONF['likes_block_max_items']) {
+						break;
+					}
+				}
+			} else {
+				// User does not have read access to item or doesn't support PLG_getItemInfo
+				// $display .= "{$A['type']} {$A['id']} - {$A['actioncount']} - {$A['latestdate']}<br>";
+			}
+		}
+		
+		if ($listCount == 0) {
+			$t->set_var('lang_no_items', $lang_no_items);
+		}
+		
+		$display .= $t->parse('output', 'likesblock');
+		
+		if ($_CONF['likes_block_cache_time'] > 0) {
+			CACHE_create_instance($cacheInstance, $display);
 		}
 	}
 	
-
-	// CACHE_create_instance($cacheInstance, $display);
-
-	
-	$retval[] = array('name'           => 'likes_most',
+	$retval[] = array('name'           => $blockname,
 					  'type'           => 'dynamic',
 					  'onleft'         => true,
-					  'title'          => 'Likes Block',
+					  'title'          => $lang_block_title,
 					  'blockorder'     => 2,
 					  'content'        => $display,
 					  'allow_autotags' => false,
