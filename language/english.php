@@ -2556,7 +2556,20 @@ $LANG_confignames['Core'] = array(
     'likes_articles' => 'Article Likes',
     'likes_comments' => 'Comment Likes',
     'likes_speedlimit' => 'Likes Speed Limit',
-	'likes_users_listed' => 'User Listed',
+	'likes_users_listed' => 'Number of User Listed in Tooltip',
+	'likes_block_cache_time' => 'Cache Time',
+	'likes_block_include_time' => 'Include Time',
+	'likes_block_max_items' => 'Max Items Listed',
+	'likes_block_displayed_actions' => 'Displayed Actions',
+	'likes_block_type' => 'Type',
+	'likes_block_subtype' => 'Sub Type',
+	'likes_block_enable' => 'Enabled',
+	'likes_block_isleft' => 'Display Block on Left',
+	'likes_block_order' => 'Block Order',
+	'likes_block_topic_option' => 'Topic Options',
+	'likes_block_topic' => 'Topic',
+	'likes_block_group_id' => 'Group',
+	'likes_block_permissions' => 'Permissions',
     'passwordspeedlimit' => 'Password Speed Limit',
     'login_attempts' => 'Max. Login Attempts',
     'login_speedlimit' => 'Login Speed Limit',
@@ -2700,6 +2713,8 @@ $LANG_fs['Core'] = array(
     'fs_gravatar' => 'Gravatar',
     'fs_comments' => 'Comments',
     'fs_likes' => 'Likes',
+	'fs_likes_block_settings' => 'Block Settings',
+	'fs_likes_block_permissions' => 'Block Permissions',
     'fs_htmlfilter' => 'HTML Filtering',
     'fs_censoring' => 'Censoring',
     'fs_iplookup' => 'IP Lookup',
@@ -2815,7 +2830,11 @@ $LANG_configselects['Core'] = array(
     39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsarticle', 'BlogPosting' => 'core-blogposting'),
     40 => array('False' => 0, 'Users and Anonymous' => 1, 'Users Only' => 2),
     41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2),
-	42 => array('None' => 0, 'Use individual Article Settings' => 1)
+	42 => array('None' => 0, 'Use individual Article Settings' => 1),
+	43 => array('All' => TOPIC_ALL_OPTION, 'Homepage Only' => TOPIC_HOMEONLY_OPTION, 'Select Topics' => TOPIC_SELECTED_OPTION),
+	44 => array('No access' => 0, 'Read-Only' => 2),
+	// 45
+	46 => array('Likes and Dislikes' => LIKES_BLOCK_DISPLAY_ALL, 'Likes Only' => LIKES_BLOCK_DISPLAY_LIKE, 'Dislikes Only' => LIKES_BLOCK_DISPLAY_DISLIKE)
 );
 
 ###############################################################################

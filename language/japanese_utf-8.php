@@ -2529,7 +2529,20 @@ $LANG_confignames['Core'] = array(
     'likes_articles' => '記事のLikes',
     'likes_comments' => 'コメントのLikes',
     'likes_speedlimit' => 'Likesの実行制限間隔(秒)',
-    'likes_users_listed' => 'User Listed',
+	'likes_users_listed' => 'Number of User Listed in Tooltip',
+	'likes_block_cache_time' => 'Cache Time',
+	'likes_block_include_time' => 'Include Time',
+	'likes_block_max_items' => 'Max Items Listed',
+	'likes_block_displayed_actions' => 'Displayed Actions',
+	'likes_block_type' => 'Type',
+	'likes_block_subtype' => 'Sub Type',
+	'likes_block_enable' => 'Enabled',
+	'likes_block_isleft' => 'Display Block on Left',
+	'likes_block_order' => 'Block Order',
+	'likes_block_topic_option' => 'Topic Options',
+	'likes_block_topic' => 'Topic',
+	'likes_block_group_id' => 'Group',
+	'likes_block_permissions' => 'Permissions',
     'passwordspeedlimit' => 'パスワードの取得制限間隔',
     'login_attempts' => 'ログイン試行最大回数',
     'login_speedlimit' => 'ログイン試行制限間隔',
@@ -2673,6 +2686,8 @@ $LANG_fs['Core'] = array(
     'fs_gravatar' => 'Gravatar',
     'fs_comments' => 'コメント',
     'fs_likes' => 'Likes',
+	'fs_likes_block_settings' => 'Block Settings',
+	'fs_likes_block_permissions' => 'Block Permissions',	
     'fs_htmlfilter' => 'HTMLフィルター',
     'fs_censoring' => 'バッドワードチェック',
     'fs_iplookup' => 'IPアドレス検索',
@@ -2781,7 +2796,12 @@ $LANG_configselects['Core'] = array(
     39 => array('なし' => '', 'Webページ' => 'core-webpage', '記事' => 'core-article', 'ニュース記事' => 'core-newsarticle', 'ブログ記事' => 'core-blogposting'),
     40 => array('無効' => 0, 'ログインユーザーとゲストユーザー' => 1, 'ログインユーザーのみ' => 2),
     41 => array('無効' => 0, 'LikesとDislikes' => 1, 'Likesのみ' => 2),
-    42 => array('なし' => 0, 'この記事の設定に従う' => 1)
+    42 => array('なし' => 0, 'この記事の設定に従う' => 1),
+	42 => array('None' => 0, 'Use individual Article Settings' => 1),
+	43 => array('All' => TOPIC_ALL_OPTION, 'Homepage Only' => TOPIC_HOMEONLY_OPTION, 'Select Topics' => TOPIC_SELECTED_OPTION),
+	44 => array('No access' => 0, 'Read-Only' => 2),
+	// 45
+	46 => array('Likes and Dislikes' => LIKES_BLOCK_DISPLAY_ALL, 'Likes Only' => LIKES_BLOCK_DISPLAY_LIKE, 'Dislikes Only' => LIKES_BLOCK_DISPLAY_DISLIKE)
 );
 
 ###############################################################################

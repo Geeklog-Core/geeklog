@@ -442,6 +442,11 @@ $_CONF_VALIDATE['Core']['likes_comments'] = [
 ];
 $_CONF_VALIDATE['Core']['likes_speedlimit'] = ['rule' => 'numeric'];
 $_CONF_VALIDATE['Core']['likes_users_listed'] = ['rule' => 'numeric'];
+$_CONF_VALIDATE['Core']['likes_block_enable'] = ['rule' => 'boolean'];
+$_CONF_VALIDATE['Core']['likes_block_isleft'] = [
+    'rule' => ['inList', [0, 1], false],
+];
+$_CONF_VALIDATE['Core']['likes_block_order'] = ['rule' => 'numeric'];
 
 // Subgroup Images, Tab Image Library
 $_CONF_VALIDATE['Core']['image_lib'] = [

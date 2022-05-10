@@ -1835,6 +1835,12 @@ function CMT_deleteComment($cid, $sid, $type)
             $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
             CACHE_remove_instance($cacheInstance);
         }
+		
+        // Delete Likes block cache so it can get updated again
+		if ($_CONF['likes_block_enable'] && $_CONF['likes_block_cache_time'] > 0) {
+			$cacheInstance = 'likesblock__'; // remove all likes block instances
+			CACHE_remove_instance($cacheInstance);
+		}		
     } else {
         DB_unlockTable($_TABLES['comments']);
         if ($_COMMENT_DEBUG) {

@@ -521,6 +521,12 @@ function plugin_configchange_template($group, $changes = array())
             CACHE_remove_instance($cacheInstance);
         }
     }
+
+	// On the safe side just delete likes block since could tie into a bunch of different items
+	if ($_CONF['likes_block_enable'] && $_CONF['likes_block_cache_time'] > 0) {
+		$cacheInstance = 'likesblock__'; // remove all likes block instances
+		CACHE_remove_instance($cacheInstance);
+	}		
 }
 
 /**
@@ -602,6 +608,7 @@ function plugin_itemdeleted_template($id, $type, $sub_type)
     $article = false;
     $block = false;
     $whatsnew = false;
+	$likes = false;
     $olderstories = false;
     $topicsblock = false;
     $topic_tree = false;
@@ -609,6 +616,7 @@ function plugin_itemdeleted_template($id, $type, $sub_type)
     if ($type === 'article' || $type === 'story') {
         $article = true;
         $whatsnew = true;
+		$likes = true;
         $olderstories = true;
         $topicsblock = true;
     } elseif ($type == 'topic') {
@@ -625,6 +633,14 @@ function plugin_itemdeleted_template($id, $type, $sub_type)
                 $whatsnew = true;
             }
         }
+		
+        // hack to see if plugin supports Likes
+        $fn_head = 'plugin_likesenabled_' . $type;
+        if (function_exists($fn_head)) {
+            if (is_array($fn_head())) { // if array then supported
+                $likes = true;
+            }
+        }		
     }
 
     if ($article) {
@@ -638,6 +654,10 @@ function plugin_itemdeleted_template($id, $type, $sub_type)
     }
     if ($whatsnew) {
         $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
+        CACHE_remove_instance($cacheInstance);
+    }
+    if ($likes) {
+        $cacheInstance = 'likesblock__'; // remove all likes block instances
         CACHE_remove_instance($cacheInstance);
     }
     if ($olderstories) {

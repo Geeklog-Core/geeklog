@@ -1216,6 +1216,71 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_likes_users_listed">likes_users_listed</a></td>
   <td valign="top">5</td>
   <td valign="top">List the last X number of users in a tooltip on the actual number who liked or disliked the item. 0 disables this feature.</td></tr>  
+<tr>
+  <td valign="top"><a name="desc_likes_block_enable">likes_block_enable</a></td>
+  <td valign="top">true</td>
+  <td valign="top">Enable the Dynamic Likes block that shows the most actions (likes and/or dislikes) a content item has had in a specific time frame (based on the settings below).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_likes_block_isleft">likes_block_isleft</a></td>
+  <td valign="top">1</td>
+  <td valign="top">Whether to display the block on the left (when set to 1)
+    or right (when set to 0).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_likes_block_order">likes_block_order</a></td>
+  <td valign="top">10</td>
+  <td valign="top">The order the block appears in the column.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_likes_block_topic_option">likes_block_topic_option</a></td>
+  <td valign="top">'all'</td>
+  <td valign="top">Set to 'All' for block to appear on all pages. Set to 'Homepage Only' for block to appear on just the homepage. Set to 'Selected Topics' for block to appear only in Topics selected in the Topic setting. This setting only affects where the block is displayed and not what is displayed in the block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_likes_block_topic">likes_block_topic</a></td>
+  <td valign="top"></td>
+  <td valign="top">The topics the block will appear for if the Topic Options is set to 'Select Topics'. This setting only affects where the block is displayed and not what is displayed in the block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_likes_block_cache_time">likes_block_cache_time</a></td>
+  <td valign="top">3600</td>
+  <td valign="top">The Dynamic Likes Block will be cached for no longer than this many seconds. If 0 caching is disabled.</td></tr>  
+<tr>
+  <td valign="top"><a name="desc_likes_block_displayed_actions">likes_block_displayed_actions</a></td>
+  <td valign="top">3</td>
+  <td valign="top">The action types that the Dynamic Likes Block will take into account and display. Likes and Dislikes (3), Likes Only (1), or Dislikes Only (2).</td></tr>    
+<tr>
+  <td valign="top"><a name="desc_likes_block_include_time">likes_block_include_time</a></td>
+  <td valign="top">604800</td>
+  <td valign="top">The Dynamic Likes Block will take into account and display items that are this many seconds old. Default is 604800 seconds (1 week). 1 day is 86400 seconds, 4 weeks is 2419200 seconds. Setting this to 0 will disable this option so the block will include all items that have been liked.</td></tr>    
+<tr>
+  <td valign="top"><a name="desc_likes_block_max_items">likes_block_max_items</a></td>
+  <td valign="top">10</td>
+  <td valign="top">The maximum number of items to show in the Dynamic Likes Block.</td></tr>    
+<tr>
+  <td valign="top"><a name="desc_likes_block_type">likes_block_type</a></td>
+  <td valign="top">''</span> <em>(empty)</em></td>
+  <td valign="top">Only show items in the Dynamic Links Block that match this item type. Must either be empty (for all types) or include 1 supported like type. For example 'article', 'comment', 'poll', 'page', 'forum'. The config option <a href="#desc_likes_block_subtype">Links Block Sub Type</a> may also need to be set.</td></tr>    
+<tr>
+  <td valign="top"><a name="desc_likes_block_subtype">likes_block_subtype</a></td>
+  <td valign="top">''</span> <em>(empty)</em></td>
+  <td valign="top">Only show items in the Dynamic Links Block that match this item sub type (the matching <a href="#desc_likes_block_type">Likes Block Type</a> must also be specified correctly). Type must either be empty (as it may not be needed) or include 1 supported like sub type. For example if Likes Block Type is set to 'forum', then the sub type must be set to 'post'. Sub types allow plugins to have more than 1 item type that can be liked.</td></tr>  
+<tr>
+  <td valign="top"><a name="desc_likes_block_group_id">likes_block_group_id</a></td>
+  <td valign="top">Block Admin</td>
+  <td valign="top">The group used by permissions.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_likes_block_permissions_0">likes_block_permissions[0]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">View permission for dynamic block by block Owner (Default Root User).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_likes_block_permissions_1">likes_block_permissions[1]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">View permission for dynamic block by assigned Admin Group (see config option block_group_id).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_likes_block_permissions_2">likes_block_permissions[2]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">View permission for dynamic block by all logged in users.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_likes_block_permissions_3">likes_block_permissions[3]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">View permission for dynamic block by anonymous users.</td></tr>
 </table>
 
 <h2><a name="images">画像</a></h2>

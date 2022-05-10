@@ -48,7 +48,54 @@ function update_ConfValuesFor222()
     $sg  =  4;      // subgroup
     $fs  = 51;      // fieldset
     $tab = 51;      // tab
-    $c->add('likes_users_listed', 5, 'text', $sg, $fs, NULL, 1740, TRUE, $me, $tab);
+	$so  = 1740;    // sort
+    $c->add('likes_users_listed', 5, 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+	$so += 10;
+	
+	$fs  = 52;      // fieldset
+    $c->add('fs_likes_block_settings', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('likes_block_enable',true, 'select', $sg, $fs, 0, $so, TRUE, $me, $tab);
+	$so += 10;
+    $c->add('likes_block_isleft', 1, 'select', $sg, $fs, 0, $so, TRUE, $me, $tab);
+    $so += 10;
+	$c->add('likes_block_order', 10, 'text', $sg, $fs, 0, $so, TRUE, $me, $tab);
+    $so += 10;
+	$c->add('likes_block_topic_option', TOPIC_ALL_OPTION,'select', $sg, $fs, 43, $so, TRUE, $me, $tab);
+    $so += 10;
+	$c->add('likes_block_topic', array(), '%select', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+	$so += 10;
+    $c->add('likes_block_cache_time',3600,'text', $sg, $fs,NULL,$so,TRUE, $me, $tab);
+    $so += 10;
+    $c->add('likes_block_displayed_actions',LIKES_BLOCK_DISPLAY_ALL, 'select', $sg, $fs, 46, $so, TRUE, $me, $tab);
+	$so += 10;	
+    $c->add('likes_block_include_time',604800,'text', $sg, $fs,NULL,$so,TRUE, $me, $tab);
+    $so += 10;
+    $c->add('likes_block_max_items',10,'text', $sg, $fs,NULL,$so,TRUE, $me, $tab);
+    $so += 10;	
+    $c->add('likes_block_type', '', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+	$so += 10;	
+    $c->add('likes_block_subtype', '', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+	$so += 10;	
+	
+	$fs  = 53;      // fieldset
+    $c->add('fs_likes_block_permissions', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $new_group_id = 0;
+    if (isset($_GROUPS['Block Admin'])) {
+        $new_group_id = $_GROUPS['Block Admin'];
+    } else {
+        $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Block Admin'");
+        if ($new_group_id == 0) {
+            if (isset($_GROUPS['Root'])) {
+                $new_group_id = $_GROUPS['Root'];
+            } else {
+                $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
+            }
+        }
+    }
+    $c->add('likes_block_group_id', $new_group_id,'select', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+	$so += 10;
+    $c->add('likes_block_permissions', array (2, 2, 2, 2), '@select', $sg, $fs, 44, $so, TRUE, $me, $tab);
+	$so += 10;
 
     return true;
 }

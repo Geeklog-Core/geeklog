@@ -2758,9 +2758,10 @@ function PLG_itemSaved($id, $type, $old_id = '', $sub_type = '')
         list($type, $sub_type) = explode('.', $type, 2);
     }
 
-    // Treat template system like a plugin (since belong to core group)
-    $pluginTypes = ['template'];
+    // Treat template and likes library like a plugin (since belong to core group)
+    $pluginTypes = ['template', 'likes'];
     require_once $_CONF['path_system'] . 'lib-template.php';
+    require_once $_CONF['path_system'] . 'lib-likes.php';	
 
     $pluginTypes = array_merge($pluginTypes, $_PLUGINS);
 
@@ -2800,9 +2801,10 @@ function PLG_itemDeleted($id, $type, $sub_type = '')
         list($type, $sub_type) = explode('.', $type, 2);
     }
 
-    // Treat template system like a plugin (since belong to core group)
-    $pluginTypes = ['template'];
+    // Treat template and likes library like a plugin (since belong to core group)
+    $pluginTypes = ['template', 'likes'];
     require_once $_CONF['path_system'] . 'lib-template.php';
+    require_once $_CONF['path_system'] . 'lib-likes.php';	
 
     $pluginTypes = array_merge($pluginTypes, $_PLUGINS);
 
@@ -4090,7 +4092,7 @@ function PLG_typeLikesLabel($type, $sub_type)
  */
 function PLG_canUserLike($type, $sub_type, $id, $uid, $ip)
 {
-   global $_CONF, $_TABLES;
+   global $_CONF;
 
     $retval = false;
 
@@ -4132,7 +4134,14 @@ function PLG_canUserLike($type, $sub_type, $id, $uid, $ip)
 */
 function PLG_itemLike($type, $sub_type, $item_id, $action)
 {
-    $retval = true;
+    global $_CONF;
+	
+	$retval = true;
+
+	if ($_CONF['likes_block_enable'] && $_CONF['likes_block_cache_time'] > 0) {
+		$cacheInstance = 'likesblock__'; // remove all likes block instances
+		CACHE_remove_instance($cacheInstance);	
+	}
 
     $args[1] = $sub_type;
     $args[2] = $item_id;

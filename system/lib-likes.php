@@ -470,102 +470,60 @@ function LIKES_getStats($action, $type = '', $sub_type = '', $item_ids = array()
 }
 
 /**
- * Gets config information for dynamic blocks from plugins
- * Returns data for blocks on a given side and, potentially, for
- * a given topic.
+ * Returns the likes block. To be used with the Block Editor
+ * Returns the HTML that includes a list of likes and/or disliked items
  *
- * @param    string $side  Side to get blocks for (right or left for now)
- * @param    string $topic Only get blocks for this topic
- * @return   array           array of block data
- * @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+ * @param       array 	$A  	Array of elements containing the row of data for this block
+ * @param		string 	$args 	Contains whatever text you place between the two parentheses
+ * @return  	string  HTML formatted block containing liked items.
  */
-function plugin_getBlocksConfig_likes($side, $topic = '')
+function phpblock_likes($A, $args)
 {
-    global $_TABLES, $_CONF, $_CA_CONF, $LANG_CAL_1;
-
-    $retval = array();
-
-	/*
-    $owner_id = SEC_getDefaultRootUser();
-
-    // Check permissions first
-    if (SEC_hasAccess($owner_id, $_CA_CONF['block_group_id'], $_CA_CONF['block_permissions'][0], $_CA_CONF['block_permissions'][1], $_CA_CONF['block_permissions'][2], $_CA_CONF['block_permissions'][3])) {
-        if (($side == 'left' && $_CA_CONF['block_isleft'] == 1) || ($side == 'right' && $_CA_CONF['block_isleft'] == 0)) {
-            $retval[] = array(
-                'plugin'         => $LANG_CAL_1[16],
-                'name'           => 'events',
-                'title'          => $LANG_CAL_1[50],
-                'type'           => 'dynamic',
-                'onleft'         => $_CA_CONF['block_isleft'],
-                'blockorder'     => $_CA_CONF['block_order'],
-                'allow_autotags' => false,
-                'help'           => '',
-                'enable'         => $_CA_CONF['block_enable'],
-                'topic_option'   => $_CA_CONF['block_topic_option'],
-                'topic'          => $_CA_CONF['block_topic'],
-                'inherit'        => array(),
-            );
-        }
-    }
-	*/
-
-    return $retval;
+	$function = 'LIKES_displayLikesBlock';
+	
+	$argsArray = explode(',', $args);
+	if (isset($args)) {
+		$retval = call_user_func_array($function,$argsArray);
+	} else {
+		$retval = $function();
+	}
+	
+	if (isset($likesBlock['name'])) {
+		return $retval['html'];
+	}
+	
 }
 
 /**
-* Gets Geeklog blocks from plugins
+* Returns the Likes Block
 *
-* Returns data for blocks on a given side and, potentially, for
-* a given topic.
-*
-* @param    string  $side   Side to get blocks for (right or left for now)
-* @param    string  $topic  Only get blocks for this topic
-* @return   array           array of block data
-* @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+* @param        int      	$displayAction  LIKES_BLOCK_DISPLAY_LIKE or LIKES_BLOCK_DISPLAY_DISLIKE or LIKES_BLOCK_DISPLAY_ALL
+* @param        string      $type     		plugin name
+* @param        string      $sub_type 		Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
+* @param        string      $item_id  item id
+* @param        int         $includeTime    Last X seconds to include
+* @param        int      	$maxItems       Max items to show in block
+* @param        int      	$cacheTime      Cache block for X secionds. 0 = do not cache
+* @return       array      	$retval['name'], $retval['title'], $retval['html']
 *
 */
-function plugin_getBlocks_likes($side, $topic = '')
+function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '', $includeTime = null, $maxItems = null, $cacheTime = null, $configOnly = false)
 {
     global $_TABLES, $_CONF, $LANG_LIKES;
 
-	return;
+	if (is_null($includeTime)) {
+		$includeTime = $_CONF['likes_block_include_time'];
+	}	
+	if (is_null($maxItems)) {
+		$maxItems = $_CONF['likes_block_max_items'];
+	}
+	if (is_null($cacheTime)) {
+		$cacheTime = $_CONF['likes_block_cache_time'];
+	}
 
-		// To Do
-		// Needs Autotag like polls block
-		// Needs to work as a phpblock_likes and as a dynamic block
-		// Needs likes block template for all themes
-		
-
-		// Likes Block
-		// Last X Seconds
-		// Show Likes and/or Dislikes
-		// Show only for users that can see Likes
-		// Show for only content that has likes enabled
-		// Show most actions first
-		
-		
-		// Figure out cutoff date
-		// 1 day = 86400
-		// 1 week = 604800
-		// 4 weeks = 2419200
-		// 12 weeks = 7257600
-		
-
-
-	// Config Options
-	$_CONF['likes_block_cache_time'] = 0;
-	$_CONF['likes_block_include_time'] = 7257600; // 7257600
-	$_CONF['likes_block_max_items'] = 10;
-	$_CONF['likes_block_displayed_actions'] = 3; // Liked, Disliked, All Actions
-	$_CONF['likes_block_type'] = ''; // All or one (comment, article, forum - post)
-	$_CONF['likes_block_subtype'] = ''; // Can only be used if type specified
-	
-	
-
-
-    $retval = [];
 	$display  = '';
 	$useCache = false;
+	$retval = [];
 	
 	// Figure out if likes system actually enabled for user (anonoymous or regular user)
 	if (!$_CONF['likes_enabled'] || (COM_isAnonUser() && $_CONF['likes_enabled'] == 2)) {
@@ -583,12 +541,12 @@ function plugin_getBlocks_likes($side, $topic = '')
 	}	
 	
 	// Figure out language labels for block based on different settings
-    switch ($_CONF['likes_block_displayed_actions']) {
+    switch ($displayAction) {
         case LIKES_BLOCK_DISPLAY_DISLIKE: 
             $sql_action = " AND action = " . LIKES_ACTION_DISLIKE ." ";
             
 			$lang_action_time_span = $LANG_LIKES['dislikes_time_span'];
-			if ($_CONF['likes_block_include_time'] > 0) {
+			if ($includeTime > 0) {
 				if (!empty($likesLabel)) {
 					$lang_block_title = sprintf($LANG_LIKES['whats_recently_disliked_type'], $likesLabel);
 				} else {
@@ -601,7 +559,7 @@ function plugin_getBlocks_likes($side, $topic = '')
 					$lang_block_title = $LANG_LIKES['whats_disliked'];
 				}
 			}
-			if ($_CONF['likes_block_include_time'] > 0) {
+			if ($includeTime > 0) {
 				$lang_no_items = $LANG_LIKES['no_disliked_items_in_time_limit'];
 			} else {
 				$lang_no_items = $LANG_LIKES['no_disliked_items'];
@@ -612,7 +570,7 @@ function plugin_getBlocks_likes($side, $topic = '')
 			$sql_action = "";
 			
 			$lang_action_time_span = $LANG_LIKES['all_time_span'];
-			if ($_CONF['likes_block_include_time'] > 0) {
+			if ($includeTime > 0) {
 				if (!empty($likesLabel)) {
 					$lang_block_title = sprintf($LANG_LIKES['whats_recently_popular_type'], $likesLabel);
 				} else {
@@ -626,7 +584,7 @@ function plugin_getBlocks_likes($side, $topic = '')
 					$lang_block_title = $LANG_LIKES['whats_popular'];
 				}
 			}
-			if ($_CONF['likes_block_include_time'] > 0) {
+			if ($includeTime > 0) {
 				$lang_no_items = $LANG_LIKES['no_action_items_in_time_limit'];
 			} else {
 				$lang_no_items = $LANG_LIKES['no_action_items'];
@@ -635,10 +593,12 @@ function plugin_getBlocks_likes($side, $topic = '')
             break;
 		case LIKES_BLOCK_DISPLAY_LIKE: 
         default:
+			$displayAction = LIKES_BLOCK_DISPLAY_LIKE; // Just in case it is using default 
+		
 			$sql_action = " AND action = " . LIKES_ACTION_LIKE ." ";
 			
 			$lang_action_time_span = $LANG_LIKES['likes_time_span'];
-			if ($_CONF['likes_block_include_time'] > 0) {
+			if ($includeTime > 0) {
 				if (!empty($likesLabel)) {
 					$lang_block_title = sprintf($LANG_LIKES['whats_recently_liked_type'], $likesLabel);
 				} else {
@@ -651,7 +611,7 @@ function plugin_getBlocks_likes($side, $topic = '')
 					$lang_block_title = $LANG_LIKES['whats_liked'];
 				}
 			}
-			if ($_CONF['likes_block_include_time'] > 0) {
+			if ($includeTime > 0) {
 				$lang_no_items = $LANG_LIKES['no_liked_items_in_time_limit'];
 			} else {
 				$lang_no_items = $LANG_LIKES['no_liked_items'];
@@ -661,21 +621,29 @@ function plugin_getBlocks_likes($side, $topic = '')
     }
 	
 	$blockname = "likesblock";
-	$blockname .= '_' . $_CONF['likes_block_displayed_actions'];
+	$blockname .= '__' . $displayAction;
 	if (!empty($_CONF['likes_block_type'])) {
 		$blockname .= '_' . $_CONF['likes_block_type'];
 		if (!empty($_CONF['likes_block_subtype'])) {
 			$blockname .= '_' . $_CONF['likes_block_subtype'];
 		}		
 	}
+	$retval['name'] = $blockname;
 	
-    if ($_CONF['likes_block_cache_time'] > 0) {
+	$retval['title'] = $lang_block_title;
+	if ($configOnly) {
+		// Just need name and title
+		return $retval;
+	}
+
+	// Build or get from cache HTML for block
+    if ($cacheTime > 0) {
         $cacheInstance = $blockname . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
         $display = CACHE_check_instance($cacheInstance);
         if ($display) {
             $lu = CACHE_get_instance_update($cacheInstance);
             $now = time();
-            if (($now - $lu) < $_CONF['likes_block_cache_time']) {
+            if (($now - $lu) < $cacheTime) {
                 $useCache = true;
             }
         }
@@ -686,19 +654,19 @@ function plugin_getBlocks_likes($side, $topic = '')
 		$t->set_file(array('likesblock' => 'likes.thtml'));	
 		$t->set_block('likesblock', 'item');
 		
-		if ($_CONF['likes_block_include_time'] > 0) {
-			$t->set_var('lang_action_time_span', COM_formatTimeString($lang_action_time_span, $_CONF['likes_block_include_time']));
+		if ($includeTime > 0) {
+			$t->set_var('lang_action_time_span', COM_formatTimeString($lang_action_time_span, $includeTime));
 		}
 
 		$likesDate = DateTime::createFromFormat('U.u', microtime(true));
 		$likesDate->setTimeZone(new DateTimeZone(TimeZoneConfig::getTimezone()));
-		$likesDate->sub(new DateInterval('PT' . $_CONF['likes_block_include_time'] . 'S')); // minus number of seconds
+		$likesDate->sub(new DateInterval('PT' . $includeTime . 'S')); // minus number of seconds
 		$includeLikesDate = $likesDate->format("Y-m-d H:i:s"); 
 		
 		$options = [];
 
 		$sql_daterange = "";
-		if ($_CONF['likes_block_include_time'] > 0) {
+		if ($includeTime > 0) {
 			$sql_daterange = " AND created > '{$includeLikesDate}'";
 		}
 		
@@ -734,7 +702,7 @@ function plugin_getBlocks_likes($side, $topic = '')
 			// If info returned then user has permission to view item
 			// If the item type, subtype, id have likes currently enabled
 			if (!empty($info[2]) && $info[2] > 0) {
-				switch ($_CONF['likes_block_displayed_actions']) {
+				switch ($displayAction) {
 					case LIKES_BLOCK_DISPLAY_DISLIKE: 
 						if ($info[2] == 1) {
 							// Likes and dislikes enabled for this item
@@ -774,13 +742,13 @@ function plugin_getBlocks_likes($side, $topic = '')
 						
 						break;
 				}
-				
+
 				if ($itemSet) {
 					$t->set_var('item-link', $info[0]);
 					$t->set_var('item-title', $info[1]);
 					$t->set_var('item-title', $info[1]);				
 					
-					if ($_CONF['likes_block_include_time'] > 0) {
+					if ($includeTime > 0) {
 						$t->set_var('lang_num_of_likes_in_time_limit', $LANG_LIKES['num_likes_in_time_limit']);
 						$t->set_var('lang_num_of_dislikes_in_time_limit', $LANG_LIKES['num_dislikes_in_time_limit']);
 					} else {
@@ -791,7 +759,7 @@ function plugin_getBlocks_likes($side, $topic = '')
 					$t->parse('items', 'item', true);
 					
 					++$listCount;
-					if ($listCount == $_CONF['likes_block_max_items']) {
+					if ($listCount == $maxItems) {
 						break;
 					}
 				}
@@ -800,29 +768,137 @@ function plugin_getBlocks_likes($side, $topic = '')
 				// $display .= "{$A['type']} {$A['id']} - {$A['actioncount']} - {$A['latestdate']}<br>";
 			}
 		}
-		
+
 		if ($listCount == 0) {
 			$t->set_var('lang_no_items', $lang_no_items);
 		}
 		
 		$display .= $t->parse('output', 'likesblock');
 		
-		if ($_CONF['likes_block_cache_time'] > 0) {
+		if ($cacheTime > 0) {
 			CACHE_create_instance($cacheInstance, $display);
 		}
 	}
-	
-	$retval[] = array('name'           => $blockname,
-					  'type'           => 'dynamic',
-					  'onleft'         => true,
-					  'title'          => $lang_block_title,
-					  'blockorder'     => 2,
-					  'content'        => $display,
-					  'allow_autotags' => false,
-					  'convert_newlines' => false,
-					  'css_id' 		   => 'gl-blockLikes', // Used to jump to block position
-					  'help'           => '');	
-	
+
+	$retval['html'] = $display;
 	
 	return $retval;
 }
+
+/**
+ * Gets config information for dynamic blocks from plugins
+ * Returns data for blocks on a given side and, potentially, for
+ * a given topic.
+ *
+ * @param    string $side  Side to get blocks for (right or left for now)
+ * @param    string $topic Only get blocks for this topic
+ * @return   array           array of block data
+ * @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+ */
+function plugin_getBlocksConfig_likes($side, $topic = '')
+{
+    global $_TABLES, $_CONF, $LANG_LIKES;
+
+    $retval = array();
+
+    $owner_id = SEC_getDefaultRootUser();
+	
+	// Check permissions first
+    if (SEC_hasAccess($owner_id, $_CONF['likes_block_group_id'], $_CONF['likes_block_permissions'][0], $_CONF['likes_block_permissions'][1], $_CONF['likes_block_permissions'][2], $_CONF['likes_block_permissions'][3])) {
+        if (($side == 'left' && $_CONF['likes_block_isleft'] == 1) || ($side == 'right' && $_CONF['likes_block_isleft'] == 0)) {
+			
+			// Get Title and Name of Block
+			$likesBlock = LIKES_displayLikesBlock($_CONF['likes_block_displayed_actions'], $_CONF['likes_block_type'], $_CONF['likes_block_subtype'], $_CONF['likes_block_include_time'], $_CONF['likes_block_max_items'], $_CONF['likes_block_cache_time'], true);
+			
+			if (isset($likesBlock['name'])) {
+				$retval[] = array(
+					'plugin'         => $LANG_LIKES['likes'],
+					'name'           => $likesBlock['name'],
+					'title'          => $likesBlock['title'],
+					'type'           => 'dynamic',
+					'onleft'         => $_CONF['likes_block_isleft'],
+					'blockorder'     => $_CONF['likes_block_order'],
+					'allow_autotags' => false,
+					'help'           => '',
+					'enable'         => $_CONF['likes_block_isleft'],
+					'topic_option'   => $_CONF['likes_block_topic_option'],
+					'topic'          => $_CONF['likes_block_topic'],
+					'inherit'        => array(),
+				);
+			}
+        }
+    }
+
+    return $retval;
+}
+
+/**
+* Gets Geeklog blocks from plugins
+*
+* Returns data for blocks on a given side and, potentially, for
+* a given topic.
+*
+* @param    string  $side   Side to get blocks for (right or left for now)
+* @param    string  $topic  Only get blocks for this topic
+* @return   array           array of block data
+* @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+*
+*/
+function plugin_getBlocks_likes($side, $topic = '')
+{
+    global $_CONF;
+	
+    $retval = array();
+
+    $owner_id = SEC_getDefaultRootUser();
+
+    // Check permissions first
+    if ($_CONF['likes_block_enable'] && SEC_hasAccess($owner_id, $_CONF['likes_block_group_id'], $_CONF['likes_block_permissions'][0], $_CONF['likes_block_permissions'][1], $_CONF['likes_block_permissions'][2], $_CONF['likes_block_permissions'][3])) {
+        // Check if right topic
+        if (($_CONF['likes_block_topic_option'] == TOPIC_ALL_OPTION) || ($_CONF['likes_block_topic_option'] == TOPIC_HOMEONLY_OPTION && COM_onFrontpage()) || ($_CONF['likes_block_topic_option'] == TOPIC_SELECTED_OPTION && in_array($topic, $_CONF['likes_block_topic']))) {
+            if (($side == 'left' && $_CONF['likes_block_isleft'] == 1) || ($side == 'right' && $_CONF['likes_block_isleft'] == 0)) {
+                // Create a block
+                $likesBlock = LIKES_displayLikesBlock($_CONF['likes_block_displayed_actions'], $_CONF['likes_block_type'], $_CONF['likes_block_subtype'], $_CONF['likes_block_include_time'], $_CONF['likes_block_max_items'], $_CONF['likes_block_cache_time']);
+
+				if (isset($likesBlock['name'])) {
+					$retval[] = array(
+						'name'           => $likesBlock['name'],
+						'type'           => 'dynamic',
+						'onleft'         => $_CONF['likes_block_isleft'],
+						'title'          => $likesBlock['title'],
+						'blockorder'     => $_CONF['likes_block_order'],
+						'content'        => $likesBlock['html'],
+						'allow_autotags' => false,
+						'convert_newlines' => false,
+						'help'           => '',
+						'css_id'         => 'event_block',  // since GL 2.2.0
+						'css_classes'    => '',             // since GL 2.2.0
+					);
+				}
+            }
+        }
+    }
+
+    return $retval;	
+}
+	
+/**
+ * Config Manager function
+ *
+ * @return   array   Array of (groud id, group name) pairs
+ */
+function configmanager_select_likes_block_group_id_helper()
+{
+    return SEC_getUserGroups();
+}
+
+/**
+ * Config Manager function
+ *
+ * @return   array   Array of (topic id, topic name) pairs
+ */
+function configmanager_select_likes_block_topic_helper()
+{
+    return array_flip(TOPIC_getList());
+}
+
