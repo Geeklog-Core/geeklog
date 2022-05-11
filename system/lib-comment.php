@@ -708,9 +708,9 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG03;
 
     $retval = '';
-	
-	$is_comment_page = CMT_isCommentPage();
 
+	$is_comment_page = CMT_isCommentPage();
+	
     if (!COM_isAnonUser()) {
         $result = DB_query("SELECT commentorder,commentmode,commentlimit FROM {$_TABLES['user_attributes']} WHERE uid = '{$_USER['uid']}'");
         $U = DB_fetchArray($result);
@@ -2653,8 +2653,9 @@ function CMT_handleView($format, $order, $page, $view = true)
     $sql = "SELECT sid, title, type FROM {$_TABLES['comments']} WHERE cid = $cid";
     $A = DB_fetchArray(DB_query($sql));
     $sid = $A['sid'];
-    $title = $A['title'];
+    //$title = $A['title'];
     $type = $A['type'];
+	$title = PLG_getItemInfo($type, $sid, 'title'); // Need title of item not comment title
 
     $display = PLG_displayComment($type, $sid, $cid, $title,
         $order, $format, $page, $view);
@@ -3182,9 +3183,9 @@ function CMT_getCommentUrlId($type, $id)
                 $retval = PLG_getItemInfo($type, $id, 'url');
             }
         }
+		
+		return $retval;
     }
-
-    return $retval;
 }
 
 /*

@@ -646,7 +646,7 @@ function PLG_commentSave($type, $title, $comment, $id, $pid, $postMode)
  * @param   string  $type   Plugin to display comment
  * @param   string  $id     Unique identifier for item comment belongs to
  * @param   int     $cid    Comment id to display (possibly including sub-comments)
- * @param   string  $title  Page/comment title
+ * @param   string  $title  title of item comment belongs to
  * @param   string  $order  'ASC' or 'DSC' or blank
  * @param   string  $format 'threaded', 'nested', or 'flat'
  * @param   int     $page   Page number of comments to display
