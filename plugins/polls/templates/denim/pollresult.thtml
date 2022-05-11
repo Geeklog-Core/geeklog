@@ -16,9 +16,9 @@
 {poll_questions}
 
 {!!if {display_type} == '0' !!}
-<div>
+<p>
     {notification} <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_voters}
-</div>
+</p>
 {!else}
 <div class="pluginTinyText">
     {notification} <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_voters} {poll_comments}

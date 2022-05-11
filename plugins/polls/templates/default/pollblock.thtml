@@ -25,9 +25,9 @@
 
 {# display_type possible values 0 = Normal, 1 = In Block, 2 = autotag #}
 {!!if {display_type} == '0' !!}
-<div>
+<p>
     <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_voters}
-</div>
+</p>
 {!else}
 <div class="pluginTinyText">
     <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_voters} {poll_comments}
