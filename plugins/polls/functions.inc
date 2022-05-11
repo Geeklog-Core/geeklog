@@ -632,7 +632,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                     $nanswers = DB_numRows($answers);
                     for ($i = 0; $i < $nanswers; $i++) {
                         $A = DB_fetchArray($answers);
-                        if (($j < count($aid)) && ($aid[$j] == $A['aid'])) {
+                        if (($j < count($aid)) && isset($aid[$j]) && ($aid[$j] == $A['aid'])) {
                             $poll->set_var('selected', ' checked');
                         }
                         $poll->set_var('answer_id', $A['aid']);
