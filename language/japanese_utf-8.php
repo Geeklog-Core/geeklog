@@ -282,7 +282,8 @@ $LANG03 = array(
     'comments_closed_msg' => 'コメントの新規受付は終了しています。',
     'read_comment' => 'すべてのコメントを読む',
     'comment_for' => '上記のコメントは次のアイテムのものです',
-    'comment_page_title' => 'Comments for %s'
+    'comment_page_title' => 'Comments for %s',
+	'comments' => 'Comments'
 );
 
 ###############################################################################

@@ -272,6 +272,8 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
 
     $indent = 0;  // begin with 0 indent
     $retval = ''; // initialize return value
+	
+	$is_comment_page = CMT_isCommentPage();
 
     $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'comment'));
     $template->set_file(array(
@@ -296,6 +298,8 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         $template->set_var('lang_replytothis', '');
         $template->set_var('lang_reply', '');
     }
+	
+	$template->set_var('is_comment_only_page', $is_comment_page); // Tell template if comment is display on own page
 
     // Make sure we have a default value for comment indentation
     if (!isset($_CONF['comment_indent'])) {
@@ -757,6 +761,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
     $template->set_var('area_id', 'commentarea');
 	$template->set_var('is_comment_only_page', $is_comment_page); // Tell template if comment is display on own page
 	$template->set_var('comment_page_title', sprintf($LANG03['comment_page_title'], stripslashes($title)));
+	$template->set_var('comment_page_title_short', $LANG03['comments']);
 
     if ($mode === 'nested' || $mode === 'threaded' || $mode === 'flat') {
         // build query

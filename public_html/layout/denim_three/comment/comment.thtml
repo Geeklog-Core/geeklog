@@ -6,7 +6,11 @@
             {author_photo}
         </div>
         <div class="uk-width-expand">
-            <h4 class="uk-comment-title uk-margin-remove">{title}</h4>
+			{!if is_comment_only_page}
+			<h2 class="uk-comment-title uk-margin-remove">{title}</h2>
+			{!else}
+			<h3 class="uk-comment-title uk-margin-remove">{title}</h3>
+			{!endif}		
             <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
                 <li>{lang_authoredby}&nbsp;{author_link}</li>
                 <li>{lang_on}&nbsp;{date}</li>

@@ -274,7 +274,8 @@ $LANG03 = array(
     'comments_closed_msg' => 'Comments are closed and no new posts are allowed.',
     'read_comment' => 'Read the full comment at',
     'comment_for' => 'The above comment is for the following item',
-	'comment_page_title' => 'Comments for %s'
+	'comment_page_title' => 'Comments for %s',
+	'comments' => 'Comments'
 );
 
 ###############################################################################

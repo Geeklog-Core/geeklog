@@ -3,7 +3,11 @@
 <article class="uk-comment uk-margin-bottom level-{indent}">
     <header class="uk-comment-header">
         {author_photo}
-        <h4 class="uk-comment-title">{title}</h4>
+		{!if is_comment_only_page}
+        <h2 class="uk-comment-title">{title}</h2>
+		{!else}
+		<h3 class="uk-comment-title">{title}</h3>
+		{!endif}
         <div class="uk-comment-meta">{lang_authoredby}&nbsp;{author_link}&nbsp;{lang_on}&nbsp;{date}</div>
     </header>
     <div class="uk-comment-body">
