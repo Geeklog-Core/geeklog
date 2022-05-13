@@ -71,7 +71,11 @@ function update_ConfValuesFor222()
     $c->add('likes_block_include_time',604800,'text', $sg, $fs,NULL,$so,TRUE, $me, $tab);
     $so += 10;
     $c->add('likes_block_max_items',10,'text', $sg, $fs,NULL,$so,TRUE, $me, $tab);
-    $so += 10;	
+    $so += 10;
+	$c->add('likes_block_title_trim_length',20,'text', $sg, $fs,NULL,$so,TRUE, $me, $tab);
+	$so += 10;
+	$c->add('likes_block_likes_new_line',true, 'select', $sg, $fs, 0, $so, TRUE, $me, $tab);
+	$so += 10;
     $c->add('likes_block_type', '', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
 	$so += 10;	
     $c->add('likes_block_subtype', '', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);

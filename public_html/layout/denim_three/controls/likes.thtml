@@ -11,7 +11,7 @@
     <span uk-icon="icon: thumbs-up;" data-uk-tooltip title="{lang_like_action}"></span>
     {!endif}
 
-    <span class="gl-like-num">{num_of_likes}</span>
+    <span class="gl-like-num" data-uk-tooltip title="{lang_num_of_likes}">{num_of_likes}</span>
     {!if dislike_enabled}
     &nbsp;&nbsp;&nbsp;&nbsp;
     
@@ -22,7 +22,7 @@
     <span uk-icon="icon: thumbs-down;" data-uk-tooltip title="{lang_dislike_action}"></span>
     {!endif}
     
-    <span class="gl-dislike-num">{num_of_dislikes}</span>
+    <span class="gl-dislike-num" data-uk-tooltip title="{lang_num_of_dislikes}">{num_of_dislikes}</span>
     {!endif}
 
     <span class="gl-likes-message">{lang_message}</span>

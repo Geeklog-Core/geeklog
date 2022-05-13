@@ -17,7 +17,12 @@
     <span data-uk-tooltip title="{lang_like_action}"><img src="/images/likes.png" style="height: 20px; vertical-align: middle;"></span>
     {!endif}
 
-    <span class="gl-like-num">{num_of_likes}</span>
+	{!if gl_tooltip_num_of_likes}
+	{gl_tooltip_num_of_likes}
+	{!else}
+	<span class="gl-like-num" data-uk-tooltip title="{lang_num_of_likes}">{num_of_likes}</span>
+	{!endif}
+	
     {!if dislike_enabled}
     &nbsp;&nbsp;&nbsp;&nbsp;
     
@@ -34,7 +39,11 @@
     <span data-uk-tooltip title="{lang_dislike_action}"><img src="/images/dislikes.png" style="height: 20px; vertical-align: middle;"></span>
     {!endif}
     
-    <span class="gl-dislike-num">{num_of_dislikes}</span>
+	{!if gl_tooltip_num_of_dislikes}
+	{gl_tooltip_num_of_dislikes}
+	{!else}
+	<span class="gl-dislike-num" data-uk-tooltip title="{lang_num_of_dislikes}">{num_of_dislikes}</span>
+	{!endif}
     {!endif}
 
     <span class="gl-likes-message">{lang_message}</span>

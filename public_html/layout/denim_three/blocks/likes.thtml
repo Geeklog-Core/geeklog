@@ -1,11 +1,11 @@
 {# begin {templatelocation} #}
 
 {!if lang_action_time_span}
-<h3>{lang_action_time_span}</h3>
+<p>{lang_action_time_span}</p>
 {!endif}
 
 {!if lang_no_items}
-{lang_no_items}<br{xhtml}>
+<p>{lang_no_items}</p>
 {!else}
 <ul>
     {items}
@@ -14,10 +14,16 @@
 
 <!-- BEGIN item -->
 <li class="listitem">
- <a href="{item-link}" title="{item-title}">{item-title}</a>
- {!!if {item-likes} >= 0 !!}&nbsp;&nbsp;<span class="uk-icon-thumbs-o-up uk-icon-small" data-uk-tooltip title="{lang_num_of_likes_in_time_limit}"></span>&nbsp;{item-likes}
+ <a href="{item-link}" title="{item-title}">{item-title-trimmed}</a>
+ {!if likes-new-line}
+ <div class="uk-text-center">
  {!endif}
- {!!if {item-dislikes} >= 0 !!}&nbsp;&nbsp;<span class="uk-icon-thumbs-o-down uk-icon-small" data-uk-tooltip title="{lang_num_of_dislikes_in_time_limit}"></span>&nbsp;{item-dislikes}
+ {!!if {item-likes} >= 0 !!}&nbsp;&nbsp;<span uk-icon="icon: thumbs-up;" data-uk-tooltip title="{lang_num_of_likes_in_time_limit}"></span>&nbsp;{item-likes}
+ {!endif}
+ {!!if {item-dislikes} >= 0 !!}&nbsp;&nbsp;<span uk-icon="icon: thumbs-down;" data-uk-tooltip title="{lang_num_of_dislikes_in_time_limit}"></span>&nbsp;{item-dislikes}
+ {!endif}
+ {!if likes-new-line}
+ </div>
  {!endif}
 </li>
 <!-- END item -->

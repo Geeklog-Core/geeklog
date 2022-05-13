@@ -163,13 +163,19 @@ function LIKES_control($type, $sub_type, $item_id, $likes_setting, $message = ''
     $likes_templates->set_var('lang_message', $message);
 
     $likes_templates->set_var('num_of_likes', LIKES_formatNum($num_likes));
-	if ($num_likes > 0) {
-		$likes_templates->set_var('lang_num_of_likes', LIKES_numberTooltip($type, $sub_type, $item_id, LIKES_ACTION_LIKE));
+	if ($num_likes > 0 && $_CONF['likes_users_listed'] > 0) {
+		$htmlToolTip = LIKES_numberTooltip($type, $sub_type, $item_id, LIKES_ACTION_LIKE);
+		
+		$likes_templates->set_var('gl_tooltip_num_of_likes', COM_getTooltip(LIKES_formatNum($num_likes), $htmlToolTip));
+		$likes_templates->set_var('lang_num_of_likes', $htmlToolTip);
 	}
     if ($dislike) {
         $likes_templates->set_var('num_of_dislikes', LIKES_formatNum($num_dislikes));
-		if ($num_dislikes > 0) {
-			$likes_templates->set_var('lang_num_of_dislikes', LIKES_numberTooltip($type, $sub_type, $item_id, LIKES_ACTION_DISLIKE));		
+		if ($num_dislikes > 0 && $_CONF['likes_users_listed'] > 0) {
+			$htmlToolTip = LIKES_numberTooltip($type, $sub_type, $item_id, LIKES_ACTION_DISLIKE);
+			
+			$likes_templates->set_var('gl_tooltip_num_of_dislikes', COM_getTooltip(LIKES_formatNum($num_dislikes), $htmlToolTip));
+			$likes_templates->set_var('lang_num_of_dislikes', $htmlToolTip);		
 		}
     }
 
@@ -650,6 +656,7 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
     }
 
 	if (!$useCache) {
+		$display  = ''; // reset display incase has old cached data
 		$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'blocks/'));
 		$t->set_file(array('likesblock' => 'likes.thtml'));	
 		$t->set_block('likesblock', 'item');
@@ -682,8 +689,8 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 			{$sql_action}
 			{$sql_daterange}
 			GROUP BY type, subtype, id 
-			ORDER BY actioncount  DESC";
-		
+			ORDER BY actioncount DESC, latestdate  DESC";
+
 		$result = DB_Query($sql);
 		$nrows = DB_numRows($result);
 
@@ -742,11 +749,13 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 						
 						break;
 				}
-
 				if ($itemSet) {
 					$t->set_var('item-link', $info[0]);
 					$t->set_var('item-title', $info[1]);
-					$t->set_var('item-title', $info[1]);				
+					$t->set_var('item-title-trimmed', COM_truncate($info[1], $_CONF['likes_block_title_trim_length'], '...'));
+					if ($_CONF['likes_block_likes_new_line']) {
+						$t->set_var('likes-new-line', true);
+					}
 					
 					if ($includeTime > 0) {
 						$t->set_var('lang_num_of_likes_in_time_limit', $LANG_LIKES['num_likes_in_time_limit']);
