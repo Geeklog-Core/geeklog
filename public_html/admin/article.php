@@ -757,8 +757,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             $largename = $LANG24[97];
             $imagelink = '';
             $largelink = '';
-            $thumblink = '';
-            $largethumblink = '';
+            $thumblink = '/images/articles/no_image_thumbnail.png';
+            $largethumblink = '/images/articles/no_image_thumbnail.png';
             if (!empty($ai_filenames[$z])) {
                 $imagename = $ai_filenames[$z];
                 $imagelink = $_CONF['site_url'] . '/images/articles/' . $imagename;
