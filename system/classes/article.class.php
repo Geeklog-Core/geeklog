@@ -1929,7 +1929,9 @@ class Article
                 break;
 
             case 'topic':
-                $return = htmlspecialchars($this->_topic);
+				if (!empty($this->_topic)) {
+					$return = htmlspecialchars($this->_topic);
+				}
 
                 break;
 
