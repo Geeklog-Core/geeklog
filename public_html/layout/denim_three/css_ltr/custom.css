@@ -4,3 +4,20 @@
 #centerblocks div.block-child-center {
   margin: 0 0 1.25em 0;
 }
+
+/* Used to better match other article related blocks */
+.block-trackback-content {
+    border-bottom: 0px;
+}
+
+/* Used by blocks that can also be called as autotags */
+.block-autotag {
+    padding: 5px;
+    width: 300px;
+}
+
+.likes-autotag {
+    padding: 5px;
+    margin: 0 auto;
+    width: 300px;
+}

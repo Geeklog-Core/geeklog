@@ -549,6 +549,7 @@ function install_config(ConfigInterface $c)
     $c->add('autotag_permissions_related_items', array(2, 2, 0, 0), '@select', 7, 41, 28, 1910, TRUE, $me, 37);
     $c->add('autotag_permissions_block', array(2, 2, 0, 0), '@select', 7, 41, 28, 1920, TRUE, $me, 37);
     $c->add('autotag_permissions_structureddata', array(2, 2, 0, 0), '@select', 7, 41, 28, 1930, TRUE, $me, 37);
+	$c->add('autotag_permissions_likes_block', array(2, 2, 0, 0), '@select', 7, 41, 28, 1940, TRUE, $me, 37);
 
     $c->add('tab_webservices', NULL, 'tab', 7, 40, NULL, 0, TRUE, $me, 40);
     $c->add('fs_webservices', NULL, 'fieldset', 7, 40, NULL, 0, TRUE, $me, 40);

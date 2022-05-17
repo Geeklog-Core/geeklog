@@ -44,6 +44,9 @@ function update_ConfValuesFor222()
     // Add IP anonymization policy
     $c->add('ip_anonymization', \Geeklog\IP::POLICY_NEVER_ANONYMIZE, 'text', 0, 0, null, 2070, true, $me, 0);
 	
+	// Add Likes Block autotag permissions
+	$c->add('autotag_permissions_likes_block', array(2, 2, 0, 0), '@select', 7, 41, 28, 1940, TRUE, $me, 37);
+	
     // Add Likes System Tab and config options
     $sg  =  4;      // subgroup
     $fs  = 51;      // fieldset

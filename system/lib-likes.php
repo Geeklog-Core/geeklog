@@ -486,7 +486,7 @@ function LIKES_getStats($action, $type = '', $sub_type = '', $item_ids = array()
 function phpblock_likes($A, $args)
 {
 	$function = 'LIKES_displayLikesBlock';
-	
+
 	$argsArray = explode(',', $args);
 	if (isset($args)) {
 		$retval = call_user_func_array($function,$argsArray);
@@ -513,7 +513,7 @@ function phpblock_likes($A, $args)
 * @return       array      	$retval['name'], $retval['title'], $retval['html']
 *
 */
-function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '', $includeTime = null, $maxItems = null, $cacheTime = null, $configOnly = false)
+function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '', $includeTime = null, $maxItems = null, $cacheTime = null, $newLine = null, $titleLength = null, $configOnly = false)
 {
     global $_TABLES, $_CONF, $LANG_LIKES;
 
@@ -526,20 +526,26 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 	if (is_null($cacheTime)) {
 		$cacheTime = $_CONF['likes_block_cache_time'];
 	}
+	if (is_null($newLine)) {
+		$newLine = $_CONF['likes_block_likes_new_line'];
+	}
+	if (is_null($titleLength)) {
+		$titleLength = $_CONF['likes_block_title_trim_length'];
+	}
 
 	$display  = '';
 	$useCache = false;
 	$retval = [];
 	
-	// Figure out if likes system actually enabled for user (anonoymous or regular user)
+	// Figure out if likes system actually enabled for user (anonymous or regular user)
 	if (!$_CONF['likes_enabled'] || (COM_isAnonUser() && $_CONF['likes_enabled'] == 2)) {
 		return $retval;
 	}	
 
 	// Check if enabled and get label
-	if (!empty($_CONF['likes_block_type'])) {
-		if (PLG_typeLikesEnabled($_CONF['likes_block_type'], $_CONF['likes_block_subtype'])) {
-			$likesLabel = PLG_typeLikesLabel($_CONF['likes_block_type'], $_CONF['likes_block_subtype']);
+	if (!empty($type)) {
+		if (PLG_typeLikesEnabled($type, $subtype)) {
+			$likesLabel = PLG_typeLikesLabel($type, $subtype);
 		} else {
 			// Type doesn't exist or is not enabled
 			return $retval;
@@ -628,10 +634,10 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 	
 	$blockname = "likesblock";
 	$blockname .= '__' . $displayAction;
-	if (!empty($_CONF['likes_block_type'])) {
-		$blockname .= '_' . $_CONF['likes_block_type'];
-		if (!empty($_CONF['likes_block_subtype'])) {
-			$blockname .= '_' . $_CONF['likes_block_subtype'];
+	if (!empty($type)) {
+		$blockname .= '_' . $type;
+		if (!empty($subtype)) {
+			$blockname .= '_' . $subtype;
 		}		
 	}
 	$retval['name'] = $blockname;
@@ -678,8 +684,8 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 		}
 		
 		$sql_type = "";
-		if (!empty($_CONF['likes_block_type'])) {
-			$sql_type = " AND type = '{$_CONF['likes_block_type']}' AND subtype = '{$_CONF['likes_block_subtype']}'";
+		if (!empty($type)) {
+			$sql_type = " AND type = '{$type}' AND subtype = '{$subtype}'";
 		}		
 		
 		// We do not know permissions of items being returned that has likes (or if likes enabled for item) so cannot limit number of rows since some items may not have read permissions for user
@@ -752,8 +758,8 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 				if ($itemSet) {
 					$t->set_var('item-link', $info[0]);
 					$t->set_var('item-title', $info[1]);
-					$t->set_var('item-title-trimmed', COM_truncate($info[1], $_CONF['likes_block_title_trim_length'], '...'));
-					if ($_CONF['likes_block_likes_new_line']) {
+					$t->set_var('item-title-trimmed', COM_truncate($info[1], $titleLength, '...'));
+					if ($newLine) {
 						$t->set_var('likes-new-line', true);
 					}
 					
@@ -811,13 +817,13 @@ function plugin_getBlocksConfig_likes($side, $topic = '')
     $retval = array();
 
     $owner_id = SEC_getDefaultRootUser();
-	
+
 	// Check permissions first
     if (SEC_hasAccess($owner_id, $_CONF['likes_block_group_id'], $_CONF['likes_block_permissions'][0], $_CONF['likes_block_permissions'][1], $_CONF['likes_block_permissions'][2], $_CONF['likes_block_permissions'][3])) {
         if (($side == 'left' && $_CONF['likes_block_isleft'] == 1) || ($side == 'right' && $_CONF['likes_block_isleft'] == 0)) {
 			
 			// Get Title and Name of Block
-			$likesBlock = LIKES_displayLikesBlock($_CONF['likes_block_displayed_actions'], $_CONF['likes_block_type'], $_CONF['likes_block_subtype'], $_CONF['likes_block_include_time'], $_CONF['likes_block_max_items'], $_CONF['likes_block_cache_time'], true);
+			$likesBlock = LIKES_displayLikesBlock($_CONF['likes_block_displayed_actions'], $_CONF['likes_block_type'], $_CONF['likes_block_subtype'], $_CONF['likes_block_include_time'], $_CONF['likes_block_max_items'], $_CONF['likes_block_cache_time'],$_CONF['likes_block_likes_new_line'], $_CONF['likes_block_title_trim_length'], true);
 			
 			if (isset($likesBlock['name'])) {
 				$retval[] = array(
@@ -867,7 +873,7 @@ function plugin_getBlocks_likes($side, $topic = '')
         if (($_CONF['likes_block_topic_option'] == TOPIC_ALL_OPTION) || ($_CONF['likes_block_topic_option'] == TOPIC_HOMEONLY_OPTION && COM_onFrontpage()) || ($_CONF['likes_block_topic_option'] == TOPIC_SELECTED_OPTION && in_array($topic, $_CONF['likes_block_topic']))) {
             if (($side == 'left' && $_CONF['likes_block_isleft'] == 1) || ($side == 'right' && $_CONF['likes_block_isleft'] == 0)) {
                 // Create a block
-                $likesBlock = LIKES_displayLikesBlock($_CONF['likes_block_displayed_actions'], $_CONF['likes_block_type'], $_CONF['likes_block_subtype'], $_CONF['likes_block_include_time'], $_CONF['likes_block_max_items'], $_CONF['likes_block_cache_time']);
+                $likesBlock = LIKES_displayLikesBlock($_CONF['likes_block_displayed_actions'], $_CONF['likes_block_type'], $_CONF['likes_block_subtype'], $_CONF['likes_block_include_time'], $_CONF['likes_block_max_items'], $_CONF['likes_block_cache_time'], $_CONF['likes_block_likes_new_line'], $_CONF['likes_block_title_trim_length']);
 
 				if (isset($likesBlock['name'])) {
 					$retval[] = array(
@@ -909,5 +915,168 @@ function configmanager_select_likes_block_group_id_helper()
 function configmanager_select_likes_block_topic_helper()
 {
     return array_flip(TOPIC_getList());
+}
+
+/**
+ * Likes Autotags
+ * [likes_block:aid action:aid wrapper:wid class:likes-autotag type: subtype: time:604800 max:10 cache:3600 line:1 length:20]
+ * 	- Displays the Likes block. No attributes are required. If attribute not specified then default in configuration used. 
+ * 	- action = 1 (likes only), 2 (dislikes only), or 3 (both) 
+ * 	- wrapper = 0 (no wrapper), 1 (block wrapper with title), div wrapper with css class), or both
+ * 	- class = Specifies the css class used by the div wrapper if enabled else default likes-autotag will be used 
+ * 	- type = Either empty (for all types) or include 1 supported like type. For example 'article' or 'comment'
+ * 	- subtype = Specify a sub type of type if needed
+ * 	- time = Display items that are this many seconds old. 0 will display all items
+ * 	- max = Maximum number of items to display
+ * 	- cache = Cached for no longer than this many seconds. If 0 caching is disabled
+ * 	- line = Display likes icons on new line
+ * 	- length = Trim item title length to this many characters
+ *
+ * @param  string $op
+ * @param  string $content
+ * @param  array $autotag
+ * @return array|string
+ */
+function plugin_autotags_likes($op, $content = '', $autotag = array())
+{
+    global $_CONF, $_TABLES, $_GROUPS, $LANG_LIKES;
+
+    if ($op === 'tagname') {
+        return array('likes_block');
+    } elseif ($op === 'permission' || $op === 'nopermission') {
+        if ($op == 'permission') {
+            $flag = true;
+        } else {
+            $flag = false;
+        }
+        $tagnames = array();
+
+        if (isset($_GROUPS['Blocks Admin'])) {
+            $group_id = $_GROUPS['Blocks Admin'];
+        } else {
+            $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Blocks Admin'");
+        }
+        $owner_id = SEC_getDefaultRootUser();
+
+        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_likes_block'][0], $_CONF['autotag_permissions_likes_block'][1], $_CONF['autotag_permissions_likes_block'][2], $_CONF['autotag_permissions_likes_block'][3]) == $flag) {
+            $tagnames[] = 'likes_block';
+        }
+
+        if (count($tagnames) > 0) {
+            return $tagnames;
+        }
+    } elseif ($op == 'description') {
+        return array(
+            'likes_block' => $LANG_LIKES['autotag_desc_likes_block']
+        );
+    } elseif ($op == 'parse') {
+		switch ($autotag['tag']) {
+			case 'likes_block':
+				// Setup defaults
+				$displayAction = null; 
+				$type = ''; 
+				$subtype = '';
+				$includeTime = null;
+				$maxItems = null;
+				$newLine = null;
+				$titleLength = null;
+				$cacheTime = null;
+
+				// 0 = Nothing
+				// 1 = blockheader-child
+				// 2 = div wrapper with css class
+				// 3 = both
+				$wrapper = 3;
+				
+				$css_class = "likes-autotag";
+				
+				$parm1 = COM_applyFilter($autotag['parm1']);
+				if (is_numeric($parm1) && $parm1 >= 1 && $parm1 <= 3) {
+					$displayAction = $parm1;
+				}
+				
+				$px = explode(' ', trim($autotag['parm2']));
+
+				if (is_array($px)) {
+					foreach ($px as $part) {
+						if (substr($part, 0, 6) == 'class:') {
+							$a = explode(':', $part);
+							if (!empty($a[1])) {
+								$css_class = $a[1];
+							}
+						} elseif (substr($part, 0, 8) == 'wrapper:') {
+							$a = explode(':', $part);
+							if (is_numeric($a[1]) && $a[1] >= 0 && $a[1] <= 3) {
+								$wrapper = $a[1];
+							}							
+						} elseif (substr($part, 0, 7) == 'action:') {
+							$a = explode(':', $part);
+							if (is_numeric($a[1]) && $a[1] >= 1 && $a[1] <= 3) {
+								$displayAction = $a[1];
+							}
+						} elseif (substr($part, 0, 5) == 'type:') {
+							$a = explode(':', $part);
+							if (!empty($a[1])) {
+								$type = $a[1];
+							}
+						} elseif (substr($part, 0, 8) == 'subtype:') {
+							$a = explode(':', $part);
+							if (!empty($a[1])) {
+								$subtype = $a[1];
+							}
+						} elseif (substr($part, 0, 5) == 'time:') {
+							$a = explode(':', $part);
+							if (is_numeric($a[1])) {
+								$includeTime = $a[1];
+							}
+						} elseif (substr($part, 0, 4) == 'max:') {
+							$a = explode(':', $part);
+							if (is_numeric($a[1])) {
+								$maxItems = $a[1];
+							}
+						} elseif (substr($part, 0, 6) == 'cache:') {
+							$a = explode(':', $part);
+							if (is_numeric($a[1])) {
+								$cacheTime = $a[1];
+							}
+						} elseif (substr($part, 0, 5) == 'line:') {
+							$a = explode(':', $part);
+							if (is_numeric($a[1]) && $a[1]) {
+								$newLine = true;
+							}
+						} elseif (substr($part, 0, 7) == 'length:') {
+							$a = explode(':', $part);
+							if (is_numeric($a[1]) && $a[1] >= 0) {
+								$titleLength = $a[1];
+							}							
+						} else {
+							break;
+						}
+					}
+				}
+
+				$retval = LIKES_displayLikesBlock($displayAction, $type, $subtype, $includeTime, $maxItems, $cacheTime, $newLine, $titleLength, false);
+				
+				if (!empty($retval['title'])) {
+					if ($wrapper == 1 || $wrapper == 3) {
+						$retval['html'] = COM_startBlock($retval['title'], '', 'blockheader-child.thtml')
+							. $retval['html'] . 
+							COM_endBlock('blockfooter-child.thtml');
+					}
+
+					if ($wrapper >= 2) {
+						$retval['html'] = '<div class="' . $css_class . '">' . $retval['html'] . '</div>';
+					}
+					
+					$content = str_replace($autotag['tagstr'], $retval['html'], $content);
+				}
+				
+				break;
+		}
+
+		
+    }
+
+    return $content;
 }
 

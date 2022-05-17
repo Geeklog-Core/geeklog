@@ -19,3 +19,36 @@
 #centerblocks div.block-child-center {
   margin: 0 0 1.25em 0;
 }
+
+/* Used to better match other article related blocks */
+.block-trackback-content {
+    border-bottom: 0px;
+}
+
+/* Needed for Calendar Submit Event as address wraps and messes layout */
+.form-description {
+	white-space:nowrap;
+}
+
+/* Needed for Calendar Submit Event */
+.clear-right {
+	clear:right;	
+}
+.clear-left {
+	clear:left;	
+}
+.clear-both {
+	clear:both;	
+}
+
+/* Used by blocks that can also be called as autotags */
+.block-autotag {
+    padding: 5px;
+    width: 300px;
+}
+
+.likes-autotag {
+    padding: 5px;
+    margin: 0 auto;
+    width: 300px;
+}

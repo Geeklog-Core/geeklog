@@ -1772,6 +1772,7 @@ function PLG_collectTags($type = 'tagname')
     require_once $_CONF['path_system'] . 'lib-article.php';
     require_once $_CONF['path_system'] . 'lib-user.php';
     require_once $_CONF['path_system'] . 'lib-topic.php';
+	require_once $_CONF['path_system'] . 'lib-likes.php';
     require_once $_CONF['path_system'] . 'lib-block.php';
     require_once $_CONF['path_system'] . 'lib-structureddata.php';
 
@@ -1783,7 +1784,7 @@ function PLG_collectTags($type = 'tagname')
          */
         $_PLUGINS = array();
     }
-    $all_plugins = array_merge($_PLUGINS, array('article', 'user', 'topic', 'block', 'structureddata'));
+    $all_plugins = array_merge($_PLUGINS, array('article', 'user', 'topic', 'likes', 'block', 'structureddata'));
 
     $autolinkModules = array();
 
