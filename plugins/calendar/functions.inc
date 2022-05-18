@@ -1512,6 +1512,9 @@ function plugin_user_delete_calendar($uid)
 {
     global $_TABLES, $_CA_CONF;
 
+	// Delete any submission records
+	DB_delete($_TABLES['eventsubmission'], 'owner_id', $uid);
+
     DB_delete($_TABLES['personal_events'], 'owner_id', $uid);
 
     if ($_CA_CONF['delete_event'] == 1) {

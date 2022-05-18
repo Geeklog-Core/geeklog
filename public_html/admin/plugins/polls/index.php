@@ -637,14 +637,20 @@ function deletePoll($pid)
         COM_accessLog("User {$_USER['username']} tried to illegally delete poll $pid.");
         COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php');
     }
+	
+	// Delete Comments for current item being deleted
+	CMT_deleteComment('', $pid, POLLS_PLUGIN_NAME, false);
+	
+	// Delete Likes for current item being deleted
+	LIKES_deleteActions(POLLS_PLUGIN_NAME, '', $pid);
 
     DB_delete($_TABLES['polltopics'], 'pid', $pid);
     DB_delete($_TABLES['pollanswers'], 'pid', $pid);
     DB_delete($_TABLES['pollquestions'], 'pid', $pid);
     DB_delete($_TABLES['pollvoters'], 'pid', $pid);
-    DB_delete($_TABLES['comments'], array('sid', 'type'),
-        array($pid, 'polls'));
-    PLG_itemDeleted($pid, 'polls');
+    
+	PLG_itemDeleted($pid, POLLS_PLUGIN_NAME);
+	
     COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php?msg=20');
 }
 

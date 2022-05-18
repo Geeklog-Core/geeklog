@@ -1080,3 +1080,36 @@ function plugin_autotags_likes($op, $content = '', $autotag = array())
     return $content;
 }
 
+/**
+ * A user is about to be deleted. Update ownership of any likes owned
+ * by that user or delete them.
+ *
+ * @param   int $uid User id of deleted user
+ */
+function plugin_user_delete_likes($uid)
+{
+    global $_TABLES, $_CONF;
+	
+    if (DB_count($_TABLES['likes'], 'uid', $uid) == 0) {
+        // there are no likes owned by this user
+        return;
+    }
+
+    DB_query("UPDATE {$_TABLES['likes']} SET uid = 1 WHERE uid = $uid");
+}
+
+/**
+ * Callback function when an item was deleted
+ *
+ * @param    string  $id        ID of item being deleted
+ * @param    string  $type      type of item ('article', 'staticpages', ...)
+ * @param    string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
+ * @see      PLG_itemDeleted
+ */
+function plugin_itemdeleted_likes($id, $type, $sub_type)
+{
+	// Lets make sure all likes are delete for item (we don't know if item even supports likes)
+	// This should already be done when item is deleted
+	LIKES_deleteActions($type, $sub_type, $id);
+}
+

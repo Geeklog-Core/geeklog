@@ -371,9 +371,10 @@ function PLG_uninstall($type)
             COM_errorLog('...success', 1);
         }
 
-        // remove comments for this plugin
+        // remove comments for this plugin if any exist
         COM_errorLog("Attempting to remove comments for $type", 1);
         DB_delete($_TABLES['comments'], 'type', $type);
+		CMT_deleteComment('', '', $type, false);
         COM_errorLog('...success', 1);
 
         // uninstall php-blocks
@@ -396,12 +397,21 @@ function PLG_uninstall($type)
         COM_errorLog("Attempting to remove topic assignments table records for $type", 1);
         DB_delete($_TABLES['topic_assignments'], 'type', $type);
         COM_errorLog('...success', 1);
+		
+        // remove likes table data for this plugin if exists
+        COM_errorLog("Attempting to remove likes table records for $type", 1);
+        DB_delete($_TABLES['likes'], 'type', $type);
+        COM_errorLog('...success', 1);		
 
         // uninstall the plugin
         COM_errorLog("Attempting to unregister the $type plugin from Geeklog", 1);
         DB_delete($_TABLES['plugins'], 'pi_name', $type);
         COM_errorLog('...success', 1);
-
+		
+		COM_errorLog("Clearing entire Geeklog Cache", 1);
+		CTL_clearCache();
+		COM_errorLog('...success', 1);
+		
         COM_errorLog("Finished uninstalling the $type plugin.", 1);
 
         return true;
@@ -1370,8 +1380,15 @@ function PLG_createUser($uid)
 function PLG_deleteUser($uid)
 {
     global $_PLUGINS, $_CONF;
+	
+    // Treat comments and likes library like a plugin (since belong to core group)
+    $pluginTypes = ['comment', 'likes'];
+    require_once $_CONF['path_system'] . 'lib-comment.php';
+    require_once $_CONF['path_system'] . 'lib-likes.php';	
 
-    foreach ($_PLUGINS as $pi_name) {
+    $pluginTypes = array_merge($pluginTypes, $_PLUGINS);	
+
+    foreach ($pluginTypes as $pi_name) {
         $function = 'plugin_user_delete_' . $pi_name;
         if (function_exists($function)) {
             $function($uid);

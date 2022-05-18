@@ -46,6 +46,20 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 
 $plugin_path = $_CONF['path'] . 'plugins/polls/';
 
+// used for Likes and Topic controls
+define("POLLS_PLUGIN_NAME", 'polls');
+
+
+
+
+
+
+
+$_PO_CONF['likes_polls'] = true;
+
+
+
+
 /**
  * Language file include
  */
@@ -1485,7 +1499,7 @@ function plugin_migrate_polls($old_conf)
  */
 function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
 {
-    global $_CONF, $_TABLES, $_USER;
+    global $_CONF, $_PO_CONF, $_TABLES, $_USER;
 
     // parse $what to see what we need to pull from the database
     $properties = explode(',', $what);
@@ -1509,6 +1523,12 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
                 $fields[] = 'topic';
                 break;
 
+		case 'likes':
+			// Likes polls setting is a global variable and not an item per item setting
+			$fields[] = $_PO_CONF['likes_polls'] . ' AS likes';
+			$groupby_fields[] = 'likes';
+			break;
+			
             case 'url':
                 // needed for $pid == '*', but also in case we're only requesting
                 // the URL (so that $fields isn't emtpy)
@@ -1575,6 +1595,10 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
                 case 'title':
                     $props['title'] = $A['topic'];
                     break;
+					
+				case 'likes':
+					$props['likes'] = $A['likes'];					
+					break;					
 
                 case 'url':
                     if (empty($A['pid'])) {

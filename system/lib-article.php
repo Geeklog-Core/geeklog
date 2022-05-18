@@ -1158,14 +1158,14 @@ function STORY_doDeleteThisStoryNow($sid)
 
     require_once $_CONF['path_system'] . 'lib-comment.php';
 
+	CMT_deleteComment('', $sid, 'article', false);
+    
+	DB_delete($_TABLES['trackback'], array('sid', 'type'),
+        array($sid, 'article'));
+
     STORY_deleteImages($sid);
-    DB_delete($_TABLES['comments'], array('sid', 'type'),
-        array($sid, 'article'));
-    DB_delete($_TABLES['commentsubmissions'], array('sid', 'type'),
-        array($sid, 'article'));
-    DB_delete($_TABLES['trackback'], array('sid', 'type'),
-        array($sid, 'article'));
-    DB_delete($_TABLES['stories'], 'sid', $sid);
+    
+	DB_delete($_TABLES['stories'], 'sid', $sid);
 
     TOPIC_deleteTopicAssignments('article', $sid);
 

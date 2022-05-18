@@ -796,10 +796,8 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
 
     // Delete page
     DB_delete($_TABLES['staticpage'], 'sp_id', $sp_id);
-    DB_delete($_TABLES['comments'], array('sid', 'type'),
-        array($sp_id, 'staticpages'));
-    DB_delete($_TABLES['commentsubmissions'], array('sid', 'type'),
-        array($sp_id, 'staticpages'));
+	
+	CMT_deleteComment('', $sp_id, STATICPAGES_PLUGIN_NAME, false);
 
     TOPIC_deleteTopicAssignments('staticpages', $sp_id);
 

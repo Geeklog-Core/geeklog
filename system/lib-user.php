@@ -86,7 +86,8 @@ function USER_deleteAccount($uid)
 
     // Ok, now delete everything related to this user
 
-    // let plugins update their data for this user
+    // let plugins update their data for this user delete any submissions, etc.
+	// this includes comments and likes libraries
     PLG_deleteUser($uid);
 
     // remove from all security groups
@@ -95,16 +96,13 @@ function USER_deleteAccount($uid)
     // remove user information and preferences
     DB_delete($_TABLES['user_attributes'], 'uid', $uid);
     DB_delete($_TABLES['backup_codes'], 'uid', $uid);
-    DB_delete($_TABLES['likes'], 'uid', $uid);
 
-    // avoid having orphand stories/comments by making them anonymous posts
-    DB_query("UPDATE {$_TABLES['comments']} SET uid = 1 WHERE uid = $uid");
+    // avoid having orphan stories by making them anonymous posts
     DB_query("UPDATE {$_TABLES['stories']} SET uid = 1 WHERE uid = $uid");
     DB_query("UPDATE {$_TABLES['stories']} SET owner_id = 1 WHERE owner_id = $uid");
 
-    // delete submissions
+    // delete story submissions
     DB_delete($_TABLES['storysubmission'], 'uid', $uid);
-    DB_delete($_TABLES['commentsubmissions'], 'uid', $uid); // Includes article and plugin submissions
 
     // delete user photo, if enabled & exists
     if ($_CONF['allow_user_photo'] == 1) {
@@ -1176,7 +1174,9 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
         $fullName = $A['fullname'];
     }
     $userName = htmlspecialchars($userName);
-    $fullName = htmlspecialchars($fullName);
+	if (!empty($fullName)) {
+		$fullName = htmlspecialchars($fullName);
+	}
 
     if ($A['status'] == USER_ACCOUNT_DISABLED) {
         $userName = sprintf('<s title="%s">%s</s>', $LANG28[42], $userName);

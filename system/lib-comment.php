@@ -1786,51 +1786,98 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
  * for the specified $type and $sid.
  *
  * @author  Vincent Furia, vinny01 AT users DOT sourceforge DOT net
- * @param   string $type article, or plugin identifier
- * @param   string $sid  id of object comment belongs to
- * @param   int    $cid  Comment ID
- * @return  string      0 indicates success, >0 identifies problem
+ * $param	boolean	$forSingle	if false then all comments can be deleted by item id or just type (as of Geeklog 2.2.2)
+ * @param   string 	$type 		article, or plugin identifier
+ * @param   string 	$sid  		id of item comment belongs to
+ * @param   int    	$cid  		Comment ID
+ * @return  string  			0 indicates success, >0 identifies problem
  */
-function CMT_deleteComment($cid, $sid, $type)
+function CMT_deleteComment($cid, $sid, $type, $forSingle = true)
 {
     global $_CONF, $_TABLES, $_USER, $_COMMENT_DEBUG;
 
     $ret = 0;  // Assume good status unless reported otherwise
 
-    // Sanity check, note we return immediately here and no DB operations
-    // are performed
-    if (!is_numeric($cid) || ($cid < 0) || empty($sid) || empty($type)) {
+    // Sanity check, note we return immediately here and no DB operations are performed
+    if ($forSingle && (!is_numeric($cid) || ($cid < 0) || empty($sid) || empty($type))) {
+		// Delete individual comment - cid must be numeric and have sid and type
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_deleteComment: {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to delete a comment with one or more missing/bad values.");
+			COM_errorLog("CMT_deleteComment: {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to delete a comment with one or more missing/bad values.");
         }
         return $ret = 1;
-    }
+    } elseif (!$forSingle && (empty($sid) || empty($type))) {
+		// Delete all comments for item id - cid must be empty
+		if ($_COMMENT_DEBUG) {
+			COM_errorLog("CMT_deleteComment: {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to delete all comments for type $type and id $sid.");
+        }
+        return $ret = 1;
+	} elseif (!$forSingle &&  empty($type)) {
+		// Delete all comments for type - cid and sid must be empty
+		if ($_COMMENT_DEBUG) {
+			COM_errorLog("CMT_deleteComment: {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to delete all comments for type $type.");
+        }
+        return $ret = 1;
+	}
 
-    // Delete the comment from the DB and update the other comments to
+    // For Single Comment Deletes
+	// Delete the comment from the DB and update the other comments to
     // maintain the tree structure
+	
+	
     // A lock is needed here to prevent other additions and/or deletions
-    // from happening at the same time. A transaction would work better,
+    // from happening at the same time on the comments table. A transaction would work better,
     // but aren't supported with MyISAM tables.
-    DB_lockTable($_TABLES['comments']);
-    $result = DB_query("SELECT pid, lft, rht FROM {$_TABLES['comments']} "
-        . "WHERE cid = $cid AND sid = '$sid' AND type = '$type'");
-    if (DB_numRows($result) == 1) {
-        list($pid, $lft, $rht) = DB_fetchArray($result);
-        DB_change($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
-        DB_delete($_TABLES['comments'], 'cid', $cid);
+	// *** All tables have to be locked that are accessed in this process before the unlock happens ***
+    DB_lockTable([$_TABLES['comments'], $_TABLES['commentnotifications'], $_TABLES['commentedits'], $_TABLES['commentsubmissions'], $_TABLES['likes']]);
+	$sql = "SELECT pid, lft, rht, cid 
+			FROM {$_TABLES['comments']}
+			WHERE type = '$type'";
+	if (!empty($sid)) {
+		$sql .= " AND sid = '$sid'";
+	}			
+	if ($forSingle) {
+		$sql .= " AND cid = $cid";
+	}
+		
+    $result = DB_query($sql); 
+	$numRows = DB_numRows($result);
+    if (($forSingle && ($numRows == 1)) || (!$forSingle && ($numRows > 0))) {
+		for ($i = 0; $i < $numRows; $i++) {
+			list($pid, $lft, $rht, $cid) = DB_fetchArray($result);
+			
+			// Only do this for single comment deletes. If Item or type being deleted then all parent comments are getting deleted so doesn't matter
+			if ($forSingle) {
+				DB_change($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
+				DB_delete($_TABLES['comments'], 'cid', $cid);
+				
+				DB_query("UPDATE {$_TABLES['comments']} SET indent = indent - 1 "
+					. "WHERE sid = '$sid' AND type = '$type' AND lft BETWEEN $lft AND $rht");
+				DB_query("UPDATE {$_TABLES['comments']} SET lft = lft - 2 "
+					. "WHERE sid = '$sid' AND type = '$type'  AND lft >= $rht");
+				DB_query("UPDATE {$_TABLES['comments']} SET rht = rht - 2 "
+					. "WHERE sid = '$sid' AND type = '$type'  AND rht >= $rht");				
+			}
+				
+			// These comment records need to be delete per comment
+			DB_delete($_TABLES['commentnotifications'], 'cid', $cid);
+			DB_delete($_TABLES['commentedits'], 'cid', $cid);
 
-        DB_lockTable($_TABLES['likes']);
-        LIKES_deleteActions('comment', '', $cid);
-        DB_unlockTable($_TABLES['likes']);
-
-        DB_query("UPDATE {$_TABLES['comments']} SET indent = indent - 1 "
-            . "WHERE sid = '$sid' AND type = '$type' AND lft BETWEEN $lft AND $rht");
-        DB_query("UPDATE {$_TABLES['comments']} SET lft = lft - 2 "
-            . "WHERE sid = '$sid' AND type = '$type'  AND lft >= $rht");
-        DB_query("UPDATE {$_TABLES['comments']} SET rht = rht - 2 "
-            . "WHERE sid = '$sid' AND type = '$type'  AND rht >= $rht");
-
-        DB_unlockTable($_TABLES['comments']);
+			LIKES_deleteActions('comment', '', $cid);
+		}
+		
+		if (!$forSingle) {
+			// Delete all comments and comment submissions at once for item deletes or plugin uninstalls
+			if (!empty($sid)) {
+				// When an item is deleted
+				DB_delete($_TABLES['comments'], array('type', 'sid'), array($type, $sid));
+				DB_delete($_TABLES['commentsubmissions'], array('type', 'sid'), array($type, $sid));
+			} else {
+				// When a plugin (type) is deleted/uninstalled
+				DB_delete($_TABLES['comments'], 'type', $type);
+				DB_delete($_TABLES['commentsubmissions'], 'type', $type);
+			}
+		}
+		DB_unlockTable([$_TABLES['comments'], $_TABLES['commentnotifications'], $_TABLES['commentedits'], $_TABLES['commentsubmissions'], $_TABLES['likes']]);
 
         // Update Comment Feeds
         COM_rdfUpToDateCheck('comment');
@@ -1847,9 +1894,15 @@ function CMT_deleteComment($cid, $sid, $type)
 			CACHE_remove_instance($cacheInstance);
 		}		
     } else {
-        DB_unlockTable($_TABLES['comments']);
+        DB_unlockTable([$_TABLES['comments'], $_TABLES['commentnotifications'], $_TABLES['commentedits'], $_TABLES['commentsubmissions'], $_TABLES['likes']]);
         if ($_COMMENT_DEBUG) {
-            COM_errorLog("CMT_deleteComment: {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to delete a comment that doesn\'t exist as described.");
+			if ($forSingle) {
+				COM_errorLog("CMT_deleteComment: {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to delete a comment that doesn't exist as described.");
+			} elseif (!empty($sid)) {
+				COM_errorLog("CMT_deleteComment: {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to delete all comments for a type $type and id $sid that doesn't have any.");
+			} else {
+				COM_errorLog("CMT_deleteComment: {$_USER['uid']} from " . \Geeklog\IP::getIPAddress() . " tried to delete all comments for a type $type that doesn't have any.");
+			}
         }
         return $ret = 2;
     }
@@ -3735,4 +3788,29 @@ function plugin_getiteminfo_comment($cid, $what, $uid = 0, $options = array())
     }
 
     return $retval;
+}
+
+/**
+ * A user is about to be deleted. Update ownership of any comments owned
+ * by that user or delete them.
+ *
+ * @param   int $uid User id of deleted user
+ */
+function plugin_user_delete_comment($uid)
+{
+    global $_TABLES, $_CONF;
+	
+	// Delete any submission records
+	DB_delete($_TABLES['commentsubmissions'], 'uid', $uid);
+	
+    if (DB_count($_TABLES['comments'], 'uid', $uid) == 0) {
+        // there are no comments owned by this user
+        return;
+    }
+
+    DB_query("UPDATE {$_TABLES['comments']} SET uid = 1 WHERE uid = $uid");
+
+	// Delete Comment related records
+	DB_delete($_TABLES['commentedits'], 'uid', $uid);
+	DB_delete($_TABLES['commentnotifications'], 'uid', $uid);
 }

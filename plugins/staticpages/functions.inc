@@ -46,6 +46,18 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 
 $plugin_path = $_CONF['path'] . 'plugins/staticpages/';
 
+// used for Likes and Topic controls
+define("STATICPAGES_PLUGIN_NAME", 'staticpages');
+
+
+
+$_SP_CONF['likes_polls'] =true;
+
+
+
+
+
+
 /**
  * Language file include
  */
@@ -2405,7 +2417,7 @@ function plugin_getwhatsnewcomment_staticpages($numreturn = 0, $uid = 0)
  */
 function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = array())
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_SP_CONF, $_TABLES;
 
     // parse $what to see what we need to pull from the database
     $properties = explode(',', $what);
@@ -2434,6 +2446,12 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
                 $fields[] = 'sp_title';
                 break;
 
+		case 'likes':
+			// Likes Staticpages setting is a global variable and not an item per item setting
+			$fields[] = $_SP_CONF['likes_polls'] . ' AS likes';
+			$groupby_fields[] = 'likes';
+			break;
+			
             case 'page_title':
                 $fields[] = 'sp_page_title';
                 break;
@@ -2522,6 +2540,10 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
                 case 'page_title':
                     $props['page_title'] = stripslashes($A['sp_page_title']);
                     break;
+
+				case 'likes':
+					$props['likes'] = $A['likes'];					
+					break;
 
                 case 'url':
                     if (empty($A['sp_id'])) {

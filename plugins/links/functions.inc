@@ -492,6 +492,9 @@ function plugin_getadminoption_links()
 function plugin_user_delete_links ($uid)
 {
     global $_TABLES, $_LI_CONF;
+	
+	// Delete any submission records
+	DB_delete($_TABLES['linksubmission'], 'owner_id', $uid);
 
     if (DB_count ($_TABLES['links'], 'owner_id', $uid) == 0) {
         return;
