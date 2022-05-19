@@ -4050,9 +4050,12 @@ function PLG_typeLikesEnabled($type, $sub_type, $id = '')
 
     $retval = false;
 
-    // ensure that we're picking up the comment library as it is not always loaded
+    // ensure that we're picking up these libraries when needed as they are not always loaded
     if ($type == 'comment') {
         require_once $_CONF['path_system'] . 'lib-comment.php';
+    }
+    if ($type == 'likes') {
+        require_once $_CONF['path_system'] . 'lib-likes.php';
     }
 
     if ($_CONF['likes_enabled']) {
@@ -4081,10 +4084,13 @@ function PLG_typeLikesLabel($type, $sub_type)
 
     $retval = '';
 
-    // ensure that we're picking up the comment library as it is not always loaded
+    // ensure that we're picking up these libraries when needed as they are not always loaded
     if ($type == 'comment') {
         require_once $_CONF['path_system'] . 'lib-comment.php';
     }
+    if ($type == 'likes') {
+        require_once $_CONF['path_system'] . 'lib-likes.php';
+    }	
 
     if ($_CONF['likes_enabled']) {
         $args[1] = $sub_type;

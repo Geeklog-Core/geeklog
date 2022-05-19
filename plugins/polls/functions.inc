@@ -49,17 +49,6 @@ $plugin_path = $_CONF['path'] . 'plugins/polls/';
 // used for Likes and Topic controls
 define("POLLS_PLUGIN_NAME", 'polls');
 
-
-
-
-
-
-
-$_PO_CONF['likes_polls'] = true;
-
-
-
-
 /**
  * Language file include
  */
@@ -81,6 +70,17 @@ if (!isset($_PO_CONF['pollsloginrequired'])) {
     $po_config = config::get_instance();
     $_PO_CONF = $po_config->get_config('polls');
 }
+
+
+
+
+
+$_PO_CONF['likes_polls'] = 1;
+
+
+
+
+
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
@@ -523,7 +523,7 @@ function plugin_autouninstall_polls()
  */
 function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $mode = '', $page = 1)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_POLLS, $LANG01, $LANG25,
+    global $_CONF, $_PO_CONF, $_TABLES, $_USER, $LANG_POLLS, $LANG01, $LANG25,
            $_IMAGE_TYPE;
 
     $retval = '';
@@ -663,6 +663,13 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                 }
                 $poll->set_var('lang_polltopics', $LANG_POLLS['polltopics']);
                 $poll->set_var('poll_notification', $notification);
+
+				if ($_CONF['likes_enabled'] != 0 && $_PO_CONF['likes_polls'] != 0) {
+					$poll->set_var('likes_control',LIKES_control(POLLS_PLUGIN_NAME, '', $pid, $_PO_CONF['likes_polls']));
+				} else {
+					$poll->set_var('likes_control', '');
+				}
+				
                 if ($P['commentcode'] >= 0) {
                     $num_comments = DB_count($_TABLES['comments'],
                         array('sid', 'type'),
@@ -993,6 +1000,12 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
                     break;
                 }
             }
+			
+			if ($_CONF['likes_enabled'] != 0 && $_PO_CONF['likes_polls'] != 0) {
+				$poll->set_var('likes_control',LIKES_control(POLLS_PLUGIN_NAME, '', $pid, $_PO_CONF['likes_polls']));
+			} else {
+				$poll->set_var('likes_control', '');
+			}
 
             if ($P['commentcode'] >= 0) {
                 $num_comments = DB_count($_TABLES['comments'],
@@ -2250,4 +2263,88 @@ function plugin_idToURL_polls($sub_type, $item_id)
     global $_CONF;
 
     return $_CONF['site_url'] . '/polls/index.php?pid=' . $item_id . '&amp;aid=-1';
+}
+
+/**
+ * Find out Likes plural label for item
+ *
+ * @return   string 	Plural name of item that can be liked or disliked
+ */
+function plugin_likeslabel_polls($sub_type)
+{
+    global $_PO_CONF, $LANG_POLLS;
+
+    $retval = false;
+
+    if ($_PO_CONF['likes_polls'] > 0) {
+		$retval = $LANG_POLLS['polls'];
+    }
+
+    return $retval;
+}
+
+/**
+ * Is Likes system enabled for item
+ *
+ * @return   int    0 = disabled, 1 = Likes and Dislikes, 2 = Likes only
+ */
+function plugin_likesenabled_polls($sub_type, $id)
+{
+    global $_PO_CONF;
+
+    return $_PO_CONF['likes_polls'];
+}
+
+/**
+ * Can user perform a like action on item
+ * Need to check not only likes enabled for item but same owner and read permissions to item
+ * Note: $Id is filtered as a string by likes.php.
+ *       If needed do additional checks here (like if you need a numeric value)
+ *       but you cannot change the value of id since it will not change in the original calling function
+ *
+ * @return   bool
+ */
+function plugin_canuserlike_polls($sub_type, $id, $uid, $ip)
+{
+    global $_PO_CONF, $_TABLES;
+
+    $retval = false;
+
+    if ($_PO_CONF['likes_polls'] > 0) {
+        $perm_sql = COM_getPermSQL( 'AND', $uid, 2);
+        $sql = "SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['polltopics']} WHERE pid='".$id."' " . $perm_sql;
+        $result = DB_query($sql);
+        if (DB_numRows($result) > 0) {
+            list ($owner_id, $group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) = DB_fetchArray($result);
+            if ($owner_id != $uid) {
+                $retval = true;
+            }
+        }
+    }
+
+    return $retval;
+}
+
+/**
+ * Get URL for item like is for
+ * Note: $Id is filtered as a string by likes.php.
+ *       If needed do additional checks here (like if you need a numeric value)
+ *       but you cannot change the value of id since it will not change in the original calling function
+ *
+ * @return   string    URL of item like is for
+ */
+function plugin_getItemLikeURL_polls($sub_type, $id)
+{
+    global $_PO_CONF, $_TABLES;
+
+    $retval = '';
+
+    if ($_PO_CONF['likes_polls'] > 0) {
+        // No sense rebuilding stuff here so use PLG_getItemInfo
+        // PLG_getItemInfo will only return url if user has permissions
+        $options['sub_type'] = $sub_type;
+        $retval = PLG_getItemInfo(POLLS_PLUGIN_NAME, $id, 'url', 0, $options);
+    }
+
+    return $retval;
 }

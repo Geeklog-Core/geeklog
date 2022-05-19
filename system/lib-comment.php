@@ -3502,13 +3502,7 @@ function plugin_likesenabled_comment($sub_type, $id)
 {
     global $_CONF;
 
-    $retval = false;
-
-    if ($_CONF['likes_comments'] > 0) {
-        $retval = $_CONF['likes_comments'];
-    }
-
-    return $retval;
+    return $_CONF['likes_comments'];
 }
 
 /**

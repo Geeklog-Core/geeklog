@@ -25,7 +25,7 @@
 
 {!!if {display_type} == '0' !!}
 <p>
-    <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_voters}
+    <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_voters}{!if likes_control} | {likes_control}{!endif}
 </p>
 {!else}
 <div class="pluginTinyText">

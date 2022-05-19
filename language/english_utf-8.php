@@ -831,9 +831,7 @@ $LANG_LIKES = array(
 	'no_action_items'   			=> 'There are no Liked or Disliked items.',
 	// Likes Block Core Supported Plurals
 	'articles'   					=> 'Articles',
-	'comments'   					=> 'Comments',
-	'pages'   						=> 'Pages',
-	'polls'   						=> 'Polls'
+	'comments'   					=> 'Comments'
 );
 
 ###############################################################################

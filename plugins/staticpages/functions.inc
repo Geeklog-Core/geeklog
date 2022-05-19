@@ -49,15 +49,6 @@ $plugin_path = $_CONF['path'] . 'plugins/staticpages/';
 // used for Likes and Topic controls
 define("STATICPAGES_PLUGIN_NAME", 'staticpages');
 
-
-
-$_SP_CONF['likes_polls'] =true;
-
-
-
-
-
-
 /**
  * Language file include
  */
@@ -80,6 +71,17 @@ if (!isset($_SP_CONF['allow_php'])) {
     $sp_config = config::get_instance();
     $_SP_CONF = $sp_config->get_config('staticpages');
 }
+
+
+
+
+$_SP_CONF['likes_pages'] = 1;
+
+
+
+
+
+
 
 // +---------------------------------------------------------------------------+
 // | Plugin API - Services                                                     |
@@ -597,6 +599,12 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
                 );
             $spage->set_var('edit_icon', $icon);
         }
+		
+		if ($_CONF['likes_enabled'] != 0 && $_SP_CONF['likes_pages'] != 0) {
+			$spage->set_var('likes_control',LIKES_control(STATICPAGES_PLUGIN_NAME, '', $page, $_SP_CONF['likes_pages']));
+		} else {
+			$spage->set_var('likes_control', '');
+		}		
 
         if ($A['commentcode'] >= 0) {
             $delete_option = (SEC_hasRights('staticpages.edit') &&
@@ -2448,7 +2456,7 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
 
 		case 'likes':
 			// Likes Staticpages setting is a global variable and not an item per item setting
-			$fields[] = $_SP_CONF['likes_polls'] . ' AS likes';
+			$fields[] = $_SP_CONF['likes_pages'] . ' AS likes';
 			$groupby_fields[] = 'likes';
 			break;
 			
@@ -2762,4 +2770,88 @@ function plugin_idToURL_staticpages($sub_type, $item_id)
     global $_CONF;
 
     return COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $item_id);
+}
+
+/**
+ * Find out Likes plural label for item
+ *
+ * @return   string 	Plural name of item that can be liked or disliked
+ */
+function plugin_likeslabel_staticpages($sub_type)
+{
+    global $_SP_CONF, $LANG_STATIC;
+
+    $retval = false;
+
+    if ($_SP_CONF['likes_pages'] > 0) {
+		$retval = $LANG_STATIC['pages'];
+    }
+
+    return $retval;
+}
+
+/**
+ * Is Likes system enabled for item
+ *
+ * @return   int    0 = disabled, 1 = Likes and Dislikes, 2 = Likes only
+ */
+function plugin_likesenabled_staticpages($sub_type, $id)
+{
+    global $_SP_CONF;
+
+    return $_SP_CONF['likes_pages'];
+}
+
+/**
+ * Can user perform a like action on item
+ * Need to check not only likes enabled for item but same owner and read permissions to item
+ * Note: $Id is filtered as a string by likes.php.
+ *       If needed do additional checks here (like if you need a numeric value)
+ *       but you cannot change the value of id since it will not change in the original calling function
+ *
+ * @return   bool
+ */
+function plugin_canuserlike_staticpages($sub_type, $id, $uid, $ip)
+{
+    global $_SP_CONF, $_TABLES;
+
+    $retval = false;
+
+    if ($_SP_CONF['likes_pages'] > 0) {
+        $perm_sql = COM_getPermSQL( 'AND', $uid, 2);
+        $sql = "SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['staticpage']} WHERE sp_id='".$id."' " . $perm_sql;
+        $result = DB_query($sql);
+        if (DB_numRows($result) > 0) {
+            list ($owner_id, $group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) = DB_fetchArray($result);
+            if ($owner_id != $uid) {
+                $retval = true;
+            }
+        }
+    }
+
+    return $retval;
+}
+
+/**
+ * Get URL for item like is for
+ * Note: $Id is filtered as a string by likes.php.
+ *       If needed do additional checks here (like if you need a numeric value)
+ *       but you cannot change the value of id since it will not change in the original calling function
+ *
+ * @return   string    URL of item like is for
+ */
+function plugin_getItemLikeURL_staticpages($sub_type, $id)
+{
+    global $_SP_CONF, $_TABLES;
+
+    $retval = '';
+
+    if ($_SP_CONF['likes_pages'] > 0) {
+        // No sense rebuilding stuff here so use PLG_getItemInfo
+        // PLG_getItemInfo will only return url if user has permissions
+        $options['sub_type'] = $sub_type;
+        $retval = PLG_getItemInfo(STATICPAGES_PLUGIN_NAME, $id, 'url', 0, $options);
+    }
+
+    return $retval;
 }
