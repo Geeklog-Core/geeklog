@@ -368,7 +368,7 @@ function LIKES_addAction($type, $sub_type, $item_id, $action, $prev_action, $uid
     global $_TABLES;
 
     // Assume all previous checks done on passed in variables including if $action and $past_action are compatible with each other
-
+	
     // Delete any previous action if exist
     if ($prev_action != LIKES_ACTION_NONE) {
         $escType = DB_escapeString($type);
@@ -380,12 +380,10 @@ function LIKES_addAction($type, $sub_type, $item_id, $action, $prev_action, $uid
             $sql = "DELETE FROM {$_TABLES['likes']} WHERE type = '$escType' AND subtype='$escSubType' AND id = '$escItemId' AND uid = $uid";
             DB_query($sql);
         } else {
-            $sql = DB_query(
-                "SELECT L.seq FROM {$_TABLES['likes']} AS L "
-                . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
-                . "ON L.seq = i.seq "
-                . "WHERE L.type = '$escType' AND L.subtype='$escSubType' AND L.id = '$escItemId' AND L.uid = 1 AND i.ipaddress = '$escIp'"
-            );
+            $sql = "SELECT L.seq FROM {$_TABLES['likes']} AS L 
+                LEFT JOIN {$_TABLES['ip_addresses']} AS i 
+                ON L.seq = i.seq 
+                WHERE L.type = '$escType' AND L.subtype='$escSubType' AND L.id = '$escItemId' AND L.uid = 1 AND i.ipaddress = '$escIp'";
             $result = DB_query($sql);
             $A = DB_fetchArray($result, false);
 
