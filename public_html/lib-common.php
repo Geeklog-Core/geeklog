@@ -1394,12 +1394,12 @@ function COM_createHTMLPrintableDocument($content = '', $information = array())
  * Create and return the HTML document
  *
  * @param  string $content      Main content for the page
- * @param  array  $information  An array defining variables to be used when creating the output
- *                              string  'what'          If 'none' then no left blocks are returned, if 'menu'
- *                              (default) then right blocks are returned string  'pagetitle'     Optional content for
- *                              the page's <title> string  'breadcrumbs'   Optional content for the page's breadcrumb
- *                              string  'headercode'    Optional code to go into the page's <head> boolean
- *                              'rightblock'    Whether or not to show blocks on right hand side default is no (-1)
+ * @param  array  $information  An array defining variables to be used when creating the output 
+ *                              string  'what'          If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are returned 
+ *								string  'pagetitle'     Optional content for the page's <title> string  'breadcrumbs'   Optional content for the page's breadcrumb
+ *                              string  'headercode'    Optional code to go into the page's <head> 
+ *								boolean 'rightblock'    Whether or not to show blocks on right hand side default is no (-1)
+ *								string	'httpstatus'	HTTP Response Status Code. 200 is assumed. WIll be passed to template
  *                              array   'custom'        An array defining custom function to be used to format
  *                              Rightblocks
  * @return string              Formatted HTML document
@@ -1419,6 +1419,7 @@ function COM_createHTMLDocument($content = '', $information = array())
     $breadcrumbs = isset($information['breadcrumbs']) ? $information['breadcrumbs'] : '';
     $rightBlock = isset($information['rightblock']) ? $information['rightblock'] : -1;
     $custom = isset($information['custom']) ? $information['custom'] : '';
+	$httpStatus = isset($information['httpstatus']) ? $information['httpstatus'] : 200;
     $relLinks = array();
 
     // If the theme implemented this for us then call their version instead.
@@ -1601,7 +1602,7 @@ function COM_createHTMLDocument($content = '', $information = array())
     $page->set_var('site_logo', $_CONF['layout_url'] . '/images/logo.' . $_IMAGE_TYPE);
     $page->set_var('theme', $_CONF['theme']);
     $page->set_var('datetime_html5', COM_strftime('%FT%T', $currentTime[1]));
-
+	$page->set_var('http_status_code', $httpStatus);
     $page->set_var('charset', COM_getCharset());
     $page->set_var('direction', $LANG_DIRECTION);
 
@@ -8332,18 +8333,8 @@ function COM_handle404($alternate_url = '')
     header('HTTP/1.1 404 Not Found');
     header('Status: 404 Not Found');
 
-    if (isset($_SERVER['SCRIPT_URI'])) {
-        // Added QUERY_STRING as this works with PHP with FPM on. Not sure if this affects other PHP setups?
-        $url = $_SERVER['SCRIPT_URI'] . '?' . $_SERVER['QUERY_STRING'];
-    } else {
-        if (empty($_SERVER['HTTPS']) || ($_SERVER['HTTPS'] === 'off')) {
-            $url = 'http';
-        } else {
-            $url = 'https';
-        }
-
-        $url .= '://' . @$_SERVER['HTTP_HOST'] . strip_tags($_SERVER['REQUEST_URI']);
-    }
+	// sanitize url since for display purposes. URL could contain tags, svg embeds, etc...
+	$url = htmlspecialchars(COM_getCurrentURL());
 
     // Add file log stuff
     if (isset($_CONF['404_log']) && $_CONF['404_log']) {
@@ -8379,7 +8370,7 @@ function COM_handle404($alternate_url = '')
     }
 
     $display .= COM_endBlock();
-    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_404[1]));
+	$display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_404[1], 'httpstatus' => 404));
     COM_output($display);
     exit; // Do not want to go any further
 }
