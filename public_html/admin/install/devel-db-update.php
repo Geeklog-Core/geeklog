@@ -106,11 +106,6 @@ function update_DatabaseFor222()
 		*/
 	}
 	
-	// Add missing route into routing table for articles that have page breaks (issue #746)
-    if (DB_count($_TABLES['routes'], 'route', '/article/@sid/@page') == 0) {
-		$_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid/@page', '/article.php?story=@sid&page=@page', 1000)"; // Priority should default to 120 but we need to mage sure it comes after the route for article print
-	}
-	
 	// The following entries are no longer defined in 'lib-database.php', so define them here
 	$_TABLES['cookiecodes'] = $_DB_table_prefix . 'cookiecodes';
 	$_TABLES['dateformats'] = $_DB_table_prefix . 'dateformats';
@@ -119,11 +114,6 @@ function update_DatabaseFor222()
 	$_TABLES['userindex'] = $_DB_table_prefix . 'userindex';
 	$_TABLES['userinfo'] = $_DB_table_prefix . 'userinfo';
 	$_TABLES['userprefs'] = $_DB_table_prefix . 'userprefs';
-	
-	// Drop tables
-	$_SQL[] = "DROP TABLE {$_TABLES['dateformats']}";
-	$_SQL[] = "DROP TABLE {$_TABLES['cookiecodes']}";
-	$_SQL[] = "DROP TABLE {$_TABLES['maillist']}";
 	
 	// Combine user tables into one and delete old tables
     $result = DB_query("SHOW TABLES LIKE '{$_TABLES['user_attributes']}'");
@@ -138,6 +128,11 @@ function update_DatabaseFor222()
 		*/
 	}
 	
+	// Add missing route into routing table for articles that have page breaks (issue #746)
+    if (DB_count($_TABLES['routes'], 'route', '/article/@sid/@page') == 0) {
+		$_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid/@page', '/article.php?story=@sid&page=@page', 1000)"; // Priority should default to 120 but we need to mage sure it comes after the route for article print
+	}	
+	
 	// Old VARS table variables for Database Backup that are not used anymore (but could still get created in some cases)
 	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_files'";
 	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_gzip'";
@@ -145,7 +140,37 @@ function update_DatabaseFor222()
 	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'db_backup_interval'";
 	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_cron'";
 	
+	// Drop tables
+	$_SQL[] = "DROP TABLE {$_TABLES['cookiecodes']}";
+	$_SQL[] = "DROP TABLE {$_TABLES['dateformats']}";
+	$_SQL[] = "DROP TABLE {$_TABLES['maillist']}";
 
+	// Old VARS table variables for Database Backup that are not used anymore (but could still get created in some cases)
+	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_files'";
+	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_gzip'";
+	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_allstructs'";
+	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'db_backup_interval'";
+	$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_cron'";
+
+	// Clean orphan records from Comments and Likes
+	// Delete comment edits with no existing comments or users
+	$_SQL[] = "DELETE FROM {$_TABLES['commentedits']} ce WHERE cid NOT IN (SELECT cid FROM {$_TABLES['comments']} c WHERE c.cid = ce.cid)";	
+	$_SQL[] = "DELETE FROM {$_TABLES['commentedits']} ce WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE u.uid = ce.uid)";	
+	// Delete comment notifications with no existing comments or users
+	$_SQL[] = "DELETE FROM {$_TABLES['commentnotifications']} cn WHERE cid NOT IN (SELECT cid FROM {$_TABLES['comments']} c WHERE c.cid = cn.cid)";	
+	$_SQL[] = "DELETE FROM {$_TABLES['commentnotifications']} cn WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE u.uid = cn.uid)";	
+	// Delete comment submissions whose parent comment does not exist and with no existing users
+	$_SQL[] = "DELETE FROM {$_TABLES['commentsubmissions']} cs WHERE pid != 0 AND pid NOT IN (SELECT cid FROM {$_TABLES['comments']} c WHERE c.cid = cs.pid)";	
+	$_SQL[] = "DELETE FROM {$_TABLES['commentsubmissions']} cs WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE u.uid = cs.uid)";	
+	// Delete Comments that type and sid do not exist anymore
+	$_SQL[] = "DELETE FROM {$_TABLES['comments']} c WHERE type = 'article' AND sid NOT IN (SELECT sid FROM {$_TABLES['stories']} s WHERE c.sid = s.sid)";
+	$_SQL[] = "DELETE FROM {$_TABLES['comments']} c WHERE type = 'staticpages' AND sid NOT IN (SELECT sid FROM {$_TABLES['staticpage']} s WHERE c.sid = s.sp_id)";
+	$_SQL[] = "DELETE FROM {$_TABLES['comments']} c WHERE type = 'polls' AND sid NOT IN (SELECT sid FROM {$_TABLES['polltopics']} pt WHERE c.sid = pt.pid)";
+	// Set any likes missing user accounts to anonymous
+	$_SQL[] = "UPDATE {$_TABLES['likes']} l SET uid = 1 WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE u.uid = l.uid)";	
+	// Delete likes that type and id do not exist anymore
+	$_SQL[] = "DELETE FROM {$_TABLES['likes']} l WHERE type = 'comment' AND id NOT IN (SELECT cid FROM {$_TABLES['comments']} s WHERE c.cid = l.id)";	
+	$_SQL[] = "DELETE FROM {$_TABLES['likes']} l WHERE type = 'article' AND id NOT IN (SELECT sid FROM {$_TABLES['stories']} s WHERE s.sid = l.id)";		
 
     // ***************************************
     // Core Plugin Updates Here (including version update)
