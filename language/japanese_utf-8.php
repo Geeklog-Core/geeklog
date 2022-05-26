@@ -821,6 +821,8 @@ $LANG_LIKES = array(
 	'no_liked_items'   				=> 'There are no Liked items.',
 	'no_disliked_items'   			=> 'There are no Disliked items.',
 	'no_action_items'   			=> 'There are no Liked or Disliked items.',
+	'title_liked'					=> '%s Liked on ',
+	'title_disliked'				=> '%s Disliked on ',
 	// Likes Block Core Supported Plurals
 	'articles'   					=> 'Articles',
 	'comments'   					=> 'Comments'

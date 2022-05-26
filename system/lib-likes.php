@@ -686,7 +686,7 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 			$sql_type = " AND type = '{$type}' AND subtype = '{$subtype}'";
 		}		
 		
-		// We do not know permissions of items being returned that has likes (or if likes enabled for item) so cannot limit number of rows since some items may not have read permissions for user
+		// We do not know permissions of items being returned that has likes (or if likes currently enabled for item) so cannot limit number of rows since some items may not have read permissions for user
 		$sql = "SELECT COUNT(lid) actioncount, type, subtype, id, MAX(created) latestdate FROM {$_TABLES['likes']} 
 			WHERE 1=1 
 			{$sql_type}
@@ -1109,5 +1109,90 @@ function plugin_itemdeleted_likes($id, $type, $sub_type)
 	// Lets make sure all likes are delete for item (we don't know if item even supports likes)
 	// This should already be done when item is deleted
 	LIKES_deleteActions($type, $sub_type, $id);
+}
+
+/**
+ * Geeklog is about to display the user's profile. Plugins now get a chance to
+ * add their own variables to the profile.
+ *
+ * @param   int      $uid      user id of the user profile to be edited
+ * @param   Template $template reference of the Template for the profile edit form
+ * @return  void
+ */
+function plugin_profilevariablesdisplay_likes ($uid, &$template)
+{
+    global $_TABLES, $_CONF, $LANG_LIKES;
+
+	if (!$_CONF['likes_enabled']) {
+		return;
+	}
+
+    $listLimit = "10";        // How many posts you want displayed
+
+    $username = DB_getItem ($_TABLES['users'], 'username', "uid = $uid");
+    $title = sprintf($LANG_LIKES['last_num_likes_by'], $listLimit, $username);
+    $template->set_var ('start_block_last10', COM_startBlock($title, '', 'blockheader-child.thtml'));
+	$template->set_var('end_block_last10', COM_endBlock('blockfooter-child.thtml'));
+
+	// We do not know permissions of items being returned that has likes (or if likes currently enabled for item) so cannot limit number of rows since some items may not have read permissions for user
+	// No need to group by as user should only have 1 action per item
+	$sql = "SELECT type, subtype, id, created, action FROM {$_TABLES['likes']} 
+		WHERE uid = {$uid} 
+		ORDER BY created DESC";
+		
+	$result = DB_Query($sql);
+	$nrows = DB_numRows($result);
+
+	$listCount = 0;
+	$likeItems = array();
+	for ($i = 0; $i < $nrows; $i++) {
+		$A = DB_fetchArray($result);
+		
+		// Some items may not be set depending on current permissions set
+		// Ie at some point dislikes allowed but currently disabled so do not want to display old ones
+		$itemSet = false;
+
+		$options['sub_type'] = $A['subtype'];
+		$info = PLG_getItemInfo($A['type'], $A['id'], 'url,title,likes', 0, $options);
+		// If info returned then user has permission to view item
+		// If the item type, subtype, id have likes currently enabled
+		if (!empty($info[2]) && $info[2] > 0) {
+			$listCount++;
+            $likeDate = COM_getUserDateTimeFormat($A['created']);
+            $template->set_var ('row_number', $listCount . '.');
+			$title = COM_createLink($info[1], $info[0],	array('class'=>'b'));
+			if ($A['action'] == LIKES_ACTION_LIKE) {
+				$title = sprintf($LANG_LIKES['title_liked'], $title);
+			} else {
+				$title = sprintf($LANG_LIKES['title_disliked'], $title);
+			}
+			$template->set_var('item_title', $title);
+            $template->set_var ('item_date', $likeDate[0]);
+
+            if ($listCount == 1) {
+                $template->parse('last10_rows', 'last10_row');
+            } else {
+                $template->parse('last10_rows', 'last10_row', true);
+            }
+
+            if ($listCount >= $listLimit) {
+                break;
+            }
+        }
+	}
+
+    if ($listCount == 0) {
+        $template->set_var('last10_rows', $LANG_LIKES['msg_no_likes']);
+    }
+    $template->parse('last10_blocks', 'last10_block', true);
+
+    // Cannot take just this as may include items the user viewing does not have access too
+	// Unfortunately to return a list of all items another user has liked that the current user has read access
+	// could use a lot of resources as items would have to be checked individually for permissions (since items could be made up of aritcles, comments, polls, pages, etc.)
+    $count = DB_count ($_TABLES['likes'], 'uid', $uid);
+
+    $template->set_var ('lang_number_field', $LANG_LIKES['total_num_likes']);
+    $template->set_var ('number_field', COM_numberFormat($count));
+    $template->parse('field_statistics', 'field_statistic', true);
 }
 

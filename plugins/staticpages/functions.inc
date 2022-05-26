@@ -2553,7 +2553,12 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
                     break;
 
 				case 'likes':
-					$props['likes'] = $A['likes'];					
+					if ($A['likes'] == -1) {
+						// Set to use Plugin Likes default setting
+						$props['likes'] = $_SP_CONF['likes_pages'];						
+					} else {
+						$props['likes'] = $A['likes'];
+					}	
 					break;
 
                 case 'url':

@@ -1626,9 +1626,13 @@ function PLG_profileExtrasSave($plugin = '', $uid = '')
  */
 function PLG_profileVariablesDisplay($uid, $template)
 {
-    global $_PLUGINS;
+    global $_CONF, $_PLUGINS;
+	
+	require_once $_CONF['path_system'] . 'lib-likes.php';
 
-    foreach ($_PLUGINS as $pi_name) {
+    $all_plugins = array_merge($_PLUGINS, array('likes'));	
+
+    foreach ($all_plugins as $pi_name) {
         $function = 'plugin_profilevariablesdisplay_' . $pi_name;
         if (function_exists($function)) {
             $function ($uid, $template);

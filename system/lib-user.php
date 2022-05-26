@@ -1370,7 +1370,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
         $user_templates->set_var('customfields', CUSTOM_userDisplay($uid));
     }
 
-    // See if other plugins want to add any extra profile informaiton
+    // See if other plugins want to add any extra profile information
     PLG_profileVariablesDisplay($uid, $user_templates);
 
     $user_templates->parse('output', 'profile');
