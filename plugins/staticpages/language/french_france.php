@@ -110,6 +110,7 @@ $LANG_STATIC = array(
     'copy' => 'Copy',
     'limit_results' => 'Limit Results',
     'search' => 'Search',
+    'likes' => 'Likes',
     'submit' => 'Submit',
     'no_new_pages' => 'Pas de nouvelle page',
     'pages' => 'Pages',
@@ -137,7 +138,8 @@ $LANG_STATIC = array(
     'parent_page' => 'Parent page',
     'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel="next" and rel="prev" to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
     'num_pages' => '%s Page(s)',
-    'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).'
+    'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).',
+    'likes_desc' => 'Determines if and how likes control appears on page. Default depends on setting in Plugin Configuration. Pages displayed in a Center Blocks will not display a likes control. Pages that are a template do not use this setting.'
 );
 
 $LANG_staticpages_search = array(
@@ -180,6 +182,7 @@ $LANG_confignames['staticpages'] = array(
     'aftersave' => 'Après la sauvegarde de la page',
     'atom_max_items' => 'Max. de pages dans le flux des Webservices',
     'meta_tags' => 'Activer les Meta Tags',
+    'likes_pages' => 'Page Likes',
     'comment_code' => 'Commentaires par défaut',
     'structured_data_type_default' => 'Structured Data Type Default',
     'draft_flag' => 'Drapeux brouillon par défaut',
@@ -228,5 +231,6 @@ $LANG_configselects['staticpages'] = array(
     12 => array('Pas d\'acces' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
     13 => array('Pas d\'accès' => 0, 'Utiliser' => 2),
     17 => array('Commentaires activés' => 0, 'Commentaires désactivés' => -1),
-    39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsarticle', 'BlogPosting' => 'core-blogposting')
+    39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsarticle', 'BlogPosting' => 'core-blogposting'),
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
 );

@@ -155,7 +155,7 @@ $LANG_confignames['polls'] = array(
     'hidenewpolls' => '新着アンケート',
     'title_trim_length' => 'タイトル最大長',
     'meta_tags' => 'メタタグを有効にする',
-	'likes_polls' => 'Poll Likes',
+    'likes_polls' => 'Poll Likes',
     'block_enable' => '有効',
     'block_isleft' => '左ブロックで表示する',
     'block_order' => 'ブロックの順番',
@@ -186,7 +186,7 @@ $LANG_fs['polls'] = array(
     'fs_block_permissions' => 'ブロックのパーミッション ([0]所有者 [1]グループ [2]メンバー [3]ゲスト)'
 );
 
-// Note: entries 0, 1, 12, and 41 are the same as in $LANG_configselects['Core']
+// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['polls'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
     1 => array('はい' => true, 'いいえ' => false),
@@ -197,5 +197,5 @@ $LANG_configselects['polls'] = array(
     13 => array('アクセス不可' => 0, '利用する' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
     15 => array('すべて' => 'all', 'ホームページのみ' => 'homeonly', '話題を選択する' => 'selectedtopics'),
-	41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
 );

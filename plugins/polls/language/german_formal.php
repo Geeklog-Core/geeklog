@@ -149,6 +149,7 @@ $LANG_confignames['polls'] = array(
     'hidenewpolls' => 'Neue Umfragen',
     'title_trim_length' => 'Titel abschneiden nach',
     'meta_tags' => 'Meta-Tags verwenden',
+    'likes_polls' => 'Poll Likes',
     'block_enable' => 'Enabled',
     'block_isleft' => 'Display Block on Left',
     'block_order' => 'Block Order',
@@ -189,5 +190,6 @@ $LANG_configselects['polls'] = array(
     12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3),
     13 => array('No access' => 0, 'Use' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics')
+    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
 );

@@ -207,7 +207,7 @@ $LANG_SUCCESS = array(
     26 => 'Remember, if you have disabled your site in <code>public_html/siteconfig.php</code>, you will need to reenable it again before you can use your site.',
     27 => 'Successfully upgraded all plugins.',
     28 => 'Failed to upgrade some plugins.  They are disabled now.',
-    29 => 'The language file "%s" you were using is no longer supported with the current version, so we are using "english.php" instead.',
+    29 => 'The language file "%s" you were using is no longer supported with the current version, so we are using "english.php" instead.'
 );
 
 // +---------------------------------------------------------------------------+
@@ -430,25 +430,6 @@ $LANG_HELP = array(
     'plugin_upload' => 'W&auml;hle ein Plugin-Archiv (in den Formaten .zip, .tar.gz oder .tgz format) zum Hochladen und Installieren.'
 );
 
-// which texts to use as labels, so they don't have to be translated again
-$LANG_LABEL = array(
-    'site_name'      => $LANG_INSTALL[32],
-    'site_slogan'    => $LANG_INSTALL[33],
-    'db_type'        => $LANG_INSTALL[34],
-    'db_host'        => $LANG_INSTALL[39],
-    'db_name'        => $LANG_INSTALL[40],
-    'db_user'        => $LANG_INSTALL[41],
-    'db_pass'        => $LANG_INSTALL[42],
-    'db_prefix'      => $LANG_INSTALL[43],
-    'site_url'       => $LANG_INSTALL[45],
-    'site_admin_url' => $LANG_INSTALL[47],
-    'site_mail'      => $LANG_INSTALL[48],
-    'noreply_mail'   => $LANG_INSTALL[49],
-	'charactersets'  => $LANG_INSTALL[123],
-    'migrate_file'   => $LANG_MIGRATE[6],
-    'plugin_upload'  => $LANG_PLUGINS[10]
-);
-
 // +---------------------------------------------------------------------------+
 // rescue.php
 
@@ -499,4 +480,25 @@ $LANG_RESCUE = array(
     43 => 'Here you can reset your geeklog root/admin password.',
     44 => 'Email my password',
     45 => 'Geeklog appears not to be installed or the install did not complete properly as core information is missing in the Geeklog database. Therefore this rescue tool cannot be used.'
+);
+
+
+// which texts to use as labels, so they don't have to be translated again
+$LANG_LABEL = array(
+    'site_name'      => $LANG_INSTALL[32],
+    'site_slogan'    => $LANG_INSTALL[33],
+    'db_type'        => $LANG_INSTALL[34],
+    'db_host'        => $LANG_INSTALL[39],
+    'db_name'        => $LANG_INSTALL[40],
+    'db_user'        => $LANG_INSTALL[41],
+    'db_pass'        => $LANG_INSTALL[42],
+    'db_prefix'      => $LANG_INSTALL[43],
+    'site_url'       => $LANG_INSTALL[45],
+    'site_admin_url' => $LANG_INSTALL[47],
+    'site_mail'      => $LANG_INSTALL[48],
+    'noreply_mail'   => $LANG_INSTALL[49],
+    'utf8'           => $LANG_INSTALL[92],
+	'charactersets'  => $LANG_INSTALL[123],
+    'migrate_file'   => $LANG_MIGRATE[6],
+    'plugin_upload'  => $LANG_PLUGINS[10]
 );

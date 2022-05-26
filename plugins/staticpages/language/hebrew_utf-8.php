@@ -111,6 +111,7 @@ $LANG_STATIC = array(
     'copy' => 'העתקה',
     'limit_results' => 'הגבלת תוצאות',
     'search' => 'חיפוש',
+    'likes' => 'Likes',
     'submit' => 'שליחה',
     'no_new_pages' => 'אין עמודים חדשים',
     'pages' => 'עמודים',
@@ -138,7 +139,8 @@ $LANG_STATIC = array(
     'parent_page' => 'Parent page',
     'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel=”next” and rel=”prev” to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
     'num_pages' => '%s Page(s)',
-    'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).'
+    'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).',
+    'likes_desc' => 'Determines if and how likes control appears on page. Default depends on setting in Plugin Configuration. Pages displayed in a Center Blocks will not display a likes control. Pages that are a template do not use this setting.'
 );
 
 $LANG_staticpages_search = array(
@@ -181,6 +183,7 @@ $LANG_confignames['staticpages'] = array(
     'aftersave' => 'לאחר שמירת עמוד',
     'atom_max_items' => 'הכמות המקסימלית של עמודים בהזנת שירותי רשת',
     'meta_tags' => 'אפשרו תגיות Meta',
+    'likes_pages' => 'Page Likes',
     'comment_code' => 'ברירת המחדל של תגובות',
     'structured_data_type_default' => 'Structured Data Type Default',
     'draft_flag' => 'ברירת המחדל של סימון כטיוטה',
@@ -229,5 +232,6 @@ $LANG_configselects['staticpages'] = array(
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
     13 => array('אין גישה' => 0, 'מותר לשימוש' => 2),
     17 => array('איפשור תגובות' => 0, 'ניטרול תגובות' => -1),
-    39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsarticle', 'BlogPosting' => 'core-blogposting')
+    39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsarticle', 'BlogPosting' => 'core-blogposting'),
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
 );

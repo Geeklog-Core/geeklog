@@ -149,6 +149,7 @@ $LANG_confignames['polls'] = array(
     'hidenewpolls' => 'نظرسنجی های جدید',
     'title_trim_length' => 'عنوان کوتاه کردن طول',
     'meta_tags' => 'فعال کردن برچسب های متا',
+    'likes_polls' => 'Poll Likes',
     'block_enable' => 'فعال شده',
     'block_isleft' => 'نمایش بلوک در چپ',
     'block_order' => 'ترتیب بلوک',
@@ -189,5 +190,6 @@ $LANG_configselects['polls'] = array(
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
     13 => array('No access' => 0, 'Use' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics')
+    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
 );

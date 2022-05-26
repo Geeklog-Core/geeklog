@@ -149,6 +149,7 @@ $LANG_confignames['polls'] = array(
     'hidenewpolls' => 'סקרים חדשים',
     'title_trim_length' => 'אורך כותרות מקוצרות',
     'meta_tags' => 'אפשרו תגיות Meta',
+    'likes_polls' => 'Poll Likes',
     'block_enable' => 'מאופשר',
     'block_isleft' => 'הצגת קוביות מידע בצד שמאל [ימין במצב שפה RTL]',
     'block_order' => 'סדר מיון קוביות מידע',
@@ -189,5 +190,6 @@ $LANG_configselects['polls'] = array(
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
     13 => array('אין גישה' => 0, 'מותר לשימוש' => 2),
     14 => array('ללא גישה' => 0, 'קריאה בלבד' => 2),
-    15 => array('כולם' => 'all', 'דף הבית בלבד' => 'homeonly', 'בחירת נושאים' => 'selectedtopics')
+    15 => array('כולם' => 'all', 'דף הבית בלבד' => 'homeonly', 'בחירת נושאים' => 'selectedtopics'),
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
 );
