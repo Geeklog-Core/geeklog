@@ -92,6 +92,10 @@ $_UPDATES = array(
     '1.7.1' => array(
         "ALTER TABLE {$_TABLES['staticpage']} ADD `search` TINYINT(1) NOT NULL DEFAULT '1' AFTER `draft_flag`;"
     ),
+    '1.7.2' => array(
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `likes` TINYINT NOT NULL DEFAULT '-1' AFTER `search`;",
+		"UPDATE {$_TABLES['staticpage']} SET `likes` = '0' WHERE template_flag = 1;" // A template page does not use likes
+    ),	
 );
 
 /**

@@ -60,6 +60,12 @@
               {search_options}
             </select></dd>
         <dd class="description">{lang_search_desc}</dd>
+		
+        <dt><label for="sp-editor-likes">{lang_likes}</label></dt>
+        <dd><select name="likes" id="sp-editor-likes">
+              {likes_options}
+            </select></dd>
+        <dd class="description">{lang_likes_desc}</dd>			
 
         <dt><label for="sp-editor-cache_time">{lang_cache_time}</label></dt>
         <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="sp-editor-cachetime" class="text"{xhtml}></dd>

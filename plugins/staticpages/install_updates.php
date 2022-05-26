@@ -191,3 +191,18 @@ function staticpages_update_ConfValues_1_7_2()
 
     return true;
 }
+
+function staticpages_update_ConfValues_1_7_3()
+{
+    global $_CONF, $_TABLES, $_SP_DEFAULT;
+
+    $c = config::get_instance();
+
+    require_once $_CONF['path'] . 'plugins/staticpages/install_defaults.php';
+
+    // Likes
+	$c->add('likes_pages', $_SP_DEFAULT['likes_pages'], 'select',
+			0, 0, 41, 130, true, 'staticpages', 0);		
+
+    return true;
+}

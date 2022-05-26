@@ -3482,15 +3482,9 @@ function plugin_usercontributed_comment($uid)
  */
 function plugin_likeslabel_comment($sub_type)
 {
-    global $_CONF, $LANG_LIKES;
+    global $LANG_LIKES;
 
-    $retval = false;
-
-    if ($_CONF['likes_comments'] > 0) {
-		$retval = $LANG_LIKES['comments'];
-    }
-
-    return $retval;
+    return $LANG_LIKES['comments'];
 }
 
 /**

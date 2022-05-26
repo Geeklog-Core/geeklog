@@ -88,8 +88,11 @@ $_PO_DEFAULT['new_polls_interval'] = 1209600; // 2 weeks
 $_PO_DEFAULT['hide_new_polls'] = 'hide'; // 'hide', 'created', 'modified'
 $_PO_DEFAULT['title_trim_length'] = 20;
 
-// Display Meta Tags for static pages (1 = show, 0 = don't)
+// Display Meta Tags for polls (1 = show, 0 = don't)
 $_PO_DEFAULT['meta_tags'] = 0;
+
+// Display Likes for polls ('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
+$_PO_DEFAULT['likes_polls'] = 1;
 
 // Poll Block
 $_PO_DEFAULT['block_isleft'] = 0;
@@ -163,6 +166,8 @@ function plugin_initconfig_polls()
                 0, 0, 9, 90, true, 'polls', 0);
         $c->add('meta_tags', $_PO_DEFAULT['meta_tags'], 'select',
                 0, 0, 0, 100, true, 'polls', 0);
+        $c->add('likes_polls', $_PO_DEFAULT['likes_polls'], 'select',
+                0, 0, 41, 110, true, 'polls', 0);				
 
         $c->add('tab_whatsnew', NULL, 'tab', 0, 1, NULL, 0, true, 'polls', 1);
         $c->add('fs_whatsnew', NULL, 'fieldset', 0, 1, NULL, 0, true, 'polls', 1);

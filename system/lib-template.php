@@ -637,9 +637,8 @@ function plugin_itemdeleted_template($id, $type, $sub_type)
         // hack to see if plugin supports Likes
         $fn_head = 'plugin_likesenabled_' . $type;
         if (function_exists($fn_head)) {
-            if (is_array($fn_head())) { // if array then supported
-                $likes = true;
-            }
+			// If function exists then assume support
+			$likes = true;
         }		
     }
 

@@ -92,7 +92,13 @@
         <dd><select name="search" id="sp-advanced_editor-search">
               {search_options}
             </select></dd>
-        <dd class="description">{lang_search_desc}</dd>        
+        <dd class="description">{lang_search_desc}</dd>      
+
+        <dt><label for="sp-advanced_editor-likes">{lang_likes}</label></dt>
+        <dd><select name="likes" id="sp-advanced_editor-likes">
+              {likes_options}
+            </select></dd>
+        <dd class="description">{lang_likes_desc}</dd>				
 
         <dt><label for="sp-advanced_editor-cache_time">{lang_cache_time}</label></dt>
         <dd><input type="text" value="{cache_time}" name="cache_time" id="sp-advanced_editor-cachetime" class="uk-input uk-form-width-small"{xhtml}></dd>

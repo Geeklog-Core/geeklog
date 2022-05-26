@@ -72,17 +72,6 @@ if (!isset($_SP_CONF['allow_php'])) {
     $_SP_CONF = $sp_config->get_config('staticpages');
 }
 
-
-
-
-$_SP_CONF['likes_pages'] = 1;
-
-
-
-
-
-
-
 // +---------------------------------------------------------------------------+
 // | Plugin API - Services                                                     |
 // +---------------------------------------------------------------------------+
@@ -600,8 +589,14 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $spage->set_var('edit_icon', $icon);
         }
 		
-		if ($_CONF['likes_enabled'] != 0 && $_SP_CONF['likes_pages'] != 0) {
-			$spage->set_var('likes_control',LIKES_control(STATICPAGES_PLUGIN_NAME, '', $page, $_SP_CONF['likes_pages']));
+		if ($A['likes']) {
+			if ($A['likes'] == -1) {
+				// Set to use Plugin Likes default setting
+				$sp_likes = $_SP_CONF['likes_pages'];
+			} else {
+				$sp_likes = $A['likes'];
+			}
+			$spage->set_var('likes_control',LIKES_control(STATICPAGES_PLUGIN_NAME, '', $page, $sp_likes));
 		} else {
 			$spage->set_var('likes_control', '');
 		}		
@@ -1776,7 +1771,15 @@ function plugin_upgrade_staticpages()
                 $current_version = '1.7.2';
                 break;
 
-            case '1.72':
+            case '1.7.2':
+                if (isset($_UPDATES[$current_version])) {
+                    $_SQL = $_UPDATES[$current_version];
+                    foreach ($_SQL as $sql) {
+                        DB_query($sql);
+                    }
+                }			
+				staticpages_update_ConfValues_1_7_3();
+			
                 $current_version = '1.7.3'; // Ships with Geeklog v2.2.2
                 break;
 
@@ -2455,8 +2458,8 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
                 break;
 
 		case 'likes':
-			// Likes Staticpages setting is a global variable and not an item per item setting
-			$fields[] = $_SP_CONF['likes_pages'] . ' AS likes';
+			// Likes Staticpages setting is a per item setting
+			$fields[] = 'likes';
 			$groupby_fields[] = 'likes';
 			break;
 			
@@ -2779,15 +2782,9 @@ function plugin_idToURL_staticpages($sub_type, $item_id)
  */
 function plugin_likeslabel_staticpages($sub_type)
 {
-    global $_SP_CONF, $LANG_STATIC;
+    global $LANG_STATIC;
 
-    $retval = false;
-
-    if ($_SP_CONF['likes_pages'] > 0) {
-		$retval = $LANG_STATIC['pages'];
-    }
-
-    return $retval;
+    return $LANG_STATIC['pages'];
 }
 
 /**
@@ -2797,9 +2794,23 @@ function plugin_likeslabel_staticpages($sub_type)
  */
 function plugin_likesenabled_staticpages($sub_type, $id)
 {
-    global $_SP_CONF;
+    global $_CONF, $_SP_CONF, $_TABLES;
+	
+	$sp_likes = 0;
+	
+	if ($_CONF['likes_enabled']) {
+		// Shouldn't happen but make sure page is not a template
+		$sp_likes = DB_getItem($_TABLES['staticpage'], 'likes', "sp_id = '$id' and template_id = 0");
+		if ($sp_likes == -1) {
+			// Set to use Plugin Likes default setting
+			$sp_likes = $_SP_CONF['likes_pages'];
+		} elseif (!($sp_likes >= 0 && $sp_likes <= 2)) {
+			// Not valid option so set to disabled
+			$sp_likes = 0;
+		}
+	}
 
-    return $_SP_CONF['likes_pages'];
+	return $sp_likes;
 }
 
 /**
@@ -2817,7 +2828,7 @@ function plugin_canuserlike_staticpages($sub_type, $id, $uid, $ip)
 
     $retval = false;
 
-    if ($_SP_CONF['likes_pages'] > 0) {
+    if (plugin_likesenabled_staticpages($sub_type, $id)) {
         $perm_sql = COM_getPermSQL( 'AND', $uid, 2);
         $sql = "SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['staticpage']} WHERE sp_id='".$id."' " . $perm_sql;
         $result = DB_query($sql);
@@ -2846,7 +2857,7 @@ function plugin_getItemLikeURL_staticpages($sub_type, $id)
 
     $retval = '';
 
-    if ($_SP_CONF['likes_pages'] > 0) {
+    if (plugin_likesenabled_staticpages($sub_type, $id)) {
         // No sense rebuilding stuff here so use PLG_getItemInfo
         // PLG_getItemInfo will only return url if user has permissions
         $options['sub_type'] = $sub_type;

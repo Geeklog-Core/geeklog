@@ -2220,15 +2220,9 @@ function plugin_usercontributed_article($uid)
  */
 function plugin_likeslabel_article($sub_type)
 {
-    global $_CONF, $LANG_LIKES;
+    global $LANG_LIKES;
 
-    $retval = false;
-
-    if ($_CONF['likes_articles'] > 0) {
-		$retval = $LANG_LIKES['articles'];
-    }
-
-    return $retval;
+    return $LANG_LIKES['articles'];
 }
 
 /**

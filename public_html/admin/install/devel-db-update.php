@@ -177,6 +177,11 @@ function update_DatabaseFor222()
 
     // ReCaptcha
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.2.2', pi_gl_version='". VERSION ."', pi_homepage='https://github.com/Geeklog-Plugins/recaptcha' WHERE pi_name='recaptcha'";
+	
+    // Staticpages
+    // Add column for likes
+    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `likes` TINYINT NOT NULL DEFAULT '-1' AFTER `search`;";	
+	$_SQL[] = "UPDATE {$_TABLES['staticpage']} SET `likes` = '0' WHERE template_flag = 1;"; // A template page does not use likes
 
     if ($use_innodb) {
         $statements = count($_SQL);

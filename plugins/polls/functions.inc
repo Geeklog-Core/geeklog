@@ -71,17 +71,6 @@ if (!isset($_PO_CONF['pollsloginrequired'])) {
     $_PO_CONF = $po_config->get_config('polls');
 }
 
-
-
-
-
-$_PO_CONF['likes_polls'] = 1;
-
-
-
-
-
-
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
 // +---------------------------------------------------------------------------+
@@ -1459,6 +1448,8 @@ function plugin_upgrade_polls()
 
                 // Drop the 'ipaddress' column
                 DB_query("ALTER TABLE {$_TABLES['pollvoters']} DROP COLUMN ipaddress");
+				
+				polls_update_ConfValues_2_2_0();
 
                 $current_version = '2.2.1'; // Ships with Geeklog v2.2.2
                 break;
@@ -2272,15 +2263,9 @@ function plugin_idToURL_polls($sub_type, $item_id)
  */
 function plugin_likeslabel_polls($sub_type)
 {
-    global $_PO_CONF, $LANG_POLLS;
+    global $LANG_POLLS;
 
-    $retval = false;
-
-    if ($_PO_CONF['likes_polls'] > 0) {
-		$retval = $LANG_POLLS['polls'];
-    }
-
-    return $retval;
+    return $LANG_POLLS['polls'];
 }
 
 /**

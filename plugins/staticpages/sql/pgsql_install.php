@@ -57,6 +57,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
   cache_time INT NOT NULL DEFAULT '0',
   draft_flag int default '0',
   search int default '1',
+  likes int default '-1',
   owner_id int NOT NULL default '1',
   group_id int NOT NULL default '1',
   perm_owner int NOT NULL default '3',

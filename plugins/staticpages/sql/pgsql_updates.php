@@ -53,8 +53,8 @@ $_UPDATES = array(
     ),
 
     '1.6.7' => array(
-        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onhits` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onmenu`",
-        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onlastupdate` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onhits`"
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onhits` INT NOT NULL DEFAULT '1' AFTER `sp_onmenu`",
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onlastupdate` INT NOT NULL DEFAULT '1' AFTER `sp_onhits`"
     ),
 
     '1.6.9' => array(
@@ -67,7 +67,11 @@ $_UPDATES = array(
         "ALTER TABLE {$_TABLES['staticpage']} ADD page_data TEXT DEFAULT NULL AFTER sp_content"
     ),
     '1.7.1' => array(
-        "ALTER TABLE {$_TABLES['staticpage']} ADD `search` int NOT NULL DEFAULT '1' AFTER `draft_flag`;"
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `search` INT NOT NULL DEFAULT '1' AFTER `draft_flag`;"
+    ),
+    '1.7.2' => array(
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `likes` INT NOT NULL DEFAULT '-1' AFTER `search`;",
+		"UPDATE {$_TABLES['staticpage']} SET `likes` = '0' WHERE template_flag = 1;" // A template page does not use likes
     ),
 );
 
