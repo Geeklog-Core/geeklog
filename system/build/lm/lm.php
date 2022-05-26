@@ -78,6 +78,10 @@ define('TOPIC_HOMEONLY_OPTION', 'homeonly');
 define('TOPIC_SELECTED_OPTION', 'selectedtopics');
 define('TOPIC_ROOT', 'root');
 
+const LIKES_BLOCK_DISPLAY_LIKE = 1;
+const LIKES_BLOCK_DISPLAY_DISLIKE = 2;
+const LIKES_BLOCK_DISPLAY_ALL = 3;
+
 define('RECAPTCHA_NO_SUPPORT', 0);
 define('RECAPTCHA_SUPPORT_V2', 1);
 define('RECAPTCHA_SUPPORT_V2_INVISIBLE', 2);
@@ -111,6 +115,7 @@ $type = '{$type}';
 // names of constants to be used in the configselect arrays
 $config_constants = [
     'TOPIC_ALL_OPTION', 'TOPIC_HOMEONLY_OPTION', 'TOPIC_SELECTED_OPTION',
+	'LIKES_BLOCK_DISPLAY_ALL', 'LIKES_BLOCK_DISPLAY_LIKE', 'LIKES_BLOCK_DISPLAY_DISLIKE',
 ];
 
 // load the English language file
