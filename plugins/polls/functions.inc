@@ -653,7 +653,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                 $poll->set_var('lang_polltopics', $LANG_POLLS['polltopics']);
                 $poll->set_var('poll_notification', $notification);
 
-				if ($_CONF['likes_enabled'] != 0 && $_PO_CONF['likes_polls'] != 0) {
+				if ($_CONF['likes_enabled'] && $_PO_CONF['likes_polls']) {
 					$poll->set_var('likes_control',LIKES_control(POLLS_PLUGIN_NAME, '', $pid, $_PO_CONF['likes_polls']));
 				} else {
 					$poll->set_var('likes_control', '');
@@ -990,7 +990,7 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
                 }
             }
 			
-			if ($_CONF['likes_enabled'] != 0 && $_PO_CONF['likes_polls'] != 0) {
+			if ($_CONF['likes_enabled'] && $_PO_CONF['likes_polls']) {
 				$poll->set_var('likes_control',LIKES_control(POLLS_PLUGIN_NAME, '', $pid, $_PO_CONF['likes_polls']));
 			} else {
 				$poll->set_var('likes_control', '');

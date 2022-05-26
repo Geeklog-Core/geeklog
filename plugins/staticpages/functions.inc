@@ -589,7 +589,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $spage->set_var('edit_icon', $icon);
         }
 		
-		if ($A['likes']) {
+		if ($_CONF['likes_enabled'] && $A['likes']) {
 			if ($A['likes'] == -1) {
 				// Set to use Plugin Likes default setting
 				$sp_likes = $_SP_CONF['likes_pages'];
