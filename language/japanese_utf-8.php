@@ -283,7 +283,7 @@ $LANG03 = array(
     'read_comment' => 'すべてのコメントを読む',
     'comment_for' => '上記のコメントは次のアイテムのものです',
     'comment_page_title' => 'Comments for %s',
-	'comments' => 'Comments'
+    'comments' => 'Comments'
 );
 
 ###############################################################################
@@ -778,54 +778,40 @@ $LANG_LIKES = array(
     'num_anon_users' => '<br' . XHTML . '>%s Anonymous Users',
     'one_anon_users' => '<br' . XHTML . '>1 Anonymous User',
     'num_more_users' => '<br' . XHTML . '>+%s more Users',
-    'username_in_likes_list' 	=> '<br' . XHTML . '>%s',
-	'autotag_desc_likes_block' 	=> "[likes_block:aid action:aid wrapper:wid class:likes-autotag type: subtype: time:604800 max:10 cache:3600 line:1 length:20]
-	- Displays the Likes block. No attributes are required. If attribute not specified then default in configuration used. 
-	- action = 1 (likes only), 2 (dislikes only), or 3 (both) 
-	- wrapper = 0 (no wrapper), 1 (block wrapper with title), div wrapper with css class), or both
-	- class = Specifies the css class used by the div wrapper if enabled else default likes-autotag will be used 
-	- type = Either empty (for all types) or include 1 supported like type. For example 'article' or 'comment'
-	- subtype = Specify a sub type of type if needed
-	- time = Display items that are this many seconds old. 0 will display all items
-	- max = Maximum number of items to display
-	- cache = Cached for no longer than this many seconds. If 0 caching is disabled
-	- line = Display likes icons on new line
-	- length = Trim item title length to this many characters",	
-	// Likes Block Tooltips
-    'num_likes_in_time_limit'		=> 'The last number of Likes this item received within the time specified.',
-	'num_dislikes_in_time_limit'   	=> 'The last number of Dislikes this item received within the time specified.',
-	'num_likes_total'   			=> 'The total number of Likes this item has received.',
-	'num_dislikes_total'   			=> 'The total number of Dislikes this item has received.',
-	// Likes Block time msg
-	'likes_time_span'   			=> 'Most Likes in the last %t %s',
-	'dislikes_time_span'   			=> 'Most Dislikes in the last %t %s',
-	'all_time_span'					=> 'Most engaging in the last %t %s',
-	// Likes Block Title
-	'whats_liked'   				=> 'Whats Liked',
-	'whats_recently_liked' 			=> 'Whats Recently Liked',
-	'whats_disliked'   				=> 'Whats Disliked',
-	'whats_recently_disliked' 		=> 'Whats Recently Disliked',
-	'whats_popular' 				=> 'Whats Popular',
-	'whats_recently_popular' 		=> 'Whats Recently Popular',
-	// Likes Block Title for type
-	'whats_liked_type'   			=> 'Liked %s',
-	'whats_recently_liked_type'		=> 'Recently Liked %s',
-	'whats_disliked_type'			=> 'Disliked %s',
-	'whats_recently_disliked_type'	=> 'Recently Disliked %s',
-	'whats_popular_type' 			=> 'Popular %s',
-	'whats_recently_popular_type'	=> 'Recently Popular %s',	
-	// Likes Block - No Items
-	'no_liked_items_in_time_limit'  => 'There have been no Likes during the time specified.',
-	'no_disliked_items_in_time_limit'  => 'There have been no Dislikes during the time specified.',
-	'no_action_items_in_time_limit' => 'There have been no Likes or Dislikes during the time specified.',
-	'no_liked_items'   				=> 'There are no Liked items.',
-	'no_disliked_items'   			=> 'There are no Disliked items.',
-	'no_action_items'   			=> 'There are no Liked or Disliked items.',
-	'title_liked'					=> '%s Liked on ',
-	'title_disliked'				=> '%s Disliked on ',
-	// Likes Block Core Supported Plurals
-	'articles'   					=> 'Articles',
-	'comments'   					=> 'Comments'
+    'username_in_likes_list' => '<br' . XHTML . '>%s',
+    'autotag_desc_likes_block' => "[likes_block:aid action:aid wrapper:wid class:likes-autotag type: subtype: time:604800 max:10 cache:3600 line:1 length:20]\n	- Displays the Likes block. No attributes are required. If attribute not specified then default in configuration used. \n	- action = 1 (likes only), 2 (dislikes only), or 3 (both) \n	- wrapper = 0 (no wrapper), 1 (block wrapper with title), div wrapper with css class), or both\n	- class = Specifies the css class used by the div wrapper if enabled else default likes-autotag will be used \n	- type = Either empty (for all types) or include 1 supported like type. For example 'article' or 'comment'\n	- subtype = Specify a sub type of type if needed\n	- time = Display items that are this many seconds old. 0 will display all items\n	- max = Maximum number of items to display\n	- cache = Cached for no longer than this many seconds. If 0 caching is disabled\n	- line = Display likes icons on new line\n	- length = Trim item title length to this many characters",
+    'num_likes_in_time_limit' => 'The last number of Likes this item received within the time specified.',
+    'num_dislikes_in_time_limit' => 'The last number of Dislikes this item received within the time specified.',
+    'num_likes_total' => 'The total number of Likes this item has received.',
+    'num_dislikes_total' => 'The total number of Dislikes this item has received.',
+    'likes_time_span' => 'Most Likes in the last %t %s',
+    'dislikes_time_span' => 'Most Dislikes in the last %t %s',
+    'all_time_span' => 'Most engaging in the last %t %s',
+    'whats_liked' => 'Whats Liked',
+    'whats_recently_liked' => 'Whats Recently Liked',
+    'whats_disliked' => 'Whats Disliked',
+    'whats_recently_disliked' => 'Whats Recently Disliked',
+    'whats_popular' => 'Whats Popular',
+    'whats_recently_popular' => 'Whats Recently Popular',
+    'whats_liked_type' => 'Liked %s',
+    'whats_recently_liked_type' => 'Recently Liked %s',
+    'whats_disliked_type' => 'Disliked %s',
+    'whats_recently_disliked_type' => 'Recently Disliked %s',
+    'whats_popular_type' => 'Popular %s',
+    'whats_recently_popular_type' => 'Recently Popular %s',
+    'no_liked_items_in_time_limit' => 'There have been no Likes during the time specified.',
+    'no_disliked_items_in_time_limit' => 'There have been no Dislikes during the time specified.',
+    'no_action_items_in_time_limit' => 'There have been no Likes or Dislikes during the time specified.',
+    'no_liked_items' => 'There are no Liked items.',
+    'no_disliked_items' => 'There are no Disliked items.',
+    'no_action_items' => 'There are no Liked or Disliked items.',
+    'last_num_likes_by' => 'Last %s Likes and Dislikes by %s',
+    'msg_no_likes' => 'No likes or dislikes found by user.',
+    'total_num_likes' => 'Total number of likes and dislikes:',
+    'title_liked' => '%s Liked on ',
+    'title_disliked' => '%s Disliked on ',
+    'articles' => 'Articles',
+    'comments' => 'Comments'
 );
 
 ###############################################################################
@@ -2542,22 +2528,22 @@ $LANG_confignames['Core'] = array(
     'likes_articles' => '記事のLikes',
     'likes_comments' => 'コメントのLikes',
     'likes_speedlimit' => 'Likesの実行制限間隔(秒)',
-	'likes_users_listed' => 'Number of User Listed in Tooltip',
-	'likes_block_cache_time' => 'Cache Time',
-	'likes_block_include_time' => 'Include Time',
-	'likes_block_max_items' => 'Max Items Listed',
-	'likes_block_displayed_actions' => 'Displayed Actions',
-	'likes_block_title_trim_length' => 'Title Trim Length',
-	'likes_block_likes_new_line' => 'Likes on New Line',	
-	'likes_block_type' => 'Type',
-	'likes_block_subtype' => 'Sub Type',
-	'likes_block_enable' => 'Enabled',
-	'likes_block_isleft' => 'Display Block on Left',
-	'likes_block_order' => 'Block Order',
-	'likes_block_topic_option' => 'Topic Options',
-	'likes_block_topic' => 'Topic',
-	'likes_block_group_id' => 'Group',
-	'likes_block_permissions' => 'Permissions',
+    'likes_users_listed' => 'Number of User Listed in Tooltip',
+    'likes_block_cache_time' => 'Cache Time',
+    'likes_block_include_time' => 'Include Time',
+    'likes_block_max_items' => 'Max Items Listed',
+    'likes_block_displayed_actions' => 'Displayed Actions',
+    'likes_block_title_trim_length' => 'Title Trim Length',
+    'likes_block_likes_new_line' => 'Likes on New Line',
+    'likes_block_type' => 'Type',
+    'likes_block_subtype' => 'Sub Type',
+    'likes_block_enable' => 'Enabled',
+    'likes_block_isleft' => 'Display Block on Left',
+    'likes_block_order' => 'Block Order',
+    'likes_block_topic_option' => 'Topic Options',
+    'likes_block_topic' => 'Topic',
+    'likes_block_group_id' => 'Group',
+    'likes_block_permissions' => 'Permissions',
     'passwordspeedlimit' => 'パスワードの取得制限間隔',
     'login_attempts' => 'ログイン試行最大回数',
     'login_speedlimit' => 'ログイン試行制限間隔',
@@ -2620,7 +2606,7 @@ $LANG_confignames['Core'] = array(
     'autotag_permissions_related_items' => '[related_items: ] パーミッション',
     'autotag_permissions_block' => '[block: ] パーミッション',
     'autotag_permissions_structureddata' => '[structureddata: ] パーミッション',
-	'autotag_permissions_likes_block' => '[likes_block: ] パーミッション',
+    'autotag_permissions_likes_block' => '[likes_block: ] パーミッション',
     'multiple_breadcrumbs' => 'パンくずリストの複数表示を許可する',
     'disable_breadcrumbs_topics' => '話題のパンくずリストを無効にする',
     'disable_breadcrumbs_articles' => '記事のパンくずリストを無効にする',
@@ -2702,8 +2688,8 @@ $LANG_fs['Core'] = array(
     'fs_gravatar' => 'Gravatar',
     'fs_comments' => 'コメント',
     'fs_likes' => 'Likes',
-	'fs_likes_block_settings' => 'Block Settings',
-	'fs_likes_block_permissions' => 'Block Permissions',	
+    'fs_likes_block_settings' => 'Block Settings',
+    'fs_likes_block_permissions' => 'Block Permissions',
     'fs_htmlfilter' => 'HTMLフィルター',
     'fs_censoring' => 'バッドワードチェック',
     'fs_iplookup' => 'IPアドレス検索',
@@ -2812,12 +2798,10 @@ $LANG_configselects['Core'] = array(
     39 => array('なし' => '', 'Webページ' => 'core-webpage', '記事' => 'core-article', 'ニュース記事' => 'core-newsarticle', 'ブログ記事' => 'core-blogposting'),
     40 => array('無効' => 0, 'ログインユーザーとゲストユーザー' => 1, 'ログインユーザーのみ' => 2),
     41 => array('無効' => 0, 'LikesとDislikes' => 1, 'Likesのみ' => 2),
-    42 => array('なし' => 0, 'この記事の設定に従う' => 1),
-	42 => array('None' => 0, 'Use individual Article Settings' => 1),
-	43 => array('All' => TOPIC_ALL_OPTION, 'Homepage Only' => TOPIC_HOMEONLY_OPTION, 'Select Topics' => TOPIC_SELECTED_OPTION),
-	44 => array('No access' => 0, 'Read-Only' => 2),
-	// 45
-	46 => array('Likes and Dislikes' => LIKES_BLOCK_DISPLAY_ALL, 'Likes Only' => LIKES_BLOCK_DISPLAY_LIKE, 'Dislikes Only' => LIKES_BLOCK_DISPLAY_DISLIKE)
+    42 => array('None' => 0, 'Use individual Article Settings' => 1),
+    43 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
+    44 => array('No access' => 0, 'Read-Only' => 2),
+    46 => array('Likes and Dislikes' => 3, 'Likes Only' => 1, 'Dislikes Only' => 2)
 );
 
 ###############################################################################
