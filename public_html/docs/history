@@ -1,17 +1,65 @@
 Geeklog History/Changes:
 
-? ? 2022 (2.2.2)
+June ? 2022 (2.2.2)
 ------------
 Explanation of list item:
 - [Issue Type] [#Github_Issue_Number OR commit reference OR NA] Description of issue [Person who worked on issue]
 
 For more in-depth explanation of the issues below see: https://github.com/Geeklog-Core/geeklog/milestone/48?closed=1
 
+- [Security] [#1023] Clean up lib-comment and fix security checks on editing and deleting of comments [Tom]
+- [Security] [NA] Fixed displaying 404 page and filtering of URL [Tom]
+- [Security] [NA] Fixed Cross Site Scripting (XSS) vulnerabilities found in Administration pages [Mystralkk]
+
+- [Feature] [#1120] Added Top 10 Likes and Dislikes to User Profile [Tom]
+- [Feature] [#1029] Added Likes Control to Static Pages and Polls [Tom]
+- [Feature] [#1036] Added Likes Block that shows most likes and disliked items within a certain time period [Tom]
+- [Feature] [#1030] Added Error Limit for submissions that works similar to Speed Limit. Ban plugin v2.0.4 supports this feature [Mystralkk]
+- [Feature] [#1003] Geeklog Core emails now use templates (for HTML and plain text) and are sent as HTML by default [Tom]
+- [Feature] [#1021] Add Tooltips for Likes and DisLikes numbers to show who Performed the Action [Tom]
+- [Feature] [#1090] Add an option to anonymize IP addresses and APIs to handle them [Mystralkk]
+- [Feature] [#1076] Add IP address to Admin Emails about New Users or when a User makes a change to their Profile [Mystralkk]
+- [Feature] [#993] Use Actual Theme Names in Configuration and User Settings [Mystralkk]
+- [Feature] [#746] Added redirects in Routing Manager [Mystralkk] 
+- [Feature] [#1060] reCAPTCHA Plugin support reCAPTCHA v3 [Mystralkk] 
+- [Feature] [#1099] Allow Plugins which are uninstalled that still have files on the website to be Deleted [Tom]
+
+- [Improvement] [#1110] [#1079] [#1087] Minor and Major changes to support PHP 8.1 [Mystralkk] [Tom]
 - [Improvement] [#1042] Removed support for old Search API (pre Geeklog 1.5.1) [Tom]
 - [Improvement] [#1086] Geeklog Core now sends email only using site_mail or noreply_mail and does not spoof user email addresses [Tom]
+- [Improvement] [#1107] Geeklog updated to use PHPMailer (replaces abandoned Swiftmailer) [Mystralkk]
+- [Improvement] [#1118] Internal improvements to Geeklog which allows plugins the improved ability to only load css or js when needed [Tom]
+- [Improvement] [#975] Drop support for languages that have not received new translations in a while [Mystralkk]
+- [Improvement] [#274] Removed unused user settings and cleaned up user tables structure [Mystralkk]
+- [Improvement] [#1106] Fix Themes included with Geeklog use of the H1 tag to better follow SEO Guidelines / Best Practices [Tom]
+- [Improvement] [#1051] Printable Pages now uses COM_createHTMLDocument to reduce Duplicate Code [Tom]
+- [Improvement] [#1111] Geeklog Database Administration misc improvements including cron jobs fixes [Tom]
+- [Improvement] [#1113] Daily Digest improvements including cron jobs fixes [Tom]
+- [Improvement] [#1086] Geeklog now always uses system email address to send emails (including those on the Send Mail to Username form) [Tom] [Mystralkk]
+- [Improvement] [#1069] Standardize the way the Anonymous Name is Retrieved and Set so Plugins can use it [Tom]
+- [Improvement] [#1098] Make Remote Logins more Prominent [Tom]
+- [Improvement] [#1080] Added Persian language (submitted by parsfounder) [Mystralkk]
+- [Improvement] [#1015] Disable the Cache of the Site before it starts the install/upgrade/migration [Mystralkk]
+- [Improvement] [#991] Installer now sets default language in Geeklog [Mystralkk]
+- [Improvement] [#992] Improve Install UTF-8 Option [Mystralkk]
+- [Improvement] [#1050] XML Sitemap Plugin - Sitemap is now updated and not completely recreated each time something changes [Mystralkk]
+- [Improvement] [#1105] XML Sitemap Plugin - Bing Ping Sitemap removed and IndexNow added [Tom]
+
 - [Bug] [NA] Fixed language issue with File Manager when Browsing images on server [Tom]
-- 
-- 
+- [Bug] [#1123] Fixed related comment records (like edits and notifications) not being deleted when the item itself that the comment is for is deleted [Tom]
+- [Bug] [#1122] Fixed broken image icons in Article Editor [Tom]
+- [Bug] [#1121] Comment Bar displaying incorrect Title in some cases when viewed on Comment Page [Tom]
+- [Bug] [#1119] Added missing postmode field to Admin User Editor [Tom]
+- [Bug] [#1116] After logging out of one user account, cannot log into different user account in the same browser [Tom]
+- [Bug] [#465] Cannot login when site using IP address with the Google Chrome Browser [Tom]
+- [Bug] [#1055] URL routing does not work in an environment without $ _SERVER ['PATH_INFO'] [hirorongl]
+- [Bug] [#1013] Fixed Staticpage Editor Doesn't Remember Some Settings on Reload of Editor [Tom]
+- [Bug] [#746] Fixed misc URL Routing issues [Tom]
+- [Bug] [#1014] Some RSS Feeds may not validate correctly if actual content (like from articles) includes invalid HTML [Mystralkk] [Tom]
+- [Bug] [#1097] Hidden is not saved in Topic Editor [Mystralkk]
+- [Bug] [#1091] Articles with same date in same topic can cause an issue [Mystralkk]
+- [Bug] [#1101] Handling of Zip Files that have Files with Names not Compatible with the Web Servers OS [Mystralkk]
+- [Bug] [#1061] Geeklog Configuration - Changing Paths can cause Issues [Mystralkk]
 
 The following items are Libraries that have been updated that are not handled by Composer.
 
