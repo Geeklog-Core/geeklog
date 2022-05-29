@@ -101,8 +101,8 @@
 <tr>
   <td valign="top"><a name="desc_meta_tags">メタタグ(meta_tags)</a></td>
   <td valign="top">無効にする</td>
-  <td valign="top">If "Enabled" (1) the meta tags for articles and topics will be displayed. If none are found, then the default will be used. The default will also be used for any page that doesn't have meta tags. If
-      "Enabled (Default for Homepage only)" (2) then it behaves the same as "Enabled" except, the defaults are used only for the Homepage. If "Disabled" (0) then Meta tags are not used.<br /><br /> Please note, if enabled and the article has it's own meta keywords then the article page will also display a list of up to 5 related articles (displayed under the title "You might also like"). This relation is based on how many keywords the article shares with others and how new the other articles are.</td></tr>
+  <td valign="top">有効にすると、記事と話題のメタタグを表示します。メタタグが見つからない場合、既定値を使用します。この既定値はメタタグを持たない全てのページにも使用します。 もし
+  「ホームページのみ」を選択すると、「全て」を選択した場合と同じように振る舞いますが、ホームページに対してのみ既定値を使用します。無効にすると、メタタグを使用しません。<br /><br />この設定を有効にして記事が独自のメタキーワードを持っている場合、記事は最大で5つまで関連する記事のリストを表示します(「関連情報」の下に表示します)。この記事が他の記事とどれくらいキーワードを共有しているか、また他の記事の新しさとの関連で決定されます。</td></tr>
 <tr>
   <td valign="top">サイトの<a name="desc_meta_description">説明文のメタタグ(meta_description)</a></td>
   <td valign="top">'Geeklog, the open source content management system designed with security in mind.'</td>
@@ -128,13 +128,13 @@
     <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
     <td valign="top">「プライバシーポリシー」のページへの外部リンクないし内部リンクを指定します。内部リンクを指定する場合は、サイトのドメイン名を含めないでください。たとえば、静的ページへリンクする場合には <code>/staticpages/index.php?page=静的ページのID</code> のように指定します。</td></tr>
 <tr>
-    <td valign="top"><a name="desc_ip_anonymization">IP匿名化</a></td>
+    <td valign="top"><a name="desc_ip_anonymization">IPアドレス匿名化</a></td>
     <td valign="top"><span class="tt">-1</span></td>
-	<td valign="top">IP anonymization policy.  -1 if you don't want to anonymize IP addresses, 0 for instant anonymization.  If you set X (an integer), IP anonymization will be performed after X seconds have passed.<br><br>
-	<b>Please note</b> that the Geeklog Cron (<a href="#desc_cron_schedule_interval">cron_schedule_interval</a>) needs to be enabled to anonymize IPs.<br><br>
-	This only anonymizes IP addresses stored in the Geeklog database (that supports this feature). To remove all IP data, the Geeklog log files and web server log files should be deleted as well.<br><br>
-	Anonymization only happens after the cron job is triggered. This means there most likely will be a delay in anonymization until the cron job is run.<br><br>
-	Setting anonymization to instant (0) or a low value may interfere with plugins and/or the functionality of Geeklog. For example, in some cases IPs are used to determine if a visitor is behaving badly by submitted spam or content to often.
+	<td valign="top">IPアドレスを匿名化する方針を指定します。-1 を指定すると、匿名化しません。0 を指定すると、即座に匿名化します。整数を指定すると、その秒数が経過した後で匿名化を行います。<br><br>
+	<b>注意</b> IPアドレスの匿名化を行うには、GeeklogのCron機能(<a href="#desc_cron_schedule_interval">Cronのスケジュール間隔</a>)を有効にする必要があります。<br><br>
+	この機能はGeeklogのデータベースに保存するIPアドレスしか匿名化しません。全てのIPアドレスを消去するには、Geeklogのログファイルとwebサーバーのログファイルも削除する必要があります。<br><br>
+	cron機能が実行されてはじめて匿名化が行われます。つまり、cron機能が実行されるまで匿名化を行うのが遅れるということです。<br><br>
+	即時匿名化を指定したり、少ない秒数を指定すると、Geeklogコアやプラグインの機能に悪影響が出る可能性があります。たとえば、SPAMやコンテンツの投稿数が多すぎるなどの、ユーザーの不法行為を判断するためにIPアドレスは使用されています。
 	</td></tr>
 </table>
 
@@ -1148,21 +1148,21 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">コメント機能を有効にする</td>
   <td valign="top">新規記事に対するコメント機能の有効・無効の初期値を指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_commentsubmission">commentsubmission</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Enable (1) or disable (0) comment submission queue.</td></tr>
+  <td valign="top"><a name="desc_commentsubmission">コメント承認機能(commentsubmission)</a></td>
+  <td valign="top">無効(0)</td>
+  <td valign="top">コメント承認機能を有効(1)または無効(0)に設定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_comment_edit">comment_edit</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Allows users to edit a comment within a certain time period (see <a href="#desc_comment_edittime">below</a>).
-    Anonymous users (those that did not register an account) can never edit their comments while admins can always edit comments (i.e. those with
-  comment.edit permission). If Comment Submissions are Queued, then in most cases this setting should be set to false (0) as once a comment is submitted,
-  a user does not have access to it until it has been approved.</td></tr>
+  <td valign="top"><a name="desc_comment_edit">コメント編集(comment_edit)</a></td>
+  <td valign="top">いいえ(0)</td>
+  <td valign="top">指定期間の間、ユーザーがコメントを編集するのを許可します(<a href="#desc_comment_edittime">コメント編集期間</a>をご覧ください。).
+    ゲストユーザー(アカウント持たないユーザー)はコメントを編集できませんが、管理者は常にコメントを編集できます(たとえば、
+  comment.editパーミッションを持っているユーザーなど)。コメント承認機能を有効にすると、たいていの場合、この設定を「いいえ」に設定する方がよいでしょう。 なぜなら、いったんコメントを投稿すると、
+  管理者がコメントを承認するまで、ユーザーはコメントにアクセスできないからです。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_comment_edittime">comment_edittime</a></td>
+  <td valign="top"><a name="desc_comment_edittime">コメント編集期間(comment_edittime)</a></td>
   <td valign="top">1800</td>
-  <td valign="top">How long (in seconds) a comment is editable for the user who
-  submitted it. Requires that comments are editable (see <a href="#desc_comment_edit">above</a>).</td></tr>
+  <td valign="top">コメントを投稿したユーザーがどれくらいの秒数の間、コメントを編集できるかを指定します。
+  コメントは編集可能でなければなりません(<a href="#desc_comment_edit">コメント編集</a>をご覧ください)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_article_comment_close_enabled">自動的にコメントの受付を停止(既定値)(article_comment_close_enabled</a>)</td>
   <td valign="top">はい</td>
@@ -1213,82 +1213,81 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">45</td>
   <td valign="top">一度Likesシステムを使用した後で次に使用するまであけなければならない時間を秒単位で指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_users_listed">likes_users_listed</a></td>
+  <td valign="top"><a name="desc_likes_users_listed">Likeしたユーザー数(likes_users_listed)</a></td>
   <td valign="top">5</td>
-  <td valign="top">List the last X number of users in a tooltip on the actual number who liked or disliked the item. 0 disables this feature.</td></tr>  
+  <td valign="top">ツールチップに表示する、あるアイテムをLikeあるいはDislikeしたユーザー数。0を指定すると、この機能を無効にします。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_enable">likes_block_enable</a></td>
-  <td valign="top">true</td>
-  <td valign="top">Enable the Dynamic Likes block that shows the most actions (likes and/or dislikes) a content item has had in a specific time frame (based on the settings below).</td></tr>
+  <td valign="top"><a name="desc_likes_block_enable">Likesブロック(likes_block_enable)</a></td>
+  <td valign="top">はい(true)</td>
+  <td valign="top">指定期間内(以下の設定値)にあるアイテムが受け取った最も多くのLikes/Dislikesアクションを表示するLikesダイナミックブロックを表示・非表示します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_isleft">likes_block_isleft</a></td>
-  <td valign="top">1</td>
-  <td valign="top">Whether to display the block on the left (when set to 1)
-    or right (when set to 0).</td></tr>
+  <td valign="top"><a name="desc_likes_block_isleft">Likesブロックを左側に表示(likes_block_isleft)</a></td>
+  <td valign="top">左側(1)</td>
+  <td valign="top">1に設定すると左側、0に設定すると右側にLikesブロックを表示します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_order">likes_block_order</a></td>
+  <td valign="top"><a name="desc_likes_block_order">Likesブロックの表示順(likes_block_order)</a></td>
   <td valign="top">10</td>
-  <td valign="top">The order the block appears in the column.</td></tr>
+  <td valign="top">Likesブロックを表示する行順序を指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_topic_option">likes_block_topic_option</a></td>
-  <td valign="top">'all'</td>
-  <td valign="top">Set to 'All' for block to appear on all pages. Set to 'Homepage Only' for block to appear on just the homepage. Set to 'Selected Topics' for block to appear only in Topics selected in the Topic setting. This setting only affects where the block is displayed and not what is displayed in the block.</td></tr>
+  <td valign="top"><a name="desc_likes_block_topic_option">Likesブロックの話題オプション(likes_block_topic_option)</a></td>
+  <td valign="top">全て(all)</td>
+  <td valign="top">「全て」に設定すると、全てのページにLikesブロックを表示します。「トップページのみ」に設定すると、トップページにしか表示しません。「選択した話題のみ」に設定すると、話題の設定で設定した話題にしか表示しません。この設定値はLikesブロックを表示する場所には影響を与えますが、表示内容には影響を与えません。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_topic">likes_block_topic</a></td>
+  <td valign="top"><a name="desc_likes_block_topic">Likesブロックを表示する話題(likes_block_topic)</a></td>
   <td valign="top"></td>
-  <td valign="top">The topics the block will appear for if the Topic Options is set to 'Select Topics'. This setting only affects where the block is displayed and not what is displayed in the block.</td></tr>
+  <td valign="top">「Likesブロックの話題オプション」を「選択した話題のみ」に設定した場合、Likesブロックを表示する話題を指定します。この設定値はLikesブロックを表示する場所には影響を与えますが、表示内容には影響を与えません。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_cache_time">likes_block_cache_time</a></td>
+  <td valign="top"><a name="desc_likes_block_cache_time">Likesブロックをキャッシュする時間(likes_block_cache_time)</a></td>
   <td valign="top">3600</td>
-  <td valign="top">The Dynamic Likes Block will be cached for no longer than this many seconds. If 0 caching is disabled.</td></tr>  
+  <td valign="top">指定した秒数の間、Likesブロックをキャッシュします。0を指定するとキャッシュしません。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_displayed_actions">likes_block_displayed_actions</a></td>
+  <td valign="top"><a name="desc_likes_block_displayed_actions">Likesブロックに表示するアクション(likes_block_displayed_actions)</a></td>
   <td valign="top">3</td>
-  <td valign="top">The action types that the Dynamic Likes Block will take into account and display. Likes and Dislikes (3), Likes Only (1), or Dislikes Only (2).</td></tr>    
+  <td valign="top">Likesブロックが表示するアクションのタイプを指定します。3を指定するとLikesとDislikes、1を指定するとLikesのみ、2を指定するとDislikesのみを表示します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_include_time">likes_block_include_time</a></td>
+  <td valign="top"><a name="desc_likes_block_include_time">Likesブロックに表示するアイテムの期間(likes_block_include_time)</a></td>
   <td valign="top">604800</td>
-  <td valign="top">The Dynamic Likes Block will take into account and display items that are this many seconds old. Default is 604800 seconds (1 week). 1 day is 86400 seconds, 4 weeks is 2419200 seconds. Setting this to 0 will disable this option so the block will include all items that have been liked.</td></tr>    
+  <td valign="top">指定した秒数の間に生成されたアイテムをLikesブロックに表示します。既定値は604800秒(1週間)です。1日なら86400秒、4週間なら2419200秒です。0を設定するとこの設定が無効になり、Likeされた全てのアイテムを表示します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_max_items">likes_block_max_items</a></td>
+  <td valign="top"><a name="desc_likes_block_max_items">Likesブロックに表示するアイテムの最大数(likes_block_max_items)</a></td>
   <td valign="top">10</td>
-  <td valign="top">The maximum number of items to show in the Dynamic Likes Block.</td></tr>
+  <td valign="top">Likesブロックに表示するアイテムの最大数を指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_title_trim_length">likes_block_title_trim_length</a></td>
+  <td valign="top"><a name="desc_likes_block_title_trim_length">Likesブロックに表示するタイトルの最大文字数(likes_block_title_trim_length)</a></td>
   <td valign="top">20</td>
-  <td valign="top">Max. length of the title of items listed in the Likes block.</td></tr>
+  <td valign="top">Likesブロックに表示するタイトルの最大文字数を指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_likes_new_line">likes_block_likes_new_line</a></td>
-  <td valign="top">true</td>
-  <td valign="top">If enabled the Likes and/or Dislikes display on a new line underneath the title of the item. Else they will display right after the title.</td></tr>  
+  <td valign="top"><a name="desc_likes_block_likes_new_line">Likesブロックで改行する(likes_block_likes_new_line)</a></td>
+  <td valign="top">はい(true)</td>
+  <td valign="top">「はい」に設定すると、アイテムのタイトルを改行した後でLikes/Dislikesを表示します。「いいえ」に設定すると、タイトルの直後に表示します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_type">likes_block_type</a></td>
-  <td valign="top">''</span> <em>(empty)</em></td>
-  <td valign="top">Only show items in the Dynamic Links Block that match this item type. Must either be empty (for all types) or include 1 supported like type. For example 'article', 'comment', 'poll', 'page', 'forum'. The config option <a href="#desc_likes_block_subtype">Links Block Sub Type</a> may also need to be set.</td></tr>    
+  <td valign="top"><a name="desc_likes_block_type">Likesブロックのタイプ(likes_block_type)</a></td>
+  <td valign="top">''</span> <em>(空白)</em></td>
+  <td valign="top">この設定値にマッチするタイプのアイテムだけをLikesブロックに表示します。全てのタイプを表示するには空白を、そうでなければ、サポートしているタイプを1つだけ(article, comment, poll, page, forumなど)指定します。<a href="#desc_likes_block_subtype">Likesブロックのサブタイプ</a>も設定する必要があるかもしれません。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_subtype">likes_block_subtype</a></td>
-  <td valign="top">''</span> <em>(empty)</em></td>
-  <td valign="top">Only show items in the Dynamic Links Block that match this item sub type (the matching <a href="#desc_likes_block_type">Likes Block Type</a> must also be specified correctly). Type must either be empty (as it may not be needed) or include 1 supported like sub type. For example if Likes Block Type is set to 'forum', then the sub type must be set to 'post'. Sub types allow plugins to have more than 1 item type that can be liked.</td></tr>  
+  <td valign="top"><a name="desc_likes_block_subtype">Likesブロックのサブタイプ(likes_block_subtype)</a></td>
+  <td valign="top">''</span> <em>(空白)</em></td>
+  <td valign="top">この設定値にマッチするサブタイプのアイテムだけをLikesブロックに表示します。(<a href="#desc_likes_block_type">Likesブロックのタイプ</a>も正確に指定してください。タイプは(不要な場合)空白かサポートしているサブタイプを1つだけ指定します。たとえば、タイプをforum(掲示板)に設定する場合、サブタイプはpost(投稿)に設定しなければなりません。サブタイプを使用すると、プラグインは複数の種類のアイテムをLikeすることが可能になります。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_group_id">likes_block_group_id</a></td>
+  <td valign="top"><a name="desc_likes_block_group_id">LikesブロックのグループID(likes_block_group_id)</a></td>
   <td valign="top">Block Admin</td>
-  <td valign="top">The group used by permissions.</td></tr>
+  <td valign="top">Likesブロックのパーミッションで使用するグループID</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_permissions_0">likes_block_permissions[0]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">View permission for dynamic block by block Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_likes_block_permissions_0">Likesブロックのパーミッション[0](likes_block_permissions[0])</a></td>
+  <td valign="top"><em>表示のみ</em></td>
+  <td valign="top">ブロック所有者(既定値ではRootユーザー)のパーミッション。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_permissions_1">likes_block_permissions[1]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">View permission for dynamic block by assigned Admin Group (see config option block_group_id).</td></tr>
+  <td valign="top"><a name="desc_likes_block_permissions_1">Likesブロックのパーミッション[1](likes_block_permissions[1])</a></td>
+  <td valign="top"><em>表示のみ</em></td>
+  <td valign="top">「LikesブロックのグループID」で指定したグループのパーミッション。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_permissions_2">likes_block_permissions[2]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">View permission for dynamic block by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_likes_block_permissions_2">Likesブロックのパーミッション[2](likes_block_permissions[2])</a></td>
+  <td valign="top"><em>表示のみ</em></td>
+  <td valign="top">ログインユーザーのパーミッション。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_likes_block_permissions_3">likes_block_permissions[3]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">View permission for dynamic block by anonymous users.</td></tr>
+  <td valign="top"><a name="desc_likes_block_permissions_3">Likesブロックのパーミッション[3](likes_block_permissions[3])</a></td>
+  <td valign="top"><em>表示のみ</em></td>
+  <td valign="top">ゲストユーザーのパーミッション。</td></tr>
 </table>
 
 <h2><a name="images">画像</a></h2>
@@ -1961,21 +1960,21 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr>
   
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_likes_block_0">autotag_permissions_likes_block[0]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_likes_block_0">Likesブロックを自動タグで使用するパーミッション[0](autotag_permissions_likes_block[0])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するタグ所有者(既定値ではRootユーザー)のパーミッション。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_likes_block_1">autotag_permissions_likes_block[1]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Blocks Admin Group.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_likes_block_1">Likesブロックを自動タグで使用するパーミッション[1](autotag_permissions_likes_block[1])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するブロック管理者のパーミッション。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_likes_block_2">autotag_permissions_likes_block[2]</a></td>
-  <td valign="top"><em>No Access</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_likes_block_2">Likesブロックを自動タグで使用するパーミッション[2](autotag_permissions_likes_block[2])</a></td>
+  <td valign="top"><em>アクセス不可</em></td>
+  <td valign="top">自動タグの利用に関するログインユーザーのパーミッション。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_likes_block_3">autotag_permissions_likes_block[3]</a></td>
-  <td valign="top"><em>No Access</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>   
+  <td valign="top"><a name="desc_autotag_permissions_likes_block_3">Likesブロックを自動タグで使用するパーミッション[3](autotag_permissions_likes_block[3])</a></td>
+  <td valign="top"><em>アクセス不可</em></td>
+  <td valign="top">自動タグの利用に関するゲストユーザーのパーミッション。</td></tr>
 </table>
 
 <h3><a name="misc_ip_webservices">その他: Webサービス</a></h3>
@@ -2482,33 +2481,33 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 </ul>
 
 
-<h2><a name="url-cron">Cron Jobs</a></h2>	
+<h2><a name="url-cron">Cron機能</a></h2>
 
-<p>The cron command-line utility, also known as cron job is a job scheduler. You can schedule jobs to run ever minute, hourly, daily, or monthly. Most web hosts offer the ability to create cron jobs from their web hosting control panel (usually found under Cron Jobs or Crontab Manager).<p> 
+<p>cronジョブとしても知られているcronコマンドラインユーティリティはジョブスケジューラーです。毎分、毎時、毎日、毎月などのスケジュールでジョブを実行できます。ほとんどホスティング会社はコントロールパネルからcronジョブを作成する機能を提供しています(「Cronジョブ」や「Crontabマネージャー」の下にあることが多いです)。<p>
 
-<p>Geeklog has 2 cron job scripts available. These cron job scripts are not required for Geeklog to function. For them to work you must have compiled PHP so it can also be used as a shell scripting language. You should call these script from your crontab (man crontab). You will also need to set the executable flags for these files.</p>
+<p>Geeklogは2種類のcronジョブ用のスクリプトを用意しています。これらのスクリプトはGeeklogの動作には必要ありません。これらのスクリプトが機能するには、PHPをシェルスクリプトとして使用できるようにコンパイルしたPHPが必要です。crontabからこれらのスクリプトを呼び出します(man crontab)。これらのスクリプトには実行可能なフラグを設定する必要があります。</p>
 
-<p>The cron job scripts filenames start with "cron-" and can be found in the root directory. It is recommended to keep these files located here as you do not want them in a location where anyone that visits your website can run them.</p>
+<p>cronジョブ用スクリプトのファイル名は "cron-" で始まり、ルートディレクトリにあります。サイトを訪れるユーザーが実行できると困るので、これらのスクリプトを他のディレクトリに移動させないでください。</p>
 
-<p>The PHP in these cron job scripts also have some code you will need to update including the path to the "lib-common.php" file. For full instructions on the changes you can do, see the comments in the cron job scripts.</p>
+<p>これらのスクリプト中のPHPコードは "lib-common.php" のパスなど設定する箇所があります。可能な変更に関する指示は、cronジョブ用スクリプトのコメントを参照してください。</p>
 
-<p>If you're not familiar with the crontab syntax: You will need to add a line to your cron job in your web host control panel that looks like this:</p>
+<p>crontabの文法に詳しくない場合は、コントロールパネルのcronジョブに次のような1行を追加する必要があるでしょう:</p>
 
 <pre>30 2 * * * /path/to/geeklog/cron-emailgeeklogdailydigest</pre>
 
-<p>This would call the cron-emailgeeklogdailydigest) script every day at 2:30am. In some cases (like with cPanel) the scheduling of the job may be done through the user interface instead of the command line. Make sure that the script is executable, i.e. do a chmod 775 (or similar) on it.</p>
+<p>このように記述すると、cron-emailgeeklogdailydigestジョブを毎日 2:30am に実行します。場合によっては(cPanelなど)、ジョブのスケジューリングはコマンドラインではなくユーザーインターフェースで設定するかもしれません。スクリプトに実行可能性属性を設定してください。chmod 775 などをスクリプトファイルに実行してください。</p>
 	
-<h3><a name="cron_daily_digest">Daily Digest</a></h3>
+<h3><a name="cron_daily_digest">デイリーダイジェスト(Daily Digest)</a></h3>
 
-<p>The file "cron-emailgeeklogdailydigest" (formerly called emailgeeklogstories) will email new articles to any user that signs up for the Daily Digest. To use this feature the Daily Digest must be enabled in the Geeklog Configuration.</p>
+<p>"cron-emailgeeklogdailydigest"スクリプト(旧ファイル名はemailgeeklogstories)はデイリーダイジェストを有効にしている全てのユーザーに新着記事をメールで送信します。この機能を使用するには、コンフィギュレーションで「デイリーダイジェスト」を有効にする必要があります。</p>
 
-<p>A word of warning: The first time you activate this, all articles in your Geeklog database are considered new - so the first email may be quite large. This only happens the very first time you activate this feature on your site, not for every new user subscribing to the Daily Digest (they will only get the new articles since the last time the digest was sent). For the first time, if you want to only send articles from a certain date, you could set the "lastemailedstories" record found in the Geeklog "gl_vars" table to the date and time you wish (e.g. 2021-10-05 12:00:00). This would mean that only articles published after this time will be sent out with the next digest.</p>
+<p>警告: この機能を有効にした場合、初回はGeeklogのデータベース内の全ての記事を新着記事と見なします。そのため、初回に送信するメールはサイズが極めて大きくなる可能性があります。これは機能を有効にした初回のみのことであり、その後からデイリーダイジェストを有効にしたユーザーに対してはこのようなことは起こりません(彼らは前回デイリーダイジェストを送信した後の新着記事しか受け取りません)。最初に、ある日付以降の記事しか送りたくない場合は、Geeklogのデータベース内にある "gl_vars" テーブルの "lastemailedstories" レコードをその日時に設定します(例: 2021-10-05 12:00:00)。次回のデイリーダイジェストで送信するのはこの時刻以降に公開された記事のみです。</p>
 
-<h3><a name="cron_emailed_database_backup">Emailed Database Backup</a></h3>	
+<h3><a name="cron_emailed_database_backup">データベースのバックアップをメールで送信する(Emailed Database Backup)</a></h3>
 
-<p>The file "cron-emailgeeklogdatabasebackup" will email a backup of the Geeklog database to a specified email address. Configuration options can be found in the Geeklog Database Administration and the Geeklog Configuration. The recipient of the email can be set either directly in the cron job script file or by adding (or updating if it exists) a "db_backup_sendto" record in the Geeklog "gl_vars" table.</p>
+<p>"cron-emailgeeklogdatabasebackup"スクリプトはGeeklogのデータベースのバックアップファイルを指定のメールアドレスに送信します。設定オプションは「データベース管理」の「コンフィギュレーション」にあります。メール受信者はcronジョブスクリプトで直接指定するか、Geeklog "gl_vars"テーブルの "db_backup_sendto" レコードに追加します。</p>
 
-<p>This cron script should only be run when the site is not busy (like early in the morning) and only as often as needed (usually weekly or for a site that has content updated often, daily). If you have a large  database you will need to make sure the email address the backup is being sent to allows for large file attachments or the email will be rejected.</p>
+<p>このcronジョブスクリプトは、(早朝などの)サイトが混雑していない時間帯に限って実行すべきです。また、必要に応じて(週ごとなど)、あるいは 頻繁に更新されるサイトでは毎日行うべきです。データベースのファイルが巨大な場合、バックアップを受信するメールアドレスでは巨大な添付ファイルを受け付けるように設定してください。さもないと、メールが拒否されてしまいます。</p>
 
 
 <div class="footer">

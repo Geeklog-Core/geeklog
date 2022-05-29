@@ -144,7 +144,7 @@ $LANG_STATIC = array(
     'page_desc' => '「前のページ」や「次のページ」を指定すると、HTMLのヘッダーに rel=”next” と rel=”prev” を追加します。表示用のナビゲーションは別に追加してください。注意: 「親ページ」は現在、使用されていません。',
     'num_pages' => '%s ページ',
     'search_desc' => '検索対象にするかどうかを指定します。既定値はコンフィギュレーションの設定とページの種類(センターブロックに表示するか、テンプレートを使用するか、PHPを使用するかどうか)で決まります。',
-    'likes_desc' => 'Determines if and how likes control appears on page. Default depends on setting in Plugin Configuration. Pages displayed in a Center Blocks will not display a likes control. Pages that are a template do not use this setting.'
+    'likes_desc' => 'likesコントロールの表示方法を決めます。既定値はプラグインの既定値で決まります。センターブロックに表示するページではlikesコントロールを表示しません。テンプレートのページではこの設定を使用しません。'
 );
 
 $LANG_staticpages_search = array(
@@ -187,7 +187,7 @@ $LANG_confignames['staticpages'] = array(
     'aftersave' => 'ページ保存後の画面遷移',
     'atom_max_items' => 'フィードに書き出す最大ページ数',
     'meta_tags' => 'メタタグを有効にする',
-    'likes_pages' => 'Page Likes',
+    'likes_pages' => 'ページのLikes',
     'comment_code' => '新規作成時のデフォルト',
     'structured_data_type_default' => '構造化データタイプのデフォルト',
     'draft_flag' => 'ドラフトモードをデフォルトにする',
@@ -237,5 +237,5 @@ $LANG_configselects['staticpages'] = array(
     13 => array('アクセス不可' => 0, '利用する' => 2),
     17 => array('コメント有効' => 0, 'コメント無効' => -1),
     39 => array('なし' => '', 'Webページ' => 'core-webpage', '記事' => 'core-article', 'ニュース記事' => 'core-newsarticle', 'ブログ記事' => 'core-blogposting'),
-    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
+    41 => array('なし' => 0, 'LikesとDislikes' => 1, 'Likesのみ' => 2)
 );

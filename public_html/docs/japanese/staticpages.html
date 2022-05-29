@@ -159,15 +159,15 @@
   <td><code>はい</code></td>
   <td>静的ページにおいて、<a href="#php">PHPを許可する</a>。つまり、この設定で、個々のページの設定を上書きします</td>
 </tr>
-<td><a name="desc_enable_eval_php_save">enable_eval_php_save</a></td>
-<td>false</td>
-<td>Allows you to globally allow or disallow the parsing of PHP for errors
-  when a page is saved. This only works if your website is using PHP v7 or higher.<br><br>
-  In most cases if you have <a href="#desc_allow_php">allow_php</a> enabled, you
-  will want this option enabled. <b>In some cases though depending on the PHP code
-  on the page, it may cause problems.</b> For example, if the PHP on a page, redirects
-  the page, you will want this disabled. During the parsing, the save process will
-  stop before it is complete because of the redirect.</td>
+<td><a name="desc_enable_eval_php_save">ページ保存時にPHPの実行を有効にする(enable_eval_php_save)</a></td>
+<td>いいえ(false)</td>
+<td>ページを保存する際に、PHPの実行をグローバルに許可するか田舎を指定します。
+  この設定が有効なのはwebサイトで使用するPHPがバージョン7以降の場合だけです。<br><br>
+  たいていの場合、<a href="#desc_allow_php">「PHPを許可する」</a>を「はい」に設定していれば、
+  この設定値も「はい」に設定する必要があるでしょう。<b>PHPのコードにもよりますが、場合によっては
+  問題が起こるかもしれません。</b>たとえば、ページのPHPのコードで他のページへ
+  リダイレクトする場合、この設定を「いいえ」にする必要があるでしょう。PHPをパース中に、
+  リダイレクトのせいでページを保存するプロセスが中断する可能性があるからです。</td>
 </tr>
 <tr>
   <td><a name="desc_sort_by">センターブロックの並べ替え(sort_by)</a></td>
@@ -270,10 +270,10 @@
 </td>
 </tr>
 <tr>
-  <td valign="top"><a name="desc_likes_pages">likes_pages</a></td>
+  <td valign="top"><a name="desc_likes_pages">静的ページのLikes(likes_pages)</a></td>
   <td valign="top">0</td>
-  <td valign="top">Disable (0) the Likes System for static pages or enable it with Likes and Dislikes (1) or just Likes (2). This is the default setting and can be overridden per page.<br><br>
-  The Geeklog config option likes_enabled also must be set if you wish to enable the Likes System for pages.</td>
+  <td valign="top">静的ページでLikesコントロールを無効にする場合は0を、LikesとDislikesの両方を有効にする場合は1を、Likesのみを有効にするには2を指定します。この設定は静的ページ全体の既定値で、個々の静的ページで変更することができます。<br><br>
+  静的ページでLikesを有効にするには、Geeklogのコンフィギュレーションで「Likesを有効にする」を有効にする必要があります。</td>
 </tr>
 </table>
 

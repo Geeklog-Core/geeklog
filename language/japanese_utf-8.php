@@ -368,8 +368,8 @@ $LANG04 = array(
     85 => 'コメントの総数:',
     86 => 'すべての投稿を検索:',
     87 => 'あなたのログイン名',
-    88 => "Someone (possibly you) has requested a new password for your account \"%s\" on {$_CONF['site_name']}, {$_CONF['site_url']}.",
-    'user_password_action_msg' => 'If you really want this action to be taken, please click on the following link:',
+    88 => "誰か(たぶん、あなた)があなたのアカウントの新しいパスワードを要求しました: \"%s\" サイト: {$_CONF['site_name']}, {$_CONF['site_url']}.",
+    'user_password_action_msg' => 'このアクションを本当に実行するなら、次のリンクをクリックしてください: ',
     89 => "パスワードを変えたくない場合はこのメッセージを無視してください。\n(パスワードは変わりません。)",
     90 => '新しいパスワードを入力して「再設定」ボタンを押してください。',
     91 => '再設定',
@@ -444,8 +444,8 @@ $LANG04 = array(
     171 => '「署名」と「自己紹介」の投稿モードです。',
     'user_login' => 'ユーザーログイン',
     'user_login_message' => 'ログインしてください。ユーザー名とパスワードの両方を入力してください。',
-    'user_remote_login_desc_long' => 'Click on one of the button(s) below to login and/or register via an account you have on another supported remote service. Please note, you must have an account on the remote service. If you are creating a new account on this website, then the remote service may ask you to give this website permissions to access information like your name, email address, and profile photo.',
-    'remote_register_instructions' => "<strong>Please note:</strong> To register and create an account via Remote Login, please visit the <a href=\"{$_CONF['site_url']}/users.php\" rel=\"nofollow\">User Login</a>.",
+    'user_remote_login_desc_long' => 'リモートサービスをサポートしている他のサイト上のアカウントを利用して、ログイン/アカウント作成を行うには、下のボタンをクリックしてください。このサイトでアカウントを新規作成する場合は、このサイトが名前やメールアドレス、プロフィール写真にアクセスするのを許可する必要があります。',
+    'remote_register_instructions' => "<strong>注意:</strong> リモートサービスを利用してアカウントを新規作成するには、<a href=\"{$_CONF['site_url']}/users.php\" rel=\"nofollow\">ユーザーログイン</a>を行ってください。",
     'user_logged_in_message' => "すでにログインしています。<a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">ログアウト</a>しますか?",
     'user_max_login_attempts' => 'ログインの試行回数の上限を超えました、',
     'tfa_two_factor_auth' => '2段階認証',
@@ -536,13 +536,13 @@ $LANG08 = array(
     20 => '発信元の名前',
     21 => '発信元のEmail',
     22 => 'すべての項目を入力してから、送信ボタンをクリックしてください',
-    23 => "This email was sent to you by %s (%s) because they thought you might be interested in this article from {$_CONF['site_name']} at {$_CONF['site_url']}. Please note that the email address involved in this messages are not saved.",
+    23 => "この記事にあなたが興味を持つかもしれないと思った (%s) さんが {$_CONF['site_name']} ( {$_CONF['site_url']} )からメッセージを送ってきました。このメッセージを送るのに使用されているメールアドレスはデータベースに保存されていません。",
     24 => 'この記事に関するコメントは次の場所でできます。',
     25 => 'この機能を使用するためにはログインしてください。',
     26 => 'このフォームでメールを送ります。',
     27 => 'メッセージ',
     28 => '%s さんからのメッセージ: ',
-    29 => "This is the daily digest from {$_CONF['site_name']} for %s. Listed below are the latest published articles since the last time this email was sent.",
+    29 => "これは {$_CONF['site_name']} ( %s ) からのデイリーダイジェストです。以下の記事は、前回このメールが送られてきた後で更新された最新の記事です。",
     30 => ' 今日のニュースレターです。宛先: ',
     31 => 'タイトル',
     32 => '日付',
@@ -558,8 +558,8 @@ $LANG08 = array(
     42 => 'このユーザーのメールアドレスは存在しません。おそらくOAuthユーザーのアカウントでしょう。',
     43 => 'このユーザーのメールアドレスは無効です。',
     44 => 'このユーザーのステータスは、「アクティブ」または「新しいパスワード」以外に設定されているため、メールアドレスは無効とみなされます。',
-    45 => "This is a message sent from {$_CONF['site_name']} by %s. Any replies will need to be sent to the email address: %s",
-    46 => "To unsubscribe from the Daily Digest, login to {$_CONF['site_name']} at {$_CONF['site_url']}. Then visit the user settings page at {$_CONF['site_url']}/usersettings.php and view the Content Tab. You can then unsubscribe to the Daily Digest by deselecting all topics and saving your profile."
+    45 => "このメッセージは {$_CONF['site_name']} の %s さんからのメッセージです。返信は次のメールアドレスに送ってください: %s",
+    46 => "デイリーダイジェストを解除するには、 {$_CONF['site_name']} の {$_CONF['site_url']} にログインしてください。その後、 {$_CONF['site_url']}/usersettings.php のユーザー設定のページへ行き、コンテンツタブの話題のチェックボックスを全て外してから保存すると、デイリーダイジェスト配信を解除できます。"
 );
 
 ###############################################################################
@@ -775,43 +775,54 @@ $LANG_LIKES = array(
     'own_item_error' => '自分自身のアイテムに対してはお気に入りは実行できません。',
     'liked_by' => 'Liked by:',
     'disliked_by' => 'Disliked by:',
-    'num_anon_users' => '<br' . XHTML . '>%s Anonymous Users',
-    'one_anon_users' => '<br' . XHTML . '>1 Anonymous User',
-    'num_more_users' => '<br' . XHTML . '>+%s more Users',
+    'num_anon_users' => '<br' . XHTML . '>%s 名のゲストユーザー',
+    'one_anon_users' => '<br' . XHTML . '>1 名のゲストユーザー',
+    'num_more_users' => '<br' . XHTML . '>さらに %s 名のユーザー',
     'username_in_likes_list' => '<br' . XHTML . '>%s',
-    'autotag_desc_likes_block' => "[likes_block:aid action:aid wrapper:wid class:likes-autotag type: subtype: time:604800 max:10 cache:3600 line:1 length:20]\n	- Displays the Likes block. No attributes are required. If attribute not specified then default in configuration used. \n	- action = 1 (likes only), 2 (dislikes only), or 3 (both) \n	- wrapper = 0 (no wrapper), 1 (block wrapper with title), div wrapper with css class), or both\n	- class = Specifies the css class used by the div wrapper if enabled else default likes-autotag will be used \n	- type = Either empty (for all types) or include 1 supported like type. For example 'article' or 'comment'\n	- subtype = Specify a sub type of type if needed\n	- time = Display items that are this many seconds old. 0 will display all items\n	- max = Maximum number of items to display\n	- cache = Cached for no longer than this many seconds. If 0 caching is disabled\n	- line = Display likes icons on new line\n	- length = Trim item title length to this many characters",
-    'num_likes_in_time_limit' => 'The last number of Likes this item received within the time specified.',
-    'num_dislikes_in_time_limit' => 'The last number of Dislikes this item received within the time specified.',
-    'num_likes_total' => 'The total number of Likes this item has received.',
-    'num_dislikes_total' => 'The total number of Dislikes this item has received.',
-    'likes_time_span' => 'Most Likes in the last %t %s',
-    'dislikes_time_span' => 'Most Dislikes in the last %t %s',
-    'all_time_span' => 'Most engaging in the last %t %s',
-    'whats_liked' => 'Whats Liked',
-    'whats_recently_liked' => 'Whats Recently Liked',
-    'whats_disliked' => 'Whats Disliked',
-    'whats_recently_disliked' => 'Whats Recently Disliked',
-    'whats_popular' => 'Whats Popular',
-    'whats_recently_popular' => 'Whats Recently Popular',
-    'whats_liked_type' => 'Liked %s',
-    'whats_recently_liked_type' => 'Recently Liked %s',
-    'whats_disliked_type' => 'Disliked %s',
-    'whats_recently_disliked_type' => 'Recently Disliked %s',
-    'whats_popular_type' => 'Popular %s',
-    'whats_recently_popular_type' => 'Recently Popular %s',
-    'no_liked_items_in_time_limit' => 'There have been no Likes during the time specified.',
-    'no_disliked_items_in_time_limit' => 'There have been no Dislikes during the time specified.',
-    'no_action_items_in_time_limit' => 'There have been no Likes or Dislikes during the time specified.',
-    'no_liked_items' => 'There are no Liked items.',
-    'no_disliked_items' => 'There are no Disliked items.',
-    'no_action_items' => 'There are no Liked or Disliked items.',
-    'last_num_likes_by' => 'Last %s Likes and Dislikes by %s',
-    'msg_no_likes' => 'No likes or dislikes found by user.',
-    'total_num_likes' => 'Total number of likes and dislikes:',
-    'title_liked' => '%s Liked on ',
-    'title_disliked' => '%s Disliked on ',
-    'articles' => 'Articles',
-    'comments' => 'Comments'
+    'autotag_desc_likes_block' => "[likes_block:aid action:aid wrapper:wid class:likes-autotag type: subtype: time:604800 max:10 cache:3600 line:1 length:20]
+\n	- Likesブロックを表示します。パラメーターは不要です。パラメーターを指定しない場合、コンフィギュレーションの既定値を使用します。 
+\n	- action = 1 (Likesのみ), 2 (Dislikesのみ), または 3 (両方) 
+\n	- wrapper = 0 (ラッパーなし), 1 (ブロックのラッパーとタイトル), divラッパーとCSSクラス), または両方
+\n	- class = divラッパーが有効にする場合、ラッパーが使用するCSSクラス。そうでなければ、likes-autotagの既定値を使用 
+\n	- type = 全てのタイプの場合は空白にし、それ以外の場合は 'article' や 'comment' などのタイプを1つ指定
+\n	- subtype = 必要な場合、typeのサブタイプを指定
+\n	- time = Likesブロックに表示するアイテムの公開期間。0を指定すると全てのアイテムを表示
+\n	- max = 表示するアイテムの最大数
+\n	- cache = Likesブロックをキャッシュする秒数。キャッシュを無効にする場合は0を指定
+\n	- line = Likesのアイコンを改行してから表示
+\n	- length = アイテムのタイトルをこの文字数にまで切り詰める",
+    'num_likes_in_time_limit' => '指定期間内にこのアイテムが受け取ったLikesの最後の数。',
+    'num_dislikes_in_time_limit' => '指定期間内にこのアイテムが受け取ったDislikesの最後の数。',
+    'num_likes_total' => 'このアイテムが受け取ったLikesの総数。',
+    'num_dislikes_total' => 'このアイテムが受け取ったDislikesの総数。',
+    'likes_time_span' => '過去 %t 内に最も多くのLikesを集めたアイテム: %s',
+    'dislikes_time_span' => '過去 %t 内に最も多くのDislikesを集めたアイテム: %s',
+    'all_time_span' => '過去 %t 内に最も多くの人の興味を引いたアイテム: %s',
+    'whats_liked' => 'Likeされたアイテム',
+    'whats_recently_liked' => '最近、Likeされたアイテム',
+    'whats_disliked' => 'Dislikeされたアイテム',
+    'whats_recently_disliked' => '最近、Dislikeされたアイテム',
+    'whats_popular' => '人気アイテム',
+    'whats_recently_popular' => '最近の人気アイテム',
+    'whats_liked_type' => 'Likeされた %s',
+    'whats_recently_liked_type' => '最近、Likeされた %s',
+    'whats_disliked_type' => 'Dislikeされた %s',
+    'whats_recently_disliked_type' => '最近、Dislikeされた %s',
+    'whats_popular_type' => '人気 %s',
+    'whats_recently_popular_type' => '最近の人気 %s',
+    'no_liked_items_in_time_limit' => '指定した期間内にLikesはありません。',
+    'no_disliked_items_in_time_limit' => '指定した期間内にDislikesはありません。',
+    'no_action_items_in_time_limit' => '指定した期間内にLikesもDislikesもありません。',
+    'no_liked_items' => 'Likeされたアイテムはありません。',
+    'no_disliked_items' => 'Dislikeされたアイテムはありません。',
+    'no_action_items' => 'LikeされたアイテムもDislikeされたアイテムもありません。',
+    'last_num_likes_by' => '最近の %s LikesとDislike by %s',
+    'msg_no_likes' => 'ユーザーが見つけたLikesもDislikesもありません。',
+    'total_num_likes' => 'LikesとDislikesの総数:',
+    'title_liked' => '%s さんがLike: ',
+    'title_disliked' => '%s さんがDislike: ',
+    'articles' => '記事',
+    'comments' => 'コメント'
 );
 
 ###############################################################################
@@ -1403,9 +1414,9 @@ $LANG31 = array(
     'email_divider_html' => '<hr' . XHTML . '>',
     'sig_divider' => '---',
     'sig_divider_html' => '---<br' . XHTML . '>',
-    'email_footer_msg_noreply' => 'The address used to send this email is not monitored. Please do not reply to this email.',
-    'email_footer_msg_content' => 'If content from the website is displayed in this email, there may be layout changes which result in formatting issues.',
-    'ip_address_email' => 'IP address that initiated email:'
+    'email_footer_msg_noreply' => 'このメールを送信するのに使用されたメールアドレスは監視されていません。このメールには返信しないでください。',
+    'email_footer_msg_content' => 'Webサイトのコンテンツがこのメールに表示される場合、レイアウトが変更され、その結果問題が生じることもあります。',
+    'ip_address_email' => 'このメールの送信元 IP アドレス:'
 );
 
 ###############################################################################
@@ -1482,10 +1493,10 @@ $LANG32 = array(
     67 => 'ディレクトリ "%s" は書き込みできません。',
     68 => 'あなたにはプラグインをインストールする権限はありません。',
     69 => 'あなたにはプラグインをアップロードする権限はありません。',
-    'delete' => 'Delete',
-    'delete_plugin' => 'Delete Plugin and all of its files?',
-    'click_to_delete_msg' => 'Click to Delete this Plugin files',
-    'really_delete_msg' => 'Really Delete %s Plugin files?',
+    'delete' => '削除',
+    'delete_plugin' => 'プラグインと関連するファイルを全て削除しますか?',
+    'click_to_delete_msg' => 'プラグインのファイルを削除するにはココをクリック',
+    'really_delete_msg' => '%s プラグインのファイルを本当に削除しますか?',
     99 => '不明なエラーが発生しました。',
     100 => 'Ok.',
     101 => 'アップロードしようとしたファイルのサイズが php.ini 内の upload_max_filesize の値を超えています。',
@@ -1636,7 +1647,7 @@ $MESSAGE = array(
     28 => 'プラグインを保存しました',
     29 => 'あなたはこの管理ページにアクセスできません。権限のない機能へのアクセスはすべて記録しています。',
     30 => 'アクセスできません',
-    31 => 'Sorry, This feature is not supported by the  database server this website is using.  Please note that all attempts to access unsupported features are logged.',
+    31 => '申し訳ありませんが、この機能はお使いのデータベースサーバーがサポートしていません。未サポート機能へのアクセスは全てログに記録されます。',
     32 => '',
     33 => '',
     34 => '',
@@ -1742,8 +1753,8 @@ $MESSAGE = array(
     502 => '新しいメールアドレスのリクエストが期限切れになりました。以下からもう一度お試しください。',
     503 => 'あなたのメールアドレスは正常に検証されました。',
     504 => 'パスワードは8文字以上で、少なくとも1つの数字と1文字を含める必要があります。パスワードは大文字と小文字が区別されます。',
-    505 => "<em>Current set Site Default theme \"{$_CONF['theme_site_default']}\" is not valid.</em> Using Geeklog Default theme \"{$_CONF['theme']}\" for now. <br" . XHTML . "><br" . XHTML . ">This version of Geeklog you are running (v2.2.1) supports Themes with Geeklog v{$_CONF['min_theme_gl_version']} support.<br" . XHTML . "><br" . XHTML . ">Please update by reselecting a valid theme for the sites Config Theme setting in the Geeklog Configuration and resave.",
-    506 => "<em>Current set Site Default theme \"{$_CONF['theme_site_default']}\" is not valid.</em> Using Geeklog theme \"{$_CONF['theme']}\" for now.<br" . XHTML . "><br" . XHTML . ">This version of Geeklog you are running (v2.2.1) supports Themes with Geeklog v{$_CONF['min_theme_gl_version']} support.<br" . XHTML . "><br" . XHTML . ">Please update by reselecting a valid theme for the sites Config Theme setting in the Geeklog Configuration and resave."
+    505 => "<em>現在設定されているサイトの規定のテーマ \"{$_CONF['theme_site_default']}\" は無効です。</em> Geeklog の規定テーマ \"{$_CONF['theme']}\" を使用します。<br" . XHTML . "><br" . XHTML . ">お使いのGeeklog (v2.2.1) がサポートしているテーマの最低バージョンは v{$_CONF['min_theme_gl_version']} です。<br" . XHTML . "><br" . XHTML . ">Geeklog のコンフィギュレーションで有効なテーマを選び直してから、保存してください。",
+    506 => "<em>現在設定されているサイトの規定のテーマ \"{$_CONF['theme_site_default']}\" は無効です。</em> Geeklog の規定テーマ \"{$_CONF['theme']}\" を使用します。<br" . XHTML . "><br" . XHTML . ">お使いのGeeklog (v2.2.1) がサポートしているテーマの最低バージョンは v{$_CONF['min_theme_gl_version']} です。<br" . XHTML . "><br" . XHTML . ">Geeklog のコンフィギュレーションで有効なテーマを選び直してから、保存してください。"
 );
 
 ###############################################################################
@@ -1823,11 +1834,11 @@ $LANG_ACCESS = array(
 $LANG_DB_BACKUP = array(
     'database_admin' => 'データベース管理',
     'last_ten_backups' => 'バックアップしたファイル',
-    'site_db_backup' => "{$_CONF['site_name']} Database Backup",
+    'site_db_backup' => "{$_CONF['site_name']} のデータベースをバックアップ",
     'create_backup' => 'データベースのバックアップ',
     'do_backup' => 'バックアップの実行',
     'backup_successful' => 'データベースのバックアップを完了しました。',
-    'backup_error' => 'Error performing database backup.',
+    'backup_error' => 'データベースのバックアップに失敗しました。',
     'db_explanation' => 'サイトのデータベースのバックアップを新しく作成するには「バックアップの実行」をクリックしてください。バックアップファイルをダウンロードするには、下記の一覧でファイル名をクリックしてください。',
     'backup_instructions' => 'サイトのデータベースのバックアップを新しく作成するには下の「バックアップの実行」を選択してください。現在のGeeklogテーブルをバックアップします。データベース管理画面からバックアップしたファイルをダウンロードすることができます。',
     'zero_size' => 'バックアップ失敗: ファイルの大きさが0バイトです。',
@@ -1876,10 +1887,10 @@ $LANG_DB_BACKUP = array(
     'struct_only' => 'テーブル構造のみバックアップ(データなし)',
     'max_files' => '保持するバックアップファイルの最大数',
     'disable_purge' => '(無制限に保持するには"0"を指定)',
-    'use_gzip' => '可能なら圧縮する(GZip)',
+    'use_gzip' => '可能なら圧縮する(gzip)',
     'configure' => 'コンフィギュレーション',
     'config_instructions' => 'バックアップしたくないテーブルを選択してください。その他のオプションはコンフィギュレーションのGeeklog - データベースタブにあります。',
-    'config_successful' => 'Tables to Backup list was saved successfully.'
+    'config_successful' => 'バックアップするテーブル一覧を保存しました。'
 );
 
 ###############################################################################
@@ -2513,7 +2524,7 @@ $LANG_confignames['Core'] = array(
     'generate_user_icon' => 'ユーザーのアイコンを自動作成する',
     'use_gravatar' => 'Gravatarを使用する',
     'gravatar_rating' => 'Gravatarの評価',
-    'gravatar_identicon' => 'Gravtarのデフォルト画像',
+    'gravatar_identicon' => 'Gravatarのデフォルト画像',
     'force_photo_width' => '写真の幅を固定',
     'default_photo' => '写真のデフォルト',
     'commentspeedlimit' => 'コメントの投稿間隔の制限',
@@ -2528,22 +2539,22 @@ $LANG_confignames['Core'] = array(
     'likes_articles' => '記事のLikes',
     'likes_comments' => 'コメントのLikes',
     'likes_speedlimit' => 'Likesの実行制限間隔(秒)',
-    'likes_users_listed' => 'Number of User Listed in Tooltip',
-    'likes_block_cache_time' => 'Cache Time',
-    'likes_block_include_time' => 'Include Time',
-    'likes_block_max_items' => 'Max Items Listed',
-    'likes_block_displayed_actions' => 'Displayed Actions',
-    'likes_block_title_trim_length' => 'Title Trim Length',
-    'likes_block_likes_new_line' => 'Likes on New Line',
-    'likes_block_type' => 'Type',
-    'likes_block_subtype' => 'Sub Type',
-    'likes_block_enable' => 'Enabled',
-    'likes_block_isleft' => 'Display Block on Left',
-    'likes_block_order' => 'Block Order',
-    'likes_block_topic_option' => 'Topic Options',
-    'likes_block_topic' => 'Topic',
-    'likes_block_group_id' => 'Group',
-    'likes_block_permissions' => 'Permissions',
+    'likes_users_listed' => 'ツールチップに表示するユーザー数',
+    'likes_block_cache_time' => 'キャッシュする時間',
+    'likes_block_include_time' => 'likesブロックに表示する期間',
+    'likes_block_max_items' => '表示するアイテムの最大数',
+    'likes_block_displayed_actions' => '表示するアクション',
+    'likes_block_title_trim_length' => 'タイトルの文字数の最大値',
+    'likes_block_likes_new_line' => '改行後にlikesを表示する',
+    'likes_block_type' => 'タイプ',
+    'likes_block_subtype' => 'サブタイプ',
+    'likes_block_enable' => '有効',
+    'likes_block_isleft' => 'ブロックを左側に表示するLeft',
+    'likes_block_order' => 'ブロックの順序',
+    'likes_block_topic_option' => '話題のオプション',
+    'likes_block_topic' => '話題',
+    'likes_block_group_id' => 'グループ',
+    'likes_block_permissions' => 'パーミッション',
     'passwordspeedlimit' => 'パスワードの取得制限間隔',
     'login_attempts' => 'ログイン試行最大回数',
     'login_speedlimit' => 'ログイン試行制限間隔',
@@ -2798,10 +2809,10 @@ $LANG_configselects['Core'] = array(
     39 => array('なし' => '', 'Webページ' => 'core-webpage', '記事' => 'core-article', 'ニュース記事' => 'core-newsarticle', 'ブログ記事' => 'core-blogposting'),
     40 => array('無効' => 0, 'ログインユーザーとゲストユーザー' => 1, 'ログインユーザーのみ' => 2),
     41 => array('無効' => 0, 'LikesとDislikes' => 1, 'Likesのみ' => 2),
-    42 => array('None' => 0, 'Use individual Article Settings' => 1),
-    43 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
+    42 => array('なし' => 0, '個々の記事の設定を使用する' => 1),
+    43 => array('全て' => 'all', 'トップページのみ' => 'homeonly', '選択した話題のみ' => 'selectedtopics'),
     44 => array('No access' => 0, 'Read-Only' => 2),
-    46 => array('Likes and Dislikes' => 3, 'Likes Only' => 1, 'Dislikes Only' => 2)
+    46 => array('LikesとDislikes' => 3, 'Likesのみ' => 1, 'Dislikesのみ' => 2)
 );
 
 ###############################################################################
@@ -2811,7 +2822,7 @@ $LANG_VALIDATION = array(
     'default' => 'このフィールドは許可していない値を含んでいます',
     'notEmpty' => 'このフィールドの入力は必須です',
     'alphaNumeric' => 'このフィールドは半角英数です。',
-    'alphaNumericOrEmpty' => 'This field must be alpha numeric or empty',
+    'alphaNumericOrEmpty' => 'このフィールドは半角英数字を入力するか空でなければなりません',
     'between' => 'このフィールドは特定の範囲内の値を入れなければなりません',
     'blank' => 'このフィールドは空でなければなりません',
     'comparison' => 'このフィールドは比較操作に適合していません',
@@ -2855,4 +2866,3 @@ $LANG_VALIDATION = array(
     'config_setting_lang_array' => 'それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください',
     'config_setting_lang_array_element_req' => '少なくとも1つキーを指定してください。それぞれのキーには他と異なるユニークな言語ショートカット(\'en\', \'de\', \'ja\'など)を指定し、対応するフィールドには言語ファイル名から .php を除いたものを指定してください'
 );
-
