@@ -37,6 +37,10 @@ abstract class EntityBase
      */
     protected static function addSlashes($value)
     {
+		if (is_null($value)) {
+				$value = '';
+		}
+		
         return self::$emulateMagicQuotes ? addslashes($value) : $value;
     }
 
@@ -48,6 +52,10 @@ abstract class EntityBase
      */
     protected static function stripSlashes($value)
     {
+		if (is_null($value)) {
+				$value = '';
+		}
+		
         return self::$emulateMagicQuotes ? stripslashes($value) : $value;
     }
 

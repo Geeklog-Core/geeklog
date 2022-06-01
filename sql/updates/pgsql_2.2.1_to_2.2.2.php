@@ -3,16 +3,7 @@
 use Geeklog\DAO\UserAttributeDAO;
 use Geeklog\Entity\UserAttributeEntity;
 
-global $_DB_table_prefix, $_TABLES;
-
-// The following entries are no longer defined in 'lib-database.php', so define them here
-$_TABLES['cookiecodes'] = $_DB_table_prefix . 'cookiecodes';
-$_TABLES['dateformats'] = $_DB_table_prefix . 'dateformats';
-$_TABLES['maillist'] = $_DB_table_prefix . 'maillist';
-$_TABLES['usercomment'] = $_DB_table_prefix . 'usercomment';
-$_TABLES['userindex'] = $_DB_table_prefix . 'userindex';
-$_TABLES['userinfo'] = $_DB_table_prefix . 'userinfo';
-$_TABLES['userprefs'] = $_DB_table_prefix . 'userprefs';
+global $_TABLES;
 
 // Add missing route into routing table for articles that have page breaks (issue #746)
 $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid/@page', '/article.php?story=@sid&page=@page', 1000)"; // Priority should default to 120 but we need to mage sure it comes after the route for article print
@@ -83,13 +74,15 @@ function update_ConfValuesFor222()
     $so += 10;
 	$c->add('likes_block_order', 10, 'text', $sg, $fs, 0, $so, TRUE, $me, $tab);
     $so += 10;
-	$c->add('likes_block_topic_option', TOPIC_ALL_OPTION,'select', $sg, $fs, 43, $so, TRUE, $me, $tab);
+	// $c->add('likes_block_topic_option', TOPIC_ALL_OPTION,'select', $sg, $fs, 43, $so, TRUE, $me, $tab);
+	$c->add('likes_block_topic_option', 'all','select', $sg, $fs, 43, $so, TRUE, $me, $tab);
     $so += 10;
 	$c->add('likes_block_topic', array(), '%select', $sg, $fs, NULL, $so, TRUE, $me, $tab);
 	$so += 10;
     $c->add('likes_block_cache_time',3600,'text', $sg, $fs,NULL,$so,TRUE, $me, $tab);
     $so += 10;
-    $c->add('likes_block_displayed_actions',LIKES_BLOCK_DISPLAY_ALL, 'select', $sg, $fs, 46, $so, TRUE, $me, $tab);
+    // $c->add('likes_block_displayed_actions',LIKES_BLOCK_DISPLAY_ALL, 'select', $sg, $fs, 46, $so, TRUE, $me, $tab);
+	$c->add('likes_block_displayed_actions', 3, 'select', $sg, $fs, 46, $so, TRUE, $me, $tab);
 	$so += 10;	
     $c->add('likes_block_include_time',604800,'text', $sg, $fs,NULL,$so,TRUE, $me, $tab);
     $so += 10;

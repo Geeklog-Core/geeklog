@@ -125,6 +125,8 @@ if (defined('GL_INSTALL_ACTIVE')) {
 	global $_SCRIPTS; // For Geeklog install (during Migrate and maybe elsewhere) when lib-common included functions.inc of plugin which called plugin_getheadercode_foo which included a $_SCRIPTS call
 	global $_STRUCT_DATA; // For Geeklog install (during Migrate and maybe elsewhere) when lib-common included functions.inc of plugin and it uses Geeklog's built in Structured Data support where plugin_getstructureddatatypes_foo gets called
 	global $LANG_configselects; // For Geeklog install (during Migrate and maybe elsewhere) when lib-common included functions.inc of forum plugin that modifies this array directly
+	global $_DB_dbms; // Needed for when Geeklog Core language file is included by lib-common
+	global $LANG32; // Some Plugin language files include a reference to this array
     // *********************************************************
 }
 

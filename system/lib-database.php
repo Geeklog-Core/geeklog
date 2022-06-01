@@ -121,10 +121,21 @@ $_TABLES['staticpage'] = $_DB_table_prefix . 'staticpage';
 
 // These tables aren't used by Geeklog any more, but the table names are still
 // needed when upgrading from old versions
-$_TABLES['commentspeedlimit'] = $_DB_table_prefix . 'commentspeedlimit';
-$_TABLES['submitspeedlimit'] = $_DB_table_prefix . 'submitspeedlimit';
-$_TABLES['tzcodes'] = $_DB_table_prefix . 'tzcodes';
-$_TABLES['userevent'] = $_DB_table_prefix . 'userevent';
+if (defined('GL_INSTALL_ACTIVE')) {
+	$_TABLES['commentspeedlimit'] = $_DB_table_prefix . 'commentspeedlimit';
+	$_TABLES['submitspeedlimit'] = $_DB_table_prefix . 'submitspeedlimit';
+	$_TABLES['tzcodes'] = $_DB_table_prefix . 'tzcodes';
+	$_TABLES['userevent'] = $_DB_table_prefix . 'userevent';
+
+	// Removed as of Geeklog 2.2.2
+	$_TABLES['cookiecodes'] = $_DB_table_prefix . 'cookiecodes';
+	$_TABLES['dateformats'] = $_DB_table_prefix . 'dateformats';
+	$_TABLES['maillist'] = $_DB_table_prefix . 'maillist';
+	$_TABLES['usercomment'] = $_DB_table_prefix . 'usercomment';
+	$_TABLES['userindex'] = $_DB_table_prefix . 'userindex';
+	$_TABLES['userinfo'] = $_DB_table_prefix . 'userinfo';
+	$_TABLES['userprefs'] = $_DB_table_prefix . 'userprefs';
+}
 
 // +---------------------------------------------------------------------------+
 // | DO NOT TOUCH ANYTHING BELOW HERE                                          |
@@ -623,6 +634,10 @@ function DB_getVersion()
 function DB_escapeString($str)
 {
     global $_DB;
+	
+	if (is_null($str)) {
+		$str = '';
+	}
 
     return $_DB->dbEscapeString($str);
 }

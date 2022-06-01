@@ -276,7 +276,7 @@ function PLG_chkVersion($type)
  */
 function PLG_uninstall($type)
 {
-    global $_PLUGINS, $_TABLES;
+    global $_PLUGINS, $_TABLES, $_CONF;
 
     if (empty($type)) {
         return false;
@@ -374,6 +374,7 @@ function PLG_uninstall($type)
         // remove comments for this plugin if any exist
         COM_errorLog("Attempting to remove comments for $type", 1);
         DB_delete($_TABLES['comments'], 'type', $type);
+		require_once $_CONF['path_system'] . 'lib-comment.php'; // May not be loaded so do it now
 		CMT_deleteComment('', '', $type, false);
         COM_errorLog('...success', 1);
 

@@ -1449,7 +1449,7 @@ function plugin_upgrade_polls()
                 // Drop the 'ipaddress' column
                 DB_query("ALTER TABLE {$_TABLES['pollvoters']} DROP COLUMN ipaddress");
 				
-				polls_update_ConfValues_2_2_0();
+				polls_update_ConfValues_2_2_1();
 
                 $current_version = '2.2.1'; // Ships with Geeklog v2.2.2
                 break;

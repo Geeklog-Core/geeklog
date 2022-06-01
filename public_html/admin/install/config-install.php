@@ -359,13 +359,15 @@ function install_config(ConfigInterface $c)
     $so += 10;
 	$c->add('likes_block_order', 10, 'text', $sg, $fs, 0, $so, TRUE, $me, $tab);
     $so += 10;
-	$c->add('likes_block_topic_option', TOPIC_ALL_OPTION,'select', $sg, $fs, 43, $so, TRUE, $me, $tab);
+	// $c->add('likes_block_topic_option', TOPIC_ALL_OPTION,'select', $sg, $fs, 43, $so, TRUE, $me, $tab);
+	$c->add('likes_block_topic_option', 'all','select', $sg, $fs, 43, $so, TRUE, $me, $tab);
     $so += 10;
 	$c->add('likes_block_topic', array(), '%select', $sg, $fs, NULL, $so, TRUE, $me, $tab);
 	$so += 10;
     $c->add('likes_block_cache_time',3600,'text', $sg, $fs,NULL,$so,TRUE, $me, $tab);
     $so += 10;
-    $c->add('likes_block_displayed_actions',LIKES_BLOCK_DISPLAY_ALL, 'select', $sg, $fs, 46, $so, TRUE, $me, $tab);
+    // $c->add('likes_block_displayed_actions',LIKES_BLOCK_DISPLAY_ALL, 'select', $sg, $fs, 46, $so, TRUE, $me, $tab);
+	$c->add('likes_block_displayed_actions', 3, 'select', $sg, $fs, 46, $so, TRUE, $me, $tab);
 	$so += 10;	
     $c->add('likes_block_include_time',604800,'text', $sg, $fs,NULL,$so,TRUE, $me, $tab);
     $so += 10;

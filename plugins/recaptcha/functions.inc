@@ -211,7 +211,7 @@ function plugin_autouninstall_recaptcha()
     return [
         'tables'     => [],
         'groups'     => ['reCAPTCHA Admin'],
-        'features'   => $_RECAPTCHA_CONF['FEATURES'],
+        'features'   => ['recaptcha.edit'],
         'php_blocks' => [],
         'vars'       => [],
     ];
