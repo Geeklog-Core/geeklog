@@ -8,12 +8,6 @@
     }
   },
   "require": {
-    "pear/pear_exception": "~1.0",
-    "pear/console_getopt": "~1.4",
-    "pear/pear-core-minimal": "~1.10",
-    "pear/net_dns2": "~1.4",
-    "pear/net_url2": "~2.2",
-    "pear/http_request2": "~2.3.0",
     "splitbrain/php-archive": "^1.1.0",
     "phpclasses/oauth-api": ">=1.0.105",
     "robthree/twofactorauth": "^1.6",
@@ -26,7 +20,9 @@
     "google/recaptcha": "^1.2",
     "ext-json": "*",
     "phpmailer/phpmailer": "^6.5",
-    "psr/container": "^1.0"
+    "psr/container": "^1.0",
+    "pear/http_request2": "^2.5",
+    "pear/net_dns2": "^1.5"
   },
   "autoload": {
     "psr-4": {

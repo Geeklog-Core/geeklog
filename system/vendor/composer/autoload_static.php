@@ -164,17 +164,6 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
                 0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
             ),
         ),
-        'C' => 
-        array (
-            'Console' => 
-            array (
-                0 => __DIR__ . '/..' . '/pear/console_getopt',
-            ),
-        ),
-    );
-
-    public static $fallbackDirsPsr0 = array (
-        0 => __DIR__ . '/..' . '/pear/pear-core-minimal/src',
     );
 
     public static $classMap = array (
@@ -213,7 +202,6 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
             $loader->prefixLengthsPsr4 = ComposerStaticInite72621cdbb7ab1eae4754470aabe0609::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInite72621cdbb7ab1eae4754470aabe0609::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInite72621cdbb7ab1eae4754470aabe0609::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInite72621cdbb7ab1eae4754470aabe0609::$fallbackDirsPsr0;
             $loader->classMap = ComposerStaticInite72621cdbb7ab1eae4754470aabe0609::$classMap;
 
         }, null, ClassLoader::class);

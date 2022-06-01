@@ -13,13 +13,13 @@
  * @category  HTTP
  * @package   HTTP_Request2
  * @author    Alexey Borzov <avb@php.net>
- * @copyright 2008-2016 Alexey Borzov <avb@php.net>
+ * @copyright 2008-2022 Alexey Borzov <avb@php.net>
  * @license   http://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      http://pear.php.net/package/HTTP_Request2
  */
 
-/** Exception classes for HTTP_Request2 package */
-require_once 'HTTP/Request2/Exception.php';
+// pear-package-only /** Exception classes for HTTP_Request2 package */
+// pear-package-only require_once 'HTTP/Request2/Exception.php';
 
 /**
  * Socket wrapper class used by Socket Adapter
@@ -40,24 +40,28 @@ class HTTP_Request2_SocketWrapper
 {
     /**
      * PHP warning messages raised during stream_socket_client() call
+     *
      * @var array
      */
-    protected $connectionWarnings = array();
+    protected $connectionWarnings = [];
 
     /**
      * Connected socket
+     *
      * @var resource
      */
     protected $socket;
 
     /**
      * Sum of start time and global timeout, exception will be thrown if request continues past this time
-     * @var  integer
+     *
+     * @var float
      */
     protected $deadline;
 
     /**
      * Global timeout value, mostly for exception messages
+     *
      * @var integer
      */
     protected $timeout;
@@ -73,39 +77,36 @@ class HTTP_Request2_SocketWrapper
      * @throws HTTP_Request2_LogicException
      * @throws HTTP_Request2_ConnectionException
      */
-    public function __construct($address, $timeout, array $contextOptions = array())
+    public function __construct($address, $timeout, array $contextOptions = [])
     {
         if (!empty($contextOptions)
             && !isset($contextOptions['socket']) && !isset($contextOptions['ssl'])
         ) {
             // Backwards compatibility with 2.1.0 and 2.1.1 releases
-            $contextOptions = array('ssl' => $contextOptions);
+            $contextOptions = ['ssl' => $contextOptions];
         }
         if (isset($contextOptions['ssl'])) {
-            $contextOptions['ssl'] += array(
+            $cryptoMethod = STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
+            if (defined('STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT')) {
+                $cryptoMethod |= STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT;
+            }
+            $contextOptions['ssl'] += [
                 // Using "Intermediate compatibility" cipher bundle from
                 // https://wiki.mozilla.org/Security/Server_Side_TLS
-                'ciphers' => 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:'
-                             . 'ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:'
-                             . 'DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:'
-                             . 'ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:'
-                             . 'ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:'
-                             . 'ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:'
-                             . 'ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:'
-                             . 'DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:'
-                             . 'DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:'
-                             . 'ECDHE-RSA-DES-CBC3-SHA:ECDHE-ECDSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:'
-                             . 'AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:'
-                             . 'AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:'
-                             . '!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA'
-            );
-            if (version_compare(phpversion(), '5.4.13', '>=')) {
-                $contextOptions['ssl']['disable_compression'] = true;
-                if (version_compare(phpversion(), '5.6', '>=')) {
-                    $contextOptions['ssl']['crypto_method'] = STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT
-                                                              | STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
-                }
-            }
+                'ciphers' =>             'TLS_AES_128_GCM_SHA256:'
+                                         . 'TLS_AES_256_GCM_SHA384:'
+                                         . 'TLS_CHACHA20_POLY1305_SHA256:'
+                                         . 'ECDHE-ECDSA-AES128-GCM-SHA256:'
+                                         . 'ECDHE-RSA-AES128-GCM-SHA256:'
+                                         . 'ECDHE-ECDSA-AES256-GCM-SHA384:'
+                                         . 'ECDHE-RSA-AES256-GCM-SHA384:'
+                                         . 'ECDHE-ECDSA-CHACHA20-POLY1305:'
+                                         . 'ECDHE-RSA-CHACHA20-POLY1305:'
+                                         . 'DHE-RSA-AES128-GCM-SHA256:'
+                                         . 'DHE-RSA-AES256-GCM-SHA384',
+                'disable_compression' => true,
+                'crypto_method'       => $cryptoMethod
+            ];
         }
         $context = stream_context_create();
         foreach ($contextOptions as $wrapper => $options) {
@@ -117,7 +118,7 @@ class HTTP_Request2_SocketWrapper
                 }
             }
         }
-        set_error_handler(array($this, 'connectionWarningsHandler'));
+        set_error_handler([$this, 'connectionWarningsHandler']);
         $this->socket = stream_socket_client(
             $address, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $context
         );
@@ -135,6 +136,9 @@ class HTTP_Request2_SocketWrapper
                 "Unable to connect to {$address}. Error: {$error}", 0, $errno
             );
         }
+        // Run socket in non-blocking mode, to prevent possible problems with
+        // HTTPS requests not timing out properly (see bug #21229)
+        stream_set_blocking($this->socket, false);
     }
 
     /**
@@ -150,16 +154,28 @@ class HTTP_Request2_SocketWrapper
      *
      * @param int $length Reads up to this number of bytes
      *
-     * @return   string Data read from socket
-     * @throws   HTTP_Request2_MessageException     In case of timeout
+     * @return string|false Data read from socket by fread()
+     * @throws HTTP_Request2_MessageException     In case of timeout
      */
     public function read($length)
     {
-        if ($this->deadline) {
-            stream_set_timeout($this->socket, max($this->deadline - time(), 1));
-        }
-        $data = fread($this->socket, $length);
-        $this->checkTimeout();
+        // Looks like stream_select() may return true, but then fread() will return an empty string...
+        // For some reason or other happens mostly with servers behind Cloudflare.
+        // Let's do the fread() call in a loop until either an error/eof or non-empty string:
+        do {
+            $data     = false;
+            $timeouts = $this->_getTimeoutsForStreamSelect();
+
+            $r = [$this->socket];
+            $w = [];
+            $e = [];
+            if (stream_select($r, $w, $e, $timeouts[0], $timeouts[1])) {
+                $data = fread($this->socket, $length);
+            }
+
+            $this->checkTimeout();
+        } while ('' === $data && !$this->eof());
+
         return $data;
     }
 
@@ -173,37 +189,33 @@ class HTTP_Request2_SocketWrapper
      * @param int $localTimeout timeout value to use just for this call
      *                          (used when waiting for "100 Continue" response)
      *
-     * @return   string Available data up to the newline (not including newline)
-     * @throws   HTTP_Request2_MessageException     In case of timeout
+     * @return string Available data up to the newline (not including newline)
+     * @throws HTTP_Request2_MessageException     In case of timeout
      */
     public function readLine($bufferSize, $localTimeout = null)
     {
         $line = '';
         while (!feof($this->socket)) {
             if (null !== $localTimeout) {
-                stream_set_timeout($this->socket, $localTimeout);
-            } elseif ($this->deadline) {
-                stream_set_timeout($this->socket, max($this->deadline - time(), 1));
+                $timeouts = [$localTimeout, 0];
+                $started  = microtime(true);
+            } else {
+                $timeouts = $this->_getTimeoutsForStreamSelect();
             }
 
-            $line .= @fgets($this->socket, $bufferSize);
+            $r = [$this->socket];
+            $w = [];
+            $e = [];
+            if (stream_select($r, $w, $e, $timeouts[0], $timeouts[1])) {
+                $line .= @fgets($this->socket, $bufferSize);
+            }
 
             if (null === $localTimeout) {
                 $this->checkTimeout();
-
-            } else {
-                $info = stream_get_meta_data($this->socket);
-                // reset socket timeout if we don't have request timeout specified,
-                // prevents further calls failing with a bogus Exception
-                if (!$this->deadline) {
-                    $default = (int)@ini_get('default_socket_timeout');
-                    stream_set_timeout($this->socket, $default > 0 ? $default : PHP_INT_MAX);
-                }
-                if ($info['timed_out']) {
-                    throw new HTTP_Request2_MessageException(
-                        "readLine() call timed out", HTTP_Request2_Exception::TIMEOUT
-                    );
-                }
+            } elseif (microtime(true) - $started > $localTimeout) {
+                throw new HTTP_Request2_MessageException(
+                    "readLine() call timed out", HTTP_Request2_Exception::TIMEOUT
+                );
             }
             if (substr($line, -1) == "\n") {
                 return rtrim($line, "\r\n");
@@ -222,16 +234,39 @@ class HTTP_Request2_SocketWrapper
      */
     public function write($data)
     {
-        if ($this->deadline) {
-            stream_set_timeout($this->socket, max($this->deadline - time(), 1));
+        $totalWritten = 0;
+        while (strlen($data) && !$this->eof()) {
+            $written  = 0;
+            $error    = null;
+            $timeouts = $this->_getTimeoutsForStreamSelect();
+
+            $r = null;
+            $w = [$this->socket];
+            $e = null;
+            if (stream_select($r, $w, $e, $timeouts[0], $timeouts[1])) {
+                set_error_handler(
+                    static function ($errNo, $errStr) use (&$error) {
+                        if (0 !== (E_NOTICE | E_WARNING) & $errNo) {
+                            $error = $errStr;
+                        }
+                    }
+                );
+                $written = fwrite($this->socket, $data);
+                restore_error_handler();
+            }
+            $this->checkTimeout();
+
+            // php_sockop_write() defined in /main/streams/xp_socket.c may return zero written bytes for non-blocking
+            // sockets in case of transient errors. These writes will not have notices raised and should be retried
+            if (false === $written || 0 === $written && null !== $error) {
+                throw new HTTP_Request2_MessageException(
+                    'Error writing request' . (null === $error ? '' : ': ' . $error)
+                );
+            }
+            $data = substr($data, $written);
+            $totalWritten += $written;
         }
-        $written = fwrite($this->socket, $data);
-        $this->checkTimeout();
-        // http://www.php.net/manual/en/function.fwrite.php#96951
-        if ($written < strlen($data)) {
-            throw new HTTP_Request2_MessageException('Error writing request');
-        }
-        return $written;
+        return $totalWritten;
     }
 
     /**
@@ -247,13 +282,22 @@ class HTTP_Request2_SocketWrapper
     /**
      * Sets request deadline
      *
-     * @param int $deadline Exception will be thrown if request continues
-     *                      past this time
-     * @param int $timeout  Original request timeout value, to use in
-     *                      Exception message
+     * If null is passed for $deadline then deadline will be calculated based
+     * on default_socket_timeout PHP setting. This is done to keep BC with previous
+     * versions that used blocking sockets.
+     *
+     * @param float|null $deadline Exception will be thrown if request continues
+     *                             past this time
+     * @param int        $timeout  Original request timeout value, to use in
+     *                             Exception message
+     *
+     * @return void
      */
     public function setDeadline($deadline, $timeout)
     {
+        if (null === $deadline && 0 < ($defaultTimeout = (int)ini_get('default_socket_timeout'))) {
+            $deadline = microtime(true) + $defaultTimeout;
+        }
         $this->deadline = $deadline;
         $this->timeout  = $timeout;
     }
@@ -261,40 +305,66 @@ class HTTP_Request2_SocketWrapper
     /**
      * Turns on encryption on a socket
      *
+     * @return void
      * @throws HTTP_Request2_ConnectionException
      */
     public function enableCrypto()
     {
-        if (version_compare(phpversion(), '5.6', '<')) {
-            $cryptoMethod = STREAM_CRYPTO_METHOD_TLS_CLIENT;
-        } else {
-            $cryptoMethod = STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT
-                            | STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
+        $cryptoMethod = STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
+        if (defined('STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT')) {
+            $cryptoMethod |= STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT;
         }
 
-        if (!stream_socket_enable_crypto($this->socket, true, $cryptoMethod)) {
-            throw new HTTP_Request2_ConnectionException(
-                'Failed to enable secure connection when connecting through proxy'
-            );
+        try {
+            stream_set_blocking($this->socket, true);
+            if (!stream_socket_enable_crypto($this->socket, true, $cryptoMethod)) {
+                throw new HTTP_Request2_ConnectionException(
+                    'Failed to enable secure connection when connecting through proxy'
+                );
+            }
+        } finally {
+            stream_set_blocking($this->socket, false);
         }
     }
 
     /**
      * Throws an Exception if stream timed out
      *
+     * @return void
      * @throws HTTP_Request2_MessageException
      */
     protected function checkTimeout()
     {
         $info = stream_get_meta_data($this->socket);
-        if ($info['timed_out'] || $this->deadline && time() > $this->deadline) {
-            $reason = $this->deadline
+        if ($info['timed_out'] || $this->deadline && microtime(true) > $this->deadline) {
+            $reason = $this->timeout
                 ? "after {$this->timeout} second(s)"
                 : 'due to default_socket_timeout php.ini setting';
             throw new HTTP_Request2_MessageException(
                 "Request timed out {$reason}", HTTP_Request2_Exception::TIMEOUT
             );
         }
+    }
+
+    /**
+     * Returns timeouts based on deadline for use with stream_select()
+     *
+     * @return array First element is $tv_sec parameter for stream_select(),
+     *               second element is $tv_usec
+     */
+    private function _getTimeoutsForStreamSelect()
+    {
+        if (!$this->deadline) {
+            return [null, null];
+        }
+        $parts = array_map(
+            'intval',
+            explode('.', sprintf('%.6F', $this->deadline - microtime(true)))
+        );
+        if (0 > $parts[0] || 0 === $parts[0] && $parts[1] < 50000) {
+            return [0, 50000];
+        }
+        return $parts;
     }
 
     /**

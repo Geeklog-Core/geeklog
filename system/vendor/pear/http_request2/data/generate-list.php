@@ -12,7 +12,7 @@
 /** URL to download Public Suffix List from */
 define('LIST_URL',    'https://publicsuffix.org/list/public_suffix_list.dat');
 /** Name of PHP file to write */
-define('OUTPUT_FILE', dirname(__FILE__) . '/public-suffix-list.php');
+define('OUTPUT_FILE', __DIR__ . '/public-suffix-list.php');
 
 require_once 'HTTP/Request2.php';
 
@@ -21,7 +21,7 @@ function buildSubdomain(&$node, $tldParts)
     $part = trim(array_pop($tldParts));
 
     if (!array_key_exists($part, $node)) {
-        $node[$part] = array();
+        $node[$part] = [];
     }
 
     if (0 < count($tldParts)) {
@@ -41,7 +41,7 @@ function writeNode($fp, $valueTree, $key = null, $indent = 0)
     if (0 == ($count = count($valueTree))) {
         fwrite($fp, 'true');
     } else {
-        fwrite($fp, "array(\n");
+        fwrite($fp, "[\n");
         for ($keys = array_keys($valueTree), $i = 0; $i < $count; $i++) {
             writeNode($fp, $valueTree[$keys[$i]], $keys[$i], $indent + 1);
             if ($i + 1 != $count) {
@@ -50,17 +50,17 @@ function writeNode($fp, $valueTree, $key = null, $indent = 0)
                 fwrite($fp, "\n");
             }
         }
-        fwrite($fp, str_repeat(' ', $indent) . ")");
+        fwrite($fp, str_repeat(' ', $indent) . "]");
     }
 }
 
 
 try {
-    $request  = new HTTP_Request2(LIST_URL, HTTP_Request2::METHOD_GET, array(
+    $request  = new HTTP_Request2(LIST_URL, HTTP_Request2::METHOD_GET, [
         // Provide path to your CA file and change 'ssl_verify_peer' to true to enable peer validation
         // 'ssl_cafile' => '... path to your Certificate Authority file ...',
         'ssl_verify_peer' => false
-    ));
+    ]);
     $response = $request->send();
     if (200 != $response->getStatus()) {
         throw new Exception("List download URL returned status: " .
@@ -70,7 +70,7 @@ try {
     if (false === strpos($list, '// ===BEGIN ICANN DOMAINS===')) {
         throw new Exception("List download URL does not contain expected phrase");
     }
-    if (!($fp = @fopen(OUTPUT_FILE, 'wt'))) {
+    if (!($fp = @fopen(OUTPUT_FILE, 'wb'))) {
         throw new Exception("Unable to open " . OUTPUT_FILE);
     }
 
@@ -78,7 +78,7 @@ try {
     die($e->getMessage());
 }
 
-$tldTree = array();
+$tldTree = [];
 $license = true;
 
 fwrite($fp, "<?php\n");

@@ -13,13 +13,13 @@
  * @category  HTTP
  * @package   HTTP_Request2
  * @author    Alexey Borzov <avb@php.net>
- * @copyright 2008-2016 Alexey Borzov <avb@php.net>
+ * @copyright 2008-2022 Alexey Borzov <avb@php.net>
  * @license   http://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link      http://pear.php.net/package/HTTP_Request2
  */
 
-/** Exception class for HTTP_Request2 package */
-require_once 'HTTP/Request2/Exception.php';
+// pear-package-only /** Exception class for HTTP_Request2 package */
+// pear-package-only require_once 'HTTP/Request2/Exception.php';
 
 /**
  * Class for building multipart/form-data request body
@@ -39,31 +39,36 @@ class HTTP_Request2_MultipartBody
 {
     /**
      * MIME boundary
-     * @var  string
+     *
+     * @var string
      */
     private $_boundary;
 
     /**
      * Form parameters added via {@link HTTP_Request2::addPostParameter()}
-     * @var  array
+     *
+     * @var array
      */
-    private $_params = array();
+    private $_params = [];
 
     /**
      * File uploads added via {@link HTTP_Request2::addUpload()}
-     * @var  array
+     *
+     * @var array
      */
-    private $_uploads = array();
+    private $_uploads = [];
 
     /**
      * Header for parts with parameters
-     * @var  string
+     *
+     * @var string
      */
     private $_headerParam = "--%s\r\nContent-Disposition: form-data; name=\"%s\"\r\n\r\n";
 
     /**
      * Header for parts with uploads
-     * @var  string
+     *
+     * @var string
      */
     private $_headerUpload = "--%s\r\nContent-Disposition: form-data; name=\"%s\"; filename=\"%s\"\r\nContent-Type: %s\r\n\r\n";
 
@@ -73,9 +78,9 @@ class HTTP_Request2_MultipartBody
      * First number is index of "current" part, second number is position within
      * "current" part
      *
-     * @var  array
+     * @var array
      */
-    private $_pos = array(0, 0);
+    private $_pos = [0, 0];
 
 
     /**
@@ -92,13 +97,13 @@ class HTTP_Request2_MultipartBody
         $this->_params = self::_flattenArray('', $params, $useBrackets);
         foreach ($uploads as $fieldName => $f) {
             if (!is_array($f['fp'])) {
-                $this->_uploads[] = $f + array('name' => $fieldName);
+                $this->_uploads[] = $f + ['name' => $fieldName];
             } else {
                 for ($i = 0; $i < count($f['fp']); $i++) {
-                    $upload = array(
+                    $upload = [
                         'name' => ($useBrackets? $fieldName . '[' . $i . ']': $fieldName)
-                    );
-                    foreach (array('fp', 'filename', 'size', 'type') as $key) {
+                    ];
+                    foreach (['fp', 'filename', 'size', 'type'] as $key) {
                         $upload[$key] = $f[$key][$i];
                     }
                     $this->_uploads[] = $upload;
@@ -110,7 +115,7 @@ class HTTP_Request2_MultipartBody
     /**
      * Returns the length of the body to use in Content-Length header
      *
-     * @return   integer
+     * @return integer
      */
     public function getLength()
     {
@@ -131,7 +136,7 @@ class HTTP_Request2_MultipartBody
     /**
      * Returns the boundary to use in Content-Type header
      *
-     * @return   string
+     * @return string
      */
     public function getBoundary()
     {
@@ -146,8 +151,8 @@ class HTTP_Request2_MultipartBody
      *
      * @param integer $length Number of bytes to read
      *
-     * @return   string  Up to $length bytes of data, empty string if at end
-     * @throws   HTTP_Request2_LogicException
+     * @return string  Up to $length bytes of data, empty string if at end
+     * @throws HTTP_Request2_LogicException
      */
     public function read($length)
     {
@@ -199,7 +204,7 @@ class HTTP_Request2_MultipartBody
                 $length  -= min(strlen($closing) - $this->_pos[1], $length);
             }
             if ($length > 0) {
-                $this->_pos     = array($this->_pos[0] + 1, 0);
+                $this->_pos     = [$this->_pos[0] + 1, 0];
             } else {
                 $this->_pos[1] += $oldLength;
             }
@@ -211,10 +216,12 @@ class HTTP_Request2_MultipartBody
      * Sets the current position to the start of the body
      *
      * This allows reusing the same body in another request
+     *
+     * @return void
      */
     public function rewind()
     {
-        $this->_pos = array(0, 0);
+        $this->_pos = [0, 0];
         foreach ($this->_uploads as $u) {
             rewind($u['fp']);
         }
@@ -226,7 +233,7 @@ class HTTP_Request2_MultipartBody
      * Note that it reads all file uploads into memory so it is a good idea not
      * to use this method with large file uploads and rely on read() instead.
      *
-     * @return   string
+     * @return string
      */
     public function __toString()
     {
@@ -243,14 +250,14 @@ class HTTP_Request2_MultipartBody
      * @param mixed  $values      item's values
      * @param bool   $useBrackets whether to append [] to array variables' names
      *
-     * @return   array   array with the following items: array('item name', 'item value');
+     * @return array   array with the following items: array('item name', 'item value');
      */
     private static function _flattenArray($name, $values, $useBrackets)
     {
         if (!is_array($values)) {
-            return array(array($name, $values));
+            return [[$name, $values]];
         } else {
-            $ret = array();
+            $ret = [];
             foreach ($values as $k => $v) {
                 if (empty($name)) {
                     $newName = $k;
