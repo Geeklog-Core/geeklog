@@ -86,6 +86,11 @@ $_XMLSMAP_DEFAULT['frequencies'] = [
 
 // Ping targets
 $_XMLSMAP_DEFAULT['ping_google'] = true;
+if (defined('GL_INSTALL_ACTIVE')) {
+	// $_XMLSMAP_DEFAULT['ping_bing'] Removed as of XML Sitemap Plugin 2.0.3 and Geeklog 2.2.2
+	// Need to keep though for upgrade procedures that are older and when this config was added or upgrade will break
+	$_XMLSMAP_DEFAULT['ping_bing']   = true; 
+}
 
 // IndexNow
 $_XMLSMAP_DEFAULT['indexnow'] = false;

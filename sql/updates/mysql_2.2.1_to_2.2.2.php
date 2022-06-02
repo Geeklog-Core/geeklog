@@ -22,23 +22,23 @@ $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_cron'";
 
 // Clean orphan records from Comments and Likes
 // Delete comment edits with no existing comments or users
-$_SQL[] = "DELETE FROM {$_TABLES['commentedits']} ce WHERE cid NOT IN (SELECT cid FROM {$_TABLES['comments']} c WHERE c.cid = ce.cid)";	
-$_SQL[] = "DELETE FROM {$_TABLES['commentedits']} ce WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE u.uid = ce.uid)";	
+$_SQL[] = "DELETE ce FROM {$_TABLES['commentedits']} ce WHERE cid NOT IN (SELECT cid FROM {$_TABLES['comments']} c WHERE c.cid = ce.cid)";	
+$_SQL[] = "DELETE ce FROM {$_TABLES['commentedits']} ce WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE u.uid = ce.uid)";	
 // Delete comment notifications with no existing comments or users
-$_SQL[] = "DELETE FROM {$_TABLES['commentnotifications']} cn WHERE cid NOT IN (SELECT cid FROM {$_TABLES['comments']} c WHERE c.cid = cn.cid)";	
-$_SQL[] = "DELETE FROM {$_TABLES['commentnotifications']} cn WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE u.uid = cn.uid)";	
+$_SQL[] = "DELETE cn FROM {$_TABLES['commentnotifications']} cn WHERE cid NOT IN (SELECT cid FROM {$_TABLES['comments']} c WHERE c.cid = cn.cid)";	
+$_SQL[] = "DELETE cn FROM {$_TABLES['commentnotifications']} cn WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE u.uid = cn.uid)";	
 // Delete comment submissions whose parent comment does not exist and with no existing users
-$_SQL[] = "DELETE FROM {$_TABLES['commentsubmissions']} cs WHERE pid != 0 AND pid NOT IN (SELECT cid FROM {$_TABLES['comments']} c WHERE c.cid = cs.pid)";	
-$_SQL[] = "DELETE FROM {$_TABLES['commentsubmissions']} cs WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE u.uid = cs.uid)";	
+$_SQL[] = "DELETE cs FROM {$_TABLES['commentsubmissions']} cs WHERE pid != 0 AND pid NOT IN (SELECT cid FROM {$_TABLES['comments']} c WHERE c.cid = cs.pid)";	
+$_SQL[] = "DELETE cs FROM {$_TABLES['commentsubmissions']} cs WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE u.uid = cs.uid)";	
 // Delete Comments that type and sid do not exist anymore
-$_SQL[] = "DELETE FROM {$_TABLES['comments']} c WHERE type = 'article' AND sid NOT IN (SELECT sid FROM {$_TABLES['stories']} s WHERE c.sid = s.sid)";
-$_SQL[] = "DELETE FROM {$_TABLES['comments']} c WHERE type = 'staticpages' AND sid NOT IN (SELECT sid FROM {$_TABLES['staticpage']} s WHERE c.sid = s.sp_id)";
-$_SQL[] = "DELETE FROM {$_TABLES['comments']} c WHERE type = 'polls' AND sid NOT IN (SELECT sid FROM {$_TABLES['polltopics']} pt WHERE c.sid = pt.pid)";
+$_SQL[] = "DELETE c FROM {$_TABLES['comments']} c WHERE type = 'article' AND sid NOT IN (SELECT sid FROM {$_TABLES['stories']} s WHERE c.sid = s.sid)";
+$_SQL[] = "DELETE c FROM {$_TABLES['comments']} c WHERE type = 'staticpages' AND sid NOT IN (SELECT sid FROM {$_TABLES['staticpage']} s WHERE c.sid = s.sp_id)";
+$_SQL[] = "DELETE c FROM {$_TABLES['comments']} c WHERE type = 'polls' AND sid NOT IN (SELECT sid FROM {$_TABLES['polltopics']} pt WHERE c.sid = pt.pid)";
 // Set any likes missing user accounts to anonymous
 $_SQL[] = "UPDATE {$_TABLES['likes']} l SET uid = 1 WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE u.uid = l.uid)";	
 // Delete likes that type and id do not exist anymore
-$_SQL[] = "DELETE FROM {$_TABLES['likes']} l WHERE type = 'comment' AND id NOT IN (SELECT cid FROM {$_TABLES['comments']} s WHERE c.cid = l.id)";	
-$_SQL[] = "DELETE FROM {$_TABLES['likes']} l WHERE type = 'article' AND id NOT IN (SELECT sid FROM {$_TABLES['stories']} s WHERE s.sid = l.id)";	
+$_SQL[] = "DELETE l FROM {$_TABLES['likes']} l WHERE type = 'comment' AND id NOT IN (SELECT cid FROM {$_TABLES['comments']} c WHERE c.cid = l.id)";	
+$_SQL[] = "DELETE l FROM {$_TABLES['likes']} l WHERE type = 'article' AND id NOT IN (SELECT sid FROM {$_TABLES['stories']} s WHERE s.sid = l.id)";	
 
 /**
  * Add/Edit/Delete config options for new version
