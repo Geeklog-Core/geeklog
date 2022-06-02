@@ -178,6 +178,10 @@ abstract class Common
                 $changed = false;
 
                 foreach ($fields as $field) {
+					if (is_null($A[$field])) {
+						$A[$field] = '';
+					}
+					
                     $newText = str_replace($oldUrl, $newUrl, $A[$field]);
 
                     if ($newText != $A[$field]) {
