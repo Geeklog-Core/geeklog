@@ -58,7 +58,13 @@ class Input
             return;
         }
 
-        // Check for invalid request data
+        self::$initialized = true;
+
+        // Check for invalid request data for UTF-8
+        if (strcasecmp($internalEncoding, 'UTF-8') !== 0) {
+            return;
+        }
+
         $targets = [$_GET, $_POST, $_COOKIE];
         $vars = '';
 
@@ -71,16 +77,11 @@ class Input
         );
 
         if (strlen($vars) > 0) {
-            // Except Slovenian
-            if (strcasecmp($internalEncoding, 'Windows-1250') !== 0) {
-                // Check encoding
-                if (!mb_check_encoding($vars, $internalEncoding)) {
-                    die('Invalid encoding detected!');
-                }
+            // Check encoding
+            if (!mb_check_encoding($vars, $internalEncoding)) {
+                die('Invalid encoding detected!');
             }
         }
-
-        self::$initialized = true;
     }
 
     /**
