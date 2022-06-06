@@ -829,7 +829,9 @@ $LANG_LIKES = array(
 	'no_liked_items'   				=> 'There are no Liked items.',
 	'no_disliked_items'   			=> 'There are no Disliked items.',
 	'no_action_items'   			=> 'There are no Liked or Disliked items.',
-	'last_num_likes_by'				=> 'Last %n Likes and/or Dislikes by %s', 
+	'last_num_likes_by'				=> 'Last %s Likes and/or Dislikes by %s', 
+	'msg_no_likes'					=> 'No likes or dislikes found by user.', 
+	'total_num_likes'				=> 'Total number of likes and dislikes:',	
 	'title_liked'					=> '%s Liked on ',
 	'title_disliked'				=> '%s Disliked on ',
 	// Likes Block Core Supported Plurals
