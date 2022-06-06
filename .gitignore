@@ -68,6 +68,8 @@ public_html/admin/plugins/menu
 data/menu_data
 plugins/nettools
 public_html/nettools
+plugins/searchrank
+public_html/admin/plugins/searchrank
 
 # test framework, if present
 public_html/tests
