@@ -396,7 +396,9 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
     }
 
     foreach ($sitemap->getFileNames() as $fileName) {
-        $sitemap->sendPing($pingTargets, $fileName);
+		if (!empty($fileName)) {
+			$sitemap->sendPing($pingTargets, $fileName);
+		}
     }
 
     return true;
