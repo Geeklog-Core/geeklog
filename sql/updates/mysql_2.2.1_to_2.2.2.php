@@ -244,6 +244,16 @@ SQL;
 
     // Insert dummy data for the guest user beforehand, to prevent column values becoming NULL
     DB_query($sql2);
+	
+	// Clean user tables that may have orphan records
+	$sql = "DELETE uc FROM {$_TABLES['usercomment']} uc WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE uc.uid = u.uid)";
+	DB_query($sql);
+	$sql = "DELETE uc FROM {$_TABLES['userindex']} uc WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE uc.uid = u.uid)";
+	DB_query($sql);
+	$sql = "DELETE uc FROM {$_TABLES['userinfo']} uc WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE uc.uid = u.uid)";
+	DB_query($sql);
+	$sql = "DELETE uc FROM {$_TABLES['userprefs']} uc WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE uc.uid = u.uid)";
+	DB_query($sql);		
 
     // Collect data from old tables
     $result = DB_query($sql3);
