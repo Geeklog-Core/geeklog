@@ -51,7 +51,7 @@ if (empty($_CONF['cookiedomain'])) {
         $_CONF['cookiedomain'] = substr($server[1], 3);
     } else {
 		// Issue #465 - Fix for cookie not getting set for Chrome browsers if domain is IP address
-		if (($_DEVICE->browser() == 'Chrome') && (filter_var($server[1], FILTER_VALIDATE_IP) || filter_var($server[1], FILTER_FLAG_IPV6))) {
+		if (($_DEVICE->browser() == 'Chrome') && (filter_var($server[1], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) || filter_var($server[1], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
 			// For Chrome browsers when IP detected instead of domain name
 			$_CONF['cookiedomain'] = '';
         } elseif (strpos($server[1], '.') === false) {
