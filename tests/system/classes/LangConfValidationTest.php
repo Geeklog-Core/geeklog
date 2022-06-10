@@ -23,7 +23,7 @@ class LangConfValidationTest extends TestCase
 
     protected function setUp(): void
     {
-        global $_CONF, $_CONF_VALIDATE, $_USER, $_DB_dbms;
+        global $_CONF, $_CONF_VALIDATE, $_TABLES, $_USER, $_DB_dbms;
 
         // set dummy values for the $_CONF options used in the language files
         $_CONF = array();
@@ -84,6 +84,18 @@ class LangConfValidationTest extends TestCase
             define('RECAPTCHA_SUPPORT_V3', 4);
         }
 
+        if (!defined('LIKES_BLOCK_DISPLAY_LIKE')) {
+            define('LIKES_BLOCK_DISPLAY_LIKE', 1);
+        }
+
+        if (!defined('LIKES_BLOCK_DISPLAY_DISLIKE')) {
+            define('LIKES_BLOCK_DISPLAY_DISLIKE', 2);
+        }
+
+        if (!defined('LIKES_BLOCK_DISPLAY_ALL')) {
+            define('LIKES_BLOCK_DISPLAY_ALL', 3);
+        }
+
         // there's a date() call somewhere - make PHP 5.2 shut up
         $system_timezone = @date_default_timezone_get();
         date_default_timezone_set($system_timezone);
@@ -92,6 +104,8 @@ class LangConfValidationTest extends TestCase
 
         include Tst::$root . 'language/english.php';
         include Tst::$public . 'admin/configuration_validation.php';
+        require_once Tst::$root . 'tests/files/dummy/system/lib-plugins.php';
+        $_TABLES['groups'] = 'gl_groups';
         require_once Tst::$public . 'admin/install/config-install.php';
 
         install_config($this->c);

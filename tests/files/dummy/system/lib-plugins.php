@@ -39,7 +39,9 @@
 *
 */
 
-require_once 'tst.class.php';
+require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/tst.class.php';
+Tst::init();
+
 require_once Tst::$tests . 'files/classes/xmldb.class.php';
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-plugins.php') !== false) {
@@ -2023,7 +2025,7 @@ function PLG_getWhatsNew()
  * @note   As for valid value for $commentType, see system/classes/Akismet.php
  * @link   http://wiki.geeklog.net/index.php/Filtering_Spam_with_Spam-X
 */
-function PLG_checkforSpam($comment, $action = -1, $permanentLink,
+function PLG_checkforSpam($comment, $action = -1, $permanentLink = null,
                           $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
                           $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
 {
