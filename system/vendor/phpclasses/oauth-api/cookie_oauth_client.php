@@ -2,7 +2,7 @@
 /*
  * cookie_oauth_client.php
  *
- * @(#) $Id: cookie_oauth_client.php,v 1.6 2017/02/26 07:29:23 mlemos Exp $
+ * @(#) $Id: cookie_oauth_client.php,v 1.7 2022/04/10 04:42:19 mlemos Exp $
  *
  */
 
@@ -12,58 +12,120 @@ class cookie_oauth_client_class extends oauth_client_class
 	var $key = '';
 	var $cookie_name = 'OAuth_session';
 	var $cookie_value;
+	var $cipher = '';
+	var $openssl_default_cipher = 'bf-ofb';
+	var $mcrypt_default_cipher = 'blowfish-compat-ofb';
 
-	Function Encrypt($text, &$encrypted)
+
+	Function EncodeText($text, $context, &$error)
 	{
-		if(strlen($this->key) === 0)
-		{
-			$this->error = 'the cookie encryption key is empty';
-			return false;
-		}
+		$error = '';
 		$encode_time = time();
-		$key = $encode_time.$this->key;
-		$key_size = mcrypt_get_key_size(MCRYPT_3DES, MCRYPT_MODE_CFB);
-		if(strlen($key) > $key_size)
-			$key=substr($key, 0, $key_size);
-		if(strlen($key)<$key_size)
-			$key=$key.str_repeat(chr(0),$key_size - strlen($key));
-		error_log(__LINE__.' '.strlen($key));
-		$iv_size = mcrypt_get_iv_size(MCRYPT_3DES, MCRYPT_MODE_CFB);
-		$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-		if(!($cipher = mcrypt_encrypt(MCRYPT_3DES, $key, $text, MCRYPT_MODE_CFB, $iv)))
+		$algorithm_mode = $this->cipher;
+		if(function_exists('openssl_encrypt'))
 		{
-			$this->error = 'could not encrypt data';
-			return false;
+			if($algorithm_mode === '')
+				$algorithm_mode = $this->openssl_default_cipher;
+			$options = true;
+			if(!($iv_size = openssl_cipher_iv_length($algorithm_mode)))
+			{
+				$ciphers = openssl_get_cipher_methods();
+				if(in_array($cipher, $ciphers))
+					$error = $this->GetError('it was not possible to get the length for an OpenSSL cipher '.$cipher.' for '.$context);
+				else
+				{
+					$error = $this->GetError('the cipher '.$algorithm_mode.' is not made available by the OpenSSL extension of the current PHP installation. Use the openssl_get_cipher_methods function to discover which ciphers are available and set the Cipher property of the input managed by the '.__CLASS__.' class');
+				}
+				return '';
+			}
+			$iv = openssl_random_pseudo_bytes($iv_size);
+			$key = $encode_time.$this->key;
+			if(!($cipher = openssl_encrypt($text, $algorithm_mode, $key, $options, $iv)))
+			{
+				$error = $this->GetError('it was not possible to encrypt using OpenSSL a value for '.$context);
+				return '';
+			}
 		}
-    $encrypted = base64_encode($iv.$cipher).':'.$encode_time;
-		return true;
+		elseif(function_exists('mcrypt_encrypt'))
+		{
+			if($algorithm_mode === '')
+				$algorithm_mode = $this->mcrypt_default_cipher;
+			$last_hiphen = strrpos($algorithm_mode, '-');
+			$algorithm = substr($algorithm_mode, 0, $last_hiphen);
+			$mode = substr($algorithm_mode, $last_hiphen + 1);
+			if(!($iv_size = @mcrypt_get_iv_size($algorithm, $mode)))
+			{
+				$algorithms = @mcrypt_list_algorithms();
+				if(!in_array($algorithm, $algorithms))
+				{
+					$error = $this->GetError('the cipher algorithm '.$algorithm.' is not made available by the mcrypt extension of the current PHP installation. Set the Cipher property of the input managed by the '.__CLASS__.' class to any of these algorithms: '.implode(', ',$algorithms));
+				}
+				else
+				{
+					$modes = mcrypt_list_modes();
+					if(!in_array($mode, $modes))
+					{
+						$error = $this->GetError('the cipher mode '.$mode.' for algorithm '.$algorithm.' is not made available by the mcrypt extension of the current PHP installation. Set the Cipher property of the input managed by the '.__CLASS__.' class to any of these modes for algorithm '.$algorithm.': '.implode(', ',$algorithms));
+					}
+					else
+					{
+						$error = 'the cipher '.$algorithm_mode.' is not made available by the mcrypt extension of the current PHP installation. Use the mcrypt_list_algorithms and mcrypt_list_modes functions to discover which algorithms and modes are available and set the Cipher property of the input managed by the '.__CLASS__.' class';
+					}
+				}
+				return '';
+			}
+			$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+			$key = $this->FixKey($encode_time.$this->key);
+			if(!($cipher = mcrypt_encrypt($algorithm, $key, $text, $mode, $iv)))
+			{
+				$error = $this->GetError('it was not possible to encrypt using mcrypt a value for '.$context);
+				return '';
+			}
+		}
+		else
+		{
+			$error = 'neither the mcrypt nor the OpenSSL extensions are available in this PHP installation'.$context;
+			return '';
+		}
+		$encoded = base64_encode($iv.$cipher);
+		$encoded = $encoded.':'.$encode_time;
+		return $encoded;
 	}
 
-	Function Decrypt($encoded, &$encode_time, &$decrypted)
+	Function DecodeText($encoded, &$encode_time, &$error)
 	{
-		if(strlen($this->key) === 0)
-		{
-			$this->error = 'the cookie encryption key is empty';
-			return false;
-		}
+		$error = '';
 		if(GetType($colon = strpos($encoded, ':')) != 'integer'
 		|| ($encode_time = intval(substr($encoded, $colon + 1))) == 0
 		|| $encode_time > time()
-		|| !($encrypted = base64_decode(substr($encoded, 0, $colon))))
+		|| !($encrypted = base64_decode($e = substr($encoded, 0, $colon))))
+			return '';
+		$algorithm_mode = $this->cipher;
+		if(function_exists('openssl_decrypt'))
 		{
-			$this->OutputDebug($this->error = 'invalid encrypted data to decode: '.$encoded);
-			return false;
+			if($algorithm_mode === '')
+				$algorithm_mode = $this->openssl_default_cipher;
+			$options = true;
+			$iv_size = openssl_cipher_iv_length($algorithm_mode);
+			$iv = substr($encrypted, 0, $iv_size);
+			$encrypted = substr($encrypted, $iv_size);
+			$key = $encode_time.$this->key;
+			$decrypted = openssl_decrypt($encrypted, $algorithm_mode, $key, $options, $iv);
+			return($decrypted);
 		}
-		$iv_size = mcrypt_get_iv_size(MCRYPT_3DES, MCRYPT_MODE_CFB);
-		$iv = substr($encrypted, 0, $iv_size);
-		$key = $encode_time.$this->key;
-		$key_size = mcrypt_get_key_size(MCRYPT_3DES, MCRYPT_MODE_CFB);
-		if(strlen($key) > $key_size)
-			$key = substr($key, 0, $key_size);
-		if(strlen($key)<$key_size)
-			$key=$key.str_repeat(chr(0),$key_size - strlen($key));
-		$decrypted = mcrypt_decrypt(MCRYPT_3DES, $key, substr($encrypted, $iv_size), MCRYPT_MODE_CFB, $iv);
-		return true;
+		elseif(function_exists('mcrypt_decrypt'))
+		{
+			if($algorithm_mode === '')
+				$algorithm_mode = $this->mcrypt_default_cipher;
+			$last_hiphen = strrpos($algorithm_mode, '-');
+			$algorithm = substr($algorithm_mode, 0, $last_hiphen);
+			$mode = substr($algorithm_mode, $last_hiphen + 1);
+			$iv_size = mcrypt_get_iv_size($algorithm, $mode);
+			$iv = substr($encrypted, 0, $iv_size);
+			$key = $this->FixKey($encode_time.$this->key);
+			return mcrypt_decrypt($algorithm, $key, substr($encrypted, $iv_size), $mode, $iv);
+		}
+		return '';
 	}
 
 	Function Unserialize()
@@ -72,7 +134,7 @@ class cookie_oauth_client_class extends oauth_client_class
 			return $this->cookie_value;
 		if(!IsSet($_COOKIE[$this->cookie_name]))
 			return null;
-		if(!$this->Decrypt($_COOKIE[$this->cookie_name], $encode_time, $serialized))
+		if(($serialized = $this->DecodeText($_COOKIE[$this->cookie_name], $encode_time, $this->error)) === '')
 			return null;
 		$value = unserialize($serialized);
 		if(GetType($value) != 'array')
@@ -82,7 +144,7 @@ class cookie_oauth_client_class extends oauth_client_class
 
 	Function Serialize($s)
 	{
-		if(!$this->Encrypt(serialize($this->cookie_value = $s), $encrypted))
+		if(($encrypted = $this->EncodeText(serialize($this->cookie_value = $s), 'Serialize', $this->error)) === '')
 			return false;
 		SetCookie($this->cookie_name, $encrypted);
 		return true;

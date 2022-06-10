@@ -965,8 +965,8 @@
         },
         {
             "name": "phpclasses/oauth-api",
-            "version": "1.0.119",
-            "version_normalized": "1.0.119.0",
+            "version": "1.0.120",
+            "version_normalized": "1.0.120.0",
             "dist": {
                 "type": "zip",
                 "url": "https://www.phpclasses.org/install/package/oauth-api.zip"

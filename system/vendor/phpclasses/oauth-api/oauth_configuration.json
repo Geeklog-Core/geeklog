@@ -1,5 +1,5 @@
 {
-	"version": "$Id: oauth_configuration.json,v 1.47 2021/09/22 08:48:40 mlemos Exp $",
+	"version": "$Id: oauth_configuration.json,v 1.49 2022/05/10 01:34:05 mlemos Exp $",
 	"comments": [
 		"The servers entry should be an object with a list of object",
 		"entries, one for each server type. The server object entry name is",
@@ -361,6 +361,16 @@
 			"access_token_url": "https://api.pinterest.com/v1/oauth/token"
 		},
 
+		"Pipedrive":
+		{
+			"oauth_version": "2.0",
+			"dialog_url": "https://oauth.pipedrive.com/oauth/authorize?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope={SCOPE}&state={STATE}",
+			"access_token_url": "https://oauth.pipedrive.com/oauth/token",
+			"access_token_authentication": "basic",
+			"access_token_accept_content_type": "application/json",
+			"oauth_user_agent": "Pipedrive-SDK-PHP-4.0.0"
+		},
+
 		"Polar":
 		{
 			"oauth_version": "2.0",
@@ -368,6 +378,13 @@
 			"access_token_url": "https://polarremote.com/v2/oauth2/token",
 			"access_token_authentication": "basic",
 			"store_access_token_response": true
+		},
+
+		"Quire":
+		{
+			"oauth_version": "2.0",
+			"dialog_url": "https://quire.io/oauth?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&state={STATE}",
+			"access_token_url": "https://quire.io/oauth/token"
 		},
 
 		"Rdio":

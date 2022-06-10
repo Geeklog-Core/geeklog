@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '6b7927c98e39d4bc39354d340cb52584e24fbb18',
+        'reference' => '7bf552c7f6477c559da119ed1a02ecb568d2974e',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '6b7927c98e39d4bc39354d340cb52584e24fbb18',
+            'reference' => '7bf552c7f6477c559da119ed1a02ecb568d2974e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -173,8 +173,8 @@
             'dev_requirement' => false,
         ),
         'phpclasses/oauth-api' => array(
-            'pretty_version' => '1.0.119',
-            'version' => '1.0.119.0',
+            'pretty_version' => '1.0.120',
+            'version' => '1.0.120.0',
             'reference' => NULL,
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpclasses/oauth-api',

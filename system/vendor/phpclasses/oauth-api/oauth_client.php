@@ -2,7 +2,7 @@
 /*
  * oauth_client.php
  *
- * @(#) $Id: oauth_client.php,v 1.173 2021/09/15 15:54:27 mlemos Exp $
+ * @(#) $Id: oauth_client.php,v 1.182 2022/05/10 01:51:03 mlemos Exp $
  *
  */
 
@@ -28,7 +28,7 @@ class oauth_session_value_class
 
 	<package>net.manuellemos.oauth</package>
 
-	<version>@(#) $Id: oauth_client.php,v 1.173 2021/09/15 15:54:27 mlemos Exp $</version>
+	<version>@(#) $Id: oauth_client.php,v 1.182 2022/05/10 01:51:03 mlemos Exp $</version>
 	<copyright>Copyright © (C) Manuel Lemos 2012</copyright>
 	<title>OAuth client</title>
 	<author>Manuel Lemos</author>
@@ -268,6 +268,8 @@ class oauth_client_class
 				<stringvalue>Bitly</stringvalue>,
 				<stringvalue>Box</stringvalue>,
 				<stringvalue>Buffer</stringvalue>,
+				<stringvalue>CharterSpectrum</stringvalue>,
+				<stringvalue>CharterSpectrumQA</stringvalue> (CharterSpectrum Quality Assurance),
 				<stringvalue>Copy</stringvalue>,
 				<stringvalue>Dailymotion</stringvalue>,
 				<stringvalue>Discogs</stringvalue>,
@@ -280,6 +282,7 @@ class oauth_client_class
 				<stringvalue>Fitbit</stringvalue>,
 				<stringvalue>Flickr</stringvalue>,
 				<stringvalue>Foursquare</stringvalue>,
+				<stringvalue>Garmin</stringvalue>,
 				<stringvalue>github</stringvalue>,
 				<stringvalue>Google</stringvalue>,
 				<stringvalue>Google1</stringvalue> (Google with OAuth 1.0),
@@ -302,8 +305,10 @@ class oauth_client_class
 				<stringvalue>Odnoklassniki</stringvalue>,
 				<stringvalue>Paypal</stringvalue>,
 				<stringvalue>PaypalApplication</stringvalue>,
-				<stringvalue>Polar</stringvalue>,
 				<stringvalue>Pinterest</stringvalue>,
+				<stringvalue>Pipedrive</stringvalue>,
+				<stringvalue>Polar</stringvalue>,
+				<stringvalue>Quire</stringvalue>,
 				<stringvalue>Rdio</stringvalue>,
 				<stringvalue>Reddit</stringvalue>,
 				<stringvalue>RunKeeper</stringvalue>,
@@ -645,7 +650,7 @@ class oauth_client_class
 			<purpose>URL of the current script page that is calling this
 				class</purpose>
 			<usage>Set this variable to the current script page URL before
-				proceeding the the OAuth authorization process.<paragraphbreak />
+				proceeding the OAuth authorization process.<paragraphbreak />
 				For pin based authorization, set this variable to
 				<stringvalue>oob</stringvalue>.</usage>
 		</documentation>
@@ -963,7 +968,7 @@ class oauth_client_class
 				token should use authentication to pass the application client ID
 				and secret.</purpose>
 			<usage>Set this variable to <stringvalue>basic</stringvalue> if the
-				OAuth server requires that the the client ID and secret be passed
+				OAuth server requires that the client ID and secret be passed
 				using HTTP basic authentication headers when retrieving a new
 				token. Set this variable to <stringvalue>none</stringvalue> to
 				avoid that the Authorization header be set in the request to get
@@ -973,6 +978,26 @@ class oauth_client_class
 {/metadocument}
 */
 	var $access_token_authentication = '';
+
+/*
+{metadocument}
+	<variable>
+		<name>access_token_accept_content_type</name>
+		<type>STRING</type>
+		<value></value>
+		<documentation>
+			<purpose>Option to determine if the content type value that
+				should be sent to the OAuth server when it requests the
+				access token.</purpose>
+			<usage>Set this variable to a specific content type if the
+				OAuth server requires that the
+				<stringvalue>Accept</stringvalue> header has a specific
+				value.</usage>
+		</documentation>
+	</variable>
+{/metadocument}
+*/
+	var $access_token_accept_content_type = '';
 
 /*
 {metadocument}
@@ -1184,10 +1209,29 @@ class oauth_client_class
 {/metadocument}
 */
 	var $http_arguments = array();
-	var $oauth_user_agent = 'PHP-OAuth-API (http://www.phpclasses.org/oauth-api $Revision: 1.173 $)';
+	var $oauth_user_agent = 'PHP-OAuth-API (http://www.phpclasses.org/oauth-api $Revision: 1.182 $)';
 
 	var $response_time = 0;
 	var $session = '';
+
+
+	Function ISOTime($timestamp = null)
+	{
+		if(extension_loaded('Intl'))
+		{
+			$date = new DateTime();
+			if(IsSet($timestamp))
+				$date->setTimestamp($timestamp);
+			$time = $date->format('Y-m-d H:i:s');
+		}
+		else
+		{
+			if(!IsSet($timestamp))
+				$timestamp = time();
+			$time = gmstrftime('%Y-%m-%d %H:%M:%S', $timestamp);
+		}
+		return $time;
+	}
 
 	Function SetError($error)
 	{
@@ -1258,7 +1302,7 @@ class oauth_client_class
 		$session->expiry = null;
 		$session->type = '';
 		$session->server = $this->server;
-		$session->creation = gmstrftime("%Y-%m-%d %H:%M:%S");
+		$session->creation = $this->ISOTime();
 		$session->refresh_token = '';
 		$session->access_token_response = null;
 	}
@@ -1758,6 +1802,14 @@ class oauth_client_class
 		}
 		else
 		{
+			if(GetType($parameters) !== 'array')
+			{
+				if(GetType($parameters) !== 'object')
+					return $this->SetError('the parameters value for the '.$options['Resource'].' to '.$url.' is not an array');
+				if($this->debug)
+					$this->OutputDebug('the parameters value for the '.$options['Resource'].' to '.$url.' is not an array');
+				$parameters = (array)$parameters;
+			}
 			$post_values = $parameters;
 			if(count($parameters))
 			{
@@ -1999,7 +2051,7 @@ class oauth_client_class
 			if(strval($expires) !== strval(intval($expires))
 			|| $expires <= 0)
 				return($this->SetError('OAuth server did not return a supported type of access token expiry time'));
-			$this->access_token_expiry = gmstrftime('%Y-%m-%d %H:%M:%S', $this->response_time + $expires);
+			$this->access_token_expiry = $this->ISOTime($this->response_time + $expires);
 			if($this->debug)
 				$this->OutputDebug('Access token expiry: '.$this->access_token_expiry.' UTC');
 			$access_token['expiry'] = $this->access_token_expiry;
@@ -2095,6 +2147,8 @@ class oauth_client_class
 			return false;
 		if(strlen($this->access_token_content_type))
 			$options['ResponseContentType'] = $this->access_token_content_type;
+		if(strlen($this->access_token_accept_content_type))
+			$options['Accept'] = $this->access_token_accept_content_type;
 		if(!$this->SendAPIRequest($access_token_url, 'POST', $values, null, $options, $response))
 			return false;
 		if(strlen($this->access_token_error))
@@ -2165,7 +2219,7 @@ class oauth_client_class
 			if(strval($expires) !== strval(intval($expires))
 			|| $expires <= 0)
 				return($this->SetError('OAuth server did not return a supported type of access token expiry time'));
-			$this->access_token_expiry = gmstrftime('%Y-%m-%d %H:%M:%S', $this->response_time + $expires);
+			$this->access_token_expiry = $this->ISOTime($this->response_time + $expires);
 			if($this->debug)
 				$this->OutputDebug('Access token expiry: '.$this->access_token_expiry.' UTC');
 			$access_token['expiry'] = $this->access_token_expiry;
@@ -2213,7 +2267,7 @@ class oauth_client_class
 		{
 			$this->access_token = $access_token['value'];
 			$this->access_token_expiry = '';
-			$expired = (IsSet($access_token['expiry']) && strcmp($this->access_token_expiry = $access_token['expiry'], gmstrftime('%Y-%m-%d %H:%M:%S')) < 0);
+			$expired = (IsSet($access_token['expiry']) && strcmp($this->access_token_expiry = $access_token['expiry'], $this->ISOTime()) < 0);
 			if($this->debug)
 			{
 				if($expired)
@@ -2438,14 +2492,14 @@ class oauth_client_class
 			if(!$this->RetrieveToken($valid))
 				return false;
 			if(!$valid)
-				return $this->SetError('the access token is not set to a valid value');
+				return $this->SetError('the access token for server '.$this->server.' is not set to a valid value');
 		}
 		switch($version)
 		{
 			case 1:
 				if(!$two_legged
 				&& strlen($this->access_token_expiry)
-				&& strcmp($this->access_token_expiry, gmstrftime('%Y-%m-%d %H:%M:%S')) <= 0)
+				&& strcmp($this->access_token_expiry, $this->ISOTime()) <= 0)
 				{
 					if(strlen($this->refresh_token) === 0)
 						return($this->SetError('the access token expired and no refresh token is available'));
@@ -2479,7 +2533,7 @@ class oauth_client_class
 
 			case 2:
 				if(strlen($this->access_token_expiry)
-				&& strcmp($this->access_token_expiry, gmstrftime('%Y-%m-%d %H:%M:%S')) <= 0)
+				&& strcmp($this->access_token_expiry, $this->ISOTime()) <= 0)
 				{
 					if(strlen($this->refresh_token) === 0)
 						return($this->SetError('the access token expired and no refresh token is available'));
@@ -2549,6 +2603,7 @@ class oauth_client_class
 		$this->token_request_method = 'GET';
 		$this->signature_method = 'HMAC-SHA1';
 		$this->access_token_authentication = '';
+		$this->access_token_accept_content_type = '';
 		$this->access_token_parameter = '';
 		$this->default_access_token_type = '';
 		$this->store_access_token_response = false;
@@ -2642,13 +2697,15 @@ class oauth_client_class
 					'token_request_method'=>'string',
 					'signature_method'=>'string',
 					'access_token_authentication'=>'string',
+					'access_token_accept_content_type'=>'string',
 					'access_token_parameter'=>'string',
 					'default_access_token_type'=>'string',
 					'store_access_token_response'=>'boolean',
 					'refresh_token_authentication'=>'string',
 					'grant_type'=>'string',
 					'access_token_content_type'=>'string',
-					'revoke_token_url'=>'string'
+					'revoke_token_url'=>'string',
+					'oauth_user_agent'=>'string',
 				);
 				$required = array(
 					'oauth_version'=>array(),
@@ -2736,7 +2793,7 @@ class oauth_client_class
 				if(IsSet($access_token['authorized'])
 				&& IsSet($access_token['value']))
 				{
-					$expired = (IsSet($access_token['expiry']) && strcmp($access_token['expiry'], gmstrftime('%Y-%m-%d %H:%M:%S')) <= 0);
+					$expired = (IsSet($access_token['expiry']) && strcmp($access_token['expiry'], $this->ISOTime()) <= 0);
 					if(!$access_token['authorized']
 					|| $expired)
 					{
@@ -2926,7 +2983,7 @@ class oauth_client_class
 				}
 				if(!$this->RetrieveToken($valid))
 					return false;
-				$expired = (strlen($this->access_token_expiry) && strcmp($this->access_token_expiry, gmstrftime('%Y-%m-%d %H:%M:%S')) <= 0 && strlen($this->refresh_token) === 0);
+				$expired = (strlen($this->access_token_expiry) && strcmp($this->access_token_expiry, $this->ISOTime()) <= 0 && strlen($this->refresh_token) === 0);
 				if($valid
 				&& !$expired)
 					return true;

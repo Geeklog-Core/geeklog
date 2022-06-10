@@ -2,7 +2,7 @@
 /*
  * database_oauth_client.php
  *
- * @(#) $Id: database_oauth_client.php,v 1.10 2021/03/22 23:55:47 mlemos Exp $
+ * @(#) $Id: database_oauth_client.php,v 1.11 2022/05/28 09:18:30 mlemos Exp $
  *
  */
 
@@ -14,6 +14,19 @@ class database_oauth_client_class extends oauth_client_class
 	var $session_cookie = 'oauth_session';
 	var $session_path = '/';
 	var $sessions = array();
+	var $oauth_session_table = 'oauth_session';
+	var $oauth_state_field = 'state';
+	var $oauth_access_token_field = 'access_token';
+	var $oauth_access_token_secret_field = 'access_token_secret';
+	var $oauth_expiry_field = 'expiry';
+	var $oauth_authorized_field = 'authorized';
+	var $oauth_type_field = 'type';
+	var $oauth_server_field = 'server';
+	var $oauth_creation_field = 'creation';
+	var $oauth_refresh_token_field = 'refresh_token';
+	var $oauth_access_token_response_field = 'access_token_response';
+	var $oauth_id_field = 'id';
+	var $oauth_user_field = 'user';
 
 	Function Query($sql, $parameters, &$results, $result_types = null)
 	{
@@ -44,7 +57,7 @@ class database_oauth_client_class extends oauth_client_class
 			's', $session->refresh_token,
 			's', $session->access_token_response
 		);
-		if(!$this->Query('INSERT INTO oauth_session (session, state, access_token, access_token_secret, expiry, authorized, type, server, creation, refresh_token, access_token_response) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', $parameters, $results))
+		if(!$this->Query('INSERT INTO '.$this->oauth_session_table.' (session, '.$this->oauth_state_field.', '.$this->oauth_access_token_field.', '.$this->oauth_access_token_secret_field.', '.$this->oauth_expiry_field.', '.$this->oauth_authorized_field.', '.$this->oauth_type_field.', '.$this->oauth_server_field.', '.$this->oauth_creation_field.', '.$this->oauth_refresh_token_field.', '.$this->oauth_access_token_response_field.') VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', $parameters, $results))
 			return false;
 		$session->id = $results['insert_id'];
 		return true;
@@ -76,7 +89,7 @@ class database_oauth_client_class extends oauth_client_class
 			's', $this->server
 		);
 		$result_types = array(   'i','s',     's',   's',          's',                 'ts',   'b',        's',  's',    'ts',     's',           's');
-		if(!$this->Query('SELECT id, session, state, access_token, access_token_secret, expiry, authorized, type, server, creation, refresh_token, access_token_response FROM oauth_session WHERE user=? AND server=?', $parameters, $results, $result_types))
+		if(!$this->Query('SELECT '.$this->oauth_id_field.', session, '.$this->oauth_state_field.', '.$this->oauth_access_token_field.', '.$this->oauth_access_token_secret_field.', '.$this->oauth_expiry_field.', '.$this->oauth_authorized_field.', '.$this->oauth_type_field.', '.$this->oauth_server_field.', '.$this->oauth_creation_field.', '.$this->oauth_refresh_token_field.', '.$this->oauth_access_token_response_field.' FROM '.$this->oauth_session_table.' WHERE '.$this->oauth_user_field.'=? AND '.$this->oauth_server_field.'=?', $parameters, $results, $result_types))
 			return false;
 		if(count($results['rows']) === 0)
 		{
@@ -101,7 +114,7 @@ class database_oauth_client_class extends oauth_client_class
 			's', $server
 		);
 		$result_types = array(   'i','s',     's',   's',          's',                 'ts',   'b',        's',  's',    'ts',     's',           's');
-		if(!$this->Query('SELECT id, session, state, access_token, access_token_secret, expiry, authorized, type, server, creation, refresh_token, access_token_response FROM oauth_session WHERE session=? AND server=?', $parameters, $results, $result_types))
+		if(!$this->Query('SELECT '.$this->oauth_id_field.', session, '.$this->oauth_state_field.', '.$this->oauth_access_token_field.', '.$this->oauth_access_token_secret_field.', '.$this->oauth_expiry_field.', '.$this->oauth_authorized_field.', '.$this->oauth_type_field.', '.$this->oauth_server_field.', '.$this->oauth_creation_field.', '.$this->oauth_refresh_token_field.', '.$this->oauth_access_token_response_field.' FROM '.$this->oauth_session_table.' WHERE session=? AND '.$this->oauth_server_field.'=?', $parameters, $results, $result_types))
 			return false;
 		if(count($results['rows']) === 0)
 		{
@@ -154,7 +167,7 @@ class database_oauth_client_class extends oauth_client_class
 			'i', $this->user,
 			'i', $oauth_session->id
 		);
-		return $this->Query('UPDATE oauth_session SET session=?, state=?, access_token=?, access_token_secret=?, expiry=?, authorized=?, type=?, server=?, creation=?, refresh_token=?, access_token_response=?, user=? WHERE id=?', $parameters, $results);
+		return $this->Query('UPDATE '.$this->oauth_session_table.' SET session=?, '.$this->oauth_state_field.'=?, '.$this->oauth_access_token_field.'=?, '.$this->oauth_access_token_secret_field.'=?, '.$this->oauth_expiry_field.'=?, '.$this->oauth_authorized_field.'=?, '.$this->oauth_type_field.'=?, '.$this->oauth_server_field.'=?, '.$this->oauth_creation_field.'=?, '.$this->oauth_refresh_token_field.'=?, '.$this->oauth_access_token_response_field.'=?, '.$this->oauth_user_field.'=? WHERE '.$this->oauth_id_field.'=?', $parameters, $results);
 	}
 
 	Function GetAccessToken(&$access_token)
@@ -210,7 +223,7 @@ class database_oauth_client_class extends oauth_client_class
 			's', $this->session,
 			's', $this->server,
 		);
-		if(!$this->Query('UPDATE oauth_session SET user=? WHERE session=? AND server=?', $parameters, $results))
+		if(!$this->Query('UPDATE '.$this->oauth_session_table.' SET '.$this->oauth_user_field.'=? WHERE session=? AND '.$this->oauth_server_field.'=?', $parameters, $results))
 			return false;
 		$this->user = $user;
 		return true;
