@@ -236,6 +236,16 @@ SELECT c.*, x.*, f.*, p.*
     LEFT JOIN {$_TABLES['userinfo']} AS f ON c.uid = f.uid
     LEFT JOIN {$_TABLES['userprefs']} AS p ON c.uid = p.uid
 SQL;
+	
+	// Clean user tables that may have orphan records
+	$sql = "DELETE uc FROM {$_TABLES['usercomment']} uc WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE uc.uid = u.uid)";
+	DB_query($sql);
+	$sql = "DELETE uc FROM {$_TABLES['userindex']} uc WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE uc.uid = u.uid)";
+	DB_query($sql);
+	$sql = "DELETE uc FROM {$_TABLES['userinfo']} uc WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE uc.uid = u.uid)";
+	DB_query($sql);
+	$sql = "DELETE uc FROM {$_TABLES['userprefs']} uc WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE uc.uid = u.uid)";
+	DB_query($sql);	
 
     // With PostgreSQL, we can use transaction
     if (DB_beginTransaction()) {
