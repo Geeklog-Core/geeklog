@@ -34,7 +34,7 @@
         <li>ディレクトリ: フォルダーと同じです。</li>
         <li>パス: Webサーバー上で、ファイルやディレクトリが実際にある場所です。Windows上でパスはドライブ文字(<code>c:/inetpub/wwwroot/</code>)で始まり、*nix系OS上でパスは <code>/var/www/</code> のようにルート(<code>/</code>)から始まります。</li>
         <li><a name="public_html">public_html</a>: URLでアクセスされる、公開領域の一般的なディレクトリ名(その他: htdocs, www)です。</li>
-        <li><acronym title="Uniform Resource Locator">URL</acronym>: Uniform Resource LocatorはWeb上の情報の特定の部分を表すアドレス(<code>http://www.foo.com/</code>)です。</li>
+        <li><acronym title="Uniform Resource Locator">URL</acronym>: Uniform Resource LocatorはWeb上の情報の特定の部分を表すアドレス(<code>https://www.example.com/</code>)です。</li>
     </ul>
 
 
@@ -54,7 +54,7 @@
             <li>fileinfo (記事で画像のサムネールをサポートするため)</li>
         </ul>
 
-        <p>また、データベースとして、<a href="http://dev.mysql.com/downloads/">MySQL</a> 4.1.3以降か、(<a href="http://mariadb.org/">MariaDB</a> 5.1以降も可), <a href="http://www.postgresql.org/download/">PostgreSQL</a> 9.1.7以降が必要です。</p>
+        <p>また、データベースとして、<a href="https://dev.mysql.com/downloads/">MySQL</a> 4.1.3以降か、(<a href="https://mariadb.org/">MariaDB</a> 5.1以降も可), <a href="https://www.postgresql.org/download/">PostgreSQL</a> 9.1.7以降が必要です。</p>
 
         <p>データベースを作成するときに、どの照合順序を使用するかを理解してください。以下に示すのは、Geeklogがインストールでサポーストする言語の文字セットと対応するデータベース文字セット及び推奨する照合順序です:</p>
 
@@ -81,9 +81,6 @@
                 <td>ヘブライ語</td><td>utf-8</td><td>utf8/utf8mb4</td><td>utf8_general_ci/utf8mb4_general_ci</td><td>UTF8</td><td>he_IL.UTF-8</td>
             </tr>
             <tr>
-                <td>ポーランド語</td><td>iso-8859-2</td><td>latin2</td><td>latin2_general_ci</td><td>LATIN2</td><td>?</td>
-            </tr>
-            <tr>
                 <td>中国語(簡体字)</td><td>utf-8</td><td>utf8/utf8mb4</td><td>utf8_general_ci/utf8mb4_general_ci</td><td>UTF8</td><td>zh_CN.UTF-8</td>
             </tr>
             <tr>
@@ -92,9 +89,9 @@
             </tbody>
         </table>
 
-        <p>多言語サイトを構築するには、データベースの文字セット/照合順序として MySQL の場合は utf8mb4_general_ci/utf8_general_ci、PostgreSQL の場合は ja_JP.UTF-8 を使用する必要があります。これらの文字セット/照合順序は複数の言語を扱うことができます。データベースの文字セット/照合順序をこれらの値に設定すると、インストール中に文字セットが自動で更新されます。</p>
+        <p>Geeklog 2.2.2以降、新規インストールの際には、お使いの言語とは無関係に、サイトの既定言語及びデータベースの文字セットでUTF-8が必須になります。データベースの文字セット/照合順序がUTF-8をサポートしていることを確認してください(MySQLの場合は utf8mb4_general_ci/utf8_general_ci、PostgreSQL の場合は ja_JP.UTF-8)。</p>
 
-        <p>インストールの過程で、自分が今使用している言語とは無関係に、サイトの言語の文字セットとして UTF-8 を使用するかどうかを指定することができます。使用するように指定すると、データベースの文字セットを UTF-8 に設定します。この設定に<strong>チェックを入れている</strong>場合は、データベースの文字セット/照合順序が UTF-8 と互換性が保たれていることを確認してください(MySQLの場合、普通は <strong>utf8_general_ci</strong> か、絵文字をサポートしたい場合は <strong>utf8mb4_general_ci</strong> です)。<em>この設定にチェックを入れても(既存の)データベースの文字セット/照合順序が変わるわけではありません。インストールを進める前に、手動で変更する必要があります。</em>「UTF-8を使用する」のチェックを外すと、選択した言語の既定値の文字セットを使用します(訳注: 日本語・中国語・ヘブライ語の場合は UTF-8、英語は ISO-8859-1、ドイツ語は ISO-8859-15、ポーランド語は ISO-8859-2 です)。</p>
+        <p>アップグレードの際には、データベースの文字セットは変更されません。アップグレード後に、 <a href="https://www.phpmyadmin.net/">phpMyAdmin</a>や<a href="https://www.adminer.org/">Adminer</a>などのツールを使用してデータベースの文字セットをUTF-8変更する場合は、手動で "db-config.php"の $_DB_charset の値を 'utf8' か 'utf8mb4' に、"siteconfig.php"の $_CONF['default_charset'] の値を 'utf-8' に変える必要があります。</p>
 
         <p>Geeklogはインストール時に使用できない言語でも運用時にはサポートしています。これらの言語をサポートする最も簡単な方法は、データベースの文字セット/照合順序で UTF-8 を使用することです。いったんインストールが終了すれば、コンフィギュレーションで自分が使用したい言語を選択すれば良いのです。自分が使用している言語に特有の文字セット/照合順序をデータベースで使用するなら、同じ文字セットを使用している言語をインストール時に選ぶか、インストール後に手動で siteconfig.php と dbconfig.php の設定を正しいものに変更する必要があります。その場合には、データベース、テーブル、列の文字セット/照合順序を更新する必要があります。他の言語がどんな文字セットを使用しているか知るには、Geeklogの language ディレクトリ内にある言語ファイルを確認する必要があります。</p>
 
@@ -122,17 +119,17 @@
         </li>
         <li>
             <p>次のコマンドを実行して、ダウンロードしたターボールを展開(解凍)します。</p>
-            <p><code>tar -zxvf geeklog-2.2.1sr1.tar.gz</code> </p>
+            <p><code>tar -zxvf geeklog-2.2.2.tar.gz</code> </p>
 
-            <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザーがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。(訳註: ExpLZH)</p>
+            <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザーがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="https://www.7-zip.org/">7-Zip</a>や<a href="https://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。(訳註: ExpLZH)</p>
         </li>
         <li>
             <p>MySQLや、PostgreSQLを使用し、空のデータベースと変更権限のあるユーザーを作成します。ホスティング会社がデータベースを作成してアカウントを作成している場合もあるので、必要ならホスティング会社に尋ねてみてください。</p>
         </li>
         <li>
-            <p><code>geeklog-2.2.1sr1/public_html/</code> ディレクトリの中身をWebサーバーのドキュメントルートに転送します。ドキュメントルートには、"public_html"や"htdocs"、"www"などの名前がつけられていることが多いです。</p>
+            <p><code>geeklog-2.2.2/public_html/</code> ディレクトリの中身をWebサーバーのドキュメントルートに転送します。ドキュメントルートには、"public_html"や"htdocs"、"www"などの名前がつけられていることが多いです。</p>
 
-            <p>次に、<code>geeklog-2.2.1sr1/</code> ディレクトリの中身の残りをドキュメントルートの親ディレクトリ(お勧め!)かWebからアクセスできないディレクトリに転送します。インストールウィザードはこれらの場所を自動的に検出しようとします。検出できない場合は、インストールの過程でパスを入力するよう要求されます。インターネットからのアクセスを防ぐセキュリティ対策としてこのような仕様になっています。</p>
+            <p>次に、<code>geeklog-2.2.2/</code> ディレクトリの中身の残りをドキュメントルートの親ディレクトリ(お勧め!)かWebからアクセスできないディレクトリに転送します。インストールウィザードはこれらの場所を自動的に検出しようとします。検出できない場合は、インストールの過程でパスを入力するよう要求されます。インターネットからのアクセスを防ぐセキュリティ対策としてこのような仕様になっています。</p>
 
             <p><strong>注意:</strong> ホスティング会社がドキュメントツリーの外にファイルを置くことを許可していない場合は、</p>
             <ul>
@@ -142,7 +139,7 @@
             </ul>
         </li>
         <li>
-            <p>Webブラウザーを起動し、Geeklogのインストールウィザードを実行します(<code>http://サイトのURL/admin/install/index.php</code> をアドレス欄に入力します)。Geeklogのファイルをサブドメインに置いた場合は、<code>http://サイトのURL/サブドメイン名/admin/install/index.php</code> などとなります。</p>
+            <p>Webブラウザーを起動し、Geeklogのインストールウィザードを実行します(<code>https://サイトのURL/admin/install/index.php</code> をアドレス欄に入力します)。Geeklogのファイルをサブドメインに置いた場合は、<code>https://サイトのURL/サブドメイン名/admin/install/index.php</code> などとなります。</p>
 
             <p>Geeklogのインストールウィザードは自動的にインストールを行うので、表示される手順に従ってください。</p>
         </li>
@@ -168,12 +165,12 @@
         </li>
         <li>
             <p>次のコマンドを実行して、ダウンロードしたターボールを展開(解凍)します。</p>
-            <p><code>tar -zxvf geeklog-2.2.1sr1.tar.gz</code> </p>
+            <p><code>tar -zxvf geeklog-2.2.2.tar.gz</code> </p>
 
-            <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザーがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。</p>
+            <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザーがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="https://www.7-zip.org/">7-Zip</a>や<a href="https://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。</p>
         </li>
         <li>
-            <p><code>geeklog-2.2.1sr1/</code> ディレクトリの中身を、現在インストールしているバージョンの同じディレクトリに転送します。たとえば、現在のバージョンを <code>/usr/home/www/geeklog/</code> にインストールしているなら、新しいバージョンも <code>/usr/home/www/geeklog/</code> に転送します。</p>
+            <p><code>geeklog-2.2.2/</code> ディレクトリの中身を、現在インストールしているバージョンの同じディレクトリに転送します。たとえば、現在のバージョンを <code>/usr/home/www/geeklog/</code> にインストールしているなら、新しいバージョンも <code>/usr/home/www/geeklog/</code> に転送します。</p>
         </li>
         <li>旧バージョンからのアップグレード：
             <ul>
@@ -182,7 +179,7 @@
             </ul>
         </li>
         <li>
-            <p>Webブラウザーを起動し、Geeklogのインストールウィザードを実行します(<code>http://サイトのURL/admin/install/index.php</code> をアドレス欄に入力します)。Geeklogのファイルをサブドメインに置いた場合は、<code>http://サイトのURL/サブドメイン名/admin/install/index.php</code> などとなります。</p>
+            <p>Webブラウザーを起動し、Geeklogのインストールウィザードを実行します(<code>https://サイトのURL/admin/install/index.php</code> をアドレス欄に入力します)。Geeklogのファイルをサブドメインに置いた場合は、<code>https://サイトのURL/サブドメイン名/admin/install/index.php</code> などとなります。</p>
 
             <p>Geeklogのインストールウィザードは自動的にインストールを行うので、表示される手順に従ってください。</p>
         </li>
@@ -247,7 +244,7 @@
                 <p><strong>答え:</strong> 上記の例はすべて(また、 <code>lib-common.php</code> で発生する "parse error" で、エラーが発生した行番号が特に3000から4000台の場合)、 <code>lib-common.php</code> が破損していることを示しています。</p>
                 <p>このドキュメントの冒頭に示したとおり、このエラーの原因は普通、次のうちの1つです:</p>
                 <ul>
-                    <li>あるバージョンのWinZipを用いてターボールを展開した場合(WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を試してみてください)</li>
+                    <li>あるバージョンのWinZipを用いてターボールを展開した場合(WinZipの代わりに<a href="https://www.7-zip.org/">7-Zip</a>や<a href="https://www.rarlab.com/">WinRAR</a>を試してみてください)</li>
                     <li><code>lib-common.php</code> をDreamweaverなどのいわゆる<acronym title="What You See Is What You Get: 編集画面で表示されているとおりに実際に表示されること">WYSIWYG</acronym> HTMLエディターで編集した(代わりに、シンプルなテキストエディターを使用してください)</li>
                     <li><code>lib-common.php</code> をCpanelなどの管理ツールに組み込まれているオンラインのエディターで編集した(代わりに、シンプルなテキストエディターを使用してください)</li>
                 </ul>
@@ -300,7 +297,7 @@ Cannnot connect to DB server</code></p>
         </ol>
 
 <div class="footer">
-    <a href="https://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="https://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a><br />
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 
