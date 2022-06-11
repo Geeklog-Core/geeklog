@@ -111,9 +111,11 @@ $languagePath = __DIR__ . '/language/' . $language . '.php';
 if (is_readable($languagePath)) {
     require_once __DIR__ . '/language/' . $language . '.php';
 
-    // Update $_CONF['language'] (issue #991)
-    $config = config::get_instance();
-    $config->set('language', $language, 'Core');
+    // Update $_CONF['language'] (issue #991, #1129)
+    if ($type === 'install') {
+        $config = config::get_instance();
+        $config->set('language', $language, 'Core');
+    }
 } else {
     require_once __DIR__ . '/language/english.php';
 }

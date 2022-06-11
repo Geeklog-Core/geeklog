@@ -952,7 +952,7 @@ class Installer extends Common
                         . $this->showReturnFormData($_POST) . PHP_EOL;
                 } else {
                     // Write the database info to db-config.php
-                    if (!$this->writeDbConfig(Common::$env['dbconfig_path'], $DB)) {
+                    if (($installType === 'install') && !$this->writeDbConfig(Common::$env['dbconfig_path'], $DB)) {
                         exit(Common::$LANG['INSTALL'][26] . ' ' . htmlspecialchars(Common::$env['dbconfig_path'])
                             . Common::$LANG['INSTALL'][58]);
                     }
