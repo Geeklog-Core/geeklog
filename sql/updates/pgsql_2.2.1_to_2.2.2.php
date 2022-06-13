@@ -229,13 +229,7 @@ INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentli
   VALUES (1, 'nested', 'ASC', 100)
 SQL;
 
-    $sql3 = <<<SQL
-SELECT c.*, x.*, f.*, p.* 
-  FROM {$_TABLES['usercomment']} AS c 
-    LEFT JOIN {$_TABLES['userindex']} AS x ON c.uid = x.uid
-    LEFT JOIN {$_TABLES['userinfo']} AS f ON c.uid = f.uid
-    LEFT JOIN {$_TABLES['userprefs']} AS p ON c.uid = p.uid
-SQL;
+
 	
 	// Clean user tables that may have orphan records
 	$sql = "DELETE uc FROM {$_TABLES['usercomment']} uc WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE uc.uid = u.uid)";
@@ -264,6 +258,29 @@ SQL;
 
             return false;
         }
+		
+		// Retrieve data from old tables and insert into new attributes table
+		$sql = "INSERT INTO {$_TABLES['user_attributes']} 
+			SELECT f.uid, 
+			IFNULL(c.commentmode, 'nested'), IFNULL(c.commentorder, 'ASC'), IFNULL(c.commentlimit, 100),
+			IFNULL(x.etids, '-'), IFNULL(x.noboxes, 0), IFNULL(x.maxstories, 0), 
+			IFNULL(f.about, ''), IFNULL(f.location, ''), IFNULL(f.pgpkey, ''), IFNULL(f.tokens, 0), IFNULL(f.lastgranted, 0), IFNULL(f.lastlogin, 0), 
+			IFNULL(p.dfid, 0), IFNULL(p.advanced_editor, 1), IFNULL(p.tzid, ''), IFNULL(p.emailfromadmin, 1), IFNULL(p.emailfromuser, 1), IFNULL(p.showonline, 1) 
+			FROM {$_TABLES['usercomment']} AS c 
+			LEFT JOIN {$_TABLES['userindex']} AS x ON c.uid = x.uid
+			LEFT JOIN {$_TABLES['userinfo']} AS f ON c.uid = f.uid
+			LEFT JOIN {$_TABLES['userprefs']} AS p ON c.uid = p.uid";
+		DB_query($sql);			
+	
+
+		/* Converted commented code to above SQL query to improve speed
+    $sql3 = <<<SQL
+SELECT c.*, x.*, f.*, p.* 
+  FROM {$_TABLES['usercomment']} AS c 
+    LEFT JOIN {$_TABLES['userindex']} AS x ON c.uid = x.uid
+    LEFT JOIN {$_TABLES['userinfo']} AS f ON c.uid = f.uid
+    LEFT JOIN {$_TABLES['userprefs']} AS p ON c.uid = p.uid
+SQL;		
 
         // Collect data from old tables
         $result = DB_query($sql3);
@@ -280,6 +297,7 @@ SQL;
             $entity = UserAttributeEntity::fromArray($A);
             $userAttributeDAO->create($entity);
         }
+		*/
 
         // Drop old tables
         DB_query("DROP TABLE {$_TABLES['usercomment']}");
