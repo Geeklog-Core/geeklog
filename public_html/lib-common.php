@@ -127,6 +127,8 @@ if (defined('GL_INSTALL_ACTIVE')) {
 	global $LANG_configselects; // For Geeklog install (during Migrate and maybe elsewhere) when lib-common included functions.inc of forum plugin that modifies this array directly
 	global $_DB_dbms; // Needed for when Geeklog Core language file is included by lib-common
 	global $LANG32; // Some Plugin language files include a reference to this array
+	global $LANG27; // Some lib-topic and TOPIC_buildTree. It needs this language file
+	
     // *********************************************************
 }
 
