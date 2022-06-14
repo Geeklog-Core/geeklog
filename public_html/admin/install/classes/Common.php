@@ -1600,7 +1600,12 @@ abstract class Common
                 case '2.2.1sr1':
                     require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.2.1_to_2.2.2.php';
 
-                    if (!$checkForMessage) {
+                    if ($checkForMessage) {
+                        $retval = upgrade_message222();
+                        if (is_array($retval)) {
+                            Common::$upgradeMessages = array_merge(Common::$upgradeMessages, $retval);
+                        }
+                    } else {
                         $this->updateDB($_SQL, $progress);
                         update_ConfValuesFor222();
                         update_TablesContainingIPAddresses222();

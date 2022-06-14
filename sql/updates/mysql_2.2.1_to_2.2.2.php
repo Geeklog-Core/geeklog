@@ -38,7 +38,24 @@ $_SQL[] = "DELETE c FROM {$_TABLES['comments']} c WHERE type = 'polls' AND sid N
 $_SQL[] = "UPDATE {$_TABLES['likes']} l SET uid = 1 WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE u.uid = l.uid)";	
 // Delete likes that type and id do not exist anymore
 $_SQL[] = "DELETE l FROM {$_TABLES['likes']} l WHERE type = 'comment' AND id NOT IN (SELECT cid FROM {$_TABLES['comments']} c WHERE c.cid = l.id)";	
-$_SQL[] = "DELETE l FROM {$_TABLES['likes']} l WHERE type = 'article' AND id NOT IN (SELECT sid FROM {$_TABLES['stories']} s WHERE s.sid = l.id)";	
+$_SQL[] = "DELETE l FROM {$_TABLES['likes']} l WHERE type = 'article' AND id NOT IN (SELECT sid FROM {$_TABLES['stories']} s WHERE s.sid = l.id)";
+
+/**
+ * Upgrade Messages
+ */
+function upgrade_message222()
+{
+    global $_DB_charset;
+
+    // 3 upgrade message types exist 'information', 'warning', 'error'
+    // error type means the user cannot continue upgrade until fixed
+
+    $upgradeMessages['2.2.2'] = array(
+        1 => array('warning', 36, 37)  // IP Addresses Anonymization timeout Warning
+    );
+
+    return $upgradeMessages;
+}	
 
 /**
  * Add/Edit/Delete config options for new version
@@ -136,27 +153,51 @@ CREATE TABLE {$_TABLES['ip_addresses']} (
   ipaddress VARCHAR(39) NOT NULL DEFAULT '0.0.0.0',
   created_at INT NOT NULL DEFAULT 0,
   is_anonymized INT NOT NULL default 0,
+  tempid VARCHAR(190) NOT NULL DEFAULT '',
   PRIMARY KEY (seq)
 ) ENGINE=MyISAM
 ";
     DB_query($sql);
 
     $data = [
-        'comments'           => ['cid', 'ipaddress'],
-        'commentsubmissions' => ['cid', 'ipaddress'],
-        'likes'              => ['lid', 'ipaddress'],
-        'sessions'           => ['sess_id', 'remote_ip'],
-        'trackback'          => ['cid', 'ipaddress'],
+        'comments'           => ['cid', 'ipaddress', 'is_anonymized'],
+        'commentsubmissions' => ['cid', 'ipaddress', 'is_anonymized'],
+        'likes'              => ['lid', 'ipaddress', 'is_anonymized'],
+        'sessions'           => ['sess_id', 'remote_ip', 'tempid'],
+        'trackback'          => ['cid', 'ipaddress', 'is_anonymized'],
     ];
 
     foreach ($data as $table => $pair) {
         $primaryKeyColumn = $pair[0];
         $ipColumn = $pair[1];
+		// idColumn is used temporarily to store id of record of insert to make update statement faster
+		$idColumn = $pair[2];
 
         // Add 'seq' column
         DB_query("ALTER TABLE $_TABLES[$table] ADD COLUMN seq INT NOT NULL DEFAULT 0");
+        
+		$sql = "INSERT INTO {$_TABLES['ip_addresses']} (ipaddress, created_at, $idColumn)  
+			SELECT $ipColumn, UNIX_TIMESTAMP(), $primaryKeyColumn FROM $_TABLES[$table]";
+		DB_query($sql);
 
-        // Collect primary key values and IP addresses
+		$sql = "UPDATE $_TABLES[$table] t, {$_TABLES['ip_addresses']} i
+			SET t.seq = i.seq WHERE i.$idColumn = t.$primaryKeyColumn";
+		DB_query($sql);
+			
+		// Now clear temp id column of data to get ready for next insert as ids from other tables may be the same
+		if ($table === 'sessions') {
+			// drop temp id column since not needed anymore
+			DB_query("ALTER TABLE {$_TABLES['ip_addresses']} DROP COLUMN tempid");
+		} else {
+			// is_anonymized was used for temp id during this process. Reset it to 0
+			DB_query("UPDATE {$_TABLES['ip_addresses']} Set is_anonymized = 0");		
+		}
+
+        // Drop column 'ipaddress'
+        DB_query("ALTER TABLE $_TABLES[$table] DROP COLUMN $ipColumn");
+
+		/*
+		// Collect primary key values and IP addresses
         $result = DB_query("SELECT $primaryKeyColumn, $ipColumn FROM $_TABLES[$table]");
         $rows = [];
 
@@ -181,9 +222,10 @@ CREATE TABLE {$_TABLES['ip_addresses']} (
                 DB_query("UPDATE $_TABLES[$table] SET seq = $seq WHERE $primaryKeyColumn = $primaryKeyValue");
             }
         }
-
+		
         // Drop column 'ipaddress'
         DB_query("ALTER TABLE $_TABLES[$table] DROP COLUMN $ipColumn");
+		*/
     }
 
     return true;
