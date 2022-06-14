@@ -110,12 +110,17 @@ class Url
     {
         if ($this->urlRewrite) {
             if ($this->urlRouting) {
-                // Grab converted original route url from router class and then parse query string into array
-                parse_str( parse_url(Router::getRoute(), PHP_URL_QUERY), $this->arguments);
-				
-				// If empty array returned then possible no routes found so fallback to rewrite
-				if(!empty($this->arguments)) {
-					return true;
+				if (!empty(Router::getRoute())) {
+					// Grab converted original route url from router class and then parse query string into array
+					parse_str( parse_url(Router::getRoute(), PHP_URL_QUERY), $this->arguments);
+					
+					// If empty array returned then possible no routes found so fallback to rewrite
+					if(!empty($this->arguments)) {
+						return true;
+					}
+				} else {
+					// No routes so fallback to rewrite
+					return false;
 				}
 			}
 			
