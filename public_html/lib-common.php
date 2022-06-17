@@ -128,7 +128,6 @@ if (defined('GL_INSTALL_ACTIVE')) {
 	global $_DB_dbms; // Needed for when Geeklog Core language file is included by lib-common
 	global $LANG32; // Some Plugin language files include a reference to this array
 	global $LANG27; // Some lib-topic and TOPIC_buildTree. It needs this language file
-	
     // *********************************************************
 }
 
@@ -241,9 +240,7 @@ $_PAGE_TIMER = new timerobject();
 $_PAGE_TIMER->startTimer();
 
 // Initialize IP class
-if (!defined('GL_INSTALL_ACTIVE')) {
-    \Geeklog\IP::init($_TABLES['ip_addresses'], $_CONF['ip_anonymization']);
-}
+\Geeklog\IP::init($_TABLES['ip_addresses'], $_CONF['ip_anonymization']);
 
 /**
  * This provides optional URL rewriting functionality.
@@ -9754,9 +9751,7 @@ if ($_CONF['cron_schedule_interval'] > 0 && COM_onFrontpage()) {
         DB_query("UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'");
         PLG_runScheduledTask();
 
-        if (!defined('GL_INSTALL_ACTIVE')) {
-            \Geeklog\IP::updateIPAddressesTable();
-        }
+		\Geeklog\IP::updateIPAddressesTable();
     }
 }
 
