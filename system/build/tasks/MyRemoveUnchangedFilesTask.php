@@ -146,7 +146,8 @@ class MyRemoveUnchangedFilesTask extends Task
         // Create the 'removed-files' file
         unset($lines);
         exec(sprintf('git diff --name-only --diff-filter=D %s %s', $this->previousVersionSHA, $this->currentVersionSHA), $lines);
-        @file_put_contents('./public_html/docs/removed-files', implode("\n", $lines) . "\n");
+        $removedFiles = array_filter($lines, [$this, 'shouldInclude']);
+        @file_put_contents('./public_html/docs/removed-files', implode("\n", $removedFiles) . "\n");
 
         exec('git config --unset diff.renameLimit');
 
