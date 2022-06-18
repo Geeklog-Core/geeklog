@@ -34,7 +34,7 @@ abstract class IP
     /**
      * @var string
      */
-    private static $ipAddressTable = 'gl_ip_addresses';
+    private static $ipAddressTable = '';
 
     /**
      * @var int
@@ -52,7 +52,7 @@ abstract class IP
      * @param  string  $ipAddressTable
      * @param  int     $anonymizationPolicy
      */
-    public static function init($ipAddressTable = 'gl_ip_addresses', $anonymizationPolicy = self::POLICY_NEVER_ANONYMIZE)
+    public static function init($ipAddressTable, $anonymizationPolicy = self::POLICY_NEVER_ANONYMIZE)
     {
         if (!self::$isInitialized) {
             self::$ipAddressTable = $ipAddressTable;

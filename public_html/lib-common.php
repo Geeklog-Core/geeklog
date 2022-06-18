@@ -128,7 +128,6 @@ if (defined('GL_INSTALL_ACTIVE')) {
 	global $_DB_dbms; // Needed for when Geeklog Core language file is included by lib-common
 	global $LANG32; // Some Plugin language files include a reference to this array
 	global $LANG27; // Some lib-topic and TOPIC_buildTree. It needs this language file
-	
     // *********************************************************
 }
 
@@ -166,27 +165,6 @@ if (defined('GL_INSTALL_ACTIVE')) {
     $_CONF['cache_resource'] = false; // If site disabled then resources cannot be used on success page which is created by Geeklog since r.php checks site_enabled independently
 }
 
-// Get features that has ft_name like 'config%'
-$_CONF_FT = $config->_get_config_features();
-
-// Load Log class
-Log::init($_CONF['path_log']);
-
-// Load Cache class
-Cache::init(new Cache\FileSystem($_CONF['path'] . 'data/cache/'));
-
-// Load in Geeklog Variables Table
-
-/**
- * @global $_VARS array
- */
-$_VARS = array();
-$result = DB_query("SELECT * FROM {$_TABLES['vars']}");
-
-while ($row = DB_fetchArray($result)) {
-    $_VARS[$row['name']] = $row['value'];
-}
-
 if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
     if (empty($_CONF['site_disabled_msg'])) {
         header("HTTP/1.1 503 Service Unavailable");
@@ -212,6 +190,28 @@ if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
 if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     COM_redirect($_CONF['site_url'] . '/index.php');
 }
+
+// Get features that has ft_name like 'config%'
+$_CONF_FT = $config->_get_config_features();
+
+// Load Log class
+Log::init($_CONF['path_log']);
+
+// Load Cache class
+Cache::init(new Cache\FileSystem($_CONF['path'] . 'data/cache/'));
+
+// Load in Geeklog Variables Table
+
+/**
+ * @global $_VARS array
+ */
+$_VARS = array();
+$result = DB_query("SELECT * FROM {$_TABLES['vars']}");
+
+while ($row = DB_fetchArray($result)) {
+    $_VARS[$row['name']] = $row['value'];
+}
+
 
 // +---------------------------------------------------------------------------+
 // | Library Includes: You shouldn't have to touch anything below here         |
@@ -241,9 +241,7 @@ $_PAGE_TIMER = new timerobject();
 $_PAGE_TIMER->startTimer();
 
 // Initialize IP class
-if (!defined('GL_INSTALL_ACTIVE')) {
-    \Geeklog\IP::init($_TABLES['ip_addresses'], $_CONF['ip_anonymization']);
-}
+\Geeklog\IP::init($_TABLES['ip_addresses'], $_CONF['ip_anonymization']);
 
 /**
  * This provides optional URL rewriting functionality.
@@ -9754,9 +9752,7 @@ if ($_CONF['cron_schedule_interval'] > 0 && COM_onFrontpage()) {
         DB_query("UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'");
         PLG_runScheduledTask();
 
-        if (!defined('GL_INSTALL_ACTIVE')) {
-            \Geeklog\IP::updateIPAddressesTable();
-        }
+		\Geeklog\IP::updateIPAddressesTable();
     }
 }
 
