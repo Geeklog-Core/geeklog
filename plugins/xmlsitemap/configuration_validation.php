@@ -61,7 +61,7 @@ $_CONF_VALIDATE['xmlsitemap']['ping_google'] = ['rule' => 'boolean'];
 // IndexNow
 $_CONF_VALIDATE['xmlsitemap']['indexnow']   = ['rule' => 'boolean'];
 $_CONF_VALIDATE['xmlsitemap']['indexnow_key'] = ['rule' => 'alphaNumericOrEmpty'];
-$_CONF_VALIDATE['xmlsitemap']['indexnow_key_location'] = ['rule' => 'url',
+$_CONF_VALIDATE['xmlsitemap']['indexnow_key_location'] = ['rule' => 'urlOrEmpty',
     'message' => isset($LANG_VALIDATION['alphaNumericOrEmpty']) ?
         $LANG_VALIDATION['alphaNumericOrEmpty'] : $LANG_VALIDATION['default']];
 

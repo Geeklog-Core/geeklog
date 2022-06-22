@@ -811,6 +811,43 @@ class Validator
 
         return $_this->_check();
     }
+	
+    /**
+     * Checks that a value is a valid URL according to http://www.w3.org/Addressing/URL/url-spec.txt
+     * The regex checks for the following component parts:
+     * - a valid, optional, scheme
+     * - a valid ip address OR
+     *   a valid domain name as defined by section 2.3.1 of http://www.ietf.org/rfc/rfc1035.txt
+     *   with an optional port number
+     * - an optional valid path
+     * - an optional query string (get parameters)
+     * - an optional fragment (anchor tag)
+     *
+     * @param  string  $check  Value to check
+     * @param  boolean $strict Require URL to be prefixed by a valid scheme (one of http(s)/ftp(s)/file/news/gopher)
+     * @return boolean Success
+     */
+    public function urlOrEmpty($check, $strict = false)
+    {
+        $_this = Validator::getInstance();
+        $_this->__populateIp();
+        $_this->check = $check;
+
+        // No check is needed expect if something exists
+        if (empty($_this->check) && $_this->check != '0') {
+            return true;
+        }		
+		
+        $validChars = '([' . preg_quote('!"$&\'()*+,-.@_:;=~') . '\/0-9a-z]|(%[0-9a-f]{2}))';
+        $_this->regex = '/^(?:(?:https?|ftps?|file|news|gopher):\/\/)' . (!empty($strict) ? '' : '?') .
+            '(?:' . $_this->__pattern['IPv4'] . '|\[' . $_this->__pattern['IPv6'] . '\]|' . $_this->__pattern['hostname'] . ')' .
+            '(?::[1-9][0-9]{0,4})?' .
+            '(?:\/?|\/' . $validChars . '*)?' .
+            '(?:\?' . $validChars . '*)?' .
+            '(?:#' . $validChars . '*)?$/i';
+
+        return $_this->_check();
+    }	
 
     /**
      * Checks if a value is in a given list.
