@@ -5792,6 +5792,7 @@ function COM_printPageNavigation($base_url, $currentPage, $num_pages,
         $page_navigation->set_var('start_previous_anchortag', '<a href="' . $first_url . $pg . $last_url . '">');
         $page_navigation->set_var('end_previous_anchortag', '</a>');
     } else {
+		$currentPage = 1;
         $page_navigation->set_var('start_first_anchortag', '');
         $page_navigation->set_var('end_first_anchortag', '');
         $page_navigation->set_var('start_previous_anchortag', '');
