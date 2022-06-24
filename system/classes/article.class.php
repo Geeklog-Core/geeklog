@@ -594,11 +594,17 @@ class Article
                 if (!isset($story['owner_id'])) {
                     $story['owner_id'] = 1;
                 }
-                $access = SEC_hasAccess(
-                    $story['owner_id'], $story['group_id'],
-                    $story['perm_owner'], $story['perm_group'],
-                    $story['perm_members'], $story['perm_anon']
-                );
+				
+				if ($mode === 'editsubmission') {
+					// Submissions have no permissions stored with record
+					$access = 3;
+				} else {
+					$access = SEC_hasAccess(
+						$story['owner_id'], $story['group_id'],
+						$story['perm_owner'], $story['perm_group'],
+						$story['perm_members'], $story['perm_anon']
+					);
+				}
 
                 //$this->_access = min($access, SEC_hasTopicAccess($this->_tid));
                 //$this->_access = min($access, TOPIC_hasMultiTopicAccess('article', $sid));
