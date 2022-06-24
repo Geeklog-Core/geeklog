@@ -460,44 +460,49 @@ function moderation($mid, $action, $type, $count)
 
             case 'approve':
                 if ($type === 'story') {
-                    $sql = "SELECT *, ta.tid
-                    FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta
-                    WHERE ta.type = 'article' AND ta.id = sid  AND sid = '$mid[$i]'";
+					// Have topic access to approve?
+					if (TOPIC_hasMultiTopicAccess('article', $mid[$i]) == 3) {
+						$sql = "SELECT *, ta.tid
+						FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta
+						WHERE ta.type = 'article' AND ta.id = sid  AND sid = '$mid[$i]'";
 
-                    $result = DB_query($sql);
-                    $A = DB_fetchArray($result);
-                    $A['related'] = DB_escapeString(implode("\n", STORY_extractLinks($A['introtext'])));
-                    $A['owner_id'] = $A['uid'];
-                    $A['title'] = DB_escapeString($A['title']);
-                    $A['introtext'] = DB_escapeString($A['introtext']);
-                    $A['bodytext'] = DB_escapeString($A['bodytext']);
+						$result = DB_query($sql);
+						$A = DB_fetchArray($result);
+						$A['related'] = DB_escapeString(implode("\n", STORY_extractLinks($A['introtext'])));
+						$A['owner_id'] = $A['uid'];
+						$A['title'] = DB_escapeString($A['title']);
+						$A['introtext'] = DB_escapeString($A['introtext']);
+						$A['bodytext'] = DB_escapeString($A['bodytext']);
 
-                    $result = DB_query("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon,archive_flag FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
-                    $T = DB_fetchArray($result);
-                    if ($T['archive_flag'] == 1) {
-                        $frontPage = 0;
-                    } elseif (isset($_CONF['frontpage'])) {
-                        $frontPage = $_CONF['frontpage'];
-                    } else {
-                        $frontPage = 1;
-                    }
+						$result = DB_query("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon,archive_flag FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
+						$T = DB_fetchArray($result);
+						if ($T['archive_flag'] == 1) {
+							$frontPage = 0;
+						} elseif (isset($_CONF['frontpage'])) {
+							$frontPage = $_CONF['frontpage'];
+						} else {
+							$frontPage = 1;
+						}
 
-                    SEC_setDefaultPermissions($A, $_CONF['default_permissions_story']);
-                    if (isset($_GROUPS['Story Admin'])) {
-                        $group_id = $_GROUPS['Story Admin'];
-                    } else {
-                        $group_id = SEC_getFeatureGroup('story.edit');
-                    }
+						SEC_setDefaultPermissions($A, $_CONF['default_permissions_story']);
+						if (isset($_GROUPS['Story Admin'])) {
+							$group_id = $_GROUPS['Story Admin'];
+						} else {
+							$group_id = SEC_getFeatureGroup('story.edit');
+						}
 
-                    DB_save($_TABLES['stories'], 'sid,uid,title,introtext,bodytext,related,date,show_topic_icon,commentcode,trackbackcode,postmode,frontpage,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
-                        "'{$A['sid']}',{$A['uid']},'{$A['title']}','{$A['introtext']}','{$A['bodytext']}','{$A['related']}','{$A['date']}','{$_CONF['show_topic_icon']}','{$_CONF['comment_code']}','{$_CONF['trackback_code']}','{$A['postmode']}',$frontPage,{$A['owner_id']},$group_id,{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
+						DB_save($_TABLES['stories'], 'sid,uid,title,introtext,bodytext,related,date,show_topic_icon,commentcode,trackbackcode,postmode,frontpage,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
+							"'{$A['sid']}',{$A['uid']},'{$A['title']}','{$A['introtext']}','{$A['bodytext']}','{$A['related']}','{$A['date']}','{$_CONF['show_topic_icon']}','{$_CONF['comment_code']}','{$_CONF['trackback_code']}','{$A['postmode']}',$frontPage,{$A['owner_id']},$group_id,{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
 
-                    DB_delete($_TABLES['storysubmission'], "$id", $mid[$i]);
+						DB_delete($_TABLES['storysubmission'], "$id", $mid[$i]);
 
-                    $approved++;
+						$approved++;
 
-                    PLG_itemSaved($A['sid'], 'article');
-                    COM_rdfUpToDateCheck();
+						PLG_itemSaved($A['sid'], 'article');
+						COM_rdfUpToDateCheck();
+					} else {
+						COM_errorLog("Someone tried to approve an article submission who didn't have edit access to the topics assigned to it.");
+					}
                 } elseif ($type === 'comment') {
                     CMT_approveModeration($mid[$i]);
                     $approved++;

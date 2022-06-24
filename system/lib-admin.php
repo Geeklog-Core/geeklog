@@ -1254,22 +1254,48 @@ function ADMIN_getListField_moderation($fieldName, $fieldValue, $A, $icon_arr)
 
     switch ($fieldName) {
         case 'edit':
-            $retval = COM_createLink($icon_arr['edit'], $A['edit']);
+			$retval = '';
+			$show = false;
+			if ($type === 'story') {
+				// See if user has topic access to edit article (article submissions do not have permissions yet just an owner id)
+				if (TOPIC_hasMultiTopicAccess('article', $A['id']) == 3) {
+					$show = true;
+				}
+			} else {
+				$show = true;
+			}
+			if ($show) {
+				$retval = COM_createLink($icon_arr['edit'], $A['edit']);
+			}
+			
             break;
 
         case 'delete':
-            $retval = COM_createControl('type-radio', array(
-                'name' => "action[{$A['row']}]",
-                'value' => 'delete'
-            ));
+			$retval = COM_createControl('type-radio', array(
+				'name' => "action[{$A['row']}]",
+				'value' => 'delete'
+			));	
+			// Include id here as any story admin user can delete but only those with appropriate topic permissions can approve
+			$retval .= "<input type=\"hidden\" name=\"id[{$A['row']}]\" value=\"{$A[0]}\"" . XHTML . ">";
             break;
 
         case 'approve':
-            $retval = COM_createControl('type-radio', array(
-                'name' => "action[{$A['row']}]",
-                'value' => 'approve'
-            ));
-            $retval .= "<input type=\"hidden\" name=\"id[{$A['row']}]\" value=\"{$A[0]}\"" . XHTML . ">";
+			$retval = '';
+			$show = false;
+			if ($type === 'story') {
+				// See if user has topic access to approve article to be published (article submissions do not have permissions yet just an owner id)
+				if (TOPIC_hasMultiTopicAccess('article', $A['id']) == 3) {
+					$show = true;
+				}
+			} else {
+				$show = true;
+			}
+			if ($show) {
+				$retval = COM_createControl('type-radio', array(
+					'name' => "action[{$A['row']}]",
+					'value' => 'approve'
+				));
+			}		
             break;
 
         case 'day':
