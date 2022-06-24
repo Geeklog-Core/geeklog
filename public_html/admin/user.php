@@ -622,10 +622,10 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
         COM_errorLog("group size at beginning = " . count($groups), 1);
     }
 
+	$passwd_changed = false;
     $service = DB_getItem($_TABLES['users'], 'remoteservice', "uid = $uid");
     // If remote service then assume blank password
     if (!empty($service)) {
-		$passwd_changed = false;
         $passwd = '';
         $passwd_conf = '';
 
@@ -634,21 +634,33 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
              $userstatus = USER_ACCOUNT_ACTIVE;
         }
     } else {
-		$passwd_changed = true;
-		if ((SEC_encryptUserPassword($passwd, $uid) === 0) && ($passwd_conf === '')) {
-			$passwd_changed = false;
+		if (empty($uid)) {
+			// New User
+			$passwd_changed = true;
+		} else {
+			// See if existing user and text in password field
+			if (empty($passwd)) {
+				$passwd = '';
+				$passwd_conf = '';
+			} else {
+				$passwd_changed = true;
+			}
 		}
-		
+
+		// Allows actual current password to be entered and validated if password confirmed field is empty
+		// Not sure the reason for this but left it in but added check for existing user... (as of Geeklog 2.2.2)
+		if (!empty($uid)) { // Only for existing users
+			if ((SEC_encryptUserPassword($passwd, $uid) === 0) && ($passwd_conf === '')) {
+				$passwd_changed = false;
+			}
+		}
+
 		if ($passwd_changed && ($passwd != $passwd_conf)) { // passwords don't match
 			return edituser($uid, 67);
 		}
 		
 		if ($passwd_changed && !SEC_checkPasswordStrength($passwd)) { // Strong Passwords
 			return edituser($uid, 504);
-		}
-		
-		if ($passwd_changed && empty($passwd)) { // no empty passwords
-			$passwd_changed = false;
 		}
 	}
 	
