@@ -596,7 +596,11 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
 			} else {
 				$sp_likes = $A['likes'];
 			}
-			$spage->set_var('likes_control',LIKES_control(STATICPAGES_PLUGIN_NAME, '', $page, $sp_likes));
+			if ($sp_likes > 0) {
+				$spage->set_var('likes_control',LIKES_control(STATICPAGES_PLUGIN_NAME, '', $page, $sp_likes));
+			} else {
+				$spage->set_var('likes_control', '');
+			}
 		} else {
 			$spage->set_var('likes_control', '');
 		}		
