@@ -593,7 +593,7 @@ function plugin_itemsaved_template($id, $type, $old_id = '', $sub_type = '')
  * @param    string  $sub_type  (unused) sub type of item (since Geeklog 2.2.2)
  * @since    Geeklog 1.6.0
  */
-function plugin_itemdeleted_template($id, $type, $sub_type)
+function plugin_itemdeleted_template($id, $type, $sub_type = '')
 {
     global $_STRUCT_DATA;
 
