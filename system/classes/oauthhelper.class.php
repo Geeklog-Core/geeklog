@@ -432,7 +432,7 @@ class OAuthConsumer
                     'passwd'         => '',
                     'passwd2'        => '',
                     'fullname'       => $info->name,
-                    'homepage'       => $info->link,
+                    'homepage'       => '', // $info->link, (this is not supported anymore)
                     'remoteusername' => DB_escapeString($info->id),
                     'remoteservice'  => 'oauth.google',
                     'remotephoto'    => $info->picture,
