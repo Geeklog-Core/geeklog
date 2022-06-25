@@ -33,7 +33,7 @@
   </form>
   
   {!if lang_remote_login}
-  <form id="userremoteloginform" class="compact uk-form">
+  <div id="userremoteloginform" class="compact uk-form">
     <fieldset>
       <legend>{lang_remote_login}</legend>
 
@@ -43,7 +43,7 @@
 	  {openid_login}
 	  
    </fieldset>
-  </form>
+  </div>
   {!endif}
 {end_block}
 
