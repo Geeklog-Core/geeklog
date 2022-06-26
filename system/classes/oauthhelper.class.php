@@ -361,6 +361,9 @@ class OAuthConsumer
                 if ( isset($info->location->name) ) {
                     $userinfo['location'] = $info->location->name;
                 }
+                if ( isset($info->email ) ) {
+                    $userinfo['email'] = $info->email;
+                }				
                 break;
 
             case 'Google' :
@@ -398,9 +401,14 @@ class OAuthConsumer
     {
         switch ($this->client->server) {
             case 'Facebook' :
+				// Facebook app for website may not have access to email
+				$mail = '';
+                if ( isset($info->email)) {
+                    $mail = $info->email;
+                }			
                 $users = array(
                     'loginname'      => (isset($info->first_name) ? $info->first_name : $info->id),
-                    'email'          => $info->email,
+                    'email'          => $mail,
                     'passwd'         => '',
                     'passwd2'        => '',
                     'fullname'       => $info->name,
@@ -440,6 +448,7 @@ class OAuthConsumer
                 break;
 
             case 'Twitter' :
+				// Twitter app for website may not have access to email
                 $mail = '';
                 if ( isset($info->email)) {
                     $mail = $info->email;
