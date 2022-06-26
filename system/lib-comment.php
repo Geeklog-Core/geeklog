@@ -2395,9 +2395,7 @@ function CMT_approveModeration($cid)
 
     $cid = DB_escapeString($cid);
     $result = DB_query(
-        "SELECT c.type, c.sid, c.date, c.title, c.comment, c.uid, c.name, c.pid, i.ipaddress FROM {$_TABLES['commentsubmissions']} AS c "
-        . "LEFT JOIN {$_TABLES['ip_addresses']} AS i "
-        . "ON c.seq = i.seq "
+        "SELECT c.type, c.sid, c.date, c.title, c.comment, c.uid, c.name, c.pid, c.seq FROM {$_TABLES['commentsubmissions']} AS c "
         . "WHERE c.cid = '$cid'"
     );
     $A = DB_fetchArray($result);
