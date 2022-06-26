@@ -169,11 +169,11 @@ if (empty($pid)) {
         . "WHERE pid = '" . DB_escapeString($pid) . "' " . COM_getPermSQL('AND'));
     $A = DB_fetchArray($result);
 
-    $polltopic = $A['topic'];
-    if (empty($polltopic)) {
+    if (!isset($A['topic']) || empty($A['topic'])) {
         // poll doesn't exist or user doesn't have access
         COM_handle404($_CONF['site_url'] . '/polls/index.php');
     } else {
+		$polltopic = $A['topic'];
         // Meta Tags
         $headercode = '';
 
