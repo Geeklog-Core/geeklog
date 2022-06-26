@@ -9101,10 +9101,10 @@ function COM_versionConvert($version)
  * Common function used to compare two Geeklog version numbers
  *
  * @param    string $version1        First version number to be compared
- * @param    string $version2        Second version number to be sompared
+ * @param    string $version2        Second version number to be compared
  * @param    string $operator        optional string to define how the two versions are to be compared
  *                                   valid operators are: <, lt, <=, le, >, gt, >=, ge, ==, =, eq, !=, <>, ne
- * @return   mixed                   By default, returns -1 if the first version is lower than the second,
+ * @return   bool|int                By default, returns -1 if the first version is lower than the second,
  *                                   0 if they are equal, and 1 if the second is lower.
  *                                   When using the optional operator argument, the function will return TRUE
  *                                   if the relationship is the one specified by the operator, FALSE otherwise.
