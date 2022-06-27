@@ -300,7 +300,18 @@ SQL;
 		LEFT JOIN {$_TABLES['userindex']} AS x ON c.uid = x.uid
 		LEFT JOIN {$_TABLES['userinfo']} AS f ON c.uid = f.uid
 		LEFT JOIN {$_TABLES['userprefs']} AS p ON c.uid = p.uid";
-	DB_query($sql);		
+	DB_query($sql);
+	
+	// Due to unknown errors in the past users may not have a usercomment record so the above statement would not have added a user attribute record
+	// Add a user attribute record for any user that is missing one (as it is required)
+	$sql = "INSERT INTO {$_TABLES['user_attributes']}  
+		SELECT u.uid, 'nested', 'ASC', 100, 
+		'-', 0, 0, 
+		'', '', '', 0, 0, 0, 
+		0, 1, '', 1, 1, 1 
+        FROM {$_TABLES['users']} u 
+		WHERE u.uid NOT IN (SELECT uid FROM {$_TABLES['user_attributes']})";
+	DB_query($sql);
 
 	/* Converted commented code to above SQL query to improve speed
     $sql3 = <<<SQL
