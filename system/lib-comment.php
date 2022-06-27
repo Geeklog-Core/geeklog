@@ -2688,6 +2688,7 @@ function CMT_handleView($format, $order, $page, $view = true)
     global $_CONF, $_TABLES, $_USER;
 
     $cid = 0;
+	$display = '';
     if ($view) {
         if (isset($_REQUEST[CMT_CID])) {
             $cid = (int) Geeklog\Input::fRequest(CMT_CID);
@@ -2702,21 +2703,29 @@ function CMT_handleView($format, $order, $page, $view = true)
     }
 
     $sql = "SELECT sid, title, type FROM {$_TABLES['comments']} WHERE cid = $cid";
-    $A = DB_fetchArray(DB_query($sql));
-    $sid = $A['sid'];
-    //$title = $A['title'];
-    $type = $A['type'];
-	$title = PLG_getItemInfo($type, $sid, 'title'); // Need title of item not comment title
+	$result = DB_query($sql);
+	$nrows = DB_numRows($result);                                     
 
-    $display = PLG_displayComment($type, $sid, $cid, $title,
-        $order, $format, $page, $view);
-    if (!$display) {
-        COM_handle404();
-    }
+	if ($nrows == 1) {
+		$A = DB_fetchArray($result);		
+		
+		$sid = $A['sid'];
+		//$title = $A['title'];
+		$type = $A['type'];
+		$title = PLG_getItemInfo($type, $sid, 'title'); // Need title of item not comment title
 
-    $display = COM_showMessageFromParameter() . $display;
-    $display = COM_createHTMLDocument($display, array('pagetitle' => $title));
+		$display = PLG_displayComment($type, $sid, $cid, $title,
+			$order, $format, $page, $view);
+		if (!$display) {
+			COM_handle404();
+		}
 
+		$display = COM_showMessageFromParameter() . $display;
+		$display = COM_createHTMLDocument($display, array('pagetitle' => $title));
+	} else {
+		COM_handle404();
+	}
+	
     return $display;
 }
 
