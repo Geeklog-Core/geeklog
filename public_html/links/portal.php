@@ -88,7 +88,8 @@ if ($what === 'link') {
 }
 
 if (empty($url)) {
-    $url = $_CONF['site_url'];
+    COM_handle404($_CONF['site_url'] . '/links/index.php');
+	exit;
 }
 
 header('HTTP/1.1 301 Moved');

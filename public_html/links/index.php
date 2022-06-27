@@ -125,21 +125,28 @@ function links_list($message)
     // Check has access and existent to this category
     if ($cid != $_LI_CONF['root']) {
         $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']} WHERE cid='{$cat}'");
-        $A = DB_fetchArray($result);
-        if (SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) < 2) {
-            $display .= COM_showMessage(5, 'links');
-            $display = COM_createHTMLDocument($display, array('pagetitle' => $page_title));
-            COM_output($display);
-            exit;
-        }
+        $nrows = DB_numRows($result);                                     
 
-        // check existent
-        if (!isset($A['owner_id'])) {
-            $display .= COM_showMessage(16, 'links');
-            $display = COM_createHTMLDocument($display, array('pagetitle' => $page_title));
-            COM_output($display);
-            exit;
-        }
+        if ($nrows == 1) {
+			$A = DB_fetchArray($result);
+			if (SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) < 2) {
+				$display .= COM_showMessage(5, 'links');
+				$display = COM_createHTMLDocument($display, array('pagetitle' => $page_title));
+				COM_output($display);
+				exit;
+			}
+
+			// check existent
+			if (!isset($A['owner_id'])) {
+				$display .= COM_showMessage(16, 'links');
+				$display = COM_createHTMLDocument($display, array('pagetitle' => $page_title));
+				COM_output($display);
+				exit;
+			}
+		} else {
+			// Links Category doesn't exist
+			COM_handle404($_CONF['site_url'] . '/links/index.php');
+		}
     }
 
     if (is_array($message) && !empty($message[0])) {
