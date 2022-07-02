@@ -2003,20 +2003,25 @@ function plugin_displaycomment_article($id, $cid, $title, $order, $format, $page
         . 'AND (draft_flag = 0) AND (commentcode >= 0) AND (date <= NOW()) AND ta.type = "article" AND ta.id = sid ' . COM_getPermSQL('AND')
         . COM_getTopicSQL('AND', 0, 'ta') . ' GROUP BY sid, owner_id, group_id, perm_owner, perm_group,perm_members, perm_anon ';
     $result = DB_query($sql);
-    $A = DB_fetchArray($result);
-    $allowed = $A['count'];
+	$nrows = DB_numRows($result);
+	if ($nrows > 0) {	
+		$A = DB_fetchArray($result);
+		$allowed = $A['count'];
 
-    if ($allowed > 0) { // Was equal 1 but when multiple topics in play the comment could belong to more than onetopic creating a higher count
-        $delete_option = (SEC_hasRights('story.edit') &&
-            (SEC_hasAccess($A['owner_id'], $A['group_id'],
-                    $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                    $A['perm_anon']) == 3));
-        $retval .= CMT_userComments($id, $title, 'article', $order,
-            $format, $cid, $page, $view, $delete_option,
-            $A['commentcode']);
-    } else {
-        $retval .= COM_showMessageText($LANG_ACCESS['storydenialmsg'], $LANG_ACCESS['accessdenied']);
-    }
+		if ($allowed > 0) { // Was equal 1 but when multiple topics in play the comment could belong to more than one topic creating a higher count
+			$delete_option = (SEC_hasRights('story.edit') &&
+				(SEC_hasAccess($A['owner_id'], $A['group_id'],
+						$A['perm_owner'], $A['perm_group'], $A['perm_members'],
+						$A['perm_anon']) == 3));
+			$retval .= CMT_userComments($id, $title, 'article', $order,
+				$format, $cid, $page, $view, $delete_option,
+				$A['commentcode']);
+		} else {
+			$retval .= COM_showMessageText($LANG_ACCESS['storydenialmsg'], $LANG_ACCESS['accessdenied']);
+		}
+	} else {
+		$retval .= COM_showMessageText($LANG_ACCESS['storydenialmsg'], $LANG_ACCESS['accessdenied']);
+	}
 
     return $retval;
 }
