@@ -32,7 +32,10 @@
 
 namespace Geeklog;
 
+use Exception;
 use JSMin\JSMin;
+use JSMin\UnterminatedRegExpException;
+use JSMin\UnterminatedStringException;
 use MatthiasMullie\Minify;
 use Mobile_Detect;
 
@@ -817,8 +820,15 @@ class Resource
                 $data = @file_get_contents($path);
 
                 if ($data !== false) {
-                    $data = JSMin::minify($data);
-                    $retval .= $data . PHP_EOL;
+                    try {
+                        // Workaround
+                        $oldErrorReporting = error_reporting();
+                        error_reporting($oldErrorReporting & !E_DEPRECATED);
+                        $data = JSMin::minify($data);
+                        error_reporting($oldErrorReporting);
+                        $retval .= $data . PHP_EOL;
+                    } catch (Exception $e) {
+                    }
                 }
             }
         }
