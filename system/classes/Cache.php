@@ -33,7 +33,6 @@ abstract class Cache
     {
         if (!self::$isInitialized) {
             self::$instance = $driver;
-//            self::$instance = new APCu();
             self::$isInitialized = true;
         }
     }
@@ -96,7 +95,7 @@ abstract class Cache
      */
     public static function set($key, $data, $ttl = 0)
     {
-        return self::$isEnabled ? self::$instance->set($key, $data, $ttl) : false;
+        return self::$isEnabled && self::$instance->set($key, $data, $ttl);
     }
 
     /**
@@ -109,7 +108,7 @@ abstract class Cache
      */
     public static function add($key, $data, $ttl = 0)
     {
-        return self::$isEnabled ? self::$instance->add($key, $data, $ttl) : false;
+        return self::$isEnabled && self::$instance->add($key, $data, $ttl);
     }
 
     /**
@@ -120,7 +119,7 @@ abstract class Cache
      */
     public static function delete($key)
     {
-        return self::$isEnabled ? self::$instance->delete($key) : false;
+        return self::$isEnabled && self::$instance->delete($key);
     }
 
     /**
@@ -131,7 +130,7 @@ abstract class Cache
      */
     public static function exists($key)
     {
-        return self::$isEnabled ? self::$instance->exists($key) : false;
+        return self::$isEnabled && self::$instance->exists($key);
     }
 
     /**

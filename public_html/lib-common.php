@@ -198,7 +198,11 @@ $_CONF_FT = $config->_get_config_features();
 Log::init($_CONF['path_log']);
 
 // Load Cache class
-Cache::init(new Cache\FileSystem($_CONF['path'] . 'data/cache/'));
+if (is_callable('apcu_store')) {
+    Cache::init(new Cache\APCu());
+} else {
+    Cache::init(new Cache\FileSystem($_CONF['path'] . 'data/cache/'));
+}
 
 // Load in Geeklog Variables Table
 
