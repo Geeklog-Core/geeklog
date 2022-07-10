@@ -755,7 +755,7 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 				}
 				if ($itemSet) {
 					$t->set_var('item-link', $info[0]);
-					$t->set_var('item-title', $info[1]);
+					$t->set_var('item-title', htmlspecialchars($info[1]));
 					$t->set_var('item-title-trimmed', COM_truncate($info[1], $titleLength, '...'));
 					if ($newLine) {
 						$t->set_var('likes-new-line', true);
