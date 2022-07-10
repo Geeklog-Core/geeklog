@@ -39,11 +39,10 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 // As of Geeklog 2.2.0, both oauth-api and httpclient classes are managed by composer.
 // Also see https://www.phpclasses.org/package/7700-PHP-Authorize-and-access-APIs-using-OAuth.html
 
-// Enable to show debug info for OAuth
-$_SYSTEM['debug_oauth'] = false;
-
 class OAuthConsumer
 {
+	private $debug = false;
+	
     protected $consumer = null;
     protected $client = null;
     public $error = '';
@@ -94,8 +93,11 @@ class OAuthConsumer
 
         $this->client = new oauth_client_class;
         $this->client->server = $service;
-        $this->client->debug = $_SYSTEM['debug_oauth'];
-        $this->client->debug_http = $_SYSTEM['debug_oauth'];
+		
+		$this->_debug = COM_isEnableDeveloperModeLog('user');
+		
+        $this->client->debug = $this->_debug;
+        $this->client->debug_http = $this->_debug;
 
         // Set key and secret for OAuth service if found in config
         if ($this->client->client_id == '') {
@@ -180,8 +182,6 @@ class OAuthConsumer
      */
     public function authenticate_user()
     {
-        global $_SYSTEM;
-
         $user = array();
 
         if (($success = $this->client->Initialize())) {
@@ -196,7 +196,7 @@ class OAuthConsumer
             }
             $success = $this->client->Finalize($success);
         }
-        if ($_SYSTEM['debug_oauth']) {
+        if ($this->debug) {
             COM_errorLog($this->client->debug_output, 1);
         }
         if ($this->client->exit) {
