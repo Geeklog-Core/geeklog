@@ -669,7 +669,8 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 			$t->set_var('lang_action_time_span', COM_formatTimeString($lang_action_time_span, $includeTime));
 		}
 
-		$likesDate = DateTime::createFromFormat('U.u', microtime(true));
+        $microtime = microtime(true); // Can't just use microtime(true) when createFromFormat with U.u as not always decimal and will error. See: https://stackoverflow.com/questions/53738427/php-error-call-to-a-member-function-settimezone-on-boolean
+        $likesDate = DateTime::createFromFormat('U.u', stripos($microtime, '.') ? $microtime : $microtime + 0.001);
 		$likesDate->setTimeZone(new DateTimeZone(TimeZoneConfig::getTimezone()));
 		$likesDate->sub(new DateInterval('PT' . $includeTime . 'S')); // minus number of seconds
 		$includeLikesDate = $likesDate->format("Y-m-d H:i:s"); 
