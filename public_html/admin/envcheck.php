@@ -53,7 +53,7 @@ if (!SEC_inGroup('Root')) {
  */
 function _checkEnvironment($phpInfoDisabled)
 {
-    global $_CONF, $_TABLES, $_PLUGINS, $_SYSTEM, $LANG_ADMIN, $LANG_ENVCHECK, $_SCRIPTS, $_DB_dbms;
+    global $_CONF, $_TABLES, $_PLUGINS, $LANG_ADMIN, $LANG_ENVCHECK, $_SCRIPTS, $_DB_dbms;
 
     $retval = '';
     $permError = 0;
