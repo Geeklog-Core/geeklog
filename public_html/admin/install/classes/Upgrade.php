@@ -72,7 +72,10 @@ class Upgrade extends Common
         require_once $path_html . 'lib-common.php';
 
         if (!COM_validateTheme($_CONF['theme'])) {
-            $config->set('theme', $_CONF['theme_geeklog_default']);
+			// Make sure default theme exists before switching to it
+			if (COM_validateTheme($_CONF['theme_geeklog_default'])) {
+				$config->set('theme', $_CONF['theme_geeklog_default']);
+			}
         }
 
         if (!file_exists($_CONF['path_images'] . 'articles')) {

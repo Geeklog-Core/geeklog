@@ -912,8 +912,11 @@ HTML;
         }
 
         if (!COM_validateTheme($theme)) {
-            $_CONF['theme'] = $_CONF['theme_geeklog_default'];
-            $config->set('theme', $_CONF['theme_geeklog_default']);
+			// Make sure default theme exists before switching to it
+			if (COM_validateTheme($_CONF['theme_geeklog_default'])) {
+				$_CONF['theme'] = $_CONF['theme_geeklog_default'];
+				$config->set('theme', $_CONF['theme_geeklog_default']);
+			}
         }
 
         /**
