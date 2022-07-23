@@ -7,9 +7,10 @@ Explanation of list item:
 
 For more in-depth explanation of the issues below see: https://github.com/Geeklog-Core/geeklog/milestone/48?closed=1
 
-- [Security] [#1023] Clean up lib-comment and fix security checks on editing and deleting of comments [Tom]
 - [Security] [NA] Fixed displaying 404 page and filtering of URL [Tom]
 - [Security] [NA] Fixed Cross Site Scripting (XSS) vulnerabilities found in Administration pages [Mystralkk]
+- [Security] [#1023] Clean up lib-comment and fix security checks on editing and deleting of comments [Tom]
+- [Security] [#842] Fixed after token expired you can re-authentication with any existing user [Mystralkk]
 
 - [Feature] [#1120] Added Top 10 Likes and Dislikes to User Profile [Tom]
 - [Feature] [#1029] Added Likes Control to Static Pages and Polls [Tom]
@@ -50,6 +51,7 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Bug] [#1122] Fixed broken image icons in Article Editor [Tom]
 - [Bug] [#1121] Comment Bar displaying incorrect Title in some cases when viewed on Comment Page [Tom]
 - [Bug] [#1119] Added missing postmode field to Admin User Editor [Tom]
+- [Bug] [#1134] Fixed Admin User Editor on save would still check passwords even if left blank (so not changed) [Tom]
 - [Bug] [#1116] After logging out of one user account, cannot log into different user account in the same browser [Tom]
 - [Bug] [#465] Cannot login when site using IP address with the Google Chrome Browser [Tom]
 - [Bug] [#1055] URL routing does not work in an environment without $ _SERVER ['PATH_INFO'] [hirorongl]
@@ -60,6 +62,7 @@ For more in-depth explanation of the issues below see: https://github.com/Geeklo
 - [Bug] [#1091] Articles with same date in same topic can cause an issue [Mystralkk]
 - [Bug] [#1101] Handling of Zip Files that have Files with Names not Compatible with the Web Servers OS [Mystralkk]
 - [Bug] [#1061] Geeklog Configuration - Changing Paths can cause Issues [Mystralkk]
+- [Bug] [#1133] Article Submissions Shows Edit button for articles in some cases when user does not actual have edit access [Tom]
 
 The following items are Libraries that have been updated that are not handled by Composer.
 
