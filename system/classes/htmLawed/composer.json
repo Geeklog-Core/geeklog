@@ -1,0 +1,37 @@
+{
+    "name": "htmlawed/htmlawed",
+    "type": "library",
+    "description": "Official htmLawed PHP library for HTML filtering",
+    "keywords": [
+        "clean","compliance","filter","filtering","htm","html","input","purify","safe","safety","sanitize","sanitizer","standards","text","xss"
+    ],
+    "homepage": "https://bioinformatics.org/phplabware/internal_utilities/htmLawed",
+    "license": [
+        "GPL-2.0-or-later","LGPL-3.0-only"
+    ],
+    "authors": [
+        {
+            "name": "Santosh Patnaik",
+            "email": "drpatnaikREMOVECAPS@yahoo.com",
+            "role": "Creator and developer"
+        }
+    ],
+    "require": {
+        "php": ">=4.4"
+    },
+    "repositories": [
+        {
+         "type": "composer",
+         "url": "https://bioinformatics.org/phplabware/downloads"
+        },
+        {
+         "type": "composer",
+         "url": "https://sourceforge.net/projects/htmlawed/files"
+        },
+    ],
+    "support": {
+        "docs": "https://bioinformatics.org/phplabware/internal_utilities/htmLawed",
+        "forum": "https://bioinformatics.org/phplabware/internal_utilities/htmLawed",
+        "source": "https://bioinformatics.org/phplabware/internal_utilities/htmLawed"
+    }
+}
