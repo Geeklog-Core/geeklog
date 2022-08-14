@@ -460,8 +460,8 @@ class Search
             $obj->setField('', 'description', true, false, '%s<br' . XHTML . '>');
             $obj->setField('', '_html', true, false, '<span class="searchresult-byline">');
             $obj->setField($LANG09[18], 'uid', $show_user, $sort_uid, $LANG01[104] . ' %s ');
-            $obj->setField($LANG09[17], 'date', true, $sort_date, $LANG01[36] . ' %s');
-            $obj->setField($LANG09[5], LF_SOURCE_TITLE, $show_type, $sort_type, ' - %s');
+            $obj->setField($LANG09[17], 'date', true, $sort_date, $LANG01[36] . ' %s - ');
+            $obj->setField($LANG09[5], LF_SOURCE_TITLE, $show_type, $sort_type, '%s'); // Moved dash on date on line above since some plugins may not have user or date associated with their content and do not want dash at start of content
             $obj->setField($LANG09[50], 'hits', $show_hits, true, ' - %s ' . $LANG09[50]);
             $obj->setField('', '_html', true, false, '</span>');
             $this->_wordLength = 50;
