@@ -57,6 +57,8 @@
 
 class Template
 {
+    const LOCK_FILE = '.lock';
+
     /**
      * Serialization helper, the name of this class.
      *
@@ -2144,6 +2146,17 @@ class Template
  */
 function cache_clean_directories($path, $needle = '', $since = 0)
 {
+    global $_CONF;
+
+    $lockFile = $_CONF['path_data'] . 'cache' . DIRECTORY_SEPARATOR . Template::LOCK_FILE;
+    if (is_readable($lockFile)) {
+        return 0;
+    }
+
+    if (!@touch($lockFile)) {
+        return 0;
+    }
+
     $numFiles = 0;
 
     if ($dir = @opendir($path)) {
@@ -2167,6 +2180,10 @@ function cache_clean_directories($path, $needle = '', $since = 0)
             }
         }
         @closedir($dir);
+    }
+
+    if (is_readable($lockFile)) {
+        @unlink($lockFile);
     }
 
     return $numFiles;
