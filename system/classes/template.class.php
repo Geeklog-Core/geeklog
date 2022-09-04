@@ -2142,7 +2142,7 @@ class Template
  * @param  string $needle String matched against cache filenames
  * @param  int    $since
  * @access private
- * @return int            number of files not deleted
+ * @return int            number of files NOT deleted
  */
 function cache_clean_directories($path, $needle = '', $since = 0)
 {
@@ -2150,11 +2150,11 @@ function cache_clean_directories($path, $needle = '', $since = 0)
 
     $lockFile = $_CONF['path_data'] . 'cache' . DIRECTORY_SEPARATOR . Template::LOCK_FILE;
     if (is_readable($lockFile)) {
-        return 0;
+        return -1;
     }
 
     if (!@touch($lockFile)) {
-        return 0;
+        return -1;
     }
 
     $numFiles = 0;
