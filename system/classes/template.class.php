@@ -2147,8 +2147,8 @@ class Template
 function cache_clean_directories($path, $needle = '', $since = 0)
 {
     global $_CONF;
-
-    $lockFile = $_CONF['path_data'] . 'cache' . DIRECTORY_SEPARATOR . Template::LOCK_FILE;
+	
+	$lockFile = $path . DIRECTORY_SEPARATOR . Template::LOCK_FILE;
     if (is_readable($lockFile)) {
         return -1;
     }
