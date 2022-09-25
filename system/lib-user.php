@@ -505,7 +505,7 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0, $cssClass
 					$ratio = $width / $sizeAttributes['width'];
 					$userPhoto .= ' height="' . ($sizeAttributes['height'] * $ratio)  . '"';
 				}
-            } else {
+            } elseif (isset($sizeAttributes['width']) AND isset($sizeAttributes['height'])) { // If these are not set then something has happened to the photo (missing from folder or corrupted)
 				$userPhoto .= ' width="' . $sizeAttributes['width'] . '" height="' . $sizeAttributes['height'] . '"';
 			}
 			
