@@ -1,5 +1,5 @@
                                 Geeklog Readme
-                                February 26, 2020
+                                September 27, 2022
 
 Table of Contents
 ================
@@ -130,16 +130,10 @@ https://www.geeklog.net
 
 Where you can find the Geeklog FAQ, Wiki, and the Forums.
 
-3.2) Online Chat
-==================
-Another option for support is visiting the Geeklog Gitter room found at:
-
-https://gitter.im/Geeklog-Core/geeklog
-
 Here you can ask questions of the developers and other people interested in
 Geeklog.
 
-3.3) Mailing Lists
+3.2) Mailing Lists
 ==================
 Another good support channel is the mailing list located at:
 
@@ -222,6 +216,7 @@ See also:
 
 Appendix A - readme history
 ===========================
+2022-09-27 - Minor updates [Tom]
 2020-02-26 - Minor updates [Tom]
 2017-01-25 - Updated links [Tom]
 2016-10-24 - Added Gitter information. Formatting [Tom]
@@ -237,6 +232,3 @@ Appendix A - readme history
 2002-08-11 - Minor updates [DHaun]
 [various]
 2001-08-18 - First readme file.
-
-
-Join the chat at https://gitter.im/Geeklog-Core/geeklog
