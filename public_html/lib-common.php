@@ -7255,19 +7255,18 @@ function COM_isAjax()
 }
 
 /**
- * Try to figure out our current URL, including all parameters.
- * This is an ugly hack since there's no single variable that returns what
- * we want and the variables used here may not be available on all servers
- * and / or setups.
- * Seems to work on Apache (1.3.x and 2.x), nginx, and IIS.
+ * Figure out our current URL, including all parameters.
+ * See URL Class and getCurrentURL function for more info
  *
  * @return   string  complete URL, e.g. 'http://www.example.com/blah.php?foo=bar'
  */
 function COM_getCurrentURL()
 {
-    global $_CONF;
-
-    return Url::getCurrentURL($_CONF['site_url']);
+	// Note: Returned URL is not sanitized. 
+	// URL could contain tags, svg embeds, etc...
+	// If needed the calling function needs to sanitize the URL by calling Url::cleanUrl($url)
+	
+    return Url::getCurrentURL();
 }
 
 /**
@@ -8335,9 +8334,9 @@ function COM_handle404($alternate_url = '')
     // send 404 in any case
     header('HTTP/1.1 404 Not Found');
     header('Status: 404 Not Found');
-
+		
 	// sanitize url since for display purposes. URL could contain tags, svg embeds, etc...
-	$url = htmlspecialchars(COM_getCurrentURL());
+	$url = Url::cleanUrl(COM_getCurrentURL());
 
     // Add file log stuff
     if (isset($_CONF['404_log']) && $_CONF['404_log']) {

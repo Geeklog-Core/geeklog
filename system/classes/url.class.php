@@ -311,12 +311,23 @@ class Url
     }
 
     /**
+     * Return a clean URL that is sanitized
+     *
+     * @return 	string
+	 * @since   Geeklog-2.2.3
+     */
+    public static function cleanUrl($url)
+    {
+		// URL could contain tags, svg embeds, etc... lets convert these characters into special chars
+		return htmlspecialchars($url);
+	}
+
+    /**
      * Return the current URL
      *
-     * @param  string  $siteUrl
      * @return string
      */
-    public static function getCurrentURL($siteUrl)
+    public static function getCurrentURL()
     {
         static $thisUrl;
 
@@ -325,61 +336,34 @@ class Url
         }
 
         $thisUrl = '';
-
-        if (empty($_SERVER['SCRIPT_URI'])) {
-            if (!empty($_SERVER['DOCUMENT_URI'])) {
-                $document_uri = $_SERVER['DOCUMENT_URI'];
-                $firstSlash = strpos($siteUrl, '/');
-
-                if ($firstSlash === false) {
-                    // special case - assume it's okay
-                    $thisUrl = $siteUrl . $document_uri;
-                } elseif ($firstSlash + 1 == strrpos($siteUrl, '/')) {
-                    // site is in the document root
-                    $thisUrl = $siteUrl . $document_uri;
-                } else {
-                    // extract server name first
-                    $pos = strpos($siteUrl, '/', $firstSlash + 2);
-                    $thisUrl = substr($siteUrl, 0, $pos) . $document_uri;
-                }
-            }
-        } else {
-            $thisUrl = $_SERVER['SCRIPT_URI'];
-        }
-
-        if (!empty($thisUrl) && !empty($_SERVER['QUERY_STRING'])) {
-            $thisUrl .= '?' . $_SERVER['QUERY_STRING'];
-        }
-
-        if (empty($thisUrl)) {
-            $requestUri = $_SERVER['REQUEST_URI'];
-            if (empty($_SERVER['REQUEST_URI'])) {
-                if (empty($_SERVER['PATH_INFO'])) {
-                    $requestUri = $_SERVER['SCRIPT_NAME'];
-                } else {
-                    $requestUri = $_SERVER['PATH_INFO'];
-                }
-
-                if (!empty($_SERVER['QUERY_STRING'])) {
-                    $requestUri .= '?' . $_SERVER['QUERY_STRING'];
-                }
-            }
-
-            $firstSlash = strpos($siteUrl, '/');
-
-            if ($firstSlash === false) {
-                // special case - assume it's okay
-                $thisUrl = $siteUrl . $requestUri;
-            } elseif ($firstSlash + 1 == strrpos($siteUrl, '/')) {
-                // site is in the document root
-                $thisUrl = $siteUrl . $requestUri;
-            } else {
-                // extract server name first
-                $pos = strpos($siteUrl, '/', $firstSlash + 2);
-                $thisUrl = substr($siteUrl, 0, $pos) . $requestUri;
-            }
-        }
-
+		
+		// https://github.com/Geeklog-Core/geeklog/issues/1139
+		// Updated for Geeklog 2.2.3
+		// Original code used $_SERVER['SCRIPT_URI']. On some hosts this can return incorrect protocol so work around needed
+		// Tested on Apache. Should work but not tested on:
+		// 	- IIS
+		//  - When site is installed in a folder off the domain and not the actual domain itself
+		
+		$protocol = 'http://';
+		if (isset($_SERVER['HTTPS'])) {
+			if ('on' == strtolower( $_SERVER['HTTPS'])) {
+				$protocol = 'https://';
+			} elseif ('1' == $_SERVER['HTTPS']) {
+				$protocol = 'https://';
+			}
+		} elseif (isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'])) {
+			$protocol = 'https://';
+		}		
+		
+		if (isset($_SERVER['REQUEST_URI'])) { // For Apache
+			$url_path = $_SERVER['REQUEST_URI'];
+		} else { // For IIS
+			$url_path = $_SERVER['PHP_SELF'];
+		}
+		
+		// Note: URL not clean/sanitized. If worried about embedded content in URL, calling function will need to perform the task using Url::cleanUrl($url)
+		$thisUrl = $protocol . $_SERVER['HTTP_HOST'] . $url_path;
+		
         return $thisUrl;
     }
 
