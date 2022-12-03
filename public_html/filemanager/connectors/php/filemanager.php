@@ -165,7 +165,7 @@ $config = [
         'allowPaths' => [],
     ],
     'upload'     => [
-        'fileSizeLimit' => $_CONF['filemanager_upload_file_size_limit'],
+        'fileSizeLimit' => 1024 * 1024 * ((int) $_CONF['filemanager_upload_file_size_limit']),
         'overwrite'     => $_CONF['filemanager_upload_overwrite'],
         'paramName'     => 'upload',
     ],
