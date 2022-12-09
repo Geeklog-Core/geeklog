@@ -344,7 +344,7 @@ function ADMIN_getListField_blocks($fieldName, $fieldValue, $A, $icon_arr, $toke
                             . "<map id=\"arrow{$A['bid']}\" name=\"arrow{$A['bid']}\">"
                             . "<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up{$csrfToken}\" alt=\"{$LANG21[58]}\"" . XHTML . ">"
                             . "<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchSide{$csrfToken}\" alt=\"$moveTitleMsg\"" . XHTML . ">"
-                            . "<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn${csrfToken}\" alt=\"{$LANG21[57]}\"" . XHTML . ">"
+                            . "<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn{$csrfToken}\" alt=\"{$LANG21[57]}\"" . XHTML . ">"
                             . "</map>";
                     }
                 }

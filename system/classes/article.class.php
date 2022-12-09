@@ -105,6 +105,8 @@ class Article
      * PRIVATE MEMBER VARIABLES: Things that make up a story.
      */
     var $_sid;
+    public $_old_sid = '';
+
     var $_title;
     var $_page_title;
     var $_meta_description;
