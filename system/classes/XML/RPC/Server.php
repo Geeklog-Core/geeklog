@@ -155,7 +155,7 @@ function XML_RPC_Server_methodSignature($server, $m)
         $dmap = $server->dmap;
         $sysCall = 0;
     }
-    //  print "<!-- ${methName} -->\n";
+    //  print "<!-- {$methName} -->\n";
     if (isset($dmap[$methName])) {
         if ($dmap[$methName]['signature']) {
             $sigs = array();
@@ -509,7 +509,7 @@ class XML_RPC_Server
             }
         }
         if (isset($wanted)) {
-            return array(0, "Wanted ${wanted}, got ${got} at param ${pno}");
+            return array(0, "Wanted {$wanted}, got {$got} at param {$pno}");
         } else {
             $allowed = array();
             foreach ($sig as $val) {
