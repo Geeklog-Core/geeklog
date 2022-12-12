@@ -356,13 +356,13 @@ class Article
      */
     public function hasContent()
     {
-        if (trim($this->_title) != '') {
+        if (!empty($this->_title) && (trim($this->_title) != '')) {
             return true;
         }
-        if (trim($this->_introtext) != '') {
+        if (!empty($this->_introtext) && (trim($this->_introtext) != '')) {
             return true;
         }
-        if (trim($this->_bodytext) != '') {
+        if (!empty($this->_bodytext) && (trim($this->_bodytext) != '')) {
             return true;
         }
 
