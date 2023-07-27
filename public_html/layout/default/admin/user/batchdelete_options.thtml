@@ -1,0 +1,15 @@
+{# begin {templatelocation} #}
+
+<div class="uk-form-row">
+  <div class="uk-form-controls">
+    <input type="radio" name="usr_type" value="{sel_id}"{selector}{xhtml}><span class="uk-form-help-inline">{lang_description}:</span>
+  </div>
+</div>
+<div class="uk-form-row">
+  <label class="uk-form-label">{lang_text_start}</label>
+  <div class="uk-form-controls">
+    <input class="aligncenter" type="text" name="usr_time[{sel_id}]" value="{id_value}" size="3"{selector}{xhtml}><span class="uk-form-help-inline">{lang_text_end}</span>
+  </div>
+</div>
+
+{# end {templatelocation} #}

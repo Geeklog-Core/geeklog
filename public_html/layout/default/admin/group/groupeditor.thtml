@@ -1,0 +1,74 @@
+{# begin {templatelocation} #}
+
+<form action="{site_admin_url}/group.php" method="post" id="admin-groupeditor" class="uk-form uk-form-horizontal">
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-groupeditor-grp_name">{lang_groupname}</label>
+    <div class="uk-form-controls">
+      {groupname_static}
+      <input type="{groupname_inputtype}" value="{group_name}" name="grp_name" id="admin-groupeditor-grp_name" class="uk-form-width-medium"{xhtml}>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-groupeditor-grp_descr">{lang_description}</label>
+    <div class="uk-form-controls">
+      <input type="text" maxlength="255" value="{group_description}" name="grp_descr" id="admin-groupeditor-grp_descr" class="uk-width-1-1"{xhtml}>
+    </div>
+  </div>
+
+  <div{hide_adminoption}>
+    <div class="uk-form-row">
+      <label class="uk-form-label">{lang_admingroup}</label>
+      <div class="uk-form-controls">
+        <input type="checkbox" name="chk_grpadmin" value="1" {chk_adminuse}{xhtml}>
+        <span class="uk-form-help-inline">{lang_admingrp_msg}</span>
+      </div>
+    </div>
+  </div>
+
+  <div{hide_defaultoption}>
+    <div class="uk-form-row">
+      <label class="uk-form-label">{lang_defaultgroup}</label>
+      <div class="uk-form-controls">
+        <input type="checkbox" name="chk_grpdefault" id="chk1" onclick="showHide('msg1')" value="1" {chk_defaultuse}{xhtml}>
+        <span class="uk-form-help-inline">{lang_defaultgrp_msg}</span>
+      </div>
+    </div>
+    <div class="uk-form-row">
+      <label class="uk-form-label"></label>
+      <div class="uk-form-controls">
+        <div style="display:none" id="msg1">
+          <input type="checkbox" name="chk_applydefault" id="chk2" value="1"{xhtml}>
+          <span class="uk-form-help-inline">{lang_applydefault_msg}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <fieldset class="uk-margin-large-top">
+    <legend>{lang_securitygroups}</legend>
+    <div class="uk-margin">{lang_securitygroupmsg}</div>
+    <div class="uk-overflow-container uk-panel uk-panel-box">{group_options}</div>
+  </fieldset>
+
+  <fieldset class="uk-margin-large-top">
+    <legend>{lang_rights}</legend>
+    <div class="uk-margin">{lang_rightsmsg}</div>
+    <div class="uk-overflow-container uk-panel uk-panel-box">{rights_options}</div>
+  </fieldset>
+
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+      <input type="submit" value="{lang_save}" name="mode" class="uk-button uk-form-width-medium"{xhtml}>
+      {delete_option}
+      <input type="hidden" name="grp_gl_core" value="{group_core}"{xhtml}>
+      <input type="hidden" name="grp_id" value="{group_id}"{xhtml}>
+      <input type="hidden" name="chk_showall" value="{show_all}"{xhtml}>
+      <input type="submit" value="{lang_cancel}" name="mode" class="uk-button"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </div>
+
+</form>
+
+{# end {templatelocation} #}

@@ -1,0 +1,8 @@
+{# begin {templatelocation} #}
+
+    <td class="uk-text-top {cal_day_style}">
+      {cal_day_anchortags}
+      {cal_day_entries}
+    </td>
+
+{# end {templatelocation} #}

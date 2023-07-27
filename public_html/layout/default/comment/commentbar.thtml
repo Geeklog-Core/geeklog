@@ -1,0 +1,39 @@
+{# begin {templatelocation} #}
+
+<ul class="uk-subnav uk-subnav-line uk-flex-center">
+  <li>{start_storylink_anchortag}<strong>{story_title}</strong>{end_storylink_anchortag}</li>
+  <li>{num_comments} {lang_comments}</li>
+  <li>{user_nullname} <a href="{login_logout_url}" rel="nofollow">{lang_login_logout}</a></li>
+</ul>
+
+<div class="uk-panel uk-panel-box uk-width-1-1">
+  <form action="{editor_url}" method="post" class="uk-form uk-float-left">
+    <div class="uk-form-row">
+      <input type="{reply_hidden_or_submit}" name="reply" value="{lang_reply}"{xhtml}>
+      <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
+      <input type="hidden" name="{nprefix}pid" value="0"{xhtml}>
+      <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
+      <input type="hidden" name="title" value="{comment_title}"{xhtml}>
+      {hidden_field_reply}
+      {jump_link_for_commenteditform}
+    </div>
+  </form>
+
+  <form action="{parent_url}" method="post" class="uk-form uk-float-right">
+    <div class="uk-form-row">
+      {order_selector} {mode_selector}
+      <input type="submit" value="{lang_refresh}"{xhtml}>
+      <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
+      <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
+      {hidden_field}
+    </div>
+  </form>
+</div>
+
+<p class="uk-text-center uk-text-muted">{lang_disclaimer}</p>
+
+<!-- BEGIN commenteditform_jumplink -->
+<a class="uk-button" href="#commenteditform">{lang_reply}</a>
+<!-- END commenteditform_jumplink -->
+
+{# end {templatelocation} #}

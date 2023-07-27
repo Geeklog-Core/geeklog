@@ -1,0 +1,23 @@
+{# begin {templatelocation} #}
+
+<ul class="uk-pagination uk-margin-large-top uk-margin-bottom ">{!if message}<li class="uk-margin-top">{message}</li>{!endif}
+
+<li{!if start_first_anchortag}{!else} class="uk-disabled"{!endif}>{!if start_first_anchortag}{!else}<span>{!endif}{start_first_anchortag}<i class="uk-icon-angle-double-left"></i>{end_first_anchortag}{!if start_first_anchortag}{!else}</span>{!endif}</li>
+<li{!if start_previous_anchortag}{!else} class="uk-disabled"{!endif}>{!if start_previous_anchortag}{!else}<span>{!endif}{start_previous_anchortag}<i class="uk-icon-angle-left"></i>{end_previous_anchortag}{!if start_previous_anchortag}{!else}</span>{!endif}</li>
+{pages}
+
+<!-- BEGIN message -->{!if message_text}<p>{message_text}</p>{!endif}<!-- END message -->
+
+<!-- BEGIN page --><li>{page_number}</li><!-- END page -->
+
+<!-- BEGIN page-current --><li class="uk-active"><span>{page_number}</span></li><!-- END page-current -->
+
+<!-- BEGIN nav-end -->
+<li{!if start_next_anchortag}{!else} class="uk-disabled"{!endif}>{!if start_next_anchortag}{!else}{!endif}{start_next_anchortag}<span><i class="uk-icon-angle-right"></i></span>{end_next_anchortag}{!if next_anchortag}{!else}{!endif}</li>
+<li{!if start_last_anchortag}{!else} class="uk-disabled"{!endif}>{!if start_last_anchortag}{!else}<span>{!endif}{start_last_anchortag}<i class="uk-icon-angle-double-right"></i>{end_last_anchortag}{!if start_last_anchortag}{!else}</span>{!endif}</li>
+</ul>
+<!-- END nav-end -->
+
+<!-- BEGIN nav-open-ended -->{open_ended}<!-- END nav-open-ended -->
+
+{# end {templatelocation} #}

@@ -1,0 +1,32 @@
+{# begin {templatelocation} #}
+
+{search_menu}
+
+<form action="{form_url}" method="post" class="uk-form uk-form-horizontal">
+
+  <div>
+    {formfields_top}
+  </div>
+
+  <div class="uk-overflow-container">
+    <table class="uk-table uk-table-condensed uk-table-striped uk-width-1-1" style="background:#ffffff;">
+      <tr>{header_row}</tr>
+      {item_row}
+    </table>
+  </div>
+
+  <div class="uk-subnav uk-flex-center uk-margin-large-top" style="{show_deleteimage}">
+    <input type="image" name="delbutton" alt="delbutton" src="{layout_url}/images/deleteitem.png" title="{lang_deleteall}" onclick="return confirm('{lang_delconfirm}');"{xhtml}>
+  </div>
+
+  <div>
+    {formfields_bottom}
+  </div>
+
+</form>
+
+<p class="uk-text-center" style="{show_message}">{message}</p>
+
+{google_paging}
+
+{# end {templatelocation} #}

@@ -1,0 +1,179 @@
+
+// Global Variables
+// ========================================================================
+
+//
+// Breakpoints
+//
+
+$breakpoint-small     ?=          480px
+$breakpoint-medium    ?=          768px
+$breakpoint-large     ?=          960px
+$breakpoint-xlarge    ?=          1200px
+
+$breakpoint-mini-max   =      ($breakpoint-small  - 1)
+$breakpoint-small-max  =      ($breakpoint-medium - 1)
+$breakpoint-medium-max =      ($breakpoint-large  - 1)
+$breakpoint-large-max  =      ($breakpoint-xlarge - 1)
+
+$var-style-mode              = initvar($var-style-mode,              "unit",   1)        // 1 or 2
+$var-header-style            = initvar($var-header-style,            "string", "normal") // "normal" or "texture"
+$var-sitename-style          = initvar($var-sitename-style,          "string", "text")   // "text"   or "image"
+$var-global-navigation-style = initvar($var-global-navigation-style, "string", "normal") // "normal" or "frame"
+$var-flip-horizontal         = initvar($var-flip-horizontal,         "boolean", false)   // true     or false
+$var-base-color              = initvar($var-base-color,              "rgba",    #426F9C) // Default: Professional Blue (#426F9C)
+$var-adjust-hue              = initvar($var-adjust-hue,              "boolean", true)    // true     or false
+$var-uikit-theme             = initvar($var-uikit-theme,             "string", "default") // "default", "gradient" or "almost-flat"
+
+//
+// Base
+//
+
+// text
+$base-text-color    = initvar($base-text-color,    "rgba", #222)
+$base-anker-color   = initvar($base-anker-color,   "rgba", #2661A2)
+$story-title-color  = initvar($story-title-color,  "rgba", $base-text-color)
+$story-status-color = initvar($story-status-color, "rgba", #999)
+
+// table
+$basic-table-th-background ?= #DAE0ED
+
+denim_hsl(h, s, l)
+    return hsl(h, round((s + 1)/256*100, 0), round((l + 1)/256*100, 0))
+
+//
+// Block Contents
+//
+
+//
+// Container
+//
+
+$container-background    = initvar($container-background,    "rgba",   #FFF)  // Default: #FFF
+$container-margin-top    = initvar($container-margin-top,    "unit",   0)     // Default: 0
+$container-margin-bottom = initvar($container-margin-bottom, "unit",   0)     // Default: 0
+$container-padding       = initvar($container-padding,       "unit",   0)     // Default: 0
+$container-border-size   = initvar($container-border-size,   "unit",   0)     // Default: 0
+$container-border-color  = initvar($container-border-color,  "rgba",   #000)  // Default: #000
+$container-border-style  = initvar($container-border-style,  "string", solid) // Default: solid
+
+
+//
+// Wrapper
+//
+
+$wrapper-background    = initvar($wrapper-background,    "rgba",   #FFF)  // Default: #FFF
+$wrapper-padding       = initvar($wrapper-padding,       "unit",   0)     // Default: 0
+$wrapper-border-size   = initvar($wrapper-border-size,   "unit",   0)     // Default: 0
+$wrapper-border-color  = initvar($wrapper-border-color,  "rgba",   #000)  // Default: #000
+$wrapper-border-style  = initvar($wrapper-border-style,  "string", solid) // Default: solid
+
+
+//
+// Header Block
+//
+
+$header-height       = initvar($header-height,       "unit",   80px)  // Default: 80px
+$header-padding      = initvar($header-padding,      "unit",   0)     // Default: 0
+$header-border-size  = initvar($header-border-size,  "unit",   0)     // Default: 0
+$header-border-color = initvar($header-border-color, "rgba",   #000)  // Default: #000
+$header-border-style = initvar($header-border-style, "string", solid) // Default: solid
+
+//$header-background ?= #426F9C
+//$header-background ?= denim_hsl(210, 104, 111) // #426F9C -> #42709E
+//$header-background ?= hsl(210, 40, 43)         // #426F9C -> #416D99
+//$header-background ?= hsl(210, 41, 44)         // #426F9C -> #42709E
+//$header-background-dark ?= #224F7C
+//$header-background-dark ?= denim_hsl(210, 147, 78) // #224F7C match
+//$header-background-dark ?= hsl(210, 57, 31)        // #224F7C match
+//$header-background-diff ?= $header-background - $header-background-dark
+
+$header-background = initvar($header-background, "rgba", $var-base-color)
+
+// Header color design type
+// flat: Flat
+// gradation: Professional Gradation
+$header-background-design-type = initvar($header-background-design-type, "string", "gradation") // "gradation" or "flat"
+
+$header-background-diff ?= #426F9C - #224F7C // Geeklog default
+if $header-background-design-type == "gradation"
+    $header-background-dark = $header-background - $header-background-diff
+else //if $header-background-design-type == "flat"
+    $header-background-dark = $header-background
+
+
+//
+// Gloval Navigation
+//
+
+//$navigation-background ?= #E7FED0 // #DDE7F1 // #E7E7E7
+$navigation-background    = initvar($navigation-background,    "rgba",   #E7E7E7)  // Default: #E7E7E7
+$navigation-padding       = initvar($navigation-padding,       "unit",   0)        // Default: 0
+$navigation-border-size   = initvar($navigation-border-size,   "unit",   0)        // Default: 0
+$navigation-border-color  = initvar($navigation-border-color,  "rgba",   #000)     // Default: #000
+$navigation-border-style  = initvar($navigation-border-style,  "string", solid)    // Default: solid
+
+
+//
+// System Message Box
+//
+
+$msgbox-title-background   = initvar($msgbox-title-background,   "rgba", rgb(62, 107, 152)) // Default: #3E6C9A
+$msgbox-title-color        = initvar($msgbox-title-color,        "rgba", #EEEEEC)           // Default: #EEEEEC
+$msgbox-message-background = initvar($msgbox-message-background, "rgba", #EEE)              // Default: #EEE
+$msgbox-message-color      = initvar($msgbox-message-color,      "rgba", #404040)           // Default: #404040
+$msgbox-border-radius      = initvar($msgbox-border-radius,      "unit", 6px)               // Default: 6px
+$msgbox-border-size        = initvar($msgbox-border-size,        "unit", 1px)               // Default: 1px
+
+
+//
+// Center Block
+//
+
+$center-separator-color ?= #E7E7E7
+
+//
+// Footer Block
+//
+
+$footer-background   = initvar($footer-background,   "rgba",   transparent) // Default: transparent
+$footer-padding      = initvar($footer-padding,      "unit",   0)           // Default: 0
+$footer-border-size  = initvar($footer-border-size,  "unit",   0)           // Default: 0
+$footer-border-color = initvar($footer-border-color, "rgba",   #000)        // Default: #000
+$footer-border-style = initvar($footer-border-style, "string", solid)       // Default: solid
+
+//
+// Admin List Table
+//
+
+$admin-list-table-th-background       ?= $basic-table-th-background
+$admin-list-table-td1-background      ?= #F7F7F7
+$admin-list-table-td2-background      ?= #E7E7E7
+$admin-list-table-rollover-background ?= #FFFF8F
+
+$admin-list-table-th-color            ?= $base-text-color
+$admin-list-table-td-color            ?= $base-text-color
+
+$admin-list-table-th-background       ?= #97B8DB //#92C5E8//#F3F3F3
+$admin-list-table-td1-background      ?= transparent
+$admin-list-table-td2-background      ?= rgba(0, 0, 0, 0.02)
+$admin-list-table-rollover-background ?= #F6ECBE //#F9F9F9
+
+//
+// Mobile
+//
+
+$mobile-blocks-background      ?= #F7F7F7 // Default: #E7E7E7
+$mobile-block-title-background ?= #3B6998 // Default: #3B6998
+$mobile-footer-background      ?= #284564 // Default: #284564
+
+// retrieve hue from $var-base-color
+$var-base-hue = hue($var-base-color)
+
+// Override the hue of $var-base-color
+if $var-adjust-hue == true
+    $msgbox-title-background       = hue($msgbox-title-background,       $var-base-hue)
+    $mobile-block-title-background = hue($mobile-block-title-background, $var-base-hue)
+    $mobile-footer-background      = hue($mobile-footer-background,      $var-base-hue)
+    $base-anker-color              = hue($base-anker-color,              $var-base-hue)
+

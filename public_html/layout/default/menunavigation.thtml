@@ -1,0 +1,11 @@
+{# {templatelocation} - The Menu Navigation uses template blocks which is built into this file #}
+
+<!-- BEGIN menuitem -->
+<li class="menuitem"><a href="{menuitem_url}">{menuitem_text}</a></li>
+<!-- END menuitem -->
+<!-- BEGIN menuitem_last -->
+<li class="menuitem last-child"><a href="{menuitem_url}">{menuitem_text}</a></li>
+<!-- END menuitem_last -->
+<!-- BEGIN menuitem_none -->
+
+<!-- END menuitem_none -->

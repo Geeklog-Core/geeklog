@@ -1,0 +1,384 @@
+
+$stage = 'admin'
+
+/*!--------------------------------------
+  Admin Common Style
+--------------------------------------*/
+
+/*! Basic Editor */
+.admin_basic
+    padding: 0.5em 2em
+    @media only screen and (max-width: $breakpoint-medium-max)
+        padding: 0.5em 0
+
+/*!--------------------------------------
+  Admin Top Menu Style
+--------------------------------------*/
+
+#admin-topmenu
+    margin-bottom: 2em
+    border: 1px solid rgba(0, 0, 0, 0.2)
+    padding: 10px 5px
+    line-height: 1.25
+    border-radius: 4px
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+
+.admin-menu-icon
+    float: left
+    padding: 5px
+    margin-right: 10px
+    width: 48px
+    height: 48px
+
+#instructions
+    padding: 5px
+    > p
+        margin: 0 0 5px 0
+        line-height: 1.25
+
+#admin-menu-fields
+    color: #CCC
+
+.admin-topic-image
+    margin: 0 5px 0 0
+    vertical-align: middle
+
+/*!--------------------------------------
+  Group Editor
+--------------------------------------*/
+
+#rights_options
+    width: 100%
+    font-size: 11px
+
+/*!--------------------------------------
+  Group Member Editor
+--------------------------------------*/
+
+.listmembers
+    float: left
+    width: 35%
+    height: 15em
+
+#admin-groupmembers-fieldFrom,
+#admin-groupmembers-fieldTo
+    width: 100%
+    height: 100%
+
+.movemembers
+    float: left
+    width: 30%
+    padding-top: 5em
+    text-align: center
+    height: 12em
+
+.movebutton
+    margin: 0.5em 0
+    text-align: center
+
+/*!--------------------------------------
+  Admin Page
+--------------------------------------*/
+
+/*! Admin List Table */
+.admin-list-table
+    margin: 0
+    width: 100%
+    @media only screen and (max-width: $breakpoint-large-max)
+        width: 900px
+    .fieldset-table-wrapper > &
+        width: 100%
+    text-align: left
+    // border-collapse: separate
+    // border-spacing: 1px
+    // border: none
+    font-size: 90%
+    tr
+        margin: 0
+        padding: 0
+        vertical-align: middle
+    th,
+    td
+        vertical-align: middle
+        line-height: 1.1em
+        height: 2.3em
+        padding-top: 2px
+        padding-bottom: 2px
+        // border: none
+    th
+        color: $admin-list-table-th-color
+        background-color: $admin-list-table-th-background
+    img
+        vertical-align: middle
+    admin-table()
+
+.admin-table-changer
+    display: none
+    @media only screen and (max-width: $breakpoint-large-max)
+        display: block
+    text-align: right
+    margin-right: 2px
+    margin-bottom: 2px
+    a
+        width: 60px
+        text-align: center
+        font-size: 85%
+        padding: 2px 6px
+
+.table-wrapper
+    width: 100%
+    overflow: scroll
+
+.table-wrapper-fit
+    width: 100%
+    overflow: visible
+    > .admin-list-table
+        width: 100%
+
+/*! Navigation */
+.admin-list-navi
+    margin-top: 0.5em
+
+/*! Message */
+.admin-list-message
+    margin: 1em 0 0 0
+    padding: 0
+    text-align: center
+
+.admin-list-search
+    text-align: center
+    margin: 0.5em 0
+    clearfix()
+    // All Mobile Sizes (devices and browser)
+    @media only screen and (max-width: $breakpoint-small-max)
+        text-align: left
+
+.admin-list-smalltable
+    margin: 0 0 0.5em 0
+    border-collapse: separate
+    border-spacing: 1px
+    font-size: 13px
+
+.admin-list-headerfield
+    padding: 4px
+
+.admin-list-field
+    padding: 4px
+    a
+        padding: 4px 6px
+
+.search-part
+    display: inline-block
+    margin-right: 5px
+    white-space: nowrap
+    // All Mobile Sizes (devices and browser)
+    @media only screen and (max-width: $breakpoint-small-max)
+        display: block
+
+/*!--------------------------------------
+  Permission Style
+--------------------------------------*/
+
+#admin-permissions
+    admin-table()
+    margin: 0 0 0.5em 0
+    font-size: 13px
+    th, td
+        font-weight: bold
+        text-align: center
+        padding: 4px
+
+/*!--------------------------------------
+  Command and Control Page
+--------------------------------------*/
+
+.admin-commandcontrol
+    list-style-position: outside
+    list-style-type: none
+    margin: 0
+    padding: 0
+    li
+        float: left
+        width: 12.5%
+        height: 8em
+        margin: 0
+        padding: 0
+        text-align: center
+        // Smaller than standard 1280 (devices and browsers)
+        @media only screen and (max-width: $breakpoint-large-max)
+            width: 16.66%
+
+        // Tablet Portrait size to standard 960 (devices and browsers)
+        @media only screen and (min-width: $breakpoint-medium) and (max-width: $breakpoint-medium-max)
+            width: 20%
+
+        // All Mobile Sizes (devices and browser)
+        @media only screen and (max-width: $breakpoint-small-max)
+            width: 25%
+
+        // Mobile Portrait Size to Mobile Landscape Size (devices and browsers)
+        @media only screen and (max-width: $breakpoint-mini-max)
+            width: 33.33%
+    a
+        display: block
+        font-size: 90%
+        margin: 5px 0
+
+/*!--------------------------------------
+  Plugin Page
+--------------------------------------*/
+
+#admin-editor #title
+    font-size: 13px
+    font-weight: bold
+    position: relative
+    top: 10px
+
+
+/*! Used by lib-plugin.php to display dependencies */
+b.notbold /*! hack for HTML compliance inside tooltips */
+    font-weight: normal
+
+b.status_red
+    display: inline
+    color: #a40000
+
+b.status_orange
+    display: inline
+    color: #b25000
+
+b.status_green
+    display: inline
+    color: #3d7805
+
+b.status_black
+    display: inline
+    color: black
+
+/*!--------------------------------------
+  Story Editor
+--------------------------------------*/
+
+.story_editor
+    margin: 0 0 1em 0
+    padding: 8px
+    border: 1px solid #CCC
+    dl
+        margin-bottom: 0
+    dt
+        width: 14%
+    dd
+        width: 85%
+    @media only screen and (max-width: $breakpoint-medium-max)
+        dt
+            width: auto
+        dd
+            width: auto
+
+#text_editor dd.description
+    margin-left: 15%
+
+#admin-storyeditor-introtext,
+#admin-storyeditor-bodytext
+    width: 98%
+
+/*! Preview */
+#preview
+    margin: 1em 0
+    padding: 1em 0
+    border-top: 1px solid #CCC
+    border-bottom: none
+
+/*! Story Stats */
+.story_stats
+    display: inline-block
+    float: left
+    margin-right: 2em
+
+/*!--------------------------------------
+  Topic Editor
+--------------------------------------*/
+
+/*! TopicList */
+#admin-topiclist
+    list-style-position: outside
+    list-style-type: none
+    margin: 0
+    padding: 0
+    li
+        float: left
+        width: 20%
+        height: 8em
+        margin: 0
+        padding: 0
+        text-align: center
+    a
+        display: block
+
+/*!--------------------------------------
+  Trackback
+--------------------------------------*/
+
+.trackback-message
+    margin: 0 0 1em 0
+    padding: 0
+
+/*!--------------------------------------
+  User Editor
+--------------------------------------*/
+
+/*! User Images */
+.userphoto
+    margin: 0.5em 0.5em 0 0
+
+
+/*! Security Group Instructions */
+.groupinstructions
+    margin: 0 0 0.5em 0
+
+/*!--------------------------------------
+  Reminder
+--------------------------------------*/
+
+#reminder-submit
+    margin: 0.5em 0
+
+/*!--------------------------------------
+  Enviroment Check
+--------------------------------------*/
+
+.pathtext
+    font-size: 11px
+    color: #666
+
+.pathtext-status
+    text-align: right
+    white-space: nowrap
+
+.yes, .iswriteable
+    font-weight: bold
+    color: #46882b
+
+.no, .notok, .notwriteable
+    font-weight: bold
+    color: #cc0000
+
+/*! PHPInfo Panel style and button */
+#panel_phpinfo
+    padding: 5px
+    width: 600px
+    margin: auto
+    text-align: center
+
+#toggle_phpinfo
+    padding: 5px
+    width: 200px
+    margin: auto
+    text-align: center
+    border: solid 1px #c3c3c3
+
+#panel_phpinfo
+    padding: 50px
+    display: none
+
+hook-root($stage)

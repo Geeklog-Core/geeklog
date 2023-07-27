@@ -1,0 +1,5 @@
+{# begin {templatelocation} #}
+
+<div style="border-bottom:1px solid white;">{delete_imagelink} {event_starttime} {event_endtime} {event_title_and_link}</div>
+
+{# end {templatelocation} #}

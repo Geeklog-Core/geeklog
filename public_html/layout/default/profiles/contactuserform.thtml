@@ -1,0 +1,49 @@
+{# begin {templatelocation} #}
+
+<form action="{site_url}/profiles.php" method="post" id="contactuserform" class="uk-form uk-form-horizontal">
+
+  <p class="uk-margin">{lang_description}</p>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="contactuserform-author">{lang_username}</label>
+    <div class="uk-form-controls"><input type="text" value="{username}" maxlength="32" name="author" id="contactuserform-author" class="uk-form-width-medium"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+
+    <label class="uk-form-label" for="contactuserform-authoremail">{lang_useremail}</label>
+    <div class="uk-form-controls"><input type="text" value="{useremail}" maxlength="96" name="authoremail" id="contactuserform-authoremail" class="uk-form-width-medium"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="contactuserform-subject">{lang_subject}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="96" value="{subject}" name="subject" id="contactuserform-subject" class="uk-form-width-medium"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="contactuserform-message">{lang_message}</label>
+    <div class="uk-form-controls">
+        <textarea rows="10" cols="50" name="message" id="contactuserform-message" class="uk-width-1-1" aria-describedby="contactuserform-cc-d1">{message}</textarea>
+        <span class="uk-form-help-inline" id="contactuserform-cc-d1">{lang_nohtml}</span>
+    </div>
+  </div>
+  <div class="uk-form-row"{cc_enabled}>
+    <div class="uk-form-controls"{cc_enabled}>
+      <label class="uk-form-label" for="contactuserform-cc">{lang_cc}</label>
+      <div class="uk-form-controls">
+        <input type="checkbox" name="cc" id="contactuserform-cc"{cc}{xhtml}>
+        <span class="uk-form-help-inline">{lang_cc_description}</span>
+      </div>
+    </div>
+  </div>
+
+  {captcha}
+
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+      <input type="hidden" name="what" value="contact"{xhtml}>
+      <input type="hidden" name="uid" value="{uid}"{xhtml}>
+      <input type="submit" value="{lang_submit}" onclick="return postconfirm();" onkeypress="return postconfirm();" class="uk-button uk-form-width-medium"{xhtml}>
+    </div>
+  </div>
+
+</form>
+
+{# end {templatelocation} #}

@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+<form method="post" action="{site_url}/calendar/index.php?mode=personal" class="uk-form">
+  <input type="submit" name="action" value="{lang_mycalendar}"{xhtml}>
+</form>
+
+{# end {templatelocation} #}

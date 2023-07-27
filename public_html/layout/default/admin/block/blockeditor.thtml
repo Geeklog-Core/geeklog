@@ -1,0 +1,156 @@
+{# begin {templatelocation} #}
+
+{start_block_editor}
+<form action="{site_admin_url}/block.php" method="post" id="admin-blockeditor" class="uk-form uk-form-horizontal">
+
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-title">{lang_blocktitle}</label>
+        <div class="uk-form-controls">
+      <input type="text" value="{block_title}" name="title" id="admin-blockeditor-title" class="uk-form-width-medium" required{xhtml}>
+    </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-is_enabled">{lang_enabled}</label>
+        <div class="uk-form-controls">
+      <input type="checkbox" {is_enabled} name="is_enabled" id="admin-blockeditor-is_enabled"{xhtml}>
+    </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-help">{lang_blockhelpurl}</label>
+        <div class="uk-form-controls">
+            <input type="text" value="{block_help}" name="help" id="admin-blockeditor-help" class="uk-form-width-medium" describedby="admin-blockeditor-d1 admin-blockeditor-d2"{xhtml}>
+            <span class="uk-form-help-inline" id="admin-blockeditor-d1">{lang_includehttp}</span>
+            <span class="uk-form-help-inline" id="admin-blockeditor-d2">{lang_explanation}</span>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-name">{lang_blockname}</label>
+        <div class="uk-form-controls"><input type="text" value="{block_name}" name="name" id="admin-blockeditor-name" class="uk-form-width-medium" describedby="admin-blockeditor-d3" required{xhtml}>
+            <span class="uk-form-help-inline" id="admin-blockeditor-d3">{lang_nospaces}</span>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label">{lang_topic}</label>
+        <div class="uk-form-controls">{topic_selection}</div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-onleft">{lang_side}</label>
+        <div class="uk-form-controls">
+            <select name="onleft" id="admin-blockeditor-onleft">
+                <option value="1" {left_selected}>{lang_left}</option>
+                <option value="0" {right_selected}>{lang_right}</option>
+            </select>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-blockorder">{lang_blockorder}</label>
+        <div class="uk-form-controls">
+            <input type="text" value="{block_order}" name="blockorder" id="admin-blockeditor-blockorder" class="uk-form-width-mini" aria-describedby="admin-blockeditor-d4"{xhtml}>
+            <span class="uk-form-help-inline" id="admin-blockeditor-d4">0-9999</span>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-type">{lang_blocktype}</label>
+        <div class="uk-form-controls">
+            <select name="type" id="admin-blockeditor-type">
+                <option value="normal" {normal_selected}>{lang_normalblock}</option>
+                <option value="phpblock" {php_selected}>{lang_phpblock}</option>
+                <option value="portal" {portal_selected}>{lang_portalblock}</option>
+            </select>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-cachetime">{lang_cachetime}</label>
+        <div class="uk-form-controls"><input type="text" size="8" value="{cache_time}" name="cache_time" id="admin-blockeditor-cachetime" class="uk-form-width-small" aria-describedby="admin-blockeditor-d5"{xhtml}>
+            <span class="uk-form-help-inline" id="admin-blockeditor-d5">{lang_cachetime_desc}</span>
+        </div>
+    </div>
+
+    <fieldset id="fs-phpblock-options" class="uk-margin-large-top">
+        <legend>{lang_phpblockoptions}</legend>
+
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-phpblockfn">{lang_blockfunction}</label>
+        <div class="uk-form-controls"><input type="text" maxlength="50" value="{block_phpblockfn}" name="phpblockfn" id="admin-blockeditor-phpblockfn" class="uk-form-width-medium" aria-describedby="admin-blockeditor-d6"{xhtml}>
+            <span class="uk-form-help-inline" id="admin-blockeditor-d6">{lang_phpblockwarning}</span>
+        </div>
+    </div>
+
+    </fieldset>
+
+    <fieldset id="fs-portal-options" class="uk-margin-large-top">
+        <legend>{lang_portalblockoptions}</legend>
+
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-rdfurl">{lang_rdfurl}</label>
+        <div class="uk-form-controls">
+      <input type="text" maxlength="{max_url_length}" value="{block_rdfurl}" name="rdfurl" id="admin-blockeditor-rdfurl" class="uk-form-width-medium"{xhtml}>
+    </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-rdflimit">{lang_rdflimit}</label>
+        <div class="uk-form-controls"><input type="text" maxlength="3" value="{block_rdflimit}" name="rdflimit" id="admin-blockeditor-rdflimit" class="uk-form-width-mini"{xhtml}></div>
+
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-rdfupdated">{lang_lastrdfupdate}</label>
+        <div class="uk-form-controls">
+      <input type="text" value="{block_rdfupdated}" name="rdfupdated" id="admin-blockeditor-rdfupdated" class="uk-form-width-medium"{xhtml}>
+    </div>
+    </div>
+
+    </fieldset>
+
+    <fieldset id="fs-normal-options" class="uk-margin-large-top">
+        <legend>{lang_normalblockoptions}</legend>
+
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-content">{lang_blockcontent}</label>
+        <div class="uk-form-controls"><textarea cols="40" rows="12" name="content" id="admin-blockeditor-content" class="uk-width-1-1" aria-describedby="admin-blockeditor-d7">{block_content}</textarea>
+            <span class="uk-form-help-inline" id="admin-blockeditor-d7">{lang_allowed_html}</span>
+      </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-blockeditor-allow_autotags">{lang_autotags}</label>
+        <div class="uk-form-controls">
+            <input type="checkbox" name="allow_autotags" id="admin-blockeditor-allow_autotags" {allow_autotags} aria-describedby="admin-blockeditor-d8"{xhtml}><span class="uk-form-help-inline" id="admin-blockeditor-d8">{lang_use_autotags}</span>
+        </div>
+    </div>
+    </fieldset>
+
+    <fieldset class="uk-margin-large-top">
+        <legend>{lang_accessrights}</legend>
+
+    <div class="uk-form-row">
+        <label class="uk-form-label">{lang_owner}</label>
+        <div class="uk-form-controls">{owner_username}</div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="group_id">{lang_group}</label>
+        <div class="uk-form-controls">{group_dropdown}</div>
+    </div>
+    <div class="uk-form-row">
+        <div class="uk-form-controls">{lang_permissions}</div>
+        <div class="uk-form-controls">{permissions_editor}
+            <span class="uk-form-help-inline">{lang_perm_key}</span>
+            <span class="uk-form-help-inline">{lang_permissions_msg}</span>
+        </div>
+    </div>
+
+    </fieldset>
+
+        <div class="uk-form-row uk-margin-large-top">
+            <div class="uk-form-controls">
+                <input type="submit" value="{lang_save}" name="mode" class="uk-button uk-form-width-medium"{xhtml}>
+                <input type="submit" value="{lang_cancel}" name="mode" class="uk-button"{xhtml}>
+                <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
+                <input type="hidden" name="bid" value="{block_bid}"{xhtml}>
+                <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+                {delete_option}
+            </div>
+        </div>
+
+</form>
+{end_block}
+
+{# end {templatelocation} #}

@@ -1,0 +1,21 @@
+{# begin {templatelocation} #}
+
+<form action="{site_url}/comment.php" method="post" id="reportcomment" class="uk-form uk-form-horizontal">
+
+<div class="uk-margin">{comment}</div>
+
+  <span class="uk-form-help-inline">{lang_report_this}</span>
+
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+      <input type="submit" name="sendit" value="{lang_send_report}" class="uk-button uk-form-width-medium"{xhtml}>
+      <input type="hidden" name="cid" value="{cid}"{xhtml}>
+      <input type="hidden" name="type" value="{type}"{xhtml}>
+      <input type="hidden" name="mode" value="sendreport"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </div>
+
+</form>
+
+{# end {templatelocation} #}

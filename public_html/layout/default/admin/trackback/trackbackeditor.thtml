@@ -1,0 +1,37 @@
+{# begin {templatelocation} #}
+
+<form action="{site_admin_url}/trackback.php" method="post" id="trackbackeditor" class="uk-form uk-form-horizontal">
+
+  <p class="uk-margin-bottom">{lang_explain}</p>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="trackbackeditor-target">{lang_trackback_url}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="{max_url_length}" value="{target_url}" name="target" id="trackbackeditor-target" class="uk-width-1-1"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="trackbackeditor-blog_name">{lang_blog_name}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="80" value="{blog_name}" name="blog_name" id="trackbackeditor-blog_name" class="uk-width-1-1"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="trackbackeditor-url">{lang_entry_url}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="{max_url_length}" value="{url}" name="url" id="trackbackeditor-url" class="uk-width-1-1"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="trackbackeditor-title">{lang_title}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="255" value="{title}" name="title" id="trackbackeditor-title" class="uk-width-1-1"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="trackbackeditor-excerpt">{lang_excerpt}</label>
+    <div class="uk-form-controls"><textarea cols="45" rows="8" name="excerpt" id="trackbackeditor-excerpt" class="uk-width-1-1" class="uk-width-1-1" aria-describedby="trackbackeditor-excerpt-d1">{excerpt}</textarea><span class="uk-form-help-inline" id="trackbackeditor-excerpt-d1">{lang_excerpt_truncated}</span></div>
+  </div>
+
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+      <input type="submit" value="{lang_send}" name="mode[0]" class="uk-button uk-form-width-medium"{xhtml}>
+      <input type="submit" value="{lang_preview}" name="mode[1]" class="uk-button"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </div>
+</form>
+
+{# end {templatelocation} #}

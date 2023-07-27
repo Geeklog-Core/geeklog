@@ -1,0 +1,99 @@
+{# begin {templatelocation} #}
+
+{start_feed_editor}
+<form action="{site_admin_url}/syndication.php" method="post" id="admin-feededitor" class="uk-form uk-form-horizontal">
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-feededitor-title">{lang_feedtitle}</label>
+    <div class="uk-form-controls">
+        <input type="text" value="{feed_title}" name="title" id="admin-feededitor-title" class="uk-form-width-large"{xhtml}>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-feededitor-is_enabled">{lang_enabled}</label>
+    <div class="uk-form-controls">
+        <input type="checkbox" {is_enabled} name="is_enabled" id="admin-feededitor-is_enabled"{xhtml}>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_type}</label>
+    <div class="uk-form-controls">{feed_type_display}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_topic}</label>
+    <div class="uk-form-controls">{feed_topic}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-feededitor-header_tid">{lang_header_topic}</label>
+    <div class="uk-form-controls">
+      <select name="header_tid" id="admin-feededitor-header_tid">
+        {header_topic_options}
+      </select>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_format}</label>
+    <div class="uk-form-controls">{feed_format}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-feededitor-limits">{lang_limits}</label>
+    <div class="uk-form-controls">
+      <input type="text" value="{feed_limits}" name="limits" id="admin-feededitor-limits" class="uk-form-width-mini"{xhtml}> {feed_limits_what}
+      </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-feededitor-content_length">{lang_content_length}</label>
+    <div class="uk-form-controls">
+      <input type="text" value="{feed_content_length}" name="content_length" id="admin-feededitor-content_length" class="uk-form-width-mini" aria-describedby="admin-feededitor-d1"{xhtml}><span class="uk-form-help-inline" id="admin-feededitor-d1">{lang_clen_explain}</span>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-feededitor-description">{lang_description}</label>
+    <div class="uk-form-controls">
+      <textarea cols="45" rows="8" name="description" id="admin-feededitor-description" class="uk-width-1-1">{feed_description}</textarea>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-feededitor-feedlogo">{lang_feedlogo}</label>
+    <div class="uk-form-controls">
+      <input type="text" maxlength="255" value="{feed_logo}" name="feedlogo" id="admin-feededitor-feedlogo" class="uk-form-width-large" aria-describedby="admin-feededitor-d2"{xhtml}>
+      <span class="uk-form-help-inline" id="admin-feededitor-d2">{lang_feedlogo_explain}</span>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-feededitor-filename">{lang_filename}</label>
+    <div class="uk-form-controls">
+      <input type="text" value="{feed_filename}" name="filename" id="admin-feededitor-filename" class="uk-form-width-medium"{xhtml}>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-feededitor-charset">{lang_charset}</label>
+    <div class="uk-form-controls">
+      <input type="text" value="{feed_charset}" name="charset" id="admin-feededitor-charset" class="uk-form-width-medium"{xhtml}>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-feededitor-language">{lang_language}</label>
+    <div class="uk-form-controls">
+      <input type="text" value="{feed_language}" name="language" id="admin-feededitor-language" class="uk-form-width-medium"{xhtml}>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_updated}</label>
+    <div class="uk-form-controls">{feed_updated}</div>
+  </div>
+
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+      <input type="submit" value="{lang_save}" name="mode" class="uk-form-width-medium"{xhtml}>
+      <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
+      <input type="hidden" name="fid" value="{feed_id}"{xhtml}>
+      <input type="hidden" name="type" value="{feed_type}"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+      {delete_option}
+    </div>
+  </div>
+</form>
+{end_block}
+
+{# end {templatelocation} #}

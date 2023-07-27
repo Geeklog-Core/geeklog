@@ -1,0 +1,26 @@
+{# begin {templatelocation} #}
+
+<li>
+  <form class="uk-form" action="{site_url}/users.php?openid_login=1" method="post" style="min-width:2em">
+    <div style="display: none;">
+        <div class="uk-form-row">
+            {# this is revealed by login.js #}
+            <label class="uk-form-label"><img alt="" src="{site_url}/images/openid_login_icon.png"{xhtml}></label>
+            <div class="uk-form-controls">
+                <input type="submit" value="{lang_openid_login}"{xhtml}>
+            </div>
+        </div>
+    </div>
+    <noscript>
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="identity_url">{lang_openid_login}</label></label>
+            <div class="uk-form-controls">
+                <input name="identity_url" id="identity_url" style='background: url("{site_url}/images/openid_login_icon.png") no-repeat;background-color:#fff;background-position:0 50%;color:#000;padding-left:18px;font-family:monospace;font-size:10px' value="http://" size="{input_field_size}"{xhtml}>
+                <input src="{site_url}/images/right_arrow.png" style="padding:1px;margin-bottom:-5px;height:16px;width:16px;border:1px" type="image"{xhtml}>
+            </div>
+        </div>
+    </noscript>
+  </form>
+</li>
+
+{# end {templatelocation} #}

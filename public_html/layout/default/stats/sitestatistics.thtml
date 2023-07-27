@@ -1,0 +1,23 @@
+{# begin {templatelocation} #}
+
+<table class="uk-table uk-table-condensed uk-table-striped uk-width-1-1" style="background:#ffffff;">
+  <tbody>
+    <tr>
+      <th>{lang_totalhitstosystem}</th>
+      <td>{total_hits}</td>
+    </tr>
+    <tr>
+      <th>{lang_active_users}</th>
+      <td>{active_users}</td>
+    </tr>
+    <tr>
+      <th>{lang_stories_comments}</th>
+      <td>{total_stories}({total_comments})</td>
+    </tr>
+
+    {summary_row}
+  </tbody>
+
+</table>
+
+{# end {templatelocation} #}

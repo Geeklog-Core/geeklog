@@ -1,0 +1,41 @@
+{# begin {templatelocation} #}
+
+<div class="uk-grid uk-panel uk-panel-box" style="margin-left:0">
+  <div class="uk-width-1-3 uk-text-center uk-text-bold"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=day">{lang_day}</a></div>
+  <div class="uk-width-1-3 uk-text-center uk-text-bold">{lang_week}</div>
+  <div class="uk-width-1-3 uk-text-center uk-text-bold"><a href="{site_url}/calendar/index.php?mode={mode}">{lang_month}</a></div>
+</div>
+
+<ul class="uk-pagination">
+  <li><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=week&amp;month={prevmonth}&amp;day={prevday}&amp;year={prevyear}">&lt;&lt;</a></li>
+  <li class="uk-disabled"><span>{date_range}</span></li>
+  <li><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=week&amp;month={nextmonth}&amp;day={nextday}&amp;year={nextyear}">&gt;&gt;</a></li>
+</ul>
+
+<ul class="uk-subnav uk-flex-center">
+  <li>{calendar_title}</li>
+  <li>{calendar_toggle}</li>
+</ul>
+
+<dl class="uk-description-list-line">
+  <dt>{day1}<span class="uk-float-right">{langlink_addevent1}</span></dt>
+  <dd>{events_day1}</dd>
+  <dt>{day2}<span class="uk-float-right">{langlink_addevent2}</span></dt>
+  <dd>{events_day2}</dd>
+  <dt>{day3}<span class="uk-float-right">{langlink_addevent3}</span></dt>
+  <dd>{events_day3}</dd>
+  <dt>{day4}<span class="uk-float-right">{langlink_addevent4}</span></dt>
+  <dd>{events_day4}</dd>
+  <dt>{day5}<span class="uk-float-right">{langlink_addevent5}</span></dt>
+  <dd>{events_day5}</dd>
+  <dt>{day6}<span class="uk-float-right">{langlink_addevent6}</span></dt>
+  <dd>{events_day6}</dd>
+  <dt>{day7}<span class="uk-float-right">{langlink_addevent7}</span></dt>
+  <dd>{events_day7}</dd>
+</dl>
+
+<div>
+  {quickadd_form}
+</div>
+
+{# end {templatelocation} #}

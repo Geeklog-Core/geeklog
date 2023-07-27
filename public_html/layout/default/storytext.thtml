@@ -1,0 +1,59 @@
+{# begin {templatelocation} #}
+
+<article itemscope itemtype="http://schema.org/Article" class="<?php if(SEC_inGroup('Root')){ ?>gl-edit <?php } ?>uk-article">
+  <header>
+
+<?php if( COM_onFrontpage() ) { ?><h2<?php } else { ?><h1<?php } ?>
+     itemprop="name" class="uk-article-title uk-margin-remove">{start_storylink_anchortag}{story_title}{end_storylink_anchortag}
+<?php if( COM_onFrontpage() ) { ?></h2><?php } else { ?></h1><?php } ?>
+
+    <div class="uk-grid">
+      <div class="uk-width-1-2">
+        <ul class="uk-article-meta uk-subnav uk-flex-left">
+          <li itemprop="datePublished">{story_date}</li>
+          <li>{lang_contributed_by} {start_contributedby_anchortag}<span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{contributedby_author}</span></span>{end_contributedby_anchortag}</li>
+          <li>{lang_views} {story_hits}</li>
+        </ul>
+      </div>
+    <div class="uk-width-1-2">
+        <div class="uk-subnav uk-flex-right">
+          {email_icon}{print_icon}{edit_icon}
+        </div>
+      </div>
+    </div>
+
+  </header>
+
+  <div itemprop="articleBody" class="uk-margin-top">
+{!if story_anchortag_and_image_no_align}
+    <span class="uk-float-right uk-margin-left uk-margin-bottom">{story_anchortag_and_image_no_align}</span>
+{!endif}
+    {story_text_no_br}
+  </div>
+
+{!if story_footer}
+  <footer>
+
+    {related_topics}
+
+{!if navi_list}
+    <ul class="uk-list">
+      {!if page_selector}<li>{page_selector}</li>{!endif}
+      {!if readmore_link}<li>{readmore_link}</li>{!endif}
+      {!if post_comment_link}<li>{post_comment_link}</li>{!endif}
+    </ul>
+{!endif}
+
+{!if feedback_list}
+    <ul class="uk-subnav uk-subnav-line uk-flex-center">
+      {!if plugin_itemdisplay}<li>{plugin_itemdisplay}</li>{!endif}
+      {!if comments_with_count}<li>{comments_with_count}</li>{!endif}
+      {!if trackbacks_with_count}<li>{trackbacks_with_count}</li>{!endif}
+    </ul>
+{!endif}
+
+  </footer>
+{!endif}
+</article>
+
+{# end {templatelocation} #}

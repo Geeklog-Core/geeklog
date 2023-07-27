@@ -1,0 +1,14 @@
+{# begin {templatelocation} #}
+
+<div>
+  <ul class="uk-list">
+    <li class="uk-text-bold"><a href="{trackback_url}">{trackback_title}</a> {trackback_from_blog_name}</li>
+    <li>{lang_tracked_on} {trackback_date}</li>
+  </ul>
+
+  <p class="uk-margin">{trackback_excerpt_readmore}</p>
+
+  <div class="uk-margin">{delete_option}</div>
+</div>
+
+{# end {templatelocation} #}

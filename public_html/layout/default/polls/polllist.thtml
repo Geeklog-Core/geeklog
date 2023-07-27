@@ -1,0 +1,5 @@
+{# begin {templatelocation} #}
+
+<div class="uk-text-bold">{item_num}. <a href="{poll_url}">{poll_question}</a> ({poll_votes} {lang_votes})</div>
+
+{# end {templatelocation} #}

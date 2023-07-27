@@ -1,0 +1,9 @@
+{# begin {templatelocation} #}
+
+<tr>
+  <td>{data}</td>
+  <td>{data2}</td>
+  <td>{data3}</td>
+</tr>
+
+{# end {templatelocation} #}

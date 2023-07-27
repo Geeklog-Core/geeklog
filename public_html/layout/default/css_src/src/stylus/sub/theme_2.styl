@@ -1,0 +1,71 @@
+// Themme 2
+// ===========================================================================
+
+// mixin
+bottom-space($size = 10px)
+    margin-bottom: $size
+    // All Mobile Sizes (devices and browser)
+    @media only screen and (max-width: $breakpoint-small-max)
+        margin-bottom: 0
+
+
+hook-root($stage = '')
+
+    if $stage == 'base'
+        html
+            $color = $var-base-color
+            $hue = hue($color)
+            $color= hue(#3465A4, $hue)
+            //background: none
+            //background: linear-gradient(top, $color 0, #eeeeec 400px, #eeeeec 100%)
+            background: linear-gradient(top, $color 0, #eeeeec 1000px)
+
+    if $stage == 'block_contents'
+
+        #container
+            bottom-space()
+            @media only screen and (min-width: $breakpoint-medium) and (max-width: $breakpoint-medium-max)
+                margin: 5px
+            box-shadow: 2px 2px 10px #ccc
+            box-shadow: 0 0 8px 1px #333
+            @media only screen and (max-width: $breakpoint-small-max)
+                margin: 5px
+                build-border("$container")
+
+        #header
+            bottom-space()
+
+        #navigation
+            bottom-space()
+
+        #wrapper
+            //background-color: #F7F8EC
+            bottom-space()
+
+    if $stage == 'main_contents'
+
+        .storytext
+            padding: 15px
+            border: 1px solid #e7e7e7
+            background-color: white
+
+        .story_status
+            margin: 0 0 15px 50px
+            padding-top: 5px
+
+        .story_image
+            float: left
+            margin: -60px 10px 10px 0
+
+
+hook-selector($stage = '', $selector = '')
+
+    if $stage == 'layout_3cols_LRbar'
+
+        if $selector == '#navigation'
+            width: (@width - 20px)
+
+    if $stage == 'layout_2cols_Rbar_fixed'
+
+        if $selector == '#navigation'
+            width: (@width - 20px)

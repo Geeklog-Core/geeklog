@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+<ul class="uk-breadcrumb">
+  {breadcrumb_links}{last_label}
+</ul>
+
+{# end {templatelocation} #}

@@ -1,0 +1,279 @@
+/*! 3 Columns left-center-right */
+/*!==============================================================================
+  Layout Pattern:
+    * 3 Column ( Left Block * Center Block * Right Block )...left-center-right
+    * 2 Column ( Left Block * Center Block )              ...left-center
+    * 2 Column ( Center Block * Right Block )             ...center-right
+    * 1 Column ( Center Block )                           ...center
+
+  Block Width:
+    * Container Width = 100%
+    * Header Width    = 100%
+    * Site Width         [W] = 1140px
+    * Left   Block Width [L] =  180px = 160px + left padding 10px + right padding 10px
+    * Right  Block Width [R] =  280px = 260px + left padding 10px + right padding 10px
+    * Center Block Width(3 Column) = [W] - [L] - [R] =  680px = 1140px - 180px - 280px
+    * Center Block Width(2 Column) = [W] - [L]       =  960px = 1140px - 180px
+    * Center Block Width(2 Column) = [W] - [R]       =  860px = 1140px - 280px
+    * Center Block Width(1 Column) = [W]             = 1140px
+
+    800-660=140
+    1280-140=1140
+    1100-140=960
+    1000-140=860
+==============================================================================*/
+
+// Variables
+// ===========================================================================
+
+$stage = 'layout_3cols_LRbar'
+
+// $var-style-mode = 1  width is container-width (100%)
+// $var-style-mode = 2  width is site-width
+//
+$var-style-mode ?= 1
+
+$layout-site-width        ?= 1140px
+$layout-left-block-width  ?= 180px
+$layout-right-block-width ?= 280px
+$layout-side-padding      ?= 10px
+
+$header-padding         ?= 0
+$header-border-size     ?= 0
+
+$navigation-padding     ?= 0
+$navigation-border-size ?= 0
+
+$wrapper-padding        ?= 0
+$wrapper-border-size    ?= 0
+
+$footer-padding         ?= 0
+$footer-border-size     ?= 0
+
+// ---------------------------------------------------------------------------
+
+if $var-style-mode == 1
+
+    $layout-site-inner-width = $layout-site-width - ($container-padding * 2) - ($container-border-size * 2)
+
+    // container
+    $layout-container-width =           100%
+
+    // header
+    $layout-header-width =              $layout-container-width
+    $layout-header-inner-width =        auto
+
+    $layout-header-content-width =      $layout-header-inner-width
+
+    $layout-navigation-width =          $layout-container-width
+    $layout-navigation-inner-width =    auto
+
+    $layout-navigation-content-width =  $layout-site-inner-width - (16px - $navigation-border-size * 2)
+
+    $layout-wrapper-width =             $layout-site-inner-width
+    $layout-wrapper-inner-width =       $layout-wrapper-width - ($wrapper-padding * 2) - ($wrapper-border-size * 2)
+
+    $layout-centerblocks-width =        100%
+
+    $layout-footer-width =              $layout-container-width
+    $layout-footer-inner-width =        auto
+
+    $layout-footer-content-width =      $layout-footer-inner-width
+
+// ---------------------------------------------------------------------------
+
+if $var-style-mode == 2
+
+    $layout-site-inner-width = $layout-site-width - ($container-padding * 2) - ($container-border-size * 2)
+
+    // container
+    $layout-container-width =           $layout-site-inner-width
+
+    // header
+    $layout-header-width =              $layout-container-width
+    $layout-header-inner-width =        $layout-header-width - ($header-padding * 2) - ($header-border-size * 2)
+
+    $layout-header-content-width =      $layout-header-inner-width
+
+    $layout-navigation-width =          $layout-container-width
+    $layout-navigation-inner-width =    $layout-navigation-width - ($navigation-padding * 2) - ($navigation-border-size * 2)
+
+    $layout-navigation-content-width =  $layout-site-inner-width
+
+    $layout-wrapper-width =             $layout-site-inner-width
+    $layout-wrapper-inner-width =       $layout-wrapper-width - ($wrapper-padding * 2) - ($wrapper-border-size * 2)
+
+    $layout-centerblocks-width =        100%
+
+    $layout-footer-width =              $layout-container-width
+    $layout-footer-inner-width =        $layout-footer-width - ($footer-padding * 2) - ($footer-border-size * 2)
+
+    $layout-footer-content-width =      $layout-footer-inner-width
+
+/*!--------------------------------------
+  Container
+  Include All Block Level Element
+  (#header, #navigation, #wrapper, #footer)
+--------------------------------------*/
+
+#container
+    position: relative
+    width: $layout-container-width
+    layout-align-center()
+
+/*!--------------------------------------
+  Header Container
+--------------------------------------*/
+
+#header
+    width: $layout-header-inner-width
+    layout-align-center()
+    height: 80px
+    &:before
+        width: $layout-header-inner-width
+
+    hook-selector($stage, "" + selector())
+
+#header-content
+    width: $layout-header-content-width
+    layout-site-max-width($layout-site-max-width)
+    layout-align-center()
+    padding: 0
+    hook-selector($stage, "" + selector())
+
+/*!--------------------------------------
+  Gloval Navigation Container
+--------------------------------------*/
+
+#navigation
+    width: $layout-navigation-inner-width
+    layout-align-center()
+    &:after
+        layout-clearfix()
+        margin-bottom: -1px
+
+    hook-selector($stage, "" + selector())
+
+.navigation_content
+    width: $layout-navigation-content-width
+    layout-site-max-width($layout-site-max-width)
+    layout-align-center()
+
+/*!--------------------------------------
+  Wrapper
+  Include contents Block level elements
+  (#leftblocks, #centerblocks, #rightblocks)
+--------------------------------------*/
+
+#wrapper
+    width: $layout-wrapper-inner-width
+    layout-site-max-width($layout-site-max-width)
+    layout-align-center()
+    &:after
+        layout-clearfix()
+
+/*!--------------------------------------
+  Left Block Container
+  display if Left Block is appeared.
+--------------------------------------*/
+
+#leftblocks,
+body.js_off #leftblocks
+    overflow: visible
+    float: left
+    width: $layout-left-block-width
+    /*! Left Margin = -[W] */
+    margin: 0 0 0 (- $layout-site-inner-width + ($wrapper-padding * 2) + ($wrapper-border-size * 2))
+    padding: 0
+
+/*!--------------------------------------
+  Center Block Container
+--------------------------------------*/
+
+#centerblocks
+    overflow: visible
+    float: left
+    width: $layout-centerblocks-width
+
+/*! 3 Column ( left-center-right ) */
+body.left-center-right #main-content,
+body.js_off #main-content
+    /*! Main Content Width = [W] - [L] - [R] - Right Padding 10px - Left Padding 10px */
+    width: $layout-site-inner-width - $layout-left-block-width - $layout-right-block-width - ($layout-side-padding * 2) - ($wrapper-padding * 2) - ($wrapper-border-size * 2)
+    /*! Right Margin = [R] , Left Margin = [L] */
+    margin: 0 $layout-right-block-width 0 $layout-left-block-width
+    padding: 0 $layout-side-padding
+
+/*! 2 Column ( left-center ) */
+body.left-center #main-content
+    /*! Main Content Width = [W] - [L] - Right Padding 10px - Left Padding 10px */
+    width: $layout-site-inner-width - $layout-left-block-width - ($layout-side-padding * 2) - ($wrapper-padding * 2) - ($wrapper-border-size * 2)
+    /*! Left Margin = [L] */
+    margin: 0 0 0 $layout-left-block-width
+    padding: 0 $layout-side-padding
+
+/*! 2 Column ( center-right ) */
+body.center-right #main-content
+    /*! Main Content Width = [W] - [R] - Right Padding 10px - Left Padding 10px */
+    width: $layout-site-inner-width - $layout-right-block-width - ($layout-side-padding * 2) - ($wrapper-padding * 2) - ($wrapper-border-size * 2)
+    /*! Right Margin = [R] */
+    margin: 0 $layout-right-block-width 0 0
+    padding: 0 $layout-side-padding
+
+/*! 1 Column ( center ) */
+body.center #main-content
+    width: 100%
+
+/*!--------------------------------------
+  Right Block Container
+  display if Right Block is appeared.
+--------------------------------------*/
+
+#rightblocks,
+body.js_off #rightblocks
+    overflow: visible
+    float: left
+    width: $layout-right-block-width
+    /*! Right Margin = -[R] */
+    margin: 0 0 0 (- $layout-right-block-width)
+
+/*!--------------------------------------
+  Footer Container
+--------------------------------------*/
+
+#footer
+    clear: left
+    width: $layout-footer-inner-width
+    layout-align-center()
+    padding: 16px $footer-padding
+    hook-selector($stage, "" + selector())
+
+#footer-content
+    width: $layout-footer-content-width
+    layout-site-max-width($layout-site-max-width)
+    layout-align-center()
+    hook-selector($stage, "" + selector())
+
+/*!--------------------------------------
+  Admin Configration Container
+--------------------------------------*/
+
+$layout-config-menu-width = 280px
+$layout-config-padding = 10px
+$layout-config-content-width = $layout-site-inner-width - $layout-config-menu-width - ($layout-config-padding * 4)
+
+#config_menu
+    float: left
+    width: $layout-config-menu-width
+    padding: 0 $layout-config-padding
+    body.center-right &
+        width: 200px
+
+#config_content
+    float: left
+    width: $layout-config-content-width
+    padding: $layout-config-padding
+    body.center-right &
+        width: 600px
+
+hook-root($stage)

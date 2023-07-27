@@ -1,0 +1,16 @@
+{# begin {templatelocation} #}
+
+    <fieldset class="uk-margin-large-top">
+        <legend>{lang_boxes_title}</legend>
+
+        <div class="uk-form-row uk-panel-box">
+            <p class="uk-text-bold">{lang_boxes_help_title}</p>
+            <div class="uk-margin-left">{lang_boxes}</div>
+        </div>
+
+          <div id="boxesblock">
+            {boxes_checklist}
+          </div>
+    </fieldset>
+
+{# end {templatelocation} #}

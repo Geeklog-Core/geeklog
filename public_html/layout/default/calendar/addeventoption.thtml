@@ -1,0 +1,11 @@
+{# begin {templatelocation} #}
+
+  <form method="post" action="{site_url}{addevent_formurl}" class="uk-form">
+    <input type="submit" name="action" value="{lang_addevent}"{xhtml}>
+    <input type="hidden" name="month" value="{cal_curmo_num}"{xhtml}>
+    <input type="hidden" name="year" value="{cal_curyr_num}"{xhtml}>
+    <input type="hidden" name="mode" value="{mode}"{xhtml}>
+    <input type="hidden" name="view" value="addentry"{xhtml}>
+  </form>
+
+{# end {templatelocation} #}

@@ -1,0 +1,262 @@
+/*! 2 Columns center-right */
+/*!==============================================================================
+  Layout Pattern:
+    * 3 Column ( Left Block * Center Block * Right Block )...left-center-right
+    * 2 Column ( Left Block * Center Block )              ...left-center
+    * 2 Column ( Center Block * Right Block )             ...center-right
+    * 1 Column ( Center Block )                           ...center
+
+  Block Width:
+    * Container Width = 100%
+    * Site Width[W]         = auto
+    * Left   Block Width[L] = 280px
+    * Right  Block Width[R] = 280px
+    * Center Block Width( 3 Column ) = [W] - [L] - [R] = auto + left padding 10px + right padding 10px
+    * Center Block Width( 2 Column ) = [W] - [L]       = auto + left padding 10px + right padding 10px
+    * Center Block Width( 2 Column ) = [W] - [R]       = auto + left padding 10px + right padding 10px
+    * Center Block Width( 1 Column ) = [W]             = auto
+==============================================================================*/
+
+// Variables
+// ===========================================================================
+
+$stage = 'layout_2cols_Rbar_liquid'
+
+// $var-style-mode = 1  width is container-width (100%)
+// $var-style-mode = 2  width is site-width
+//
+$var-style-mode ?= 1
+$var-flip-horizontal ?= false
+
+$left  = ($var-flip-horizontal == false) ? left  : right
+$right = ($var-flip-horizontal == false) ? right : left
+
+$layout-site-width        ?= auto
+//$layout-site-max-width   ?= 1024px
+$layout-left-block-width  ?= 280px
+$layout-right-block-width ?= 280px
+$layout-side-padding      ?= 10px
+
+$header-padding         ?= 0
+$header-border-size     ?= 0
+
+$navigation-padding     ?= 0
+$navigation-border-size ?= 0
+
+$wrapper-padding        ?= 0
+$wrapper-border-size    ?= 0
+
+$footer-padding         ?= 0
+$footer-border-size     ?= 0
+
+// ---------------------------------------------------------------------------
+
+if $var-style-mode == 1
+
+    // $layout-site-inner-width = $layout-site-width
+
+    // container
+    $layout-container-width =           100%
+
+    // header
+    $layout-header-width =              auto
+    // $layout-header-inner-width =        $layout-header-width
+
+    $layout-header-content-width =      $layout-site-width
+
+    $layout-navigation-width =          auto
+
+    $layout-navigation-content-width =  $layout-site-width
+
+    $layout-wrapper-width =             $layout-site-width
+    $layout-centerblocks-width =        100%
+
+    $layout-footer-width =              $layout-container-width
+
+    $layout-footer-content-width =      $layout-site-width
+
+// ---------------------------------------------------------------------------
+
+if $var-style-mode == 2
+
+    // $layout-site-inner-width = $layout-site-width
+
+    // container
+    $layout-container-width =           $layout-site-width
+
+    // header
+    $layout-header-width =              $layout-container-width
+    // $layout-header-inner-width =        $layout-header-width
+
+    $layout-header-content-width =      $layout-site-width
+
+    $layout-navigation-width =          $layout-container-width
+
+    $layout-navigation-content-width =  $layout-site-width
+
+    $layout-wrapper-width =             $layout-site-width
+    $layout-centerblocks-width =        100%
+
+    $layout-footer-width =              $layout-container-width
+
+    $layout-footer-content-width =      $layout-site-width
+
+/*!--------------------------------------
+  Container
+  Include All Block Level Element
+  (#header, #navigation, #wrapper, #footer)
+--------------------------------------*/
+
+#container
+    position: relative
+    width: $layout-container-width
+    layout-align-center()
+
+/*!--------------------------------------
+  Header Container
+--------------------------------------*/
+
+#header
+    width: $layout-header-width
+    layout-align-center()
+    height: 80px
+    &:before
+        width: $layout-header-width
+
+    hook-selector($stage, "" + selector())
+
+#header-content
+    width: $layout-header-content-width
+    layout-site-max-width($layout-site-max-width)
+    layout-align-center()
+    padding: 0
+    hook-selector($stage, "" + selector())
+
+/*!--------------------------------------
+  Gloval Navigation Container
+--------------------------------------*/
+
+#navigation
+    width: $layout-navigation-width
+    layout-align-center()
+    &:after
+        layout-clearfix()
+        margin-bottom: (-1px)
+
+    hook-selector($stage, "" + selector())
+
+.navigation_content
+    width: $layout-navigation-content-width
+    layout-site-max-width($layout-site-max-width)
+    layout-align-center()
+
+/*!--------------------------------------
+  Wrapper
+  Include contents Block level elements
+  (#leftblocks, #centerblocks, #rightblocks)
+--------------------------------------*/
+
+#wrapper
+    width: $layout-wrapper-width
+    layout-site-max-width($layout-site-max-width)
+    layout-align-center()
+    //padding: 0 0 2em 0
+    &:after
+        layout-clearfix()
+
+/*!--------------------------------------
+  Left Block Container
+  display if Left Block is appeared.
+--------------------------------------*/
+
+#leftblocks,
+body.js_off #leftblocks
+    overflow: visible
+    float: $right // LTR
+    width: $layout-left-block-width
+    margin: 0
+    padding: 0
+
+/*!--------------------------------------
+  Center Block Container
+--------------------------------------*/
+
+#centerblocks
+    overflow: visible
+    float: $left // LTR
+    width: $layout-centerblocks-width
+    margin-{$left}: (- $layout-right-block-width) /* -[R] */ // LTR
+
+body.js_off #centerblocks
+    width: 100%
+    margin: 0
+    padding: 0
+
+/*! 3 Column ( left-center-right ) */
+body.left-center-right #main-content,
+body.js_off #main-content
+    float: none
+    width: auto
+    margin: 0
+    margin-{$left}: $layout-left-block-width // LTR
+    padding: 0 $layout-side-padding
+
+/*! 2 Column ( left-center ) */
+body.left-center #main-content
+    float: none
+    width: auto
+    margin: 0
+    margin-{$left}: $layout-left-block-width // LTR
+    padding: 0 $layout-side-padding
+
+/*! 2 Column ( center-right ) */
+body.center-right #main-content
+    float: none
+    width: auto
+    margin: 0
+    margin-{$left}: $layout-left-block-width // LTR
+    padding: 0 $layout-side-padding
+
+/*! 1 Column ( center ) */
+body.center #main-content
+    width: 100%
+
+body.center #centerblocks
+    float: $left // LTR
+    //width: $layout-centerblocks-width
+    //margin: 0
+    width: auto
+    padding: 0 $layout-side-padding
+    margin: 0
+
+/*!--------------------------------------
+  Right Block Container
+  display if Right Block is appeared.
+--------------------------------------*/
+
+#rightblocks,
+body.js_off #rightblocks
+    overflow: visible
+    clear: $right // LTR
+    float: $right // LTR
+    width: $layout-right-block-width
+    margin: 0
+
+/*!--------------------------------------
+  Footer Container
+--------------------------------------*/
+
+#footer
+    clear: $left // LTR
+    width: $layout-footer-width
+    layout-align-center()
+    padding: 16px $footer-padding
+    hook-selector($stage, "" + selector())
+
+#footer-content
+    width: $layout-footer-content-width
+    layout-site-max-width($layout-site-max-width)
+    layout-align-center()
+    hook-selector($stage, "" + selector())
+
+hook-root($stage)

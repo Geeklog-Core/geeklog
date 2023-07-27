@@ -1,0 +1,9 @@
+{# begin {templatelocation} #}
+
+{top_menu}
+
+<ul class="uk-clearfix uk-list">
+  {list_row}
+</ul>
+
+{# end {templatelocation} #}

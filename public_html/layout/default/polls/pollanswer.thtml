@@ -1,0 +1,5 @@
+{# begin {templatelocation} #}
+
+<li><input type="radio" name="aid[{question_id}]" value="{answer_id}"{selected}{xhtml}>&nbsp;{answer_text}</li>
+
+{# end {templatelocation} #}

@@ -1,0 +1,10 @@
+{# begin {templatelocation} #}
+
+  <dt data-uk-tooltip title="{answer_text}{!if remark_text}({remark_text}){!endif}">
+    {answer_text}
+  </dt>
+  <dd>
+    <img src="{layout_url}/images/bar.gif" style="align:bottom; height:10px; width:{bar_width}%;" alt=""{xhtml}><span class="uk-margin-small-left uk-text-small">{answer_num} ({answer_percent}%)</span>
+  </dd>
+
+{# end {templatelocation} #}

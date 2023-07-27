@@ -1,0 +1,11 @@
+{# begin {templatelocation} #}
+
+<p class="uk-margin-bottom">{lang_results}</p>
+
+<table class="uk-table uk-table-striped uk-table-condensed" style="background:#ffffff">
+  <tbody>
+    {pingback_results}
+  </tbody>
+</table>
+
+{# end {templatelocation} #}

@@ -1,0 +1,5 @@
+{# begin {templatelocation} #}
+
+<li class="{menuitem_class}"><a href="{menuitem_url}"{class_property}>{menuitem_text}</a></li>
+
+{# end {templatelocation} #}

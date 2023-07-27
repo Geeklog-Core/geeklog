@@ -1,0 +1,5 @@
+{# begin {templatelocation} #}
+
+<th class="uk-text-nowrap"{th_subtags}>{header_text}</th>
+
+{# end {templatelocation} #}

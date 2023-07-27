@@ -1,0 +1,25 @@
+{# begin {templatelocation} #}
+
+{breadcrumbs}
+
+<!-- BEGIN breadcrumb -->
+<ul class="uk-breadcrumb">
+  {breadcrumb_items}
+</ul>
+<!-- END breadcrumb -->
+
+<!-- BEGIN breadcrumb_item -->
+<li>
+  <a href="{url}">
+    <span>{name}</span>
+  </a>
+</li>
+<!-- END breadcrumb_item -->
+
+<!-- BEGIN breadcrumb_item_nolink -->
+<li>
+  <span>{name}</span>
+</li>
+<!-- END breadcrumb_item_nolink -->
+
+{# end {templatelocation} #}

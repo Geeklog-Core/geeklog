@@ -1,0 +1,26 @@
+{# begin {templatelocation} #}
+
+<fieldset class="uk-margin-large-top">
+  <legend>{lang_comment_title}</legend>
+
+        <div class="uk-form-row uk-panel-box">
+            <p class="uk-text-bold">{lang_comment_help_title}</p>
+            <div class="uk-margin-left"><ul>{lang_comment_help}</ul></div>
+        </div>
+
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="commentmode">{lang_displaymode}</label>
+            <div class="uk-form-controls">{displaymode_selector}</div>
+        </div>
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="commentorder">{lang_sortorder}</label>
+            <div class="uk-form-controls">{sortorder_selector}</div>
+        </div>
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="commentlimit">{lang_commentlimit}</label>
+            <div class="uk-form-controls"><input type="text" maxlength="5" value="{commentlimit_value}" name="commentlimit" id="commentlimit" class="uk-form-width-small"{xhtml}></div>
+        </div>
+
+</fieldset>
+
+{# end {templatelocation} #}

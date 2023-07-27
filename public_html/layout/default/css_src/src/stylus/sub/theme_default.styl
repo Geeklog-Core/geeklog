@@ -1,0 +1,22 @@
+// Themme Default
+// ===========================================================================
+
+$wrapper-background    = transparent
+
+hook-selector($stage = '', $selector = '')
+
+    if $stage == 'layout_3cols_LRbar'
+
+        if $selector == '#header-content'
+            width: 1140px
+
+        if $selector == '#footer-content'
+            width: 1140px
+
+    if $stage == 'layout_2cols_Rbar_fixed'
+
+        if $selector == '#header-content'
+            width: 960px
+
+        if $selector == '#footer-content'
+            width: 960px
