@@ -1295,7 +1295,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $display .= savegroup(
         (int) Geeklog\Input::fPost('grp_id', 0),
         Geeklog\Input::fPost('grp_name'),
-        Geeklog\Input::post('grp_descr'),
+        Geeklog\Input::fPost('grp_descr'),
         $chk_grpadmin, $grp_gl_core, $grp_default, $grp_applydefault, $features, $groups
     );
 } elseif (($mode === 'savegroupusers') && SEC_checkToken()) {

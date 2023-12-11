@@ -837,9 +837,9 @@ if (($mode === 'delete') && SEC_checkToken()) {
 } elseif ($mode === 'send') {
     $target = Geeklog\Input::fPost('target');
     $url = Geeklog\Input::fPost('url');
-    $title = Geeklog\Input::post('title');
-    $excerpt = Geeklog\Input::post('excerpt');
-    $blog = Geeklog\Input::post('blog_name');
+    $title = Geeklog\Input::fPost('title');
+    $excerpt = Geeklog\Input::fPost('excerpt');
+    $blog = Geeklog\Input::fPost('blog_name');
     if (empty($target)) {
         $display .= showTrackbackMessage($LANG_TRB['target_missing'],
             $LANG_TRB['target_required']);
@@ -1115,9 +1115,9 @@ if (($mode === 'delete') && SEC_checkToken()) {
     $is_enabled = Geeklog\Input::post('is_enabled', '');
     $display .= saveService(
         (int) Geeklog\Input::fPost('service_id'),
-        Geeklog\Input::post('service_name'),
-        Geeklog\Input::post('service_site_url'),
-        Geeklog\Input::post('service_ping_url'),
+        Geeklog\Input::fPost('service_name'),
+        Geeklog\Input::fPost('service_site_url'),
+        Geeklog\Input::fPost('service_ping_url'),
         Geeklog\Input::post('method'),
         $is_enabled
     );

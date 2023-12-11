@@ -657,8 +657,8 @@ switch ($mode) {
         }
 
         $method = Input::fPost('method', '');
-        $rule = Input::post('rule', '');
-        $route = Input::post('route', '');
+        $rule = Input::fPost('rule', '');
+        $route = Input::fPost('route', '');
         $statusCode = (int) Input::fPost('status_code', 302);
         $priority = Input::fPost('priority', Router::DEFAULT_PRIORITY);
         $enabled = Input::fPost('enabled', '');
