@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+                                <div>
+                                    {item_field}
+                                </div>
+
+{# end {templatelocation} #}

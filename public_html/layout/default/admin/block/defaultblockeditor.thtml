@@ -1,0 +1,91 @@
+{# begin {templatelocation} #}
+
+<form action="{site_admin_url}/block.php" method="post" id="admin-blockeditor" class="uk-form uk-form-horizontal">
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-blockeditor-title">{lang_blocktitle}</label>
+    <div class="uk-form-controls">
+      <input type="text" name="title" value="{block_title}" id="admin-blockeditor-title" class="uk-width-1-1" required{xhtml}>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-blockeditor-is_enabled">{lang_enabled}</label>
+    <div class="uk-form-controls"><input type="checkbox" name="is_enabled" {is_enabled} id="admin-blockeditor-is_enabled"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-blockeditor-help">{lang_blockhelpurl}</label>
+    <div class="uk-form-controls">
+      <input type="text" name="help" value="{block_help}" maxlength="{max_url_length}" id="admin-blockeditor-help" class="uk-form-width-medium" aria-describedby="admin-blockeditor-d1 admin-blockeditor-d2"{xhtml}>
+      <span class="uk-form-help-inline" id="admin-blockeditor-d1">{lang_includehttp}</span>
+      <span class="uk-form-help-inline" id="admin-blockeditor-d2">{lang_explanation}</span>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_blockname}</label>
+    <div class="uk-form-controls">
+      {block_name}
+      <input type="hidden" name="name" value="{block_name}" class="uk-form-width-medium"{xhtml}>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_topic}</label>
+    <div class="uk-form-controls">
+      {topic_selection}
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-blockeditor-onleft">{lang_side}</label>
+    <div class="uk-form-controls">
+      <select name="onleft" id="admin-blockeditor-onleft">
+        <option value="1" {left_selected}>{lang_left}</option>
+        <option value="0" {right_selected}>{lang_right}</option>
+      </select>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-blockeditor-blockorder">{lang_blockorder}</label>
+    <div class="uk-form-controls">
+      <input type="text" name="blockorder" value="{block_order}" id="admin-blockeditor-blockorder" class="uk-form-width-mini" aria-describedby="admin-blockeditor-d3"{xhtml}>
+<span class="uk-form-help-inline" id="admin-blockeditor-d3">0 - 9999{lang_blocktype}</span>
+    </div>
+  </div>
+  <input type="hidden" name="type" value="gldefault"{xhtml}>
+
+  <fieldset class="uk-margin-large-top">
+    <legend>{lang_accessrights}</legend>
+
+    <div class="uk-form-row">
+      <label class="uk-form-label">{lang_owner}</label>
+      <div class="uk-form-controls">{owner_name}
+        <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
+      </div>
+    </div>
+    <div class="uk-form-row">
+      <label class="uk-form-label" for="group_id">{lang_group}</label>
+      <div class="uk-form-controls">
+        {group_dropdown}
+      </div>
+    </div>
+    <div class="uk-form-row">
+      <label class="uk-form-label">{lang_permissions}</label>
+      <div class="uk-form-controls">{permissions_editor}
+        <span class="uk-form-help-inline">{lang_perm_key}</span>
+        <span class="uk-form-help-inline">{permissions_msg}</span>
+      </div>
+    </div>
+
+  </fieldset>
+
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+      <input type="submit" value="{lang_save}" name="mode" class="uk-button uk-form-width-medium"{xhtml}>
+      <input type="submit" value="{lang_cancel}" name="mode" class="uk-button"{xhtml}>
+      <input type="hidden" name="bid" value="{block_id}"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </div>
+
+</form>
+
+{# end {templatelocation} #}
+

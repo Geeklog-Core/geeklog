@@ -1,0 +1,46 @@
+{# begin {templatelocation} #}
+
+<form action="{site_url}/submit.php" method="post" id="submitlink" class="uk-form">
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="submitlink-title">{lang_title}</label>
+    <div class="uk-form-controls">
+      <input type="text" maxlength="96" name="title" id="submitlink-title" class="uk-form-width-large"{xhtml}>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="submitlink-url">{lang_link}</label>
+    <div class="uk-form-controls">
+      <input type="text" dir="ltr" maxlength="{max_url_length}" name="url" value="http://" id="submitlink-url" class="uk-form-width-large"{xhtml}>      
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="submitlink-categorydd">{lang_category}</label>
+    <div class="uk-form-controls">
+      <select name="categorydd" id="submitlink-categorydd">{link_category_options}</select>
+    </div>
+  </div>
+
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+      <label class="uk-form-label" for="submitlink-description">{lang_description}</label>
+      <div class="uk-form-controls">
+        <textarea name="description" rows="8" cols="30" id="submitlink-description" class="uk-width-1-1"></textarea>
+        <span class="uk-form-help-inline">{lang_allowed_html}</span>
+      </div>
+    </div>
+  </div>
+
+    {captcha}
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+      <input type="hidden" name="mode" value="{lang_submit}"{xhtml}>
+      <input type="hidden" name="type" value="links"{xhtml}>
+      <input type="submit" value="{lang_submit}" class="uk-form-width-medium"{xhtml}>
+    </div>
+  </div>
+
+</form>
+
+{# end {templatelocation} #}

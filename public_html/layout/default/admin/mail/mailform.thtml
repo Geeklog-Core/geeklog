@@ -1,0 +1,55 @@
+{# begin {templatelocation} #}
+
+<form action="{php_self}" method="post" id="admin-mailform" class="uk-form uk-form-horizontal">
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-mailform-to_group">{lang_to}</label>
+    <div class="uk-form-controls">
+      <select name="to_group" id="admin-mailform-to_group">
+        <option value="">{lang_selectgroup}</option>
+        {group_options}
+      </select>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-mailform-fra">{lang_from}</label>
+    <div class="uk-form-controls">
+      <input type="text" value="{site_name}" name="fra" class="uk-form-width-medium" id="admin-mailform-fra"{xhtml}>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-mailform-fraepost">{lang_replyto}</label>
+    <div class="uk-form-controls">
+      <input type="text" value="{site_mail}" name="fraepost" class="uk-form-width-medium" id="admin-mailform-fraepost"{xhtml}>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-mailform-subject">{lang_subject}</label>
+    <div class="uk-form-controls"><input type="text" value="{subject}" name="subject" class="uk-width-1-1" id="admin-mailform-subject" required{xhtml}>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-mailform-message">{lang_body}</label>
+    <div class="uk-form-controls"><textarea rows="12" cols="44" name="message" id="admin-mailform-message" class="uk-width-1-1" required>{message}</textarea>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-mailform-html">{lang_options}</label>
+    <div class="uk-form-controls">
+      <input type="checkbox" name="html" id="admin-mailform-html"{html}{xhtml}>{lang_HTML}
+      <input type="checkbox" name="priority"{priority}{xhtml}>{lang_urgent}
+      <input type="checkbox" name="overstyr"{overstyr}{xhtml}>{lang_ignoreusersettings}
+    </div>
+  </div>
+
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+      <input type="hidden" name="mail" value="mail"{xhtml}>
+      <input type="submit" value="{lang_send}" onclick="return postconfirm()" class="uk-button uk-form-width-medium"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </div>
+
+</form>
+
+{# end {templatelocation} #}

@@ -1,0 +1,89 @@
+{# begin {templatelocation} #}
+
+<p>{instructions}</p>
+<form action="{site_admin_url}/plugins/links/index.php" method="post" id="links-linkeditor" class="uk-form uk-form-horizontal">
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="links-linkeditor-title">{lang_linktitle}</label>
+    <div class="uk-form-controls">
+      <input type="text" maxlength="96" name="title" value="{link_title}" id="links-linkeditor-title" class="uk-form-width-large" required{xhtml}>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="links-linkeditor-lid">{lang_linkid}</label>
+    <div class="uk-form-controls">
+      <input type="text" dir="ltr" maxlength="40" id="links-linkeditor-lid" name="lid" value="{link_id}" class="uk-form-width-large" required{xhtml}>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="links-linkeditor-url">{lang_linkurl}</label>
+    <div class="uk-form-controls">
+      <input type="text" dir="ltr" maxlength="{max_url_length}" id="links-linkeditor-url" name="url" value="{link_url}" class="uk-form-width-large" required{xhtml}> {lang_includehttp}
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="links-linkeditor-categorydd">{lang_category}</label>
+    <div class="uk-form-controls">
+      <select name="categorydd" id="links-linkeditor-categorydd">{category_options}</select> &nbsp;<a href="{site_admin_url}/plugins/links/category.php?mode=edit">{lang_new_category}</a>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="links-linkeditor-hits">{lang_linkhits}</label>
+    <div class="uk-form-controls">
+      <input type="text" name="hits" id="links-linkeditor-hits" value="{link_hits}" class="uk-form-width-small"{xhtml}>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="links-linkeditor-description">{lang_linkdescription}</label>
+    <div class="uk-form-controls">
+      <textarea name="description" cols="45" rows="8" id="links-linkeditor-description" class="uk-width-1-1" required>{link_description}</textarea>
+      <span class="uk-form-help-inline">{lang_allowed_html}</span>
+    </div>
+  </div>
+
+  <fieldset class="uk-margin-large-top">
+    <legend>{lang_accessrights}</legend>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_owner}</label>
+    <div class="uk-form-controls">
+      {owner_name}<input type="hidden" name="owner_id" value="{link_ownerid}"{xhtml}>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="group_id">{lang_group}</label>
+    <div class="uk-form-controls">
+      {group_dropdown}
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_permissions}</label>
+    <div class="uk-form-controls">
+      {permissions_editor}
+      <span class="uk-form-help-inline">{lang_perm_key}</span>
+      <span class="uk-form-help-inline">{lang_permissions_msg}</span>
+    </div>
+  </div>
+
+  </fieldset>
+
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+      <input type="submit" value="{lang_save}" name="mode" class="uk-form-width-medium"{xhtml}>
+      <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
+      <input type="hidden" value="{link_id}" name="old_lid"{xhtml}>
+      {delete_option}
+      {submission_option}
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </div>
+</form>
+
+{# end {templatelocation} #}

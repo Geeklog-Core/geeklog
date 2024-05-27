@@ -1,0 +1,64 @@
+
+/*--------------------------------------
+  Profile Notes
+--------------------------------------*/
+
+.profile_notes {
+  border: 1px solid #CCC;
+}
+
+/*--------------------------------------
+  System Message Block
+--------------------------------------*/
+
+/* Title */
+.block-message dt {
+  border: 1px solid #32567B;
+}
+
+/* Message */
+.block-message dd {
+  font-weight: bold;
+  border-bottom: 1px solid #BEBEBE;
+  border-left:   1px solid #BEBEBE;
+  border-right:  1px solid #BEBEBE;
+}
+
+/*--------------------------------------
+  Story
+--------------------------------------*/
+
+.story_icon a {
+  display: inline-block;
+}
+
+/*--------------------------------------
+  Comment Block
+--------------------------------------*/
+
+#commentbar-selector {
+  width:75%;
+  text-align: left; /* rtl */
+}
+
+#commentbar-selector div {
+  display: inline;
+  width: 100%;
+}
+
+/*--------------------------------------
+  Admin Top Menu Style
+--------------------------------------*/
+
+#admin-topmenu {
+  border: 1px solid #DDD;
+}
+
+/*--------------------------------------
+  Admin Page
+--------------------------------------*/
+
+.search-part {
+  display: inline;
+  white-space: normal;
+}

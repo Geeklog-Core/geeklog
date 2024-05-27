@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+    <section class="block-left">
+      <h2 class="block-title">{block_title}{block_help}</h2>
+      <div class="block-left-content">
+
+{# end {templatelocation} #}

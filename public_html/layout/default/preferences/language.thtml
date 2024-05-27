@@ -1,0 +1,8 @@
+{# begin {templatelocation} #}
+
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="language">{lang_language}</label>
+            <div class="uk-form-controls">{language_selector}</div>
+        </div>
+
+{# end {templatelocation} #}

@@ -1,0 +1,12 @@
+{# begin {templatelocation} #}
+
+{breadcrumb_trail}
+<?php if(SEC_inGroup('Root')){ ?><div class="gl-edit">{edit_icon}<?php } ?>
+{block_start}
+{content}
+{block_end}
+<ul class="uk-subnav uk-subnav-line uk-flex-center"><li>{lastupdate}{!if hits}</li><li>{!endif}{hits} {print_icon}{edit_icon}</li></ul>
+{commentbar}
+<?php if(SEC_inGroup('Root')){ ?></div><?php } ?>
+
+{# end {templatelocation} #}

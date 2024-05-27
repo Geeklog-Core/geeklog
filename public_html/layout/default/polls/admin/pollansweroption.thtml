@@ -1,0 +1,8 @@
+{# begin {templatelocation} #}
+
+<div class="uk-form-controls uk-form-controls-text uk-margin-small-bottom">
+  <p class="uk-form-controls-condensed"><input type="text" name="answer[{question_id}][]" value="{answer_text}" maxlength="255" class="uk-form-width-medium"{xhtml}> /
+  <input type="text" name="votes[{question_id}][]" value="{answer_votes}" class="uk-form-width-small"{xhtml}> /  <input type="text" name="remark[{question_id}][]" value="{remark_text}" maxlength="255" class="uk-form-width-medium"{xhtml}></p>
+</div>
+
+{# end {templatelocation} #}

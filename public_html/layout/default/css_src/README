@@ -1,0 +1,15 @@
+Building style.css for Denim theme
+-----------------------------------
+1) First of all, install Node.
+   https://nodejs.org/
+
+2) Open shell.
+
+3) Install the Node dependencies.
+
+   $ cd css_src
+   $ npm install
+
+4) Build and deploy style.css.
+
+   $ npm run build

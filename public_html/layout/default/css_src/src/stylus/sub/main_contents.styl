@@ -1,0 +1,640 @@
+
+$stage = 'main_contents'
+
+/*!--------------------------------------
+  Story
+--------------------------------------*/
+
+/*! Container */
+.storytext
+    margin: 0 0 1.5em 0
+    border-bottom: 1px solid $center-separator-color
+    /* Table */
+    table
+        text-align: left
+        border-collapse: collapse
+        margin: 1em 0.5em
+    tr
+        margin: 0
+        padding: 0
+        vertical-align: middle
+    th,
+    td
+        margin: 0
+        padding: 0.2em 0.6em
+        vertical-align: middle
+        line-height: 160%
+        border: 1px solid #DDD
+    th
+        font-weight: bold
+        background: #F5F5F5
+    img
+        max-width: 100%
+        height: auto
+    hook-selector($stage, "" + selector())
+
+/*! Story Title */
+.story_title
+    float: left
+    margin: 0 0 0.5em 0
+    font-size: 140%
+    text-decoration: none
+    color: $story-title-color
+    a:link,
+    a:visited
+        color: $story-title-color
+        text-decoration: none
+    a:hover
+        color: $base-anker-color
+        text-decoration: underline
+    hook-selector($stage, "" + selector())
+
+/*! Icon(email, print, pdf) */
+.story_icon
+    float: right
+    img
+        margin-left: 8px
+    // All Mobile Sizes (devices and browser)
+    @media only screen and (max-width: $breakpoint-small-max)
+        display: none
+    hook-selector($stage, "" + selector())
+
+/*! Story(Date, Auther, Display no.) */
+.story_status
+    list-style-position: outside
+    list-style-type: none
+    clear: both
+    margin: 0 0 1em 0
+    padding-left: 1em
+    color: $story-status-color
+    font-size: 85%
+    line-height: 1.25
+    hook-selector($stage, "" + selector())
+
+/*! Story Body */
+.story_introtext
+    margin: 0 0 2em 0
+    line-height: 1.625
+    clearfix()
+    hook-selector($stage, "" + selector())
+
+/*! Topic Icon */
+.story_image
+    float: right
+    width: 48px
+    height: 48px
+    margin: 15px
+    hook-selector($stage, "" + selector())
+
+/*! Navigation */
+.story_navi
+    list-style-type: none
+    clear: both
+    margin: 0
+    padding-left: 0
+    text-align: center
+    li
+        display: inline
+        margin: 0 2px
+    hook-selector($stage, "" + selector())
+
+/*! Comment and Trackback */
+.feedback
+    list-style-type: none
+    margin: 0 0 0.5em 0
+    padding-left: 0
+    text-align: center
+    li
+        display: inline
+        margin: 0 2px
+    hook-selector($stage, "" + selector())
+
+.article
+    font-size: 100%
+    hook-selector($stage, "" + selector())
+
+/*!--------------------------------------
+  Tooltips
+--------------------------------------*/
+
+.gl-tooltip
+    span
+        margin-left: -999em
+        position: absolute
+        text-align: left
+        width: 250px
+    &:link,
+    &:visited
+        color: $base-anker-color
+        outline: none
+        text-decoration: none
+        position: relative
+    &:hover
+        span
+            border-radius: 8px
+            box-shadow: 2px 2px 8px #666
+            font-size: 1em
+            text-align: left
+            white-space: normal
+            font-family: Calibri, Tahoma, Geneva, sans, sans-serif
+            position: absolute
+            left: 2.2em
+            top: 2.2em
+            z-index: 99
+            margin-left: 0
+            width: 250px
+        img.icon
+            border: 0
+            margin: -15px 0 0 -51px
+            float: left
+            position: absolute
+        em
+            font-family: Candara, Tahoma, Geneva, sans, sans-serif
+            font-size: 1.2em
+            font-weight: bold
+            display: block
+            padding: 0.2em 0 0.6em 0.4em
+
+#gl-tooltip-icon
+    border: 0
+
+span
+    &.classic
+        padding: 0.8em 1em
+    &.custom
+        padding: 0.5em 0.8em 0.8em 2em
+    &.classic
+        background: #EEEEEC
+        border: 2px solid #555753
+    &.critical
+        background: #F5F0F0
+        border: 2px solid #A40000
+        em
+            color: #A40000
+    &.help
+        background: #EDF0F2
+        border: 2px solid #204A87
+        em
+            color: #204A87
+    &.info
+        background: #EDF0F2
+        border: 2px solid #204A87
+        em
+            color: #204A87
+    &.warning
+        background: #FCF7EF
+        border: 2px solid #CE5C00
+        font-weight: normal
+        color: black
+        em
+            color: #CE5C00
+
+/*!--------------------------------------
+  Article Page
+--------------------------------------*/
+
+/*! Related Information & Story Option */
+.list-whats-related,
+.list-story-options
+    line-height: 1.7em
+    margin: 0 0 0 20px
+    padding: 0
+
+/*! Article Related Block */
+.block-related
+    float: left
+    width: 50%
+    margin: 0 0 1.5em 0
+    // All Mobile Sizes (devices and browser)
+    @media only screen and (max-width: $breakpoint-small-max)
+        float: none
+        width: auto
+
+/*!--------------------------------------
+  Comment Block
+--------------------------------------*/
+
+#commentarea
+    clear: both
+
+/*! Comment Information (Story Title | Comment Number | Username) */
+.commentbar_status
+    text-align: center
+    margin: 1em 0
+
+.bar_separator
+    padding-left: 5px
+    padding-right: 5px
+    color: #CCC
+
+#commentbar
+    padding: 3px
+    background: none repeat scroll 0 0 #EEE
+    border-radius: 4px
+    clearfix()
+
+/*! Comment Submit Form */
+#commentbar-comment
+    float: left
+    padding: 0.3em
+
+#commentbar-selector
+    float: right
+    padding: 0.3em
+
+/*! Comment NOTE */
+.disclaimer
+    text-align: center
+    color: #666
+    margin: 0.5em 0 1em
+
+#commentpreview
+    margin:0
+    background:transparent
+    border:1px dashed grey
+    padding:5px 10px
+
+#commenteditform
+    margin:0
+    background:#F7F7F7
+    border:1px solid #E7E7E7
+    padding:10px
+
+/*!--------------------------------------
+  Comment Body
+--------------------------------------*/
+
+/*! Individual Comment (Tree) */
+.comment_thread
+    list-style-position: outside
+    list-style-type: none
+    margin: 0 0 0.5em 0
+    padding: 0
+    text-align: left
+
+/*! Individual Comment (Tree) Title */
+.thread_title
+    display: inline
+    margin: 0
+    padding: 0
+
+/*! Individual Comment (Tree) Auther */
+.thread_author
+    display: inline
+    margin: 0 0 0 8px
+    padding: 0
+    &:before
+        content: " - "
+
+/*! Individual Comment */
+.block-comment-content
+    margin: 0
+    padding: 0
+    text-align: left
+
+/*! Individual Comment Level(Nested | Tree) */
+for num in (0..16)
+    .level-{num * 25}
+        margin-left: (num * 16)px
+
+/*! Comment Information */
+.comment_status
+    list-style-position: outside
+    list-style-type: none
+    margin: 0
+    padding: 0
+
+/*! Comment Title */
+.comment_title
+    display: block
+    margin: 1em 0 0.5em 0
+    padding: 4px
+    border: 1px solid #E7E7E7
+    background: #F7F7F7
+
+/*! Comment Auther */
+.comment_author
+    display: block
+    margin: 0 0 1em 0
+    padding: 0
+    color: #666
+
+/*! Comment Content */
+.comment_content
+    margin: 0 0 1em 0
+    padding: 0
+
+/*! Comment Navigation */
+.comment_navi
+    clear: both
+    color: #666
+
+/*!--------------------------------------
+  Report Comment Form
+--------------------------------------*/
+
+/*! Comment */
+.reportcomment
+    margin: 0 0 1em 0
+    padding: 0
+    border-bottom: 1px solid $center-separator-color
+
+/*!--------------------------------------
+  Comment Submit Form
+--------------------------------------*/
+
+/*! Username */
+.dt-commentform-username
+    display: inline
+
+.logoutorcreateaccount
+    padding: 0 3px
+
+/*! NOTE */
+.importantstuff
+    margin-top: 0
+
+.ul-importantstuff
+    margin: 0 0 0 1em
+    padding: 0
+
+.li-importantstuff
+    margin: 0 0 0 8px
+    padding: 0
+
+/*!--------------------------------------
+  Breadcrumbs List
+--------------------------------------*/
+
+.navbar-breadcrumbs
+    list-style-position: outside
+    list-style-type: none
+    margin: 0
+    padding: 0
+
+.li-navbar-breadcrumbs
+    display: inline
+
+.a-navbar-breadcrumbs
+    margin: 0 8px
+
+/*!--------------------------------------
+  Navigation
+--------------------------------------*/
+
+#navcontainer
+    width: 100%
+    margin-bottom: 10px
+    padding-bottom: 2px
+    font-size: 90%
+    line-height: normal
+    border-bottom: 1px solid #ddd
+    height: 30px
+
+#navlist
+    display: block
+    margin: 0 0 20px 0
+    padding: 0
+    list-style: none
+    /* Clearfixing tabs for beautiful stacking */
+    &:before,
+    &:after
+        content: ""
+        display: block
+        overflow: hidden
+        visibility: hidden
+        width: 0
+        height: 0
+    &:after
+        clear: both
+
+.li-navlist
+    display: block
+    width: auto
+    height: 30px
+    padding: 0
+    float: left
+    margin: 2px -1px 0 0
+    #current
+        background: #fff
+        height: 29px
+        position: relative
+        top: -5px
+        padding-top: 5px
+        border-left-width: 1px
+        margin: 0
+        color: #111
+        border-top-left-radius: 3px
+        border-top-right-radius: 3px
+        border-bottom-color: #FFF
+        &:first-child a
+            border-width: 1px
+            border-top-left-radius: 3px
+        &:last-child a
+            border-top-right-radius: 3px
+
+.a-navlist
+    display: block
+    text-decoration: none
+    width: auto
+    height: 29px
+    padding: 0px 12px
+    line-height: 30px
+    border: solid 1px #ddd
+    border-width: 1px
+    margin: 0
+    background: #f5f5f5
+    &:link,
+    &:visited,
+    &:hover
+        color: #555
+        text-decoration: none
+
+/*!--------------------------------------
+  Page Navigation
+--------------------------------------*/
+
+.gl-pagenav
+    text-align: center
+    color: #CCC
+    margin: 0 0 1.5em
+    line-height: 1.4em
+    a,
+    b
+        display: inline-block
+        margin: 1px 2px
+        padding: 2px 7px
+        background: transparent
+        border: 1px solid #E7E7E7
+    b
+        color: #222
+    a:hover
+        background: #EEE
+        border: 1px solid #CCC
+    span
+        display: inline-block
+        color: #999
+        a
+            margin: 0
+            padding: 2px 0
+            background: transparent
+            border: none
+            &:hover
+                background: transparent
+                border: none
+    .divider
+        padding: 0
+        margin: 0 4px
+
+/*!--------------------------------------
+  Breadcrumbs Navigation
+--------------------------------------*/
+
+.bc_navigation
+    margin: -1em 0 1em
+
+/*!--------------------------------------
+  My Account Page
+--------------------------------------*/
+
+#exclude_topic > .checkboxes-list > li,
+#boxesblock > .checkboxes-list > li
+    /*! display: inline */
+    margin-right: 0.5em
+
+/*!--------------------------------------
+  Access Information Page
+--------------------------------------*/
+
+.itemstatistics
+    width: 100%
+    margin: 0
+    padding: 0
+    border-collapse: collapse
+    th
+        margin: 0
+        padding: 2px
+        text-align: left
+    td
+        margin: 0
+        padding: 2px
+
+/*!--------------------------------------
+  Trackback
+--------------------------------------*/
+
+/*! Trackback Block */
+#trackback
+    clear: both
+
+/*! Trackback Content */
+.block-trackback-content
+    border-bottom: 1px solid $center-separator-color
+    > p
+        margin: 0 0 1em 0
+
+/*! Description */
+.trackback_comments_no_link
+    margin: 0 0 1em 0
+    padding: 0
+
+/*! Recept Trackback Block */
+.formattedcomment
+    margin: 0 0 1em 0
+    padding: 0
+
+/*! Recept Trackback Information */
+.trackback_status
+    list-style-position: outside
+    list-style-type: none
+    margin: 0
+    padding: 0
+
+/*! Recept Trackback Title */
+.trackback_title
+    margin: 0 0 0.5em 0
+    padding: 4px
+    border: 1px solid #E7E7E7
+    background: #F7F7F7
+
+/*! Recept Trackback Recept Date */
+.trackback_date
+    margin: 0 0 0.5em 0
+    padding: 0
+
+/*! Recept Trackback Summary */
+.trackback_excerpt_readmore
+    margin: 0 0 1em 0
+    padding: 0
+
+/*!--------------------------------------
+  Profile
+--------------------------------------*/
+
+/*! Account Information */
+#profile-userprofile
+    overflow: hidden /*! Adjust floating element */
+    margin: 0
+    padding: 0
+    clearfix()
+    dt
+        float: left
+        clear: left
+        width: 25%
+        margin: 0 0 0.5em 0
+        padding: 0
+    dd
+        float: left
+        width: 75%
+        margin: 0 0 0.5em 0
+        padding: 0
+
+/*! Photo */
+dd#profile-user_photo
+    float: none
+    width: auto
+    margin-left: 25%
+    // All Mobile Sizes (devices and browser)
+    @media only screen and (max-width: $breakpoint-small-max)
+        margin-left: 50%
+    margin-bottom: 1em
+
+/*! Recent Submit | User Recent Comment */
+.storyrow,
+.commentrow
+    margin: 0
+    padding: 0
+    a
+        margin: 0 8px 0 0
+        padding: 0
+
+/*! Submit Story | Comment Total */
+#profile-postingstats
+    margin: 0
+    padding: 0
+    dt
+        float: left
+        clear: left
+        width: 25%
+        margin: 0 0 0.5em 0
+        padding: 0
+    dd
+        float: left
+        width: 75%
+        margin: 0 0 0.5em 0
+        padding: 0
+
+// All Mobile Sizes (devices and browser)
+@media only screen and (max-width: $breakpoint-small-max)
+    #profile-userprofile dt,
+    #profile-userprofile dd,
+    #profile-postingstats dt,
+    #profile-postingstats dd
+        width: 50%
+
+/*! User All Submit Search Link */
+#profile-all_postings_by
+    clear: left
+    padding-top: 1em
+
+hook-root($stage)

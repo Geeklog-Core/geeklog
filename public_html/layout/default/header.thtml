@@ -1,0 +1,77 @@
+{doctype}
+<html{lang_attribute}>
+
+<head>
+<meta charset="{charset}"{xhtml}>
+<title>{page_title_and_site_name}</title>
+
+<!-- Mobile Specific Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"{xhtml}>
+
+<!-- Favicons -->
+<link rel="shortcut icon" href="{layout_url}/images/favicon.ico"{xhtml}>
+
+<!-- <meta http-equiv="Pragma" content="no-cache"{xhtml}> -->
+<link rel="start contents" href="{site_url}"{xhtml}>
+
+<meta name="twitter:image:height" content="400"{xhtml}>
+<meta name="twitter:image:width" content="500"{xhtml}>
+<meta name="twitter:url" content="<?php echo COM_getCurrentURL(); ?>"{xhtml}>
+
+{feed_url}
+{rel_links}
+{plg_headercode}
+
+<!--[if lt IE 8]><link rel="stylesheet" href="{layout_url}/css_{direction}/ie8.css"{xhtml}><![endif]-->
+<!--[if lt IE 9]><script type="text/javascript" src="{layout_url}/javascript/respond.min.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body dir="{direction}" class="{layout_columns}">
+{# begin {templatelocation} #}
+
+    <nav class="uk-navbar uk-margin-bottom" data-uk-sticky="{ top:-100, animation: 'uk-animation-slide-top', boundary:true }">
+      <a class="uk-navbar-brand uk-hidden-small" href="{site_url}"><img src="{layout_url}/images/logomark.svg" alt="{site_name}" style="height:32px; width:auto; margin-bottom:3px"></a>
+      <ul class="uk-navbar-nav uk-hidden-small">
+        {menu_elements}
+      </ul>
+
+      <div class="uk-navbar-flip uk-navbar-flip">
+        <a href="{site_url}/search.php" class="uk-navbar-toggle uk-navbar-toggle-alt"></a>
+      </div>
+
+      <a href="#uk-offcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas=""></a>
+      <div class="uk-navbar-brand uk-navbar-center uk-visible-small"><img src="{layout_url}/images/logomark.svg" alt="{site_name}" style="height:32px; width:auto; margin-bottom:3px"></div>
+    </nav>
+
+    <div id="uk-offcanvas" class="uk-offcanvas">
+      <div class="uk-offcanvas-bar">
+        <ul class="uk-nav uk-nav-offcanvas">
+          {menu_elements}
+
+<?php global $_USER, $_CONF; if (isset($_USER['uid']) && $_USER['uid'] > 1) { ?>
+          <li><a href="{site_url}/usersettings.php?mode=edit"><i class="uk-icon-cog"></i> {$LANG01[48]}</a></li>
+          <li><a href="{site_url}/users.php?mode=logout"><i class="uk-icon-sign-out"></i> {$LANG01[35]}</a></li>
+<?php } else { if ($_CONF['disable_new_user_registration']==0) { ?>
+          <li><a href="{site_url}/users.php?mode=new"><i class="uk-icon-user"></i> {$LANG04[27]}</a></li>
+<?php } ?>
+          <li><a href="{site_url}/users.php"><i class="uk-icon-sign-in"></i> {$LANG01[58]}</a></li>
+<?php } ?>
+
+        </ul>
+      </div>
+    </div>
+
+  {# begin #container #}
+  <div id="container" class="uk-container uk-container-center uk-margin-large-bottom">
+
+    {# begin #wrapper #}
+    <div id="wrapper">
+
+      {# begin Center Block Container #}
+      <div id="centerblocks">
+        <main id="main-content" role="main">
+          <p class="uk-text-left uk-margin-small-top">{welcome_msg}&nbsp;{datetime}</p>
+          {breadcrumb_trail}
+
+{# end {templatelocation} #}

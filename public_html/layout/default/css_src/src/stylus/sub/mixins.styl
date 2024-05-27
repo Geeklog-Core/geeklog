@@ -1,0 +1,121 @@
+// Mixins
+// ===========================================================================
+
+denim-clearfix()
+    content: ""
+    display: block
+    clear: both
+    height: 1px
+    //height: 0px
+    overflow: hidden
+
+layout-align-center()
+    margin: 0 auto
+
+layout-clearfix()
+    denim-clearfix()
+
+layout-site-max-width($width)
+    max-width: $width if $width is defined and $width != none
+
+admin-table($headercolor = #D9E6F3, $bordercolor = rgba(0, 0, 0, 0.2), $radius = 5px)
+    $headercolor = hue($headercolor, $var-base-hue)
+    border-collapse: separate
+    border-spacing: 0
+    border: 1px solid $bordercolor
+    border-radius: $radius
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+    td, th
+        border-left: 1px solid $bordercolor
+        border-top: 1px solid $bordercolor
+    th
+        $coll = $headercolor
+        $cold = darken($coll,15%)
+        background-color: $cold
+        background-image: linear-gradient(top, $coll, $cold)
+        border-top: none
+    th:first-child,
+    td:first-child
+        border-left: none
+    th:first-child
+        border-radius: $radius 0 0 0
+    th:last-child
+        border-radius: 0 $radius 0 0
+    tr:last-child td:first-child
+        border-radius: 0 0 0 $radius
+    tr:last-child td:last-child
+        border-radius: 0 0 $radius 0
+
+img-width(img)
+    return image-size(img)[0]
+
+img-height(img)
+    return image-size(img)[1]
+
+build-border(prefix)
+    $color = lookup(prefix + "-border-color")
+    $style = lookup(prefix + "-border-style")
+    $size  = lookup(prefix + "-border-size")
+    $color = ($color == null) ? #000  : $color
+    $style = ($style == null) ? solid : $style
+    $size  = ($size  == null) ? 1px   : $size
+    if $size != 0
+        border $size $style $color
+
+
+initvar(var, type, default_value)
+    if var is defined
+        $t = typeof(var)
+        if ($t == "literal" or $t == "string") and (var == "default")
+            default_value
+
+        else if (type == "string") and ($t == "literal" or $t == "string")
+            var
+
+        else if (type == "literal")
+            if $t == "string"
+                var = convert(var)
+                $t = typeof(var)
+            if $t == type
+                var
+            else
+                default_value
+
+        else if (type == "boolean")
+            if ($t == type)
+                var
+            else if ($t == "unit")
+                if (var == 1)
+                    return true
+                else if (var == 0)
+                    return false
+                else
+                    default_value
+            else if ($t == "literal" or $t == "string")
+                if (var == "true")
+                    return true
+                else if (var == "false")
+                    return false
+                else
+                    default_value
+            else
+                default_value
+
+        else if (type == "rgba")
+            if $t == "string"
+                var = convert(var)
+                $t = typeof(var)
+            if var == "transparent"
+                var
+            else if $t == type
+                var
+            else
+                default_value
+
+        else if $t == type
+            var
+
+        else
+            default_value
+    else
+        default_value

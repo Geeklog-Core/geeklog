@@ -1,0 +1,6 @@
+{# begin {templatelocation} #}
+
+<div class="uk-width-medium-1-3"><div><a href="{category_link}">{category_name}</a> {category_count}</div>
+<div>{category_description}</div></div>
+
+{# end {templatelocation} #}

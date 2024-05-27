@@ -1,0 +1,126 @@
+{# begin {templatelocation} #}
+
+<div class="uk-grid uk-panel uk-panel-box" style="margin-left:0">
+  <div class="uk-width-1-3 uk-text-center uk-text-bold">{lang_day}</div>
+  <div class="uk-width-1-3 uk-text-center uk-text-bold"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=week">{lang_week}</a></div>
+  <div class="uk-width-1-3 uk-text-center uk-text-bold"><a href="{site_url}/calendar/index.php?mode={mode}">{lang_month}</a></div>
+</div>
+
+<ul class="uk-pagination">
+  <li><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=day&amp;month={prevmonth}&amp;day={prevday}&amp;year={prevyear}">&lt;&lt;</a></li>
+  <li class="uk-disabled"><span>{currentday}</span></li>
+  <li><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=day&amp;month={nextmonth}&amp;day={nextday}&amp;year={nextyear}">&gt;&gt;</a></li>
+</ul>
+
+<ul class="uk-subnav uk-flex-center">
+  <li>{calendar_title}</li>
+  <li>{calendar_toggle}</li>
+</ul>
+
+<div>{lang_week} {week_num} {allday_events}</div>
+
+<table class="uk-table uk-width-1-1">
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=0">{0_hour}</a></div></td>
+      {0_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=1">{1_hour}</a></div></td>
+      {1_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=2">{2_hour}</a></div></td>
+      {2_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=3">{3_hour}</a></div></td>
+      {3_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=4">{4_hour}</a></div></td>
+      {4_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=5">{5_hour}</a></div></td>
+      {5_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=6">{6_hour}</a></div></td>
+      {6_cols}
+  </tr>
+
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=7">{7_hour}</a></div></td>
+      {7_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=8">{8_hour}</a></div></td>
+      {8_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=9">{9_hour}</a></div></td>
+      {9_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=10">{10_hour}</a></div></td>
+      {10_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=11">{11_hour}</a></div></td>
+      {11_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=12">{12_hour}</a></div></td>
+      {12_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=13">{13_hour}</a></div></td>
+      {13_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=14">{14_hour}</a></div></td>
+      {14_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=15">{15_hour}</a></div></td>
+      {15_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=16">{16_hour}</a></div></td>
+      {16_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=17">{17_hour}</a></div></td>
+      {17_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=18">{18_hour}</a></div></td>
+      {18_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=19">{19_hour}</a></div></td>
+      {19_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=20">{20_hour}</a></div></td>
+      {20_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=21">{21_hour}</a></div></td>
+      {21_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=22">{22_hour}</a></div></td>
+      {22_cols}
+  </tr>
+  <tr>
+      <td style="width:1%" class="cal-dayx-times"><div class="uk-text-right"><a href="{site_url}/submit.php?type=calendar&amp;mode={mode}&amp;month={month}&amp;day={day}&amp;year={year}&amp;hour=23">{23_hour}</a></div></td>
+      {23_cols}
+  </tr>
+</table>
+
+<div>
+  {quickadd_form}
+</div>
+
+{# end {templatelocation} #}

@@ -1,0 +1,19 @@
+{# begin {templatelocation} #}
+
+<div class="level-{indent} uk-width-medium-2-3 uk-margin-bottom">
+  <div>
+    <div class="uk-panel uk-panel-box">
+      <h3 class="uk-panel-title">{title}</h3>
+        <ul class="uk-subnav uk-flex-right uk-text-small" style="margin-top:-20px"><li>{lang_authoredby}&nbsp;{author_link}</li><li>{lang_on} {date}</li></ul>
+      <div>{comments}</div>
+      <span class="uk-button uk-button-small uk-float-right" {hide_if_preview}>{reply_option}</span>
+    </div>
+    <div {hide_if_preview}>
+      <div class="comment_navi" role="navigation" {hide_if_preview}>[
+       <span>{reply_option} {parent_link} {delete_option} <a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="bookmark" title="{lang_permlink}">#</a></span>
+       ]</div>
+    </div>
+  </div>
+</div>
+
+{# end {templatelocation} #}

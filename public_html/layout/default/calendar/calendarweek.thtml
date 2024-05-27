@@ -1,0 +1,9 @@
+{# begin {templatelocation} #}
+
+  <tr>
+    <td class="cal-weekpointers uk-text-center"><b><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=week&amp;month={wmonth}&amp;day={wday}&amp;year={wyear}">&gt;&gt;</a></b>
+    </td>
+    {cal_days}
+  </tr>
+
+{# end {templatelocation} #}

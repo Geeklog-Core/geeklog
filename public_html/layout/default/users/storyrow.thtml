@@ -1,0 +1,5 @@
+{# begin {templatelocation} #}
+
+<p>{row_number}&nbsp;{story_title}&nbsp;{story_date}</p>
+
+{# end {templatelocation} #}

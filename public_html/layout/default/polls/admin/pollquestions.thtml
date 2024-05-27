@@ -1,0 +1,17 @@
+{# begin {templatelocation} #}
+
+<div id="po_{question_id}" {style}>
+  <div class="uk-form-row uk-margin-small-bottom">
+    <label>{lang_question}</label>
+    <div class="uk-form-controls"><input type="text" dir="ltr" name="question[{q_idx}]" value="{question_text}" maxlength="255" class="uk-width-1-1"{xhtml}></div>
+  </div>
+
+  <div class="uk-form-row">
+    <label>{lang_answersvotes}</label>
+    <div class="uk-form-controls">{answer_option}</div>
+  </div>
+</div>
+
+<hr class="separator"{xhtml}>
+
+{# end {templatelocation} #}
