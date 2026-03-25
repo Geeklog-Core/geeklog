@@ -240,6 +240,7 @@ if (empty($archiveTid)) {
     $asql .= ' OR statuscode = ' . STORY_ARCHIVE_ON_EXPIRE . ") AND ta.tid != '" . DB_escapeString($archiveTid) . "'";
 }
 $expiresql = DB_query($asql);
+if (!empty( DB_fetcharray($expiresql))) {
 while (list($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetcharray($expiresql)) {
     if ($statuscode == STORY_ARCHIVE_ON_EXPIRE) {
         if (!empty($archiveTid)) {
@@ -261,7 +262,7 @@ while (list($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetcharray($e
         STORY_doDeleteThisStoryNow($sid);
     }
 }
-
+}
 // Figure out different settings to display stories in a topic
 $sql = " (date <= NOW()) AND (draft_flag = 0)";
 
