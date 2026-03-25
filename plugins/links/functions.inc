@@ -1522,6 +1522,7 @@ function links_select_box_recursive (&$menu, $cid, $sel, $indent, $access)
             WHERE (pid='{$cat}') " . COM_getPermSQL('AND', 0, $access) . "
             ORDER BY category";
     $query = DB_query($sql);
+    if ($query->num_rows >1) {
     while (list($cid, $category) = DB_fetchArray($query)) {
         // set selected item
         if ($cid == $sel) {
@@ -1541,7 +1542,7 @@ function links_select_box_recursive (&$menu, $cid, $sel, $indent, $access)
                         $indent . '&nbsp;&nbsp;', $access);
         }
    }
-
+  }
    return $menu;
 }
 
