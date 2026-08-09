@@ -476,8 +476,8 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
 		XMLSMAP_update($type);
     }
 	
-	// Ping IndexNow for changed url. For new, updated, and delete
-	if ($_XMLSMAP_CONF['indexnow']) {
+	// Only notify IndexNow when the saved item is publicly accessible.
+	if (!empty($_XMLSMAP_CONF['indexnow']) && !empty($newItem)) {
 		$sitemap->submitURL($url);
 	}
 }
@@ -541,6 +541,11 @@ function plugin_itemdeleted_xmlsitemap($id, $type, $sub_type)
         if (!$result) {
             XMLSMAP_update($type);
         }
+
+		// Notify IndexNow so search engines can remove the deleted URL.
+		if (!empty($_XMLSMAP_CONF['indexnow'])) {
+			$sitemap->submitURL($oldUrl);
+		}
     }
 }
 
