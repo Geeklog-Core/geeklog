@@ -224,7 +224,7 @@ function update_ConfValuesFor210()
     $c->add('tab_filemanager_images', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
     $c->add('fs_filemanager_images', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
 
-    $c->add('filemanager_images_ext', array('jpg', 'jpeg', 'gif', 'png', 'svg'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $c->add('filemanager_images_ext', array('jpg', 'jpeg', 'gif', 'png', 'webp', 'svg'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
     $so += 10;
 
     // Subgroup: File Manager - Videos

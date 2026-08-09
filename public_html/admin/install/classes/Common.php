@@ -2133,6 +2133,74 @@ abstract class Common
     }
 
     /**
+     * Remove executable endpoints left behind by the retired Rich Filemanager.
+     *
+     * Upgrade archives do not remove files that disappeared from a release, so
+     * these web-accessible PHP entry points have to be removed explicitly.  Do
+     * not replace this allow-list with recursive deletion: filemanager/userfiles
+     * and configured media directories can contain user data.
+     *
+     * @param  string  $htmlPath  Absolute public_html path
+     * @return array              Security-sensitive files that remain
+     */
+    protected function cleanupLegacyFileManagerEndpoints($htmlPath)
+    {
+        $base = rtrim($htmlPath, '/\\') . DIRECTORY_SEPARATOR . 'filemanager' . DIRECTORY_SEPARATOR;
+        $files = [
+            'connectors/php/events.php',
+            'connectors/php/filemanager.php',
+            'libs/jQuery-File-Upload/server/php/UploadHandler.php',
+            'libs/jQuery-File-Upload/server/php/index.php',
+        ];
+        $directories = [
+            'connectors/php',
+            'connectors',
+            'libs/jQuery-File-Upload/server/php',
+            'libs/jQuery-File-Upload/server',
+        ];
+        $failures = [];
+
+        foreach ($files as $relativePath) {
+            $path = $base . str_replace('/', DIRECTORY_SEPARATOR, $relativePath);
+            if (!file_exists($path) && !is_link($path)) {
+                continue;
+            }
+            if (!@unlink($path)) {
+                $failures[] = $relativePath;
+                $this->logLegacyFileManagerCleanupFailure('file', $path);
+            }
+        }
+
+        // rmdir() is deliberately used only for known, empty directories.
+        foreach ($directories as $relativePath) {
+            $path = $base . str_replace('/', DIRECTORY_SEPARATOR, $relativePath);
+            if (!is_dir($path) || is_link($path)) {
+                continue;
+            }
+            $entries = @scandir($path);
+            if ($entries !== false && count($entries) === 2 && !@rmdir($path)) {
+                $this->logLegacyFileManagerCleanupFailure('directory', $path);
+            }
+        }
+
+        return $failures;
+    }
+
+    /**
+     * @param string $type
+     * @param string $path
+     */
+    private function logLegacyFileManagerCleanupFailure($type, $path)
+    {
+        $message = "Geeklog upgrade could not remove legacy Filemanager {$type}: {$path}";
+        if (is_callable('\\COM_errorLog')) {
+            COM_errorLog($message);
+        } else {
+            error_log($message);
+        }
+    }
+
+    /**
      * Return the database character set
      *
      * @param  string  $driver  either 'mysql' or 'pgsql'

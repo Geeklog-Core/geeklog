@@ -2298,8 +2298,8 @@ the admin panel.</p>
 
 <h2><a name="filemanager">File Manager</a></h2>
 
-<p>Geeklog-2.2.1 integrated the <a href="https://github.com/servocoder/RichFilemanager">Rich Filemanager</a>, an open-source file manager release under MIT license by Pavel Solomienko.</p>
-<p>Only Root Admins, Story Admins and Static Page Admins can use the Filemanager on a fresh install.</p>
+<p>Geeklog provides a native Media Library for browsing and maintaining files in the configured image directories. All requests use the current Geeklog account, permissions and CSRF protection.</p>
+<p>Only Root Admins, Story Admins and Static Page Admins can use the Media Library on a fresh install. Story editors without File Manager administration rights are restricted to the configured editor image library.</p>
 
 <h3><a name="filemanager_general">File Manager: General Settings</a></h3>
 
@@ -2377,7 +2377,7 @@ the admin panel.</p>
     <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_images_ext">filemanager_images_ext</a></td>
-  <td valign="top">'jpg', 'jpeg', 'gif', 'png', 'svg'</td>
+  <td valign="top">'jpg', 'jpeg', 'gif', 'png', 'webp', 'svg'</td>
   <td valign="top">An array of accepted images extensions.</td></tr>
 </table>
 
