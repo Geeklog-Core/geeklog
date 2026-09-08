@@ -803,6 +803,7 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
     // Delete page
     DB_delete($_TABLES['staticpage'], 'sp_id', $sp_id);
 	
+    require_once $_CONF['path_system'] . 'lib-comment.php';
 	CMT_deleteComment('', $sp_id, STATICPAGES_PLUGIN_NAME, false);
 
     TOPIC_deleteTopicAssignments('staticpages', $sp_id);
