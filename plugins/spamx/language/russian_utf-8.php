@@ -17,7 +17,7 @@ global $LANG32;
 $LANG_SX00 = array(
     'inst1' => '<p>Если Вы это сделаете, другие ',
     'inst2' => 'смогут просматривать и импортировать Ваш черный список, что позволит создать более эффективную базу данных.',
-    'inst3' => '</p><p>Если Ваш сайт был подписан и Вы хотите выйти из списка, ',
+    'inst3' => '</p><p>Если Ваш сайт был добавлен и Вы хотите удалить его из списка ',
     'inst4' => 'отправьте уведомление на адрес <a href="mailto:spamx@pigstye.net">spamx@pigstye.net</a>. ',
     'inst5' => 'Все запросы принимаются с благодарностью.',
     'submit' => 'Подписать',
@@ -25,7 +25,7 @@ $LANG_SX00 = array(
     'secbut' => 'Вторая кнопка создает rdf feed, предоставляя возможность импортировать Ваш список.',
     'sitename' => 'Имя сайта: ',
     'URL' => 'URL для списка Spam-X: ',
-    'RDF' => 'RDF url: ',
+    'RDF' => 'URL RDF: ',
     'impinst1a' => 'Перед использованием Spam-X отправьте комментарий в отдел блокировки спама для просмотра и импорта других черных списков частных сайтов.',
     'impinst1b' => ' Просьба нажать следующие две кнопки. (Вы нажали последнюю.)',
     'impinst2' => 'Первая выполняет подписку Вашего сайта на сайте Gplugs/Spam-X, после чего его можно добавить в главный список ',
@@ -50,7 +50,7 @@ $LANG_SX00 = array(
     'e1' => 'Для удаления записи нажмите на нее.',
     'e2' => 'Для добавления записи щелкните по ней и нажмите Добавить. Записи могут использовать полноценные регулярные выражения перл.',
     'pblack' => 'Частный список Spam-X',
-    'sfseblack' => 'Spam-X SFS Email Blacklist',
+    'sfseblack' => 'Чёрный список email SFS Spam-X',
     'conmod' => 'Конфигурация использования Spam-X',
     'acmod' => 'Модули действий Spam-X',
     'exmod' => 'Модули проверки Spam-X',
@@ -71,7 +71,7 @@ $LANG_SX00 = array(
     'clearlog' => 'Очистить файл лога',
     'logcleared' => '- лог Spam-X очищен',
     'plugin' => 'Модуль',
-    'action' => 'Action',
+    'action' => 'Действие',
     'access_denied' => 'Доступ запрещен',
     'access_denied_msg' => 'Только администраторы имеют доступ к данной странице.  Ваш логин и IP адрес были зафиксированы.',
     'admin' => 'Управление модулями',
@@ -99,8 +99,8 @@ $LANG_SX00 = array(
     'note4' => 'вернитесь и с помощью Spam-X проверьте последние комментарии.</li></ul>Комментарии ',
     'note5' => 'проверены от самых новых до самых старых -- дальнейшая проверка ',
     'note6' => 'требует большего времени.</p>',
-    'masshead' => '<hr' . XHTML . '><h1 style="text-align: center;">Массовое удаление спам комментариев</h1>',
-    'masstb' => '<hr' . XHTML . '><h1 style="text-align: center;">массовое удаление спама Trackback</h1>',
+    'masshead' => 'Массовое удаление спам-комментариев',
+    'masstb' => 'Массовое удаление спама Trackback',
     'comdel' => ' комментариев удалено.',
     'initial_Pimport' => '<p>импорт черного списка"',
     'initial_import' => 'Начальный импорт MT-Blacklist',
@@ -114,10 +114,10 @@ $LANG_SX00 = array(
     'ipofurlblack' => 'Список Spam-X IP или URL',
     'headerblack' => 'Список Spam-X заголовков HTTP',
     'headers' => 'Запрашиваемые заголовки:',
-    'edit' => 'Edit',
-    'view' => 'View',
-    'value' => 'Value',
-    'counter' => 'Counter',
+    'edit' => 'Изменить',
+    'view' => 'Просмотр',
+    'value' => 'Значение',
+    'counter' => 'Счётчик',
     'stats_headline' => 'Статистика Spam-X',
     'stats_page_title' => 'Черный список',
     'stats_entries' => 'Записи',
@@ -127,16 +127,16 @@ $LANG_SX00 = array(
     'stats_ipofurl' => 'Блокировка IP или URL',
     'stats_header' => 'Заголовки HTTP',
     'stats_deleted' => 'Сообщения удалены как спам',
-    'invalid_email_or_ip' => 'Invalid e-mail address or IP address has been blocked.',
-    'email_ip_spam' => '%s or %s attempted to register but was considered a spammer.',
-    'edit_personal_blacklist' => 'Edit Personal Blacklist',
-    'mass_delete_spam_comments' => 'Mass Delete Spam Comments',
-    'mass_delete_trackback_spam' => 'Mass Delete Trackback Spam',
-    'edit_http_header_blacklist' => 'Edit HTTP Header Blacklist',
-    'edit_ip_blacklist' => 'Edit IP Blacklist',
-    'edit_ip_url_blacklist' => 'Edit IP of URL Blacklist',
-    'edit_sfs_blacklist' => 'Edit SFS Email Blacklist',
-    'edit_slv_whitelist' => 'Edit SLV Whitelist',
+    'invalid_email_or_ip' => 'Недопустимый адрес электронной почты или IP-адрес был заблокирован.',
+    'email_ip_spam' => '%s или %s пытался зарегистрироваться, но был признан спамером.',
+    'edit_personal_blacklist' => 'Изменить личный чёрный список',
+    'mass_delete_spam_comments' => 'Массовое удаление спам-комментариев',
+    'mass_delete_trackback_spam' => 'Массовое удаление спам-трекбеков',
+    'edit_http_header_blacklist' => 'Изменить чёрный список HTTP-заголовков',
+    'edit_ip_blacklist' => 'Изменить чёрный список IP',
+    'edit_ip_url_blacklist' => 'Изменить чёрный список IP URL',
+    'edit_sfs_blacklist' => 'Изменить чёрный список email SFS',
+    'edit_slv_whitelist' => 'Изменить белый список SLV',
     'plugin_name' => 'Spam-X'
 );
 
@@ -145,43 +145,43 @@ $PLG_spamx_MESSAGE128 = 'Обнаружен спам и сообщение ил�
 $PLG_spamx_MESSAGE8 = 'Обнаружен спам. Администратору отправлено уведомление.';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_spamx_MESSAGE3001 = 'Обновление плагина не поддерживается.';
 $PLG_spamx_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['spamx'] = array(
     'label' => 'Spam-X',
-    'title' => 'Spam-X Configuration'
+    'title' => 'Настройка Spam-X'
 );
 
 $LANG_confignames['spamx'] = array(
-    'spamx_action' => 'Spam-X Actions',
-    'notification_email' => 'Notification Email',
-    'logging' => 'Enable Logging',
-    'timeout' => 'Timeout',
-    'max_age' => 'Max Age of Records',
-    'records_delete' => 'Record Types to Delete',
-    'sfs_enabled' => 'Enable SFS',
-    'sfs_confidence' => 'Confidence Threshold',
-    'snl_enabled' => 'Enable SNL',
-    'snl_num_links' => 'Number of links',
-    'akismet_enabled' => 'Enable Akismet',
-    'akismet_api_key' => 'API Key'
+    'spamx_action' => 'Действия Spam-X',
+    'notification_email' => 'Email для уведомлений',
+    'logging' => 'Включить журналирование',
+    'timeout' => 'Тайм-аут',
+    'max_age' => 'Максимальный возраст записей',
+    'records_delete' => 'Типы записей для удаления',
+    'sfs_enabled' => 'Включить SFS',
+    'sfs_confidence' => 'Порог доверия',
+    'snl_enabled' => 'Включить SNL',
+    'snl_num_links' => 'Количество ссылок',
+    'akismet_enabled' => 'Включить Akismet',
+    'akismet_api_key' => 'Ключ API'
 );
 
 $LANG_configsubgroups['spamx'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Основные настройки'
 );
 
 $LANG_tab['spamx'] = array(
-    'tab_main' => 'Spam-X Main Settings',
-    'tab_modules' => 'Modules'
+    'tab_main' => 'Основные настройки Spam-X',
+    'tab_modules' => 'Модули'
 );
 
 $LANG_fs['spamx'] = array(
-    'fs_main' => 'Spam-X Main Settings',
+    'fs_main' => 'Основные настройки Spam-X',
     'fs_sfs' => 'Stop Forum Spam (SFS)',
-    'fs_snl' => 'Spam Number of Links (SNL)',
+    'fs_snl' => 'Количество спам-ссылок (SNL)',
     'fs_akismet' => 'Akismet'
 );
 

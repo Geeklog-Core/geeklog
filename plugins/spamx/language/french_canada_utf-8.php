@@ -52,7 +52,7 @@ $LANG_SX00 = array(
     'e1' => 'Pour supprimer une entrée cliquez dessus.',
     'e2' => 'Pour ajouter une entrée, entrez-la dans la case et cliquez Ajouter.  Les entrées peuvent utiliser les expressions régulières complètes de Perl.',
     'pblack' => 'Liste Noire Personnelle Spam-X',
-    'sfseblack' => 'Spam-X SFS Email Blacklist',
+    'sfseblack' => 'Liste noire d\'adresses e-mail SFS Spam-X',
     'conmod' => 'Configurer utilisation du module Spam-X',
     'acmod' => 'Modules Action de Spam-X',
     'exmod' => 'Modules Vérification de Spam-X',
@@ -72,8 +72,8 @@ $LANG_SX00 = array(
     'viewlog' => 'Voir fichier log Spam-X',
     'clearlog' => 'Vider fichier ',
     'logcleared' => '- fichier log Spam-X vide',
-    'plugin' => 'Plugin',
-    'action' => 'Action',
+    'plugin' => 'Extension',
+    'action' => 'Opération',
     'access_denied' => 'Accès refusé',
     'access_denied_msg' => 'Seulement les utilisateurs Root ont accès à cette page.  Votre code d\'usager et votre adresse IP ont été enregistrés.',
     'admin' => 'Administration Plugin',
@@ -101,8 +101,8 @@ $LANG_SX00 = array(
     'note4' => 'revenez ici et exécutez Spam-X pour vérifier les derniers commentaires.</li></ul><p>Les commentaires ',
     'note5' => 'sont vérifiés à partir des plus récents -- vérifier plus de commentaires ',
     'note6' => 'nécessite plus de temps pour la vérification</p>',
-    'masshead' => '<hr' . XHTML . '><h1 style="text-align: center;">Suppression de commentaires en lot</h1>',
-    'masstb' => '<hr' . XHTML . '><h1 style="text-align: center;">Mass Delete Trackback Spam</h1>',
+    'masshead' => 'Suppression en masse des commentaires indésirables',
+    'masstb' => 'Suppression en masse des rétroliens indésirables',
     'comdel' => ' commentaires supprimés.',
     'initial_Pimport' => '<p>Importer Liste Noire Personnelle"',
     'initial_import' => 'Importer Liste Noire Principale Originale',
@@ -111,34 +111,34 @@ $LANG_SX00 = array(
     'allow_url_fopen' => '<p>Désolé, la configuration de votre serveur web ne permet pas la lecture de fichiers distants (<code>allow_url_fopen</code> est désactivé). Veuillez télécharger la liste noire de l\'adresse suivante et placez-la dans le répertoire "data" de Geeklog, <span style="font-family: monospace;">%s</span>, avant un nouvel essai:',
     'documentation' => 'Documentation du Plugin Spam-X',
     'emailmsg' => "Un nouveau commentaire indésirable a été envoyé à \"%s\"\nUser UID:\"%s\"\n\nContent:\"%s\"",
-    'emailsubject' => 'Spam post at %s',
-    'ipblack' => 'Spam-X IP Blacklist',
-    'ipofurlblack' => 'Spam-X IP of URL Blacklist',
-    'headerblack' => 'Spam-X HTTP Header Blacklist',
-    'headers' => 'Request headers:',
-    'edit' => 'Edit',
-    'view' => 'View',
-    'value' => 'Value',
-    'counter' => 'Counter',
-    'stats_headline' => 'Spam-X Statistics',
-    'stats_page_title' => 'Blacklist',
-    'stats_entries' => 'Entries',
+    'emailsubject' => 'Message indésirable sur %s',
+    'ipblack' => 'Liste noire d\'adresses IP Spam-X',
+    'ipofurlblack' => 'Liste noire Spam-X des IP d\'URL',
+    'headerblack' => 'Liste noire des en-têtes HTTP Spam-X',
+    'headers' => 'En-têtes de la requête :',
+    'edit' => 'Modifier',
+    'view' => 'Afficher',
+    'value' => 'Valeur',
+    'counter' => 'Compteur',
+    'stats_headline' => 'Statistiques Spam-X',
+    'stats_page_title' => 'Liste noire',
+    'stats_entries' => 'Entrées',
     'stats_mtblacklist' => 'MT-Blacklist',
-    'stats_pblacklist' => 'Personal Blacklist',
-    'stats_ip' => 'Blocked IPs',
-    'stats_ipofurl' => 'Blocked by IP of URL',
-    'stats_header' => 'HTTP headers',
-    'stats_deleted' => 'Posts deleted as spam',
-    'invalid_email_or_ip' => 'Invalid e-mail address or IP address has been blocked.',
-    'email_ip_spam' => '%s or %s attempted to register but was considered a spammer.',
-    'edit_personal_blacklist' => 'Edit Personal Blacklist',
-    'mass_delete_spam_comments' => 'Mass Delete Spam Comments',
-    'mass_delete_trackback_spam' => 'Mass Delete Trackback Spam',
-    'edit_http_header_blacklist' => 'Edit HTTP Header Blacklist',
-    'edit_ip_blacklist' => 'Edit IP Blacklist',
-    'edit_ip_url_blacklist' => 'Edit IP of URL Blacklist',
-    'edit_sfs_blacklist' => 'Edit SFS Email Blacklist',
-    'edit_slv_whitelist' => 'Edit SLV Whitelist',
+    'stats_pblacklist' => 'Liste noire personnelle',
+    'stats_ip' => 'Adresses IP bloquées',
+    'stats_ipofurl' => 'Bloqués par l\'IP de l\'URL',
+    'stats_header' => 'En-têtes HTTP',
+    'stats_deleted' => 'Publications supprimées comme indésirables',
+    'invalid_email_or_ip' => 'Une adresse e-mail ou une adresse IP non valide a été bloquée.',
+    'email_ip_spam' => '%s ou %s a tenté de s\'inscrire mais a été considéré comme un spammeur.',
+    'edit_personal_blacklist' => 'Modifier la liste noire personnelle',
+    'mass_delete_spam_comments' => 'Supprimer en masse les commentaires indésirables',
+    'mass_delete_trackback_spam' => 'Supprimer en masse les rétroliens indésirables',
+    'edit_http_header_blacklist' => 'Modifier la liste noire des en-têtes HTTP',
+    'edit_ip_blacklist' => 'Modifier la liste noire des adresses IP',
+    'edit_ip_url_blacklist' => 'Modifier la liste noire des IP d\'URL',
+    'edit_sfs_blacklist' => 'Modifier la liste noire d\'adresses e-mail SFS',
+    'edit_slv_whitelist' => 'Modifier la liste blanche SLV',
     'plugin_name' => 'Spam-X'
 );
 
@@ -147,43 +147,43 @@ $PLG_spamx_MESSAGE128 = 'Commentaire indésirable détecté et Commentaire ou Me
 $PLG_spamx_MESSAGE8 = 'Commentaire indésirable détecté et Commentaire supprimé. Courriel envoyé à l\Administrateur.';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_spamx_MESSAGE3001 = 'Mise à niveau de l\'extension non prise en charge.';
 $PLG_spamx_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['spamx'] = array(
     'label' => 'Spam-X',
-    'title' => 'Spam-X Configuration'
+    'title' => 'Configuration de Spam-X'
 );
 
 $LANG_confignames['spamx'] = array(
-    'spamx_action' => 'Spam-X Actions',
-    'notification_email' => 'Notification Email',
-    'logging' => 'Enable Logging',
-    'timeout' => 'Timeout',
-    'max_age' => 'Max Age of Records',
-    'records_delete' => 'Record Types to Delete',
-    'sfs_enabled' => 'Enable SFS',
-    'sfs_confidence' => 'Confidence Threshold',
-    'snl_enabled' => 'Enable SNL',
-    'snl_num_links' => 'Number of links',
-    'akismet_enabled' => 'Enable Akismet',
-    'akismet_api_key' => 'API Key'
+    'spamx_action' => 'Actions Spam-X',
+    'notification_email' => 'E-mail de notification',
+    'logging' => 'Activer la journalisation',
+    'timeout' => 'Délai d\'expiration',
+    'max_age' => 'Âge maximal des enregistrements',
+    'records_delete' => 'Types d\'enregistrements à supprimer',
+    'sfs_enabled' => 'Activer SFS',
+    'sfs_confidence' => 'Seuil de confiance',
+    'snl_enabled' => 'Activer SNL',
+    'snl_num_links' => 'Nombre de liens',
+    'akismet_enabled' => 'Activer Akismet',
+    'akismet_api_key' => 'Clé API'
 );
 
 $LANG_configsubgroups['spamx'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Paramètres principaux'
 );
 
 $LANG_tab['spamx'] = array(
-    'tab_main' => 'Spam-X Main Settings',
-    'tab_modules' => 'Modules'
+    'tab_main' => 'Paramètres principaux de Spam-X',
+    'tab_modules' => 'Modules Spam-X'
 );
 
 $LANG_fs['spamx'] = array(
-    'fs_main' => 'Spam-X Main Settings',
+    'fs_main' => 'Paramètres principaux de Spam-X',
     'fs_sfs' => 'Stop Forum Spam (SFS)',
-    'fs_snl' => 'Spam Number of Links (SNL)',
+    'fs_snl' => 'Nombre de liens indésirables (SNL)',
     'fs_akismet' => 'Akismet'
 );
 
