@@ -85,7 +85,7 @@ $LANG_CAL_1 = array(
     45 => 'Envoyez',
     46 => 'Événements dans le système',
     47 => 'Les 10 événements les plus consultés',
-    48 => 'Hits',
+    48 => 'Consultations',
     49 => 'Il semblerait qu\'il n\'y est aucun événement sur ce site ou que personne ne les ai découverts.',
     50 => 'Événements',
     51 => 'Effacer',
@@ -105,11 +105,11 @@ $_LANG_CAL_SEARCH = array(
 
 $LANG_CAL_2 = array(
     8 => '+ événement personnel',
-    9 => '%s Event',
+    9 => '%s événement',
     10 => 'Évènement pour',
     11 => 'Calendrier général',
     12 => 'Mon calendrier',
-    25 => 'Back to ',
+    25 => 'Retour à ',
     26 => 'Toute la journée',
     27 => 'Semaine',
     28 => 'Calendrier perso de',
@@ -170,7 +170,7 @@ $LANG_CAL_ADMIN = array(
     34 => 'ID de l\évènement',
     35 => 'ne peut pas être effacer',
     36 => 'effacer avec succès',
-    'num_events' => '%s Event(s)'
+    'num_events' => '%s événement(s)'
 );
 
 $LANG_CAL_MESSAGE = array(
@@ -190,7 +190,7 @@ $PLG_calendar_MESSAGE24 = 'Événement sauvegardé sur votre calendrier.';
 $PLG_calendar_MESSAGE26 = 'Événement effacé avec succès.';
 
 // Messages for the plugin upgrade
-$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3001 = 'La mise à niveau du plugin n\'est pas prise en charge.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
@@ -212,16 +212,16 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => 'Supprimer les évènements avec leur propriétaire',
     'aftersave' => 'Après la sauvegarde d\un évènement',
     'recaptcha' => 'reCAPTCHA',
-    'recaptcha_score' => 'reCAPTCHA Score',
+    'recaptcha_score' => 'Score reCAPTCHA',
     'default_permissions' => 'Permissions par défaut des évènements',
-    'autotag_permissions_event' => '[event: ] Permissions',
-    'block_enable' => 'Enabled',
-    'block_isleft' => 'Display Block on Left',
-    'block_order' => 'Block Order',
-    'block_topic_option' => 'Topic Options',
-    'block_topic' => 'Topic',
-    'block_group_id' => 'Group',
-    'block_permissions' => 'Permissions'
+    'autotag_permissions_event' => 'Permissions [event: ]',
+    'block_enable' => 'Activé',
+    'block_isleft' => 'Afficher le bloc à gauche',
+    'block_order' => 'Ordre du bloc',
+    'block_topic_option' => 'Options du sujet',
+    'block_topic' => 'Sujet',
+    'block_group_id' => 'Groupe',
+    'block_permissions' => 'Permissions du bloc'
 );
 
 $LANG_configsubgroups['calendar'] = array(
@@ -232,15 +232,15 @@ $LANG_tab['calendar'] = array(
     'tab_main' => 'Paramètres généraux du calendrier',
     'tab_permissions' => 'Permissions par défaut',
     'tab_autotag_permissions' => 'Permissions d\'usage des autotags',
-    'tab_events_block' => 'Events Block'
+    'tab_events_block' => 'Bloc des événements'
 );
 
 $LANG_fs['calendar'] = array(
     'fs_main' => 'Paramètres généraux du calendrier',
     'fs_permissions' => 'Permissions par défaut',
     'fs_autotag_permissions' => 'Permissions d\'usage des autotags',
-    'fs_block_settings' => 'Block Settings',
-    'fs_block_permissions' => 'Block Permissions'
+    'fs_block_settings' => 'Paramètres du bloc',
+    'fs_block_permissions' => 'Permissions du bloc'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
@@ -251,7 +251,7 @@ $LANG_configselects['calendar'] = array(
     9 => array('Afficher l\'évènement' => 'item', 'Afficher la liste administrateur' => 'list', 'Afficher le calendrier' => 'plugin', 'Afficher la page d\'acceuil' => 'home', 'Afficher le panneau administratif' => 'admin'),
     12 => array('Aucun accès' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
     13 => array('Pas d\'accès' => 0, 'Utiliser' => 2),
-    14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
-    16 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
+    14 => array('Aucun accès' => 0, 'Lecture seule' => 2),
+    15 => array('Tous' => 'all', 'Page d\'accueil uniquement' => 'homeonly', 'Sélectionner les sujets' => 'selectedtopics'),
+    16 => array('Désactivé' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
 );

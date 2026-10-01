@@ -167,7 +167,7 @@ $LANG_CAL_ADMIN = array(
     34 => 'קוד זיהוי אירוע',
     35 => 'לא הצליח להימחק',
     36 => 'נמחק בהצלחה',
-    'num_events' => '%s Event(s)'
+    'num_events' => '%s אירוע(ים)'
 );
 
 $LANG_CAL_MESSAGE = array(

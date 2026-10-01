@@ -85,7 +85,7 @@ $LANG_CAL_1 = array(
     49 => 'На сайте пока нет событий, или их ещё никто не просматривал.',
     50 => 'События',
     51 => 'Удалить',
-    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_event' => '[event: id альтернативный заголовок] - Показывает ссылку на событие календаря, используя название события. При необходимости можно указать альтернативный заголовок.'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -155,18 +155,18 @@ $LANG_CAL_ADMIN = array(
     23 => 'Неправильная дата начала.',
     24 => 'Неправильная дата окончания.',
     25 => 'Дата окончания предшествует дате начала. Перепутали?',
-    26 => 'Delete old entries',
-    27 => 'These are the events that are older than ',
-    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<br' . XHTML . '>Find all entries that are older than ',
-    29 => ' months.',
-    30 => 'Update List',
-    31 => 'Are You sure you want to permanently delete ALL selected users?',
-    32 => 'List all',
-    33 => 'No events selected for deletion',
-    34 => 'Event ID',
-    35 => 'could not be deleted',
-    36 => 'Sucessfully deleted',
-    'num_events' => '%s Event(s)'
+    26 => 'Удалить старые записи',
+    27 => 'Это события старше ',
+    28 => ' месяцев. Нажмите значок корзины внизу, чтобы удалить их, или выберите другой период:<br' . XHTML . '>Найти все записи старше ',
+    29 => ' месяцев.',
+    30 => 'Обновить список',
+    31 => 'Вы уверены, что хотите окончательно удалить ВСЕ выбранные записи?',
+    32 => 'Показать все',
+    33 => 'Не выбрано событий для удаления',
+    34 => 'ID события',
+    35 => 'не удалось удалить',
+    36 => 'Успешно удалено',
+    'num_events' => '%s событие(я)'
 );
 
 $LANG_CAL_MESSAGE = array(
@@ -186,68 +186,68 @@ $PLG_calendar_MESSAGE24 = 'Событие успешно сохранено в �
 $PLG_calendar_MESSAGE26 = 'Событие успешно удалено.';
 
 // Messages for the plugin upgrade
-$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3001 = 'Обновление плагина не поддерживается.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['calendar'] = array(
-    'label' => 'Calendar',
-    'title' => 'Calendar Configuration'
+    'label' => 'Календарь',
+    'title' => 'Настройки календаря'
 );
 
 $LANG_confignames['calendar'] = array(
-    'calendarloginrequired' => 'Calendar Login Required?',
-    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
-    'personalcalendars' => 'Enable Personal Calendars?',
-    'eventsubmission' => 'Enable Submission Queue?',
-    'showupcomingevents' => 'Show upcoming Events?',
-    'upcomingeventsrange' => 'Upcoming Events Range',
-    'event_types' => 'Event Types',
-    'hour_mode' => 'Hour Mode',
-    'notification' => 'Notification Email?',
-    'delete_event' => 'Delete Events with Owner?',
-    'aftersave' => 'After Saving Event',
+    'calendarloginrequired' => 'Требовать вход для календаря?',
+    'hidecalendarmenu' => 'Скрыть календарь в меню?',
+    'personalcalendars' => 'Включить личные календари?',
+    'eventsubmission' => 'Включить очередь заявок?',
+    'showupcomingevents' => 'Показывать предстоящие события?',
+    'upcomingeventsrange' => 'Период предстоящих событий',
+    'event_types' => 'Типы событий',
+    'hour_mode' => 'Формат времени',
+    'notification' => 'Уведомлять по электронной почте?',
+    'delete_event' => 'Удалять события вместе с владельцем?',
+    'aftersave' => 'После сохранения события',
     'recaptcha' => 'reCAPTCHA',
-    'recaptcha_score' => 'reCAPTCHA Score',
-    'default_permissions' => 'Event Default Permissions',
-    'autotag_permissions_event' => '[event: ] Permissions',
-    'block_enable' => 'Enabled',
-    'block_isleft' => 'Display Block on Left',
-    'block_order' => 'Block Order',
-    'block_topic_option' => 'Topic Options',
-    'block_topic' => 'Topic',
-    'block_group_id' => 'Group',
-    'block_permissions' => 'Permissions'
+    'recaptcha_score' => 'Оценка reCAPTCHA',
+    'default_permissions' => 'Права событий по умолчанию',
+    'autotag_permissions_event' => 'Права для [event: ]',
+    'block_enable' => 'Включено',
+    'block_isleft' => 'Показывать блок слева',
+    'block_order' => 'Порядок блока',
+    'block_topic_option' => 'Параметры темы',
+    'block_topic' => 'Тема',
+    'block_group_id' => 'Группа',
+    'block_permissions' => 'Права блока'
 );
 
 $LANG_configsubgroups['calendar'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Основные настройки'
 );
 
 $LANG_tab['calendar'] = array(
-    'tab_main' => 'General Calendar Settings',
-    'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions',
-    'tab_events_block' => 'Events Block'
+    'tab_main' => 'Основные настройки календаря',
+    'tab_permissions' => 'Права по умолчанию',
+    'tab_autotag_permissions' => 'Права использования автотегов',
+    'tab_events_block' => 'Блок событий'
 );
 
 $LANG_fs['calendar'] = array(
-    'fs_main' => 'General Calendar Settings',
-    'fs_permissions' => 'Default Permissions',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions',
-    'fs_block_settings' => 'Block Settings',
-    'fs_block_permissions' => 'Block Permissions'
+    'fs_main' => 'Основные настройки календаря',
+    'fs_permissions' => 'Права по умолчанию',
+    'fs_autotag_permissions' => 'Права использования автотегов',
+    'fs_block_settings' => 'Настройки блока',
+    'fs_block_permissions' => 'Права блока'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['calendar'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
+    0 => array('Да' => 1, 'Нет' => 0),
+    1 => array('Да' => true, 'Нет' => false),
     6 => array('12' => 12, '24' => 24),
-    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
-    13 => array('No access' => 0, 'Use' => 2),
-    14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
-    16 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
+    9 => array('Перейти к событию' => 'item', 'Показать список администратора' => 'list', 'Показать календарь' => 'plugin', 'Показать главную' => 'home', 'Показать админ-панель' => 'admin'),
+    12 => array('Нет доступа' => 0, 'Только чтение' => 2, 'Чтение и запись' => 3),
+    13 => array('Нет доступа' => 0, 'Использовать' => 2),
+    14 => array('Нет доступа' => 0, 'Только чтение' => 2),
+    15 => array('Все' => 'all', 'Только главная' => 'homeonly', 'Выбрать темы' => 'selectedtopics'),
+    16 => array('Отключено' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
 );
