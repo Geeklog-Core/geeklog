@@ -3,8 +3,8 @@
 ###############################################################################
 # german_formal_utf-8.php
 #
-# This is the German language file for the Geeklog Links Plugin,
-# addressing the user as "Sie" (formal German).
+# This is the German language file for the Geeklog Links Plugin
+# addressing the user as "Du" (informal German).
 #
 # Authors: Dirk Haun <dirk AT haun-online DOT de>
 #          Markus Wollschläger
@@ -48,10 +48,10 @@ $LANG_LINKS = array(
     121 => 'Fehlerhafte Link wurde gemeldet von: ',
     122 => 'Danke fürs Bescheidsagen. Der Administrator korrigiert das Problem sobald wie möglich.',
     123 => 'Danke',
-    124 => 'Go',
+    124 => 'Los',
     125 => 'Kategorien',
-    126 => 'Sie sind hier:',
-    'autotag_desc_link' => '[link: id alternate title] - Displays a link to a Link from the Links Plugin using the Link Title as the title. An alternate title may be specified but is not required.',
+    126 => 'Du bist hier:',
+    'autotag_desc_link' => '[link: id alternativer Titel] - Zeigt einen Link aus dem Links-Plugin mit dem Linktitel an. Ein alternativer Titel kann optional angegeben werden.',
     'root' => 'oben'
 );
 
@@ -87,7 +87,7 @@ $LANG_LINKS_SUBMIT = array(
     4 => 'Andere',
     5 => 'oder neue Kategorie',
     6 => 'Fehler: Kategorie fehlt',
-    7 => 'Wenn Sie "Andere" auswählen, geben Sie bitte auch eine neue Kategorie ein',
+    7 => 'Wenn Du "Andere" auswählst, gib bitte auch eine neue Kategorie ein',
     8 => 'Titel',
     9 => 'URL',
     10 => 'Kategorie',
@@ -97,16 +97,16 @@ $LANG_LINKS_SUBMIT = array(
 ###############################################################################
 # Messages for COM_showMessage the submission form
 
-$PLG_links_MESSAGE1 = "Danke für Ihren Beitrag zu {$_CONF['site_name']}. Ihr Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a> aufgelistet werden.";
-$PLG_links_MESSAGE2 = 'Ihr Link wurde gespeichert.';
+$PLG_links_MESSAGE1 = "Danke für Deinen Beitrag zu {$_CONF['site_name']}. Dein Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a> aufgelistet werden.";
+$PLG_links_MESSAGE2 = 'Dein Link wurde gespeichert.';
 $PLG_links_MESSAGE3 = 'Der Link wurde gelöscht.';
-$PLG_links_MESSAGE4 = "Danke für Ihren Link. Sie finden ihn nun unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a>.";
+$PLG_links_MESSAGE4 = "Danke für Deinen Link. Du findest ihn nun unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a>.";
 $PLG_links_MESSAGE5 = 'Keine ausreichenden Rechte, diese Kategorie anzusehen.';
 $PLG_links_MESSAGE6 = 'Keine ausreichenden Rechte, diese Kategorie zu editieren.';
-$PLG_links_MESSAGE7 = 'Bitte geben Sie den Namen der Kategorie und die Beschreibung ein.';
+$PLG_links_MESSAGE7 = 'Bitte gib den Namen der Kategorie und die Beschreibung ein.';
 $PLG_links_MESSAGE10 = 'Die Kategorie wurde erfolgreich gespeichert.';
 $PLG_links_MESSAGE11 = 'ID nicht "site" oder "user" nennen - dies sind reservierte Worte zum internen Gebrauch.';
-$PLG_links_MESSAGE12 = 'Sie versuchen eine Oberkategorie zur Unterkategorie seiner eigenen Unterkategorie zu machen. Dies würde eine verwaiste Kategorie produzieren. Bitte erst die Unterkategorie einen Level höher verschieben.';
+$PLG_links_MESSAGE12 = 'Du versuchst eine Oberkategorie zur Unterkategorie seiner eigenen Unterkategorie zu machen. Dies würde eine verwaiste Kategorie produzieren. Bitte erst die Unterkategorie einen Level höher verschieben.';
 $PLG_links_MESSAGE13 = 'Die Kategorie wurde erfolgreich gelöscht.';
 $PLG_links_MESSAGE14 = 'Die Kategorie enthält Links und / oder Kategorien. Bitte diese erst entfernen.';
 $PLG_links_MESSAGE15 = 'Keine ausreichenden Rechte, diese Kategorie zu löschen.';
@@ -143,7 +143,7 @@ $LANG_LINKS_ADMIN = array(
     24 => 'Link nicht gefunden',
     25 => 'Der zu editierende Link konnte nicht gefunden werden.',
     26 => 'Links überprüfen',
-    27 => 'HTTP Status',
+    27 => 'HTTP-Status',
     28 => 'Kategorie editieren',
     29 => 'Die Details unten editieren oder eingeben.',
     30 => 'Kategorie',
@@ -157,7 +157,7 @@ $LANG_LINKS_ADMIN = array(
     42 => 'Diese Kategorie löschen',
     43 => 'Kategorie der Site',
     44 => 'Unterkategorie&nbsp;hinzufügen',
-    46 => 'User %s hat unrechtmäßig versucht die Kategorie %s zu löschen.',
+    46 => 'Benutzer %s hat versucht, eine Kategorie ohne die erforderlichen Zugriffsrechte zu löschen.',
     50 => 'Kategorien auflisten',
     51 => 'Neuer Link',
     52 => 'Neue Kategorie',
@@ -239,11 +239,11 @@ $LANG_confignames['links'] = array(
     'show_category_descriptions' => 'Kategoriebeschreibung anzeigen?',
     'new_window' => 'Externe Links in neuem Fenster öffnen?',
     'recaptcha' => 'reCAPTCHA',
-    'recaptcha_score' => 'reCAPTCHA Score',
+    'recaptcha_score' => 'reCAPTCHA-Bewertung',
     'root' => 'ID der Oberkategorie',
     'default_permissions' => 'Grundeinstellung Rechte',
-    'category_permissions' => 'Category Default Permissions',
-    'autotag_permissions_link' => '[link: ] Permissions'
+    'category_permissions' => 'Standardberechtigungen für Kategorien',
+    'autotag_permissions_link' => 'Berechtigungen für [link: ]'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -251,19 +251,19 @@ $LANG_configsubgroups['links'] = array(
 );
 
 $LANG_tab['links'] = array(
-    'tab_public' => 'Public Links List Settings',
-    'tab_admin' => 'Links Admin Settings',
-    'tab_permissions' => 'Link Permissions',
-    'tab_cpermissions' => 'Category Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+    'tab_public' => 'Einstellungen der öffentlichen Linkliste',
+    'tab_admin' => 'Administrationseinstellungen für Links',
+    'tab_permissions' => 'Link-Berechtigungen',
+    'tab_cpermissions' => 'Kategorie-Berechtigungen',
+    'tab_autotag_permissions' => 'Berechtigungen für die Autotag-Nutzung'
 );
 
 $LANG_fs['links'] = array(
     'fs_public' => 'Einstellungen öffentliche Links',
     'fs_admin' => 'Admin Einstellungen',
     'fs_permissions' => 'Grundeinstellungen Rechte',
-    'fs_cpermissions' => 'Category Permissions',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_cpermissions' => 'Kategorie-Berechtigungen',
+    'fs_autotag_permissions' => 'Berechtigungen für die Autotag-Nutzung'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']

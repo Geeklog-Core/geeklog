@@ -170,7 +170,7 @@ $LANG_LINKS_ADMIN = array(
     59 => '<p>כדי לוודא את כל הקישורים המוצגים, אנא ליחצו על הקישור "ודאו עכשיו" שלהלן. אנא שימו לב שזה עלול לקחת קצת זמן בהתאם לכמות הקישורים המוצגים.</p>',
     60 => 'המשתמש %s ניסה לערוך ללא רשות את הקטגוריה %s.',
     61 => 'קישורים בקטגוריה',
-    'num_links' => '%s Link(s)'
+    'num_links' => '%s קישור(ים)'
 );
 
 
@@ -239,7 +239,7 @@ $LANG_confignames['links'] = array(
     'show_category_descriptions' => 'הצגת תיאור הקטגוריה?',
     'new_window' => 'האם לפתוח קישורים חיצוניים בחלון חדש?',
     'recaptcha' => 'reCAPTCHA',
-    'recaptcha_score' => 'reCAPTCHA Score',
+    'recaptcha_score' => 'ציון reCAPTCHA',
     'root' => 'קוד הזיהוי של הקטגוריה הראשית',
     'default_permissions' => 'הרשאות ברירת המחדל של קישורים',
     'category_permissions' => 'הרשאות ברירת המחדל של קטגוריות',

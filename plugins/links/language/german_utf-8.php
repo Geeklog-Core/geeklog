@@ -48,10 +48,10 @@ $LANG_LINKS = array(
     121 => 'Fehlerhafte Link wurde gemeldet von: ',
     122 => 'Danke fürs Bescheidsagen. Der Administrator korrigiert das Problem sobald wie möglich.',
     123 => 'Danke',
-    124 => 'Go',
+    124 => 'Los',
     125 => 'Kategorien',
     126 => 'Du bist hier:',
-    'autotag_desc_link' => '[link: id alternate title] - Displays a link to a Link from the Links Plugin using the Link Title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_link' => '[link: id alternativer Titel] - Zeigt einen Link aus dem Links-Plugin mit dem Linktitel an. Ein alternativer Titel kann optional angegeben werden.',
     'root' => 'oben'
 );
 
@@ -143,7 +143,7 @@ $LANG_LINKS_ADMIN = array(
     24 => 'Link nicht gefunden',
     25 => 'Der zu editierende Link konnte nicht gefunden werden.',
     26 => 'Links überprüfen',
-    27 => 'HTTP Status',
+    27 => 'HTTP-Status',
     28 => 'Kategorie editieren',
     29 => 'Die Details unten editieren oder eingeben.',
     30 => 'Kategorie',
@@ -157,7 +157,7 @@ $LANG_LINKS_ADMIN = array(
     42 => 'Diese Kategorie löschen',
     43 => 'Kategorie der Site',
     44 => 'Unterkategorie&nbsp;hinzufügen',
-    46 => 'User %s hat unrechtmäßig versucht die Kategorie %s zu löschen.',
+    46 => 'Benutzer %s hat versucht, eine Kategorie ohne die erforderlichen Zugriffsrechte zu löschen.',
     50 => 'Kategorien auflisten',
     51 => 'Neuer Link',
     52 => 'Neue Kategorie',
@@ -239,11 +239,11 @@ $LANG_confignames['links'] = array(
     'show_category_descriptions' => 'Kategoriebeschreibung anzeigen?',
     'new_window' => 'Externe Links in neuem Fenster öffnen?',
     'recaptcha' => 'reCAPTCHA',
-    'recaptcha_score' => 'reCAPTCHA Score',
+    'recaptcha_score' => 'reCAPTCHA-Bewertung',
     'root' => 'ID der Oberkategorie',
     'default_permissions' => 'Grundeinstellung Rechte',
-    'category_permissions' => 'Category Default Permissions',
-    'autotag_permissions_link' => '[link: ] Permissions'
+    'category_permissions' => 'Standardberechtigungen für Kategorien',
+    'autotag_permissions_link' => 'Berechtigungen für [link: ]'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -251,19 +251,19 @@ $LANG_configsubgroups['links'] = array(
 );
 
 $LANG_tab['links'] = array(
-    'tab_public' => 'Public Links List Settings',
-    'tab_admin' => 'Links Admin Settings',
-    'tab_permissions' => 'Link Permissions',
-    'tab_cpermissions' => 'Category Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+    'tab_public' => 'Einstellungen der öffentlichen Linkliste',
+    'tab_admin' => 'Administrationseinstellungen für Links',
+    'tab_permissions' => 'Link-Berechtigungen',
+    'tab_cpermissions' => 'Kategorie-Berechtigungen',
+    'tab_autotag_permissions' => 'Berechtigungen für die Autotag-Nutzung'
 );
 
 $LANG_fs['links'] = array(
     'fs_public' => 'Einstellungen öffentliche Links',
     'fs_admin' => 'Admin Einstellungen',
     'fs_permissions' => 'Grundeinstellungen Rechte',
-    'fs_cpermissions' => 'Category Permissions',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_cpermissions' => 'Kategorie-Berechtigungen',
+    'fs_autotag_permissions' => 'Berechtigungen für die Autotag-Nutzung'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
