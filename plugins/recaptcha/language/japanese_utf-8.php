@@ -3,12 +3,12 @@
 // +---------------------------------------------------------------------------+
 // | reCAPTCHA Plugin for Geeklog - The Ultimate Weblog                        |
 // +---------------------------------------------------------------------------+
-// | geeklog/plugins/recaptcha/language/japanese_utf-8.php                     |
+// | geeklog/plugins/recaptcha/language/japanese_utf-8.php                  |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2014-2020 mystral-kk - geeklog AT mystral-kk DOT net        |
 // |                                                                           |
 // | Based on the CAPTCHA Plugin by Ben                                        |
-// |                                                   - ben AT geeklog DOT fr |
+// |                                                - ben AT geeklog DOT fr    |
 // | Based on the original CAPTCHA Plugin by Mark R. Evans                     |
 // |                                                - mark AT glfusion DOT org |
 // | Constructed with the Universal Plugin                                     |
@@ -27,7 +27,7 @@
 // | along with this program; if not, write to the Free Software               |
 // | Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA|
 // |                                                                           |
-// +---------------------------------------------------------------------------|
+// +---------------------------------------------------------------------------+
 
 if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file cannot be used on its own!');
@@ -36,40 +36,40 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 $LANG_RECAPTCHA = [
     'plugin'      => 'reCAPTCHA',
     'admin'       => 'reCAPTCHA',
-    'msg_error'   => 'エラーが発生しました。reCAPTCHAがリクエストを拒否しました。',
-    'entry_error' => '%1sで無効な入力を検出しました。IPアドレス: %2s  エラーコード: %3s',    // %1s = $type, %2s = $ip, %3s = $errorCode
+    'msg_error'   => 'エラー: reCAPTCHA の検証に失敗しました。',
+    'entry_error' => '%1s で無効な reCAPTCHA 文字列が入力されました - IPアドレス: %2s - エラーコード: %3s',    // %1s = $type, %2s = $ip, %3s = $errorCode
 ];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['recaptcha'] = [
     'label' => 'reCAPTCHA',
-    'title' => 'reCAPTCHAの設定',
+    'title' => 'reCAPTCHA の設定',
 ];
 
 $LANG_confignames['recaptcha'] = [
-    'site_key'             => 'reCAPTCHA V2 Site Key',
-    'secret_key'           => 'reCAPTCHA V2 Secret Key',
-    'invisible_site_key'   => 'Invisible reCAPTCHA Site Key',
-    'invisible_secret_key' => 'Invisible reCAPTCHA Secret Key',
-    'site_key_v3'          => 'reCAPTCHA V3 Site Key',
-    'secret_key_v3'        => 'reCAPTCHA V3 Secret Key',
-    'logging'              => '無効な入力をログファイルに記録する',
-    'anonymous_only'       => 'ゲストユーザーに対してのみ使用する',
-    'remoteusers'          => 'リモートユーザー全員に強制する',
-    'enable_comment'       => 'コメントをサポートする',
-    'enable_contact'       => 'メール送信をサポートする',
-    'enable_emailstory'    => '「記事をメールする」をサポートする',
-    'enable_registration'  => 'ユーザー登録をサポートする',
-    'enable_loginform'     => 'ログインフォームをサポートする',
-    'enable_getpassword'   => 'パスワード再設定フォームをサポートする',
-    'enable_story'         => '記事投稿をサポートする',
-    'score_comment'        => 'コメント用のスコア',
-    'score_contact'        => 'メール送信用のスコア',
-    'score_emailstory'     => '「記事をメールする」用のスコア',
-    'score_registration'   => 'ユーザー登録用のスコア',
-    'score_loginform'      => 'ログインフォーム用のスコア',
-    'score_getpassword'    => 'パスワード再設定フォーム用のスコア',
-    'score_story'          => '記事投稿用のスコア',
+    'site_key'             => 'reCAPTCHA V2 サイトキー',
+    'secret_key'           => 'reCAPTCHA V2 シークレットキー',
+    'invisible_site_key'   => 'Invisible reCAPTCHA サイトキー',
+    'invisible_secret_key' => 'Invisible reCAPTCHA シークレットキー',
+    'site_key_v3'          => 'reCAPTCHA V3 サイトキー',
+    'secret_key_v3'        => 'reCAPTCHA V3 シークレットキー',
+    'logging'              => '無効な reCAPTCHA 試行を記録する',
+    'anonymous_only'       => 'ゲストユーザーのみ',
+    'remoteusers'          => 'すべてのリモートユーザーに reCAPTCHA を強制する',
+    'enable_comment'       => 'コメント保護を有効にする',
+    'enable_contact'       => 'お問い合わせフォーム保護を有効にする',
+    'enable_emailstory'    => '記事のメール送信保護を有効にする',
+    'enable_registration'  => 'ユーザー登録保護を有効にする',
+    'enable_loginform'     => 'ログインフォーム保護を有効にする',
+    'enable_getpassword'   => 'パスワード再設定フォーム保護を有効にする',
+    'enable_story'         => '記事保護を有効にする',
+    'score_comment'        => 'コメントのスコアしきい値',
+    'score_contact'        => 'お問い合わせのスコアしきい値',
+    'score_emailstory'     => '記事メール送信のスコアしきい値',
+    'score_registration'   => 'ユーザー登録のスコアしきい値',
+    'score_loginform'      => 'ログインフォームのスコアしきい値',
+    'score_getpassword'    => 'パスワード再設定のスコアしきい値',
+    'score_story'          => '記事のスコアしきい値',
 ];
 
 $LANG_configsubgroups['recaptcha'] = [
@@ -77,15 +77,15 @@ $LANG_configsubgroups['recaptcha'] = [
 ];
 
 $LANG_tab['recaptcha'] = [
-    'tab_general'     => 'reCAPTCHA設定',
-    'tab_integration' => 'Geeklogへの統合',
-    'tab_score'       => 'スコア',
+    'tab_general'     => 'reCAPTCHA 設定',
+    'tab_integration' => 'Geeklog 統合',
+    'tab_score'       => 'スコアしきい値',
 ];
 
 $LANG_fs['recaptcha'] = [
     'fs_system'      => 'システム',
-    'fs_integration' => 'Geeklogへの統合',
-    'fs_score'       => 'スコア',
+    'fs_integration' => 'Geeklog 統合',
+    'fs_score'       => 'スコアしきい値',
 ];
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
