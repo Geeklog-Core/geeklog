@@ -32,63 +32,56 @@ global $LANG32;
 $LANG_XMLSMAP = array(
     'plugin' => 'XMLSitemap',
     'admin' => 'ניהול XMLSitemap',
-    'description' => 'Usually, all the sitemap files will automatically be updated whenever an item is added, changed or deleted.  If something went wrong, please update sitemap files manually by pressing the button bellow.',
-    'filename' => 'File name',
-    'updated' => 'Updated',
-    'not_saved' => 'Not Saved',
-    'update_now' => 'Update all the sitemap files now!',
-    'update_success' => 'All the sitemap files were successfully updated.',
-    'update_fail' => 'Failed to update sitemap files.  Please refer to the "error.log" for details.'
+    'description' => 'בדרך כלל כל קובצי מפת האתר מתעדכנים אוטומטית כאשר פריט נוסף, משתנה או נמחק. אם אירעה בעיה, עדכן את קובצי מפת האתר ידנית באמצעות הכפתור למטה.',
+    'filename' => 'שם קובץ',
+    'updated' => 'עודכן',
+    'not_saved' => 'לא נשמר',
+    'update_now' => 'עדכן עכשיו את כל קובצי מפת האתר!',
+    'update_success' => 'כל קובצי מפת האתר עודכנו בהצלחה.',
+    'update_fail' => 'עדכון קובצי מפת האתר נכשל. לפרטים עיין ב-"error.log".',
 );
 
-// Localization of the Admin Configuration UI
-$LANG_configsections['xmlsitemap'] = array(
-    'label' => 'XMLSitemap',
-    'title' => 'כיוון XMLSitemap'
-);
+$LANG_configsections['xmlsitemap'] = array('label' => 'XMLSitemap', 'title' => 'הגדרות XMLSitemap');
 
 $LANG_confignames['xmlsitemap'] = array(
-    'sitemap_file' => 'שם קובץ Sitemap',
-    'mobile_sitemap_file' => 'שם קובץ Mobile Sitemap',
-    'include_homepage' => 'Homepage in Sitemap',
-    'types' => 'תוכן ה-sitemap',
-    'lastmod' => 'Content Types to include lastmod element',
-    'priorities' => 'Priority',
-    'frequencies' => 'Frequency',
-    'ping_google' => 'Send ping to Google',
-    'indexnow' => 'Enable IndexNow',
-    'indexnow_key' => 'IndexNow Key',
-    'indexnow_key_location' => 'IndexNow Key Location',
-    'news_sitemap_file' => 'News Sitemap file name',
-    'news_sitemap_topics' => 'Include Articles from these Topics',
-    'news_sitemap_age' => 'Max Age of Articles'
+    'sitemap_file' => 'שם קובץ מפת האתר',
+    'mobile_sitemap_file' => 'שם קובץ מפת האתר לנייד',
+    'include_homepage' => 'דף הבית במפת האתר',
+    'types' => 'תוכן מפת האתר',
+    'lastmod' => 'סוגי תוכן שיכללו את רכיב lastmod',
+    'priorities' => 'עדיפות',
+    'frequencies' => 'תדירות',
+    'ping_google' => 'שלח ping ל-Google',
+    'indexnow' => 'הפעל IndexNow',
+    'indexnow_key' => 'מפתח IndexNow',
+    'indexnow_key_location' => 'מיקום מפתח IndexNow',
+    'news_sitemap_file' => 'שם קובץ מפת אתר לחדשות',
+    'news_sitemap_topics' => 'כלול מאמרים מנושאים אלה',
+    'news_sitemap_age' => 'גיל מרבי של מאמרים',
 );
 
-$LANG_configsubgroups['xmlsitemap'] = array(
-    'sg_main' => 'הגדרות כלליות'
-);
+$LANG_configsubgroups['xmlsitemap'] = array('sg_main' => 'הגדרות ראשיות');
 
 $LANG_tab['xmlsitemap'] = array(
-    'tab_main' => 'הגדרות כלליות של XMLSitemap',
+    'tab_main' => 'הגדרות ראשיות של XMLSitemap',
     'tab_pri' => 'עדיפות',
-    'tab_freq' => 'תכיפות עדכונים',
+    'tab_freq' => 'תדירות עדכון',
     'tab_ping' => 'Ping',
-    'tab_news' => 'News Sitemap'
+    'tab_news' => 'מפת אתר לחדשות',
 );
 
 $LANG_fs['xmlsitemap'] = array(
-    'fs_main' => 'ההגדרות הכלליות של XMLSitemap',
-    'fs_pri' => 'עדיפות (ברירת המחדל = 0.5, הכי נמוך = 0.0, הכי גבוה = 1.0)',
-    'fs_freq' => 'תדירות עדכונים',
-    'fs_ping' => 'Send ping on updating sitemap',
-    'fs_news' => 'News Sitemap Settings'
+    'fs_main' => 'הגדרות ראשיות של XMLSitemap',
+    'fs_pri' => 'עדיפות (ברירת מחדל = 0.5, הנמוכה ביותר = 0.0, הגבוהה ביותר = 1.0)',
+    'fs_freq' => 'תדירות עדכון',
+    'fs_ping' => 'שלח ping בעת שינוי',
+    'fs_news' => 'הגדרות מפת אתר לחדשות',
 );
 
-// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['xmlsitemap'] = array(
     0 => array('כן' => 1, 'לא' => 0),
-    1 => array('כן' => true, 'לא' => false),
-    9 => array('הפנייה לעמוד' => 'item', 'הצגת רשימה' => 'list', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
-    12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
-    20 => array('תמיד' => 'always', 'כל שעה' => 'hourly', 'יומי' => 'daily', 'שבועי' => 'weekly', 'חודשי' => 'monthly', 'שנתי' => 'yearly', 'אף פעם' => 'never', 'hidden' => 'hidden')
+    1 => array('כן' => TRUE, 'לא' => FALSE),
+    9 => array('העבר לדף' => 'item', 'הצג רשימה' => 'list', 'הצג דף בית' => 'home', 'הצג ניהול' => 'admin'),
+    12 => array('ללא גישה' => 0, 'קריאה בלבד' => 2, 'קריאה-כתיבה' => 3),
+    20 => array('תמיד' => 'always', 'כל שעה' => 'hourly', 'יומי' => 'daily', 'שבועי' => 'weekly', 'חודשי' => 'monthly', 'שנתי' => 'yearly', 'לעולם לא' => 'never', 'מוסתר' => 'hidden'),
 );
