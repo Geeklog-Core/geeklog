@@ -36,11 +36,11 @@ global $LANG32;
 
 $LANG_POLLS = array(
     'polls' => 'Umfragen',
-    'poll' => 'Poll',
+    'poll' => 'Umfrage',
     'results' => 'Ergebnisse',
     'pollresults' => 'Umfrage-Ergebnisse',
     'votes' => 'Stimmen',
-    'voters' => 'voters',
+    'voters' => 'Abstimmende',
     'vote' => 'Abstimmen',
     'pastpolls' => 'Ältere Umfragen',
     'savedvotetitle' => 'Stimme gespeichert',
@@ -62,9 +62,9 @@ $LANG_POLLS = array(
     'pollhidden' => 'Du hast schon abgestimmt. Die Ergebnisse dieser Umfrage werden veröffentlicht, sobald sie abgeschlossen ist.',
     'start_poll' => 'Zur Umfrage',
     'no_new_polls' => 'Keine neuen Umfragen',
-    'autotag_desc_poll' => '[poll: id alternate title] - Displays a link to a poll using the Poll Topic as the title. An alternate title may be specified but is not required.',
-    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - Displays a poll for voting. Class and showall not required. Class specifies the css class and Showall if set to 1, shows all questions',
-    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - Displays the poll results. Class not required. Class specifies the css class.',
+    'autotag_desc_poll' => '[poll: id alternativer Titel] - Zeigt einen Link zu einer Umfrage mit dem Umfragethema als Titel. Ein alternativer Titel ist optional.',
+    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - Zeigt eine Umfrage zur Abstimmung. class und showall sind optional. class legt die CSS-Klasse fest; showall:1 zeigt alle Fragen.',
+    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - Zeigt die Umfrageergebnisse. class ist optional und legt die CSS-Klasse fest.',
     'deny_msg' => 'Zugang zu dieser Umfrage nicht gestattet.  Entweder wurde diese Umfrage entfernt oder es fehlen die nötigen Zugriffsrechte.'
 );
 
@@ -93,7 +93,7 @@ $LANG25 = array(
     19 => 'Um eine Umfrage zu editieren oder zu löschen, auf das Edit-Icon klicken.  Um eine neue Umfrage zu eröffnen, bitte auf "Neu anlegen" oben klicken.',
     20 => 'Abstimmende',
     21 => 'Kein Zugang',
-    22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",
+    22 => "Sie versuchen, auf eine Umfrage zuzugreifen, für die Sie keine Berechtigung haben. Dieser Versuch wurde protokolliert. Bitte <a href=\"{$_CONF['site_admin_url']}/poll.php\">kehren Sie zur Umfrageverwaltung zurück</a>.",
     23 => 'Neue Umfrage',
     24 => 'Schaltzentrale',
     25 => 'Ja',
@@ -112,9 +112,9 @@ $LANG25 = array(
     38 => 'Während diese Umfrage läuft, können nur der Eigentümer &amp; Root die Ergebnisse sehen.',
     39 => 'Die Kategorie wird nur angezeigt, wenn sie mehr als eine Frage enthält.',
     40 => 'Alle Antworten zu dieser Umfrage ansehen',
-    1001 => 'Allow multiple answers',
-    1002 => 'Description',
-    1003 => 'Description'
+    1001 => 'Mehrere Antworten erlauben',
+    1002 => 'Beschreibung',
+    1003 => 'Beschreibung'
 );
 
 $PLG_polls_MESSAGE15 = 'Der Kommentar wurde gespeichert, muss aber noch von einem Moderator freigegeben werden.';

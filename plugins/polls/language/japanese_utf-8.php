@@ -42,7 +42,7 @@ global $LANG32;
 
 $LANG_POLLS = array(
     'polls' => 'アンケート',
-    'poll' => 'Poll',
+    'poll' => 'アンケート',
     'results' => '投票結果を見る',
     'pollresults' => '投票結果',
     'votes' => '投票',
