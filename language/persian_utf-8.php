@@ -49,8 +49,8 @@ $LANG01 = array(
     2 => 'بیشتر بخوانید',
     3 => 'نظرات',
     4 => 'ویرایش',
-    5 => 'Contributed by: %s on %s',
-    6 => 'Last modified on %s',
+    5 => 'ارسال‌شده توسط: %s در %s',
+    6 => 'آخرین تغییر در %s',
     7 => '',
     8 => '',
     9 => 'وظایف مدیریت:',
@@ -62,7 +62,7 @@ $LANG01 = array(
     15 => '',
     16 => '',
     17 => 'کاربران',
-    18 => 'SQL Query',
+    18 => 'پرس‌وجوی SQL',
     19 => 'خروج',
     20 => 'اطلاعات کاربر:',
     21 => 'نام کاربری',
@@ -188,27 +188,27 @@ $LANG01 = array(
     141 => 'یک خطا رخ داد',
     142 => 'متأسفانه، در بارگذاری این صفحه خطایی رخ داده است. لطفا بعدا مجدد امتحان کنید.',
     143 => 'اظهار نظر (%d)',
-    144 => 'Parse Error.  An error occurred while parsing PHP code.',
-    'loginform' => "<a href=\"{$_CONF['site_url']}/users.php\">Login Here</a>",
-    'remoteloginoptions' => 'Remote Login Options',
+    144 => 'خطای تجزیه. هنگام تجزیه کد PHP خطایی رخ داد.',
+    'loginform' => "<a href=\"{$_CONF['site_url']}/users.php\">اینجا وارد شوید</a>",
+    'remoteloginoptions' => 'گزینه‌های ورود از راه دور',
     'facebook' => 'برای ورود با فیسبوک',
     'twitter' => 'ورود با توییتر',
     'linkedin' => 'ورود با لینکداین',
     'google' => 'ورود با گوگل',
-    'microsoft' => 'Login with Microsoft',
+    'microsoft' => 'ورود با Microsoft',
     'yahoo' => 'ورود با یاهو',
     'github' => 'ورود با گیتهاب',
     'ctl' => 'پاکسازی حافظه نهان',
     'ok' => 'تصویب',
     'filemanager' => 'مدیریت پرونده',
     'error_invalid_password' => 'خطا، رمز عبور نامعتبر برای نام کاربری',
-    'error_filemanager_disabled' => 'Filemanager is disabled',
-    'terms_of_use' => 'Terms of Use',
-    'terms_of_service' => 'Terms of Service',
-    'privacy_policy' => 'Privacy Policy',
-    'about_cookies' => 'About Cookies',
-    'parse_php_error' => 'There was an error parsing your PHP code: %s',
-    'error_title' => 'An Error Occurred'
+    'error_filemanager_disabled' => 'مدیریت پرونده غیرفعال است',
+    'terms_of_use' => 'شرایط استفاده',
+    'terms_of_service' => 'شرایط خدمات',
+    'privacy_policy' => 'سیاست حفظ حریم خصوصی',
+    'about_cookies' => 'درباره کوکی‌ها',
+    'parse_php_error' => 'هنگام تجزیه کد PHP شما خطایی رخ داد: %s',
+    'error_title' => 'خطایی رخ داد'
 );
 
 ###############################################################################
@@ -220,7 +220,7 @@ $LANG03 = array(
     3 => 'خروج',
     4 => 'ایجاد حساب کاربری',
     5 => 'نام کاربری',
-    6 => 'این سایت به شما نیاز دارد که برای ارسال نظر وارد سیستم شوید، لطفا وارد شوید. اگر حساب کاربری ندارید می توانید از فرم زیر برای ایجاد یک حساب استفاده کنید.',
+    6 => 'برای ارسال نظر باید وارد سایت شوید. اگر حساب کاربری دارید یا می‌خواهید حسابی ایجاد کنید، لطفاً <a href="%s">اینجا وارد شوید</a>.',
     7 => 'آخرین نظر شما بود ',
     8 => " چند ثانیه قبل. این سایت حداقل نیاز دارد {$_CONF['commentspeedlimit']} ثانیه بین نظرات",
     9 => 'اظهار نظر',
@@ -238,7 +238,7 @@ $LANG03 = array(
     21 => 'قبل از ارسال خود، پیام های دیگران را بخوانید تا آنچه که از قبل گفته شد، از تکثیر مجدد آن جلوگیری شود.',
     22 => 'از یک موضوع واضح استفاده کنید که درباره پیام شما توضیح می دهد.',
     23 => 'نشانی ایمیل شما به صورت عمومی منتشر نخواهد شد.',
-    'instr_line6' => 'When logged in as a user your comments will be linked to your account and you can specify if you would like notifications of any replies.',
+    'instr_line6' => 'هنگامی که به‌عنوان کاربر وارد شده‌اید، نظرات شما به حسابتان مرتبط می‌شوند و می‌توانید مشخص کنید آیا برای پاسخ‌ها اعلان دریافت کنید یا خیر.',
     24 => 'کاربر ناشناس',
     25 => 'آیا مطمئن هستید که میخواهید این پست را به مدیر سایت گزارش دهید؟',
     26 => '%s :گزارش پست های خشونت آمیز زیر را گزارش کرد',
@@ -270,13 +270,13 @@ $LANG03 = array(
     106 => 'انجام اعمال حجمی در نظرات و ارسالی های نظر از جمله تصویب و حذف. همچنین می توانید کاربران و نشانی های آیپی را به صورت حجمی ممنوع کنید. <span style="color: red;">نشانی های آیپی در قرمز</span> کسانی که توسط افزونه ضد هرزنامه ممنوع شده اند (فقط از ارسالی ها ممنوع شده) and/or افزونه ممنوعیت (از بازدید سایت ممنوع شده). <span style="color: red;">نام های کاربری در قرمز</span> کاربرانی که ممنوع شده اند.',
     'record_edit' => 'کاربر و زمان ویرایش ضبط شود؟',
     'ban_plugin_ban_ip' => 'این نشانی آیپی را توسط افزونه ممنوعیت ممنوع کنید',
-    'num_comments' => '%s Comment(s)',
-    'anon_user_name' => '%s (Anonymous User)',
-    'comments_closed_msg' => 'Comments are closed and no new posts are allowed.',
-    'read_comment' => 'Read the full comment at',
-    'comment_for' => 'The above comment is for the following item',
-    'comment_page_title' => 'Comments for %s',
-    'comments' => 'Comments'
+    'num_comments' => '%s نظر',
+    'anon_user_name' => '%s (کاربر ناشناس)',
+    'comments_closed_msg' => 'نظرات بسته هستند و ارسال جدید مجاز نیست.',
+    'read_comment' => 'نظر کامل را در این نشانی بخوانید',
+    'comment_for' => 'نظر بالا مربوط به مورد زیر است',
+    'comment_page_title' => 'نظرات برای %s',
+    'comments' => 'نظرات'
 );
 
 ###############################################################################
@@ -298,7 +298,7 @@ $LANG04 = array(
     13 => 'خلاصه ایمیل روزانه',
     14 => 'این رمز عبور توسط یک رندومایزر تولید شده است. توصیه می شود که این رمز را بلافاصله تغییر دهید. برای تغییر رمز عبور خود، وارد شوید و سپس از منوی وظایف کاربر بر حساب کاربری من کلیک کنید.',
     15 => "حساب کاربری شما {$_CONF['site_name']} با موفقیت ایجاد شده است. برای استفاده از آن، باید با بکارگیری از اطلاعات زیر وارد شوید. لطفا این ایمیل را برای ارجاع بیشتر ذخیره کنید.",
-    'email_convert_remote' => "Your {$_CONF['site_name']} remote account has been converted to a local account. To continue to use your account, you must login using the information below. Please save this mail for further reference.",
+    'email_convert_remote' => "حساب از راه دور شما در {$_CONF['site_name']} به یک حساب محلی تبدیل شده است. برای ادامه استفاده از حساب، باید با اطلاعات زیر وارد شوید. لطفاً این ایمیل را برای مراجعه بعدی نگه دارید.",
     16 => 'اطلاعات حساب کاربری شما',
     17 => 'حساب کاربری وجود ندارد',
     18 => 'نشانی ایمیل ارائه شده به نظر نمی رسد یک نشانی ایمیل معتبر باشد',
@@ -342,7 +342,7 @@ $LANG04 = array(
     67 => 'عضو از',
     68 => 'مرا به خاطر داشته باش برای',
     69 => 'چه مدت باید پس از ورود به سیستم به شما یادآوری کنیم؟',
-    'cookietimeout_tooltip' => 'This site will remember you are logged in from the device you are currently using regardless of if your account has been logged out automatically due to no activity. Accounts are logged out after being inactive for %s seconds (this is called the "User Session Timeout"). When "Remember Me For" is set for your account it will include the time you select here PLUS the "User Session timeout".',
+    'cookietimeout_tooltip' => 'این سایت به خاطر می‌سپارد که از دستگاه فعلی وارد شده‌اید، حتی اگر حساب به دلیل عدم فعالیت به‌طور خودکار خارج شود. حساب‌ها پس از %s ثانیه عدم فعالیت خارج می‌شوند (این زمان «مهلت نشست کاربر» نام دارد). زمان «مرا به خاطر بسپار» شامل زمان انتخاب‌شده در اینجا به‌علاوه مهلت نشست کاربر است.',
     70 => "سفارشی کردن طرح بندی و محتوای {$_CONF['site_name']}!",
     71 => "یکی از ویژگی های عالی {$_CONF['site_name']} این است که می توانید سفارشی سازید محتوایی را که دریافت می کنید و می توانید طرح کلی این سایت را تغییر دهید. برای استفاده از مزیت این ویژگی های عالی ابتدا باید <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">ثبت نام کنید</a> with {$_CONF['site_name']}. آیا از قبل عضو می باشید؟ سپس از فرم ورود در سمت چپ برای ورود استفاده کنید!",
     72 => 'زمینه',
@@ -362,7 +362,7 @@ $LANG04 = array(
     86 => 'یافتن همه ارسال ها توسط',
     87 => 'نام ورود شما',
     88 => "کسی (احتمالا شما) یک رمز جدید برای حساب شما \"%s\" در {$_CONF['site_name']} درخواست کرده است، <{$_CONF['site_url']}> \n\nاگر واقعا می‌خواهید این اقدام عملی شود، لطفا روی پیوند زیر کلیک کنید:\n\n",
-    'user_password_action_msg' => 'If you really want this action to be taken, please click on the following link:',
+    'user_password_action_msg' => 'اگر واقعاً می‌خواهید این عملیات انجام شود، روی پیوند زیر کلیک کنید:',
     89 => "اگر نمی خواهید این اقدام عملی شود، بسادگی این پیام را نادیده بگیرید و درخواست چشم پوشی خواهد شد (رمز عبور شما بدون تغییر باقی خواهد ماند).\n\n",
     90 => 'می توانید یک رمز عبور جدید برای حساب کاربری خود وارد کنید. لطفا توجه داشته باشید که رمز عبور قدیمی شما هنوز تا هنگامی که این فرم را ارسال می کنید معتبر است.',
     91 => 'رمز عبور جدید را تنظیم کنید',
@@ -434,11 +434,11 @@ $LANG04 = array(
     168 => 'همچنین می توانید با یکی از خدمات تأیید اعتبار از راه دور در زیر وارد شوید.',
     169 => 'کاربر مشخصات خود را به روز کرده است',
     170 => "مدیر در {$_CONF['site_name']} رمز عبور حساب کاربری شما را به صورت زیر تغییر داد. لطفا این ایمیل را برای مرجع بیشتر ذخیره کنید.",
-    171 => 'Post mode for the "Signature" and "Bio" below',
+    171 => 'حالت ارسال برای «امضا» و «زندگی‌نامه» زیر',
     'user_login' => 'ورود کاربر',
     'user_login_message' => 'لطفا وارد شوید. شما باید نام کاربری و رمز عبور را وارد کنید.',
-    'user_remote_login_desc_long' => 'Click on one of the button(s) below to login and/or register via an account you have on another supported remote service. Please note, you must have an account on the remote service. If you are creating a new account on this website, then the remote service may ask you to give this website permissions to access information like your name, email address, and profile photo.',
-    'remote_register_instructions' => "<strong>Please note:</strong> To register and create an account via Remote Login, please visit the <a href=\"{$_CONF['site_url']}/users.php\" rel=\"nofollow\">User Login</a>.",
+    'user_remote_login_desc_long' => 'برای ورود و/یا ثبت‌نام با حسابی که در یکی از سرویس‌های راه دور پشتیبانی‌شده دارید، روی یکی از دکمه‌های زیر کلیک کنید. باید در آن سرویس حساب داشته باشید. هنگام ایجاد حساب جدید در این وب‌سایت، ممکن است سرویس راه دور از شما بخواهد اجازه دسترسی به اطلاعاتی مانند نام، نشانی ایمیل و تصویر پروفایل را بدهید.',
+    'remote_register_instructions' => "<strong>توجه:</strong> برای ثبت‌نام و ایجاد حساب از طریق ورود راه دور، به صفحه <a href=\"{$_CONF['site_url']}/users.php\" rel=\"nofollow\">ورود کاربر</a> مراجعه کنید.",
     'user_logged_in_message' => "شما از قبل وارد سیستم شدید. آیا مایلید به <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">خروج</a>?",
     'user_max_login_attempts' => 'حداکثر تلاش های ورود و محدودیت سرعت رسیده',
     'tfa_two_factor_auth' => 'دو عامل تأیید هویت',
@@ -465,14 +465,14 @@ $LANG04 = array(
     'enter_new_email' => 'وارد کردن ایمیل جدید',
     'desc_new_email_status' => 'شما نیاز دارید یک نشانی ایمیل جدید برای حساب کاربری خود وارد کنید. شما می توانید یک ایمیل جدید برای حساب کاربری خود وارد کنید. <em>لطفا توجه داشته باشید شما قادر نخواهید بود هیچ کاری با حساب کاربری خود انجام دهید تا هنگامی که ایمیل شما بروزرسانی و تأیید شده باشد.</em>',
     'email_msg_email_status_1' => "شما نشانی ایمیل خود را برای حساب کاربری خود بروز کرده اید \"%s\" در {$_CONF['site_name']}، <{$_CONF['site_url']}>.\n\nبرای تأیید این نشانی ایمیل، لطفا روی پیوند زیر کلیک کنید:\n\n",
-    'email_msg_verify' => 'Please click on the following link to verify this email address:',
+    'email_msg_verify' => 'برای تأیید این نشانی ایمیل روی پیوند زیر کلیک کنید:',
     'email_msg_email_status_2' => "اگر این نشانی ایمیل را تأیید نکنید و به حساب کاربری خود وارد شوید نیاز خواهید داشت یک نشانی ایمیل جدید وارد کنید و مجدد از طریق این روند تأیید ایمیل بروید.\n\n",
     'email_verify' => 'ایمیل جدید برای تأیید',
     'email_verify_delete' => 'حذف ایمیل برای تأیید',
     'email_verify_msg' => "شما از قبل نشانی ایمیل خود را برای حساب کاربری خود بروزرسانی کرده اید اما هنوز نیاز دارد تأیید شود. لطفا ایمیل حساب خود را برای یک ایمیل از {$_CONF['site_name']} که شامل یک پیوند تأیید است را بررسی کنید. یکبار که روی آن پیوند کلیک می کنید نشانی ایمیل جدید شما تأیید خواهد شد و حساب کاربری شما برای استفاده از آن بروزرسانی خواهد شد.<br" . XHTML . "><br" . XHTML . ">اگر مایلید می توانید ایمیل جدید را بروزرسانی کنید تا با رشته‌ های ایمیل بالا تایید شود یا می توانید آن را حذف کنید.",
     'remove_account_msg' => 'برای برداشتن حساب خود از پایگاه داده ما، رمز عبور فعلی خود را در "رمز عبور فعلی" بالا وارد کنید، جعبه کنار "گزینه حذف" را در زیر بررسی کنید و روی "ذخیره" کلیک کنید. لطفا توجه داشته باشید که هر گونه مقالات و نظراتی که تحت این حساب کاربری ارسال کردید حذف <strong>نخواهند</strong> شد، اما نشان می دهد که توسط "ناشناس" پست شده است.',
     'remove_remote_account_msg' => 'برای برداشتن حساب از راه دور خود از پایگاه داده ما، جعبه کنار "گزینه حذف" را در زیر بررسی کنید و روی "ذخیره" کلیک کنید. لطفا توجه داشته باشید که هر گونه مقالات و نظراتی که تحت این حساب کاربری ارسال کردید حذف <strong>نخواهند</strong> شد، اما نشان می دهد که توسط "ناشناس" پست شده است.',
-    'theme_info' => '%1$s %2$s (requires Geeklog %3$s)'
+    'theme_info' => '%1$s %2$s (نیازمند Geeklog %3$s)'
 );
 
 ###############################################################################
@@ -500,7 +500,7 @@ $LANG05 = array(
     6 => 'قبلی',
     7 => 'اولین',
     8 => 'آخرین',
-    9 => 'Page navigation'
+    9 => 'پیمایش صفحه'
 );
 
 ###############################################################################
@@ -535,7 +535,7 @@ $LANG08 = array(
     26 => 'این فرم به شما اجازه می دهد تا یک ایمیل به کاربر انتخابی ارسال کنید. همه رشته ها نیاز است.',
     27 => 'پیام کوتاه',
     28 => '%s :نوشت ',
-    29 => "این خلاصه روزانه از {$_CONF['site_name']} برای ",
+    29 => "این خلاصه روزانه از {$_CONF['site_name']} برای %s است. در زیر تازه‌ترین مقاله‌های منتشرشده از زمان آخرین ارسال این ایمیل آمده‌اند.",
     30 => ' خبرنامه روزانه برای ',
     31 => 'عنوان',
     32 => 'تاریخ',
@@ -551,8 +551,8 @@ $LANG08 = array(
     42 => 'این نشانی ایمیل کاربر موجود نمی باشد. این به احتمال زیاد به این معنی است که یک حساب کاربری OAuth است.',
     43 => 'این نشانی ایمیل کاربر نامعتبر است.',
     44 => 'این وضعیت کاربران به چیزی غیر از فعال یا رمز عبور جدید تنظیم شده و بنابراین نشانی ایمیل بد فرض شده.',
-    45 => "This is a message sent from {$_CONF['site_name']} by %s. Any replies will need to be sent to the email address: %s",
-    46 => "To unsubscribe from the Daily Digest, login to {$_CONF['site_name']} at {$_CONF['site_url']}. Then visit the user settings page at {$_CONF['site_url']}/usersettings.php and view the Content Tab. You can then unsubscribe to the Daily Digest by deselecting all topics and saving your profile."
+    45 => "این پیام از {$_CONF['site_name']} توسط %s ارسال شده است. هر پاسخی باید به این نشانی ایمیل ارسال شود: %s",
+    46 => "برای لغو اشتراک خلاصه روزانه، در {$_CONF['site_url']} وارد {$_CONF['site_name']} شوید. سپس به صفحه تنظیمات کاربر در {$_CONF['site_url']}/usersettings.php بروید و زبانه محتوا را باز کنید. با برداشتن انتخاب همه موضوعات و ذخیره نمایه می‌توانید اشتراک خلاصه روزانه را لغو کنید."
 );
 
 ###############################################################################
@@ -642,8 +642,8 @@ $LANG10 = array(
     1 => 'آمار سایت',
     2 => 'مجموع بازدید به سیستم',
     3 => 'مقالات (نظرات) در سیستم',
-    4 => 'Site Statistic',
-    5 => "Overall Site Statistics for {$_CONF['site_name']}",
+    4 => 'آمار سایت',
+    5 => "آمار کلی سایت {$_CONF['site_name']}",
     6 => '',
     7 => 'ده مقاله برتر دیده شده',
     8 => 'عنوان مقاله',
@@ -670,8 +670,8 @@ $LANG10 = array(
     29 => '',
     30 => 'بازدید',
     31 => '',
-    32 => 'Top Ten Liked Articles',
-    33 => 'No liked articles found.'
+    32 => 'ده مقاله با بیشترین پسند',
+    33 => 'هیچ مقاله پسندیده‌شده‌ای یافت نشد.'
 );
 
 ###############################################################################
@@ -751,60 +751,60 @@ $LANG12 = array(
 # LIKES feature since Geeklog 2.2.1
 
 $LANG_LIKES = array(
-    'like' => 'Like',
-    'unlike' => 'Unlike',
-    'dislike' => 'Dislike',
-    'undislike' => 'Undislike',
-    'likes' => 'Likes',
-    'unlikes' => 'Unlikes',
-    'dislikes' => 'Dislikes',
-    'undislikes' => 'Undislikes',
-    'i_like_this' => 'I like this',
-    'i_dislike_this' => 'I dislike this',
-    'thanks_for_action' => 'Thanks for voting!',
-    'likes_speedlimit' => 'You last used the Likes system on an item %s seconds ago. This site requires at least %s seconds between using the Likes system',
-    'likes_ip_error' => 'Your IP address has already performed this Likes action.',
-    'likes_uid_error' => 'Your User account has already performed this Likes action.',
-    'own_item_error' => 'Either you own the item or do not have permission to Like/Dislike it.',
-    'liked_by' => 'Liked by:',
-    'disliked_by' => 'Disliked by:',
-    'num_anon_users' => '<br' . XHTML . '>%s Anonymous Users',
-    'one_anon_users' => '<br' . XHTML . '>1 Anonymous User',
-    'num_more_users' => '<br' . XHTML . '>+%s more Users',
+    'like' => 'پسندیدن',
+    'unlike' => 'لغو پسندیدن',
+    'dislike' => 'نپسندیدن',
+    'undislike' => 'لغو نپسندیدن',
+    'likes' => 'پسندها',
+    'unlikes' => 'لغو پسندها',
+    'dislikes' => 'نپسندیدن‌ها',
+    'undislikes' => 'لغو نپسندیدن‌ها',
+    'i_like_this' => 'این را می‌پسندم',
+    'i_dislike_this' => 'این را نمی‌پسندم',
+    'thanks_for_action' => 'از رأی شما سپاسگزاریم!',
+    'likes_speedlimit' => 'آخرین بار %s ثانیه پیش از سامانه پسند برای یک مورد استفاده کردید. این سایت حداقل %s ثانیه فاصله بین استفاده‌های سامانه پسند نیاز دارد',
+    'likes_ip_error' => 'این نشانی IP قبلاً این عمل پسند را انجام داده است.',
+    'likes_uid_error' => 'حساب کاربری شما قبلاً این عمل پسند را انجام داده است.',
+    'own_item_error' => 'یا مالک این مورد هستید یا اجازه پسندیدن/نپسندیدن آن را ندارید.',
+    'liked_by' => 'پسندیده‌شده توسط:',
+    'disliked_by' => 'نپسندیده‌شده توسط:',
+    'num_anon_users' => '<br' . XHTML . '>%s کاربر ناشناس',
+    'one_anon_users' => '<br' . XHTML . '>1 کاربر ناشناس',
+    'num_more_users' => '<br' . XHTML . '>+%s کاربر دیگر',
     'username_in_likes_list' => '<br' . XHTML . '>%s',
     'autotag_desc_likes_block' => "[likes_block:aid action:aid wrapper:wid class:likes-autotag type: subtype: time:604800 max:10 cache:3600 line:1 length:20]\n	- Displays the Likes block. No attributes are required. If attribute not specified then default in configuration used. \n	- action = 1 (likes only), 2 (dislikes only), or 3 (both) \n	- wrapper = 0 (no wrapper), 1 (block wrapper with title), div wrapper with css class), or both\n	- class = Specifies the css class used by the div wrapper if enabled else default likes-autotag will be used \n	- type = Either empty (for all types) or include 1 supported like type. For example 'article' or 'comment'\n	- subtype = Specify a sub type of type if needed\n	- time = Display items that are this many seconds old. 0 will display all items\n	- max = Maximum number of items to display\n	- cache = Cached for no longer than this many seconds. If 0 caching is disabled\n	- line = Display likes icons on new line\n	- length = Trim item title length to this many characters",
-    'num_likes_in_time_limit' => 'The last number of Likes this item received within the time specified.',
-    'num_dislikes_in_time_limit' => 'The last number of Dislikes this item received within the time specified.',
-    'num_likes_total' => 'The total number of Likes this item has received.',
-    'num_dislikes_total' => 'The total number of Dislikes this item has received.',
-    'likes_time_span' => 'Most Likes in the last %t %s',
-    'dislikes_time_span' => 'Most Dislikes in the last %t %s',
-    'all_time_span' => 'Most engaging in the last %t %s',
-    'whats_liked' => 'Whats Liked',
-    'whats_recently_liked' => 'Whats Recently Liked',
-    'whats_disliked' => 'Whats Disliked',
-    'whats_recently_disliked' => 'Whats Recently Disliked',
-    'whats_popular' => 'Whats Popular',
-    'whats_recently_popular' => 'Whats Recently Popular',
-    'whats_liked_type' => 'Liked %s',
-    'whats_recently_liked_type' => 'Recently Liked %s',
-    'whats_disliked_type' => 'Disliked %s',
-    'whats_recently_disliked_type' => 'Recently Disliked %s',
-    'whats_popular_type' => 'Popular %s',
-    'whats_recently_popular_type' => 'Recently Popular %s',
-    'no_liked_items_in_time_limit' => 'There have been no Likes during the time specified.',
-    'no_disliked_items_in_time_limit' => 'There have been no Dislikes during the time specified.',
-    'no_action_items_in_time_limit' => 'There have been no Likes or Dislikes during the time specified.',
-    'no_liked_items' => 'There are no Liked items.',
-    'no_disliked_items' => 'There are no Disliked items.',
-    'no_action_items' => 'There are no Liked or Disliked items.',
+    'num_likes_in_time_limit' => 'تعداد پسندهای این مورد در بازه زمانی مشخص‌شده.',
+    'num_dislikes_in_time_limit' => 'تعداد نپسندیدن‌های این مورد در بازه زمانی مشخص‌شده.',
+    'num_likes_total' => 'تعداد کل پسندهای دریافت‌شده برای این مورد.',
+    'num_dislikes_total' => 'تعداد کل نپسندیدن‌های دریافت‌شده برای این مورد.',
+    'likes_time_span' => 'بیشترین پسند در %t %s گذشته',
+    'dislikes_time_span' => 'بیشترین نپسندیدن در %t %s گذشته',
+    'all_time_span' => 'بیشترین تعامل در %t %s گذشته',
+    'whats_liked' => 'موارد پسندیده‌شده',
+    'whats_recently_liked' => 'موارد اخیراً پسندیده‌شده',
+    'whats_disliked' => 'موارد نپسندیده‌شده',
+    'whats_recently_disliked' => 'موارد اخیراً نپسندیده‌شده',
+    'whats_popular' => 'موارد محبوب',
+    'whats_recently_popular' => 'موارد اخیراً محبوب',
+    'whats_liked_type' => '%s پسندیده‌شده',
+    'whats_recently_liked_type' => '%s اخیراً پسندیده‌شده',
+    'whats_disliked_type' => '%s نپسندیده‌شده',
+    'whats_recently_disliked_type' => '%s اخیراً نپسندیده‌شده',
+    'whats_popular_type' => '%s محبوب',
+    'whats_recently_popular_type' => '%s اخیراً محبوب',
+    'no_liked_items_in_time_limit' => 'در بازه زمانی مشخص‌شده هیچ پسندی ثبت نشده است.',
+    'no_disliked_items_in_time_limit' => 'در بازه زمانی مشخص‌شده هیچ نپسندیدنی ثبت نشده است.',
+    'no_action_items_in_time_limit' => 'در بازه زمانی مشخص‌شده هیچ پسند یا نپسندیدنی ثبت نشده است.',
+    'no_liked_items' => 'هیچ مورد پسندیده‌شده‌ای وجود ندارد.',
+    'no_disliked_items' => 'هیچ مورد نپسندیده‌شده‌ای وجود ندارد.',
+    'no_action_items' => 'هیچ مورد پسندیده یا نپسندیده‌شده‌ای وجود ندارد.',
     'last_num_likes_by' => 'Last %s Likes and Dislikes by %s',
-    'msg_no_likes' => 'No likes or dislikes found by user.',
-    'total_num_likes' => 'Total number of likes and dislikes:',
-    'title_liked' => '%s Liked on ',
-    'title_disliked' => '%s Disliked on ',
+    'msg_no_likes' => 'هیچ پسند یا نپسندیدنی برای این کاربر یافت نشد.',
+    'total_num_likes' => 'تعداد کل پسندها و نپسندیدن‌ها:',
+    'title_liked' => '%s پسندیده شد در ',
+    'title_disliked' => '%s نپسندیده شد در ',
     'articles' => 'Articles',
-    'comments' => 'Comments'
+    'comments' => 'نظرات'
 );
 
 ###############################################################################
@@ -896,21 +896,21 @@ $LANG_ENVCHECK = array(
     'view_online' => 'اینجا %s برای دیدن آنلاین اینجا کلیک کنید',
     'no_new_items' => 'بدون موارد جدید',
     'max_execution_time' => 'گیکلاگ مقدار پیشفرض پی اچ پی را ۳۰ ثانیه به عنوان حداقلی توصیه می کند اما بارگذاری های افزونه و سایر عملیات ممکن است طولانی تر از این بسته به محیط میزبانی اینترنت شما باشد. اگر safe_mode (در بالا) خاموش است، شما ممکن است قادر به افزایش این با تغییر مقدار <b>max_execution_time</b> در پرونده php.ini خود باشید.',
-    'phpinfo_disabled' => 'In order to view the current php settings, you will have to contact your host and enable access to the phpinfo() function.'
+    'phpinfo_disabled' => 'برای مشاهده تنظیمات فعلی PHP باید با میزبان خود تماس بگیرید و دسترسی به تابع phpinfo() را فعال کنید.'
 );
 
 ###############################################################################
 # For Demo Mode (since v2.2.1)
 
 $LANG_DEMO = array(
-    'header' => 'Header',
-    'subject' => 'Subject:',
-    'to' => 'To:',
-    'from' => 'From:',
-    'priority' => 'Priority:',
-    'body' => 'Body',
-    'notice' => 'Notice',
-    'emails_disabled_msg' => 'Please note sending emails is disabled in Demo mode. An email which would have been sent was:'
+    'header' => 'سربرگ',
+    'subject' => 'موضوع:',
+    'to' => 'به:',
+    'from' => 'از:',
+    'priority' => 'اولویت:',
+    'body' => 'متن پیام',
+    'notice' => 'توجه',
+    'emails_disabled_msg' => 'توجه داشته باشید که ارسال ایمیل در حالت نمایشی غیرفعال است. ایمیلی که در حالت عادی ارسال می‌شد به این صورت بود:'
 );
 
 ###############################################################################
@@ -925,7 +925,7 @@ $LANG20 = array(
     6 => 'تمام دسترسی به بخش های اداری این سایت اینترنتی ضبط و بررسی می شود.<br' . XHTML . '>این صفحه فقط برای استفاده پرسنل مجاز است.',
     7 => 'ورود',
     8 => 'ورود',
-    9 => 'This page is for the use of authorized personnel only. Please note all access to administrative portions of this web site are logged and reviewed.'
+    9 => 'این صفحه فقط برای استفاده افراد مجاز است. توجه داشته باشید که همه دسترسی‌ها به بخش‌های مدیریتی این وب‌سایت ثبت و بررسی می‌شوند.'
 );
 
 ###############################################################################
@@ -952,7 +952,7 @@ $LANG21 = array(
     18 => 'لطفا رشته های عنوان بلوک و محتوا را وارد کنید',
     19 => 'مدیریت بلوک',
     20 => 'بلوک های منظم',
-    21 => 'Block SecLev',
+    21 => 'سطح امنیتی بلوک',
     22 => 'بلوک های پویا',
     23 => 'ترتیب بلوک',
     24 => 'پویا',
@@ -1180,9 +1180,9 @@ $LANG27 = array(
     39 => 'فقط صفحه اصلی',
     40 => 'اختصاص یک یا چند موضوع. ',
     41 => 'اگر "همه" انتخاب شده باشد سپس مورد برای همه موضوعات ظاهر خواهد شد. اگر "فقط صفحه اصلی" انتخاب شده باشد سپس مورد فقط در صفحه اصلی ظاهر خواهد شد. دیگر باید حداقل یک موضوع را انتخاب کنید تا مورد را به آن اختصاص دهید.',
-    'topic_control_select_topics' => 'Else you must select at least one topic to assign the item to. ',
-    'topic_control_select_topics_disabled' => 'Else you must select at least one topic you have edit access for, to assign the item to (text is darker). ',
-    'topic_control_no_topics' => 'Unfortunately you do not have edit access to any topics so none can be selected. ',
+    'topic_control_select_topics' => 'در غیر این صورت باید دست‌کم یک موضوع برای اختصاص این مورد انتخاب کنید. ',
+    'topic_control_select_topics_disabled' => 'در غیر این صورت باید دست‌کم یک موضوعی را که اجازه ویرایش آن را دارید برای اختصاص این مورد انتخاب کنید (متن تیره‌تر است). ',
+    'topic_control_no_topics' => 'متأسفانه اجازه ویرایش هیچ موضوعی را ندارید، بنابراین موضوعی قابل انتخاب نیست. ',
     42 => 'وارث شامل فهرستی از موضوعات اختصاص داده شده است. اگر موضوع انتخاب شده باشد سپس مورد توسط موضوع اصلی به ارث برده خواهد شد.',
     43 => 'پیشفرض شامل فهرستی از موضوعات اختصاص داده شده است. این موضوع پیشفرض است که هنگام نمایش مورد استفاده خواهد شد اگر موضوع واقعی که کاربر در آن است یافت نشد.',
     44 => 'وارث',
@@ -1207,10 +1207,10 @@ $LANG27 = array(
     'filed_under:' => ':ثبت شده تحت',
     'topic_title' => 'عنوان موضوع',
     'topic_title_desc' => 'استفاده شده به صورت عنوان صفحه برای موضوع. اگر خالی باشد نام موضوع استفاده خواهد شد.',
-    'move_topic_up' => 'Move topic up the sort order',
-    'move_topic_down' => 'Move topic down in the sort order',
-    'topics_edit_access_select' => 'You can only select topics you have Edit access to you (text is darker).',
-    'topics_edit_access_listed' => 'Only topics with Edit access are listed.'
+    'move_topic_up' => 'انتقال موضوع به بالاتر در ترتیب',
+    'move_topic_down' => 'انتقال موضوع به پایین‌تر در ترتیب',
+    'topics_edit_access_select' => 'فقط موضوعاتی را می‌توانید انتخاب کنید که اجازه ویرایش آن‌ها را دارید (متن تیره‌تر است).',
+    'topics_edit_access_listed' => 'فقط موضوعاتی که اجازه ویرایش آن‌ها را دارید فهرست شده‌اند.'
 );
 
 ###############################################################################
@@ -1229,8 +1229,8 @@ $LANG28 = array(
     10 => 'لطفا نام کاربری و نشانی ایمیل را وارد کنید',
     11 => 'مدیریت کاربر',
     12 => 'برای تغییر یا حذف یک کاربر، روی نقشک ویرایش آن کاربر زیر کلیک کنید. برای دیدن یک کاربر، روی نام کاربری که مایل به دیدن می باشید کلیک کنید. برای ایجاد یک کاربر جدید، روی "ایجاد جدید" در بالا کلیک کنید.',
-    13 => 'SecLev',
-    14 => 'Reg. Date',
+    13 => 'سطح امنیتی',
+    14 => 'تاریخ ثبت‌نام',
     15 => '',
     16 => '',
     17 => '',
@@ -1302,19 +1302,19 @@ $LANG28 = array(
     82 => "حساب کاربری شما در {$_CONF['site_name']} از %s در دسترس نبوده است و در صورت عدم دسترسی در ۳۰ روز آینده غیرفعال خواهد شد.",
     83 => "حساب کاربری شما در {$_CONF['site_name']} از زمان ایجاد آن استفاده نشده است و در صورت عدم دسترسی به زودی حذف خواهد شد.",
     84 => "نام ورود شما هست: %s برای سایت ما: {$_CONF['site_url']}",
-    85 => 'اگر رمز عبور را فراموش کرده اید از پیوند زیر استفاده کنید: %s',
+    85 => 'اگر رمز عبور را فراموش کرده‌اید از پیوند زیر استفاده کنید:',
     86 => 'شامل',
     87 => 'یادآوری ها',
     88 => 'گروه پیشفرض',
     89 => 'برای تعیین این به عنوان یک گروه پیشفرض برای کاربران جدید علامت بزنید',
-    90 => 'Apply "Default Group" change to existing user accounts',
+    90 => 'اعمال تغییر «گروه پیش‌فرض» به حساب‌های کاربری موجود',
     91 => 'ارسال رمز عبور به کاربر',
     92 => 'فقط برای کاربران جدید و یا هنگام تغییر رمز عبور برای کاربر موجود.',
-    'convert_remote' => 'Check here to convert from remote to a local account',
-    'convert_remote_desc' => 'When a remote account is converted to a local account, a password will be automatically generated. If the account does not have a confirmed email address, the account will be locked after it is converted since the user will have no way of retrieving the password. Once converted and if the account is active and has an email address the user will be emailed the password or they can request the password by using the forget password link from the Login page. For user accounts that do not have an active status and valid email you will have to manually notify the user of the account change and how to login.',
-    'contributed' => 'Contributed',
+    'convert_remote' => 'برای تبدیل حساب از راه دور به حساب محلی این گزینه را انتخاب کنید',
+    'convert_remote_desc' => 'وقتی یک حساب از راه دور به حساب محلی تبدیل می‌شود، یک گذرواژه به‌طور خودکار ساخته می‌شود. اگر حساب نشانی ایمیل تأییدشده نداشته باشد، پس از تبدیل قفل می‌شود زیرا کاربر راهی برای بازیابی گذرواژه نخواهد داشت. اگر حساب فعال و دارای نشانی ایمیل باشد، گذرواژه برای کاربر ایمیل می‌شود یا می‌تواند از پیوند فراموشی گذرواژه در صفحه ورود آن را درخواست کند. برای حساب‌هایی که فعال نیستند یا ایمیل معتبر ندارند، باید کاربر را به‌صورت دستی از تغییر حساب و روش ورود آگاه کنید.',
+    'contributed' => 'مشارکت‌ها',
     'na' => 'NA',
-    'nothing' => 'Nothing',
+    'nothing' => 'هیچ‌چیز',
     'autotag_desc_user' => '[user: name alternate title] - یک پیوند به یک کاربر با استفاده از نام کاربری مانند عنوان را نمایش می دهد. یک عنوان جایگزین ممکن است مشخص شود اما نیاز نمی باشد.',
     'USER_ACCOUNT_LOCKED' => 'قفل شده',
     'USER_ACCOUNT_NEW_EMAIL' => 'ایمیل جدید نیاز است',
@@ -1396,9 +1396,9 @@ $LANG31 = array(
     'email_divider_html' => '<hr' . XHTML . '>',
     'sig_divider' => '---',
     'sig_divider_html' => '---<br' . XHTML . '>',
-    'email_footer_msg_noreply' => 'The address used to send this email is not monitored. Please do not reply to this email.',
-    'email_footer_msg_content' => 'If content from the website is displayed in this email, there may be layout changes which result in formatting issues.',
-    'ip_address_email' => 'IP address that initiated email:'
+    'email_footer_msg_noreply' => 'نشانی مورد استفاده برای ارسال این ایمیل پایش نمی‌شود. لطفاً به این ایمیل پاسخ ندهید.',
+    'email_footer_msg_content' => 'اگر محتوای وب‌سایت در این ایمیل نمایش داده شود، ممکن است تغییرات چیدمان باعث مشکلات قالب‌بندی شود.',
+    'ip_address_email' => 'نشانی IP آغازکننده ایمیل:'
 );
 
 ###############################################################################
@@ -1419,7 +1419,7 @@ $LANG32 = array(
     12 => 'نام افزونه برای plugineditor() تهیه نشده',
     13 => 'مرکز اطلاعات افزونه',
     14 => 'افزونه های پاک شده',
-    'installed_plugins' => 'Installed Plugins',
+    'installed_plugins' => 'افزونه‌های نصب‌شده',
     15 => 'خانه مدیر',
     16 => 'نام افزونه',
     17 => 'نسخه افزونه',
@@ -1475,10 +1475,10 @@ $LANG32 = array(
     67 => 'پوشه "%s" قابل نوشتن نمی باشد.',
     68 => 'مجوز های لازم برای نصب افزونه ها ندارید.',
     69 => 'مجوز های لازم برای بارگذاری افزونه ها ندارید.',
-    'delete' => 'Delete',
-    'delete_plugin' => 'Delete Plugin and all of its files?',
-    'click_to_delete_msg' => 'Click to Delete this Plugin files',
-    'really_delete_msg' => 'Really Delete %s Plugin files?',
+    'delete' => 'حذف',
+    'delete_plugin' => 'افزونه و همه پرونده‌های آن حذف شوند؟',
+    'click_to_delete_msg' => 'برای حذف پرونده‌های این افزونه کلیک کنید',
+    'really_delete_msg' => 'آیا واقعاً پرونده‌های افزونه %s حذف شوند؟',
     99 => 'یک خطای ناشناخته رخ داده است',
     100 => 'باشه.',
     101 => 'پرونده بارگذاری شده فراتر از رهنمود upload_max_filesize در php.ini است.',
@@ -1517,7 +1517,7 @@ $LANG33 = array(
     25 => 'عنوان خوراک',
     26 => 'حد',
     27 => 'طول ورودی ها',
-    28 => '(0 = no text, 1 = full text, other = limit to that number of chars.)',
+    28 => '(0 = بدون متن، 1 = متن کامل، سایر مقادیر = محدودیت به همان تعداد نویسه.)',
     29 => 'شرح',
     30 => 'آخرین بروزرسانی',
     31 => 'مجموعه کاراکتر',
@@ -1545,7 +1545,7 @@ $LANG33 = array(
     53 => 'همه مقالات صفحه اول',
     54 => 'لطفا نوع خوراک را برای ایجاد انتخاب کنید.',
     55 => 'مقالات',
-    'num_articles' => '%s Article(s)'
+    'num_articles' => '%s مقاله'
 );
 
 ###############################################################################
@@ -1560,8 +1560,8 @@ $LANG_LANG = array(
     'language' => 'زبان',
     'name' => 'عنصر متغیر',
     'var_name' => 'نام متغیر',
-    'name_tip' => 'Required just for language arrays.',
-    'var_name_tip' => 'Can be a regular variable or array. Do not include the dollar sign at the beginning of the variable/array name.',
+    'name_tip' => 'فقط برای آرایه‌های زبان الزامی است.',
+    'var_name_tip' => 'می‌تواند یک متغیر عادی یا آرایه باشد. علامت دلار را در ابتدای نام متغیر یا آرایه وارد نکنید.',
     'value' => 'مقدار جدید'
 );
 
@@ -1659,7 +1659,7 @@ $MESSAGE = array(
     58 => 'خوراک شما با موفقیت ذخیره شده است.',
     59 => 'خوراک با موفقیت حذف شده است.',
     60 => 'افزونه با موفقیت به روز شد.',
-    61 => 'Plugin %s: Unknown message placeholder',
+    61 => 'افزونه %s: جای‌نگهدار پیام ناشناخته',
     62 => 'نظر دنبالک حذف شده است.',
     63 => 'یک خطا هنگام حذف نظر دنبالک رخ داد.',
     64 => 'نظر دنبالک شما با موفقیت ارسال شده است.',
@@ -1726,8 +1726,8 @@ $MESSAGE = array(
     151 => 'حذف ناموفق برخی از پرونده ها و پوشه های مورد استفاده در هنگام نصب. لطفا آنها را به صورت دستی بردارید.',
     152 => 'همه پرونده ها و پوشه هایی که در هنگام نصب استفاده شدند همانطور که می باشند رها شدند. حفظ آنها روی سرور خطرناک است، پس لطفا فراموش نکنید که آنها را به صورت دستی بردارید.',
     153 => 'آخرین مقاله را %1$d ثانیه قبل ایمیل کردید. این سایت حداقل %2$d ثانیه بین ایمیل کردن مقالات نیاز دارد.',
-    160 => 'The plugin files was successfully deleted.',
-    161 => 'The archive includes a file whose name includes an unsafe character.',
+    160 => 'فایل‌های افزونه با موفقیت حذف شدند.',
+    161 => 'آرشیو شامل فایلی است که نام آن دارای نویسهٔ ناامن است.',
     400 => 'همه رشته های مورد نیاز اعتبار داده نشده اند',
     401 => 'لطفا نام کامل را وارد کنید',
     500 => 'حافظه نهان قالب با موفقیت پاک شده است.',
@@ -1773,7 +1773,7 @@ $LANG_ACCESS = array(
     'members' => 'اعضا',
     'anonymous' => 'ناشناس',
     'permissions' => 'مجوز ها',
-    'permissionskey' => 'R = read, E = edit, edit rights assume read rights',
+    'permissionskey' => 'R = خواندن، E = ویرایش؛ اجازه ویرایش شامل اجازه خواندن نیز هست',
     'edit' => 'ویرایش',
     'none' => 'هیچ یک',
     'accessdenied' => 'دسترسی ممنوع است',
@@ -1816,11 +1816,11 @@ $LANG_ACCESS = array(
 $LANG_DB_BACKUP = array(
     'database_admin' => 'مدیریت پایگاه داده',
     'last_ten_backups' => 'پشتیبان های پایگاه داده',
-    'site_db_backup' => "{$_CONF['site_name']} Database Backup",
+    'site_db_backup' => "پشتیبان پایگاه داده {$_CONF['site_name']}",
     'create_backup' => 'پایگاه داده پشتیبان',
     'do_backup' => 'انجام پشتیبان گیری',
     'backup_successful' => 'پشتیبان پایگاه داده موفق بود.',
-    'backup_error' => 'Error performing database backup.',
+    'backup_error' => 'هنگام تهیه پشتیبان پایگاه داده خطایی رخ داد.',
     'db_explanation' => 'برای ایجاد یک پشتیبان جدید از پایگاه داده سایت خود، گزینه "پایگاه داده پشتیبان" را در بالا انتخاب کنید. برای بارگیری یک پشتیبان، روی نام پرونده از فهرست زیر کلیک کنید.',
     'backup_instructions' => 'برای ایجاد یک پشتیبان جدید از پایگاه داده سایت خود، دکمه "انجام پشتیبان گیری" را در زیر انتخاب کنید. این همه جداول فعلی گیکلاگ را پشتیبان می گیرد. شما می توانید نسخه پشتیبان را از صفحه اصلی مدیریت پایگاه داده بارگیری کنید.',
     'zero_size' => 'پشتیبان ناموفق: حجم پرونده 0 بایت بود',
@@ -1872,7 +1872,7 @@ $LANG_DB_BACKUP = array(
     'use_gzip' => ' GZip در صورت موجود بودن استفاده از',
     'configure' => 'پیکربندی',
     'config_instructions' => 'هر جدولی را که می خواهید از پشتیبان مستثنی شود را انتخاب کنید. گزینه های دیگر را می توان در پیکربندی گیکلاگ زیر برگ پایگاه داده یافت.',
-    'config_successful' => 'Tables to Backup list was saved successfully.'
+    'config_successful' => 'فهرست جدول‌های پشتیبان‌گیری با موفقیت ذخیره شد.'
 );
 
 ###############################################################################
@@ -2083,18 +2083,18 @@ $LANG_MONTH = array(
 # Short Month names
 
 $LANG_MONTH_SHORT = array(
-    1 => 'Jan',
-    2 => 'Feb',
-    3 => 'Mar',
-    4 => 'Apr',
-    5 => 'May',
-    6 => 'Jun',
-    7 => 'Jul',
-    8 => 'Aug',
-    9 => 'Sep',
-    10 => 'Oct',
-    11 => 'Nov',
-    12 => 'Decr'
+    1 => 'ژان',
+    2 => 'فور',
+    3 => 'مار',
+    4 => 'آور',
+    5 => 'مه',
+    6 => 'ژوئن',
+    7 => 'ژوئی',
+    8 => 'اوت',
+    9 => 'سپت',
+    10 => 'اکت',
+    11 => 'نوام',
+    12 => 'دسامبر'
 );
 
 ###############################################################################
@@ -2114,13 +2114,13 @@ $LANG_WEEK = array(
 # Short Weekday Names
 
 $LANG_WEEK_SHORT = array(
-    1 => 'Sun',
-    2 => 'Mon',
-    3 => 'Tue',
-    4 => 'Wed',
-    5 => 'Thu',
-    6 => 'Fri',
-    7 => 'Sat'
+    1 => 'یک',
+    2 => 'دو',
+    3 => 'سه',
+    4 => 'چهار',
+    5 => 'پنج',
+    6 => 'جمع',
+    7 => 'شنب'
 );
 
 ###############################################################################
@@ -2177,7 +2177,7 @@ $LANG_ADMIN = array(
     'token_expired' => 'نشانگر امنیتی این عملیات منقضی شده است. لطفا مجدد تصدیق کنید تا ادامه یابد.',
     'reauth_msg' => 'نشانگر امنیتی این عملیات منقضی شده است. اگر می خواهید این عملیات را ادامه دهید، لطفا مجدد در پایین تصدیق کنید. این مطمئن خواهد شد تغییراتی که انجام داده اید، از بین نمی رود.',
     'token_expired_remote_user' => 'نشانگر امنیتی این عملیات منقضی شده است. از آنجا که یک کاربر از راه دور می باشید، نمی توانید مجدد تصدیق اعتبار کنید، بنابراین تغییرات خود را از دست داده اید.',
-    'token_re_authentication_error' => 'There was an error after your account was re-authenticated. It is unclear if the operation you were performing was executed or not.',
+    'token_re_authentication_error' => 'پس از تأیید دوباره هویت حساب شما خطایی رخ داد. مشخص نیست عملیاتی که در حال انجام آن بودید اجرا شده است یا خیر.',
     'authenticate' => 'تصدیق',
     'approve' => 'تأیید',
     'device' => 'دستگاه',
@@ -2188,7 +2188,7 @@ $LANG_ADMIN = array(
     'all' => 'همه',
     'mobile' => 'گوشی',
     'computer' => 'رایانه',
-    'edit_access_only' => 'Edit Access Only'
+    'edit_access_only' => 'فقط دسترسی ویرایش'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -2255,7 +2255,7 @@ $LANG_trackbackcodes = array(
 );
 
 $LANG_structureddatatypes = array(
-    'none' => 'None',
+    'none' => 'هیچ‌کدام',
     'core-webpage' => 'WebPage',
     'core-article' => 'Article',
     'core-newsarticle' => 'NewsArticle',
@@ -2263,8 +2263,8 @@ $LANG_structureddatatypes = array(
 );
 
 $LANG_STRUCT_DATA = array(
-    'lang_structured_data_type' => 'Structured Data Type',
-    'autotag_desc_structureddata' => '[structureddata:schema_property]Property Value[/structureddata] - Adds a property to the structured data of the content that the autotag is embedded in.'
+    'lang_structured_data_type' => 'نوع داده ساخت‌یافته',
+    'autotag_desc_structureddata' => '[structureddata:schema_property]مقدار ویژگی[/structureddata] - یک ویژگی به داده ساخت‌یافته محتوایی که این برچسب خودکار در آن قرار دارد اضافه می‌کند.'
 );
 
 ###############################################################################
@@ -2804,7 +2804,7 @@ $LANG_VALIDATION = array(
     'default' => 'این رشته شامل یک مقدار نامعتبر است',
     'notEmpty' => 'این رشته نباید خالی باشد',
     'alphaNumeric' => 'این رشته باید حرفی عددی باشد',
-    'alphaNumericOrEmpty' => 'This field must be alpha numeric or empty',
+    'alphaNumericOrEmpty' => 'این رشته باید حرفی‌عددی یا خالی باشد',
     'between' => 'این رشته باید در یک محدوده مشخصی باشد',
     'blank' => 'این رشته باید خالی باشد',
     'comparison' => 'این رشته با عمل مقایسه تطابق ندارد',
@@ -2845,7 +2845,7 @@ $LANG_VALIDATION = array(
     'single_char' => 'این رشته باید یک کاراکتر واحد باشد',
     'page_navigation_max_pages' => 'این رشته باید بین ۲ - ۲۱ باشد',
     'hash' => 'این رشته باید یک تابع مخلوط باشد که توسط نسخه پی اچ پی شما پشتیبانی می شود',
-    'config_setting_lang_array' => 'Each element requires a unique language shortcut (\'en\', \'de\', etc.) and the corresponding field must contain a value',
-    'config_setting_lang_array_element_req' => 'Requires at least one element. Each element requires a unique language shortcut (\'en\', \'de\', etc.) and the corresponding field must contain a value'
+    'config_setting_lang_array' => 'هر عنصر به یک کد زبان یکتا (مانند \'en\' یا \'de\') نیاز دارد و رشته متناظر باید دارای مقدار باشد',
+    'config_setting_lang_array_element_req' => 'حداقل یک عنصر لازم است. هر عنصر به یک کد زبان یکتا (مانند \'en\' یا \'de\') نیاز دارد و رشته متناظر باید دارای مقدار باشد'
 );
 
