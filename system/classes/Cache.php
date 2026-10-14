@@ -50,7 +50,7 @@ abstract class Cache
      */
     public static function enable()
     {
-        self::$isEnabled = false;
+        self::$isEnabled = true;
     }
 
     /**
