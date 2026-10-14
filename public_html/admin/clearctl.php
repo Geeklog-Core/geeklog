@@ -50,11 +50,8 @@ CTL_clearCache();
 // Clearing Resource Cache (CSS, and Javascript concatenated and minified files)
 Geeklog\Cache::clear(); 
 
-// ********************************
-// Clean out Data directory (includes things like temp uploaded plugin files, user batch files, etc...)
-$leave_dirs = array('cache', 'layout_cache', 'layout_css');
-$leave_files = array('cacert.pem', 'README');
-COM_cleanDirectory($_CONF['path_data'], $leave_dirs, $leave_files);
+// Do not recursively clean $_CONF['path_data']: this can contain persistent
+// plugin data. Only explicitly managed cache locations may be cleared.
 
 // ********************************
 // Clean out File Manager Thumbnail Files (article directory is also used by article editor to create thumbs of images)
