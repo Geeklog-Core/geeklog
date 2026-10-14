@@ -110,7 +110,7 @@ namespace {
         // minimal, empty lib-common.php file.
         $admin = $base . '/site-a/public_html/admin';
         testAssert(mkdir($admin, 0777, true), 'Cannot create admin fixture');
-        testAssert(file_put_contents($base . '/site-a/public_html/lib-common.php', '<?php') !== false,
+        testAssert(file_put_contents($base . '/site-a/public_html/lib-common.php', '<?php // Test bootstrap stub') !== false,
             'Cannot create bootstrap stub');
         $controller = dirname(__DIR__) . '/public_html/admin/clearctl.php';
         testAssert(copy($controller, $admin . '/clearctl.php'), 'Cannot copy controller');
