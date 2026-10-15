@@ -45,7 +45,7 @@ $LANG_ISO639_1 = 'fr';
 
 $LANG01 = array(
     1 => 'Proposé par :',
-    2 => 'Lire la suite...',
+    2 => 'Lire la suite',
     3 => 'commentaires',
     4 => 'Modifier',
     5 => 'Proposé par : %s le %s',
