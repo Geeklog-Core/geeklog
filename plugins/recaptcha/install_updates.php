@@ -113,22 +113,22 @@ function recaptcha_update_ConfValues_1_1_6()
     $so += 10;
     $c->add('enable_emailstory', (isset($_RECAPTCHA_CONF['enable_emailstory']) ? $_RECAPTCHA_CONF['enable_emailstory'] : $_RECAPTCHA_DEFAULT['enable_emailstory']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_forum', (isset($_RECAPTCHA_CONF['enable_forum']) ? $_RECAPTCHA_CONF['enable_forum'] : $_RECAPTCHA_DEFAULT['enable_forum']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_forum', (isset($_RECAPTCHA_CONF['enable_forum']) ? $_RECAPTCHA_CONF['enable_forum'] : 0), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
     $c->add('enable_registration', (isset($_RECAPTCHA_CONF['enable_registration']) ? $_RECAPTCHA_CONF['enable_registration'] : $_RECAPTCHA_DEFAULT['enable_registration']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
     $c->add('enable_getpassword', (isset($_RECAPTCHA_CONF['enable_getpassword']) ? $_RECAPTCHA_CONF['enable_getpassword'] : $_RECAPTCHA_DEFAULT['enable_getpassword']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
     $c->add('enable_loginform', (isset($_RECAPTCHA_CONF['enable_loginform']) ? $_RECAPTCHA_CONF['enable_loginform'] : $_RECAPTCHA_DEFAULT['enable_loginform']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
-    $c->add('enable_mediagallery', (isset($_RECAPTCHA_CONF['enable_mediagallery']) ? $_RECAPTCHA_CONF['enable_mediagallery'] : $_RECAPTCHA_DEFAULT['enable_mediagallery']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_mediagallery', (isset($_RECAPTCHA_CONF['enable_mediagallery']) ? $_RECAPTCHA_CONF['enable_mediagallery'] : 0), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_rating', (isset($_RECAPTCHA_CONF['enable_rating']) ? $_RECAPTCHA_CONF['enable_rating'] : $_RECAPTCHA_DEFAULT['enable_rating']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_rating', (isset($_RECAPTCHA_CONF['enable_rating']) ? $_RECAPTCHA_CONF['enable_rating'] : 0), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
     $c->add('enable_story', (isset($_RECAPTCHA_CONF['enable_story']) ? $_RECAPTCHA_CONF['enable_story'] : $_RECAPTCHA_DEFAULT['enable_story']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_calendar', (isset($_RECAPTCHA_CONF['enable_calendar']) ? $_RECAPTCHA_CONF['enable_calendar'] : $_RECAPTCHA_DEFAULT['enable_calendar']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_calendar', (isset($_RECAPTCHA_CONF['enable_calendar']) ? $_RECAPTCHA_CONF['enable_calendar'] : 0), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_links', (isset($_RECAPTCHA_CONF['enable_links']) ? $_RECAPTCHA_CONF['enable_links'] : $_RECAPTCHA_DEFAULT['enable_links']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_links', (isset($_RECAPTCHA_CONF['enable_links']) ? $_RECAPTCHA_CONF['enable_links'] : 0), 'select', $sg, $fs, 2, $so, true, $me, $tab);
 
     return true;
 }
