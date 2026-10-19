@@ -1,0 +1,31 @@
+name: Spam-X migration regression
+
+on:
+  push:
+    branches:
+      - fix/1151-spamx-upgrade-errors
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  standalone-regression:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['5.6', '8.1', '8.2']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: none
+          coverage: none
+      - name: Syntax check
+        run: |
+          php -l plugins/spamx/sql/mysql_updates.php
+          php -l plugins/spamx/functions.inc
+          php -l tests/spamx-upgrade-1151.php
+      - name: Run mock migration regression
+        run: php tests/spamx-upgrade-1151.php
