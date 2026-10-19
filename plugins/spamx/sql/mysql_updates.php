@@ -145,10 +145,10 @@ function spamx_upgradeMysqlPrimaryKey()
         return false;
     }
 
-    if (count($columns) > 0) {
-        if (DB_query("ALTER TABLE {$_TABLES['spamx']} DROP PRIMARY KEY") === false) {
-            return false;
-        }
+    // Replace a legacy name-only key in one DDL statement, avoiding a
+    // temporarily unprotected table if creating the composite key fails.
+    if ($columns === array('name')) {
+        return DB_query("ALTER TABLE {$_TABLES['spamx']} DROP PRIMARY KEY, ADD PRIMARY KEY (name, value)") !== false;
     }
 
     return DB_query("ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name, value)") !== false;
