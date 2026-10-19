@@ -68,6 +68,14 @@ function recaptcha_update_ConfValues_1_1_6()
 
     require_once __DIR__ . '/install_defaults.php';
 
+    // Preserve existing settings before rebuilding the legacy configuration.
+    // Some upgrade entry points may not have loaded all plugin settings yet.
+    $c = config::get_instance();
+    $existingConfig = $c->get_config('recaptcha');
+    if (is_array($existingConfig)) {
+        $_RECAPTCHA_CONF = array_merge($_RECAPTCHA_CONF, $existingConfig);
+    }
+
     // Delete old configuration values
     $sql = "DELETE FROM {$_TABLES['conf_values']} WHERE group_name = 'recaptcha'";
     DB_query($sql);
