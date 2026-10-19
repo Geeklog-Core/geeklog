@@ -43,6 +43,8 @@ function recaptcha_update_ConfValues_1_1_5()
 {
     global $_RECAPTCHA_DEFAULT;
 
+    require_once __DIR__ . '/install_defaults.php';
+
     $c = config::get_instance();
     $me = 'recaptcha';
     $sg = 0;
@@ -64,6 +66,8 @@ function recaptcha_update_ConfValues_1_1_6()
 {
     global $_RECAPTCHA_CONF, $_RECAPTCHA_DEFAULT, $_TABLES;
 
+    require_once __DIR__ . '/install_defaults.php';
+
     // Delete old configuration values
     $sql = "DELETE FROM {$_TABLES['conf_values']} WHERE group_name = 'recaptcha'";
     DB_query($sql);
@@ -82,19 +86,19 @@ function recaptcha_update_ConfValues_1_1_6()
     // Subgroup = 0, Fieldset = 0, Tab = 0
     $c->add('fs_system', null, 'fieldset', $sg, $fs, null, 0, true, $me, $tab);
     $so += 10;
-    $c->add('site_key', $_RECAPTCHA_CONF['public_key'], 'text', $sg, $fs, null, $so, true, $me, $tab);
+    $c->add('site_key', (isset($_RECAPTCHA_CONF['public_key']) ? $_RECAPTCHA_CONF['public_key'] : $_RECAPTCHA_DEFAULT['site_key']), 'text', $sg, $fs, null, $so, true, $me, $tab);
     $so += 10;
-    $c->add('secret_key', $_RECAPTCHA_CONF['secret_key'], 'text', $sg, $fs, null, $so, true, $me, $tab);
+    $c->add('secret_key', (isset($_RECAPTCHA_CONF['secret_key']) ? $_RECAPTCHA_CONF['secret_key'] : $_RECAPTCHA_DEFAULT['secret_key']), 'text', $sg, $fs, null, $so, true, $me, $tab);
     $so += 10;
     $c->add('invisible_site_key', '', 'text', $sg, $fs, null, $so, true, $me, $tab);
     $so += 10;
     $c->add('invisible_secret_key', '', 'text', $sg, $fs, null, $so, true, $me, $tab);
     $so += 10;
-    $c->add('logging', $_RECAPTCHA_CONF['logging'], 'select', $sg, $fs, 0, $so, true, $me, $tab);
+    $c->add('logging', (isset($_RECAPTCHA_CONF['logging']) ? $_RECAPTCHA_CONF['logging'] : $_RECAPTCHA_DEFAULT['logging']), 'select', $sg, $fs, 0, $so, true, $me, $tab);
     $so += 10;
-    $c->add('anonymous_only', $_RECAPTCHA_CONF['anonymous_only'], 'select', $sg, $fs, 0, $so, true, $me, $tab);
+    $c->add('anonymous_only', (isset($_RECAPTCHA_CONF['anonymous_only']) ? $_RECAPTCHA_CONF['anonymous_only'] : $_RECAPTCHA_DEFAULT['anonymous_only']), 'select', $sg, $fs, 0, $so, true, $me, $tab);
     $so += 10;
-    $c->add('remoteusers', $_RECAPTCHA_CONF['remoteusers'], 'select', $sg, $fs, 0, $so, true, $me, $tab);
+    $c->add('remoteusers', (isset($_RECAPTCHA_CONF['remoteusers']) ? $_RECAPTCHA_CONF['remoteusers'] : $_RECAPTCHA_DEFAULT['remoteusers']), 'select', $sg, $fs, 0, $so, true, $me, $tab);
     $so += 10;
 
     // Subgroup = 0, Fieldset = 0, Tab = 1
@@ -103,28 +107,28 @@ function recaptcha_update_ConfValues_1_1_6()
     $so += 10;
     $c->add('fs_integration', null, 'fieldset', $sg, $fs, null, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_comment', $_RECAPTCHA_CONF['enable_comment'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_comment', (isset($_RECAPTCHA_CONF['enable_comment']) ? $_RECAPTCHA_CONF['enable_comment'] : $_RECAPTCHA_DEFAULT['enable_comment']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_contact', $_RECAPTCHA_CONF['enable_contact'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_contact', (isset($_RECAPTCHA_CONF['enable_contact']) ? $_RECAPTCHA_CONF['enable_contact'] : $_RECAPTCHA_DEFAULT['enable_contact']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_emailstory', $_RECAPTCHA_CONF['enable_emailstory'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_emailstory', (isset($_RECAPTCHA_CONF['enable_emailstory']) ? $_RECAPTCHA_CONF['enable_emailstory'] : $_RECAPTCHA_DEFAULT['enable_emailstory']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_forum', $_RECAPTCHA_CONF['enable_forum'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_forum', (isset($_RECAPTCHA_CONF['enable_forum']) ? $_RECAPTCHA_CONF['enable_forum'] : $_RECAPTCHA_DEFAULT['enable_forum']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_registration', $_RECAPTCHA_CONF['enable_registration'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_registration', (isset($_RECAPTCHA_CONF['enable_registration']) ? $_RECAPTCHA_CONF['enable_registration'] : $_RECAPTCHA_DEFAULT['enable_registration']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_getpassword', $_RECAPTCHA_CONF['enable_getpassword'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_getpassword', (isset($_RECAPTCHA_CONF['enable_getpassword']) ? $_RECAPTCHA_CONF['enable_getpassword'] : $_RECAPTCHA_DEFAULT['enable_getpassword']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_loginform', $_RECAPTCHA_CONF['enable_loginform'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
-    $c->add('enable_mediagallery', $_RECAPTCHA_CONF['enable_mediagallery'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_loginform', (isset($_RECAPTCHA_CONF['enable_loginform']) ? $_RECAPTCHA_CONF['enable_loginform'] : $_RECAPTCHA_DEFAULT['enable_loginform']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_mediagallery', (isset($_RECAPTCHA_CONF['enable_mediagallery']) ? $_RECAPTCHA_CONF['enable_mediagallery'] : $_RECAPTCHA_DEFAULT['enable_mediagallery']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_rating', $_RECAPTCHA_CONF['enable_rating'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_rating', (isset($_RECAPTCHA_CONF['enable_rating']) ? $_RECAPTCHA_CONF['enable_rating'] : $_RECAPTCHA_DEFAULT['enable_rating']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_story', $_RECAPTCHA_CONF['enable_story'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_story', (isset($_RECAPTCHA_CONF['enable_story']) ? $_RECAPTCHA_CONF['enable_story'] : $_RECAPTCHA_DEFAULT['enable_story']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_calendar', $_RECAPTCHA_CONF['enable_calendar'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_calendar', (isset($_RECAPTCHA_CONF['enable_calendar']) ? $_RECAPTCHA_CONF['enable_calendar'] : $_RECAPTCHA_DEFAULT['enable_calendar']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
-    $c->add('enable_links', $_RECAPTCHA_CONF['enable_links'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
+    $c->add('enable_links', (isset($_RECAPTCHA_CONF['enable_links']) ? $_RECAPTCHA_CONF['enable_links'] : $_RECAPTCHA_DEFAULT['enable_links']), 'select', $sg, $fs, 2, $so, true, $me, $tab);
 
     return true;
 }
