@@ -371,6 +371,13 @@ function plugin_upgrade_spamx()
                 break;
 
             case '1.3.2':
+                // The historical migration temporarily uses PRIMARY KEY(name).
+                // Refuse to alter the table when multiple entries share a name.
+                $check = DB_query("SELECT name FROM {$_TABLES['spamx']} GROUP BY name HAVING COUNT(*) > 1 LIMIT 1");
+                if ($check === false || DB_numRows($check) > 0) {
+                    COM_errorLog('Spam-X 1.3.2 upgrade blocked: duplicate names or preflight query failure', 1);
+                    return false;
+                }
                 if (isset($_UPDATES[$current_version])) {
                     $_SQL = $_UPDATES[$current_version];
                     foreach ($_SQL as $sql) {
@@ -385,6 +392,13 @@ function plugin_upgrade_spamx()
                 break;
 
             case '1.3.3':
+                // Reducing value to 191 characters may create composite-key collisions.
+                // Never let MySQL truncate or discard rules during an upgrade.
+                $check = DB_query("SELECT name, LEFT(value, 191) AS truncated_value FROM {$_TABLES['spamx']} GROUP BY name, LEFT(value, 191) HAVING COUNT(*) > 1 LIMIT 1");
+                if ($check === false || DB_numRows($check) > 0) {
+                    COM_errorLog('Spam-X 1.3.3 upgrade blocked: truncated-value collision or preflight query failure', 1);
+                    return false;
+                }
                 if (isset($_UPDATES[$current_version])) {
                     $_SQL = $_UPDATES[$current_version];
                     foreach ($_SQL as $sql) {
