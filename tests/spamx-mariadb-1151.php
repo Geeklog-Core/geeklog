@@ -11,6 +11,8 @@ foreach (array('SPAMX_DB_HOST', 'SPAMX_DB_USER', 'SPAMX_DB_PASSWORD', 'SPAMX_DB_
         exit(2);
     }
 }
+// The legacy Geeklog DB API reports SQL errors as false in this test.
+mysqli_report(MYSQLI_REPORT_OFF);
 $db = new mysqli(getenv('SPAMX_DB_HOST'), getenv('SPAMX_DB_USER'), getenv('SPAMX_DB_PASSWORD'), getenv('SPAMX_DB_NAME'));
 if ($db->connect_errno) {
     fwrite(STDERR, "Database connection failed\n");
