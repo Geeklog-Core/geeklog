@@ -29,3 +29,37 @@ jobs:
           php -l tests/spamx-upgrade-1151.php
       - name: Run mock migration regression
         run: php tests/spamx-upgrade-1151.php
+
+  mariadb-integration:
+    runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: test_root_password
+          MARIADB_DATABASE: spamx_ci
+          MARIADB_USER: spamx_ci
+          MARIADB_PASSWORD: test_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mysqli
+          coverage: none
+      - name: Verify integration test syntax
+        run: php -l tests/spamx-mariadb-1151.php
+      - name: Run disposable MariaDB migration fixtures
+        env:
+          SPAMX_DB_HOST: 127.0.0.1
+          SPAMX_DB_USER: spamx_ci
+          SPAMX_DB_PASSWORD: test_password
+          SPAMX_DB_NAME: spamx_ci
+        run: php tests/spamx-mariadb-1151.php
