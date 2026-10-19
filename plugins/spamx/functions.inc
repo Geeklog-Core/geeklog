@@ -357,59 +357,52 @@ function plugin_upgrade_spamx()
                 break;
 
             case '1.3.1':
-                if (isset($_UPDATES[$current_version])) {
-                    $_SQL = $_UPDATES[$current_version];
-                    foreach ($_SQL as $sql) {
-                        if (DB_query($sql) === false) {
-                            COM_errorLog('Spam-X upgrade SQL failed at version ' . $current_version, 1);
-                            return false;
-                        }
-                    }
+                // Use the final composite key instead of historical key changes.
+                // Existing keys are inspected, not blindly recreated.
+                if (!spamx_upgradeMysqlPrimaryKey()) {
+                    COM_errorLog('Spam-X upgrade failed at version 1.3.1', 1);
+                    return false;
                 }
-
-                $current_version = '1.3.2'; // Shipped with Geeklog-2.1.1
+                $current_version = '1.3.2';
                 break;
 
             case '1.3.2':
-                // The historical migration temporarily uses PRIMARY KEY(name).
-                // Refuse to alter the table when multiple entries share a name.
-                $check = DB_query("SELECT name FROM {$_TABLES['spamx']} GROUP BY name HAVING COUNT(*) > 1 LIMIT 1");
-                if ($check === false || DB_numRows($check) > 0) {
-                    COM_errorLog('Spam-X 1.3.2 upgrade blocked: duplicate names or preflight query failure', 1);
-                    return false;
-                }
                 if (isset($_UPDATES[$current_version])) {
-                    $_SQL = $_UPDATES[$current_version];
-                    foreach ($_SQL as $sql) {
+                    foreach ($_UPDATES[$current_version] as $sql) {
                         if (DB_query($sql) === false) {
-                            COM_errorLog('Spam-X upgrade SQL failed at version ' . $current_version, 1);
+                            COM_errorLog('Spam-X upgrade SQL failed at version 1.3.2', 1);
                             return false;
                         }
                     }
                 }
-
-                $current_version = '1.3.3'; // Shipped with Geeklog-2.1.2
+                $current_version = '1.3.3';
                 break;
 
             case '1.3.3':
-                // Reducing value to 191 characters may create composite-key collisions.
-                // Never let MySQL truncate or discard rules during an upgrade.
-                $check = DB_query("SELECT name, LEFT(value, 191) AS truncated_value FROM {$_TABLES['spamx']} GROUP BY name, LEFT(value, 191) HAVING COUNT(*) > 1 LIMIT 1");
+                // Existing values must not be silently shortened to VARCHAR(191).
+                $check = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE CHAR_LENGTH(value) > 191 LIMIT 1");
                 if ($check === false || DB_numRows($check) > 0) {
-                    COM_errorLog('Spam-X 1.3.3 upgrade blocked: truncated-value collision or preflight query failure', 1);
+                    COM_errorLog('Spam-X 1.3.3 upgrade blocked: values longer than 191 characters or preflight failure', 1);
+                    return false;
+                }
+                $check = DB_query("SELECT name FROM {$_TABLES['spamx']} GROUP BY name, LEFT(value, 191) HAVING COUNT(*) > 1 LIMIT 1");
+                if ($check === false || DB_numRows($check) > 0) {
+                    COM_errorLog('Spam-X 1.3.3 upgrade blocked: duplicate composite values or preflight failure', 1);
                     return false;
                 }
                 if (isset($_UPDATES[$current_version])) {
-                    $_SQL = $_UPDATES[$current_version];
-                    foreach ($_SQL as $sql) {
+                    foreach ($_UPDATES[$current_version] as $sql) {
                         if (DB_query($sql) === false) {
-                            COM_errorLog('Spam-X upgrade SQL failed at version ' . $current_version, 1);
+                            COM_errorLog('Spam-X upgrade SQL failed at version 1.3.3', 1);
                             return false;
                         }
                     }
                 }
-
-                $current_version = '1.3.4'; // Shipped with Geeklog-2.1.3
+                if (!spamx_upgradeMysqlPrimaryKey()) {
+                    COM_errorLog('Spam-X upgrade failed to verify composite primary key at version 1.3.3', 1);
+                    return false;
+                }
+                $current_version = '1.3.4';
                 break;
 
             case '1.3.4':
