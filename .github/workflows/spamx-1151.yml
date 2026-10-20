@@ -27,8 +27,11 @@ jobs:
           php -l plugins/spamx/sql/mysql_updates.php
           php -l plugins/spamx/functions.inc
           php -l tests/spamx-upgrade-1151.php
+          php -l tests/spamx-dispatcher-1151.php
       - name: Run mock migration regression
-        run: php tests/spamx-upgrade-1151.php
+        run: |
+          php tests/spamx-upgrade-1151.php
+          php tests/spamx-dispatcher-1151.php
 
   mariadb-integration:
     runs-on: ubuntu-latest
