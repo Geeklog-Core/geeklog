@@ -41,7 +41,6 @@ function DB_query($sql) {
     return true;
 }
 function spamx_update_ConfValues_1_3_4() { return true; }
-function spamx_upgradeMysqlPrimaryKey() { return true; }
 
 // Extract and execute production dispatcher without loading unrelated Geeklog
 // top-level bootstrap; only the require_once lines are removed.
@@ -63,6 +62,8 @@ function scenario($version, $failure, $expectedReturn, $expectedVersion) {
     $GLOBALS['plugin_version'] = $version;
     $GLOBALS['query_fail'] = $failure;
     $GLOBALS['sql_calls'] = array();
+    $GLOBALS['key_columns'] = array('name', 'value');
+    unset($GLOBALS['key_seq']);
     $GLOBALS['long_values'] = false;
     $value = plugin_upgrade_spamx();
     if ($value !== $expectedReturn || $GLOBALS['plugin_version'] !== $expectedVersion) {
