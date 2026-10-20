@@ -24,6 +24,7 @@ function plugin_chkVersion_spamx() { return '1.3.6'; }
 function plugin_compatible_with_this_version_spamx($name) { return true; }
 function plugin_autoinstall_spamx($name) { return array('info'=>array('pi_gl_version'=>'2.2.2','pi_homepage'=>'https://example.com')); }
 function spamx_update_ConfValues_1_3_4() { return true; }
+function spamx_update_ConfValues_1_3_0() { return true; }
 $source = file_get_contents(__DIR__.'/../plugins/spamx/functions.inc');
 $begin = strpos($source,'function plugin_upgrade_spamx()');
 $end = strpos($source,'/**',$begin);
@@ -54,6 +55,31 @@ try {
     if (DB_getItem('gl_plugins_ci','pi_version',"pi_name='spamx'") !== '1.3.3') throw new Exception('version changed on failure');
     $count = DB_query("SELECT COUNT(*) AS n FROM gl_spamx_ci");
     if ((int) DB_fetchArray($count)['n'] !== 3) throw new Exception('rules lost on failure');
+    // Historical 1.3.2: start with a name-only primary key.
+    DB_query('DROP TABLE gl_spamx_ci');
+    DB_query("CREATE TABLE gl_spamx_ci (name VARCHAR(20) NOT NULL, value VARCHAR(255) NOT NULL, counter INT NOT NULL DEFAULT 0, regdate DATETIME NULL, PRIMARY KEY(name)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    DB_query("UPDATE gl_plugins_ci SET pi_version='1.3.2' WHERE pi_name='spamx'");
+    DB_query("INSERT INTO gl_spamx_ci(name,value) VALUES ('Personal','rule-a'),('IP','rule-b')");
+    if (plugin_upgrade_spamx() !== true) throw new Exception('1.3.2 upgrade failed');
+    if (DB_getItem('gl_plugins_ci','pi_version',"pi_name='spamx'") !== '1.3.6') throw new Exception('1.3.2 version');
+    $idx = DB_query("SHOW INDEX FROM gl_spamx_ci WHERE Key_name='PRIMARY'");
+    $cols = array();
+    while ($row = DB_fetchArray($idx)) $cols[(int)$row['Seq_in_index']] = $row['Column_name'];
+    ksort($cols);
+    if (array_values($cols) !== array('name','value')) throw new Exception('1.3.2 composite key');
+    $count = DB_query('SELECT COUNT(*) AS n FROM gl_spamx_ci');
+    if ((int)DB_fetchArray($count)['n'] !== 2) throw new Exception('1.3.2 rules lost');
+
+    // Historical 1.3.1: table without primary key, repeated rule names.
+    DB_query('DROP TABLE gl_spamx_ci');
+    DB_query("CREATE TABLE gl_spamx_ci (name VARCHAR(20) NOT NULL, value VARCHAR(255) NOT NULL, counter INT NOT NULL DEFAULT 0, regdate DATETIME NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    DB_query("UPDATE gl_plugins_ci SET pi_version='1.3.1' WHERE pi_name='spamx'");
+    DB_query("INSERT INTO gl_spamx_ci(name,value) VALUES ('Personal','rule-a'),('Personal','rule-b')");
+    if (plugin_upgrade_spamx() !== true) throw new Exception('1.3.1 upgrade failed');
+    $count = DB_query('SELECT COUNT(*) AS n FROM gl_spamx_ci');
+    if ((int)DB_fetchArray($count)['n'] !== 2) throw new Exception('1.3.1 rules lost');
+    if (DB_getItem('gl_plugins_ci','pi_version',"pi_name='spamx'") !== '1.3.6') throw new Exception('1.3.1 version');
+
     echo "PASS: SQL-backed Spam-X dispatcher preserves rules and version state\n";
 } catch (Exception $e) {
     fwrite(STDERR,"FAIL: ".$e->getMessage()."\n");
