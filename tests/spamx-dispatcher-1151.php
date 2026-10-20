@@ -9,7 +9,7 @@
  */
 error_reporting(E_ALL);
 $_SERVER['PHP_SELF'] = 'spamx-dispatcher-1151.php';
-$_TABLES = array('plugins' => 'gl_plugins', 'spamx' => 'gl_spamx');
+$_TABLES = array('plugins' => 'gl_plugins', 'spamx' => 'gl_spamx', 'features' => 'gl_features');
 $_CONF = array('path' => dirname(__DIR__) . '/');
 $_DB_dbms = 'mysql';
 $GLOBALS['plugin_version'] = '1.3.3';
@@ -20,7 +20,7 @@ $GLOBALS['key_columns'] = array('name', 'value');
 function DB_getItem($table, $field, $where) { return $GLOBALS['plugin_version']; }
 function plugin_chkVersion_spamx() { return '1.3.6'; }
 function plugin_compatible_with_this_version_spamx($name) { return true; }
-function COM_errorLog($message, $level = 1) {}
+function COM_errorLog($message, $level = 1) { $GLOBALS['last_log'] = $message; }
 function DB_numRows($result) { return $result === 'rows' ? 1 : 0; }
 function DB_fetchArray($result) {
     if ($result === 'index') {
@@ -67,7 +67,7 @@ function scenario($version, $failure, $expectedReturn, $expectedVersion) {
     $GLOBALS['long_values'] = false;
     $value = plugin_upgrade_spamx();
     if ($value !== $expectedReturn || $GLOBALS['plugin_version'] !== $expectedVersion) {
-        fwrite(STDERR, "FAIL: start={$version}, failed={$failure}, version={$GLOBALS['plugin_version']}\n");
+        fwrite(STDERR, "FAIL: start={$version}, failed={$failure}, version={$GLOBALS['plugin_version']}, return=" . var_export($value, true) . ", log=" . (isset($GLOBALS['last_log']) ? $GLOBALS['last_log'] : '') . ", queries=" . implode(" | ", $GLOBALS['sql_calls']) . "\n");
         exit(1);
     }
 }
