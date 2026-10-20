@@ -59,10 +59,13 @@ jobs:
           coverage: none
       - name: Verify integration test syntax
         run: php -l tests/spamx-mariadb-1151.php
+          php -l tests/spamx-dispatcher-mariadb-1151.php
       - name: Run disposable MariaDB migration fixtures
         env:
           SPAMX_DB_HOST: 127.0.0.1
           SPAMX_DB_USER: spamx_ci
           SPAMX_DB_PASSWORD: test_password
           SPAMX_DB_NAME: spamx_ci
-        run: php tests/spamx-mariadb-1151.php
+        run: |
+          php tests/spamx-mariadb-1151.php
+          php tests/spamx-dispatcher-mariadb-1151.php
