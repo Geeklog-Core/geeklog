@@ -51,6 +51,9 @@ $end = strpos($source, '/**', $begin);
 if ($begin === false || $end === false) { fwrite(STDERR, "Unable to locate upgrade function\n"); exit(2); }
 $function = substr($source, $begin, $end - $begin);
 $function = preg_replace('/^\s*require_once .*?;\s*$/m', "\n", $function);
+// The original require_once declares $_UPDATES inside this function; the
+// isolated test loads the SQL updates outside, so import that map explicitly.
+$function = str_replace('global $_CONF, $_TABLES, $_DB_dbms;', 'global $_CONF, $_TABLES, $_DB_dbms, $_UPDATES;', $function);
 eval($function);
 // Config metadata from actual autoinstall is not relevant to versioned SQL.
 function plugin_autoinstall_spamx($name) {
