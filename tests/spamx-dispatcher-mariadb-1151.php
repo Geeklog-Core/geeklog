@@ -80,6 +80,20 @@ try {
     if ((int)DB_fetchArray($count)['n'] !== 2) throw new Exception('1.3.1 rules lost');
     if (DB_getItem('gl_plugins_ci','pi_version',"pi_name='spamx'") !== '1.3.6') throw new Exception('1.3.1 version');
 
+    // Historical 1.3.0: add counter and regdate to the original two-column table.
+    DB_query('DROP TABLE gl_spamx_ci');
+    DB_query("CREATE TABLE gl_spamx_ci (name VARCHAR(20) NOT NULL, value VARCHAR(255) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    DB_query("UPDATE gl_plugins_ci SET pi_version='1.3.0' WHERE pi_name='spamx'");
+    DB_query("INSERT INTO gl_spamx_ci(name,value) VALUES ('Personal','rule-a'),('Personal','rule-b')");
+    if (plugin_upgrade_spamx() !== true) throw new Exception('1.3.0 upgrade failed');
+    if (DB_getItem('gl_plugins_ci','pi_version',"pi_name='spamx'") !== '1.3.6') throw new Exception('1.3.0 version');
+    $count = DB_query('SELECT COUNT(*) AS n FROM gl_spamx_ci');
+    if ((int)DB_fetchArray($count)['n'] !== 2) throw new Exception('1.3.0 rules lost');
+    $cols = DB_query("SHOW COLUMNS FROM gl_spamx_ci");
+    $columnNames = array();
+    while ($row = DB_fetchArray($cols)) $columnNames[] = $row['Field'];
+    if (!in_array('counter',$columnNames) || !in_array('regdate',$columnNames)) throw new Exception('1.3.0 missing columns');
+
     echo "PASS: SQL-backed Spam-X dispatcher preserves rules and version state\n";
 } catch (Exception $e) {
     fwrite(STDERR,"FAIL: ".$e->getMessage()."\n");
