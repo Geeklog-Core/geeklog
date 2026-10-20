@@ -26,7 +26,8 @@ function DB_fetchArray($result) {
     if ($result === 'index') {
         if (empty($GLOBALS['key_columns'])) return false;
         $column = array_shift($GLOBALS['key_columns']);
-        $n = !isset($GLOBALS['key_seq']) ? 1 : ++$GLOBALS['key_seq'];
+        $GLOBALS['key_seq'] = isset($GLOBALS['key_seq']) ? $GLOBALS['key_seq'] + 1 : 1;
+        $n = $GLOBALS['key_seq'];
         return array('Seq_in_index' => $n, 'Column_name' => $column);
     }
     return false;
