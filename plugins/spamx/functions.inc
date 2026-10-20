@@ -443,7 +443,10 @@ function plugin_upgrade_spamx()
     }
 
     // update plugin version number and other info
-    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'spamx'");
+    if (DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'spamx'") === false) {
+        COM_errorLog('Spam-X upgrade: failed to save plugin version', 1);
+        return false;
+    }
 
     COM_errorLog( "Updated spamx plugin from v$installed_version to v$code_version", 1 );
 
