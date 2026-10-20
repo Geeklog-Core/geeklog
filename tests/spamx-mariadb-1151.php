@@ -93,6 +93,30 @@ try {
     if (spamx_upgradeMysqlPrimaryKey()) throw new Exception('duplicate rows unexpectedly accepted');
     assertRows(2);
 
+    // SQL collations can consider case variants equal even when strings differ.
+    fixture('none');
+    DB_query("INSERT INTO gl_spamx_ci (name,value) VALUES ('Personal','Duplicate'),('Personal','duplicate')");
+    if (spamx_upgradeMysqlPrimaryKey()) throw new Exception('collation duplicate unexpectedly accepted');
+    assertRows(2);
+
+    // Verify that the legacy width reduction would be unsafe for long values.
+    DB_query('DROP TABLE IF EXISTS gl_spamx_ci');
+    DB_query('CREATE TABLE gl_spamx_ci (name VARCHAR(20) NOT NULL, value VARCHAR(255) NOT NULL, counter INT NOT NULL DEFAULT 0, regdate DATETIME NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4');
+    $long = str_repeat('x', 192);
+    $escaped = $db->real_escape_string($long);
+    DB_query("INSERT INTO gl_spamx_ci (name,value) VALUES ('Personal','{$escaped}')");
+    $lengthCheck = DB_query('SELECT CHAR_LENGTH(value) AS length_value FROM gl_spamx_ci');
+    $lengthRow = DB_fetchArray($lengthCheck);
+    if ((int) $lengthRow['length_value'] !== 192) throw new Exception('long-value fixture failed');
+    if (spamx_upgradeMysqlPrimaryKey()) {
+        // A composite index might be creatable, but a later shrink must still
+        // be rejected by plugin_upgrade_spamx().
+        assertRows(1);
+    }
+    $longCheck = DB_query('SELECT COUNT(*) AS count_rows FROM gl_spamx_ci WHERE CHAR_LENGTH(value) > 191');
+    $longRow = DB_fetchArray($longCheck);
+    if ((int) $longRow['count_rows'] !== 1) throw new Exception('long value lost before width migration');
+
     echo "PASS: MariaDB Spam-X primary-key migration fixtures\n";
 } catch (Exception $e) {
     fwrite(STDERR, "FAIL: " . $e->getMessage() . "\n");
