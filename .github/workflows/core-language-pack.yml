@@ -1,0 +1,50 @@
+name: Build Geeklog 2.2.2 core language pack
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out translated language files
+        uses: actions/checkout@v4
+        with:
+          ref: lang
+          persist-credentials: false
+      - name: Validate core translations
+        run: php tools/check-languages.php
+      - name: Create core-only language archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+          root = Path("language")
+          files = sorted(root.glob("*.php"))
+          if not files or not (root / "english_utf-8.php").exists():
+              raise SystemExit("Core language files not found")
+          output = Path("dist/geeklog_2.2.2_languages.zip")
+          with ZipFile(output, "w", compression=ZIP_DEFLATED, compresslevel=9) as archive:
+              for file in files:
+                  archive.write(file, arcname=f"language/{file.name}")
+          print(f"Packaged {len(files)} core language files: {output}")
+          PY
+          if unzip -Z1 dist/geeklog_2.2.2_languages.zip | grep -Ev '^language/[^/]+\.php$'; then
+            echo 'Unexpected archive contents' >&2
+            exit 1
+          fi
+          sha256sum dist/geeklog_2.2.2_languages.zip > dist/SHA256SUMS.txt
+      - name: Upload archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: geeklog_2.2.2_languages
+          path: |
+            dist/geeklog_2.2.2_languages.zip
+            dist/SHA256SUMS.txt
+          if-no-files-found: error
