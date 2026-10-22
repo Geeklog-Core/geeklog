@@ -348,9 +348,14 @@ function sendPings($type, $id)
                     $pinged = COM_createControl('display-text-warning-small', array('text' => $pinged));
                 }
 
-                $template->set_var('service_name', $A['name']);
-                $template->set_var('service_url', $A['site_url']);
-                $template->set_var('service_ping_url', $A['ping_url']);
+                $template->set_var('service_name', htmlspecialchars($A['name'], ENT_QUOTES, COM_getCharset()));
+                $serviceUrl = trim($A['site_url']);
+                // A safe HTML attribute alone cannot prevent javascript: links.
+                if (!preg_match('~^https?://~i', $serviceUrl)) {
+                    $serviceUrl = '#';
+                }
+                $template->set_var('service_url', htmlspecialchars($serviceUrl, ENT_QUOTES, COM_getCharset()));
+                $template->set_var('service_ping_url', htmlspecialchars($A['ping_url'], ENT_QUOTES, COM_getCharset()));
                 $template->set_var('ping_result', $pinged);
                 $template->set_var('resend', $resend);
                 $template->set_var('alternate_row',
@@ -596,17 +601,17 @@ function editServiceForm($pid, $msg = '', $new_name = '', $new_site_url = '', $n
         $template->set_var('service_id', '');
     }
     if (isset($A['name'])) {
-        $template->set_var('service_name', $A['name']);
+        $template->set_var('service_name', htmlspecialchars($A['name'], ENT_QUOTES, COM_getCharset()));
     } else {
         $template->set_var('service_name', '');
     }
     if (isset($A['site_url'])) {
-        $template->set_var('service_site_url', $A['site_url']);
+        $template->set_var('service_site_url', htmlspecialchars($A['site_url'], ENT_QUOTES, COM_getCharset()));
     } else {
         $template->set_var('service_site_url', '');
     }
     if (isset($A['ping_url'])) {
-        $template->set_var('service_ping_url', $A['ping_url']);
+        $template->set_var('service_ping_url', htmlspecialchars($A['ping_url'], ENT_QUOTES, COM_getCharset()));
     } else {
         $template->set_var('service_ping_url', '');
     }
