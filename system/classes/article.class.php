@@ -2302,7 +2302,7 @@ class Article
         // Treat them as denied instead of accessing undefined array keys.
         foreach (array('perm_owner', 'perm_group', 'perm_members', 'perm_anon') as $permissionKey) {
             if (!isset($array[$permissionKey])) {
-                $array[$permissionKey] = array();
+                $array[$permissionKey] = 0;
             }
         }
 
