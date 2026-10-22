@@ -496,19 +496,25 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
 
                 if ($story->DisplayElements('comments') > 0) {
                     $result = DB_query("SELECT UNIX_TIMESTAMP(date) AS day,username,fullname,{$_TABLES['comments']}.uid as cuid FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '" . $story->getSid() . "' ORDER BY date DESC LIMIT 1");
-                    $C = DB_fetchArray($result);
+                    $C = ($result !== false) ? DB_fetchArray($result) : false;
 
-                    $recent_comment_info = $LANG01[27] . ': '
-                        . COM_strftime($_CONF['daytime'], $C['day']) . ' '
-                        . $LANG01[104] . ' ' . COM_getDisplayName($C['cuid'],
-                            $C['username'], $C['fullname']);
-                    $article->set_var('recent_comment_info', $recent_comment_info);
+                    if (is_array($C)) {
+                        $recent_comment_info = $LANG01[27] . ': '
+                            . COM_strftime($_CONF['daytime'], $C['day']) . ' '
+                            . $LANG01[104] . ' ' . COM_getDisplayName($C['cuid'],
+                                $C['username'], $C['fullname']);
+                        $article->set_var('recent_comment_info', $recent_comment_info);
 
-                    $attr = array('title' => htmlspecialchars($recent_comment_info));
-                    $comments_with_count = COM_createLink($comments_with_count, $commentsUrl, $attr);
-                    $article->set_var('comments_with_count', $comments_with_count);
+                        $attr = array('title' => htmlspecialchars($recent_comment_info));
+                        $comments_with_count = COM_createLink($comments_with_count, $commentsUrl, $attr);
+                        $article->set_var('comments_with_count', $comments_with_count);
 
-                    $recent_comment_anchortag = COM_createLink($comments_with_count, $postCommentUrl, $attr);
+                        $recent_comment_anchortag = COM_createLink($comments_with_count, $postCommentUrl, $attr);
+                    } else {
+                        // A missing latest-comment row must not break article rendering.
+                        $article->set_var('comments_with_count', $comments_with_count);
+                        $recent_comment_anchortag = COM_createLink($comments_with_count, $postCommentUrl);
+                    }
 
                 } else {
                     $article->set_var('comments_with_count', $comments_with_count);
