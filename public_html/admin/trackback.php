@@ -611,7 +611,7 @@ function editServiceForm($pid, $msg = '', $new_name = '', $new_site_url = '', $n
         $template->set_var('service_site_url', '');
     }
     if (isset($A['ping_url'])) {
-        $template->set_var('service_ping_url', $A['ping_url']);
+        $template->set_var('service_ping_url', htmlspecialchars($A['ping_url'], ENT_QUOTES, COM_getCharset()));
     } else {
         $template->set_var('service_ping_url', '');
     }
