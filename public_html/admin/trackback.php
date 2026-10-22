@@ -348,8 +348,8 @@ function sendPings($type, $id)
                     $pinged = COM_createControl('display-text-warning-small', array('text' => $pinged));
                 }
 
-                $template->set_var('service_name', $A['name']);
-                $template->set_var('service_url', $A['site_url']);
+                $template->set_var('service_name', htmlspecialchars($A['name'], ENT_QUOTES, COM_getCharset()));
+                $template->set_var('service_url', htmlspecialchars($A['site_url'], ENT_QUOTES, COM_getCharset()));
                 $template->set_var('service_ping_url', $A['ping_url']);
                 $template->set_var('ping_result', $pinged);
                 $template->set_var('resend', $resend);
