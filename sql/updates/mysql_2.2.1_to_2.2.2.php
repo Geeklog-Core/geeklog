@@ -6,12 +6,12 @@ use Geeklog\Entity\UserAttributeEntity;
 global $_TABLES;
 
 // Add missing route into routing table for articles that have page breaks (issue #746)
-$_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid/@page', '/article.php?story=@sid&page=@page', 1000)"; // Priority should default to 120 but we need to mage sure it comes after the route for article print
+$_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) SELECT 1, '/article/@sid/@page', '/article.php?story=@sid&page=@page', 1000 FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM {$_TABLES['routes']} WHERE rule = '/article/@sid/@page' AND method = 1)"; // Priority should default to 120 but we need to mage sure it comes after the route for article print
 
 // Drop tables
-$_SQL[] = "DROP TABLE {$_TABLES['cookiecodes']}";
-$_SQL[] = "DROP TABLE {$_TABLES['dateformats']}";
-$_SQL[] = "DROP TABLE {$_TABLES['maillist']}";
+$_SQL[] = "DROP TABLE IF EXISTS {$_TABLES['cookiecodes']}";
+$_SQL[] = "DROP TABLE IF EXISTS {$_TABLES['dateformats']}";
+$_SQL[] = "DROP TABLE IF EXISTS {$_TABLES['maillist']}";
 
 // Old VARS table variables for Database Backup that are not used anymore (but could still get created in some cases)
 $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = '_dbback_files'";
@@ -33,7 +33,11 @@ $_SQL[] = "DELETE cs FROM {$_TABLES['commentsubmissions']} cs WHERE uid NOT IN (
 // Delete Comments that type and sid do not exist anymore
 $_SQL[] = "DELETE c FROM {$_TABLES['comments']} c WHERE type = 'article' AND sid NOT IN (SELECT sid FROM {$_TABLES['stories']} s WHERE c.sid = s.sid)";
 $_SQL[] = "DELETE c FROM {$_TABLES['comments']} c WHERE type = 'staticpages' AND sid NOT IN (SELECT sid FROM {$_TABLES['staticpage']} s WHERE c.sid = s.sp_id)";
-$_SQL[] = "DELETE c FROM {$_TABLES['comments']} c WHERE type = 'polls' AND sid NOT IN (SELECT sid FROM {$_TABLES['polltopics']} pt WHERE c.sid = pt.pid)";
+// Polls is an optional plugin: its table may not exist on this site.
+// In that case preserve any historical poll comments rather than querying a missing table.
+if (DB_checkTableExists('polltopics')) {
+    $_SQL[] = "DELETE c FROM {$_TABLES['comments']} c WHERE type = 'polls' AND sid NOT IN (SELECT sid FROM {$_TABLES['polltopics']} pt WHERE c.sid = pt.pid)";
+}
 // Set any likes missing user accounts to anonymous
 $_SQL[] = "UPDATE {$_TABLES['likes']} l SET uid = 1 WHERE uid NOT IN (SELECT uid FROM {$_TABLES['users']} u WHERE u.uid = l.uid)";	
 // Delete likes that type and id do not exist anymore
