@@ -8457,9 +8457,9 @@ function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errConte
 {
     global $_CONF, $_USER, $LANG01;
 
-    // Respect the @ operator and the current error reporting mask
-    if ((error_reporting() & $errNo) === 0) {
-        return true;
+    // Handle @ operator
+    if (error_reporting() == 0) {
+        return;
     }
 
     $hasPHP8 = version_compare(PHP_VERSION, '8.0.0', '>=');
