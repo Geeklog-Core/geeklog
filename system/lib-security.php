@@ -1568,7 +1568,7 @@ function SECINT_checkToken()
             $uid = isset($_USER['uid']) ? $_USER['uid'] : 1;
             if ($uid != $tokendata['owner_id']) {
                 $return = false;
-            } elseif ($tokendata['urlfor'] != $_SERVER['HTTP_REFERER']) {
+            } elseif (!isset($_SERVER['HTTP_REFERER']) || $tokendata['urlfor'] != $_SERVER['HTTP_REFERER']) {
                 $return = false;
             } elseif ($tokendata['expired']) {
                 $return = false;
