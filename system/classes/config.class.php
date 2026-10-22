@@ -1322,7 +1322,7 @@ class config implements ConfigInterface
             $t->set_var('validation_error_message', $this->validationErrors[$group][$name]);
             $t->set_var('error_block', $t->parse('output', 'validation_error_block'));
             $t->set_var('error_class', ' input_error');
-            $t->set_var('value', $this->validationErrorValues[$group][$name]);
+            $t->set_var('value', htmlspecialchars($this->validationErrorValues[$group][$name], ENT_QUOTES, COM_getCharset()));
         } else {
             $t->set_var('error_class', '');
             $t->set_var('error_block', '');
