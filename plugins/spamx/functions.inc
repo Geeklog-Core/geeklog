@@ -261,7 +261,10 @@ function plugin_upgrade_spamx()
                 if (isset($_UPDATES[$current_version])) {
                     $_SQL = $_UPDATES[$current_version];
                     foreach ($_SQL as $sql) {
-                        DB_query($sql);
+                        if (DB_query($sql) === false) {
+                            COM_errorLog('Spam-X upgrade SQL failed at version ' . $current_version, 1);
+                            return false;
+                        }
                     }
                 }
 
@@ -288,7 +291,10 @@ function plugin_upgrade_spamx()
                 if (isset($_UPDATES[$current_version])) {
                     $_SQL = $_UPDATES[$current_version];
                     foreach ($_SQL as $sql) {
-                        DB_query($sql);
+                        if (DB_query($sql) === false) {
+                            COM_errorLog('Spam-X upgrade SQL failed at version ' . $current_version, 1);
+                            return false;
+                        }
                     }
                 }
 
@@ -305,7 +311,10 @@ function plugin_upgrade_spamx()
                 if (isset($_UPDATES[$current_version])) {
                     $_SQL = $_UPDATES[$current_version];
                     foreach ($_SQL as $sql) {
-                        DB_query($sql);
+                        if (DB_query($sql) === false) {
+                            COM_errorLog('Spam-X upgrade SQL failed at version ' . $current_version, 1);
+                            return false;
+                        }
                     }
                 }
 
@@ -335,7 +344,10 @@ function plugin_upgrade_spamx()
                 if (isset($_UPDATES[$current_version])) {
                     $_SQL = $_UPDATES[$current_version];
                     foreach ($_SQL as $sql) {
-                        DB_query($sql);
+                        if (DB_query($sql) === false) {
+                            COM_errorLog('Spam-X upgrade SQL failed at version ' . $current_version, 1);
+                            return false;
+                        }
                     }
                 }
 
@@ -345,43 +357,62 @@ function plugin_upgrade_spamx()
                 break;
 
             case '1.3.1':
-                if (isset($_UPDATES[$current_version])) {
-                    $_SQL = $_UPDATES[$current_version];
-                    foreach ($_SQL as $sql) {
-                        DB_query($sql);
-                    }
+                // Use the final composite key instead of historical key changes.
+                // Existing keys are inspected, not blindly recreated.
+                if (!spamx_upgradeMysqlPrimaryKey()) {
+                    COM_errorLog('Spam-X upgrade failed at version 1.3.1', 1);
+                    return false;
                 }
-
-                $current_version = '1.3.2'; // Shipped with Geeklog-2.1.1
+                $current_version = '1.3.2';
                 break;
 
             case '1.3.2':
                 if (isset($_UPDATES[$current_version])) {
-                    $_SQL = $_UPDATES[$current_version];
-                    foreach ($_SQL as $sql) {
-                        DB_query($sql);
+                    foreach ($_UPDATES[$current_version] as $sql) {
+                        if (DB_query($sql) === false) {
+                            COM_errorLog('Spam-X upgrade SQL failed at version 1.3.2', 1);
+                            return false;
+                        }
                     }
                 }
-
-                $current_version = '1.3.3'; // Shipped with Geeklog-2.1.2
+                $current_version = '1.3.3';
                 break;
 
             case '1.3.3':
+                // Existing values must not be silently shortened to VARCHAR(191).
+                $check = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE CHAR_LENGTH(value) > 191 LIMIT 1");
+                if ($check === false || DB_numRows($check) > 0) {
+                    COM_errorLog('Spam-X 1.3.3 upgrade blocked: values longer than 191 characters or preflight failure', 1);
+                    return false;
+                }
+                $check = DB_query("SELECT name FROM {$_TABLES['spamx']} GROUP BY name, LEFT(value, 191) HAVING COUNT(*) > 1 LIMIT 1");
+                if ($check === false || DB_numRows($check) > 0) {
+                    COM_errorLog('Spam-X 1.3.3 upgrade blocked: duplicate composite values or preflight failure', 1);
+                    return false;
+                }
                 if (isset($_UPDATES[$current_version])) {
-                    $_SQL = $_UPDATES[$current_version];
-                    foreach ($_SQL as $sql) {
-                        DB_query($sql);
+                    foreach ($_UPDATES[$current_version] as $sql) {
+                        if (DB_query($sql) === false) {
+                            COM_errorLog('Spam-X upgrade SQL failed at version 1.3.3', 1);
+                            return false;
+                        }
                     }
                 }
-
-                $current_version = '1.3.4'; // Shipped with Geeklog-2.1.3
+                if (!spamx_upgradeMysqlPrimaryKey()) {
+                    COM_errorLog('Spam-X upgrade failed to verify composite primary key at version 1.3.3', 1);
+                    return false;
+                }
+                $current_version = '1.3.4';
                 break;
 
             case '1.3.4':
                 if (isset($_UPDATES[$current_version])) {
                     $_SQL = $_UPDATES[$current_version];
                     foreach ($_SQL as $sql) {
-                        DB_query($sql);
+                        if (DB_query($sql) === false) {
+                            COM_errorLog('Spam-X upgrade SQL failed at version ' . $current_version, 1);
+                            return false;
+                        }
                     }
                 }
 
@@ -394,7 +425,10 @@ function plugin_upgrade_spamx()
                     if (isset($_UPDATES[$current_version])) {
                         $_SQL = $_UPDATES[$current_version];
                         foreach ($_SQL as $sql) {
-                            DB_query($sql);
+                            if (DB_query($sql) === false) {
+                                COM_errorLog('Spam-X upgrade SQL failed at version ' . $current_version, 1);
+                                return false;
+                            }
                         }
                     }
 
@@ -409,7 +443,10 @@ function plugin_upgrade_spamx()
     }
 
     // update plugin version number and other info
-    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'spamx'");
+    if (DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'spamx'") === false) {
+        COM_errorLog('Spam-X upgrade: failed to save plugin version', 1);
+        return false;
+    }
 
     COM_errorLog( "Updated spamx plugin from v$installed_version to v$code_version", 1 );
 

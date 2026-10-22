@@ -51,21 +51,13 @@ $_UPDATES = array(
         "ALTER TABLE {$_TABLES['spamx']} ADD regdate datetime NOT NULL default '0000-00-00 00:00:00'"
     ),
 
-    '1.3.1' => array(
-        "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name, value)"
-    ),
-
+    // Historical key changes are handled by spamx_upgradeMysqlPrimaryKey().
+    '1.3.1' => array(),
     '1.3.2' => array(
-        "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN regdate DATETIME DEFAULT NULL",
-        "ALTER TABLE {$_TABLES['spamx']} DROP PRIMARY  KEY",
-        "DROP INDEX `spamx_name` ON {$_TABLES['spamx']}",
-        "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name)"
+        "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN regdate DATETIME DEFAULT NULL"
     ),
-    
     '1.3.3' => array(
-        "ALTER TABLE {$_TABLES['spamx']} DROP PRIMARY  KEY",
-        "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN `value` VARCHAR(191)",
-        "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name, value)"
+        "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN `value` VARCHAR(191)"
     ),
 
     '1.3.5' => array(
@@ -121,4 +113,43 @@ function spamx_update_ConfigSecurity_1_2_2()
             }
         }
     }
+}
+
+/**
+ * Ensure the final Spam-X MySQL primary key without an invalid temporary
+ * PRIMARY KEY(name). Supports absent, name-only and composite legacy keys.
+ *
+ * @return bool true if the composite key exists or was created.
+ */
+function spamx_upgradeMysqlPrimaryKey()
+{
+    global $_TABLES;
+
+    $result = DB_query("SHOW INDEX FROM {$_TABLES['spamx']} WHERE Key_name = 'PRIMARY'");
+    if ($result === false) {
+        return false;
+    }
+
+    $columns = array();
+    while ($row = DB_fetchArray($result)) {
+        $columns[(int) $row['Seq_in_index']] = $row['Column_name'];
+    }
+    ksort($columns);
+    $columns = array_values($columns);
+
+    if ($columns === array('name', 'value')) {
+        return true;
+    }
+    if (count($columns) > 0 && $columns !== array('name')) {
+        COM_errorLog('Spam-X upgrade: unexpected primary key; manual review required', 1);
+        return false;
+    }
+
+    // Replace a legacy name-only key in one DDL statement, avoiding a
+    // temporarily unprotected table if creating the composite key fails.
+    if ($columns === array('name')) {
+        return DB_query("ALTER TABLE {$_TABLES['spamx']} DROP PRIMARY KEY, ADD PRIMARY KEY (name, value)") !== false;
+    }
+
+    return DB_query("ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name, value)") !== false;
 }
