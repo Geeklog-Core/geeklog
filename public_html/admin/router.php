@@ -108,8 +108,8 @@ function getRouteEditor($rid = 0)
     $T->set_var(array(
         'rid'          => $A['rid'],
         'method'       => $A['method'],
-        'rule'         => $A['rule'],
-        'route'        => $A['route'],
+        'rule'         => htmlspecialchars($A['rule'], ENT_QUOTES, COM_getCharset()),
+        'route'        => htmlspecialchars($A['route'], ENT_QUOTES, COM_getCharset()),
         'status_code'  => $A['status_code'],
         'priority'     => $A['priority'],
         'enabled'     => $enabled,
