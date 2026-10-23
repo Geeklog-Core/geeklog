@@ -429,14 +429,11 @@ class StructuredData
     {
         $sd_name = $this->create_name($type, $id);
         $this->items[$sd_name]['itemListElement'][] = array(
-            array(
-                "@type"     => "ListItem",
-                "position" 	=> $position,
-                "item" 		=>
-                    array(
-                        "@id"   => $item_id,
-                        "name"  => $name,
-                    )
+            "@type"     => "ListItem",
+            "position"  => $position,
+            "item"      => array(
+                "@id"  => $item_id,
+                "name" => $name,
             )
         );
 	}
