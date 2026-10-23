@@ -220,6 +220,12 @@ function plugin_upgrade_xmlsitemap()
                 $current_version = '2.0.3'; // Released with Geeklog 2.2.2
                 break;
 
+            case '2.0.3':
+                xmlsitemap_update_ConfValues_2_0_4();
+
+                $current_version = '2.0.4';
+                break;
+
             default:
                 $done = true;
                 break;
@@ -258,7 +264,7 @@ function plugin_autouninstall_xmlsitemap()
         'php_blocks' => [],
         // give all vars with their name
         'vars'       => [
-            'xmlsitemap_filename', 'xmlsitemap_mobile', 'xmlsitemap_news', 'xmlsitemap.pings',
+            'xmlsitemap_filename', 'xmlsitemap_mobile', 'xmlsitemap_news',
         ],
     ];
 }
@@ -386,19 +392,6 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
 
     if (!$sitemap->create()) {
         return false;
-    }
-
-    // Send ping to search engines
-    $pingTargets = [];
-
-    if (isset($_XMLSMAP_CONF['ping_google']) && $_XMLSMAP_CONF['ping_google']) {
-        $pingTargets[] = 'google';
-    }
-
-    foreach ($sitemap->getFileNames() as $fileName) {
-		if (!empty($fileName)) {
-			$sitemap->sendPing($pingTargets, $fileName);
-		}
     }
 
     return true;

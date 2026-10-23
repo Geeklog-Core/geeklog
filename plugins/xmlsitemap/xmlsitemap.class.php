@@ -60,7 +60,6 @@ class XMLSitemap
     const MAX_NUM_ENTRIES = 50000;
     const MAX_FILE_SIZE = 10485760;   // 1MB
     const DEFAULT_PRIORITY = 0.5;
-    const PING_INTERVAL = 3600;       // 1 hour
     const LB = "\n";
 
     // Sitemap types
@@ -1016,20 +1015,11 @@ class XMLSitemap
      */
     public function endUpdate()
     {
-        global $_XMLSMAP_CONF;
-
         $retval = true;
         $this->updating = false;
 
         if (count($this->items) === 0) {
             return true;
-        }
-
-        // Send ping to search engines
-        $pingTargets = [];
-
-        if (isset($_XMLSMAP_CONF['ping_google']) && $_XMLSMAP_CONF['ping_google']) {
-            $pingTargets[] = 'google';
         }
 
         // Get file names
@@ -1038,25 +1028,16 @@ class XMLSitemap
         if (!empty($filename)) {
             $retval = $this->patchFile(self::TYPE_REGULAR, $filename, $this->items);
 
-            if ($retval) {
-                $this->sendPing($pingTargets, $filename);
-            }
         }
 
         if (!empty($mobileFilename)) {
             $retval = $retval && $this->patchFile(self::TYPE_MOBILE, $mobileFilename, $this->items);
 
-            if ($retval)  {
-                $this->sendPing($pingTargets, $mobileFilename);
-            }
         }
 		
         if (!empty($newsFilename)) {
             $retval = $retval && $this->patchFile(self::TYPE_NEWS, $newsFilename, $this->items);
 
-            if ($retval)  {
-                $this->sendPing($pingTargets, $newsFilename);
-            }
         }		
 
         // Empty the queue
@@ -1065,113 +1046,6 @@ class XMLSitemap
         return $retval;
     }
 
-    /**
-     * Sends a ping to search engines for the main sitemap only
-     *
-     * @param  array   $destinations  an array of search engine types.  Currently supported are 'google' and 'bing'.
-     * @param  string  $filename      the full path to a sitemap file
-     * @return int                    the number of successful pings
-     */
-    public function sendPing(array $destinations, $filename)
-    {
-        global $_CONF, $_TABLES;
-
-        $destinations = array_unique($destinations);
-        if (COM_isDemoMode() || (count($destinations) === 0)) {
-            return 0;
-        }
-
-        if (empty($filename)) {
-            COM_errorLog(__METHOD__ . ': sitemap file name is not specified.');
-
-            return 0;
-        } elseif (preg_match('@\Ahttps?://localhost/@i', $_CONF['site_url'])) {
-            // It seems that 'localhost' is not accepted
-            return 0;
-        }
-
-        // Checks for the record of previous pings
-        $hasRecord = false;
-        $sql = "SELECT value FROM {$_TABLES['vars']} WHERE (name = 'xmlsitemap.pings') ";
-        $result = DB_query($sql);
-
-        if (($result !== false) && (DB_numRows($result) == 1)) {
-            $hasRecord = true;
-            list ($A) = DB_fetchArray($result);
-            $records = json_decode($A, true);
-        } else {
-            $records = [];
-        }
-
-        $success = 0;
-        $sitemapUrl = $_CONF['site_url'] . '/' . basename($filename);
-        $sitemapUrl = urlencode($sitemapUrl);
-
-        foreach ($destinations as $dest) {
-            $dest = strtolower($dest);
-
-            // Checks if there was a record of a previous ping
-            if (isset($records[$dest]) &&
-                ($records[$dest] + self::PING_INTERVAL > time())) {
-                continue;
-            }
-
-            switch ($dest) {
-                case 'google':
-                    $url = 'https://www.google.com/ping?sitemap=' . $sitemapUrl;
-                    break;
-				
-				// See: https://github.com/Geeklog-Core/geeklog/issues/1105
-                //case 'bing':
-                //    $url = 'https://www.bing.com/ping?sitemap=' . $sitemapUrl;
-                //    break;
-
-                default:
-                    $url = '';
-                    COM_errorLog(__METHOD__ . ': unknown target "' . $dest . '"is specified.');
-                    break;
-            }
-
-            // Sends a ping to the endpoint of a search engine
-            if (!empty($url)) {
-                $req = new HTTP_Request2($url, HTTP_Request2::METHOD_GET);
-
-                try {
-                    $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
-                    $response = $req->send();
-                    $status = $response->getStatus();
-
-                    if ($status == 200) {
-                        $success++;
-                        $records[$dest] = time();
-                    } else {
-                        COM_errorLog(sprintf('Failed to send a ping to %s: HTTP status %d', $url, $status));
-                    }
-                } catch (HTTP_Request2_Exception $e) {
-                    COM_errorLog(__METHOD__ . ': ' . $e->getMessage());
-                }
-            }
-        }
-
-        // Writes back a record of pings into database
-        $records = json_encode($records);
-        $records = DB_escapeString($records);
-
-        if ($hasRecord) {
-            $sql = "UPDATE {$_TABLES['vars']} SET value = '{$records}' "
-                . "WHERE (name = 'xmlsitemap.pings') ";
-        } else {
-            $sql = "INSERT INTO {$_TABLES['vars']} (name, value) "
-                . "VALUES ('xmlsitemap.pings', '{$records}') ";
-        }
-
-        if (DB_query($sql) === false) {
-            COM_errorLog(__METHOD__ . ': cannot save ping records into database');
-        }
-
-        return (count($destinations) === $success);
-    }
-	
     /**
      * Submit a changed URL to IndexNow
      *
