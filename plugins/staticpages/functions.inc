@@ -2174,7 +2174,7 @@ function SP_render_content($A)
         }
         $properties['author']['name'] = COM_getDisplayName($A['owner_id']);
         if (!USER_isBanned($A['owner_id'])) {
-            $properties['author']['url'] = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
+            $properties['author']['url'] = $_CONF['site_url'] . '/users.php?mode=profile&uid=' . $A['owner_id'];
         }
 
         $attributes['multi_language'] = true;
