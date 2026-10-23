@@ -84,6 +84,15 @@ class LocaleData
             'encoding' => ['UTF-8'],
         ],
 
+        'italian' => [
+            'native'   => 'Italiano',
+            'english'  => 'Italian',
+            'iso639-1' => 'it',
+            'locale'   => 'it_IT',
+            'dir'      => 'ltr',
+            'encoding' => ['UTF-8'],
+        ],
+
         'japanese' => [
             'native'   => '日本語',
             'english'  => 'Japanese',
