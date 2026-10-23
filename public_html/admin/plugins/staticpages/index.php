@@ -772,6 +772,8 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         $A['structured_data_type'] = $_SP_CONF['structured_data_type_default'];
         $A['search'] = 1; // Use Default config setting
 		$A['likes'] = -1; // Use Default config setting
+        $A['sp_onhits'] = !empty($_SP_CONF['show_hits']) ? 1 : 0;
+        $A['sp_onlastupdate'] = !empty($_SP_CONF['show_date']) ? 1 : 0;
         $A['sp_where'] = 1; // default new pages to "top of page"
         $A['draft_flag'] = $_SP_CONF['draft_flag'];
         $A['cache_time'] = $_SP_CONF['default_cache_time'];
