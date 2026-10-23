@@ -8995,6 +8995,17 @@ function COM_getTextContent($text)
         $text = substr($text, 0, $pos + strlen('</body>'));
     }
 
+    // Remove embedded styles before stripping HTML tags, so CSS rules do not
+    // appear as plain text in search excerpts and other text-only output.
+    if (stripos($text, '<style') !== false) {
+        $text = preg_replace('@<style\b[^>]*>[\s\S]*?</style\s*>@i', ' ', $text);
+
+        // Discard an incomplete style block rather than exposing its CSS.
+        if (($pos = stripos($text, '<style')) !== false) {
+            $text = substr($text, 0, $pos);
+        }
+    }
+
     // remove <script> tags
     if (stripos($text, '<script') !== false) {
         $text = preg_replace('@<script.*?>.*?</script>@i', ' ', $text);
