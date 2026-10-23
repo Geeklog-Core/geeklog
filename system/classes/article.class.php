@@ -2298,6 +2298,14 @@ class Article
             $this->_comment_expire = 0;
         }
 
+        // Unchecked permission checkboxes are omitted from the submitted form.
+        // Treat them as denied instead of accessing undefined array keys.
+        foreach (array('perm_owner', 'perm_group', 'perm_members', 'perm_anon') as $permissionKey) {
+            if (!isset($array[$permissionKey])) {
+                $array[$permissionKey] = 0;
+            }
+        }
+
         // Then grab the permissions
 
         // Convert array values to numeric permission values
