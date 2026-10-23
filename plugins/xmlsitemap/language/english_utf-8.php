@@ -59,7 +59,6 @@ $LANG_confignames['xmlsitemap'] = array(
     'lastmod'             => 'Content Types to include lastmod element',
     'priorities'          => 'Priority',
     'frequencies'         => 'Frequency',
-    'ping_google'         => 'Send ping to Google',
 	'indexnow'            => 'Enable IndexNow',
 	'indexnow_key'        => 'IndexNow Key',
 	'indexnow_key_location' => 'IndexNow Key Location',

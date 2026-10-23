@@ -55,7 +55,6 @@ $LANG_confignames['xmlsitemap'] = array(
     'lastmod' => '最終編集日',
     'priorities' => '優先度',
     'frequencies' => '頻度',
-    'ping_google' => 'Googleにpingを送信する',
     'indexnow' => 'IndexNowを有効にする',
     'indexnow_key' => 'IndexNowのキー',
     'indexnow_key_location' => 'IndexNowのキーの場所',

@@ -90,3 +90,20 @@ function xmlsitemap_update_ConfValues_2_0_3()
 	
 	return true;
 }
+
+
+function xmlsitemap_update_ConfValues_2_0_4()
+{
+    global $_TABLES;
+
+    $c = config::get_instance();
+    $me = 'xmlsitemap';
+
+    // Google retired the sitemap ping endpoint. Remove the obsolete setting.
+    $c->del('ping_google', $me);
+
+    // Remove old per-search-engine ping timestamps.
+    DB_query("DELETE FROM {$_TABLES['vars']} WHERE name = 'xmlsitemap.pings'");
+
+    return true;
+}

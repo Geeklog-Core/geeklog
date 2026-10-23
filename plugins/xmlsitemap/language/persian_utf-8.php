@@ -53,7 +53,6 @@ $LANG_confignames['xmlsitemap'] = array(
     'lastmod' => 'انواع محتوا برای در برداشتن عنصر lastmod',
     'priorities' => 'اولویت',
     'frequencies' => 'بسامد',
-    'ping_google' => 'ارسال پینگ به گوگل',
     'indexnow' => 'Enable IndexNow',
     'indexnow_key' => 'IndexNow Key',
     'indexnow_key_location' => 'IndexNow Key Location',

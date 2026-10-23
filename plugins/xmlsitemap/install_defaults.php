@@ -84,12 +84,13 @@ $_XMLSMAP_DEFAULT['frequencies'] = [
     'staticpages' => 'weekly'
 ];
 
-// Ping targets
+// Legacy ping target used only by older upgrade steps. It is no longer added
+// to the configuration for new installations as of XML Sitemap Plugin 2.0.4.
 $_XMLSMAP_DEFAULT['ping_google'] = true;
+
 if (defined('GL_INSTALL_ACTIVE')) {
-	// $_XMLSMAP_DEFAULT['ping_bing'] Removed as of XML Sitemap Plugin 2.0.3 and Geeklog 2.2.2
-	// Need to keep though for upgrade procedures that are older and when this config was added or upgrade will break
-	$_XMLSMAP_DEFAULT['ping_bing']   = true; 
+    // Removed as of XML Sitemap Plugin 2.0.3 and Geeklog 2.2.2.
+    $_XMLSMAP_DEFAULT['ping_bing'] = true;
 }
 
 // IndexNow
@@ -147,13 +148,11 @@ function plugin_initconfig_xmlsitemap()
         $c->add('frequencies', $_XMLSMAP_DEFAULT['frequencies'], '@select', 0,
             2, 20, 60, true, $me, 2);
 
-        // Ping targets
+        // URL submission
         $c->add('tab_ping', null, 'tab', 0, 3, null, 0, true, $me, 3);
         $c->add('fs_ping', null, 'fieldset', 0, 3, null, 0, true, $me, 3);
-        $c->add('ping_google', $_XMLSMAP_DEFAULT['ping_google'], 'select', 0,
-            3, 1, 100, true, $me, 3);
-		
-		// IndexNow
+
+        // IndexNow
         $c->add('indexnow', $_XMLSMAP_DEFAULT['indexnow'], 'select', 0,
             3, 1, 110, true, $me, 3);
 		$c->add('indexnow_key', $_XMLSMAP_DEFAULT['indexnow_key'], 'text', 0,

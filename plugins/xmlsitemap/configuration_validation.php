@@ -55,9 +55,6 @@ $_CONF_VALIDATE['xmlsitemap']['frequencies[staticpages]'] = [
     'rule' => ['inList', ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never', 'hidden'], true]
 ];
 
-// Ping target
-$_CONF_VALIDATE['xmlsitemap']['ping_google'] = ['rule' => 'boolean'];
-
 // IndexNow
 $_CONF_VALIDATE['xmlsitemap']['indexnow']   = ['rule' => 'boolean'];
 $_CONF_VALIDATE['xmlsitemap']['indexnow_key'] = ['rule' => 'alphaNumericOrEmpty'];

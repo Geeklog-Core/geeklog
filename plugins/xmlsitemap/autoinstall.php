@@ -52,7 +52,7 @@ function plugin_autoinstall_xmlsitemap($pi_name)
     $info = [
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '2.0.3',
+        'pi_version'      => '2.0.4',
         'pi_gl_version'   => '2.2.2',
         'pi_homepage'     => 'https://github.com/Geeklog-Core/geeklog',
     ];
