@@ -2162,7 +2162,7 @@ function SP_render_content($A)
 
     // Figure out structured data if need be
     if (!empty($structured_data_type)) {
-        $properties['headline'] = $A['sp_title'];
+        $properties['headline'] = !empty($A['sp_page_title']) ? $A['sp_page_title'] : $A['sp_title'];
         $properties['url'] = $sp_url;
         $properties['datePublished'] = $A['created'];
         $properties['dateModified'] = $A['modified'];
