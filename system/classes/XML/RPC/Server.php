@@ -540,12 +540,22 @@ class XML_RPC_Server
                 $XML_RPC_defencoding, $XML_RPC_Server_dmap;
 
         if ($data == '') {
-            $data = $HTTP_RAW_POST_DATA;
+            $data = isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : '';
+        }
+
+        if (!is_string($data) || trim($data) === '') {
+            $this->encoding = $XML_RPC_defencoding;
+
+            return new XML_RPC_Response(
+                0,
+                $XML_RPC_err['invalid_request'],
+                $XML_RPC_str['invalid_request']
+            );
         }
 
         $this->encoding = XML_RPC_Message::getEncoding($data);
         $parser_resource = xml_parser_create($this->encoding);
-        $parser = (int) $parser_resource;
+        $parser = XML_RPC_getParserKey($parser_resource);
 
         $XML_RPC_xh[$parser] = array();
         $XML_RPC_xh[$parser]['cm']     = 0;
