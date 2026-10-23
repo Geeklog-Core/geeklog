@@ -243,7 +243,9 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $bodytext = $story->displayElements('bodytext');
         }
         $readmore = empty($bodytext) ? 0 : 1;
-        $numwords = COM_numberFormat(count(explode(' ', COM_getTextContent($bodytext))));
+        $bodyPlainText = trim(COM_getTextContent($bodytext));
+        $numwords = ($bodyPlainText === '') ? 0 : count(preg_split('/\s+/u', $bodyPlainText));
+        $numwords = COM_numberFormat($numwords);
         if (COM_onFrontpage()) {
             $bodytext = '';
         }
@@ -452,7 +454,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                         $LANG01[2],
                         $articleUrl,
                         array('class' => 'story-read-more-link')
-                    ) . ' (' . $numwords . ' ' . $LANG01[62] . ') ';
+                    ) . (($bodyPlainText === '') ? '' : ' (' . $numwords . ' ' . $LANG01[62] . ') ');
                 $article->set_var('readmore_link', $readmore_link);
                 $article->set_var('start_readmore_anchortag', '<a href="'
                     . $articleUrl . '" class="story-read-more-link">');
