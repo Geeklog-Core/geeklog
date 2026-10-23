@@ -492,6 +492,19 @@ if (!empty($current_topic)) {
             );
     }
 
+    // Canonical URLs for topic listings, including paginated pages.
+    // Use the same topic URL helper as the pagination navigation.
+    $canonicalUrl = TOPIC_getUrl($current_topic);
+    if ($page > 1) {
+        if ($_CONF['url_rewrite']) {
+            $canonicalUrl = rtrim($canonicalUrl, '/') . '/' . $page;
+        } else {
+            $canonicalUrl .= (strpos($canonicalUrl, '?') === false ? '?' : '&') . 'page=' . $page;
+        }
+    }
+    $header .= LB . '<link rel="canonical" href="'
+        . htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8') . '"' . XHTML . '>';
+
     // Add hreflang link element if Multi Language Content is setup
     // Only allow hreflang link element to be visible when on canonical url.
     // NOTE: Since Topic does not have canonical do it just for first page (as other languages for same topic may not have the same number of articles in each)
