@@ -349,10 +349,10 @@ class Search
                 $searchForm->set_var('author_option_list', $options);
                 $searchForm->parse('author_form_element', 'author_form_element', true);
             } else {
-                $searchForm->set_var('author_form_element', 'author_form_element_disabled');
+                $searchForm->parse('author_form_element', 'author_form_element_disabled', true);
             }
         } else {
-            $searchForm->set_var('author_form_element', 'author_form_element_disabled');
+            $searchForm->parse('author_form_element', 'author_form_element_disabled', true);
         }
 
         // Results per page
