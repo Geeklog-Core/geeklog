@@ -57,7 +57,16 @@ class FileSystem implements CacheInterface
      */
     private function removeDirContents($dir)
     {
-        foreach (scandir($dir) as $entry) {
+        if (!is_dir($dir)) {
+            return;
+        }
+
+        $entries = scandir($dir);
+        if ($entries === false) {
+            return;
+        }
+
+        foreach ($entries as $entry) {
             if (!in_array($entry, $this->excludes)) {
                 $path = $dir . DIRECTORY_SEPARATOR . $entry;
 

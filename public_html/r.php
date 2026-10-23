@@ -13,7 +13,20 @@ if (!isset($_CONF['path'], $_CONF['path_system']) ||
 // Register autoloader
 require_once $_CONF['path_system'] . 'classes/Autoload.php';
 Geeklog\Autoload::initialize();
-Geeklog\Cache::init(new Geeklog\Cache\FileSystem($_CONF['path'] . 'data/cache/'));
+
+// Resource files are written using the site-specific Core configuration.
+// Load the same configuration before reading them (including path_data from DB).
+$config = config::get_instance();
+$config->set_configfile($_CONF['path'] . 'db-config.php');
+$config->load_baseconfig();
+$config->initConfig();
+$_CONF = $config->get_config('Core');
+
+if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
+    exit;
+}
+
+Geeklog\Cache::init(new Geeklog\Cache\FileSystem($_CONF['path_data'] . 'cache/'));
 
 // Get cache key
 $key = Geeklog\Input::fGet('k');
