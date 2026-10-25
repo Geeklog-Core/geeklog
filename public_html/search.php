@@ -38,12 +38,15 @@ TOPIC_getTopic();
 
 $searchObj = new Search($_CONF);
 
+// Keep internal search pages out of search engine indexes, including result pages.
+$searchRobotsHeader = '<meta name="robots" content="noindex, follow">';
+
 if (Geeklog\Input::get('mode') === 'search') {
     $content = $searchObj->doSearch();
-    $display = COM_createHTMLDocument($content, array('pagetitle' => $LANG09[11]));
+    $display = COM_createHTMLDocument($content, array('pagetitle' => $LANG09[11], 'headercode' => $searchRobotsHeader));
 } else {
     $content = $searchObj->showForm();
-    $display = COM_createHTMLDocument($content, array('pagetitle' => $LANG09[1]));
+    $display = COM_createHTMLDocument($content, array('pagetitle' => $LANG09[1], 'headercode' => $searchRobotsHeader));
 }
 
 COM_output($display);
