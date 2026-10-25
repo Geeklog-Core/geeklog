@@ -25,7 +25,7 @@ Disallow: /webservices/
 Disallow: /docs/
 Disallow: /help/
 Disallow: /pingback.php
-Disallow: /search.php
+# Allow search.php to be crawled so its HTML noindex directive can be read.
 Disallow: /submit.php
 Disallow: /trackback.php
 Disallow: /usersettings.php
