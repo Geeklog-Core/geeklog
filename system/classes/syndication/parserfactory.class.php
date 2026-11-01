@@ -205,7 +205,8 @@ class FeedParserFactory
         if (stripos($url, 'https:') === 0) {
             $options['ssl_verify_peer'] = true;
 
-            if ($hasCaFile !== true) {
+            if ($hasCaFile !== true && version_compare(PHP_VERSION, '5.6.0', '<')) {
+                // Older PHP versions may require an explicit CA bundle.
                 $options['ssl_cafile'] = $_CONF['path_data'] . 'cacert.pem';
             }
         }
