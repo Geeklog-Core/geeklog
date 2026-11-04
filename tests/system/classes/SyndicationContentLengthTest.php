@@ -15,7 +15,7 @@ class SyndicationContentLengthTest extends TestCase
         // source to keep the test independent of the database/site bootstrap.
         $source = file_get_contents(__DIR__ . '/../../../system/lib-syndication.php');
         $matched = preg_match(
-            '/function SYND_getFeedSummary\\(\\$text, \\$length\\)\\s*\\{.*?\\n\\}/s',
+            '/function SYND_getFeedSummary\(\$text, \$length\)\s*\{.*?\n\}/s',
             $source,
             $matches
         );
