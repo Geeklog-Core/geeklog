@@ -623,12 +623,11 @@ function SYND_updateFeed($fid)
 }
 
 /**
- * Truncate a feed item's text to a given max. length of characters
+ * Return the feed summary according to the documented content length setting.
  *
- * @param    string $text   the item's text
- * @param    int    $length max. length
- * @return   string              truncated text
- * @note     Use COM_truncateHTML from now on.
+ * @param    string $text   Full article text
+ * @param    int    $length 0: no text, 1: full text, >1: maximum characters
+ * @return   string         Feed summary
  */
 function SYND_getFeedSummary($text, $length)
 {
