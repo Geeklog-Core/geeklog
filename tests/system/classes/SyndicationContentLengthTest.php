@@ -30,8 +30,16 @@ class SyndicationContentLengthTest extends TestCase
         $this->assertSame('', \SYND_getFeedSummary($fullText, '0'));
         $this->assertSame($fullText, \SYND_getFeedSummary($fullText, 1));
 
-        // Positive lengths must still delegate to the existing HTML-aware
-        // truncator. No change to its semantics is intended by this fix.
-        $this->assertTrue(strpos($matches[0], 'COM_truncateHTML($text, $length') !== false);
+        // A positive length must delegate to the existing HTML-aware
+        // truncator with the same arguments and suffix.
+        if (!function_exists('COM_truncateHTML')) {
+            eval('function COM_truncateHTML($text, $length, $suffix) {'
+                . ' return substr($text, 0, $length) . $suffix; }');
+        }
+
+        $this->assertSame(
+            \COM_truncateHTML($fullText, 12, ' ...'),
+            \SYND_getFeedSummary($fullText, 12)
+        );
     }
 }
