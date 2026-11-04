@@ -276,7 +276,7 @@ function SYND_getFeedContentPerTopic($tid, $limit, &$link, &$update, $contentLen
 				];
 				$fulltext = htmLawed($fulltext, $config);			
 			}			
-            $storytext = ($contentLength == 1) ? $fulltext : COM_truncateHTML($fulltext, $contentLength, ' ...');
+            $storytext = SYND_getFeedSummary($fulltext, $contentLength);
             $fulltext = trim($fulltext);
             $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
 
@@ -412,7 +412,7 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
 			];
 			$fulltext = htmLawed($fulltext, $config);			
 		}
-        $storytext = ($contentLength == 1) ? $fulltext : COM_truncateHTML($fulltext, $contentLength, ' ...');
+        $storytext = SYND_getFeedSummary($fulltext, $contentLength);
         $fulltext = trim($fulltext);
         $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
 
@@ -522,13 +522,13 @@ function SYND_updateFeed($fid)
 						$content[$i]['text'] = htmLawed($content[$i]['text'], $config);
 					}
 					
-					if ($A['content_length'] != 1) {		
-						if (isset($content[$i]['text'])) {
-							$content[$i]['summary'] = ($A['content_length'] == 1) ? $content[$i]['text'] : COM_truncateHTML($content[$i]['text'], $A['content_length'], ' ...');
-						} else {
-							$content[$i]['summary'] = '';
-						}
-					}
+                    if ((int) $A['content_length'] === 0) {
+                        $content[$i]['summary'] = '';
+                    } elseif ((int) $A['content_length'] !== 1) {
+                        $content[$i]['summary'] = isset($content[$i]['text'])
+                            ? SYND_getFeedSummary($content[$i]['text'], $A['content_length'])
+                            : '';
+                    }
 				}
             }
 			
@@ -623,18 +623,31 @@ function SYND_updateFeed($fid)
 }
 
 /**
- * Truncate a feed item's text to a given max. length of characters
+ * Return the feed summary according to the documented content length setting.
  *
- * @param    string $text   the item's text
- * @param    int    $length max. length
- * @return   string              truncated text
- * @note     Use COM_truncateHTML from now on.
+ * @param    string $text   Full article text
+ * @param    int    $length 0: no text, 1: full text, >1: maximum characters
+ * @return   string         Feed summary
+ */
+function SYND_getFeedSummary($text, $length)
+{
+    if ((int) $length === 0) {
+        return '';
+    }
+
+    if ((int) $length === 1) {
+        return $text;
+    }
+
+    return COM_truncateHTML($text, $length, ' ...');
+}
+
+/**
+ * @deprecated Use SYND_getFeedSummary instead.
  */
 function SYND_truncateSummary($text, $length)
 {
-    $storyText = ($length == 1) ? $text : COM_truncateHTML($text, $length, ' ...');
-
-    return $storyText;
+    return SYND_getFeedSummary($text, $length);
 }
 
 /**
