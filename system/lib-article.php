@@ -1195,7 +1195,10 @@ function STORY_updateLastArticlePublished()
     $result = DB_query($sql);
 
     $A = DB_fetchArray($result);
-    DB_query("UPDATE {$_TABLES['vars']} SET value='{$A['date']}' WHERE name='last_article_publish'");
+    // No published articles remain: reset the stored date instead of
+    // accessing an array offset on false.
+    $date = (is_array($A) && isset($A['date'])) ? $A['date'] : '';
+    DB_query("UPDATE {$_TABLES['vars']} SET value='{$date}' WHERE name='last_article_publish'");
 
 }
 
