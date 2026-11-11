@@ -226,6 +226,15 @@ class Upgrade extends Common
         }
 
         if ($this->doDatabaseUpgrades($version)) {
+            // #1255: Add the profile privacy option to existing Core sites.
+            // Add only when missing; never reset an administrator's choice.
+            $config = config::get_instance();
+            $coreConfig = $config->get_config('Core');
+            if (!array_key_exists('profile_visibility', $coreConfig)) {
+                $config->add('profile_visibility', 0, 'select',
+                    4, 18, 47, 735, true, 'Core', 18);
+            }
+
             if (version_compare($version, '1.5.0') < 0) {
                 // After updating the database we'll want to update some of the information from the form.
                 $site_name = $this->post('site_name', $this->get('site_name', ''));
