@@ -1,0 +1,35 @@
+name: Profile visibility regression
+
+on:
+  push:
+    branches:
+      - feature/1255-profile-visibility
+  pull_request:
+    paths:
+      - 'system/lib-user.php'
+      - 'public_html/admin/install/config-install.php'
+      - 'language/english*.php'
+      - 'language/french_france*.php'
+      - 'tests/profile_visibility_policy.php'
+
+jobs:
+  php:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['7.4', '8.2', '8.3']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+      - name: PHP syntax and policy tests
+        run: |
+          php -l system/lib-user.php
+          php -l public_html/admin/install/config-install.php
+          php -l language/english.php
+          php -l language/english_utf-8.php
+          php -l language/french_france.php
+          php -l language/french_france_utf-8.php
+          php -l tests/profile_visibility_policy.php
+          php tests/profile_visibility_policy.php
