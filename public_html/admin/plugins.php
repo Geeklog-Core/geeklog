@@ -706,6 +706,81 @@ function plugin_show_uploadform($token)
 }
 
 /**
+ * Restore backed-up directories when plugin extraction fails.
+ *
+ * @param string $plugin Plugin directory name
+ * @param bool   $had_previous Whether a previous version existed
+ */
+function plugin_restore_previous_files($plugin, $had_previous)
+{
+    global $_CONF;
+
+    $paths = array(
+        $_CONF['path'] . 'plugins/' . $plugin,
+        $_CONF['path_html'] . $plugin,
+        $_CONF['path_admin'] . 'plugins/' . $plugin,
+    );
+    foreach ($paths as $path) {
+        if ($had_previous && file_exists($path . '.previous')) {
+            if (file_exists($path)) {
+                Geeklog\FileSystem::remove($path);
+            }
+            if (!rename($path . '.previous', $path)) {
+                COM_errorLog("Plugin upload rollback failed for '$path'.");
+            }
+        }
+    }
+}
+
+/**
+ * Restore the plugin's database enable state after a failed upload.
+ */
+function plugin_restore_upload_state($plugin, $was_enabled, $callback)
+{
+    global $_TABLES;
+
+    if ($was_enabled) {
+        if (is_callable($callback)) {
+            changePluginStatus($plugin);
+        } else {
+            DB_change($_TABLES['plugins'], 'pi_enabled', 1, 'pi_name', $plugin);
+        }
+    }
+}
+
+/**
+ * Invalidate PHP bytecode for newly deployed plugin files, when supported.
+ */
+function plugin_invalidate_uploaded_opcache($plugin)
+{
+    global $_CONF;
+
+    if (!function_exists('opcache_invalidate')) {
+        return;
+    }
+
+    $paths = array(
+        $_CONF['path'] . 'plugins/' . $plugin,
+        $_CONF['path_html'] . $plugin,
+        $_CONF['path_admin'] . 'plugins/' . $plugin,
+    );
+
+    foreach ($paths as $path) {
+        if (!is_dir($path)) {
+            continue;
+        }
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)
+        );
+        foreach ($files as $file) {
+            if ($file->isFile() && preg_match('/\.(php|inc)$/i', $file->getFilename())) {
+                @opcache_invalidate($file->getPathname(), true);
+            }
+        }
+    }
+}
+
+/**
  * Handle uploaded plugin
  *
  * @return   string      HTML: redirect or main plugin screen + error message
@@ -733,7 +808,14 @@ function plugin_upload()
         }
 
         $tmp = $archive->getList(); // Grab the contents of the tarball to see what the plugin name is
-        $dirName = preg_replace('/\/.*$/', '', $tmp[0]['filename']);
+        $dirName = isset($tmp[0]['filename'])
+            ? preg_replace('/\\/.*$/', '', $tmp[0]['filename']) : '';
+
+        // Never use an archive-supplied path as a plugin directory name.
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/D', $dirName)) {
+            COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=100');
+            exit;
+        }
 
         if (empty($dirName)) { // If $dirname is blank it's probably because the user uploaded a non Tarball file.
             COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=100');
@@ -827,20 +909,43 @@ function plugin_upload()
                 $pi_name = $dirName;
             }
 
-            // Extract the uploaded archive to the plugins directory
-            $upload_success = $archive->unpack($_CONF['path'] . 'plugins/');
-
-            $plg_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
-            if ($upload_success) {
-                if (file_exists($plg_path . 'public_html')) {
-                    rename($plg_path . 'public_html', $_CONF['path_html'] . $pi_name);
-                }
-                if (file_exists($plg_path . 'admin')) {
-                    rename($plg_path . 'admin', $_CONF['path_admin'] . 'plugins/' . $pi_name);
-                }
+            // The archive must agree with its top-level directory.
+            if ($pi_name !== $dirName) {
+                COM_errorLog("Plugin upload rejected: archive directory and plugin name differ.");
+                plugin_restore_previous_files($dirName, $pi_did_exist);
+                plugin_restore_upload_state($dirName, $pi_was_enabled, $callback);
+                COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=72');
+                exit;
             }
 
-            unset($archive); // Collect some garbage
+            // Do not discard backups if extraction or installation fails.
+            $upload_success = $archive->unpack($_CONF['path'] . 'plugins/');
+            $plg_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
+
+            if ($upload_success && file_exists($plg_path . 'functions.inc')) {
+                if (file_exists($plg_path . 'public_html')) {
+                    $upload_success = rename($plg_path . 'public_html', $_CONF['path_html'] . $pi_name);
+                }
+                if ($upload_success && file_exists($plg_path . 'admin')) {
+                    $upload_success = rename($plg_path . 'admin', $_CONF['path_admin'] . 'plugins/' . $pi_name);
+                }
+            } else {
+                $upload_success = false;
+            }
+
+            unset($archive);
+
+            if (!$upload_success) {
+                COM_errorLog("Plugin upload failed while extracting or moving files for '$dirName'.");
+                plugin_restore_previous_files($dirName, $pi_did_exist);
+                plugin_restore_upload_state($dirName, $pi_was_enabled, $callback);
+                COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=72');
+                exit;
+            }
+
+            // Old functions.inc is already loaded in this request, but the
+            // next request must load the newly uploaded PHP code.
+            plugin_invalidate_uploaded_opcache($dirName);
 
             // cleanup when uploading a new version
             if ($pi_did_exist) {
@@ -872,33 +977,16 @@ function plugin_upload()
             $msg_with_plugin_name = false;
             if ($pi_did_exist) {
                 if ($pi_was_enabled) {
-                    // check if we have to perform an update
-                    $pi_version = DB_getItem($_TABLES['plugins'], 'pi_version',
-                        "pi_name = '$dirName'");
-                    $code_version = PLG_chkVersion($dirName);
-                    if (!empty($code_version) &&
-                        ($code_version != $pi_version)
-                    ) {
-                        /**
-                         * At this point, we would have to call PLG_upgrade().
-                         * However, we've loaded the plugin's old functions.inc
-                         * (in lib-common.php). We can't load the new one here
-                         * now since that would result in duplicate function
-                         * definitions. Solution: Trigger a reload (with the new
-                         * functions.inc) and continue there.
-                         */
-                        $url = $_CONF['site_admin_url'] . '/plugins.php'
-                            . '?mode=continue_upgrade'
-                            . '&amp;codeversion=' . urlencode($code_version)
-                            . '&amp;piversion=' . urlencode($pi_version)
-                            . '&amp;plugin=' . urlencode($dirName);
-                        COM_redirect($url);
-                    } else {
-                        $msg = 98; // successfully uploaded
-                    }
-                } else {
-                    $msg = 98; // successfully uploaded
+                    // Always check the new code in a fresh PHP request.
+                    // PLG_chkVersion() here could call the OLD functions.inc.
+                    $url = $_CONF['site_admin_url'] . '/plugins.php'
+                        . '?mode=continue_upgrade'
+                        . '&amp;plugin=' . urlencode($dirName)
+                        . '&amp;' . CSRF_TOKEN . '=' . SEC_createToken();
+                    COM_redirect($url);
+                    exit;
                 }
+                $msg = 98; // successfully uploaded
             } elseif (file_exists($plg_path . 'autoinstall.php')) {
                 // if the plugin has an autoinstall.php, install it now
                 if (plugin_autoinstall($pi_name)) {
@@ -931,46 +1019,54 @@ function plugin_upload()
  * @return   string                  HTML refresh
  * @see      function plugin_upload
  */
-function continue_upgrade($plugin, $pi_version, $code_version)
+function continue_upgrade($plugin)
 {
     global $_CONF, $_TABLES;
 
-    $retval = '';
-    $msg_with_plugin_name = false;
-
-    // simple sanity checks
-    if (empty($plugin) || empty($pi_version) || empty($code_version) ||
-        ($pi_version == $code_version)
+    // A successful upload can only initiate this operation through a
+    // CSRF-protected redirect. Do not trust versions passed in the URL.
+    if (!SEC_hasRights('plugin.install,plugin.upload') || !SEC_checkToken() ||
+        !preg_match('/^[a-zA-Z0-9_-]+$/D', $plugin)
     ) {
+        COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=72');
+        exit;
+    }
+
+    $result = DB_query("SELECT pi_version, pi_enabled FROM {$_TABLES['plugins']} " .
+        "WHERE pi_name = '" . DB_escapeString($plugin) . "'");
+    if (!$result || DB_numRows($result) !== 1) {
+        COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=72');
+        exit;
+    }
+
+    $row = DB_fetchArray($result);
+    if ($row['pi_enabled'] != 1 || empty($row['pi_version'])) {
+        COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=72');
+        exit;
+    }
+
+    // lib-common.php loaded the new plugin functions for this request.
+    $code_version = PLG_chkVersion($plugin);
+    if (empty($code_version)) {
+        COM_errorLog("Plugin upload: cannot determine code version for '$plugin'.");
         $msg = 72;
+    } elseif ($row['pi_version'] == $code_version) {
+        $msg = 98; // Upload succeeded; no database upgrade needed.
     } else {
-        // more sanity checks
-        $result = DB_query("SELECT pi_version, pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name = '" . DB_escapeString($plugin) . "'");
-        $A = DB_fetchArray($result);
-        if (!empty($A['pi_version']) && ($A['pi_enabled'] == 1) &&
-            ($A['pi_version'] == $pi_version) &&
-            ($A['pi_version'] != $code_version)
-        ) {
-            // continue upgrade process that started in plugin_upload()
-            $result = PLG_upgrade($plugin);
-            if ($result === true) {
-                PLG_pluginStateChange($plugin, 'upgraded');
-                $msg = 60; // successfully updated
-            } else {
-                $msg_with_plugin_name = true;
-                $msg = $result; // message provided by the plugin
-            }
+        $upgrade_result = PLG_upgrade($plugin);
+        if ($upgrade_result === true) {
+            PLG_pluginStateChange($plugin, 'upgraded');
+            $msg = 60;
+        } elseif (is_int($upgrade_result) && $upgrade_result > 0) {
+            $msg = $upgrade_result;
         } else {
-            $msg = 72;
+            COM_errorLog("Plugin upgrade failed for '$plugin'.");
+            $msg = 95;
         }
     }
 
-    $url = $_CONF['site_admin_url'] . '/plugins.php?msg=' . $msg;
-    if ($msg_with_plugin_name) {
-        $url .= '&amp;plugin=' . $plugin;
-    }
-
-    COM_redirect($url);
+    COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=' . $msg);
+    exit;
 }
 
 /**
@@ -1425,8 +1521,7 @@ if ($mode === 'delete') { // Uninstall Plugin
     }
 } elseif ($mode === 'continue_upgrade') {
     $display .= continue_upgrade(
-        COM_sanitizeFilename(Geeklog\Input::Get('plugin')),
-        Geeklog\Input::Get('piversion'), Geeklog\Input::Get('codeversion')
+        COM_sanitizeFilename(Geeklog\Input::Get('plugin'))
     );
 } elseif (isset($_FILES['plugin']) && SEC_checkToken() && SEC_hasRights('plugin.install,plugin.upload')) {
     $display .= plugin_upload();
