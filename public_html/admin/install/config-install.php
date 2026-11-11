@@ -283,6 +283,7 @@ function install_config(ConfigInterface $c)
     $c->add('statsloginrequired',0,'select',4,18,0,710,TRUE, $me, 18);
     $c->add('searchloginrequired',0,'select',4,18,16,720,TRUE, $me, 18);
     $c->add('profileloginrequired',0,'select',4,18,0,730,TRUE, $me, 18);
+    $c->add('profile_visibility',0,'select',4,18,47,735,TRUE, $me, 18);
     $c->add('emailuserloginrequired',0,'select',4,18,0,740,TRUE, $me, 18);
     $c->add('emailstoryloginrequired',0,'select',4,18,0,750,TRUE, $me, 18);
     $c->add('directoryloginrequired',0,'select',4,18,0,760,TRUE, $me, 18);
