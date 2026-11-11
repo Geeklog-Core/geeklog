@@ -1145,10 +1145,12 @@ function saveuser(array $A)
         $A['pgpkey'] = DB_escapeString($A['pgpkey']);
         $A['postmode'] = DB_escapeString($A['postmode']);
 
-        if (!empty($filename)) {
-            if (!file_exists($_CONF['path_images'] . 'userphotos/' . $filename)) {
+        $sql_photo = '';
+        if ($_CONF['allow_user_photo'] == 1) {
+            if (!empty($filename) && !file_exists($_CONF['path_images'] . 'userphotos/' . $filename)) {
                 $filename = '';
             }
+            $sql_photo = ",photo='" . DB_escapeString($filename) . "'";
         }
 
         // Confirm if email has changed and needs to be updated
@@ -1162,7 +1164,7 @@ function saveuser(array $A)
             $sql_emailconfirm = ",emailtoconfirm=NULL";
         }
 
-        DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A['fullname']}',homepage='{$A['homepage']}',sig='{$A['sig']}',cookietimeout={$A['cooktime']},photo='$filename'{$sql_emailconfirm},postmode='{$A['postmode']}' WHERE uid={$_USER['uid']}");
+        DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A['fullname']}',homepage='{$A['homepage']}',sig='{$A['sig']}',cookietimeout={$A['cooktime']}{$sql_photo}{$sql_emailconfirm},postmode='{$A['postmode']}' WHERE uid={$_USER['uid']}");
         DB_query("UPDATE {$_TABLES['user_attributes']} SET pgpkey='{$A['pgpkey']}',about='{$A['about']}',location='{$A['location']}' WHERE uid={$_USER['uid']}");
 
         // Call custom registration save function if enabled and exists
