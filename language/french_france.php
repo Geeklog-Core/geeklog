@@ -2398,6 +2398,7 @@ $LANG_confignames['Core'] = array(
     'statsloginrequired' => 'Connexion n�cessaire pour consulter les statistiques',
     'searchloginrequired' => 'Connexion n�cessaire pour effectuer une recherche',
     'profileloginrequired' => 'Connexion n�cessaire pour consulter un profil',
+    'profile_visibility' => 'Visibilité des profils membres',
     'emailuserloginrequired' => 'Connexion n�cessaire pour exp�dier un email aux membres',
     'emailstoryloginrequired' => 'Connexion n�cessaire pour exp�dier un article par email',
     'directoryloginrequired' => 'Connexion n�cessaire pour consulter la liste des archives',
@@ -2793,7 +2794,8 @@ $LANG_configselects['Core'] = array(
     42 => array('None' => 0, 'Use individual Article Settings' => 1),
     43 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
     44 => array('No access' => 0, 'Read-Only' => 2),
-    46 => array('Likes and Dislikes' => 3, 'Likes Only' => 1, 'Dislikes Only' => 2)
+    46 => array('Likes and Dislikes' => 3, 'Likes Only' => 1, 'Dislikes Only' => 2),
+    47 => array('Public' => 0, 'Membres connectés' => 1, 'Propriétaire et administrateurs' => 2)
 );
 
 ###############################################################################

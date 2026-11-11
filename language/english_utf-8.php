@@ -2450,6 +2450,7 @@ $LANG_confignames['Core'] = array(
     'statsloginrequired' => 'Stats Login Required?',
     'searchloginrequired' => 'Search Login Required?',
     'profileloginrequired' => 'Profile Login Required?',
+    'profile_visibility' => 'User Profile Visibility',
     'emailuserloginrequired' => 'E-Mail User Login Required?',
     'emailstoryloginrequired' => 'E-Mail Article Login Required?',
     'directoryloginrequired' => 'Directory Login Required?',
@@ -2854,7 +2855,8 @@ $LANG_configselects['Core'] = array(
 	43 => array('All' => TOPIC_ALL_OPTION, 'Homepage Only' => TOPIC_HOMEONLY_OPTION, 'Select Topics' => TOPIC_SELECTED_OPTION),
 	44 => array('No access' => 0, 'Read-Only' => 2),
 	// 45
-	46 => array('Likes and Dislikes' => LIKES_BLOCK_DISPLAY_ALL, 'Likes Only' => LIKES_BLOCK_DISPLAY_LIKE, 'Dislikes Only' => LIKES_BLOCK_DISPLAY_DISLIKE)
+	46 => array('Likes and Dislikes' => LIKES_BLOCK_DISPLAY_ALL, 'Likes Only' => LIKES_BLOCK_DISPLAY_LIKE, 'Dislikes Only' => LIKES_BLOCK_DISPLAY_DISLIKE),
+    47 => array('Public' => 0, 'Registered Users' => 1, 'Owner and Administrators' => 2)
 );
 
 ###############################################################################
