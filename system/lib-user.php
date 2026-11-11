@@ -1100,6 +1100,50 @@ function USER_isCanSendMail($toUid = 0)
  * @param    string  $plugin  optional plugin name for message
  * @return   string           HTML for user profile page
  */
+/**
+ * Determine whether the current visitor may view a user's public profile.
+ *
+ * Configuration: profile_visibility
+ *   0 = public (legacy behavior)
+ *   1 = registered users only
+ *   2 = profile owner and user administrators only
+ *
+ * A missing setting retains legacy behavior on existing installations
+ * which have not yet applied the updated Core configuration.
+ *
+ * @param   int $uid Target user's numeric ID
+ * @return  bool     True when viewing this profile is permitted
+ */
+function USER_canViewProfile($uid)
+{
+    global $_CONF, $_USER;
+
+    $visibility = isset($_CONF['profile_visibility'])
+        ? (int) $_CONF['profile_visibility'] : 0;
+
+    if ($visibility === 0) {
+        return true;
+    }
+
+    // Geeklog's anonymous account is uid 1.
+    if (COM_isAnonUser()) {
+        return false;
+    }
+
+    if ($visibility === 1) {
+        return true;
+    }
+
+    if ($visibility === 2) {
+        return ($uid > 1 && isset($_USER['uid'])
+            && (int) $_USER['uid'] === (int) $uid)
+            || SEC_hasRights('user.edit');
+    }
+
+    // An unexpected configuration value must not weaken the restriction.
+    return false;
+}
+
 function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
 {
     global $_CONF, $_TABLES, $_USER, $_IMAGE_TYPE,
@@ -1112,6 +1156,12 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_LOGIN[1]));
 
         return $retval;
+    }
+
+    // Enforce visibility for all Core profile URLs before querying or
+    // rendering user details, including plugin profile blocks.
+    if (!USER_canViewProfile((int) $uid)) {
+        COM_displayMessageAndAbort(30, '', 403, 'Forbidden');
     }
 
     $result = DB_query(
