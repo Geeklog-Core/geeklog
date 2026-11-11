@@ -851,24 +851,38 @@ function plugin_upload()
                 if (file_exists($plugin_dir . '.previous')) {
                     Geeklog\FileSystem::remove($plugin_dir . '.previous');
                 }
-                if (file_exists($plugin_dir)) {
-                    rename($plugin_dir, $plugin_dir . '.previous');
+                if (file_exists($plugin_dir) &&
+                    !rename($plugin_dir, $plugin_dir . '.previous')
+                ) {
+                    plugin_restore_upload_state($dirName, $pi_was_enabled, $callback);
+                    COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=72');
+                    exit;
                 }
 
                 $public_dir = $_CONF['path_html'] . $dirName;
                 if (file_exists($public_dir . '.previous')) {
                     Geeklog\FileSystem::remove($public_dir . '.previous');
                 }
-                if (file_exists($public_dir)) {
-                    rename($public_dir, $public_dir . '.previous');
+                if (file_exists($public_dir) &&
+                    !rename($public_dir, $public_dir . '.previous')
+                ) {
+                    plugin_restore_previous_files($dirName, true);
+                    plugin_restore_upload_state($dirName, $pi_was_enabled, $callback);
+                    COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=72');
+                    exit;
                 }
 
                 $admin_dir = $_CONF['path_admin'] . 'plugins/' . $dirName;
                 if (file_exists($admin_dir . '.previous')) {
                     Geeklog\FileSystem::remove($admin_dir . '.previous');
                 }
-                if (file_exists($admin_dir)) {
-                    rename($admin_dir, $admin_dir . '.previous');
+                if (file_exists($admin_dir) &&
+                    !rename($admin_dir, $admin_dir . '.previous')
+                ) {
+                    plugin_restore_previous_files($dirName, true);
+                    plugin_restore_upload_state($dirName, $pi_was_enabled, $callback);
+                    COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=72');
+                    exit;
                 }
             }
 
