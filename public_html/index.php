@@ -364,7 +364,7 @@ if ($A = DB_fetchArray($result)) {
     // Print Google-like paging navigation
     if (!isset($_CONF['hide_main_page_navigation']) ||
         ($_CONF['hide_main_page_navigation'] == 'false') ||
-        ($_CONF['hide_main_page_navigation'] === 'frontpage' && ($current_topic != TOPIC_ALL_OPTION))) {
+        ($_CONF['hide_main_page_navigation'] === 'frontpage' && !empty($current_topic))) {
 
         if ($_CONF['url_rewrite']) {
             $tempTopic = empty($current_topic) ? '-' : $current_topic;
