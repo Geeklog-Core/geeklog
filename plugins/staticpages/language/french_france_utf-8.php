@@ -44,7 +44,7 @@ $LANG_STATIC = array(
     'title' => 'Titre',
     'page_title' => 'Titre de la page (optionnel)',
     'content' => 'Contenu',
-    'hits' => 'Clicks',
+    'hits' => 'Consultations',
     'staticpagelist' => 'Liste des pages statiques',
     'url' => 'URL',
     'edit' => 'Modifier',
@@ -128,7 +128,7 @@ $LANG_STATIC = array(
     'show_on_page' => 'Afficher sur la page',
     'show_on_page_disabled' => 'Remarque : cette option est actuellement désactivée pour toutes les pages dans la configuration des pages statiques.',
     'cache_time' => 'Durée du cache',
-    'cache_time_desc' => 'This staticpage content will be cached for no longer than this many seconds. If 0 caching is disabled (3600 = 1 hour,  86400 = 1 day). Staticpages with PHP enabled or are a template will not be cached.',
+    'cache_time_desc' => 'Durée maximale de mise en cache de cette page, en secondes. La valeur 0 désactive le cache ; la valeur -1 conserve la page jusqu’à sa prochaine modification. Les pages exécutant du PHP ou servant de modèle ne sont pas mises en cache (3 600 = 1 heure, 86 400 = 1 jour).',
     'autotag_desc_staticpage' => '[staticpage: id titre alternatif] - Affiche un lien vers une page statique en utilisant le titre la page. Un titre alternatif peut être spécifié mais n\'est pas nécessaire.',
     'autotag_desc_staticpage_content' => '[staticpage_content: id] - Affiche le contenu d\'une page statique.',
     'autotag_desc_page' => '[page: id titre alternatif] - Affiche un lien vers une page (du plugin Pages statiques) en utilisant le titre de la page. Un titre alternatif peut être indiqué, mais il n’est pas obligatoire.',
@@ -138,9 +138,9 @@ $LANG_STATIC = array(
     'prev_page' => 'Page précédente',
     'next_page' => 'Page suivante',
     'parent_page' => 'Page parente',
-    'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel=”next” and rel=”prev” to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
+    'page_desc' => 'Définir une page précédente ou suivante indique leur relation dans une série de pages. Les liens de navigation visibles ne sont pas créés automatiquement : vous devez les ajouter vous-même. Remarque : la page parente n’est actuellement pas utilisée.',
     'num_pages' => '%s page(s)',
-    'search_desc' => 'Control if page appears in search. Default depends on setting in Configuration and depends on page type (if it is a Center Block, Uses a Template, or Uses PHP).',
+    'search_desc' => 'Détermine si la page apparaît dans les résultats de recherche. La valeur par défaut dépend de la configuration du plugin et du type de page (bloc central, modèle ou page exécutant du PHP).',
     'likes_desc' => 'Détermine si et comment le contrôle des mentions J’aime s’affiche sur la page. La valeur par défaut dépend de la configuration du plugin. Les pages affichées comme blocs centraux n’affichent pas ce contrôle. Les modèles n’utilisent pas ce réglage.'
 );
 
@@ -161,7 +161,7 @@ $PLG_staticpages_MESSAGE15 = 'Votre commentaire à bien été soumis et sera pub
 $PLG_staticpages_MESSAGE19 = 'La page à bien été sauvegardée.';
 $PLG_staticpages_MESSAGE20 = 'La page à bien été effacée.';
 $PLG_staticpages_MESSAGE21 = 'Cette page n\'existe pas encore. Pour créer la page, merci de comléter le formulaire ci-dessous. Si vous êtes là par erreur, cliquer sur le bouton Annuler.';
-$PLG_staticpages_MESSAGE22 = 'You could not delete the page. It is a template staticpage and it is currently assigned to 1 or more staticpages.';
+$PLG_staticpages_MESSAGE22 = 'Impossible de supprimer cette page : elle sert de modèle à une ou plusieurs autres pages statiques.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
