@@ -60,7 +60,7 @@ define('STATICPAGE_MAX_ID_LENGTH', 128);
 function service_submit_staticpages($args, &$output, &$svc_msg)
 {
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG01, $LANG12, $LANG_STATIC,
-           $_GROUPS, $_SP_CONF, $_STRUCT_DATA, $LANG_structureddatatypes;
+           $_GROUPS, $_SP_CONF, $_STRUCT_DATA, $LANG_structureddatatypes, $_DB_charset;
 
     if (!$_CONF['disable_webservices']) {
         require_once $_CONF['path_system'] . 'lib-webservices.php';
@@ -500,20 +500,23 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if ($_SP_CONF['filter_html'] == 1) {
             $sp_content = COM_checkHTML($sp_content, 'staticpages.edit');
         }
-        $sp_content = GLText::remove4byteUtf8Chars($sp_content);
-
         $sp_title = GLText::stripTags($sp_title);
-        $sp_title = GLText::remove4byteUtf8Chars($sp_title);
         $sp_page_title = GLText::stripTags($sp_page_title);
-        $sp_page_title = GLText::remove4byteUtf8Chars($sp_page_title);
         $sp_label = GLText::stripTags($sp_label);
-        $sp_label = GLText::remove4byteUtf8Chars($sp_label);
-
         $meta_description = GLText::stripTags($meta_description);
-        $meta_description = GLText::remove4byteUtf8Chars($meta_description);
         $meta_keywords = GLText::stripTags($meta_keywords);
-        $meta_keywords = GLText::remove4byteUtf8Chars($meta_keywords);
-        $sp_help = GLText::remove4byteUtf8Chars($sp_help);
+
+        // Keep 4-byte UTF-8 characters when Geeklog connects using utf8mb4.
+        // Legacy database connections cannot store these characters safely.
+        if (!isset($_DB_charset) || strcasecmp((string) $_DB_charset, 'utf8mb4') !== 0) {
+            $sp_content = GLText::remove4byteUtf8Chars($sp_content);
+            $sp_title = GLText::remove4byteUtf8Chars($sp_title);
+            $sp_page_title = GLText::remove4byteUtf8Chars($sp_page_title);
+            $sp_label = GLText::remove4byteUtf8Chars($sp_label);
+            $meta_description = GLText::remove4byteUtf8Chars($meta_description);
+            $meta_keywords = GLText::remove4byteUtf8Chars($meta_keywords);
+            $sp_help = GLText::remove4byteUtf8Chars($sp_help);
+        }
 
         $sp_content = DB_escapeString($sp_content);
         $sp_title = DB_escapeString($sp_title);
