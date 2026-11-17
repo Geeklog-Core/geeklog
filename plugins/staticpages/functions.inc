@@ -388,6 +388,41 @@ function SP_countVisiblePages()
 }
 
 /**
+ * Return a previous/next static page visible to the current user.
+ *
+ * A navigation target must be published, must not be a template, and must
+ * pass the same Geeklog read-permission filter as ordinary static pages.
+ *
+ * @param  string $id  Target static page ID
+ * @return array       URL and title, or empty values when unavailable
+ */
+function SP_getNavigationPage($id)
+{
+    global $_CONF, $_TABLES;
+
+    $target = array('url' => '', 'title' => '');
+    if ($id === '') {
+        return $target;
+    }
+
+    $id = DB_escapeString($id);
+    $sql = "SELECT sp_id, sp_title, sp_page_title FROM {$_TABLES['staticpage']} "
+        . "WHERE sp_id = '{$id}' AND draft_flag = 0 AND template_flag = 0 "
+        . COM_getPermSQL('AND');
+    $result = DB_query($sql);
+    if (DB_error() || DB_numRows($result) !== 1) {
+        return $target;
+    }
+
+    $page = DB_fetchArray($result);
+    $title = !empty($page['sp_page_title']) ? $page['sp_page_title'] : $page['sp_title'];
+    $target['url'] = COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $page['sp_id']);
+    $target['title'] = stripslashes($title);
+
+    return $target;
+}
+
+/**
  * Prepare static page for display.
  *
  * @param    string $page          static page id
@@ -443,22 +478,16 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $headerCode .= COM_createHREFLang('staticpages', $page);
         }
 
-        // Previous and next pages
-        $sp_prev = stripslashes($A['sp_prev']);
-        if ($sp_prev !== '') {
-            $headerCode .= PHP_EOL . sprintf(
-                    '<link href="%s"%s>',
-                    COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $sp_prev),
-                    XHTML
-                );
+        // Previous and next pages, excluding unpublished or inaccessible targets
+        $previousPage = SP_getNavigationPage($A['sp_prev']);
+        $nextPage = SP_getNavigationPage($A['sp_next']);
+        if ($previousPage['url'] !== '') {
+            $headerCode .= PHP_EOL . '<link rel="prev" href="'
+                . htmlspecialchars($previousPage['url'], ENT_QUOTES, COM_getCharset()) . '"' . XHTML . '>';
         }
-        $sp_next = stripslashes($A['sp_next']);
-        if ($sp_next !== '') {
-            $headerCode .= PHP_EOL . sprintf(
-                    '<link href="%s"%s>',
-                    COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $sp_next),
-                    XHTML
-                );
+        if ($nextPage['url'] !== '') {
+            $headerCode .= PHP_EOL . '<link rel="next" href="'
+                . htmlspecialchars($nextPage['url'], ENT_QUOTES, COM_getCharset()) . '"' . XHTML . '>';
         }
 
         $page_title = stripslashes($A['sp_page_title']);
@@ -482,6 +511,10 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         ));
 
         $spage->set_var('sp_id', $page);
+        $spage->set_var('sp_prev_url', htmlspecialchars($previousPage['url'], ENT_QUOTES, COM_getCharset()));
+        $spage->set_var('sp_prev_title', htmlspecialchars($previousPage['title'], ENT_QUOTES, COM_getCharset()));
+        $spage->set_var('sp_next_url', htmlspecialchars($nextPage['url'], ENT_QUOTES, COM_getCharset()));
+        $spage->set_var('sp_next_title', htmlspecialchars($nextPage['title'], ENT_QUOTES, COM_getCharset()));
 
         if ($A['sp_inblock'] == 1) {
             $spage->set_var('block_start', COM_startBlock(stripslashes($A['sp_title']), $A['sp_help'],
