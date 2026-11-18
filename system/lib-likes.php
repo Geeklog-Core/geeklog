@@ -687,21 +687,32 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 			$sql_type = " AND type = '{$type}' AND subtype = '{$subtype}'";
 		}		
 		
-		// We do not know permissions of items being returned that has likes (or if likes currently enabled for item) so cannot limit number of rows since some items may not have read permissions for user
-		$sql = "SELECT COUNT(lid) actioncount, type, subtype, id, MAX(created) latestdate FROM {$_TABLES['likes']} 
-			WHERE 1=1 
+		// A candidate can be hidden by permissions or have Likes disabled. Fetch
+		// ranked candidates in batches until enough visible items are found.
+		// The database still aggregates matching Likes; batching bounds the result
+		// set and the subsequent plugin permission checks.
+		$batchSize = max(50, (int) $maxItems * 5);
+		$offset = 0;
+		$sql = "SELECT COUNT(lid) actioncount, type, subtype, id, MAX(created) latestdate,
+			SUM(CASE WHEN action = " . LIKES_ACTION_LIKE . " THEN 1 ELSE 0 END) likecount,
+			SUM(CASE WHEN action = " . LIKES_ACTION_DISLIKE . " THEN 1 ELSE 0 END) dislikecount
+			FROM {$_TABLES['likes']}
+			WHERE 1=1
 			{$sql_type}
 			{$sql_action}
 			{$sql_daterange}
-			GROUP BY type, subtype, id 
-			ORDER BY actioncount DESC, latestdate  DESC";
-
-		$result = DB_Query($sql);
-		$nrows = DB_numRows($result);
+			GROUP BY type, subtype, id
+			ORDER BY actioncount DESC, latestdate DESC, type, subtype, id";
 
 		$listCount = 0;
 		$likeItems = array();
-		for ($i = 0; $i < $nrows; $i++) {
+		$hasMoreCandidates = true;
+		while ($hasMoreCandidates && ($maxItems <= 0 || $listCount < $maxItems)) {
+			$result = DB_query($sql . " LIMIT {$batchSize} OFFSET {$offset}");
+			$nrows = DB_numRows($result);
+			$hasMoreCandidates = ($nrows === $batchSize);
+			$offset += $nrows;
+			for ($i = 0; $i < $nrows; $i++) {
 			$A = DB_fetchArray($result);
 			
 			// Some items may not be set depending on current permissions set
@@ -724,13 +735,9 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 						
 						break;
 					case LIKES_BLOCK_DISPLAY_ALL: 
-						$sql_id = " type = '{$A['type']}' AND subtype = '{$A['subtype']}' AND id = '{$A['id']}'";
-						
-						$sql_action = " AND action = " . LIKES_ACTION_DISLIKE ." ";						
-						$dislikeCount = DB_getItem($_TABLES['likes'], 'COUNT(lid) dislikecount', $sql_id . $sql_action .$sql_daterange);
-					
-						$sql_action = " AND action = " . LIKES_ACTION_LIKE ." ";
-						$likeCount = DB_getItem($_TABLES['likes'], 'COUNT(lid) likecount', $sql_id . $sql_action . $sql_daterange);
+						// The aggregate query already contains both action totals.
+						$dislikeCount = (int) $A['dislikecount'];
+						$likeCount = (int) $A['likecount'];
 						
 						if ($info[2] == 1) {
 							// Likes and Dislikes allowed for items
@@ -781,6 +788,8 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 				// User does not have read access to item or doesn't support PLG_getItemInfo
 				// $display .= "{$A['type']} {$A['id']} - {$A['actioncount']} - {$A['latestdate']}<br>";
 			}
+		}
+
 		}
 
 		if ($listCount == 0) {

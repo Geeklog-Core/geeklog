@@ -199,7 +199,8 @@ CREATE TABLE {$_TABLES['likes']} (
   created DATETIME NOT NULL,
   PRIMARY KEY (lid),
   KEY type (type,subtype,id),
-  KEY type_2 (type,id)
+  KEY type_2 (type,id),
+  KEY created (created)
 ) ENGINE=MyISAM
 ";
 
