@@ -198,6 +198,7 @@ CREATE TABLE {$_TABLES['likes']} (
 );
 CREATE INDEX {$_TABLES['likes']}_type ON {$_TABLES['likes']} (type,subtype,id);
 CREATE INDEX {$_TABLES['likes']}type_2 ON {$_TABLES['likes']} (type,id);
+CREATE INDEX {$_TABLES['likes']}_created ON {$_TABLES['likes']} (created);
 ";
 
 $_SQL[] = "
