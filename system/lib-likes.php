@@ -703,7 +703,7 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 			{$sql_daterange}
 			GROUP BY type, subtype, id
 			ORDER BY actioncount DESC, latestdate DESC, type, subtype, id";
-		
+
 		$listCount = 0;
 		$likeItems = array();
 		$hasMoreCandidates = true;
