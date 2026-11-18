@@ -707,7 +707,7 @@ function LIKES_displayLikesBlock($displayAction = null, $type = '', $subtype = '
 		$listCount = 0;
 		$likeItems = array();
 		$hasMoreCandidates = true;
-		while ($hasMoreCandidates && $listCount < $maxItems) {
+		while ($hasMoreCandidates && ($maxItems <= 0 || $listCount < $maxItems)) {
 			$result = DB_query($sql . " LIMIT {$batchSize} OFFSET {$offset}");
 			$nrows = DB_numRows($result);
 			$hasMoreCandidates = ($nrows === $batchSize);
