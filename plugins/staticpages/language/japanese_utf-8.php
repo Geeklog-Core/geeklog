@@ -115,7 +115,7 @@ $LANG_STATIC = array(
     'copy' => 'コピー',
     'limit_results' => '絞込検索',
     'search' => '検索',
-    'likes' => 'Likes',
+    'likes' => '気に入った!',
     'submit' => '登録',
     'no_new_pages' => '-',
     'pages' => 'ページ',
@@ -151,6 +151,13 @@ $LANG_staticpages_search = array(
     0 => '除外する',
     1 => '既定値を使用する',
     2 => '含める'
+);
+
+$LANG_staticpages_likes = array(
+    -1 => 'デフォルトを使用',
+    0  => '無効',
+    1  => 'いいね・よくないね',
+    2  => 'いいねのみ',
 );
 
 $PLG_staticpages_MESSAGE15 = 'あなたのコメントは投稿スタッフによる承認待ちとなっていて、承認が済むとサイトに表示します。';
