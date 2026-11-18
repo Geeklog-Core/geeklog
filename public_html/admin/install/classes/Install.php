@@ -15,6 +15,31 @@ require_once __DIR__ . '/Common.php';
 class Install extends Common
 {
     /**
+     * Check the default XMLSitemap output before creating any database tables.
+     * An existing file needs to be writable; otherwise its parent directory
+     * must allow the installer to create it.
+     *
+     * @return string|null Path that cannot be written, or null on success
+     */
+    private function xmlSitemapInstallPermissionError()
+    {
+        $pluginPath = Common::$env['gl_path'] . 'plugins/xmlsitemap/autoinstall.php';
+
+        if (!is_file($pluginPath)) {
+            return null;
+        }
+
+        $file = rtrim(Common::$env['html_path'], '/\\') . '/sitemap.xml';
+        clearstatcache(true, $file);
+
+        if (file_exists($file)) {
+            return is_file($file) && is_writable($file) ? null : $file;
+        }
+
+        return is_dir(dirname($file)) && is_writable(dirname($file)) ? null : $file;
+    }
+
+    /**
      * Check for InnoDB table support (usually as of MySQL 4.0, but may be
      * available in earlier versions, e.g. "Max" or custom builds).
      *
@@ -247,6 +272,20 @@ class Install extends Common
             Common::$env['noreply_mail'] = urldecode($noreply_mail);
             $retval .= MicroTemplate::quick(PATH_LAYOUT, 'step3-install', Common::$env);
         } else {
+            // XMLSitemap creates sitemap.xml during plugin post-install. If it
+            // cannot do so, the plugin fails after the core database has been
+            // populated, preventing a clean retry of this installation.
+            if (!$installPlugins && ($sitemapPath = $this->xmlSitemapInstallPermissionError()) !== null) {
+                $retval .= '<div class="uk-alert-danger" uk-alert><p>'
+                    . 'XMLSitemap cannot create or update <code>'
+                    . htmlspecialchars($sitemapPath, ENT_QUOTES, 'UTF-8')
+                    . '</code>. Give the web server write permission to this file '
+                    . '(or its parent directory if the file does not exist) '
+                    . 'before installing Geeklog.</p></div>';
+
+                return $retval;
+            }
+
             if ($this->createDatabaseStructures()) {
                 $site_name = $this->post('site_name', $this->get('site_name', ''));
                 $site_slogan = $this->post('site_slogan', $this->get('site_slogan', ''));
