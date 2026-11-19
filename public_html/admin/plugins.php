@@ -989,7 +989,14 @@ function plugin_main($message = '', $token = '')
     if (!empty($message)) {
         $retval .= COM_showMessageText($message);
     } else {
-        $retval .= COM_showMessageFromParameter();
+        // The confirmation survives the canonical redirect only once.
+        $flashMessage = \Geeklog\Session::getVar('plugins_confirmation_message', 0);
+        if ($flashMessage == 60 || $flashMessage == 98) {
+            \Geeklog\Session::unsetVar('plugins_confirmation_message');
+            $retval .= COM_showMessage((int) $flashMessage);
+        } else {
+            $retval .= COM_showMessageFromParameter();
+        }
     }
 
     if (empty($token)) {
@@ -1345,6 +1352,17 @@ function plugin_get_pluginname($plugin)
 // MAIN
 $display = '';
 $mode = Geeklog\Input::postOrGet('mode', '');
+
+// Display upload and upgrade confirmations from a clean URL so newly
+// generated CSRF tokens are tied to the canonical administration page.
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && $mode === '') {
+    $confirmation = (int) Geeklog\Input::fGet('msg', 0);
+    if (($confirmation === 60 || $confirmation === 98)
+        && SEC_hasRights('plugin.install')) {
+        \Geeklog\Session::setVar('plugins_confirmation_message', $confirmation);
+        COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
+    }
+}
 
 if ($mode === 'delete') { // Uninstall Plugin
     $pi_name = Geeklog\Input::fGet('pi_name');
