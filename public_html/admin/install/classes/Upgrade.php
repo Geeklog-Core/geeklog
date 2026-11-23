@@ -198,6 +198,19 @@ class Upgrade extends Common
          */
         require_once Common::$env['siteconfig_path'];
 
+        /**
+         * @global $_TABLES
+         */
+        require_once $_CONF['path_system'] . 'lib-database.php';
+
+        // Check for any upgrade info and/or warning messages for specific upgrade path. Skip if continued has been clicked already
+        if ($this->post('upgrade_check') !== 'confirmed') {
+            $retval = $this->checkUpgradeMessage($version);
+            if (!empty($retval)) {
+                return $retval;
+            }
+        }
+
         // Release archives cannot remove files left by older installations.
         // Delete the retired web-facing PHP endpoints before doing any database
         // work, and make an administrator acknowledge any endpoint that remains.
@@ -214,18 +227,6 @@ class Upgrade extends Common
             return $retval;
         }
 
-        /**
-         * @global $_TABLES
-         */
-        require_once $_CONF['path_system'] . 'lib-database.php';
-
-        // Check for any upgrade info and/or warning messages for specific upgrade path. Skip if continued has been clicked already
-        if ($this->post('upgrade_check') !== 'confirmed') {
-            $retval = $this->checkUpgradeMessage($version);
-            if (!empty($retval)) {
-                return $retval;
-            }
-        }
 
         // If this is a MySQL database check to see if it was
         // installed with InnoDB support
