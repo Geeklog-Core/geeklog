@@ -164,4 +164,66 @@ class MediaLibraryClassTest extends TestCase
             unlink($outside);
         }
     }
+
+    /**
+     * @dataProvider mediaPermissionsProvider
+     */
+    public function testMediaManagementPermissions(
+        $admin,
+        $browseOnly,
+        $expectedWrite,
+        $expectedManage
+    ) {
+        require_once \Tst::$root
+            . 'system/classes/Media/MediaLibrary.php';
+
+        global $_CONF;
+
+        $hadSetting = array_key_exists(
+            'filemanager_browse_only',
+            $_CONF
+        );
+        $previous = $hadSetting
+            ? $_CONF['filemanager_browse_only']
+            : null;
+
+        try {
+            $_CONF['filemanager_browse_only'] = $browseOnly;
+
+            $library = new \Geeklog\Media\MediaLibrary(
+                $admin,
+                $this->storage
+            );
+
+            $this->assertSame($admin, $library->isAdmin());
+            $this->assertSame(
+                $expectedWrite,
+                $library->canWrite()
+            );
+            $this->assertSame(
+                $expectedManage,
+                $library->canManage()
+            );
+            $this->assertSame(
+                $expectedManage,
+                $library->canCreateDirectory()
+            );
+        } finally {
+            if ($hadSetting) {
+                $_CONF['filemanager_browse_only'] = $previous;
+            } else {
+                unset($_CONF['filemanager_browse_only']);
+            }
+        }
+    }
+
+    public function mediaPermissionsProvider()
+    {
+        return [
+            'editor' => [false, false, true, false],
+            'media administrator' => [true, false, true, true],
+            'read-only administrator' => [true, true, false, false],
+        ];
+    }
+
 }
