@@ -7,6 +7,14 @@
     var statusElement = document.getElementById('status');
     var errorElement = document.getElementById('error');
     var breadcrumbsElement = document.getElementById('breadcrumbs');
+    var allItems = [];
+    var searchQuery = '';
+    var sortOrder = 'name-asc';
+    var viewMode = 'grid';
+    var searchInput;
+    var sortSelect;
+    var viewButtons = {};
+    var resultCount;
 
     function setStatus(message) {
         statusElement.textContent = message || '';
@@ -142,6 +150,27 @@
         });
     }
 
+    function icon(name) {
+        var paths = {
+            folder: '<path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+            file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
+            grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+            list: '<path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01" stroke-width="3" stroke-linecap="round"/>',
+            search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>'
+        };
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('fill', 'none');
+        svg.setAttribute('stroke', 'currentColor');
+        svg.setAttribute('stroke-width', '1.7');
+        svg.setAttribute('stroke-linecap', 'round');
+        svg.setAttribute('stroke-linejoin', 'round');
+        svg.setAttribute('aria-hidden', 'true');
+        // Only hard-coded, locally defined SVG paths are inserted here.
+        svg.innerHTML = paths[name] || paths.file;
+        return svg;
+    }
+
     function renderItem(item) {
         var card = document.createElement('article');
         card.className = 'media-item ' + item.kind;
@@ -149,8 +178,9 @@
         preview.type = 'button';
         preview.className = 'media-preview';
         preview.setAttribute('aria-label', (item.kind === 'folder' ? 'Open ' : 'Select ') + item.name);
+        preview.title = item.name;
         if (item.kind === 'folder') {
-            preview.textContent = 'Folder';
+            preview.appendChild(icon('folder'));
             preview.addEventListener('click', function () { load(item.path); });
         } else {
             if (item.image && settings.showThumbnails) {
@@ -160,58 +190,203 @@
                 image.loading = 'lazy';
                 preview.appendChild(image);
             } else {
-                preview.textContent = 'File';
+                preview.appendChild(icon('file'));
             }
             preview.addEventListener('click', function () { selectFile(item); });
         }
         card.appendChild(preview);
 
+        var info = document.createElement('div');
+        info.className = 'media-info';
         var name = document.createElement('div');
         name.className = 'media-name';
         name.textContent = item.name;
         name.title = item.name;
-        card.appendChild(name);
+        info.appendChild(name);
 
         var meta = document.createElement('div');
         meta.className = 'media-meta';
         meta.textContent = item.kind === 'file' ? formatSize(item.size) : 'Folder';
-        card.appendChild(meta);
+        info.appendChild(meta);
+        card.appendChild(info);
 
         if (settings.canManage) {
-            var controls = document.createElement('div');
+            var controls = document.createElement('details');
             controls.className = 'media-controls';
-            controls.appendChild(addButton('Rename', '', function () {
+            var summary = document.createElement('summary');
+            summary.textContent = '⋯';
+            summary.title = 'Actions for ' + item.name;
+            summary.setAttribute('aria-label', 'Actions for ' + item.name);
+            controls.appendChild(summary);
+            var menu = document.createElement('div');
+            menu.className = 'media-control-menu';
+            menu.appendChild(addButton('Rename', '', function () {
+                controls.open = false;
                 var nextName = window.prompt('New name', item.name);
                 if (nextName && nextName !== item.name) {
                     mutate('rename', {path: item.path, name: nextName});
                 }
             }));
-            controls.appendChild(addButton('Delete', 'danger', function () {
+            menu.appendChild(addButton('Delete', 'danger', function () {
+                controls.open = false;
                 if (!settings.confirmChanges || window.confirm('Delete "' + item.name + '"?')) {
                     mutate('delete', {path: item.path});
                 }
             }));
+            controls.appendChild(menu);
+            controls.addEventListener('toggle', function () {
+                if (controls.open) {
+                    itemsElement.querySelectorAll('details.media-controls[open]').forEach(function (other) {
+                        if (other !== controls) { other.open = false; }
+                    });
+                }
+            });
             card.appendChild(controls);
         }
         return card;
+    }
+
+    function compareItems(a, b) {
+        if (sortOrder === 'size-desc' || sortOrder === 'size-asc') {
+            var difference = (Number(a.size) || 0) - (Number(b.size) || 0);
+            if (difference !== 0) {
+                return sortOrder === 'size-desc' ? -difference : difference;
+            }
+        }
+        var comparison = a.name.localeCompare(b.name, undefined, {numeric: true, sensitivity: 'base'});
+        return sortOrder === 'name-desc' ? -comparison : comparison;
+    }
+
+    function renderResults() {
+        var filtered = allItems.filter(function (item) {
+            return item.name.toLocaleLowerCase().indexOf(searchQuery) !== -1;
+        });
+        var folders = filtered.filter(function (item) { return item.kind === 'folder'; }).sort(compareItems);
+        var files = filtered.filter(function (item) { return item.kind !== 'folder'; }).sort(compareItems);
+        itemsElement.textContent = '';
+        itemsElement.className = 'media-results view-' + viewMode;
+        [{title: 'Folders', items: folders}, {title: 'Files', items: files}].forEach(function (group) {
+            if (!group.items.length) { return; }
+            var section = document.createElement('section');
+            section.className = 'media-group';
+            var heading = document.createElement('h2');
+            heading.textContent = group.title + ' (' + group.items.length + ')';
+            section.appendChild(heading);
+            var grid = document.createElement('div');
+            grid.className = 'media-grid';
+            group.items.forEach(function (item) { grid.appendChild(renderItem(item)); });
+            section.appendChild(grid);
+            itemsElement.appendChild(section);
+        });
+        resultCount.textContent = filtered.length + ' items';
+        setStatus(filtered.length ? '' : (searchQuery ? 'No matching files or folders.' : 'This folder is empty.'));
+    }
+
+    function createToolbar() {
+        var toolbar = document.createElement('div');
+        toolbar.className = 'media-toolbar';
+
+        var searchLabel = document.createElement('label');
+        searchLabel.className = 'media-search';
+        searchLabel.appendChild(icon('search'));
+        searchInput = document.createElement('input');
+        searchInput.type = 'search';
+        searchInput.placeholder = 'Search this folder';
+        searchInput.setAttribute('aria-label', 'Search files and folders in the current directory');
+        searchInput.addEventListener('input', function () {
+            searchQuery = searchInput.value.toLocaleLowerCase().trim();
+            renderResults();
+        });
+        searchLabel.appendChild(searchInput);
+        toolbar.appendChild(searchLabel);
+
+        sortSelect = document.createElement('select');
+        sortSelect.className = 'media-sort';
+        sortSelect.setAttribute('aria-label', 'Sort files and folders');
+        [
+            ['name-asc', 'Name A–Z'],
+            ['name-desc', 'Name Z–A'],
+            ['size-desc', 'Largest first'],
+            ['size-asc', 'Smallest first']
+        ].forEach(function (option) {
+            var element = document.createElement('option');
+            element.value = option[0];
+            element.textContent = option[1];
+            sortSelect.appendChild(element);
+        });
+        sortSelect.addEventListener('change', function () {
+            sortOrder = sortSelect.value;
+            renderResults();
+        });
+        toolbar.appendChild(sortSelect);
+
+        var views = document.createElement('div');
+        views.className = 'media-view-switch';
+        ['grid', 'list'].forEach(function (view) {
+            var button = document.createElement('button');
+            button.type = 'button';
+            button.setAttribute('aria-label', view === 'grid' ? 'Grid view' : 'List view');
+            button.title = view === 'grid' ? 'Grid view' : 'List view';
+            button.appendChild(icon(view));
+            button.addEventListener('click', function () {
+                viewMode = view;
+                updateViewButtons();
+                renderResults();
+            });
+            viewButtons[view] = button;
+            views.appendChild(button);
+        });
+        toolbar.appendChild(views);
+        resultCount = document.createElement('span');
+        resultCount.className = 'media-result-count';
+        resultCount.setAttribute('aria-live', 'polite');
+        toolbar.appendChild(resultCount);
+        itemsElement.parentNode.insertBefore(toolbar, itemsElement);
+        updateViewButtons();
+    }
+
+    function updateViewButtons() {
+        Object.keys(viewButtons).forEach(function (view) {
+            viewButtons[view].setAttribute('aria-pressed', String(view === viewMode));
+        });
     }
 
     function load(path) {
         clearError();
         setStatus('Loading...');
         return request('list', {path: path}).then(function (payload) {
+            var changedDirectory = currentPath !== payload.data.path;
             currentPath = payload.data.path;
+            allItems = payload.data.items;
+            if (changedDirectory) {
+                searchQuery = '';
+                searchInput.value = '';
+            }
             renderBreadcrumbs(currentPath);
-            itemsElement.textContent = '';
-            payload.data.items.forEach(function (item) {
-                itemsElement.appendChild(renderItem(item));
-            });
-            setStatus(payload.data.items.length ? '' : 'This folder is empty.');
+            renderResults();
         }).catch(function (error) {
             setStatus('');
             showError(error.message);
         });
     }
+
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('.media-controls')) {
+            itemsElement.querySelectorAll('details.media-controls[open]').forEach(function (menu) {
+                menu.open = false;
+            });
+        }
+    });
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            itemsElement.querySelectorAll('details.media-controls[open]').forEach(function (menu) {
+                menu.open = false;
+                menu.querySelector('summary').focus();
+            });
+        }
+    });
+
+    createToolbar();
 
     document.getElementById('refresh-button').addEventListener('click', function () { load(currentPath); });
     var uploadForm = document.getElementById('upload-form');
