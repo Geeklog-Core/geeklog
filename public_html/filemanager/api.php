@@ -129,6 +129,9 @@ try {
             break;
 
         case 'rename':
+            if (!$library->canManage()) {
+                mediaResponse(['ok' => false, 'error' => 'Permission denied.'], 403);
+            }
             $library->storage()->renameItem(
                 mediaRequestValue('path'),
                 mediaRequestValue('name'),
@@ -137,6 +140,9 @@ try {
             break;
 
         case 'delete':
+            if (!$library->canManage()) {
+                mediaResponse(['ok' => false, 'error' => 'Permission denied.'], 403);
+            }
             $library->storage()->deleteItem(mediaRequestValue('path'));
             break;
 

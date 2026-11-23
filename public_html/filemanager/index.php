@@ -44,6 +44,7 @@ $settings = [
     'csrfName' => CSRF_TOKEN,
     'csrfToken' => $csrfToken,
     'browseOnly' => !$mediaLibrary->canWrite(),
+    'canManage' => $mediaLibrary->canManage(),
     'canCreateDirectory' => $mediaLibrary->canCreateDirectory(),
     'confirmChanges' => !empty($_CONF['filemanager_show_confirmation']),
     'showThumbnails' => !empty($_CONF['filemanager_show_thumbs']),

@@ -85,6 +85,11 @@ class MediaLibrary
         return empty($_CONF['filemanager_browse_only']);
     }
 
+    public function canManage()
+    {
+        return $this->canWrite() && $this->admin;
+    }
+
     public function canCreateDirectory()
     {
         return $this->canWrite() && $this->admin;

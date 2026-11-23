@@ -177,7 +177,7 @@
         meta.textContent = item.kind === 'file' ? formatSize(item.size) : 'Folder';
         card.appendChild(meta);
 
-        if (!settings.browseOnly) {
+        if (settings.canManage) {
             var controls = document.createElement('div');
             controls.className = 'media-controls';
             controls.appendChild(addButton('Rename', '', function () {
