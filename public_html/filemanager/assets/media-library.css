@@ -269,3 +269,10 @@ summary:focus-visible {
     .media-item.folder { min-height: 58px; }
     .selected-file { max-width: 140px; }
 }
+
+/* List mode keeps its horizontal rhythm for folders as well as files. */
+.view-list .media-item.folder { display: flex; min-height: 60px; }
+.view-list .media-item.folder .media-preview { flex: 0 0 48px; width: 48px; height: 44px; }
+.view-list .media-item.folder .media-info { flex: 1; min-width: 0; }
+.view-list .media-item.folder .media-controls { margin-left: auto; }
+.view-list .media-item.folder .media-control-menu { bottom: auto; top: calc(100% + .25rem); }
