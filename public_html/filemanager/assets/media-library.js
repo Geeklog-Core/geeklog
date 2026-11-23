@@ -2,6 +2,14 @@
     'use strict';
 
     var settings = JSON.parse(document.getElementById('media-settings').textContent);
+    var labels = settings.labels || {};
+    function t(key, values) {
+        var value = labels[key] || key;
+        Object.keys(values || {}).forEach(function (name) {
+            value = value.split('{' + name + '}').join(String(values[name]));
+        });
+        return value;
+    }
     var currentPath = '';
     var itemsElement = document.getElementById('items');
     var statusElement = document.getElementById('status');
@@ -53,20 +61,20 @@
         }
         return fetch(url.toString(), fetchOptions).then(function (response) {
             return response.json().catch(function () {
-                var contentType = response.headers.get('content-type') || 'unknown content type';
-                throw new Error('The server returned invalid JSON (HTTP ' + response.status + ', ' + contentType + ').');
+                var contentType = response.headers.get('content-type') || t('unknownContent');
+                throw new Error(t('invalidResponse', {status: response.status, type: contentType}));
             }).then(function (payload) {
                 if (payload.csrfToken) {
                     settings.csrfToken = payload.csrfToken;
                 }
                 if (!response.ok || !payload.ok) {
-                    throw new Error(payload.error || 'The request failed.');
+                    throw new Error(payload.error || t('requestFailed'));
                 }
                 return payload;
             });
         }).catch(function (error) {
             if (error && error.name === 'AbortError') {
-                throw new Error('The server did not answer within 30 seconds. The upload may have been blocked upstream.');
+                throw new Error(t('timeout'));
             }
             throw error;
         }).finally(function () {
@@ -85,8 +93,7 @@
         ];
         if (!extension || blocked.indexOf(extension) !== -1
             || settings.uploadExtensions.indexOf(extension) === -1) {
-            throw new Error('This file type is not allowed. Allowed extensions: '
-                + settings.uploadExtensions.join(', ') + '.');
+            throw new Error(t('invalidFile', {extensions: settings.uploadExtensions.join(', ')}));
         }
     }
 
@@ -101,7 +108,7 @@
 
     function renderBreadcrumbs(path) {
         breadcrumbsElement.textContent = '';
-        var root = addButton('Media', '', function () { load(''); });
+        var root = addButton(t('mediaRoot'), '', function () { load(''); });
         breadcrumbsElement.appendChild(root);
         var accumulated = '';
         path.split('/').filter(Boolean).forEach(function (part) {
@@ -141,7 +148,7 @@
         clearError();
         var body = new FormData();
         Object.keys(values).forEach(function (key) { body.set(key, values[key]); });
-        setStatus('Working...');
+        setStatus(t('working'));
         return request(action, {method: 'POST', body: body}).then(function () {
             return load(currentPath);
         }).catch(function (error) {
@@ -177,7 +184,7 @@
         var preview = document.createElement('button');
         preview.type = 'button';
         preview.className = 'media-preview';
-        preview.setAttribute('aria-label', (item.kind === 'folder' ? 'Open ' : 'Select ') + item.name);
+        preview.setAttribute('aria-label', (item.kind === 'folder' ? t('open') : t('select')) + ' ' + item.name);
         preview.title = item.name;
         if (item.kind === 'folder') {
             preview.appendChild(icon('folder'));
@@ -206,7 +213,7 @@
 
         var meta = document.createElement('div');
         meta.className = 'media-meta';
-        meta.textContent = item.kind === 'file' ? formatSize(item.size) : 'Folder';
+        meta.textContent = item.kind === 'file' ? formatSize(item.size) : t('folder');
         info.appendChild(meta);
         card.appendChild(info);
 
@@ -215,21 +222,21 @@
             controls.className = 'media-controls';
             var summary = document.createElement('summary');
             summary.textContent = '⋯';
-            summary.title = 'Actions for ' + item.name;
-            summary.setAttribute('aria-label', 'Actions for ' + item.name);
+            summary.title = t('actionsFor') + ' ' + item.name;
+            summary.setAttribute('aria-label', t('actionsFor') + ' ' + item.name);
             controls.appendChild(summary);
             var menu = document.createElement('div');
             menu.className = 'media-control-menu';
-            menu.appendChild(addButton('Rename', '', function () {
+            menu.appendChild(addButton(t('rename'), '', function () {
                 controls.open = false;
-                var nextName = window.prompt('New name', item.name);
+                var nextName = window.prompt(t('newName'), item.name);
                 if (nextName && nextName !== item.name) {
                     mutate('rename', {path: item.path, name: nextName});
                 }
             }));
-            menu.appendChild(addButton('Delete', 'danger', function () {
+            menu.appendChild(addButton(t('delete'), 'danger', function () {
                 controls.open = false;
-                if (!settings.confirmChanges || window.confirm('Delete "' + item.name + '"?')) {
+                if (!settings.confirmChanges || window.confirm(t('confirmDelete', {name: item.name}))) {
                     mutate('delete', {path: item.path});
                 }
             }));
@@ -265,7 +272,7 @@
         var files = filtered.filter(function (item) { return item.kind !== 'folder'; }).sort(compareItems);
         itemsElement.textContent = '';
         itemsElement.className = 'media-results view-' + viewMode;
-        [{title: 'Folders', items: folders}, {title: 'Files', items: files}].forEach(function (group) {
+        [{title: t('folders'), items: folders}, {title: t('files'), items: files}].forEach(function (group) {
             if (!group.items.length) { return; }
             var section = document.createElement('section');
             section.className = 'media-group';
@@ -278,8 +285,8 @@
             section.appendChild(grid);
             itemsElement.appendChild(section);
         });
-        resultCount.textContent = filtered.length + ' items';
-        setStatus(filtered.length ? '' : (searchQuery ? 'No matching files or folders.' : 'This folder is empty.'));
+        resultCount.textContent = t('itemCount', {count: filtered.length});
+        setStatus(filtered.length ? '' : (searchQuery ? t('noMatches') : t('empty')));
     }
 
     function createToolbar() {
@@ -291,8 +298,8 @@
         searchLabel.appendChild(icon('search'));
         searchInput = document.createElement('input');
         searchInput.type = 'search';
-        searchInput.placeholder = 'Search this folder';
-        searchInput.setAttribute('aria-label', 'Search files and folders in the current directory');
+        searchInput.placeholder = t('searchPlaceholder');
+        searchInput.setAttribute('aria-label', t('searchLabel'));
         searchInput.addEventListener('input', function () {
             searchQuery = searchInput.value.toLocaleLowerCase().trim();
             renderResults();
@@ -302,12 +309,12 @@
 
         sortSelect = document.createElement('select');
         sortSelect.className = 'media-sort';
-        sortSelect.setAttribute('aria-label', 'Sort files and folders');
+        sortSelect.setAttribute('aria-label', t('sortLabel'));
         [
-            ['name-asc', 'Name A–Z'],
-            ['name-desc', 'Name Z–A'],
-            ['size-desc', 'Largest first'],
-            ['size-asc', 'Smallest first']
+            ['name-asc', t('sortNameAsc')],
+            ['name-desc', t('sortNameDesc')],
+            ['size-desc', t('sortSizeDesc')],
+            ['size-asc', t('sortSizeAsc')]
         ].forEach(function (option) {
             var element = document.createElement('option');
             element.value = option[0];
@@ -325,8 +332,8 @@
         ['grid', 'list'].forEach(function (view) {
             var button = document.createElement('button');
             button.type = 'button';
-            button.setAttribute('aria-label', view === 'grid' ? 'Grid view' : 'List view');
-            button.title = view === 'grid' ? 'Grid view' : 'List view';
+            button.setAttribute('aria-label', view === 'grid' ? t('gridView') : t('listView'));
+            button.title = view === 'grid' ? t('gridView') : t('listView');
             button.appendChild(icon(view));
             button.addEventListener('click', function () {
                 viewMode = view;
@@ -353,7 +360,7 @@
 
     function load(path) {
         clearError();
-        setStatus('Loading...');
+        setStatus(t('loading'));
         return request('list', {path: path}).then(function (payload) {
             var changedDirectory = currentPath !== payload.data.path;
             currentPath = payload.data.path;
@@ -391,6 +398,12 @@
     document.getElementById('refresh-button').addEventListener('click', function () { load(currentPath); });
     var uploadForm = document.getElementById('upload-form');
     if (uploadForm) {
+        var selectedFileLabel = document.getElementById('selected-file');
+        var uploadInput = document.getElementById('upload-file');
+        uploadInput.addEventListener('change', function () {
+            selectedFileLabel.textContent = uploadInput.files.length
+                ? uploadInput.files[0].name : t('noFile');
+        });
         uploadForm.addEventListener('submit', function (event) {
             event.preventDefault();
             var fileInput = document.getElementById('upload-file');
@@ -406,9 +419,10 @@
             body.set('path', currentPath);
             body.set('upload', fileInput.files[0]);
             clearError();
-            setStatus('Uploading...');
+            setStatus(t('uploading'));
             request('upload', {method: 'POST', body: body}).then(function () {
                 uploadForm.reset();
+                selectedFileLabel.textContent = t('noFile');
                 return load(currentPath);
             }).catch(function (error) {
                 setStatus('');
@@ -419,7 +433,7 @@
     var mkdirButton = document.getElementById('mkdir-button');
     if (mkdirButton) {
         mkdirButton.addEventListener('click', function () {
-            var name = window.prompt('Folder name');
+            var name = window.prompt(t('folderName'));
             if (name) { mutate('mkdir', {path: currentPath, name: name}); }
         });
     }
