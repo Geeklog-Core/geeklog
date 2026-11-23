@@ -38,7 +38,54 @@ $uploadExtensions = array_values(array_unique(array_filter(array_map(function ($
     // rejected by the server-side validator.
     return $extension === 'svg' ? '' : $extension;
 }, $uploadExtensions))));
+$mediaLanguage = strtolower(substr((string) COM_getLangIso639Code(), 0, 2));
+$mediaStrings = [
+    'en' => [
+        'title' => 'Media Library', 'selectImage' => 'Select an image', 'selectFile' => 'Select a file',
+        'refresh' => 'Refresh', 'currentFolder' => 'Current folder', 'fileOperations' => 'File operations',
+        'chooseFile' => 'Choose file', 'noFile' => 'No file selected', 'upload' => 'Upload',
+        'newFolder' => 'New folder', 'filesLabel' => 'Media files',
+        'mediaRoot' => 'Media', 'folder' => 'Folder', 'folders' => 'Folders', 'files' => 'Files',
+        'open' => 'Open', 'select' => 'Select', 'actionsFor' => 'Actions for',
+        'rename' => 'Rename', 'delete' => 'Delete', 'newName' => 'New name',
+        'confirmDelete' => 'Delete "{name}"?', 'loading' => 'Loading...', 'working' => 'Working...',
+        'uploading' => 'Uploading...', 'empty' => 'This folder is empty.',
+        'noMatches' => 'No matching files or folders.', 'itemCount' => '{count} items',
+        'searchPlaceholder' => 'Search this folder', 'searchLabel' => 'Search files and folders in the current directory',
+        'sortLabel' => 'Sort files and folders', 'sortNameAsc' => 'Name A–Z',
+        'sortNameDesc' => 'Name Z–A', 'sortSizeDesc' => 'Largest first',
+        'sortSizeAsc' => 'Smallest first', 'gridView' => 'Grid view', 'listView' => 'List view',
+        'folderName' => 'Folder name',
+        'invalidFile' => 'This file type is not allowed. Allowed extensions: {extensions}.',
+        'invalidResponse' => 'The server returned invalid JSON (HTTP {status}, {type}).',
+        'unknownContent' => 'unknown content type', 'requestFailed' => 'The request failed.',
+        'timeout' => 'The server did not answer within 30 seconds. The upload may have been blocked upstream.',
+    ],
+    'fr' => [
+        'title' => 'Bibliothèque média', 'selectImage' => 'Sélectionner une image', 'selectFile' => 'Sélectionner un fichier',
+        'refresh' => 'Actualiser', 'currentFolder' => 'Dossier actuel', 'fileOperations' => 'Gestion des fichiers',
+        'chooseFile' => 'Choisir un fichier', 'noFile' => 'Aucun fichier sélectionné', 'upload' => 'Envoyer',
+        'newFolder' => 'Nouveau dossier', 'filesLabel' => 'Fichiers média',
+        'mediaRoot' => 'Médias', 'folder' => 'Dossier', 'folders' => 'Dossiers', 'files' => 'Fichiers',
+        'open' => 'Ouvrir', 'select' => 'Sélectionner', 'actionsFor' => 'Actions pour',
+        'rename' => 'Renommer', 'delete' => 'Supprimer', 'newName' => 'Nouveau nom',
+        'confirmDelete' => 'Supprimer « {name} » ?', 'loading' => 'Chargement...', 'working' => 'Traitement...',
+        'uploading' => 'Envoi...', 'empty' => 'Ce dossier est vide.',
+        'noMatches' => 'Aucun fichier ou dossier correspondant.', 'itemCount' => '{count} éléments',
+        'searchPlaceholder' => 'Rechercher dans ce dossier', 'searchLabel' => 'Rechercher des fichiers et dossiers',
+        'sortLabel' => 'Trier les fichiers et dossiers', 'sortNameAsc' => 'Nom A–Z',
+        'sortNameDesc' => 'Nom Z–A', 'sortSizeDesc' => 'Plus grands d’abord',
+        'sortSizeAsc' => 'Plus petits d’abord', 'gridView' => 'Vue grille', 'listView' => 'Vue liste',
+        'folderName' => 'Nom du dossier',
+        'invalidFile' => 'Type de fichier interdit. Extensions autorisées : {extensions}.',
+        'invalidResponse' => 'Le serveur a renvoyé un JSON invalide (HTTP {status}, {type}).',
+        'unknownContent' => 'type de contenu inconnu', 'requestFailed' => 'Échec de la requête.',
+        'timeout' => 'Le serveur n’a pas répondu en 30 secondes. L’envoi a peut-être été bloqué.',
+    ],
+];
+$mediaLabels = $mediaStrings[isset($mediaStrings[$mediaLanguage]) ? $mediaLanguage : 'en'];
 $settings = [
+    'labels' => $mediaLabels,
     'apiUrl' => $_CONF['site_url'] . '/filemanager/api.php',
     'type' => $type,
     'csrfName' => CSRF_TOKEN,
@@ -62,36 +109,36 @@ header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Geeklog Media Library</title>
+    <title><?php echo htmlspecialchars($mediaLabels['title'], ENT_QUOTES, 'UTF-8'); ?></title>
     <link rel="stylesheet" href="assets/media-library.css?v=<?php echo (int) @filemtime(__DIR__ . '/assets/media-library.css'); ?>">
 </head>
 <body>
 <main class="media-library" aria-labelledby="media-title">
     <header class="media-header">
         <div>
-            <h1 id="media-title">Media Library</h1>
-            <p id="media-context"><?php echo $type === 'Image' ? 'Select an image' : 'Select a file'; ?></p>
+            <h1 id="media-title"><?php echo htmlspecialchars($mediaLabels['title'], ENT_QUOTES, 'UTF-8'); ?></h1>
+            <p id="media-context"><?php echo htmlspecialchars($mediaLabels[$type === 'Image' ? 'selectImage' : 'selectFile'], ENT_QUOTES, 'UTF-8'); ?></p>
         </div>
-        <button id="refresh-button" type="button">Refresh</button>
+        <button id="refresh-button" type="button"><?php echo htmlspecialchars($mediaLabels['refresh'], ENT_QUOTES, 'UTF-8'); ?></button>
     </header>
 
-    <nav id="breadcrumbs" class="breadcrumbs" aria-label="Current folder"></nav>
+    <nav id="breadcrumbs" class="breadcrumbs" aria-label="<?php echo htmlspecialchars($mediaLabels['currentFolder'], ENT_QUOTES, 'UTF-8'); ?>"></nav>
 
     <?php if ($mediaLibrary->canWrite()) : ?>
-    <section class="media-actions" aria-label="File operations">
+    <section class="media-actions" aria-label="<?php echo htmlspecialchars($mediaLabels['fileOperations'], ENT_QUOTES, 'UTF-8'); ?>">
         <form id="upload-form" enctype="multipart/form-data">
-            <label class="file-picker">Choose file<input id="upload-file" name="upload" type="file" required></label>
-            <button type="submit">Upload</button>
+            <label class="file-picker" for="upload-file"><span class="file-picker-label"><?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?></span><input id="upload-file" name="upload" type="file" required aria-label="<?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?>"><span id="selected-file" class="selected-file" aria-live="polite"><?php echo htmlspecialchars($mediaLabels['noFile'], ENT_QUOTES, 'UTF-8'); ?></span></label>
+            <button type="submit"><?php echo htmlspecialchars($mediaLabels['upload'], ENT_QUOTES, 'UTF-8'); ?></button>
         </form>
         <?php if ($mediaLibrary->canCreateDirectory()) : ?>
-        <button id="mkdir-button" type="button">New folder</button>
+        <button id="mkdir-button" type="button"><?php echo htmlspecialchars($mediaLabels['newFolder'], ENT_QUOTES, 'UTF-8'); ?></button>
         <?php endif; ?>
     </section>
     <?php endif; ?>
 
     <div id="status" class="status" role="status" aria-live="polite"></div>
     <div id="error" class="error" role="alert" hidden></div>
-    <section id="items" class="media-grid" aria-label="Media files"></section>
+    <section id="items" class="media-results" aria-label="<?php echo htmlspecialchars($mediaLabels['filesLabel'], ENT_QUOTES, 'UTF-8'); ?>"></section>
 </main>
 
 <script id="media-settings" type="application/json"><?php
