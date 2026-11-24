@@ -49,10 +49,16 @@ try {
         || ($mime !== 'image/png' && $mime !== 'image/webp')) {
         throw new RuntimeException('Thumbnail not generated.');
     }
+    // PHP 5.6 has no reliable WebP metadata support; the generator must use PNG.
+    if (PHP_VERSION_ID < 70100 && $mime !== 'image/png') {
+        throw new RuntimeException('PHP 5.6 must generate PNG thumbnails.');
+    }
     $preview = $mime === 'image/png' ? @imagecreatefrompng($target)
         : (function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($target) : false);
+    $actual = $preview ? imagesx($preview) . 'x' . imagesy($preview) : 'undecodable';
     if (!$preview || imagesx($preview) !== 320 || imagesy($preview) !== 213) {
-        throw new RuntimeException('Thumbnail dimensions incorrect.');
+        throw new RuntimeException('Thumbnail dimensions incorrect: expected 320x213, got '
+            . $actual . ' (' . $mime . ', PHP ' . PHP_VERSION . ').');
     }
     imagedestroy($preview);
     list($cached, $sameTag) = MediaThumbnail::generate($source, $cache);
