@@ -125,7 +125,9 @@ summary:focus-visible {
     line-height: 1.25rem;
     font-weight: 600;
     overflow: hidden;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    word-break: normal;
+    text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -276,3 +278,25 @@ summary:focus-visible {
 .view-list .media-item.folder .media-info { flex: 1; min-width: 0; }
 .view-list .media-item.folder .media-controls { margin-left: auto; }
 .view-list .media-item.folder .media-control-menu { bottom: auto; top: calc(100% + .25rem); }
+
+/* Administration link in the standalone Root view. */
+.media-header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.media-header-actions a {
+    color: #1769aa;
+    font-size: .88rem;
+    text-decoration: none;
+}
+.media-header-actions a:hover,
+.media-header-actions a:focus-visible {
+    text-decoration: underline;
+}
+@media (max-width: 600px) {
+    .media-header { flex-wrap: wrap; }
+    .media-header-actions { margin-left: auto; }
+}
