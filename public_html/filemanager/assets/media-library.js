@@ -31,6 +31,15 @@
         return url.toString();
     }
 
+    function thumbnailUrl(item) {
+        var url = new URL(settings.apiUrl, window.location.href);
+        url.searchParams.set('action', 'thumbnail');
+        url.searchParams.set('type', settings.type);
+        url.searchParams.set('path', item.path);
+        url.searchParams.set('v', imageRevisions[item.path] || item.version || String(item.modified || 0));
+        return url.toString();
+    }
+
     function setStatus(message) {
         statusElement.textContent = message || '';
     }
@@ -469,7 +478,7 @@
         } else {
             if (item.image && settings.showThumbnails) {
                 var image = document.createElement('img');
-                image.src = freshImageUrl(item);
+                image.src = thumbnailUrl(item);
                 image.alt = '';
                 image.loading = 'lazy';
                 function showFallbackIcon() {
