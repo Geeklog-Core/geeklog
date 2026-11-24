@@ -5,10 +5,10 @@
 Download the attached **`geeklog-2.2.2-native-media-library-preview-1.zip`**, not GitHub's automatic source code archive. Install on an existing Geeklog 2.2.2 site after a full backup.
 
 Highlights:
-- Native file browser with directory management, upload, rename, delete and CKEditor image selection.
+- Native file browser with directory management, multi-file upload, drag-and-drop, per-file upload progress, rename, delete and CKEditor image selection.
 - JPEG/PNG/WebP editing: crop, rotate, resize, save copy or replace original, depending on the server's GD capabilities.
 - Private cached thumbnail generation, with PNG fallback on PHP 5.6.
-- Throttled, near-viewport thumbnail loading to reduce load on older shared hosting.
+- Throttled, near-viewport thumbnail loading and at most two concurrent uploads to reduce load on older shared hosting.
 - Always confirm deletion of an empty folder.
 - Installs only the required files; no database, lib-common.php or installer changes.
 - Backup and rollback scripts, English installation and rollback documentation.
