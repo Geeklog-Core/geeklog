@@ -8,6 +8,7 @@ require_once dirname(__DIR__) . '/lib-common.php';
 require_once $_CONF['path_system'] . 'classes/Media/MediaValidator.php';
 require_once $_CONF['path_system'] . 'classes/Media/MediaStorage.php';
 require_once $_CONF['path_system'] . 'classes/Media/MediaLibrary.php';
+require_once $_CONF['path_system'] . 'classes/Media/MediaImageEditor.php';
 
 use Geeklog\Media\MediaLibrary;
 use Geeklog\Session;
@@ -119,6 +120,21 @@ try {
                 throw new RuntimeException('No upload was received.');
             }
             $library->storage()->upload(mediaRequestValue('path'), $_FILES['upload'], $type);
+            break;
+
+        case 'edit_image':
+            if (!$library->canManage()) {
+                mediaResponse(['ok' => false, 'error' => 'Permission denied.'], 403);
+            }
+            if (!isset($_FILES['image']) || !is_array($_FILES['image'])) {
+                throw new RuntimeException('No edited image was received.');
+            }
+            $result = $library->storage()->saveEditedImage(
+                mediaRequestValue('path'),
+                $_FILES['image'],
+                mediaRequestValue('save_copy') === '1'
+            );
+            mediaResponse(['ok' => true, 'result' => $result, 'csrfToken' => $nextToken]);
             break;
 
         case 'mkdir':
