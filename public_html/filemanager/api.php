@@ -108,11 +108,11 @@ try {
         if (!is_dir($cache) && !@mkdir($cache, 0700, true) && !is_dir($cache)) {
             throw new RuntimeException('Cannot create a private thumbnail cache.');
         }
-        list($thumbnail, $etag) = \Geeklog\Media\MediaThumbnail::generate($source, $cache);
+        list($thumbnail, $etag, $thumbnailMime) = \Geeklog\Media\MediaThumbnail::generate($source, $cache);
         // Readable only by the current signed-in Geeklog user; do not use public caches.
         header_remove('Content-Type');
         header_remove('Cache-Control');
-        header('Content-Type: image/webp');
+        header('Content-Type: ' . $thumbnailMime);
         header('Cache-Control: private, max-age=86400');
         header('X-Content-Type-Options: nosniff');
         header('ETag: "' . $etag . '"');
@@ -214,7 +214,14 @@ try {
         $response['csrfToken'] = $nextToken;
     }
     mediaResponse($response, 400);
-} catch (Throwable $e) {
+} catch (Exception $e) {
+    COM_errorLog('Media Library request failed: ' . $e->getMessage());
+    $response = ['ok' => false, 'error' => 'The Media Library could not complete the request.'];
+    if (!empty($nextToken)) {
+        $response['csrfToken'] = $nextToken;
+    }
+    mediaResponse($response, 500);
+} catch (Error $e) {
     COM_errorLog('Media Library request failed: ' . $e->getMessage());
     $response = ['ok' => false, 'error' => 'The Media Library could not complete the request.'];
     if (!empty($nextToken)) {
