@@ -65,6 +65,7 @@ jobs:
               assert 'maxConcurrentUploads = 2' in js, 'Upload concurrency cap missing'
               assert "xhr.upload.addEventListener('progress'" in js, 'Per-file upload progress missing'
               assert "uploadDropzone.addEventListener('drop'" in js, 'Drag and drop missing'
+              assert 'duplicateUpload' in js and 'duplicateUpload' in index, 'Duplicate name protection missing'
               assert 'confirmDeleteFolder' in js, 'Folder deletion confirmation missing'
               assert 'confirmDeleteFolder' in index, 'Folder confirmation translation missing'
               assert 'type="file" multiple ' in index, 'Multiple file input missing'
