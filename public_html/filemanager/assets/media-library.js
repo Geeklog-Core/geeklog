@@ -229,9 +229,32 @@
         var toolbar = document.createElement('div');
         toolbar.className = 'media-edit-toolbar';
         dialog.appendChild(toolbar);
+        function toolGroup(titleText) {
+            var group = document.createElement('section');
+            group.className = 'media-edit-group';
+            var caption = document.createElement('strong');
+            caption.className = 'media-edit-group-title';
+            caption.textContent = titleText;
+            group.appendChild(caption);
+            var actions = document.createElement('div');
+            actions.className = 'media-edit-group-actions';
+            group.appendChild(actions);
+            toolbar.appendChild(group);
+            return actions;
+        }
+        var cropTools = toolGroup(t('cropImage'));
+        var rotateTools = toolGroup(t('toolsSection'));
+        var sourceTools = toolGroup(t('replaceSection'));
         var sizeRow = document.createElement('div');
         sizeRow.className = 'media-edit-size';
-        dialog.appendChild(sizeRow);
+        var sizeSection = document.createElement('section');
+        sizeSection.className = 'media-edit-group media-edit-dimensions';
+        var sizeHeading = document.createElement('strong');
+        sizeHeading.className = 'media-edit-group-title';
+        sizeHeading.textContent = t('dimensionsSection');
+        sizeSection.appendChild(sizeHeading);
+        sizeSection.appendChild(sizeRow);
+        dialog.appendChild(sizeSection);
         var error = document.createElement('div');
         error.className = 'media-edit-error';
         error.setAttribute('role', 'alert');
@@ -243,6 +266,10 @@
         var working = null;
         var starting = null;
         var selection = null;
+        var dragMode = 'create';
+        var dragOrigin = null;
+        var initialSelection = null;
+        var ratio = 0;
         var busy = false;
         var previousFocus = document.activeElement;
         var widthInput = document.createElement('input');
@@ -310,6 +337,66 @@
             widthInput.value = String(working.width);
             heightInput.value = String(working.height);
         }
+        function normalizedSelection() {
+            if (!selection) { return null; }
+            var x = Math.min(selection.x1, selection.x2);
+            var y = Math.min(selection.y1, selection.y2);
+            return {x: x, y: y, w: Math.abs(selection.x2 - selection.x1),
+                h: Math.abs(selection.y2 - selection.y1)};
+        }
+        function within(p, rect) {
+            return p.x >= rect.x && p.x <= rect.x + rect.w
+                && p.y >= rect.y && p.y <= rect.y + rect.h;
+        }
+        function cornerAt(p, rect) {
+            if (!rect || rect.w < 2 || rect.h < 2) { return null; }
+            var tolerance = Math.max(12, Math.round(canvas.width * 14 / Math.max(1, canvas.clientWidth)));
+            var corners = [
+                {id: 'nw', x: rect.x, y: rect.y},
+                {id: 'ne', x: rect.x + rect.w, y: rect.y},
+                {id: 'sw', x: rect.x, y: rect.y + rect.h},
+                {id: 'se', x: rect.x + rect.w, y: rect.y + rect.h}
+            ];
+            for (var i = 0; i < corners.length; i++) {
+                if (Math.hypot(p.x - corners[i].x, p.y - corners[i].y) <= tolerance) {
+                    return corners[i].id;
+                }
+            }
+            return null;
+        }
+        function selectionFromDrag(anchor, pointer) {
+            var dx = pointer.x - anchor.x, dy = pointer.y - anchor.y;
+            if (ratio > 0) {
+                var w = Math.min(Math.abs(dx), Math.abs(dy) * ratio);
+                var h = w / ratio;
+                // If movement is predominantly horizontal, respect the width first.
+                if (Math.abs(dx) >= Math.abs(dy) * ratio) {
+                    w = Math.abs(dx); h = w / ratio;
+                }
+                var limitX = dx >= 0 ? working.width - anchor.x : anchor.x;
+                var limitY = dy >= 0 ? working.height - anchor.y : anchor.y;
+                w = Math.min(w, limitX, limitY * ratio);
+                h = w / ratio;
+                dx = (dx < 0 ? -1 : 1) * w;
+                dy = (dy < 0 ? -1 : 1) * h;
+            }
+            return {x1: anchor.x, y1: anchor.y,
+                x2: Math.max(0, Math.min(working.width, Math.round(anchor.x + dx))),
+                y2: Math.max(0, Math.min(working.height, Math.round(anchor.y + dy)))};
+        }
+        function updateSelection(pointer) {
+            if (!starting) { return; }
+            if (dragMode === 'move' && initialSelection) {
+                var rect = initialSelection;
+                var dx = pointer.x - dragOrigin.x, dy = pointer.y - dragOrigin.y;
+                var x = Math.max(0, Math.min(working.width - rect.w, rect.x + dx));
+                var y = Math.max(0, Math.min(working.height - rect.h, rect.y + dy));
+                selection = {x1: x, y1: y, x2: x + rect.w, y2: y + rect.h};
+            } else {
+                selection = selectionFromDrag(starting, pointer);
+            }
+            refresh();
+        }
         function setWorking(source) {
             if (!valid(source.width, source.height)) { throw new Error(t('dimensionsInvalid')); }
             working = resized(source, source.width, source.height);
@@ -339,30 +426,61 @@
             };
         }
         canvas.addEventListener('pointerdown', function (event) {
-            if (!working || busy) { return; }
+            if (!working || busy || event.button !== 0) { return; }
             event.preventDefault();
             var p = point(event);
-            starting = p;
-            selection = {x1: p.x, y1: p.y, x2: p.x, y2: p.y};
+            var rect = normalizedSelection();
+            var corner = cornerAt(p, rect);
+            dragOrigin = p;
+            initialSelection = rect;
+            if (corner) {
+                dragMode = 'resize';
+                var oppositeX = corner.indexOf('w') >= 0 ? rect.x + rect.w : rect.x;
+                var oppositeY = corner.indexOf('n') >= 0 ? rect.y + rect.h : rect.y;
+                starting = {x: oppositeX, y: oppositeY};
+            } else if (rect && within(p, rect)) {
+                dragMode = 'move';
+                starting = p;
+            } else {
+                dragMode = 'create';
+                starting = p;
+                selection = selectionFromDrag(p, p);
+            }
             canvas.setPointerCapture(event.pointerId);
             refresh();
         });
         canvas.addEventListener('pointermove', function (event) {
-            if (!starting || !selection) { return; }
-            var p = point(event);
-            selection.x2 = p.x; selection.y2 = p.y;
-            refresh();
+            if (!starting || !working) { return; }
+            updateSelection(point(event));
         });
         canvas.addEventListener('pointerup', function (event) {
-            if (starting && selection) {
-                var p = point(event);
-                selection.x2 = p.x; selection.y2 = p.y;
-                refresh();
-            }
+            if (starting && working) { updateSelection(point(event)); }
             starting = null;
         });
-        canvas.addEventListener('pointercancel', function () { starting = null; selection = null; refresh(); });
-        toolbar.appendChild(addButton(t('cropImage'), '', function () {
+        canvas.addEventListener('pointercancel', function () {
+            starting = null;
+            selection = null;
+            refresh();
+        });
+        var ratioLabel = document.createElement('label');
+        ratioLabel.textContent = t('cropRatio') + ' ';
+        var ratioSelect = document.createElement('select');
+        ratioSelect.className = 'media-edit-ratio';
+        [['0', t('ratioFree')], ['1', '1:1'], ['1.333333333', '4:3'],
+            ['1.777777778', '16:9']].forEach(function (option) {
+            var node = document.createElement('option');
+            node.value = option[0];
+            node.textContent = option[1];
+            ratioSelect.appendChild(node);
+        });
+        ratioSelect.addEventListener('change', function () {
+            ratio = Number(ratioSelect.value);
+            selection = null;
+            refresh();
+        });
+        ratioLabel.appendChild(ratioSelect);
+        cropTools.appendChild(ratioLabel);
+        cropTools.appendChild(addButton(t('cropImage'), '', function () {
             if (!working || !selection) { return; }
             var x = Math.min(selection.x1, selection.x2), y = Math.min(selection.y1, selection.y2);
             var w = Math.abs(selection.x2 - selection.x1), h = Math.abs(selection.y2 - selection.y1);
@@ -382,9 +500,8 @@
             ctx.drawImage(working, 0, 0);
             working = next; selection = null; refresh();
         }
-        toolbar.appendChild(addButton(t('rotateLeft'), '', function () { rotate(false); }));
-        toolbar.appendChild(addButton(t('rotateRight'), '', function () { rotate(true); }));
-        var lastWidth = 0, lastHeight = 0;
+        rotateTools.appendChild(addButton(t('rotateLeft'), '', function () { rotate(false); }));
+        rotateTools.appendChild(addButton(t('rotateRight'), '', function () { rotate(true); }));
         [widthInput, heightInput].forEach(function (input) {
             input.addEventListener('change', function () {
                 if (!working) { return; }
@@ -397,24 +514,39 @@
                 widthInput.value = String(w); heightInput.value = String(h);
             });
         });
-        toolbar.appendChild(addButton(t('resizeImage'), '', function () {
+        sizeRow.appendChild(addButton(t('resizeImage'), '', function () {
             if (!working) { return; }
             var w = Number(widthInput.value), h = Number(heightInput.value);
             if (!valid(w, h)) { fail(t('dimensionsInvalid')); return; }
             working = resized(working, w, h); selection = null; refresh(); fail('');
         }));
-        toolbar.appendChild(addButton(t('resetImage'), '', function () {
+        rotateTools.appendChild(addButton(t('resetImage'), '', function () {
             if (original) { setWorking(original); fail(''); }
         }));
         var replacement = document.createElement('input');
         replacement.type = 'file';
         replacement.accept = 'image/jpeg,image/png,image/webp';
         replacement.className = 'media-edit-file';
-        var replacementLabel = field(t('replaceImage'), replacement);
-        toolbar.appendChild(replacementLabel);
+        var replacementLabel = document.createElement('label');
+        replacementLabel.className = 'media-edit-replace-button';
+        replacementLabel.setAttribute('role', 'button');
+        replacementLabel.setAttribute('tabindex', '0');
+        replacementLabel.textContent = t('replaceImage');
+        replacementLabel.appendChild(replacement);
+        replacementLabel.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                replacement.click();
+            }
+        });
+        sourceTools.appendChild(replacementLabel);
+        var replacementName = document.createElement('span');
+        replacementName.className = 'media-edit-replace-name';
+        sourceTools.appendChild(replacementName);
         replacement.addEventListener('change', function () {
             if (!replacement.files.length) { return; }
             var file = replacement.files[0];
+            replacementName.textContent = t('replacementSelected', {name: file.name});
             if (['image/jpeg', 'image/png', 'image/webp'].indexOf(file.type) < 0) {
                 fail(t('editUnsupported')); return;
             }
@@ -444,6 +576,10 @@
                   .catch(function (e) { busy = false; fail(e.message); });
             }, mime, mime === 'image/jpeg' ? 0.9 : 0.92);
         }
+        var warning = document.createElement('p');
+        warning.className = 'media-edit-warning';
+        warning.textContent = t('replaceWarning');
+        footer.appendChild(warning);
         footer.appendChild(addButton(t('saveCopy'), '', function () { save(true); }));
         footer.appendChild(addButton(t('saveOriginal'), 'media-edit-primary', function () { save(false); }));
         function finish() {
