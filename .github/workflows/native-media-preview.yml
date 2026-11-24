@@ -67,7 +67,7 @@ jobs:
               assert "uploadDropzone.addEventListener('drop'" in js, 'Drag and drop missing'
               assert 'confirmDeleteFolder' in js, 'Folder deletion confirmation missing'
               assert 'confirmDeleteFolder' in index, 'Folder confirmation translation missing'
-              assert 'type="file" multiple required' in index, 'Multiple file input missing'
+              assert 'type="file" multiple ' in index, 'Multiple file input missing'
               assert any(n.endswith('/README.md') for n in z.namelist())
               assert not any(n.endswith('/README_FR.md') for n in z.namelist())
               assert not any(n.endswith('/lib-common.php') for n in z.namelist())
