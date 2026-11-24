@@ -218,6 +218,7 @@
         var canvas = document.createElement('canvas');
         canvas.className = 'media-edit-preview';
         canvas.setAttribute('aria-label', t('editHelp'));
+        canvas.tabIndex = 0;
         var stage = document.createElement('div');
         stage.className = 'media-edit-stage';
         stage.appendChild(canvas);
@@ -482,6 +483,54 @@
             selection = null;
             refresh();
         });
+        function nudgeCrop(dx, dy) {
+            if (!working || busy) { return; }
+            var rect = normalizedSelection();
+            if (!rect || rect.w < 2 || rect.h < 2) {
+                fail(t('cropNoSelection'));
+                return;
+            }
+            var x = Math.max(0, Math.min(working.width - rect.w, rect.x + dx));
+            var y = Math.max(0, Math.min(working.height - rect.h, rect.y + dy));
+            selection = {x1: x, y1: y, x2: x + rect.w, y2: y + rect.h};
+            fail('');
+            refresh();
+        }
+        canvas.addEventListener('keydown', function (event) {
+            var arrows = {
+                ArrowLeft: [-1, 0], ArrowRight: [1, 0],
+                ArrowUp: [0, -1], ArrowDown: [0, 1]
+            };
+            var delta = arrows[event.key];
+            if (!delta || event.altKey || event.ctrlKey || event.metaKey) { return; }
+            event.preventDefault();
+            var step = event.shiftKey ? 10 : 1;
+            nudgeCrop(delta[0] * step, delta[1] * step);
+        });
+        var moveControls = document.createElement('div');
+        moveControls.className = 'media-edit-move-controls';
+        var moveHeading = document.createElement('span');
+        moveHeading.className = 'media-edit-move-heading';
+        moveHeading.textContent = t('moveCrop');
+        moveControls.appendChild(moveHeading);
+        var directions = document.createElement('div');
+        directions.className = 'media-edit-direction-buttons';
+        [
+            ['↑', 0, -10, 'up'], ['←', -10, 0, 'left'],
+            ['↓', 0, 10, 'down'], ['→', 10, 0, 'right']
+        ].forEach(function (direction) {
+            var button = addButton(direction[0], 'media-edit-direction-' + direction[3], function () {
+                nudgeCrop(direction[1], direction[2]);
+            });
+            button.setAttribute('aria-label', t('moveCrop') + ' ' + direction[0]);
+            directions.appendChild(button);
+        });
+        moveControls.appendChild(directions);
+        var moveHelp = document.createElement('small');
+        moveHelp.className = 'media-edit-move-help';
+        moveHelp.textContent = t('cropKeyboardHelp');
+        moveControls.appendChild(moveHelp);
+        cropTools.appendChild(moveControls);
         var ratioLabel = document.createElement('label');
         ratioLabel.textContent = t('cropRatio') + ' ';
         var ratioSelect = document.createElement('select');
