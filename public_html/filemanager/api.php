@@ -9,6 +9,7 @@ require_once $_CONF['path_system'] . 'classes/Media/MediaValidator.php';
 require_once $_CONF['path_system'] . 'classes/Media/MediaStorage.php';
 require_once $_CONF['path_system'] . 'classes/Media/MediaLibrary.php';
 require_once $_CONF['path_system'] . 'classes/Media/MediaImageEditor.php';
+require_once $_CONF['path_system'] . 'classes/Media/MediaThumbnail.php';
 
 use Geeklog\Media\MediaLibrary;
 use Geeklog\Session;
@@ -86,6 +87,43 @@ try {
     $type = ucfirst(strtolower(mediaRequestValue('type', 'File')));
     if (!in_array($type, ['Image', 'File', 'Media', 'Root'], true)) {
         throw new RuntimeException('Invalid media type.');
+    }
+
+    if ($action === 'thumbnail') {
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+            mediaResponse(['ok' => false, 'error' => 'Method not allowed.'], 405);
+        }
+        $source = $library->storage()->resolveThumbnailSource(mediaRequestValue('path'), $type);
+        // Never store cached image data inside the public document root.
+        $dataRoot = isset($_CONF['path_data']) ? realpath($_CONF['path_data']) : false;
+        $htmlRoot = isset($_CONF['path_html']) ? realpath($_CONF['path_html']) : false;
+        if ($dataRoot === false || $htmlRoot === false
+            || $dataRoot === $htmlRoot
+            || strpos($dataRoot . DIRECTORY_SEPARATOR,
+                rtrim($htmlRoot, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR) === 0) {
+            throw new RuntimeException('A private thumbnail cache directory is required.');
+        }
+        $cache = $dataRoot . DIRECTORY_SEPARATOR . 'cache'
+            . DIRECTORY_SEPARATOR . 'media-library-thumbnails';
+        if (!is_dir($cache) && !@mkdir($cache, 0700, true) && !is_dir($cache)) {
+            throw new RuntimeException('Cannot create a private thumbnail cache.');
+        }
+        list($thumbnail, $etag) = \\Geeklog\\Media\\MediaThumbnail::generate($source, $cache);
+        // Readable only by the current signed-in Geeklog user; do not use public caches.
+        header_remove('Content-Type');
+        header_remove('Cache-Control');
+        header('Content-Type: image/webp');
+        header('Cache-Control: private, max-age=86400');
+        header('X-Content-Type-Options: nosniff');
+        header('ETag: "' . $etag . '"');
+        if (isset($_SERVER['HTTP_IF_NONE_MATCH'])
+            && trim($_SERVER['HTTP_IF_NONE_MATCH']) === '"' . $etag . '"') {
+            http_response_code(304);
+            exit;
+        }
+        header('Content-Length: ' . filesize($thumbnail));
+        readfile($thumbnail);
+        exit;
     }
 
     if ($action === 'list') {
