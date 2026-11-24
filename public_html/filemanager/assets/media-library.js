@@ -777,7 +777,11 @@
             }));
             menu.appendChild(addButton(t('delete'), 'danger', function () {
                 controls.open = false;
-                if (!settings.confirmChanges || window.confirm(t('confirmDelete', {name: item.name}))) {
+                // Always confirm folder deletion, even when the general
+                // Filemanager confirmation preference is disabled.
+                var needsConfirmation = item.kind === 'folder' || settings.confirmChanges;
+                var promptKey = item.kind === 'folder' ? 'confirmDeleteFolder' : 'confirmDelete';
+                if (!needsConfirmation || window.confirm(t(promptKey, {name: item.name}))) {
                     mutate('delete', {path: item.path});
                 }
             }));
