@@ -79,6 +79,13 @@ install_files() {
   for file in media-library.js media-library.css; do
     cp -p "$SOURCE/public_html/filemanager/assets/$file" "$WEB/filemanager/assets/$file" || return 1
   done
+  # ZIP extraction can produce mode 0600 files; the web server needs to read assets.
+  # PHP classes outside the document root still require readable permissions.
+  chmod 755 "$WEB/filemanager/assets" "$SYS/classes/Media" || return 1
+  chmod 644 "$WEB/filemanager/index.php" "$WEB/filemanager/api.php" \
+    "$WEB/filemanager/assets/media-library.js" \
+    "$WEB/filemanager/assets/media-library.css" \
+    "$SYS/classes/Media/"*.php || return 1
   for file in "${FILES[@]:4}"; do
     rm -f "$WEB/filemanager/$file" || return 1
   done
