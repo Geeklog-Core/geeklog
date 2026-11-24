@@ -1,6 +1,6 @@
 # Geeklog 2.2.2 — Native Media Library preview 1 (admins only)
 
-This is an **experimental test package**, not a Geeklog core release. It installs
+This is an **experimental compatibility package**, not a Geeklog core release. It can remain installed on a Geeklog 2.2.2 site until the official Geeklog 2.2.3 upgrade, provided the site's administrator accepts the preview risk. It installs
 only the native Media Library and the required PHP classes. It does not edit
 `lib-common.php`, the database, the Geeklog installer, themes or story records.
 
@@ -15,8 +15,7 @@ only the native Media Library and the required PHP classes. It does not edit
 - **Administrators only:** non-admin story editors are deliberately not enabled
   by this package. Admin privileges are verified in PHP on every request.
 
-> PHP 5.6 is end-of-life and has known security risks. Test on a staging clone
-> or a protected deployment, not on an unprotected production website.
+> PHP 5.6 is end-of-life and has known security risks. Prefer a supported PHP version; if a legacy site must remain on 5.6, use a protected staging clone for initial validation before any production decision. This preview does not mitigate vulnerabilities in unsupported PHP versions.
 
 ## Prepare the ZIP (for the maintainer)
 
@@ -54,6 +53,29 @@ endpoints** but never deletes media files in `images` or `userfiles`.
 
 The command prints its backup path. Keep it. It also copies `rollback.sh`
 into the backup directory so you can restore without retaining the ZIP.
+
+## Running this preview until Geeklog 2.2.3
+
+This package does not create a separate media database or a new media location.
+Uploaded images and folders continue to reside in the existing Geeklog media
+directories. Cached thumbnails are disposable, not the source files.
+
+- **Keep the installer backup** until the official upgrade has been verified.
+- Continue normal backups of the Geeklog database and actual media directories.
+- Do not remove user-uploaded files or Geeklog's existing `_thumbs` folders.
+- When Geeklog **2.2.3** is officially released, use the normal Geeklog
+  upgrade process; **do not run the preview rollback first**, since that would
+  restore obsolete Filemanager code before the upgrade.
+- Check that the released version includes PR #1173 or an equivalent native
+  media implementation before upgrading. If the official integration differs,
+  review the release notes/migration instructions rather than assuming it is identical.
+- After upgrading, verify old image URLs, edited copies, the library, the editor
+  and permissions. Once everything works, archive or remove the backup.
+- The preview is admin-only. The future official release can enable authorized
+  editors without changing the stored media.
+
+If a site elects to use this on production, first verify the live site's PHP
+version, upload limits, permission model and restore procedure on a clone.
 
 ## Roll back
 
