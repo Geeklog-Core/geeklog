@@ -378,3 +378,88 @@ summary:focus-visible {
     .media-edit-stage { min-height: 100px; }
     .media-edit-toolbar { gap: .35rem; }
 }
+
+/* Final editor controls: grouped actions, accessible replacement picker and warning. */
+.media-edit-toolbar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+    align-items: stretch;
+    gap: .65rem;
+}
+.media-edit-group {
+    min-width: 0;
+    padding: .55rem .7rem;
+    border: 1px solid #dce3ea;
+    background: #f8fafc;
+    border-radius: .55rem;
+}
+.media-edit-group-title {
+    display: block;
+    font-size: .78rem;
+    color: #526171;
+    font-weight: 650;
+    margin-bottom: .4rem;
+}
+.media-edit-group-actions, .media-edit-size {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .4rem;
+}
+.media-edit-ratio {
+    max-width: 110px;
+    border: 1px solid #c5ced8;
+    border-radius: .35rem;
+    padding: .4rem;
+    background: #fff;
+}
+.media-edit-group-actions label { font-size: .88rem; }
+.media-edit-replace-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #c5ced8;
+    border-radius: .45rem;
+    padding: .45rem .7rem;
+    background: #fff;
+    color: #20242a;
+    cursor: pointer;
+}
+.media-edit-replace-button:hover,
+.media-edit-replace-button:focus-visible {
+    border-color: #1769aa;
+    outline: 2px solid rgba(23,105,170,.22);
+}
+.media-edit-replace-button input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+.media-edit-replace-name {
+    color: #526171;
+    font-size: .8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+}
+.media-edit-dimensions { margin-top: .55rem; }
+.media-edit-dimensions .media-edit-size { margin-top: 0; }
+.media-edit-footer {
+    border-top: 1px solid #e0e6ec;
+    padding-top: .65rem;
+}
+.media-edit-warning {
+    flex: 1 1 300px;
+    margin: 0 auto 0 0;
+    color: #805311;
+    font-size: .8rem;
+    line-height: 1.4;
+}
+@media (max-width: 700px) {
+    .media-edit-toolbar { grid-template-columns: minmax(0, 1fr); }
+    .media-edit-dialog { overflow-y: auto; }
+    .media-edit-stage { flex: 1 0 28vh; }
+}
