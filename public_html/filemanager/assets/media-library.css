@@ -463,3 +463,77 @@ summary:focus-visible {
     .media-edit-dialog { overflow-y: auto; }
     .media-edit-stage { flex: 1 0 28vh; }
 }
+
+/* Image editor workspace: use maximum vertical room for the image. */
+.media-edit-dialog {
+    padding: .75rem 1rem;
+}
+.media-edit-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(280px, 24vw, 370px);
+    gap: .85rem;
+    flex: 1 1 auto;
+    min-height: 0;
+    min-width: 0;
+}
+.media-edit-workspace .media-edit-stage {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+}
+.media-edit-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    min-height: 0;
+    overflow-y: auto;
+    padding: .15rem .2rem .2rem 0;
+}
+.media-edit-sidebar .media-edit-help {
+    margin: 0;
+    font-size: .82rem;
+    line-height: 1.4;
+}
+.media-edit-sidebar .media-edit-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    margin: 0;
+}
+.media-edit-sidebar .media-edit-toolbar .media-edit-group {
+    width: 100%;
+}
+.media-edit-sidebar .media-edit-dimensions {
+    margin: 0;
+}
+.media-edit-sidebar .media-edit-size label {
+    flex-wrap: wrap;
+}
+.media-edit-sidebar .media-edit-footer {
+    display: flex;
+    margin-top: auto;
+    padding-top: .7rem;
+    justify-content: flex-end;
+    gap: .5rem;
+}
+.media-edit-sidebar .media-edit-warning {
+    flex: 1 0 100%;
+    margin: 0;
+}
+@media (max-width: 760px) {
+    .media-edit-dialog { overflow-y: auto; }
+    .media-edit-workspace {
+        display: flex;
+        flex-direction: column;
+        overflow: visible;
+        flex: 1 0 auto;
+    }
+    .media-edit-workspace .media-edit-stage {
+        flex: 0 0 48vh;
+        min-height: 240px;
+    }
+    .media-edit-sidebar {
+        overflow: visible;
+        flex: none;
+    }
+}
