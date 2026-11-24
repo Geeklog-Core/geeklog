@@ -64,7 +64,8 @@ jobs:
               assert 'maxActiveThumbnails = 2' in js, 'Thumbnail throttling missing'
               assert 'confirmDeleteFolder' in js, 'Folder deletion confirmation missing'
               assert 'confirmDeleteFolder' in index, 'Folder confirmation translation missing'
-              assert any(n.endswith('/README_FR.md') for n in z.namelist())
+              assert any(n.endswith('/README.md') for n in z.namelist())
+              assert not any(n.endswith('/README_FR.md') for n in z.namelist())
               assert not any(n.endswith('/lib-common.php') for n in z.namelist())
           PY
       - name: Compute ZIP SHA-256
