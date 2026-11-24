@@ -13,8 +13,9 @@ class MediaStorage
     private $validator;
     private $maxUploadBytes;
     private $overwrite;
+    private $excludedDirectories;
 
-    public function __construct($root, $baseUrl, MediaValidator $validator, $maxUploadBytes, $overwrite)
+    public function __construct($root, $baseUrl, MediaValidator $validator, $maxUploadBytes, $overwrite, array $excludedDirectories = [])
     {
         $resolved = realpath($root);
         if ($resolved === false || !is_dir($resolved)) {
@@ -26,6 +27,13 @@ class MediaStorage
         $this->validator = $validator;
         $this->maxUploadBytes = max(0, (int) $maxUploadBytes);
         $this->overwrite = (bool) $overwrite;
+        // Keep legacy Geeklog's technical directories out of user media navigation.
+        $this->excludedDirectories = ['_thumbs' => true];
+        foreach ($excludedDirectories as $name) {
+            if (is_string($name) && $name !== '') {
+                $this->excludedDirectories[strtolower(trim($name, '/\\\\'))] = true;
+            }
+        }
     }
 
     public function listDirectory($logicalPath, $type)
@@ -45,6 +53,9 @@ class MediaStorage
                 continue;
             }
             $childPath = $logicalPath === '' ? $name : $logicalPath . '/' . $name;
+            if ($entry->isDir() && $this->isExcludedDirectory($name)) {
+                continue;
+            }
             if ($entry->isDir()) {
                 $items[] = [
                     'name' => $name, 'path' => $childPath, 'kind' => 'folder',
@@ -55,6 +66,7 @@ class MediaStorage
                 $items[] = [
                     'name' => $name, 'path' => $childPath, 'kind' => 'file',
                     'size' => $entry->getSize(), 'modified' => $entry->getMTime(),
+                    'version' => implode('-', [$entry->getMTime(), $entry->getSize(), $entry->getInode()]),
                     'url' => $this->publicUrl($childPath),
                     'image' => $this->validator->isImage($name),
                 ];
@@ -74,6 +86,9 @@ class MediaStorage
         $directoryPath = $this->validator->normalizeLogicalPath($logicalDirectory);
         $directory = $this->resolveExisting($directoryPath, true);
         $validated = $this->validator->validateUpload($file, $type);
+        if ($this->isExcludedDirectory($validated['name'])) {
+            throw new \\RuntimeException('Reserved technical filename.');
+        }
         if ($this->maxUploadBytes > 0 && (int) $file['size'] > $this->maxUploadBytes) {
             throw new \RuntimeException('The uploaded file exceeds the configured size limit.');
         }
@@ -169,6 +184,9 @@ class MediaStorage
     {
         $parent = $this->resolveExisting($this->validator->normalizeLogicalPath($logicalDirectory), true);
         $this->validator->validateName($name);
+        if ($this->isExcludedDirectory($name)) {
+            throw new \\RuntimeException('Reserved technical directory name.');
+        }
         $target = $parent . DIRECTORY_SEPARATOR . $name;
         if (file_exists($target) || is_link($target)) {
             throw new \RuntimeException('An item with that name already exists.');
@@ -187,6 +205,9 @@ class MediaStorage
         }
         $source = $this->resolveExisting($logicalPath, null);
         $this->validator->validateName($newName);
+        if ($this->isExcludedDirectory($newName)) {
+            throw new \\RuntimeException('Reserved technical directory name.');
+        }
         if (is_file($source)) {
             $this->validator->validateExistingFileName($newName, $type);
             $this->validator->validateFileContents($source, $newName);
@@ -222,8 +243,40 @@ class MediaStorage
         return true;
     }
 
+    private function isExcludedDirectory($name)
+    {
+        return isset($this->excludedDirectories[strtolower($name)]);
+    }
+
+    private function assertAccessiblePath($logicalPath)
+    {
+        if ($logicalPath === '') {
+            return;
+        }
+        foreach (explode('/', $logicalPath) as $part) {
+            if ($this->isExcludedDirectory($part)) {
+                throw new \\RuntimeException('This technical directory is not available in the Media Library.');
+            }
+        }
+    }
+
+    /** Validate a path without exposing a filesystem path to the browser. */
+    public function resolveThumbnailSource($logicalPath, $type)
+    {
+        $logicalPath = $this->validator->normalizeLogicalPath($logicalPath);
+        if ($logicalPath === '') {
+            throw new \\RuntimeException('Choose an image.');
+        }
+        $this->validator->validateExistingFileName(basename($logicalPath), $type);
+        if (!$this->validator->isImage(basename($logicalPath))) {
+            throw new \\RuntimeException('The selected file is not an image.');
+        }
+        return $this->resolveExisting($logicalPath, false);
+    }
+
     private function resolveExisting($logicalPath, $mustBeDirectory)
     {
+        $this->assertAccessiblePath($logicalPath);
         $candidate = $logicalPath === ''
             ? $this->root
             : $this->root . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $logicalPath);
