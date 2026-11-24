@@ -91,6 +91,80 @@ class MediaStorage
         return true;
     }
 
+    /**
+     * Commit an edited raster image, either retaining the public URL or creating a copy.
+     * The original is never changed before a complete, validated temporary image exists.
+     */
+    public function saveEditedImage($logicalPath, array $file, $saveCopy)
+    {
+        $logicalPath = $this->validator->normalizeLogicalPath($logicalPath);
+        if ($logicalPath === '') {
+            throw new \RuntimeException('Choose an image to edit.');
+        }
+        $source = $this->resolveExisting($logicalPath, false);
+        $extension = strtolower(pathinfo($source, PATHINFO_EXTENSION));
+        if (!in_array($extension, ['jpg', 'jpeg', 'png', 'webp'], true)) {
+            throw new \RuntimeException('Only JPEG, PNG and WebP images can be edited.');
+        }
+        $this->validator->validateExistingFileName(basename($source), 'Image');
+        if (is_link($source)) {
+            throw new \RuntimeException('Symbolic links cannot be edited.');
+        }
+        $image = MediaImageEditor::encodeUpload($file, $extension, $this->maxUploadBytes);
+        $directory = dirname($source);
+        $temporary = @tempnam($directory, '.media-edit-');
+        if (!$temporary) {
+            imagedestroy($image);
+            throw new \RuntimeException('Cannot create a temporary image.');
+        }
+        try {
+            MediaImageEditor::writeImage($image, $temporary, $extension);
+            @chmod($temporary, 0644);
+            clearstatcache(true, $source);
+            if (!is_file($source) || is_link($source)) {
+                throw new \RuntimeException('The original image is no longer available.');
+            }
+            if ($saveCopy) {
+                $base = pathinfo($source, PATHINFO_FILENAME);
+                $target = null;
+                for ($i = 1; $i <= 1000; ++$i) {
+                    $candidate = $directory . DIRECTORY_SEPARATOR . $base
+                        . '-edited' . ($i > 1 ? '-' . $i : '') . '.' . $extension;
+                    if (!file_exists($candidate) && !is_link($candidate)) {
+                        // Exclusive creation prevents silently overwriting an existing copy.
+                        $handle = @fopen($candidate, 'x');
+                        if ($handle === false) {
+                            continue;
+                        }
+                        fclose($handle);
+                        $target = $candidate;
+                        break;
+                    }
+                }
+                if ($target === null) {
+                    throw new \RuntimeException('Cannot allocate a filename for the copy.');
+                }
+                if (!@rename($temporary, $target)) {
+                    @unlink($target);
+                    throw new \RuntimeException('Cannot save the image copy.');
+                }
+                return ['path' => ($logicalPath === basename($source) ? '' : dirname($logicalPath) . '/')
+                    . basename($target), 'copied' => true];
+            }
+            // Atomic on local POSIX filesystems. On platforms that prohibit overwrite,
+            // this fails without first deleting the existing image.
+            if (!@rename($temporary, $source)) {
+                throw new \RuntimeException('Cannot replace the original image.');
+            }
+            return ['path' => $logicalPath, 'copied' => false];
+        } finally {
+            imagedestroy($image);
+            if (file_exists($temporary)) {
+                @unlink($temporary);
+            }
+        }
+    }
+
     public function createDirectory($logicalDirectory, $name)
     {
         $parent = $this->resolveExisting($this->validator->normalizeLogicalPath($logicalDirectory), true);
