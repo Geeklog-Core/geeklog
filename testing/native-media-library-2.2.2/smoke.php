@@ -49,10 +49,12 @@ try {
         || ($mime !== 'image/png' && $mime !== 'image/webp')) {
         throw new RuntimeException('Thumbnail not generated.');
     }
-    $info = getimagesize($target);
-    if (!$info || $info[0] !== 320 || $info[1] !== 213) {
+    $preview = $mime === 'image/png' ? @imagecreatefrompng($target)
+        : (function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($target) : false);
+    if (!$preview || imagesx($preview) !== 320 || imagesy($preview) !== 213) {
         throw new RuntimeException('Thumbnail dimensions incorrect.');
     }
+    imagedestroy($preview);
     list($cached, $sameTag) = MediaThumbnail::generate($source, $cache);
     if ($cached !== $target || $sameTag !== $etag) {
         throw new RuntimeException('Thumbnail cache not reused.');
