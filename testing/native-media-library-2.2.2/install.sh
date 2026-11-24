@@ -86,7 +86,7 @@ install_files() {
 echo "Backup: $BACKUP"
 if ! install_files; then
   echo "ERROR: installation interrupted. Restoring the previous Filemanager files."
-  if ! printf 'RESTORE\\n' | bash "$BACKUP/rollback.sh" "$BACKUP"; then
+  if ! printf 'RESTORE\n' | bash "$BACKUP/rollback.sh" "$BACKUP"; then
     echo "CRITICAL: automatic restore failed; restore manually from: $BACKUP" >&2
   fi
   exit 1
