@@ -64,6 +64,11 @@ into the backup directory so you can restore without retaining the ZIP.
 
 ## Running this preview until Geeklog 2.2.3
 
+Uploads support selecting multiple files and drag-and-drop. Each file is sent
+individually to the existing validated API, with **at most two simultaneous
+uploads** and independent progress/error messages. Large batches remain subject
+to the hosting provider's upload size and execution limits.
+
 This package does not create a separate media database or a new media location.
 Uploaded images and folders continue to reside in the existing Geeklog media
 directories. Cached thumbnails are disposable, not the source files.
@@ -100,12 +105,19 @@ Filemanager endpoints are restored from the backup.
 1. Log in as an administrator and open `/filemanager/index.php?Type=Root`.
 2. Confirm a non-admin account cannot access `index.php` or `api.php`.
 3. List and create directories, and confirm `_thumbs` is not accessible.
-4. Upload a small JPEG/PNG, check previews and private thumbnail cache.
-5. Crop/rotate/resize, save a copy and replace the original.
-6. Select an image through CKEditor on the admin article form.
-7. Verify image display on existing articles; verify rollback.
-8. If testing on PHP 5.6, report separately whether WebP support exists
-   and whether upload/thumbnail/edit functions succeed.
+4. Select multiple images and upload them together; verify per-file progress,
+   the success/error report, and the Cancel uploads button.
+5. Drag and drop several files into the upload area, then upload.
+6. Test one invalid extension alongside valid images; the valid files must
+   upload, while the invalid file shows a clear error.
+7. While uploading, navigate to another folder: files must remain targeted at
+   the folder where the upload started.
+8. Upload a small JPEG/PNG, check previews and private thumbnail cache.
+9. Crop/rotate/resize, save a copy and replace the original.
+10. Select an image through CKEditor on the admin article form.
+11. Verify image display on existing articles; verify rollback.
+12. If testing on PHP 5.6, report separately whether WebP support exists
+    and whether upload/thumbnail/edit functions succeed.
 
 ## Report issues
 
