@@ -30,7 +30,8 @@ class MediaThumbnail
         if (!in_array($info[2], $types, true)) {
             throw new \RuntimeException('Unsupported thumbnail format.');
         }
-        $useWebp = function_exists('imagewebp');
+        // Require both directions: PHP 5.6 GD can expose a WebP encoder without a decoder.
+        $useWebp = function_exists('imagewebp') && function_exists('imagecreatefromwebp');
         $format = $useWebp ? 'webp' : 'png';
         $mime = $useWebp ? 'image/webp' : 'image/png';
         // Inode changes after an atomic replacement, even if size and mtime coincide.
