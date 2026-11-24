@@ -542,3 +542,47 @@ summary:focus-visible {
     outline: 3px solid #087dea;
     outline-offset: 2px;
 }
+
+/* Multiple uploads: compact progress queue and drag-and-drop target. */
+.upload-dropzone {
+    flex: 1 1 100%;
+    border: 2px dashed #a5b6c7;
+    border-radius: .55rem;
+    padding: 1.1rem;
+    text-align: center;
+    color: #52677c;
+    background: #f8fafc;
+    transition: border-color .15s, background .15s;
+}
+.upload-dropzone.drag-over {
+    border-color: #1769aa;
+    background: #e9f3fc;
+}
+.upload-queue { flex: 1 1 100%; max-width: 100%; }
+.upload-queue[hidden], #upload-cancel[hidden] { display: none; }
+.upload-progress-list {
+    list-style: none;
+    padding: 0;
+    margin: .45rem 0;
+    display: grid;
+    gap: .4rem;
+}
+.upload-progress-list li {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(100px, 180px) minmax(70px, 1fr);
+    gap: .65rem;
+    align-items: center;
+    padding: .45rem .6rem;
+    border: 1px solid #d6dee6;
+    border-radius: .4rem;
+    background: #fff;
+}
+.upload-name { overflow-wrap: anywhere; min-width: 0; }
+.upload-progress-list progress { width: 100%; accent-color: #1769aa; }
+.upload-state { font-size: .85rem; color: #52677c; overflow-wrap: anywhere; }
+.upload-success { color: #176236; }
+.upload-failure { color: #a1261b; }
+@media (max-width: 600px) {
+    .upload-progress-list li { grid-template-columns: 1fr 100px; }
+    .upload-state { grid-column: 1 / -1; }
+}
