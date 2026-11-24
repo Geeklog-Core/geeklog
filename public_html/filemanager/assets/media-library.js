@@ -367,12 +367,9 @@
         function selectionFromDrag(anchor, pointer) {
             var dx = pointer.x - anchor.x, dy = pointer.y - anchor.y;
             if (ratio > 0) {
-                var w = Math.min(Math.abs(dx), Math.abs(dy) * ratio);
+                // Follow the stronger pointer movement to permit vertical or horizontal drags.
+                var w = Math.max(Math.abs(dx), Math.abs(dy) * ratio);
                 var h = w / ratio;
-                // If movement is predominantly horizontal, respect the width first.
-                if (Math.abs(dx) >= Math.abs(dy) * ratio) {
-                    w = Math.abs(dx); h = w / ratio;
-                }
                 var limitX = dx >= 0 ? working.width - anchor.x : anchor.x;
                 var limitY = dy >= 0 ? working.height - anchor.y : anchor.y;
                 w = Math.min(w, limitX, limitY * ratio);
