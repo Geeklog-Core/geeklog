@@ -165,6 +165,39 @@ class MediaLibraryClassTest extends TestCase
         }
     }
 
+    public function testHidesAndBlocksTechnicalDirectories()
+    {
+        mkdir($this->testRoot . DIRECTORY_SEPARATOR . '_thumbs', 0700);
+        mkdir($this->testRoot . DIRECTORY_SEPARATOR . 'cache', 0700);
+        mkdir($this->testRoot . DIRECTORY_SEPARATOR . 'public', 0700);
+        $storage = new MediaStorage(
+            $this->testRoot,
+            'https://example.invalid/media',
+            $this->validator,
+            1024 * 1024,
+            false,
+            ['cache']
+        );
+        $listing = $storage->listDirectory('', 'Root');
+        $names = array_column($listing['items'], 'name');
+        $this->assertSame(['public'], $names);
+
+        foreach (['_thumbs', 'cache'] as $hidden) {
+            try {
+                $storage->listDirectory($hidden, 'Root');
+                $this->fail('Technical folder remained accessible: ' . $hidden);
+            } catch (RuntimeException $e) {
+                $this->assertStringContainsString('technical directory', $e->getMessage());
+            }
+            try {
+                $storage->createDirectory('', $hidden);
+                $this->fail('A reserved technical folder was created.');
+            } catch (RuntimeException $e) {
+                $this->assertStringContainsString('Reserved technical directory', $e->getMessage());
+            }
+        }
+    }
+
     /**
      * @dataProvider mediaPermissionsProvider
      */
