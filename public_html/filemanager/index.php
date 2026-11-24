@@ -49,7 +49,7 @@ $mediaStrings = [
         'resetImage' => 'Reset', 'saveOriginal' => 'Replace original', 'saveCopy' => 'Save a copy',
         'closeEditor' => 'Close', 'imageSaved' => 'Image saved.',
         'editHelp' => 'Drag to crop. Move the selection or resize it using its corners.',
-        'cropRatio' => 'Crop ratio', 'ratioFree' => 'Free',
+        'cropRatio' => 'Crop ratio', 'ratioFree' => 'Free', 'cropNoSelection' => 'Draw a selection first.',
 
         'toolsSection' => 'Transform', 'dimensionsSection' => 'Dimensions',
         'replaceWarning' => 'Replacing the original updates every article using this image URL. Cached copies may take time to refresh.',
@@ -86,7 +86,7 @@ $mediaStrings = [
         'resetImage' => 'Réinitialiser', 'saveOriginal' => 'Remplacer l’original', 'saveCopy' => 'Enregistrer une copie',
         'closeEditor' => 'Fermer', 'imageSaved' => 'Image enregistrée.',
         'editHelp' => 'Tracez une sélection, déplacez-la ou redimensionnez-la avec les coins.',
-        'cropRatio' => 'Proportions du recadrage', 'ratioFree' => 'Libre',
+        'cropRatio' => 'Proportions du recadrage', 'ratioFree' => 'Libre', 'cropNoSelection' => 'Tracez d’abord une sélection.',
 
         'toolsSection' => 'Transformations', 'dimensionsSection' => 'Dimensions',
         'replaceWarning' => 'Remplacer l’original modifie tous les articles utilisant cette URL. Le cache peut retarder l’affichage.',
