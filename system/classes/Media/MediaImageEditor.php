@@ -32,7 +32,7 @@ class MediaImageEditor
             || (float) $info[0] * $info[1] > 24000000) {
             throw new \RuntimeException('Invalid image or image dimensions exceed the safety limit.');
         }
-        $allowedTypes = [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP];
+        $allowedTypes = [IMAGETYPE_JPEG, IMAGETYPE_PNG, 18 /* WebP: IMAGETYPE_WEBP is available only from PHP 7.1 */];
         if (!in_array($info[2], $allowedTypes, true)) {
             throw new \RuntimeException('The uploaded file is not a supported raster image.');
         }
