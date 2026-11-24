@@ -308,3 +308,57 @@ summary:focus-visible {
     .media-header { flex-wrap: wrap; }
     .media-header-actions { margin-left: auto; }
 }
+
+/* Inline image editor — stays within the standalone Media Library page. */
+.media-edit-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(15, 23, 42, .68);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+.media-edit-dialog {
+    width: min(920px, 100%);
+    max-height: calc(100vh - 2rem);
+    overflow: auto;
+    padding: 1.1rem;
+    border-radius: .75rem;
+    background: #fff;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, .22);
+}
+.media-edit-header, .media-edit-toolbar, .media-edit-size, .media-edit-footer {
+    display: flex;
+    gap: .65rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.media-edit-header { justify-content: space-between; margin-bottom: .9rem; }
+.media-edit-header strong { min-width: 0; overflow-wrap: anywhere; }
+.media-edit-preview {
+    display: block;
+    max-width: 100%;
+    max-height: 46vh;
+    height: auto;
+    width: auto;
+    margin: 0 auto;
+    background: #e8edf1;
+    touch-action: none;
+    cursor: crosshair;
+}
+.media-edit-help { font-size: .85rem; color: #65717e; margin: .6rem 0; }
+.media-edit-toolbar, .media-edit-size { margin-top: .75rem; }
+.media-edit-size label { display: inline-flex; gap: .35rem; align-items: center; font-size: .87rem; }
+.media-edit-size input[type="number"] { width: 88px; padding: .35rem; }
+.media-edit-file { max-width: 175px; font-size: .8rem; }
+.media-edit-error { color: #a3261b; margin: .65rem 0; }
+.media-edit-footer { justify-content: flex-end; margin-top: .9rem; }
+.media-edit-primary { background: #1769aa; color: #fff; border-color: #1769aa; }
+.media-edit-primary:hover { background: #12558b; }
+@media (max-width: 600px) {
+    .media-edit-overlay { padding: .3rem; }
+    .media-edit-dialog { max-height: calc(100vh - .6rem); padding: .7rem; }
+    .media-edit-preview { max-height: 35vh; }
+}
