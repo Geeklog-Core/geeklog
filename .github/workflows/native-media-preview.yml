@@ -62,8 +62,12 @@ jobs:
               js = z.read(next(n for n in z.namelist() if n.endswith('/assets/media-library.js'))).decode('utf-8')
               index = z.read(next(n for n in z.namelist() if n.endswith('/filemanager/index.php'))).decode('utf-8')
               assert 'maxActiveThumbnails = 2' in js, 'Thumbnail throttling missing'
+              assert 'maxConcurrentUploads = 2' in js, 'Upload concurrency cap missing'
+              assert "xhr.upload.addEventListener('progress'" in js, 'Per-file upload progress missing'
+              assert "uploadDropzone.addEventListener('drop'" in js, 'Drag and drop missing'
               assert 'confirmDeleteFolder' in js, 'Folder deletion confirmation missing'
               assert 'confirmDeleteFolder' in index, 'Folder confirmation translation missing'
+              assert 'type="file" multiple required' in index, 'Multiple file input missing'
               assert any(n.endswith('/README.md') for n in z.namelist())
               assert not any(n.endswith('/README_FR.md') for n in z.namelist())
               assert not any(n.endswith('/lib-common.php') for n in z.namelist())
