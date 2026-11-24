@@ -23,6 +23,13 @@
     var sortSelect;
     var viewButtons = {};
     var resultCount;
+    var imageRevisions = Object.create(null);
+
+    function freshImageUrl(item) {
+        var url = new URL(item.url, window.location.href);
+        url.searchParams.set('glMediaVersion', imageRevisions[item.path] || String(item.modified || 0));
+        return url.toString();
+    }
 
     function setStatus(message) {
         statusElement.textContent = message || '';
@@ -202,7 +209,10 @@
         var canvas = document.createElement('canvas');
         canvas.className = 'media-edit-preview';
         canvas.setAttribute('aria-label', t('editHelp'));
-        dialog.appendChild(canvas);
+        var stage = document.createElement('div');
+        stage.className = 'media-edit-stage';
+        stage.appendChild(canvas);
+        dialog.appendChild(stage);
         var help = document.createElement('p');
         help.className = 'media-edit-help';
         help.textContent = t('editHelp');
@@ -265,9 +275,28 @@
                 var y = Math.min(selection.y1, selection.y2);
                 var w = Math.abs(selection.x2 - selection.x1);
                 var h = Math.abs(selection.y2 - selection.y1);
-                ctx.strokeStyle = '#fff'; ctx.lineWidth = Math.max(2, canvas.width / 600);
-                ctx.setLineDash([8, 4]); ctx.strokeRect(x, y, w, h);
-                ctx.strokeStyle = '#1465b8'; ctx.lineDash([4, 8]); ctx.strokeRect(x, y, w, h);
+                if (w > 1 && h > 1) {
+                    // Darken the unselected region while keeping the crop rectangle clear.
+                    ctx.fillStyle = 'rgba(8, 20, 36, 0.62)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(working, x, y, w, h, x, y, w, h);
+                    var line = Math.max(2, canvas.width / Math.max(1, canvas.clientWidth) * 2.5);
+                    ctx.setLineDash([]);
+                    ctx.lineWidth = line + 2;
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.strokeRect(x, y, w, h);
+                    ctx.lineWidth = line;
+                    ctx.strokeStyle = '#087dea';
+                    ctx.strokeRect(x, y, w, h);
+                    var handle = line * 2.5;
+                    [[x, y], [x + w, y], [x, y + h], [x + w, y + h]].forEach(function (corner) {
+                        ctx.fillStyle = '#fff';
+                        ctx.fillRect(corner[0] - handle / 2, corner[1] - handle / 2, handle, handle);
+                        ctx.strokeStyle = '#087dea';
+                        ctx.lineWidth = line / 2;
+                        ctx.strokeRect(corner[0] - handle / 2, corner[1] - handle / 2, handle, handle);
+                    });
+                }
             }
             widthInput.value = String(working.width);
             heightInput.value = String(working.height);
@@ -302,6 +331,7 @@
         }
         canvas.addEventListener('pointerdown', function (event) {
             if (!working || busy) { return; }
+            event.preventDefault();
             var p = point(event);
             starting = p;
             selection = {x1: p.x, y1: p.y, x2: p.x, y2: p.y};
@@ -314,7 +344,14 @@
             selection.x2 = p.x; selection.y2 = p.y;
             refresh();
         });
-        canvas.addEventListener('pointerup', function () { starting = null; });
+        canvas.addEventListener('pointerup', function (event) {
+            if (starting && selection) {
+                var p = point(event);
+                selection.x2 = p.x; selection.y2 = p.y;
+                refresh();
+            }
+            starting = null;
+        });
         canvas.addEventListener('pointercancel', function () { starting = null; selection = null; refresh(); });
         toolbar.appendChild(addButton(t('cropImage'), '', function () {
             if (!working || !selection) { return; }
@@ -390,6 +427,7 @@
                 body.set('save_copy', copy ? '1' : '0');
                 body.set('image', blob, item.name);
                 request('edit_image', {method: 'POST', body: body}).then(function () {
+                    imageRevisions[item.path] = String(Date.now());
                     busy = false;
                     finish();
                     return load(currentPath);
@@ -411,7 +449,7 @@
         document.addEventListener('keydown', onKey);
         document.body.appendChild(overlay);
         close.focus();
-        loadImage(item.url + (item.url.indexOf('?') < 0 ? '?' : '&') + 'mediaEdit=' + Date.now(), function (source) {
+        loadImage(freshImageUrl(item) + '&mediaEdit=' + Date.now(), function (source) {
             original = source;
             setWorking(source);
         });
@@ -431,7 +469,7 @@
         } else {
             if (item.image && settings.showThumbnails) {
                 var image = document.createElement('img');
-                image.src = item.url;
+                image.src = freshImageUrl(item);
                 image.alt = '';
                 image.loading = 'lazy';
                 function showFallbackIcon() {
