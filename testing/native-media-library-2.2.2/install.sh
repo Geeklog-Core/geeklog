@@ -20,13 +20,13 @@ SOURCE="$(cd "$(dirname "$0")" && pwd -P)"
 }
 echo "Geeklog 2.2.2 preview: target $WEB, system $SYS"
 echo "NOTE: Confirm in the Geeklog control panel that this is Geeklog 2.2.2."
-echo "NOTE: The HTTP/web PHP version must also be PHP 8.3+ (CLI alone is not sufficient)."
-if ! php -r 'exit(PHP_VERSION_ID >= 80300 ? 0 : 1);'; then
-  echo "ERROR: PHP CLI 8.3+ is required; do not install on PHP 5.6."
+echo "NOTE: The HTTP/web PHP version must be PHP 5.6.4 or higher (CLI alone is not sufficient)."
+if ! php -r 'exit(PHP_VERSION_ID >= 50604 ? 0 : 1);'; then
+  echo "ERROR: PHP 5.6.4 or higher is required."
   exit 1
 fi
-if ! php -r 'exit(extension_loaded("gd") && function_exists("imagewebp") ? 0 : 1);'; then
-  echo "ERROR: GD with WebP support required."
+if ! php -r 'exit(extension_loaded("gd") && function_exists("imagepng") && function_exists("finfo_open") ? 0 : 1);'; then
+  echo "ERROR: GD with PNG support and Fileinfo extension required."
   exit 1
 fi
 for file in "$SOURCE"/public_html/filemanager/{index,api}.php "$SOURCE"/system/classes/Media/*.php; do
@@ -84,4 +84,4 @@ done
 trap - ERR
 echo "Installed admin-only preview. Backup: $BACKUP"
 echo "Rollback command: bash rollback.sh '$BACKUP'"
-echo "DO NOT use in production until PHP/web compatibility and functional tests pass."
+echo "Production site: PHP 5.6 is no longer security-supported. Test on a staging clone first."
