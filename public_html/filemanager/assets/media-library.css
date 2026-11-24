@@ -134,6 +134,14 @@ summary:focus-visible {
     line-clamp: 2;
     max-height: 2.5rem;
 }
+.media-item.file .media-name {
+    display: block;
+    max-height: none;
+    white-space: nowrap;
+    overflow: hidden;
+    overflow-wrap: normal;
+    text-overflow: ellipsis;
+}
 .media-meta { margin-top: .18rem; color: #65717e; font-size: .78rem; }
 .media-controls { position: absolute; bottom: .38rem; right: .38rem; }
 .media-controls summary {
