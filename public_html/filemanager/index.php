@@ -65,7 +65,11 @@ $mediaStrings = [
         'open' => 'Open', 'select' => 'Select', 'actionsFor' => 'Actions for',
         'rename' => 'Rename', 'delete' => 'Delete', 'newName' => 'New name',
         'confirmDelete' => 'Delete "{name}"?', 'confirmDeleteFolder' => 'Delete the folder "{name}"? Only empty folders can be deleted.', 'loading' => 'Loading...', 'working' => 'Working...',
-        'uploading' => 'Uploading...', 'empty' => 'This folder is empty.',
+        'uploading' => 'Uploading...', 'uploadQueued' => 'Queued', 'uploadDone' => 'Uploaded',
+        'uploadCancelled' => 'Cancelled', 'uploadHttpError' => 'Upload failed (HTTP {status}).',
+        'selectedFiles' => '{count} files selected', 'uploadSummary' => '{ok} uploaded, {failed} failed, {cancelled} cancelled.',
+        'cancelUploads' => 'Cancel uploads', 'dropFiles' => 'Drop files here or choose files above',
+        'empty' => 'This folder is empty.',
         'noMatches' => 'No matching files or folders.', 'itemCount' => '{count} items',
         'searchPlaceholder' => 'Search this folder', 'searchLabel' => 'Search files and folders in the current directory',
         'sortLabel' => 'Sort files and folders', 'sortNameAsc' => 'Name A–Z',
@@ -102,7 +106,11 @@ $mediaStrings = [
         'open' => 'Ouvrir', 'select' => 'Sélectionner', 'actionsFor' => 'Actions pour',
         'rename' => 'Renommer', 'delete' => 'Supprimer', 'newName' => 'Nouveau nom',
         'confirmDelete' => 'Supprimer « {name} » ?', 'confirmDeleteFolder' => 'Supprimer le dossier « {name} » ? Seuls les dossiers vides peuvent être supprimés.', 'loading' => 'Chargement...', 'working' => 'Traitement...',
-        'uploading' => 'Envoi...', 'empty' => 'Ce dossier est vide.',
+        'uploading' => 'Envoi...', 'uploadQueued' => 'En attente', 'uploadDone' => 'Envoyé',
+        'uploadCancelled' => 'Annulé', 'uploadHttpError' => 'Échec de l’envoi (HTTP {status}).',
+        'selectedFiles' => '{count} fichiers sélectionnés', 'uploadSummary' => '{ok} envoyés, {failed} échecs, {cancelled} annulés.',
+        'cancelUploads' => 'Annuler les envois', 'dropFiles' => 'Déposez les fichiers ici ou sélectionnez-les ci-dessus',
+        'empty' => 'Ce dossier est vide.',
         'noMatches' => 'Aucun fichier ou dossier correspondant.', 'itemCount' => '{count} éléments',
         'searchPlaceholder' => 'Rechercher dans ce dossier', 'searchLabel' => 'Rechercher des fichiers et dossiers',
         'sortLabel' => 'Trier les fichiers et dossiers', 'sortNameAsc' => 'Nom A–Z',
@@ -167,9 +175,12 @@ header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style
     <?php if ($mediaLibrary->canWrite()) : ?>
     <section class="media-actions" aria-label="<?php echo htmlspecialchars($mediaLabels['fileOperations'], ENT_QUOTES, 'UTF-8'); ?>">
         <form id="upload-form" enctype="multipart/form-data">
-            <label class="file-picker" for="upload-file"><span class="file-picker-label"><?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?></span><input id="upload-file" name="upload" type="file" required aria-label="<?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?>"><span id="selected-file" class="selected-file" aria-live="polite"><?php echo htmlspecialchars($mediaLabels['noFile'], ENT_QUOTES, 'UTF-8'); ?></span></label>
+            <label class="file-picker" for="upload-file"><span class="file-picker-label"><?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?></span><input id="upload-file" name="upload" type="file" multiple required aria-label="<?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?>"><span id="selected-file" class="selected-file" aria-live="polite"><?php echo htmlspecialchars($mediaLabels['noFile'], ENT_QUOTES, 'UTF-8'); ?></span></label>
             <button type="submit"><?php echo htmlspecialchars($mediaLabels['upload'], ENT_QUOTES, 'UTF-8'); ?></button>
+            <button id="upload-cancel" type="button" hidden><?php echo htmlspecialchars($mediaLabels['cancelUploads'], ENT_QUOTES, 'UTF-8'); ?></button>
         </form>
+        <div id="upload-dropzone" class="upload-dropzone"><?php echo htmlspecialchars($mediaLabels['dropFiles'], ENT_QUOTES, 'UTF-8'); ?></div>
+        <div id="upload-queue" class="upload-queue" aria-live="polite" hidden></div>
         <?php if ($mediaLibrary->canCreateDirectory()) : ?>
         <button id="mkdir-button" type="button"><?php echo htmlspecialchars($mediaLabels['newFolder'], ENT_QUOTES, 'UTF-8'); ?></button>
         <?php endif; ?>
