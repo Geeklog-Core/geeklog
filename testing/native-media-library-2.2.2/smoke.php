@@ -3,9 +3,9 @@
  * Standalone smoke test without PHPUnit or Geeklog bootstrap.
  * Compatible with PHP 5.6.4: run using PHP CLI with GD and Fileinfo.
  */
-require_once dirname(__DIR__, 2) . '/system/classes/Media/MediaValidator.php';
-require_once dirname(__DIR__, 2) . '/system/classes/Media/MediaStorage.php';
-require_once dirname(__DIR__, 2) . '/system/classes/Media/MediaThumbnail.php';
+require_once dirname(dirname(__DIR__)) . '/system/classes/Media/MediaValidator.php';
+require_once dirname(dirname(__DIR__)) . '/system/classes/Media/MediaStorage.php';
+require_once dirname(dirname(__DIR__)) . '/system/classes/Media/MediaThumbnail.php';
 
 use Geeklog\Media\MediaStorage;
 use Geeklog\Media\MediaValidator;
