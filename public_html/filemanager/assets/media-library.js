@@ -507,30 +507,6 @@
             var step = event.shiftKey ? 10 : 1;
             nudgeCrop(delta[0] * step, delta[1] * step);
         });
-        var moveControls = document.createElement('div');
-        moveControls.className = 'media-edit-move-controls';
-        var moveHeading = document.createElement('span');
-        moveHeading.className = 'media-edit-move-heading';
-        moveHeading.textContent = t('moveCrop');
-        moveControls.appendChild(moveHeading);
-        var directions = document.createElement('div');
-        directions.className = 'media-edit-direction-buttons';
-        [
-            ['↑', 0, -10, 'up'], ['←', -10, 0, 'left'],
-            ['↓', 0, 10, 'down'], ['→', 10, 0, 'right']
-        ].forEach(function (direction) {
-            var button = addButton(direction[0], 'media-edit-direction-' + direction[3], function () {
-                nudgeCrop(direction[1], direction[2]);
-            });
-            button.setAttribute('aria-label', t('moveCrop') + ' ' + direction[0]);
-            directions.appendChild(button);
-        });
-        moveControls.appendChild(directions);
-        var moveHelp = document.createElement('small');
-        moveHelp.className = 'media-edit-move-help';
-        moveHelp.textContent = t('cropKeyboardHelp');
-        moveControls.appendChild(moveHelp);
-        cropTools.appendChild(moveControls);
         var ratioLabel = document.createElement('label');
         ratioLabel.textContent = t('cropRatio') + ' ';
         var ratioSelect = document.createElement('select');
