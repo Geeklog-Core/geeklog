@@ -9,8 +9,8 @@ class MediaThumbnail
 {
     public static function generate($source, $cacheRoot)
     {
-        if (!extension_loaded('gd') || !function_exists('imagewebp')) {
-            throw new \RuntimeException('GD WebP support is unavailable.');
+        if (!extension_loaded('gd') || !function_exists('imagepng')) {
+            throw new \RuntimeException('GD PNG support is unavailable.');
         }
         $base = realpath($cacheRoot);
         if ($base === false || !is_dir($base)) {
@@ -26,20 +26,23 @@ class MediaThumbnail
             || $info[1] > 10000 || (float) $info[0] * $info[1] > 24000000) {
             throw new \RuntimeException('Image dimensions exceed thumbnail safety limits.');
         }
-        $types = [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF, IMAGETYPE_WEBP];
+        $types = [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF, 18]; // WebP constant appears in PHP 7.1.
         if (!in_array($info[2], $types, true)) {
             throw new \RuntimeException('Unsupported thumbnail format.');
         }
+        $useWebp = function_exists('imagewebp');
+        $format = $useWebp ? 'webp' : 'png';
+        $mime = $useWebp ? 'image/webp' : 'image/png';
         // Inode changes after an atomic replacement, even if size and mtime coincide.
-        $key = hash('sha256', $source . ':' . $stat['mtime'] . ':'
+        $key = hash('sha256', $format . ':' . $source . ':' . $stat['mtime'] . ':'
             . $stat['size'] . ':' . $stat['ino']);
         $directory = $base . DIRECTORY_SEPARATOR . substr($key, 0, 2);
         if (!is_dir($directory) && !@mkdir($directory, 0700, true) && !is_dir($directory)) {
             throw new \RuntimeException('Cannot initialize thumbnail cache.');
         }
-        $target = $directory . DIRECTORY_SEPARATOR . $key . '.webp';
+        $target = $directory . DIRECTORY_SEPARATOR . $key . '.' . $format;
         if (is_file($target) && filesize($target) > 0) {
-            return [$target, $key];
+            return [$target, $key, $mime];
         }
         $lockPath = $directory . DIRECTORY_SEPARATOR . $key . '.lock';
         $lock = @fopen($lockPath, 'c');
@@ -59,8 +62,9 @@ class MediaThumbnail
                     case IMAGETYPE_GIF:
                         $image = @imagecreatefromgif($source);
                         break;
-                    case IMAGETYPE_WEBP:
-                        $image = @imagecreatefromwebp($source);
+                    case 18:
+                        $image = function_exists('imagecreatefromwebp')
+                            ? @imagecreatefromwebp($source) : false;
                         break;
                     default:
                         $image = false;
@@ -91,7 +95,8 @@ class MediaThumbnail
                             throw new \RuntimeException('Cannot create temporary thumbnail.');
                         }
                         try {
-                            if (!@imagewebp($thumb, $temporary, 76)
+                            if (!($useWebp ? @imagewebp($thumb, $temporary, 76)
+                                    : @imagepng($thumb, $temporary, 6))
                                 || !is_file($temporary) || filesize($temporary) === 0
                                 || !@rename($temporary, $target)) {
                                 throw new \RuntimeException('Cannot save generated thumbnail.');
@@ -111,6 +116,6 @@ class MediaThumbnail
             flock($lock, LOCK_UN);
             fclose($lock);
         }
-        return [$target, $key];
+        return [$target, $key, $mime];
     }
 }
