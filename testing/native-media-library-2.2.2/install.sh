@@ -69,18 +69,18 @@ fi
 # The rollback script knows exactly which files the preview changes.
 cp "$SOURCE/rollback.sh" "$BACKUP/rollback.sh"
 install_files() {
-  mkdir -p "$SYS/classes/Media" "$WEB/filemanager/assets"
+  mkdir -p "$SYS/classes/Media" "$WEB/filemanager/assets" || return 1
   for file in "$SOURCE"/system/classes/Media/*.php; do
-    cp -p "$file" "$SYS/classes/Media/"
+    cp -p "$file" "$SYS/classes/Media/" || return 1
   done
   for file in index.php api.php; do
-    cp -p "$SOURCE/public_html/filemanager/$file" "$WEB/filemanager/$file"
+    cp -p "$SOURCE/public_html/filemanager/$file" "$WEB/filemanager/$file" || return 1
   done
   for file in media-library.js media-library.css; do
-    cp -p "$SOURCE/public_html/filemanager/assets/$file" "$WEB/filemanager/assets/$file"
+    cp -p "$SOURCE/public_html/filemanager/assets/$file" "$WEB/filemanager/assets/$file" || return 1
   done
   for file in "${FILES[@]:4}"; do
-    rm -f "$WEB/filemanager/$file"
+    rm -f "$WEB/filemanager/$file" || return 1
   done
 }
 echo "Backup: $BACKUP"
