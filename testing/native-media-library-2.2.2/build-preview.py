@@ -21,7 +21,7 @@ files = [
     "system/classes/Media/MediaImageEditor.php",
     "system/classes/Media/MediaThumbnail.php",
 ]
-extra = ["install.sh", "rollback.sh", "README.md"]
+extra = ["install.sh", "rollback.sh", "README.md", "README_FR.md"]
 editor_access = "$editor = SEC_hasRights('story.edit') || SEC_hasRights('story.submit');"
 admin_restricted = "$editor = false; // Preview: administrators only"
 with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
