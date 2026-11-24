@@ -108,7 +108,7 @@ try {
         if (!is_dir($cache) && !@mkdir($cache, 0700, true) && !is_dir($cache)) {
             throw new RuntimeException('Cannot create a private thumbnail cache.');
         }
-        list($thumbnail, $etag) = \\Geeklog\\Media\\MediaThumbnail::generate($source, $cache);
+        list($thumbnail, $etag) = \Geeklog\Media\MediaThumbnail::generate($source, $cache);
         // Readable only by the current signed-in Geeklog user; do not use public caches.
         header_remove('Content-Type');
         header_remove('Cache-Control');
