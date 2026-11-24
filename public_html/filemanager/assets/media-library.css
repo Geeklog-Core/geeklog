@@ -309,56 +309,72 @@ summary:focus-visible {
     .media-header-actions { margin-left: auto; }
 }
 
-/* Inline image editor — stays within the standalone Media Library page. */
+/* Full-viewport image editor: the canvas is contained without distorting its aspect ratio. */
 .media-edit-overlay {
     position: fixed;
     inset: 0;
     z-index: 100;
-    background: rgba(15, 23, 42, .68);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
+    background: #eef2f6;
+    padding: 0;
 }
 .media-edit-dialog {
-    width: min(920px, 100%);
-    max-height: calc(100vh - 2rem);
-    overflow: auto;
-    padding: 1.1rem;
-    border-radius: .75rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    padding: .85rem 1.25rem;
+    overflow: hidden;
     background: #fff;
-    box-shadow: 0 16px 48px rgba(0, 0, 0, .22);
 }
 .media-edit-header, .media-edit-toolbar, .media-edit-size, .media-edit-footer {
     display: flex;
     gap: .65rem;
     align-items: center;
     flex-wrap: wrap;
+    flex-shrink: 0;
 }
-.media-edit-header { justify-content: space-between; margin-bottom: .9rem; }
+.media-edit-header {
+    justify-content: space-between;
+    margin-bottom: .65rem;
+}
 .media-edit-header strong { min-width: 0; overflow-wrap: anywhere; }
+.media-edit-stage {
+    flex: 1 1 auto;
+    min-height: 100px;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: .55rem;
+    background: #e5eaf0;
+    border: 1px solid #cbd5e1;
+}
 .media-edit-preview {
     display: block;
     max-width: 100%;
-    max-height: 46vh;
-    height: auto;
+    max-height: 100%;
     width: auto;
-    margin: 0 auto;
-    background: #e8edf1;
+    height: auto;
+    object-fit: contain;
     touch-action: none;
     cursor: crosshair;
+    background: #e8edf1;
 }
-.media-edit-help { font-size: .85rem; color: #65717e; margin: .6rem 0; }
-.media-edit-toolbar, .media-edit-size { margin-top: .75rem; }
+.media-edit-help { font-size: .84rem; color: #65717e; margin: .45rem 0 0; flex-shrink: 0; }
+.media-edit-toolbar, .media-edit-size { margin-top: .55rem; }
 .media-edit-size label { display: inline-flex; gap: .35rem; align-items: center; font-size: .87rem; }
 .media-edit-size input[type="number"] { width: 88px; padding: .35rem; }
 .media-edit-file { max-width: 175px; font-size: .8rem; }
-.media-edit-error { color: #a3261b; margin: .65rem 0; }
-.media-edit-footer { justify-content: flex-end; margin-top: .9rem; }
+.media-edit-error { color: #a3261b; margin: .45rem 0; flex-shrink: 0; }
+.media-edit-error:empty { display: none; }
+.media-edit-footer { justify-content: flex-end; margin-top: .55rem; }
 .media-edit-primary { background: #1769aa; color: #fff; border-color: #1769aa; }
 .media-edit-primary:hover { background: #12558b; }
 @media (max-width: 600px) {
-    .media-edit-overlay { padding: .3rem; }
-    .media-edit-dialog { max-height: calc(100vh - .6rem); padding: .7rem; }
-    .media-edit-preview { max-height: 35vh; }
+    .media-edit-dialog { padding: .6rem; }
+    .media-edit-stage { min-height: 100px; }
+    .media-edit-toolbar { gap: .35rem; }
 }
