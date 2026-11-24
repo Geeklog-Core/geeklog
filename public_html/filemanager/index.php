@@ -42,6 +42,7 @@ $mediaLanguage = strtolower(substr((string) COM_getLangIso639Code(), 0, 2));
 $mediaStrings = [
     'en' => [
         'title' => 'Media Library', 'selectImage' => 'Select an image', 'selectFile' => 'Select a file',
+        'manageMedia' => 'Manage your media files', 'backToAdmin' => 'Back to administration',
         'refresh' => 'Refresh', 'currentFolder' => 'Current folder', 'fileOperations' => 'File operations',
         'chooseFile' => 'Choose file', 'noFile' => 'No file selected', 'upload' => 'Upload',
         'newFolder' => 'New folder', 'filesLabel' => 'Media files',
@@ -63,6 +64,7 @@ $mediaStrings = [
     ],
     'fr' => [
         'title' => 'Bibliothèque média', 'selectImage' => 'Sélectionner une image', 'selectFile' => 'Sélectionner un fichier',
+        'manageMedia' => 'Gérer les fichiers médias', 'backToAdmin' => 'Retour à l’administration',
         'refresh' => 'Actualiser', 'currentFolder' => 'Dossier actuel', 'fileOperations' => 'Gestion des fichiers',
         'chooseFile' => 'Choisir un fichier', 'noFile' => 'Aucun fichier sélectionné', 'upload' => 'Envoyer',
         'newFolder' => 'Nouveau dossier', 'filesLabel' => 'Fichiers média',
@@ -117,9 +119,17 @@ header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style
     <header class="media-header">
         <div>
             <h1 id="media-title"><?php echo htmlspecialchars($mediaLabels['title'], ENT_QUOTES, 'UTF-8'); ?></h1>
-            <p id="media-context"><?php echo htmlspecialchars($mediaLabels[$type === 'Image' ? 'selectImage' : 'selectFile'], ENT_QUOTES, 'UTF-8'); ?></p>
+            <p id="media-context"><?php echo htmlspecialchars($mediaLabels[$type === 'Root' ? 'manageMedia' : ($type === 'Image' ? 'selectImage' : 'selectFile')], ENT_QUOTES, 'UTF-8'); ?></p>
         </div>
-        <button id="refresh-button" type="button"><?php echo htmlspecialchars($mediaLabels['refresh'], ENT_QUOTES, 'UTF-8'); ?></button>
+        <div class="media-header-actions">
+            <?php if ($type === 'Root'
+                && !isset($_GET['CKEditorFuncNum'])
+                && !isset($_GET['CKEditor'])
+                && (SEC_inGroup('Root') || SEC_hasRights('filemanager.admin'))) : ?>
+            <a href="<?php echo htmlspecialchars($_CONF['site_admin_url'] . '/index.php', ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($mediaLabels['backToAdmin'], ENT_QUOTES, 'UTF-8'); ?></a>
+            <?php endif; ?>
+            <button id="refresh-button" type="button"><?php echo htmlspecialchars($mediaLabels['refresh'], ENT_QUOTES, 'UTF-8'); ?></button>
+        </div>
     </header>
 
     <nav id="breadcrumbs" class="breadcrumbs" aria-label="<?php echo htmlspecialchars($mediaLabels['currentFolder'], ENT_QUOTES, 'UTF-8'); ?>"></nav>
