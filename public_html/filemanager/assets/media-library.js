@@ -1057,12 +1057,20 @@
             var failed = 0;
             var cancelled = false;
             var promises = [];
+            var submittedNames = Object.create(null);
 
             function worker() {
                 if (cancelled || cursor >= files.length) { return Promise.resolve(); }
                 var file = files[cursor++];
                 try {
                     validateUploadSelection(file);
+                    // Prevent accidental duplicate names in the same batch, especially
+                    // when the site's overwrite setting is enabled.
+                    var foldedName = file.name.toLocaleLowerCase();
+                    if (submittedNames[foldedName]) {
+                        throw new Error(t('duplicateUpload', {name: file.name}));
+                    }
+                    submittedNames[foldedName] = true;
                 } catch (error) {
                     failed += 1;
                     file._mediaState.textContent = error.message;
