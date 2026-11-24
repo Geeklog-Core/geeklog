@@ -62,7 +62,9 @@ class MediaLibrary
             $baseUrl,
             $validator,
             $limitBytes,
-            !empty($_CONF['filemanager_upload_overwrite'])
+            !empty($_CONF['filemanager_upload_overwrite']),
+            isset($_CONF['filemanager_unallowed_dirs'])
+                ? (array) $_CONF['filemanager_unallowed_dirs'] : []
         );
 
         return new self($admin, $storage);
