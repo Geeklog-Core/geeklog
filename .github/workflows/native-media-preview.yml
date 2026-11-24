@@ -35,6 +35,8 @@ jobs:
           for f in public_html/filemanager/index.php public_html/filemanager/api.php system/classes/Media/*.php; do
             php -l "$f"
           done
+      - name: PHP 5.6 runtime smoke test
+        run: php testing/native-media-library-2.2.2/smoke.php
       - name: JavaScript syntax check
         run: node --check public_html/filemanager/assets/media-library.js
       - name: Build preview archive
