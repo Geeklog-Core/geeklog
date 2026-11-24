@@ -178,6 +178,245 @@
         return svg;
     }
 
+    function openImageEditor(item) {
+        var ext = item.name.split('.').pop().toLowerCase();
+        var mime = (ext === 'jpg' || ext === 'jpeg') ? 'image/jpeg'
+            : (ext === 'png' ? 'image/png' : (ext === 'webp' ? 'image/webp' : ''));
+        if (!mime) { showError(t('editUnsupported')); return; }
+        var overlay = document.createElement('div');
+        overlay.className = 'media-edit-overlay';
+        var dialog = document.createElement('section');
+        dialog.className = 'media-edit-dialog';
+        dialog.setAttribute('role', 'dialog');
+        dialog.setAttribute('aria-modal', 'true');
+        dialog.setAttribute('aria-label', t('editImage') + ': ' + item.name);
+        overlay.appendChild(dialog);
+        var header = document.createElement('div');
+        header.className = 'media-edit-header';
+        var title = document.createElement('strong');
+        title.textContent = t('editImage') + ': ' + item.name;
+        header.appendChild(title);
+        var close = addButton(t('closeEditor'), '', finish);
+        header.appendChild(close);
+        dialog.appendChild(header);
+        var canvas = document.createElement('canvas');
+        canvas.className = 'media-edit-preview';
+        canvas.setAttribute('aria-label', t('editHelp'));
+        dialog.appendChild(canvas);
+        var help = document.createElement('p');
+        help.className = 'media-edit-help';
+        help.textContent = t('editHelp');
+        dialog.appendChild(help);
+        var toolbar = document.createElement('div');
+        toolbar.className = 'media-edit-toolbar';
+        dialog.appendChild(toolbar);
+        var sizeRow = document.createElement('div');
+        sizeRow.className = 'media-edit-size';
+        dialog.appendChild(sizeRow);
+        var error = document.createElement('div');
+        error.className = 'media-edit-error';
+        error.setAttribute('role', 'alert');
+        dialog.appendChild(error);
+        var footer = document.createElement('div');
+        footer.className = 'media-edit-footer';
+        dialog.appendChild(footer);
+        var original = null;
+        var working = null;
+        var starting = null;
+        var selection = null;
+        var busy = false;
+        var previousFocus = document.activeElement;
+        var widthInput = document.createElement('input');
+        var heightInput = document.createElement('input');
+        [widthInput, heightInput].forEach(function (input) {
+            input.type = 'number'; input.min = '1'; input.max = '10000'; input.step = '1';
+        });
+        var locked = document.createElement('input');
+        locked.type = 'checkbox';
+        locked.checked = true;
+        function field(text, input) {
+            var label = document.createElement('label');
+            label.textContent = text + ' ';
+            label.appendChild(input);
+            return label;
+        }
+        sizeRow.appendChild(field(t('width'), widthInput));
+        sizeRow.appendChild(field(t('height'), heightInput));
+        sizeRow.appendChild(field(t('lockRatio'), locked));
+        function fail(message) { error.textContent = message; }
+        function valid(w, h) {
+            return Number.isInteger(w) && Number.isInteger(h) && w > 0 && h > 0
+                && w <= 10000 && h <= 10000 && w * h <= 24000000;
+        }
+        function resized(source, w, h) {
+            if (!valid(w, h)) { throw new Error(t('dimensionsInvalid')); }
+            var next = document.createElement('canvas');
+            next.width = w; next.height = h;
+            next.getContext('2d').drawImage(source, 0, 0, w, h);
+            return next;
+        }
+        function refresh() {
+            if (!working) { return; }
+            canvas.width = working.width; canvas.height = working.height;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(working, 0, 0);
+            if (selection) {
+                var x = Math.min(selection.x1, selection.x2);
+                var y = Math.min(selection.y1, selection.y2);
+                var w = Math.abs(selection.x2 - selection.x1);
+                var h = Math.abs(selection.y2 - selection.y1);
+                ctx.strokeStyle = '#fff'; ctx.lineWidth = Math.max(2, canvas.width / 600);
+                ctx.setLineDash([8, 4]); ctx.strokeRect(x, y, w, h);
+                ctx.strokeStyle = '#1465b8'; ctx.lineDash([4, 8]); ctx.strokeRect(x, y, w, h);
+            }
+            widthInput.value = String(working.width);
+            heightInput.value = String(working.height);
+        }
+        function setWorking(source) {
+            if (!valid(source.width, source.height)) { throw new Error(t('dimensionsInvalid')); }
+            working = resized(source, source.width, source.height);
+            selection = null;
+            refresh();
+        }
+        function loadImage(url, callback) {
+            var image = new Image();
+            image.onload = function () {
+                try {
+                    if (!valid(image.naturalWidth, image.naturalHeight)) {
+                        throw new Error(t('dimensionsInvalid'));
+                    }
+                    var source = resized(image, image.naturalWidth, image.naturalHeight);
+                    callback(source);
+                    fail('');
+                } catch (e) { fail(e.message); }
+            };
+            image.onerror = function () { fail(t('imageLoadFailed')); };
+            image.src = url;
+        }
+        function point(event) {
+            var bounds = canvas.getBoundingClientRect();
+            return {
+                x: Math.max(0, Math.min(canvas.width, Math.round((event.clientX - bounds.left) * canvas.width / bounds.width))),
+                y: Math.max(0, Math.min(canvas.height, Math.round((event.clientY - bounds.top) * canvas.height / bounds.height)))
+            };
+        }
+        canvas.addEventListener('pointerdown', function (event) {
+            if (!working || busy) { return; }
+            var p = point(event);
+            starting = p;
+            selection = {x1: p.x, y1: p.y, x2: p.x, y2: p.y};
+            canvas.setPointerCapture(event.pointerId);
+            refresh();
+        });
+        canvas.addEventListener('pointermove', function (event) {
+            if (!starting || !selection) { return; }
+            var p = point(event);
+            selection.x2 = p.x; selection.y2 = p.y;
+            refresh();
+        });
+        canvas.addEventListener('pointerup', function () { starting = null; });
+        canvas.addEventListener('pointercancel', function () { starting = null; selection = null; refresh(); });
+        toolbar.appendChild(addButton(t('cropImage'), '', function () {
+            if (!working || !selection) { return; }
+            var x = Math.min(selection.x1, selection.x2), y = Math.min(selection.y1, selection.y2);
+            var w = Math.abs(selection.x2 - selection.x1), h = Math.abs(selection.y2 - selection.y1);
+            if (w < 2 || h < 2) { return; }
+            var next = document.createElement('canvas');
+            next.width = w; next.height = h;
+            next.getContext('2d').drawImage(working, x, y, w, h, 0, 0, w, h);
+            working = next; selection = null; refresh();
+        }));
+        function rotate(clockwise) {
+            if (!working) { return; }
+            var next = document.createElement('canvas');
+            next.width = working.height; next.height = working.width;
+            var ctx = next.getContext('2d');
+            ctx.translate(clockwise ? next.width : 0, clockwise ? 0 : next.height);
+            ctx.rotate(clockwise ? Math.PI / 2 : -Math.PI / 2);
+            ctx.drawImage(working, 0, 0);
+            working = next; selection = null; refresh();
+        }
+        toolbar.appendChild(addButton(t('rotateLeft'), '', function () { rotate(false); }));
+        toolbar.appendChild(addButton(t('rotateRight'), '', function () { rotate(true); }));
+        var lastWidth = 0, lastHeight = 0;
+        [widthInput, heightInput].forEach(function (input) {
+            input.addEventListener('change', function () {
+                if (!working) { return; }
+                var w = Number(widthInput.value), h = Number(heightInput.value);
+                if (locked.checked) {
+                    if (input === widthInput) { h = Math.round(working.height * w / working.width); }
+                    else { w = Math.round(working.width * h / working.height); }
+                }
+                if (!valid(w, h)) { fail(t('dimensionsInvalid')); refresh(); return; }
+                widthInput.value = String(w); heightInput.value = String(h);
+            });
+        });
+        toolbar.appendChild(addButton(t('resizeImage'), '', function () {
+            if (!working) { return; }
+            var w = Number(widthInput.value), h = Number(heightInput.value);
+            if (!valid(w, h)) { fail(t('dimensionsInvalid')); return; }
+            working = resized(working, w, h); selection = null; refresh(); fail('');
+        }));
+        toolbar.appendChild(addButton(t('resetImage'), '', function () {
+            if (original) { setWorking(original); fail(''); }
+        }));
+        var replacement = document.createElement('input');
+        replacement.type = 'file';
+        replacement.accept = 'image/jpeg,image/png,image/webp';
+        replacement.className = 'media-edit-file';
+        var replacementLabel = field(t('replaceImage'), replacement);
+        toolbar.appendChild(replacementLabel);
+        replacement.addEventListener('change', function () {
+            if (!replacement.files.length) { return; }
+            var file = replacement.files[0];
+            if (['image/jpeg', 'image/png', 'image/webp'].indexOf(file.type) < 0) {
+                fail(t('editUnsupported')); return;
+            }
+            var url = URL.createObjectURL(file);
+            loadImage(url, function (source) {
+                original = source;
+                setWorking(original);
+                URL.revokeObjectURL(url);
+            });
+        });
+        function save(copy) {
+            if (!working || busy) { return; }
+            if (!copy && !window.confirm(t('editConfirm'))) { return; }
+            busy = true; fail('');
+            working.toBlob(function (blob) {
+                if (!blob) { busy = false; fail(t('requestFailed')); return; }
+                var body = new FormData();
+                body.set('path', item.path);
+                body.set('save_copy', copy ? '1' : '0');
+                body.set('image', blob, item.name);
+                request('edit_image', {method: 'POST', body: body}).then(function () {
+                    finish();
+                    return load(currentPath);
+                }).then(function () { setStatus(t('imageSaved')); })
+                  .catch(function (e) { fail(e.message); })
+                  .finally(function () { busy = false; });
+            }, mime, mime === 'image/jpeg' ? 0.9 : 0.92);
+        }
+        footer.appendChild(addButton(t('saveCopy'), '', function () { save(true); }));
+        footer.appendChild(addButton(t('saveOriginal'), 'media-edit-primary', function () { save(false); }));
+        function finish() {
+            if (busy) { return; }
+            document.removeEventListener('keydown', onKey);
+            overlay.remove();
+            if (previousFocus && previousFocus.isConnected) { previousFocus.focus(); }
+        }
+        function onKey(event) {
+            if (event.key === 'Escape' && !busy) { event.stopPropagation(); finish(); }
+        }
+        document.addEventListener('keydown', onKey);
+        document.body.appendChild(overlay);
+        close.focus();
+        loadImage(item.url + (item.url.indexOf('?') < 0 ? '?' : '&') + 'mediaEdit=' + Date.now(), function (source) {
+            original = source;
+            setWorking(source);
+        });
+    }
+
     function renderItem(item) {
         var card = document.createElement('article');
         card.className = 'media-item ' + item.kind;
@@ -241,6 +480,12 @@
             controls.appendChild(summary);
             var menu = document.createElement('div');
             menu.className = 'media-control-menu';
+            if (item.kind === 'file' && /\.(jpe?g|png|webp)$/i.test(item.name)) {
+                menu.appendChild(addButton(t('editImage'), '', function () {
+                    controls.open = false;
+                    openImageEditor(item);
+                }));
+            }
             menu.appendChild(addButton(t('rename'), '', function () {
                 controls.open = false;
                 var nextName = window.prompt(t('newName'), item.name);
