@@ -8,7 +8,8 @@ only the native Media Library and the required PHP classes. It does not edit
 
 - Geeklog **2.2.2** (verify the version before installing).
 - PHP **5.6.4 or newer** with GD/PNG and Fileinfo. PHP 5.6 code compatibility is
-  targeted, but **full functional tests under PHP 5.6 still need to be run**.
+  verified by automated checks and tested on one live PHP 5.6.40 site;
+  configurations may differ.
 - PHP GD with WebP support is optional: thumbnails use WebP if available and PNG
   otherwise. Existing WebP source processing depends on server GD capabilities.
 - JavaScript browser APIs require a reasonably recent browser.
@@ -16,6 +17,13 @@ only the native Media Library and the required PHP classes. It does not edit
   by this package. Admin privileges are verified in PHP on every request.
 
 > PHP 5.6 is end-of-life and has known security risks. Prefer a supported PHP version; if a legacy site must remain on 5.6, use a protected staging clone for initial validation before any production decision. This preview does not mitigate vulnerabilities in unsupported PHP versions.
+
+## Download (for administrators)
+
+Get the attached `geeklog-2.2.2-native-media-library-preview-1.zip` from
+[GitHub prerelease](https://github.com/hostellerie/geeklog-2.2.2/releases/tag/native-media-library-2.2.2-preview.1).
+**Do not use** GitHub's automatic Source code ZIP: it is the entire Geeklog
+repository and not an installer for an existing site.
 
 ## Prepare the ZIP (for the maintainer)
 
@@ -26,7 +34,7 @@ python3 testing/native-media-library-2.2.2/build-preview.py
 ```
 
 The builder packages just nine runtime files, `install.sh`, `rollback.sh`
-and this README. It patches `MediaLibrary.php` **inside the ZIP only** to
+and this English README. It patches `MediaLibrary.php` **inside the ZIP only** to
 remove editor access. It does not alter the PR branch's normal editor support.
 
 ## Test installation
