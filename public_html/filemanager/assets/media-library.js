@@ -40,6 +40,59 @@
         return url.toString();
     }
 
+    // Keep legacy PHP installations responsive: never flood the API with
+    // concurrent thumbnail requests. Only enqueue cards close to the viewport.
+    var thumbnailQueue = [];
+    var activeThumbnails = 0;
+    var maxActiveThumbnails = 2;
+    var thumbnailObserver = typeof IntersectionObserver !== 'undefined'
+        ? new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    thumbnailObserver.unobserve(entry.target);
+                    enqueueThumbnail(entry.target);
+                }
+            });
+        }, {rootMargin: '250px 0px'}) : null;
+
+    function enqueueThumbnail(image) {
+        if (!image.isConnected || image.dataset.mediaThumbQueued) { return; }
+        image.dataset.mediaThumbQueued = '1';
+        thumbnailQueue.push(image);
+        drainThumbnailQueue();
+    }
+
+    function drainThumbnailQueue() {
+        while (activeThumbnails < maxActiveThumbnails && thumbnailQueue.length) {
+            var image = thumbnailQueue.shift();
+            if (!image.isConnected) { continue; }
+            activeThumbnails += 1;
+            var done = function () {
+                activeThumbnails -= 1;
+                drainThumbnailQueue();
+            };
+            image.addEventListener('load', done, {once: true});
+            image.addEventListener('error', done, {once: true});
+            image.src = image.dataset.mediaThumbUrl;
+        }
+    }
+
+    function observeThumbnail(image) {
+        if (thumbnailObserver) {
+            thumbnailObserver.observe(image);
+        } else {
+            enqueueThumbnail(image);
+        }
+    }
+
+    function resetPendingThumbnails() {
+        // A folder change or filter should discard requests not started yet.
+        thumbnailQueue = [];
+        if (thumbnailObserver) {
+            thumbnailObserver.disconnect();
+        }
+    }
+
     function setStatus(message) {
         statusElement.textContent = message || '';
     }
@@ -659,7 +712,7 @@
         } else {
             if (item.image && settings.showThumbnails) {
                 var image = document.createElement('img');
-                image.src = thumbnailUrl(item);
+                image.dataset.mediaThumbUrl = thumbnailUrl(item);
                 image.alt = '';
                 image.loading = 'lazy';
                 function showFallbackIcon() {
@@ -677,6 +730,7 @@
                 }, {once: true});
                 image.addEventListener('error', showFallbackIcon, {once: true});
                 preview.appendChild(image);
+                observeThumbnail(image);
             } else {
                 preview.appendChild(icon('file'));
             }
@@ -757,6 +811,7 @@
         });
         var folders = filtered.filter(function (item) { return item.kind === 'folder'; }).sort(compareItems);
         var files = filtered.filter(function (item) { return item.kind !== 'folder'; }).sort(compareItems);
+        resetPendingThumbnails();
         itemsElement.textContent = '';
         itemsElement.className = 'media-results view-' + viewMode;
         [{title: t('folders'), items: folders}, {title: t('files'), items: files}].forEach(function (group) {
