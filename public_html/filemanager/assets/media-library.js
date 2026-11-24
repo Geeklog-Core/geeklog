@@ -451,17 +451,33 @@
                 selection = selectionFromDrag(p, p);
             }
             canvas.setPointerCapture(event.pointerId);
+            canvas.style.cursor = dragMode === 'move' ? 'grabbing'
+                : (dragMode === 'resize' ? 'nwse-resize' : 'crosshair');
             refresh();
         });
         canvas.addEventListener('pointermove', function (event) {
-            if (!starting || !working) { return; }
-            updateSelection(point(event));
+            if (!working) { return; }
+            var p = point(event);
+            if (starting) {
+                updateSelection(p);
+                return;
+            }
+            var rect = normalizedSelection();
+            var corner = cornerAt(p, rect);
+            if (corner) {
+                canvas.style.cursor = (corner === 'nw' || corner === 'se')
+                    ? 'nwse-resize' : 'nesw-resize';
+            } else {
+                canvas.style.cursor = rect && within(p, rect) ? 'move' : 'crosshair';
+            }
         });
         canvas.addEventListener('pointerup', function (event) {
             if (starting && working) { updateSelection(point(event)); }
             starting = null;
+            canvas.style.cursor = 'crosshair';
         });
         canvas.addEventListener('pointercancel', function () {
+            canvas.style.cursor = 'crosshair';
             starting = null;
             selection = null;
             refresh();
