@@ -175,7 +175,7 @@ header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style
     <?php if ($mediaLibrary->canWrite()) : ?>
     <section class="media-actions" aria-label="<?php echo htmlspecialchars($mediaLabels['fileOperations'], ENT_QUOTES, 'UTF-8'); ?>">
         <form id="upload-form" enctype="multipart/form-data">
-            <label class="file-picker" for="upload-file"><span class="file-picker-label"><?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?></span><input id="upload-file" name="upload" type="file" multiple required aria-label="<?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?>"><span id="selected-file" class="selected-file" aria-live="polite"><?php echo htmlspecialchars($mediaLabels['noFile'], ENT_QUOTES, 'UTF-8'); ?></span></label>
+            <label class="file-picker" for="upload-file"><span class="file-picker-label"><?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?></span><input id="upload-file" name="upload" type="file" multiple aria-label="<?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?>"><span id="selected-file" class="selected-file" aria-live="polite"><?php echo htmlspecialchars($mediaLabels['noFile'], ENT_QUOTES, 'UTF-8'); ?></span></label>
             <button type="submit"><?php echo htmlspecialchars($mediaLabels['upload'], ENT_QUOTES, 'UTF-8'); ?></button>
             <button id="upload-cancel" type="button" hidden><?php echo htmlspecialchars($mediaLabels['cancelUploads'], ENT_QUOTES, 'UTF-8'); ?></button>
         </form>
