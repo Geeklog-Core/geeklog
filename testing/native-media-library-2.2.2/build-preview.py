@@ -32,9 +32,17 @@ with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as arch
             if text.count(editor_access) != 1:
                 raise SystemExit("ERROR: MediaLibrary permission layout changed; refusing to build.")
             data = text.replace(editor_access, admin_restricted).encode("utf-8")
-        archive.writestr(name + "/" + filename, data)
+        info = zipfile.ZipInfo(name + "/" + filename)
+        info.create_system = 3
+        info.external_attr = 0o100644 << 16
+        info.compress_type = zipfile.ZIP_DEFLATED
+        archive.writestr(info, data)
     for filename in extra:
-        archive.write(here / filename, arcname=name + "/" + filename)
+        info = zipfile.ZipInfo(name + "/" + filename)
+        info.create_system = 3
+        info.external_attr = (0o100755 if filename.endswith(".sh") else 0o100644) << 16
+        info.compress_type = zipfile.ZIP_DEFLATED
+        archive.writestr(info, (here / filename).read_bytes())
 digest = hashlib.sha256(output.read_bytes()).hexdigest()
 print("Preview archive:", output)
 print("SHA-256:", digest)
