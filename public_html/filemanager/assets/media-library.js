@@ -946,35 +946,209 @@
     if (uploadForm) {
         var selectedFileLabel = document.getElementById('selected-file');
         var uploadInput = document.getElementById('upload-file');
+        var uploadDropzone = document.getElementById('upload-dropzone');
+        var uploadQueueElement = document.getElementById('upload-queue');
+        var uploadSubmit = uploadForm.querySelector('button[type="submit"]');
+        var uploadCancel = document.getElementById('upload-cancel');
+        var pendingFiles = [];
+        var uploading = false;
+        var activeUploads = [];
+        var maxConcurrentUploads = 2;
+
+        function setPendingFiles(files) {
+            if (uploading) { return; }
+            pendingFiles = Array.prototype.slice.call(files || []);
+            selectedFileLabel.textContent = pendingFiles.length
+                ? t('selectedFiles', {count: pendingFiles.length}) : t('noFile');
+            uploadQueueElement.textContent = '';
+            if (pendingFiles.length) {
+                renderUploadQueue(pendingFiles);
+            } else {
+                uploadQueueElement.hidden = true;
+            }
+        }
+
+        function renderUploadQueue(files) {
+            uploadQueueElement.textContent = '';
+            uploadQueueElement.hidden = false;
+            var list = document.createElement('ul');
+            list.className = 'upload-progress-list';
+            files.forEach(function (file) {
+                var item = document.createElement('li');
+                var name = document.createElement('span');
+                name.className = 'upload-name';
+                name.textContent = file.name;
+                name.title = file.name;
+                var bar = document.createElement('progress');
+                bar.max = 100;
+                bar.value = 0;
+                bar.setAttribute('aria-label', file.name);
+                var state = document.createElement('span');
+                state.className = 'upload-state';
+                state.textContent = t('uploadQueued');
+                item.appendChild(name);
+                item.appendChild(bar);
+                item.appendChild(state);
+                list.appendChild(item);
+                file._mediaProgress = bar;
+                file._mediaState = state;
+            });
+            uploadQueueElement.appendChild(list);
+        }
+
+        function uploadFile(file, folder) {
+            return new Promise(function (resolve) {
+                var xhr = new XMLHttpRequest();
+                activeUploads.push(xhr);
+                var finished = false;
+                function finish(ok, message) {
+                    if (finished) { return; }
+                    finished = true;
+                    var position = activeUploads.indexOf(xhr);
+                    if (position !== -1) { activeUploads.splice(position, 1); }
+                    file._mediaState.textContent = message;
+                    file._mediaState.className = 'upload-state ' + (ok ? 'upload-success' : 'upload-failure');
+                    if (ok) { file._mediaProgress.value = 100; }
+                    resolve(ok);
+                }
+                xhr.open('POST', settings.apiUrl, true);
+                xhr.withCredentials = true;
+                xhr.timeout = 60000;
+                xhr.upload.addEventListener('progress', function (event) {
+                    if (event.lengthComputable) {
+                        file._mediaProgress.value = Math.min(100, Math.round(event.loaded * 100 / event.total));
+                        file._mediaState.textContent = file._mediaProgress.value + '%';
+                    }
+                });
+                xhr.addEventListener('load', function () {
+                    var payload;
+                    try {
+                        payload = JSON.parse(xhr.responseText);
+                    } catch (ignore) {
+                        finish(false, t('uploadHttpError', {status: xhr.status}));
+                        return;
+                    }
+                    if (payload.csrfToken) { settings.csrfToken = payload.csrfToken; }
+                    finish(xhr.status >= 200 && xhr.status < 300 && payload.ok,
+                        (xhr.status >= 200 && xhr.status < 300 && payload.ok)
+                            ? t('uploadDone') : (payload.error || t('requestFailed')));
+                });
+                xhr.addEventListener('error', function () { finish(false, t('requestFailed')); });
+                xhr.addEventListener('timeout', function () { finish(false, t('timeout')); });
+                xhr.addEventListener('abort', function () { finish(false, t('uploadCancelled')); });
+                var body = new FormData();
+                body.set('action', 'upload');
+                body.set('type', settings.type);
+                body.set('path', folder);
+                body.set(settings.csrfName, settings.csrfToken);
+                body.set('upload', file, file.name);
+                file._mediaState.textContent = t('uploading');
+                xhr.send(body);
+            });
+        }
+
+        function runUploadQueue(files, folder) {
+            uploading = true;
+            uploadInput.disabled = true;
+            uploadSubmit.disabled = true;
+            uploadCancel.hidden = false;
+            var cursor = 0;
+            var succeeded = 0;
+            var failed = 0;
+            var cancelled = false;
+            var promises = [];
+
+            function worker() {
+                if (cancelled || cursor >= files.length) { return Promise.resolve(); }
+                var file = files[cursor++];
+                try {
+                    validateUploadSelection(file);
+                } catch (error) {
+                    failed += 1;
+                    file._mediaState.textContent = error.message;
+                    file._mediaState.className = 'upload-state upload-failure';
+                    return worker();
+                }
+                return uploadFile(file, folder).then(function (ok) {
+                    if (ok) { succeeded += 1; } else { failed += 1; }
+                    return worker();
+                });
+            }
+
+            uploadCancel.onclick = function () {
+                cancelled = true;
+                activeUploads.slice().forEach(function (xhr) { xhr.abort(); });
+                files.slice(cursor).forEach(function (file) {
+                    file._mediaState.textContent = t('uploadCancelled');
+                    file._mediaState.className = 'upload-state upload-failure';
+                });
+            };
+            for (var i = 0; i < Math.min(maxConcurrentUploads, files.length); i += 1) {
+                promises.push(worker());
+            }
+            Promise.all(promises).then(function () {
+                uploading = false;
+                uploadInput.disabled = false;
+                uploadSubmit.disabled = false;
+                uploadCancel.hidden = true;
+                uploadCancel.onclick = null;
+                uploadForm.reset();
+                pendingFiles = [];
+                selectedFileLabel.textContent = t('noFile');
+                setStatus(t('uploadSummary', {ok: succeeded, failed: failed, cancelled: cancelled ? files.length - cursor : 0}));
+                if (currentPath === folder && succeeded) {
+                    return load(folder).then(function () {
+                        setStatus(t('uploadSummary', {ok: succeeded, failed: failed, cancelled: cancelled ? files.length - cursor : 0}));
+                    });
+                }
+            }).catch(function (error) {
+                uploading = false;
+                uploadInput.disabled = false;
+                uploadSubmit.disabled = false;
+                uploadCancel.hidden = true;
+                showError(error.message);
+            });
+        }
+
         uploadInput.addEventListener('change', function () {
-            selectedFileLabel.textContent = uploadInput.files.length
-                ? uploadInput.files[0].name : t('noFile');
+            setPendingFiles(uploadInput.files);
         });
         uploadForm.addEventListener('submit', function (event) {
             event.preventDefault();
-            var fileInput = document.getElementById('upload-file');
-            if (!fileInput.files.length) { return; }
-            try {
-                validateUploadSelection(fileInput.files[0]);
-            } catch (validationError) {
-                setStatus('');
-                showError(validationError.message);
-                return;
-            }
-            var body = new FormData();
-            body.set('path', currentPath);
-            body.set('upload', fileInput.files[0]);
+            if (uploading || !pendingFiles.length) { return; }
             clearError();
-            setStatus(t('uploading'));
-            request('upload', {method: 'POST', body: body}).then(function () {
-                uploadForm.reset();
-                selectedFileLabel.textContent = t('noFile');
-                return load(currentPath);
-            }).catch(function (error) {
-                setStatus('');
-                showError(error.message);
-            });
+            // Snapshot the folder: navigation while uploading must not redirect files.
+            runUploadQueue(pendingFiles.slice(), currentPath);
         });
+        if (uploadDropzone) {
+            var dragDepth = 0;
+            uploadDropzone.addEventListener('dragenter', function (event) {
+                if (uploading) { return; }
+                event.preventDefault();
+                dragDepth += 1;
+                uploadDropzone.classList.add('drag-over');
+            });
+            uploadDropzone.addEventListener('dragover', function (event) {
+                if (uploading) { return; }
+                event.preventDefault();
+                event.dataTransfer.dropEffect = 'copy';
+            });
+            uploadDropzone.addEventListener('dragleave', function (event) {
+                dragDepth -= 1;
+                if (dragDepth <= 0) {
+                    dragDepth = 0;
+                    uploadDropzone.classList.remove('drag-over');
+                }
+            });
+            uploadDropzone.addEventListener('drop', function (event) {
+                event.preventDefault();
+                dragDepth = 0;
+                uploadDropzone.classList.remove('drag-over');
+                if (!uploading && event.dataTransfer && event.dataTransfer.files.length) {
+                    setPendingFiles(event.dataTransfer.files);
+                }
+            });
+        }
     }
     var mkdirButton = document.getElementById('mkdir-button');
     if (mkdirButton) {
