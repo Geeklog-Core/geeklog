@@ -195,11 +195,20 @@
                 image.src = item.url;
                 image.alt = '';
                 image.loading = 'lazy';
-                image.addEventListener('error', function () {
-                    // Broken, empty or unsupported images get a neutral file icon.
+                function showFallbackIcon() {
                     image.remove();
-                    preview.appendChild(icon('file'));
+                    if (!preview.querySelector('svg')) {
+                        preview.appendChild(icon('file'));
+                    }
+                }
+                // Valid 1x1 transparent placeholders do not trigger an error.
+                // Treat them like missing previews, without changing the file itself.
+                image.addEventListener('load', function () {
+                    if (image.naturalWidth <= 1 && image.naturalHeight <= 1) {
+                        showFallbackIcon();
+                    }
                 }, {once: true});
+                image.addEventListener('error', showFallbackIcon, {once: true});
                 preview.appendChild(image);
             } else {
                 preview.appendChild(icon('file'));
