@@ -195,6 +195,11 @@
                 image.src = item.url;
                 image.alt = '';
                 image.loading = 'lazy';
+                image.addEventListener('error', function () {
+                    // Broken, empty or unsupported images get a neutral file icon.
+                    image.remove();
+                    preview.appendChild(icon('file'));
+                }, {once: true});
                 preview.appendChild(image);
             } else {
                 preview.appendChild(icon('file'));
