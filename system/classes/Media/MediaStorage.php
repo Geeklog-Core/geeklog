@@ -87,7 +87,7 @@ class MediaStorage
         $directory = $this->resolveExisting($directoryPath, true);
         $validated = $this->validator->validateUpload($file, $type);
         if ($this->isExcludedDirectory($validated['name'])) {
-            throw new \\RuntimeException('Reserved technical filename.');
+            throw new \RuntimeException('Reserved technical filename.');
         }
         if ($this->maxUploadBytes > 0 && (int) $file['size'] > $this->maxUploadBytes) {
             throw new \RuntimeException('The uploaded file exceeds the configured size limit.');
@@ -185,7 +185,7 @@ class MediaStorage
         $parent = $this->resolveExisting($this->validator->normalizeLogicalPath($logicalDirectory), true);
         $this->validator->validateName($name);
         if ($this->isExcludedDirectory($name)) {
-            throw new \\RuntimeException('Reserved technical directory name.');
+            throw new \RuntimeException('Reserved technical directory name.');
         }
         $target = $parent . DIRECTORY_SEPARATOR . $name;
         if (file_exists($target) || is_link($target)) {
@@ -206,7 +206,7 @@ class MediaStorage
         $source = $this->resolveExisting($logicalPath, null);
         $this->validator->validateName($newName);
         if ($this->isExcludedDirectory($newName)) {
-            throw new \\RuntimeException('Reserved technical directory name.');
+            throw new \RuntimeException('Reserved technical directory name.');
         }
         if (is_file($source)) {
             $this->validator->validateExistingFileName($newName, $type);
@@ -255,7 +255,7 @@ class MediaStorage
         }
         foreach (explode('/', $logicalPath) as $part) {
             if ($this->isExcludedDirectory($part)) {
-                throw new \\RuntimeException('This technical directory is not available in the Media Library.');
+                throw new \RuntimeException('This technical directory is not available in the Media Library.');
             }
         }
     }
@@ -265,11 +265,11 @@ class MediaStorage
     {
         $logicalPath = $this->validator->normalizeLogicalPath($logicalPath);
         if ($logicalPath === '') {
-            throw new \\RuntimeException('Choose an image.');
+            throw new \RuntimeException('Choose an image.');
         }
         $this->validator->validateExistingFileName(basename($logicalPath), $type);
         if (!$this->validator->isImage(basename($logicalPath))) {
-            throw new \\RuntimeException('The selected file is not an image.');
+            throw new \RuntimeException('The selected file is not an image.');
         }
         return $this->resolveExisting($logicalPath, false);
     }
