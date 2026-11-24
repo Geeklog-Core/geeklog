@@ -15,7 +15,7 @@ on:
       - '.github/workflows/native-media-preview.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-preview:
@@ -53,9 +53,44 @@ jobs:
               assert "SEC_hasRights('story.edit') || SEC_hasRights('story.submit')" not in s
               assert not any('/lib-common.php' in f for f in z.namelist())
           PY
-      - name: Publish test ZIP as workflow artifact
+      - name: Verify recent live-site fixes are in the ZIP
+        run: |
+          python3 - <<'PY'
+          import zipfile
+          archive = 'geeklog-2.2.2-native-media-library-preview-1.zip'
+          with zipfile.ZipFile(archive) as z:
+              js = z.read(next(n for n in z.namelist() if n.endswith('/assets/media-library.js'))).decode('utf-8')
+              index = z.read(next(n for n in z.namelist() if n.endswith('/filemanager/index.php'))).decode('utf-8')
+              assert 'maxActiveThumbnails = 2' in js, 'Thumbnail throttling missing'
+              assert 'confirmDeleteFolder' in js, 'Folder deletion confirmation missing'
+              assert 'confirmDeleteFolder' in index, 'Folder confirmation translation missing'
+              assert any(n.endswith('/README_FR.md') for n in z.namelist())
+              assert not any(n.endswith('/lib-common.php') for n in z.namelist())
+          PY
+      - name: Compute ZIP SHA-256
+        run: sha256sum geeklog-2.2.2-native-media-library-preview-1.zip > geeklog-2.2.2-native-media-library-preview-1.zip.sha256
+      - name: Publish ZIP as workflow artifact
         uses: actions/upload-artifact@v4
         with:
           name: geeklog-2.2.2-native-media-library-preview-1
-          path: geeklog-2.2.2-native-media-library-preview-1.zip
+          path: |
+            geeklog-2.2.2-native-media-library-preview-1.zip
+            geeklog-2.2.2-native-media-library-preview-1.zip.sha256
           retention-days: 60
+      - name: Publish pinned community preview as GitHub prerelease
+        if: github.event_name == 'push' && github.ref == 'refs/heads/native-media-library-pr'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: native-media-library-2.2.2-preview.1
+          ZIP: geeklog-2.2.2-native-media-library-preview-1.zip
+        run: |
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; leaving its pinned ZIP unchanged."
+            exit 0
+          fi
+          gh release create "$TAG" "$ZIP" "$ZIP.sha256" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "Geeklog 2.2.2 — Native Media Library Preview 1" \
+            --notes-file testing/native-media-library-2.2.2/RELEASE_NOTES.md \
+            --prerelease
