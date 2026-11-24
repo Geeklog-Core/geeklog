@@ -390,11 +390,11 @@
                 body.set('save_copy', copy ? '1' : '0');
                 body.set('image', blob, item.name);
                 request('edit_image', {method: 'POST', body: body}).then(function () {
+                    busy = false;
                     finish();
                     return load(currentPath);
                 }).then(function () { setStatus(t('imageSaved')); })
-                  .catch(function (e) { fail(e.message); })
-                  .finally(function () { busy = false; });
+                  .catch(function (e) { busy = false; fail(e.message); });
             }, mime, mime === 'image/jpeg' ? 0.9 : 0.92);
         }
         footer.appendChild(addButton(t('saveCopy'), '', function () { save(true); }));
