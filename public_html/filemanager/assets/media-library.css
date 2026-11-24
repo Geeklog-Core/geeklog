@@ -538,38 +538,6 @@ summary:focus-visible {
     }
 }
 
-/* Crop positioning without drag: trackpad-friendly directional controls. */
-.media-edit-move-controls {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: .35rem;
-    margin-top: .55rem;
-    width: 100%;
-}
-.media-edit-move-heading {
-    font-size: .82rem;
-    font-weight: 600;
-}
-.media-edit-direction-buttons {
-    display: grid;
-    grid-template-columns: repeat(3, 42px);
-    grid-template-rows: repeat(3, 36px);
-    gap: 3px;
-}
-.media-edit-direction-buttons button {
-    padding: .25rem;
-    font-size: 1.15rem;
-}
-.media-edit-direction-up { grid-column: 2; grid-row: 1; }
-.media-edit-direction-left { grid-column: 1; grid-row: 2; }
-.media-edit-direction-down { grid-column: 2; grid-row: 3; }
-.media-edit-direction-right { grid-column: 3; grid-row: 2; }
-.media-edit-move-help {
-    display: block;
-    color: #526171;
-    line-height: 1.4;
-}
 .media-edit-preview:focus-visible {
     outline: 3px solid #087dea;
     outline-offset: 2px;
