@@ -50,8 +50,7 @@ $mediaStrings = [
         'closeEditor' => 'Close', 'imageSaved' => 'Image saved.',
         'editHelp' => 'Drag to crop. Move the selection or resize it using its corners.',
         'cropRatio' => 'Crop ratio', 'ratioFree' => 'Free',
-        'moveCrop' => 'Move selection', 'cropKeyboardHelp' => 'Use arrow buttons or the arrow keys on the preview (Shift = 10 px).',
-        'cropNoSelection' => 'Draw a selection first.', 'replaceSection' => 'Source image',
+
         'toolsSection' => 'Transform', 'dimensionsSection' => 'Dimensions',
         'replaceWarning' => 'Replacing the original updates every article using this image URL. Cached copies may take time to refresh.',
         'replacementSelected' => 'Selected: {name}',
@@ -88,8 +87,7 @@ $mediaStrings = [
         'closeEditor' => 'Fermer', 'imageSaved' => 'Image enregistrée.',
         'editHelp' => 'Tracez une sélection, déplacez-la ou redimensionnez-la avec les coins.',
         'cropRatio' => 'Proportions du recadrage', 'ratioFree' => 'Libre',
-        'moveCrop' => 'Déplacer la sélection', 'cropKeyboardHelp' => 'Utilisez les flèches ou les touches fléchées sur l’aperçu (Maj = 10 px).',
-        'cropNoSelection' => 'Tracez d’abord une sélection.', 'replaceSection' => 'Image source',
+
         'toolsSection' => 'Transformations', 'dimensionsSection' => 'Dimensions',
         'replaceWarning' => 'Remplacer l’original modifie tous les articles utilisant cette URL. Le cache peut retarder l’affichage.',
         'replacementSelected' => 'Sélection : {name}',
