@@ -1,87 +1,92 @@
 #!/usr/bin/env bash
-# Geeklog 2.2.2 Native Media Library preview -- restricted to administrators.
+# Admin-only Geeklog 2.2.2 Native Media Library preview (PHP >= 5.6.4).
 set -Eeuo pipefail
-
 usage() {
   echo "Usage: bash install.sh --check|--install PUBLIC_HTML_PATH SYSTEM_PATH"
-  echo "Example: bash install.sh --check /home/account/public_html /home/account/geeklog/system"
   exit 2
 }
 [[ $# -eq 3 ]] || usage
 MODE="$1"; WEB="${2%/}"; SYS="${3%/}"
 [[ "$MODE" == "--check" || "$MODE" == "--install" ]] || usage
-[[ -d "$WEB/filemanager" && -f "$WEB/lib-common.php" && -f "$WEB/siteconfig.php" ]] || { echo "ERROR: not a Geeklog public_html directory."; exit 1; }
-[[ -d "$SYS/classes" ]] || { echo "ERROR: invalid Geeklog system path."; exit 1; }
+[[ -f "$WEB/lib-common.php" && -f "$WEB/siteconfig.php" && -d "$WEB/filemanager" ]] || {
+  echo "ERROR: invalid Geeklog public_html directory."; exit 1;
+}
+[[ -d "$SYS/classes" ]] || { echo "ERROR: invalid Geeklog system directory."; exit 1; }
 WEB="$(cd "$WEB" && pwd -P)"
 SYS="$(cd "$SYS" && pwd -P)"
 SOURCE="$(cd "$(dirname "$0")" && pwd -P)"
 [[ -f "$SOURCE/public_html/filemanager/index.php" && -f "$SOURCE/system/classes/Media/MediaLibrary.php" ]] || {
-  echo "ERROR: unpack the full preview ZIP first."; exit 1;
+  echo "ERROR: extract the complete preview ZIP before installing."; exit 1;
 }
-echo "Geeklog 2.2.2 preview: target $WEB, system $SYS"
-echo "NOTE: Confirm in the Geeklog control panel that this is Geeklog 2.2.2."
-echo "NOTE: The HTTP/web PHP version must be PHP 5.6.4 or higher (CLI alone is not sufficient)."
 if ! php -r 'exit(PHP_VERSION_ID >= 50604 ? 0 : 1);'; then
-  echo "ERROR: PHP 5.6.4 or higher is required."
-  exit 1
+  echo "ERROR: PHP CLI 5.6.4 or later is required."; exit 1;
 fi
 if ! php -r 'exit(extension_loaded("gd") && function_exists("imagepng") && function_exists("finfo_open") ? 0 : 1);'; then
-  echo "ERROR: GD with PNG support and Fileinfo extension required."
-  exit 1
+  echo "ERROR: PHP GD/PNG and Fileinfo are required."; exit 1;
 fi
 for file in "$SOURCE"/public_html/filemanager/{index,api}.php "$SOURCE"/system/classes/Media/*.php; do
   php -l "$file" >/dev/null || { echo "ERROR: PHP syntax: $file"; exit 1; }
 done
 grep -Fq 'Preview: administrators only' "$SOURCE/system/classes/Media/MediaLibrary.php" || {
-  echo "ERROR: package is missing the admin-only permission restriction."; exit 1;
+  echo "ERROR: admin-only restriction missing from package."; exit 1;
 }
+echo "Target public_html: $WEB"
+echo "Target system:      $SYS"
+echo "Verify Geeklog is 2.2.2 and the WEBSITE PHP (not only CLI) is >= 5.6.4."
+echo "PHP 5.6 is obsolete and receives no upstream security fixes."
 if [[ "$MODE" == "--check" ]]; then
-  echo "Preflight passed (CLI checks only). No files changed."
+  echo "Preflight passed. No files modified."
   exit 0
 fi
 BASE="$HOME/geeklog-media-preview-backups"
 mkdir -p "$BASE"
 BACKUP="$BASE/$(date -u +%Y%m%dT%H%M%SZ)-$$"
 mkdir -m 700 "$BACKUP"
-cp -a "$WEB/filemanager" "$BACKUP/filemanager"
-if [[ -e "$SYS/classes/Media" ]]; then
+printf '%s\n%s\n' "$WEB" "$SYS" > "$BACKUP/targets.txt"
+chmod 600 "$BACKUP/targets.txt"
+# Only back up files we will touch: never copy or delete userfiles/media.
+FILES=(
+  index.php api.php
+  assets/media-library.js assets/media-library.css
+  connectors/php/events.php connectors/php/filemanager.php
+  libs/jQuery-File-Upload/server/php/UploadHandler.php
+  libs/jQuery-File-Upload/server/php/index.php
+  libs/jQuery-File-Upload/test/index.html
+  libs/jQuery-File-Upload/test/test.js
+)
+mkdir -p "$BACKUP/filemanager"
+for file in "${FILES[@]}"; do
+  if [[ -f "$WEB/filemanager/$file" ]]; then
+    mkdir -p "$BACKUP/filemanager/$(dirname "$file")"
+    cp -p "$WEB/filemanager/$file" "$BACKUP/filemanager/$file"
+  fi
+done
+if [[ -d "$SYS/classes/Media" ]]; then
   cp -a "$SYS/classes/Media" "$BACKUP/Media"
 else
   touch "$BACKUP/Media.did-not-exist"
 fi
-printf '%s\n%s\n' "$WEB" "$SYS" > "$BACKUP/targets.txt"
-chmod 600 "$BACKUP/targets.txt"
-
-rollback_on_error() {
-  echo "ERROR: installation failed. Restoring original files from $BACKUP"
-  rm -rf "$WEB/filemanager" "$SYS/classes/Media"
-  cp -a "$BACKUP/filemanager" "$WEB/filemanager"
-  if [[ -d "$BACKUP/Media" ]]; then
-    cp -a "$BACKUP/Media" "$SYS/classes/Media"
-  fi
+# The rollback script knows exactly which files the preview changes.
+cp "$SOURCE/rollback.sh" "$BACKUP/rollback.sh"
+install_files() {
+  mkdir -p "$SYS/classes/Media" "$WEB/filemanager/assets"
+  for file in "$SOURCE"/system/classes/Media/*.php; do
+    cp -p "$file" "$SYS/classes/Media/"
+  done
+  for file in index.php api.php; do
+    cp -p "$SOURCE/public_html/filemanager/$file" "$WEB/filemanager/$file"
+  done
+  for file in media-library.js media-library.css; do
+    cp -p "$SOURCE/public_html/filemanager/assets/$file" "$WEB/filemanager/assets/$file"
+  done
+  for file in "${FILES[@]:4}"; do
+    rm -f "$WEB/filemanager/$file"
+  done
 }
-trap rollback_on_error ERR
-mkdir -p "$SYS/classes/Media" "$WEB/filemanager/assets"
-for file in "$SOURCE"/system/classes/Media/*.php; do
-  cp -p "$file" "$SYS/classes/Media/"
-done
-for file in index.php api.php; do
-  cp -p "$SOURCE/public_html/filemanager/$file" "$WEB/filemanager/$file"
-done
-for file in media-library.js media-library.css; do
-  cp -p "$SOURCE/public_html/filemanager/assets/$file" "$WEB/filemanager/assets/$file"
-done
-# Block obsolete executable upload endpoints without deleting media content.
-for file in \
-  connectors/php/events.php \
-  connectors/php/filemanager.php \
-  libs/jQuery-File-Upload/server/php/UploadHandler.php \
-  libs/jQuery-File-Upload/server/php/index.php \
-  libs/jQuery-File-Upload/test/index.html \
-  libs/jQuery-File-Upload/test/test.js; do
-  rm -f "$WEB/filemanager/$file"
-done
-trap - ERR
-echo "Installed admin-only preview. Backup: $BACKUP"
-echo "Rollback command: bash rollback.sh '$BACKUP'"
-echo "Production site: PHP 5.6 is no longer security-supported. Test on a staging clone first."
+echo "Backup: $BACKUP"
+if ! install_files; then
+  echo "Installation failed. Restore from backup: $BACKUP"
+  exit 1
+fi
+echo "Installed. Restore with: bash '$BACKUP/rollback.sh' '$BACKUP'"
+echo "No media files, lib-common.php, database, or Geeklog installer modified."
