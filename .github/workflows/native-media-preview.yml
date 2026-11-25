@@ -73,6 +73,25 @@ jobs:
               assert not any(n.endswith('/README_FR.md') for n in z.namelist())
               assert not any(n.endswith('/lib-common.php') for n in z.namelist())
           PY
+      - name: End-to-end ZIP install and rollback regression
+        run: bash testing/native-media-library-2.2.2/test-package.sh
+      - name: Validate ZIP members and browser image picker
+        run: |
+          python3 - <<'PY'
+          import zipfile
+          name = 'geeklog-2.2.2-native-media-library-preview-1.zip'
+          with zipfile.ZipFile(name) as z:
+              names = z.namelist()
+              assert len(names) == 12, 'Expected nine runtime files and three package extras'
+              assert len(names) == len(set(names)), 'Duplicate ZIP members'
+              assert all(not n.startswith('/') and '..' not in n.split('/') for n in names), 'Unsafe ZIP path'
+              assert all(n.startswith('geeklog-2.2.2-native-media-library-preview-1/') for n in names)
+              index = z.read(next(n for n in names if n.endswith('/filemanager/index.php'))).decode('utf-8')
+              js = z.read(next(n for n in names if n.endswith('/assets/media-library.js'))).decode('utf-8')
+              assert 'image/*' in index, 'Image picker filter missing'
+              assert 'upload-submit' in index and 'upload-submit' in js
+              assert 'resetUploadOnNavigation();' in js
+          PY
       - name: Compute ZIP SHA-256
         run: sha256sum geeklog-2.2.2-native-media-library-preview-1.zip > geeklog-2.2.2-native-media-library-preview-1.zip.sha256
       - name: Publish ZIP as workflow artifact
