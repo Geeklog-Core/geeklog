@@ -953,7 +953,9 @@
         var pendingFiles = [];
         var uploading = false;
         var activeUploads = [];
-        var maxConcurrentUploads = 2;
+        // Geeklog CSRF tokens are one-use; wait for each response before
+        // sending the next file with the newly issued token.
+        var maxConcurrentUploads = 1;
 
         function setPendingFiles(files) {
             if (uploading) { return; }
