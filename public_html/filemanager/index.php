@@ -138,6 +138,12 @@ $mediaStrings = [
     ],
 ];
 $mediaLabels = $mediaStrings[isset($mediaStrings[$mediaLanguage]) ? $mediaLanguage : 'en'];
+if ($type !== 'Root' && $type !== 'Image') {
+    $mediaLabels['chooseFile'] = $mediaLanguage === 'fr' ? 'Choisir des fichiers' : 'Choose files';
+    $mediaLabels['dropFiles'] = $mediaLanguage === 'fr'
+        ? 'Déposez les fichiers ici ou sélectionnez-les ci-dessus'
+        : 'Drop files here or select them above';
+}
 $settings = [
     'labels' => $mediaLabels,
     'apiUrl' => $_CONF['site_url'] . '/filemanager/api.php',
