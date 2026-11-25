@@ -1,0 +1,71 @@
+name: Native Media Library core compatibility
+
+on:
+  push:
+    branches:
+      - native-media-library-pr
+    paths:
+      - 'public_html/filemanager/**'
+      - 'public_html/lib-common.php'
+      - 'public_html/admin/install/**'
+      - 'system/classes/Media/**'
+      - 'sql/updates/**'
+      - 'tests/media-library/**'
+      - '.github/workflows/native-media-core.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  media-compatibility:
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['5.6', '8.3', '8.4', '8.5']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: gd, fileinfo
+          coverage: none
+      - name: PHP lint for changed media and integration files
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -v
+          for f in public_html/filemanager/{index,api}.php system/classes/Media/*.php; do
+            php -l "$f"
+          done
+          php -l public_html/admin/install/classes/Common.php
+          php -l public_html/admin/install/classes/Upgrade.php
+          php -l public_html/admin/install/classes/installer.class.php
+          php -l public_html/admin/install/config-install.php
+          php -l public_html/lib-common.php
+          php -l sql/updates/mysql_2.0.0_to_2.1.0.php
+          php -l sql/updates/pgsql_2.0.0_to_2.1.0.php
+      - name: Media storage and thumbnail smoke test
+        run: php tests/media-library/smoke.php
+      - name: Ensure editor scope and legacy endpoint removal
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          library = Path('system/classes/Media/MediaLibrary.php').read_text()
+          api = Path('public_html/filemanager/api.php').read_text()
+          index = Path('public_html/filemanager/index.php').read_text()
+          assert "return $this->admin ? $type : 'Image';" in library
+          assert '$library->restrictType($type)' in api
+          assert '$mediaLibrary->restrictType($type)' in index
+          for path in (
+              'public_html/filemanager/connectors/php/events.php',
+              'public_html/filemanager/connectors/php/filemanager.php',
+              'public_html/filemanager/libs/jQuery-File-Upload/server/php/UploadHandler.php',
+              'public_html/filemanager/libs/jQuery-File-Upload/server/php/index.php',
+          ):
+              assert not Path(path).exists(), 'Retired endpoint still tracked: ' + path
+          PY
+      - name: JavaScript syntax
+        run: node --check public_html/filemanager/assets/media-library.js
