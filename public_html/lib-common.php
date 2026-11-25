@@ -198,7 +198,7 @@ $_CONF_FT = $config->_get_config_features();
 Log::init($_CONF['path_log']);
 
 // Load Cache class
-Cache::init(new Cache\FileSystem($_CONF['path'] . 'data/cache/'));
+Cache::init(new Cache\FileSystem($_CONF['path_data'] . 'cache/'));
 
 // Load in Geeklog Variables Table
 
