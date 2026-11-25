@@ -211,6 +211,23 @@ class Upgrade extends Common
             }
         }
 
+        // Release archives cannot remove files left by older installations.
+        // Delete the retired web-facing PHP endpoints before doing any database
+        // work, and make an administrator acknowledge any endpoint that remains.
+        $legacyEndpointFailures = $this->cleanupLegacyFileManagerEndpoints(Common::$env['html_path']);
+        if (!empty($legacyEndpointFailures)) {
+            Common::$env['currentVersion'] = $version;
+            $paths = array_map('htmlspecialchars', $legacyEndpointFailures);
+            $message = 'Geeklog could not remove the following obsolete, security-sensitive Filemanager files: '
+                . implode(', ', $paths)
+                . '. Remove them manually, or correct their filesystem permissions, then retry the upgrade.';
+            $retval .= $this->getAlertMessage($message, 'warning', 'Legacy Filemanager cleanup incomplete');
+            $retval .= MicroTemplate::quick(PATH_LAYOUT, 'upgrade_prompt_warning', Common::$env);
+
+            return $retval;
+        }
+
+
         // If this is a MySQL database check to see if it was
         // installed with InnoDB support
         if ($_DB_dbms === 'mysql') {
