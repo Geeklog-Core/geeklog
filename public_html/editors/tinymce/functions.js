@@ -2,6 +2,8 @@
 (function () {
     'use strict';
     var states = Object.create(null);
+    var initializationQueue = Promise.resolve();
+    var initializationTimeout = 20000;
     var toolbars = [
         'code undo redo | bold italic | link | bullist numlist | image table | fullscreen',
         'code undo redo | bold italic underline strikethrough subscript superscript | link | bullist numlist outdent indent | alignleft aligncenter alignright blockquote | image table hr charmap | fullscreen',
@@ -55,7 +57,7 @@
     function start(id, level, initialHeight) {
         var element = document.getElementById(id);
         if (!element) { return; }
-        var state = states[id] = {element:element, level:level, ready:false, height:initialHeight || element.offsetHeight || 300};
+        var state = states[id] = {element:element, level:level, ready:false, failed:false, height:initialHeight || element.offsetHeight || 300};
         function config() {
             return {
                 target: element, base_url: geeklogTinyMceBase, suffix: '.min',
@@ -72,6 +74,7 @@
                 file_picker_callback:geeklogFileManager ? picker : undefined,
                 setup:function (editor) {
                     editor.on('init', function () {
+                        if (state.failed || states[id] !== state) { return; }
                         state.ready = true;
                         if (state.pending !== undefined) { editor.setContent(state.pending); delete state.pending; }
                         if (state.requested !== undefined && state.requested !== state.level) {
@@ -83,11 +86,55 @@
                 }
             };
         }
-        if (typeof tinymce === 'undefined') { element.style.display = ''; return; }
-        tinymce.init(config()).catch(function (error) {
-            state.ready = false;
-            element.style.display = '';
-            if (window.console) { console.error('Geeklog TinyMCE initialization failed', error); }
+        initializationQueue = initializationQueue.then(function () {
+            if (states[id] !== state) { return; }
+            return new Promise(function (resolve) {
+                var settled = false;
+                var timer;
+                function finish(error) {
+                    if (settled) { return; }
+                    settled = true;
+                    window.clearTimeout(timer);
+                    if (error) {
+                        var content = state.pending !== undefined ? state.pending : element.value;
+                        state.failed = true;
+                        state.ready = false;
+                        try {
+                            var editor = typeof tinymce !== 'undefined' && tinymce.get(id);
+                            if (editor) { editor.remove(); }
+                        } catch (cleanupError) {
+                            if (window.console) { console.error('Geeklog TinyMCE cleanup failed', cleanupError); }
+                        }
+                        element.value = content;
+                        element.style.display = '';
+                        element.style.visibility = 'visible';
+                        if (window.console) { console.error('Geeklog TinyMCE initialization failed: ' + id, error); }
+                    }
+                    resolve();
+                }
+                timer = window.setTimeout(function () {
+                    finish(new Error('Initialization timed out'));
+                }, initializationTimeout);
+                try {
+                    if (typeof tinymce === 'undefined') { throw new Error('TinyMCE unavailable'); }
+                    Promise.resolve(tinymce.init(config())).then(function (editors) {
+                        if (state.failed) {
+                            // Never remove a newer editor that happens to share this ID.
+                            (editors || []).forEach(function (editor) {
+                                if (states[id] === state && tinymce.get(id) === editor) {
+                                    var content = element.value;
+                                    editor.remove();
+                                    element.value = content;
+                                    element.style.display = '';
+                                    element.style.visibility = 'visible';
+                                }
+                            });
+                            return;
+                        }
+                        finish(state.ready ? null : new Error('Editor did not initialize'));
+                    }, finish);
+                } catch (error) { finish(error); }
+            });
         });
     }
     function getContent(id) {
@@ -98,7 +145,7 @@
         var state = states[id], editor = typeof tinymce !== 'undefined' && tinymce.get(id);
         document.getElementById(id).value = content;
         if (state && state.ready && editor) { editor.setContent(content); }
-        else if (state) { state.pending = content; }
+        else if (state && !state.failed) { state.pending = content; }
     }
     function changeToolbar(id, level) {
         var state = states[id];
@@ -107,6 +154,7 @@
             level = {'editor-toolbar1':0,'editor-toolbar2':1,'editor-toolbar3':2}[level];
             if (level === undefined) { level = 3; }
         }
+        if (state.failed) { return; }
         if (!state.ready) { state.requested = level; return; }
         if (state.level === level) { return; }
         var content = getContent(id), height = state.height;

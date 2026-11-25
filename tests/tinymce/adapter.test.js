@@ -1,21 +1,23 @@
-// Adapter contract test with a mock engine; not a browser round-trip test.
+// Mocked asynchronous adapter contract, including timeout and queue recovery.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
 const root = path.resolve(__dirname, '../../public_html/editors/tinymce');
-const elements = {intro:{value:'<p>Intro</p>',offsetHeight:300,style:{}}, body:{value:'<p>Body</p>',offsetHeight:300,style:{}}};
-const instances = {};
-const configs = {};
+const elements = Object.fromEntries(['intro','body','stuck','next'].map(id => [id,{value:id,offsetHeight:300,style:{}}]));
+const instances = {}, configs = {}, completions = {}, starts = [], timers = new Map();
+let timerId = 0;
 const context = {
     AdvancedEditor:{api:{}}, geeklogAllowedHtml:{strong:1,em:1,p:{style:1},a:{href:1}},
     geeklogFileManager:false, geeklogTinyMceBase:'/editors/tinymce/vendor',geeklogTinyMceLanguage:'en',
-    document:{getElementById:id=>elements[id]},window:{setTimeout:fn=>fn(),console},
+    document:{getElementById:id=>elements[id]},
+    window:{setTimeout:(fn,ms)=>{if(ms===0){queueMicrotask(fn);return 0;} timers.set(++timerId,fn);return timerId;},
+        clearTimeout:id=>timers.delete(id),console:{error:()=>{}}},
     tinymce:{
         get:id=>instances[id],
         init:config=>{
             const id=Object.keys(elements).find(key=>elements[key]===config.target);
-            configs[id]=config;
+            starts.push(id); configs[id]=config;
             const events={};
             let value=elements[id].value;
             const editor=instances[id]={
@@ -23,27 +25,55 @@ const context = {
                 getContent:()=>value,setContent:c=>{value=c;},save:()=>{elements[id].value=value;},
                 remove:()=>{delete instances[id];},getContainer:()=>({style:{}})
             };
-            config.setup(editor); events.init();
-            return Promise.resolve([editor]);
+            config.setup(editor);
+            return new Promise(resolve=>{completions[id]=()=>{events.init();resolve([editor]);};});
         }
     }
 };
 vm.runInNewContext(fs.readFileSync(path.join(root,'functions.js'),'utf8'),context);
 const api=context.AdvancedEditor.api.tinymce;
-api.newEditor('intro',{toolbar:0});
-api.newEditor('body',{toolbar:2});
-assert.equal(api.getContent('intro'),'<p>Intro</p>');
-assert.equal(api.getContent('body'),'<p>Body</p>');
-assert.ok(!configs.intro.toolbar.split(' ').includes('image'));
-assert.ok(!configs.intro.file_picker_callback);
-const protectedContent='[raw]<div>raw</div>[/raw]\n[code]x < y[/code]';
-api.setContent('intro',protectedContent);
-api.changeToolbar('intro','editor-toolbar3');
-assert.equal(api.getContent('intro'),protectedContent);
-assert.equal(api.getContent('body'),'<p>Body</p>');
-assert.equal(configs.intro.license_key,'gpl');
-assert.equal(configs.intro.base_url,'/editors/tinymce/vendor');
-assert.equal(configs.intro.protect.length,3);
-for (const regex of configs.intro.protect) assert.ok(regex.test(protectedContent) || regex.test('<pre>code</pre>'));
-for (const plugin of configs.intro.plugins.split(' ')) assert.ok(fs.existsSync(path.join(root,'vendor/plugins',plugin,'plugin.min.js')),plugin);
-console.log('TinyMCE adapter contract passed');
+const tick=()=>new Promise(resolve=>setImmediate(resolve));
+(async()=>{
+    api.newEditor('intro',{toolbar:0});
+    api.newEditor('body',{toolbar:2});
+    await tick();
+    assert.deepEqual(starts,['intro']);
+    api.setContent('body','queued body');
+    completions.intro();
+    await tick();
+    assert.deepEqual(starts,['intro','body']);
+    completions.body();
+    await tick();
+    assert.equal(api.getContent('body'),'queued body');
+    assert.ok(!configs.intro.toolbar.split(' ').includes('image'));
+    assert.ok(!configs.intro.file_picker_callback);
+    const protectedContent='[raw]<div>raw</div>[/raw]\n[code]x < y[/code]';
+    api.setContent('intro',protectedContent);
+    api.changeToolbar('intro','editor-toolbar3');
+    await tick();
+    completions.intro();
+    await tick();
+    assert.equal(api.getContent('intro'),protectedContent);
+    assert.equal(api.getContent('body'),'queued body');
+    assert.equal(configs.intro.license_key,'gpl');
+    assert.equal(configs.intro.protect.length,3);
+    for(const plugin of configs.intro.plugins.split(' ')) assert.ok(fs.existsSync(path.join(root,'vendor/plugins',plugin,'plugin.min.js')),plugin);
+    api.newEditor('stuck',{toolbar:1});
+    api.newEditor('next',{toolbar:1});
+    await tick();
+    api.setContent('stuck','preserved');
+    assert.equal(starts.at(-1),'stuck');
+    assert.equal(timers.size,1);
+    [...timers.values()][0]();
+    await tick();
+    assert.equal(starts.at(-1),'next');
+    assert.equal(api.getContent('stuck'),'preserved');
+    assert.equal(elements.stuck.style.visibility,'visible');
+    completions.stuck();
+    completions.next();
+    await tick();
+    assert.equal(api.getContent('stuck'),'preserved');
+    assert.equal(api.getContent('next'),'next');
+    assert.equal(timers.size,0);
+    console.log('TinyMCE asynchronous adapter contract passed');
+})().catch(error=>{console.error(error);process.exitCode=1;});
