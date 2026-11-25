@@ -170,7 +170,7 @@ class MediaValidator
             && $this->isWebPContainer($path)) {
             return 'image/webp';
         }
-        throw new \\RuntimeException('The file contents do not match the file extension.');
+        throw new \RuntimeException('The file contents do not match the file extension.');
     }
 
     private function isWebPContainer($path)
