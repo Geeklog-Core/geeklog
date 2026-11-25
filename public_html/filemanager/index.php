@@ -32,12 +32,19 @@ $uploadExtensions = $type === 'Image'
         (array) $_CONF['filemanager_videos_ext'],
         (array) $_CONF['filemanager_audios_ext']
     );
+// The Root and Image views primarily serve image management. Keep the picker
+// restricted to images there; File/Media views retain their configured formats.
+$uploadExtensions = ($type === 'Root' || $type === 'Image')
+    ? (array) $_CONF['filemanager_images_ext'] : $uploadExtensions;
 $uploadExtensions = array_values(array_unique(array_filter(array_map(function ($extension) {
     $extension = strtolower(ltrim(trim((string) $extension), '.'));
     // SVG browsing remains compatible, but uploads require a sanitizer and are
     // rejected by the server-side validator.
     return $extension === 'svg' ? '' : $extension;
 }, $uploadExtensions))));
+$uploadAccept = implode(',', array_map(function ($extension) {
+    return '.' . $extension;
+}, $uploadExtensions));
 $mediaLanguage = strtolower(substr((string) COM_getLangIso639Code(), 0, 2));
 $mediaStrings = [
     'en' => [
@@ -177,7 +184,7 @@ header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style
     <?php if ($mediaLibrary->canWrite()) : ?>
     <section class="media-actions" aria-label="<?php echo htmlspecialchars($mediaLabels['fileOperations'], ENT_QUOTES, 'UTF-8'); ?>">
         <form id="upload-form" enctype="multipart/form-data">
-            <label class="file-picker" for="upload-file"><span class="file-picker-label"><?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?></span><input id="upload-file" name="upload" type="file" multiple aria-label="<?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?>"><span id="selected-file" class="selected-file" aria-live="polite"><?php echo htmlspecialchars($mediaLabels['noFile'], ENT_QUOTES, 'UTF-8'); ?></span></label>
+            <label class="file-picker" for="upload-file"><span class="file-picker-label"><?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?></span><input id="upload-file" name="upload" type="file" multiple accept="<?php echo htmlspecialchars($uploadAccept, ENT_QUOTES, 'UTF-8'); ?>" aria-label="<?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?>"><span id="selected-file" class="selected-file" aria-live="polite"><?php echo htmlspecialchars($mediaLabels['noFile'], ENT_QUOTES, 'UTF-8'); ?></span></label>
             <div id="upload-dropzone" class="upload-dropzone"><?php echo htmlspecialchars($mediaLabels['dropFiles'], ENT_QUOTES, 'UTF-8'); ?></div>
             <div class="upload-submit-row">
                 <button id="upload-submit" class="upload-primary" type="submit" disabled><?php echo htmlspecialchars($mediaLabels['upload'], ENT_QUOTES, 'UTF-8'); ?></button>
