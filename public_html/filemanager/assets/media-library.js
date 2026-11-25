@@ -199,6 +199,10 @@
     }
 
     function selectFile(item) {
+        if (new URLSearchParams(window.location.search).get('GeeklogPicker') === '1' && window.opener) {
+            window.opener.postMessage({type: 'geeklog-media-selected', url: item.url}, window.location.origin);
+            return;
+        }
         var callbackNumber = new URLSearchParams(window.location.search).get('CKEditorFuncNum');
         var target = window.opener || (window.parent !== window ? window.parent : null);
         if (callbackNumber && target && target.CKEDITOR && target.CKEDITOR.tools) {
