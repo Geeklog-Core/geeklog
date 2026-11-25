@@ -65,8 +65,8 @@ into the backup directory so you can restore without retaining the ZIP.
 ## Running this preview until Geeklog 2.2.3
 
 Uploads support selecting multiple files and drag-and-drop. Each file is sent
-individually to the existing validated API, with **at most two simultaneous
-uploads** and independent progress/error messages. Large batches remain subject
+**sequentially** to the existing validated API, with a refreshed one-time
+Geeklog CSRF token between files and independent progress/error messages. Large batches remain subject
 to the hosting provider's upload size and execution limits.
 
 This package does not create a separate media database or a new media location.
