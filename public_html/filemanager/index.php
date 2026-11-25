@@ -176,11 +176,13 @@ header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style
     <section class="media-actions" aria-label="<?php echo htmlspecialchars($mediaLabels['fileOperations'], ENT_QUOTES, 'UTF-8'); ?>">
         <form id="upload-form" enctype="multipart/form-data">
             <label class="file-picker" for="upload-file"><span class="file-picker-label"><?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?></span><input id="upload-file" name="upload" type="file" multiple aria-label="<?php echo htmlspecialchars($mediaLabels['chooseFile'], ENT_QUOTES, 'UTF-8'); ?>"><span id="selected-file" class="selected-file" aria-live="polite"><?php echo htmlspecialchars($mediaLabels['noFile'], ENT_QUOTES, 'UTF-8'); ?></span></label>
-            <button type="submit"><?php echo htmlspecialchars($mediaLabels['upload'], ENT_QUOTES, 'UTF-8'); ?></button>
-            <button id="upload-cancel" type="button" hidden><?php echo htmlspecialchars($mediaLabels['cancelUploads'], ENT_QUOTES, 'UTF-8'); ?></button>
+            <div id="upload-dropzone" class="upload-dropzone"><?php echo htmlspecialchars($mediaLabels['dropFiles'], ENT_QUOTES, 'UTF-8'); ?></div>
+            <div class="upload-submit-row">
+                <button id="upload-submit" class="upload-primary" type="submit" disabled><?php echo htmlspecialchars($mediaLabels['upload'], ENT_QUOTES, 'UTF-8'); ?></button>
+                <button id="upload-cancel" type="button" hidden><?php echo htmlspecialchars($mediaLabels['cancelUploads'], ENT_QUOTES, 'UTF-8'); ?></button>
+            </div>
+            <div id="upload-queue" class="upload-queue" aria-live="polite" hidden></div>
         </form>
-        <div id="upload-dropzone" class="upload-dropzone"><?php echo htmlspecialchars($mediaLabels['dropFiles'], ENT_QUOTES, 'UTF-8'); ?></div>
-        <div id="upload-queue" class="upload-queue" aria-live="polite" hidden></div>
         <?php if ($mediaLibrary->canCreateDirectory()) : ?>
         <button id="mkdir-button" type="button"><?php echo htmlspecialchars($mediaLabels['newFolder'], ENT_QUOTES, 'UTF-8'); ?></button>
         <?php endif; ?>
