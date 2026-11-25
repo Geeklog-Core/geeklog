@@ -88,6 +88,9 @@ try {
     if (!in_array($type, ['Image', 'File', 'Media', 'Root'], true)) {
         throw new RuntimeException('Invalid media type.');
     }
+    // Never trust Type=Root/File/Media from a story editor: only administrators
+    // can operate on other media types. The library root is already scoped.
+    $type = $library->restrictType($type);
 
     if ($action === 'thumbnail') {
         if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
