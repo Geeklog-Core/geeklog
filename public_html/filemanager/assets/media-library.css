@@ -586,3 +586,42 @@ summary:focus-visible {
     .upload-progress-list li { grid-template-columns: 1fr 100px; }
     .upload-state { grid-column: 1 / -1; }
 }
+
+/* One clear submit action for file picker and drag-and-drop uploads. */
+.media-actions { display: block; }
+.media-actions #upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: .65rem;
+}
+.media-actions #upload-form .file-picker { align-self: flex-start; }
+.upload-submit-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: .6rem;
+    width: 100%;
+}
+.upload-primary {
+    color: #fff;
+    background: #1769aa;
+    border-color: #1769aa;
+    font-weight: 600;
+    min-height: 40px;
+}
+.upload-primary:not(:disabled):hover,
+.upload-primary:not(:disabled):focus-visible {
+    background: #125488;
+}
+.upload-primary:disabled {
+    color: #68737f;
+    background: #e8edf2;
+    border-color: #cad4df;
+    cursor: not-allowed;
+}
+.media-actions #mkdir-button { margin-top: .7rem; }
+@media (max-width: 600px) {
+    .upload-submit-row { justify-content: stretch; }
+    .upload-submit-row button { flex: 1; }
+}
