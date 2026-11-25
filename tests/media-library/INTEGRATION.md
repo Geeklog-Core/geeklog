@@ -4,7 +4,7 @@ This checklist concerns upstream [Geeklog-Core/geeklog PR #1173](https://github.
 
 ## Automated checks
 
-- [ ] Core compatibility workflow green for PHP 5.6, 8.3, 8.4 and 8.5
+- [x] Core compatibility workflow reported green for PHP 5.6, 8.3, 8.4 and 8.5 (2026-11-25; user-confirmed)
 - [ ] PHP syntax, JavaScript syntax, runtime thumbnail and storage smoke checks
 - [ ] PHPUnit media tests run in the project's supported development environment
 - [ ] Legacy PHP connectors and Blueimp test handlers absent from distributed update
@@ -13,7 +13,8 @@ This checklist concerns upstream [Geeklog-Core/geeklog PR #1173](https://github.
 ## Manual tests – PHP and permissions
 
 - [ ] Root/Filemanager administrator: browse, upload, edit, rename, create/remove empty folder, delete files
-- [ ] Story editor without filemanager.admin: CKEditor image selection works within the configured image library
+- [x] Tested account with both `story.submit` and `story.edit`, without Filemanager administration: images can be added directly in the gallery and through the article interface/CKEditor; deletion and folder creation are unavailable (user validation on Geeklog 2.2.2 / PHP 5.6.40)
+- [ ] Verify `story.submit`-only and `story.edit`-only roles independently, and confirm server-side upload/delete/mkdir permissions (not just hidden buttons)
 - [ ] Story editor: `Type=Root`, `Type=File` and `Type=Media` cannot enlarge access or permit a non-image upload
 - [ ] Read-only setting forbids uploads, image edits, rename and deletion
 - [ ] Non-member/anonymous access denied to index, JSON API and thumbnail endpoint
@@ -36,7 +37,7 @@ This checklist concerns upstream [Geeklog-Core/geeklog PR #1173](https://github.
 - [ ] Upgrade from 2.2.2 containing Rich Filemanager; media/userfiles preserved
 - [ ] Upgrade from 2.2.2 containing the standalone preview; no preliminary rollback
 - [ ] Filemanager obsolete executable endpoints removed, or upgrade reports actionable permission errors
-- [ ] IIS/Windows validation for issue #983: browser, folders, thumbnails, upload and CKEditor
+- [ ] IIS/Windows validation for issue #983: browser, folders, thumbnails, upload and CKEditor. Geeklog v2.2.2 officially documents Apache **or Microsoft IIS** as supported, but the legacy Rich Filemanager fails on IIS 7/8 (CLDR/Globalize loading, #983). Native Media Library removes that legacy dependency; do not close #983 without a Windows/IIS test. Static Pages experimental URL rewriting is separately documented as incompatible with IIS and is outside this PR.
 - [ ] Verify URL/path handling on Unix and Windows; report missing extension support separately
 - [ ] Verify PHP 8.4/8.5 runtime on a complete Geeklog installation (lint alone is not sufficient)
 
