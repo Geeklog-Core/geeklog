@@ -15,8 +15,32 @@ MODE="$1"; WEB="${2%/}"; SYS="${3%/}"
 WEB="$(cd "$WEB" && pwd -P)"
 SYS="$(cd "$SYS" && pwd -P)"
 SOURCE="$(cd "$(dirname "$0")" && pwd -P)"
-[[ -f "$SOURCE/public_html/filemanager/index.php" && -f "$SOURCE/system/classes/Media/MediaLibrary.php" ]] || {
-  echo "ERROR: extract the complete preview ZIP before installing."; exit 1;
+# Check the entire package, not just its entry point, before modifying a site.
+REQUIRED=(
+  public_html/filemanager/index.php
+  public_html/filemanager/api.php
+  public_html/filemanager/assets/media-library.js
+  public_html/filemanager/assets/media-library.css
+  system/classes/Media/MediaValidator.php
+  system/classes/Media/MediaStorage.php
+  system/classes/Media/MediaLibrary.php
+  system/classes/Media/MediaImageEditor.php
+  system/classes/Media/MediaThumbnail.php
+  rollback.sh
+)
+for file in "${REQUIRED[@]}"; do
+  [[ -f "$SOURCE/$file" && ! -L "$SOURCE/$file" ]] || {
+    echo "ERROR: preview package is incomplete or contains a symbolic link: $file"; exit 1;
+  }
+done
+# Never replace a symlink that might point beyond the selected Geeklog site.
+for file in index.php api.php assets/media-library.js assets/media-library.css; do
+  [[ ! -L "$WEB/filemanager/$file" ]] || {
+    echo "ERROR: refusing to overwrite symlink: $WEB/filemanager/$file"; exit 1;
+  }
+done
+[[ ! -L "$SYS/classes/Media" && ! -L "$WEB/filemanager/assets" ]] || {
+  echo "ERROR: refusing a symlinked Media classes or assets directory."; exit 1;
 }
 if ! php -r 'exit(PHP_VERSION_ID >= 50604 ? 0 : 1);'; then
   echo "ERROR: PHP CLI 5.6.4 or later is required."; exit 1;
