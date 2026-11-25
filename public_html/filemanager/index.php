@@ -45,6 +45,11 @@ $uploadExtensions = array_values(array_unique(array_filter(array_map(function ($
 $uploadAccept = implode(',', array_map(function ($extension) {
     return '.' . $extension;
 }, $uploadExtensions));
+// Some file chooser implementations recognise the image MIME category more
+// reliably than extension-only filters. The extension list remains authoritative.
+if ($type === 'Root' || $type === 'Image') {
+    $uploadAccept = 'image/*' . ($uploadAccept !== '' ? ',' . $uploadAccept : '');
+}
 $mediaLanguage = strtolower(substr((string) COM_getLangIso639Code(), 0, 2));
 $mediaStrings = [
     'en' => [
@@ -66,7 +71,7 @@ $mediaStrings = [
         'imageLoadFailed' => 'Unable to load the image for editing.',
         'dimensionsInvalid' => 'Image dimensions must be between 1 and 10000 pixels (24 megapixels maximum).',
         'refresh' => 'Refresh', 'currentFolder' => 'Current folder', 'fileOperations' => 'File operations',
-        'chooseFile' => 'Choose files', 'noFile' => 'No files selected', 'upload' => 'Upload',
+        'chooseFile' => 'Choose images', 'noFile' => 'No files selected', 'upload' => 'Upload',
         'uploadSingle' => 'Upload file', 'uploadMultiple' => 'Upload {count} files',
         'newFolder' => 'New folder', 'filesLabel' => 'Media files',
         'mediaRoot' => 'Media', 'folder' => 'Folder', 'folders' => 'Folders', 'files' => 'Files',
@@ -76,7 +81,7 @@ $mediaStrings = [
         'uploading' => 'Uploading...', 'uploadQueued' => 'Queued', 'uploadDone' => 'Uploaded',
         'uploadCancelled' => 'Cancelled', 'uploadHttpError' => 'Upload failed (HTTP {status}).',
         'selectedFiles' => '{count} files selected', 'duplicateUpload' => 'Duplicate file in selection: {name}', 'uploadSummary' => '{ok} uploaded, {failed} failed, {cancelled} cancelled.',
-        'cancelUploads' => 'Cancel uploads', 'dropFiles' => 'Drop files here or choose files above',
+        'cancelUploads' => 'Cancel uploads', 'dropFiles' => 'Drop images here or select them above',
         'empty' => 'This folder is empty.',
         'noMatches' => 'No matching files or folders.', 'itemCount' => '{count} items',
         'searchPlaceholder' => 'Search this folder', 'searchLabel' => 'Search files and folders in the current directory',
@@ -108,7 +113,7 @@ $mediaStrings = [
         'imageLoadFailed' => 'Impossible de charger l’image pour modification.',
         'dimensionsInvalid' => 'Dimensions comprises entre 1 et 10000 pixels (24 mégapixels maximum).',
         'refresh' => 'Actualiser', 'currentFolder' => 'Dossier actuel', 'fileOperations' => 'Gestion des fichiers',
-        'chooseFile' => 'Choisir des fichiers', 'noFile' => 'Aucun fichier sélectionné', 'upload' => 'Envoyer',
+        'chooseFile' => 'Choisir des images', 'noFile' => 'Aucun fichier sélectionné', 'upload' => 'Envoyer',
         'uploadSingle' => 'Envoyer le fichier', 'uploadMultiple' => 'Envoyer {count} fichiers',
         'newFolder' => 'Nouveau dossier', 'filesLabel' => 'Fichiers média',
         'mediaRoot' => 'Médias', 'folder' => 'Dossier', 'folders' => 'Dossiers', 'files' => 'Fichiers',
@@ -118,7 +123,7 @@ $mediaStrings = [
         'uploading' => 'Envoi...', 'uploadQueued' => 'En attente', 'uploadDone' => 'Envoyé',
         'uploadCancelled' => 'Annulé', 'uploadHttpError' => 'Échec de l’envoi (HTTP {status}).',
         'selectedFiles' => '{count} fichiers sélectionnés', 'duplicateUpload' => 'Fichier en double : {name}', 'uploadSummary' => '{ok} envoyés, {failed} échecs, {cancelled} annulés.',
-        'cancelUploads' => 'Annuler les envois', 'dropFiles' => 'Déposez les fichiers ici ou sélectionnez-les ci-dessus',
+        'cancelUploads' => 'Annuler les envois', 'dropFiles' => 'Déposez les images ici ou sélectionnez-les ci-dessus',
         'empty' => 'Ce dossier est vide.',
         'noMatches' => 'Aucun fichier ou dossier correspondant.', 'itemCount' => '{count} éléments',
         'searchPlaceholder' => 'Rechercher dans ce dossier', 'searchLabel' => 'Rechercher des fichiers et dossiers',
