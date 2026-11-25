@@ -73,6 +73,45 @@ function adveditor_setup_tinymce($custom)
     }
 }
 
+/**
+ * Resolve Geeklog and community locale identifiers to installed TinyMCE packs.
+ * Unsupported or malformed identifiers fall back to built-in English.
+ */
+function adveditor_tinymce_language($locale)
+{
+    $locale = strtolower(str_replace('_', '-', trim((string) $locale)));
+    if (!preg_match('/^[a-z]{2}(?:-[a-z]{2,8}){0,2}$/D', $locale)) {
+        return 'en';
+    }
+    $map = array(
+        'fr' => 'fr-FR', 'fr-ca' => 'fr-FR', 'fr-fr' => 'fr-FR',
+        'pt' => 'pt-PT', 'pt-br' => 'pt-BR', 'pt-pt' => 'pt-PT',
+        'he' => 'he-IL', 'iw' => 'he-IL', 'he-il' => 'he-IL',
+        'ko' => 'ko-KR', 'ko-kr' => 'ko-KR',
+        'zh-cn' => 'zh-CN', 'zh-hans' => 'zh-CN', 'zh-hans-cn' => 'zh-CN',
+        'zh-sg' => 'zh-CN', 'zh-hans-sg' => 'zh-CN',
+        'zh' => 'zh-TW', 'zh-tw' => 'zh-TW', 'zh-hant' => 'zh-TW',
+        'zh-hk' => 'zh-TW', 'zh-mo' => 'zh-TW', 'zh-hant-tw' => 'zh-TW',
+        'zh-hant-hk' => 'zh-TW', 'zh-hant-mo' => 'zh-TW',
+        'nb' => 'nb-NO', 'no' => 'nb-NO', 'nb-no' => 'nb-NO', 'no-no' => 'nb-NO',
+        'sv' => 'sv-SE', 'sv-se' => 'sv-SE',
+        'sl' => 'sl-SI', 'sl-si' => 'sl-SI',
+        'bg' => 'bg-BG', 'bg-bg' => 'bg-BG',
+    );
+    $parts = explode('-', $locale);
+    $base = $parts[0];
+    $candidates = array(
+        isset($map[$locale]) ? $map[$locale] : $locale,
+        isset($map[$base]) ? $map[$base] : $base,
+    );
+    foreach ($candidates as $language) {
+        if ($language === 'en' || is_file(__DIR__ . '/vendor/langs/' . $language . '.js')) {
+            return $language;
+        }
+    }
+    return 'en';
+}
+
 function adveditor_init_tinymce()
 {
     global $_CONF, $_SCRIPTS, $LANG_ISO639_1;
@@ -80,14 +119,7 @@ function adveditor_init_tinymce()
         str_replace('\\', '/', $_CONF['path_editors'])), '/');
     $base = rtrim($_CONF['site_url'], '/') . '/' . $dir . '/tinymce/vendor';
     $assets = adveditor_tinymce_asset_info(__DIR__ . '/vendor');
-    $map = array('fr' => 'fr-FR', 'fr-ca' => 'fr-FR', 'pt' => 'pt-PT', 'pt-br' => 'pt-BR',
-        'he' => 'he-IL', 'ko' => 'ko-KR', 'zh-cn' => 'zh-CN', 'zh' => 'zh-TW',
-        'nb' => 'nb-NO', 'sv' => 'sv-SE', 'sl' => 'sl-SI', 'bg' => 'bg-BG');
-    $language = isset($map[$LANG_ISO639_1]) ? $map[$LANG_ISO639_1] : $LANG_ISO639_1;
-    if (!preg_match('/^[a-z]{2}(?:-[A-Z]{2})?$/D', $language) ||
-        !is_file(__DIR__ . '/vendor/langs/' . $language . '.js')) {
-        $language = 'en';
-    }
+    $language = adveditor_tinymce_language($LANG_ISO639_1);
     $_SCRIPTS->setJavaScript('<script type="text/javascript">var geeklogTinyMceBase = ' .
         json_encode($base, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) .
         '; var geeklogTinyMceLanguage = ' . json_encode($language) .

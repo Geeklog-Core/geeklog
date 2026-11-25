@@ -36,3 +36,7 @@ Preserve upstream license and third-party notices and the translation license/no
 ## Resource caching
 
 The adapter registers the four ordered editor scripts as absolute same-site URLs with the TinyMCE package version and individual file modification time. TinyMCE's native `cache_suffix` additionally uses a stable fingerprint of all bundled JS/CSS modification times, including files that are not the newest. No core Resource changes or third-party CDN are required. Deploy changed files with updated modification times; clear the Geeklog cache after upgrades. Contributor confirmed all six browser checks on commit 4c46188, including both editor instances, French UI, toolbar changes, image insertion, article save and resource caching enabled/disabled.
+
+## Languages
+
+All 13 shipped UTF-8 Geeklog language files resolve to an installed TinyMCE pack or built-in English. In particular Geeklog's zh-Hans and zh-Hant map to zh-CN and zh-TW respectively. Regional variants use an available regional pack or the base language; unavailable and malformed identifiers fall back to English. French Canada shares fr-FR, and Spanish Argentina shares es. All 35 bundled packs are tested for reachability. Actual browser UI checks in Chinese and right-to-left languages remain pending.

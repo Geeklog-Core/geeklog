@@ -26,6 +26,30 @@ foreach ($_SCRIPTS->files as $i => $file) {
 }
 check(strpos($_SCRIPTS->inline, 'geeklogTinyMceCacheSuffix') !== false, 'Cache suffix exposed');
 check(strpos($_SCRIPTS->inline, 'fr-FR') !== false, 'French language');
+$locales = array(
+    'en'=>'en', 'fr'=>'fr-FR', 'de'=>'de', 'es'=>'es', 'ru'=>'ru',
+    'ja'=>'ja', 'he'=>'he-IL', 'fa'=>'fa', 'zh-Hans'=>'zh-CN', 'zh-Hant'=>'zh-TW',
+    'FR_ca'=>'fr-FR', 'de-DE'=>'de', 'es_AR'=>'es', 'pt_BR'=>'pt-BR',
+    'pt-PT'=>'pt-PT', 'zh_Hans_CN'=>'zh-CN', 'zh-Hant-HK'=>'zh-TW',
+    'zh-SG'=>'zh-CN', 'zh-TW'=>'zh-TW', 'ko-KR'=>'ko-KR', 'nb_NO'=>'nb-NO',
+    'sv-SE'=>'sv-SE', 'sl-SI'=>'sl-SI', 'bg-BG'=>'bg-BG',
+    'en_US'=>'en', 'th'=>'en', '../fr'=>'en', 'fr/../../x'=>'en', ''=>'en',
+);
+foreach ($locales as $locale => $expected) {
+    check(adveditor_tinymce_language($locale) === $expected, 'Locale: ' . $locale);
+}
+// Every installed pack must also be reachable by its own identifier.
+foreach (glob($root . 'editors/tinymce/vendor/langs/*.js') as $file) {
+    $locale = basename($file, '.js');
+    check(adveditor_tinymce_language($locale) === $locale, 'Installed pack: ' . $locale);
+}
+// Check the locale declarations of every shipped UTF-8 Geeklog language file.
+foreach (glob(dirname(dirname(__DIR__)) . '/language/*_utf-8.php') as $file) {
+    $source = file_get_contents($file);
+    check(preg_match('~\$LANG_ISO639_1\s*=\s*\x27([^\x27]+)\x27~', $source, $match) === 1, 'Language declaration: ' . $file);
+    check(isset($locales[$match[1]]), 'Unreviewed Geeklog locale: ' . $match[1]);
+    check(adveditor_tinymce_language($match[1]) === $locales[$match[1]], 'Geeklog locale: ' . $file);
+}
 $dir = sys_get_temp_dir() . '/geeklog-tinymce-' . uniqid();
 mkdir($dir);
 try {
