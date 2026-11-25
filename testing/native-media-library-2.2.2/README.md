@@ -62,6 +62,14 @@ endpoints** but never deletes media files in `images` or `userfiles`.
 The command prints its backup path. Keep it. It also copies `rollback.sh`
 into the backup directory so you can restore without retaining the ZIP.
 
+The `--check` command now verifies all nine required runtime files, PHP
+syntax, required extensions and permissions-related package constraints. It
+refuses symlinked entry points, Media class directories and asset directories.
+The GitHub Actions build also checks the ZIP contents and exercises the install
+and rollback scripts against disposable test directories, checking that old
+files return and uploaded media remain untouched. This is not a substitute
+for testing restoration on a staging clone of your own site.
+
 ## Running this preview until Geeklog 2.2.3
 
 Uploads support selecting multiple files and drag-and-drop. Each file is sent
