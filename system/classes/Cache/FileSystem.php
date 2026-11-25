@@ -41,13 +41,7 @@ class FileSystem implements CacheInterface
      */
     private function getFileName($key)
     {
-        static $cache = array();
-
-        if (!isset($cache[$key])) {
-            $cache[$key] = $this->root . md5($key) . '.php';
-        }
-
-        return $cache[$key];
+        return $this->root . md5($key) . '.php';
     }
 
     /**
