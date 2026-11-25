@@ -22,8 +22,9 @@ try {
 
 $type = isset($_GET['Type']) ? ucfirst(strtolower((string) $_GET['Type'])) : 'File';
 if (!in_array($type, ['Image', 'File', 'Media', 'Root'], true)) {
-    $type = 'File';
+    $type = 'Image';
 }
+$type = $mediaLibrary->restrictType($type);
 $csrfToken = SEC_createToken();
 $uploadExtensions = $type === 'Image'
     ? (array) $_CONF['filemanager_images_ext']
