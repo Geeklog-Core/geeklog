@@ -60,6 +60,7 @@
             return {
                 target: element, base_url: geeklogTinyMceBase, suffix: '.min',
                 language: geeklogTinyMceLanguage,
+                language_url: geeklogTinyMceLanguage === 'en' ? undefined : geeklogTinyMceBase + '/langs/' + geeklogTinyMceLanguage + '.js',
                 license_key:'gpl', menubar:false, promotion:false, branding:false,
                 height:state.height, toolbar:toolbar(state.level),
                 plugins:'code lists link image table charmap fullscreen anchor media searchreplace visualblocks preview',
@@ -82,7 +83,7 @@
                 }
             };
         }
-        if (typeof tinymce === 'undefined') { return; }
+        if (typeof tinymce === 'undefined') { element.style.display = ''; return; }
         tinymce.init(config()).catch(function (error) {
             state.ready = false;
             element.style.display = '';

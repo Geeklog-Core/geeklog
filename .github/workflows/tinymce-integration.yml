@@ -1,0 +1,36 @@
+name: TinyMCE integration
+on:
+  push:
+    branches: [feature/tinymce-integration]
+    paths:
+      - 'public_html/editors/tinymce/**'
+      - 'public_html/filemanager/assets/media-library.js'
+      - 'tests/tinymce/**'
+      - '.github/workflows/tinymce-integration.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  adapter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check public_html/editors/tinymce/functions.js
+      - run: node --check public_html/filemanager/assets/media-library.js
+      - run: node tests/tinymce/adapter.test.js
+  php:
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['5.6', '8.3', '8.4', '8.5']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - run: php -l public_html/editors/tinymce/functions.php
