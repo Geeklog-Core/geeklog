@@ -52,13 +52,15 @@
         window.addEventListener('message', receive);
         timer = window.setInterval(function () { if (popup.closed) { cleanup(); } }, 1000);
     }
-    function start(id, level) {
+    function start(id, level, initialHeight) {
         var element = document.getElementById(id);
         if (!element) { return; }
-        var state = states[id] = {element:element, level:level, ready:false, height:element.offsetHeight || 300};
+        var state = states[id] = {element:element, level:level, ready:false, height:initialHeight || element.offsetHeight || 300};
         function config() {
             return {
-                target: element, license_key:'gpl', menubar:false, promotion:false, branding:false,
+                target: element, base_url: geeklogTinyMceBase, suffix: '.min',
+                language: geeklogTinyMceLanguage,
+                license_key:'gpl', menubar:false, promotion:false, branding:false,
                 height:state.height, toolbar:toolbar(state.level),
                 plugins:'code lists link image table charmap fullscreen anchor media searchreplace visualblocks preview',
                 entity_encoding:'raw', convert_urls:false, verify_html:true,
@@ -109,8 +111,7 @@
         var content = getContent(id), height = state.height;
         tinymce.get(id).remove();
         state.element.value = content;
-        start(id, level);
-        states[id].height = height;
+        start(id, level, height);
     }
     AdvancedEditor.api.tinymce = {
         newEditor:function (id, options) { var n = Number(options.toolbar); start(id, n >= 0 && n <= 3 ? n : 1); },
