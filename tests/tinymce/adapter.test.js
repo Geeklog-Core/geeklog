@@ -11,7 +11,7 @@ const popup = {closed:false,close(){this.closed=true;}};
 let timerId = 0;
 const context = {
     AdvancedEditor:{api:{}}, geeklogAllowedHtml:{strong:1,em:1,p:{style:1},a:{href:1}},
-    geeklogFileManager:false, geeklog:{site_url:'https://example.test'}, URL, geeklogTinyMceBase:'/editors/tinymce/vendor',geeklogTinyMceLanguage:'en',
+    geeklogFileManager:false, geeklog:{site_url:'https://example.test'}, URL, geeklogTinyMceBase:'/editors/tinymce/vendor',geeklogTinyMceLanguage:'en', geeklogTinyMceCacheSuffix:'?v=8.11.0-123-test',
     document:{getElementById:id=>elements[id]},
     window:{setTimeout:(fn,ms)=>{if(ms===0){queueMicrotask(fn);return 0;} timers.set(++timerId,fn);return timerId;},
         clearTimeout:id=>timers.delete(id),console:{error:()=>{}},
@@ -61,6 +61,8 @@ const tick=()=>new Promise(resolve=>setImmediate(resolve));
     assert.equal(api.getContent('intro'),protectedContent);
     assert.equal(api.getContent('body'),'queued body');
     assert.equal(configs.intro.license_key,'gpl');
+    assert.equal(configs.intro.cache_suffix,'?v=8.11.0-123-test');
+    assert.equal(configs.intro.base_url,'/editors/tinymce/vendor');
     assert.equal(configs.intro.protect.length,3);
     for(const plugin of configs.intro.plugins.split(' ')) assert.ok(fs.existsSync(path.join(root,'vendor/plugins',plugin,'plugin.min.js')),plugin);
     api.newEditor('stuck',{toolbar:1});

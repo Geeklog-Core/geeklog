@@ -62,6 +62,7 @@
         function config() {
             return {
                 target: element, base_url: geeklogTinyMceBase, suffix: '.min',
+                cache_suffix: geeklogTinyMceCacheSuffix,
                 language: geeklogTinyMceLanguage,
                 language_url: geeklogTinyMceLanguage === 'en' ? undefined : geeklogTinyMceBase + '/langs/' + geeklogTinyMceLanguage + '.js',
                 license_key:'gpl', menubar:false, promotion:false, branding:false,

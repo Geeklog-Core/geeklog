@@ -30,3 +30,7 @@ The picker accepts only HTTP(S) media URLs from its configured origin and the or
 ## Distribution release gate
 
 Preserve upstream license and third-party notices and the translation license/notice. Language packs are redistributed under their applicable TinyMCE terms, not blanket MIT. Before distributing a release, verify complete corresponding source (including applicable language sources, build instructions and bundled dependencies) and GPL-compatible redistribution terms and license notices. The source tag alone is not a claim that these obligations are fulfilled. Keep CKEditor default; do not merge upstream before the native media dependency and maintainer review.
+
+## Resource caching
+
+The adapter registers the four ordered editor scripts as absolute same-site URLs with the TinyMCE package version and individual file modification time. TinyMCE's native `cache_suffix` additionally uses a stable fingerprint of all bundled JS/CSS modification times, including files that are not the newest. No core Resource changes or third-party CDN are required. Deploy changed files with updated modification times; clear the Geeklog cache after upgrades. Browser checks with resource caching enabled and disabled remain required.

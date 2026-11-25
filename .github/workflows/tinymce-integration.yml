@@ -42,3 +42,4 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
       - run: php -l public_html/editors/tinymce/functions.php
+      - run: php tests/tinymce/resource.test.php
