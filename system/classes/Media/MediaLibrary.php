@@ -81,6 +81,16 @@ class MediaLibrary
         return $this->admin;
     }
 
+    /**
+     * Editors may use CKEditor's legacy Type=Root URL, but their access must
+     * always be restricted to images regardless of the requested view.
+     * Administrators retain the configured Root, Image, File and Media views.
+     */
+    public function restrictType($type)
+    {
+        return $this->admin ? $type : 'Image';
+    }
+
     public function canWrite()
     {
         global $_CONF;
