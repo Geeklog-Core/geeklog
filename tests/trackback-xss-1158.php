@@ -1,7 +1,7 @@
 <?php
 /** Source and encoding smoke guard for Geeklog issue #1158. */
 $source = file_get_contents(dirname(__DIR__) . '/public_html/admin/trackback.php');
-$expected = "htmlspecialchars($serviceUrl, ENT_QUOTES, COM_getCharset())";
+$expected = "htmlspecialchars(\$serviceUrl, ENT_QUOTES, COM_getCharset())";
 if ($source === false || strpos($source, $expected) === false || strpos($source, "preg_match('~^https?://~i', \$serviceUrl)") === false) {
     fwrite(STDERR, "Expected escaping guard not found\n");
     exit(1);
