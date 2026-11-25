@@ -948,7 +948,7 @@
         var uploadInput = document.getElementById('upload-file');
         var uploadDropzone = document.getElementById('upload-dropzone');
         var uploadQueueElement = document.getElementById('upload-queue');
-        var uploadSubmit = uploadForm.querySelector('button[type="submit"]');
+        var uploadSubmit = document.getElementById('upload-submit');
         var uploadCancel = document.getElementById('upload-cancel');
         var pendingFiles = [];
         var uploading = false;
@@ -961,7 +961,12 @@
             if (uploading) { return; }
             pendingFiles = Array.prototype.slice.call(files || []);
             selectedFileLabel.textContent = pendingFiles.length
-                ? t('selectedFiles', {count: pendingFiles.length}) : t('noFile');
+                ? (pendingFiles.length === 1 ? pendingFiles[0].name : t('selectedFiles', {count: pendingFiles.length}))
+                : t('noFile');
+            uploadSubmit.disabled = pendingFiles.length === 0;
+            uploadSubmit.textContent = pendingFiles.length === 1
+                ? t('uploadSingle')
+                : pendingFiles.length > 1 ? t('uploadMultiple', {count: pendingFiles.length}) : t('upload');
             uploadQueueElement.textContent = '';
             if (pendingFiles.length) {
                 renderUploadQueue(pendingFiles);
@@ -1099,7 +1104,8 @@
             Promise.all(promises).then(function () {
                 uploading = false;
                 uploadInput.disabled = false;
-                uploadSubmit.disabled = false;
+                uploadSubmit.disabled = true;
+                uploadSubmit.textContent = t('upload');
                 uploadCancel.hidden = true;
                 uploadCancel.onclick = null;
                 uploadForm.reset();
