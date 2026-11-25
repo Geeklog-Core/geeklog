@@ -8,7 +8,7 @@ Highlights:
 - Native file browser with directory management, multi-file upload, drag-and-drop, per-file upload progress, rename, delete and CKEditor image selection.
 - JPEG/PNG/WebP editing: crop, rotate, resize, save copy or replace original, depending on the server's GD capabilities.
 - Private cached thumbnail generation, with PNG fallback on PHP 5.6.
-- Throttled, near-viewport thumbnail loading and at most two concurrent uploads to reduce load on older shared hosting.
+- Throttled, near-viewport thumbnail loading and sequential uploads with refreshed one-time security tokens to reduce load and support Geeklog 2.2.2.
 - Always confirm deletion of an empty folder.
 - Installs only the required files; no database, lib-common.php or installer changes.
 - Backup and rollback scripts, English installation and rollback documentation.
