@@ -19,7 +19,11 @@ if ($db->connect_errno) {
     exit(2);
 }
 $db->set_charset('utf8mb4');
-$_TABLES = array('spamx' => 'gl_spamx_ci');
+$_TABLES = array(
+    'spamx' => 'gl_spamx_ci',
+    'features' => 'gl_features_ci',
+    'plugins' => 'gl_plugins_ci'
+);
 function DB_query($sql) {
     global $db;
     return $db->query($sql);
