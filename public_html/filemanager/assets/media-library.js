@@ -24,6 +24,7 @@
     var viewButtons = {};
     var resultCount;
     var imageRevisions = Object.create(null);
+    var resetUploadOnNavigation = function () {};
 
     function freshImageUrl(item) {
         var url = new URL(item.url, window.location.href);
@@ -914,6 +915,7 @@
             if (changedDirectory) {
                 searchQuery = '';
                 searchInput.value = '';
+                resetUploadOnNavigation();
             }
             renderBreadcrumbs(currentPath);
             renderResults();
@@ -952,6 +954,7 @@
         var uploadCancel = document.getElementById('upload-cancel');
         var pendingFiles = [];
         var uploading = false;
+        var clearUploadAfterFinish = false;
         var activeUploads = [];
         // Geeklog CSRF tokens are one-use; wait for each response before
         // sending the next file with the newly issued token.
@@ -974,6 +977,17 @@
                 uploadQueueElement.hidden = true;
             }
         }
+
+        // Upload history and pending selections belong to the current folder.
+        // Keep in-flight progress visible until it finishes, then clear it.
+        resetUploadOnNavigation = function () {
+            if (uploading) {
+                clearUploadAfterFinish = true;
+                return;
+            }
+            uploadForm.reset();
+            setPendingFiles([]);
+        };
 
         function renderUploadQueue(files) {
             uploadQueueElement.textContent = '';
@@ -1111,6 +1125,12 @@
                 uploadForm.reset();
                 pendingFiles = [];
                 selectedFileLabel.textContent = t('noFile');
+                if (clearUploadAfterFinish) {
+                    clearUploadAfterFinish = false;
+                    setPendingFiles([]);
+                    setStatus('');
+                    return;
+                }
                 setStatus(t('uploadSummary', {ok: succeeded, failed: failed, cancelled: cancelled ? files.length - cursor : 0}));
                 if (currentPath === folder && succeeded) {
                     return load(folder).then(function () {
