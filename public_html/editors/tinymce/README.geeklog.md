@@ -23,14 +23,16 @@ Run the adapter contract test with node tests/tinymce/adapter.test.js. This is a
 
 ## Staging evidence — 2026-11-25
 
-Contributor-reported browser checks: article edit/preview/save/reopen, four toolbar levels, resizing and mode switching; image insertion and article save; preserved HTML, Unicode, protected blocks and autotags compared with CKEditor (with Root filtering bypass and four-byte removal disabled for the unrestricted comparison); static page content save; nine comment/submission checks; ten of eleven member permission checks; ten Eclipse checks including mobile and light/dark modes; switching back to CKEditor. Member article save/reopen, remaining static page and media picker cases, official themes and fresh-install/upgrade packaging remain open. Intermittent site-wide server response delay is not attributed to TinyMCE and remains separately unresolved.
+Contributor-reported browser checks: article edit/preview/save/reopen, four toolbar levels, resizing and mode switching; image insertion and article save; preserved HTML, Unicode, protected blocks and autotags compared with CKEditor (with Root filtering bypass and four-byte removal disabled for the unrestricted comparison); static page content save; nine comment/submission checks; eleven member permission checks; ten Eclipse checks including mobile and light/dark modes; switching back to CKEditor. Remaining static page and media picker cases, official themes and fresh-install/upgrade packaging remain open. Intermittent site-wide server response delay is not attributed to TinyMCE and remains separately unresolved.
 
 The picker accepts only HTTP(S) media URLs from its configured origin and the originating popup. The browser toolbar is not a permission or HTML security boundary; server checks remain authoritative.
 
 ## Distribution release gate
 
+See [REDISTRIBUTION.md](REDISTRIBUTION.md) for pinned provenance, licensing and the outstanding source distribution requirements.
+
 Preserve upstream license and third-party notices and the translation license/notice. Language packs are redistributed under their applicable TinyMCE terms, not blanket MIT. Before distributing a release, verify complete corresponding source (including applicable language sources, build instructions and bundled dependencies) and GPL-compatible redistribution terms and license notices. The source tag alone is not a claim that these obligations are fulfilled. Keep CKEditor default; do not merge upstream before the native media dependency and maintainer review.
 
 ## Resource caching
 
-The adapter registers the four ordered editor scripts as absolute same-site URLs with the TinyMCE package version and individual file modification time. TinyMCE's native `cache_suffix` additionally uses a stable fingerprint of all bundled JS/CSS modification times, including files that are not the newest. No core Resource changes or third-party CDN are required. Deploy changed files with updated modification times; clear the Geeklog cache after upgrades. Browser checks with resource caching enabled and disabled remain required.
+The adapter registers the four ordered editor scripts as absolute same-site URLs with the TinyMCE package version and individual file modification time. TinyMCE's native `cache_suffix` additionally uses a stable fingerprint of all bundled JS/CSS modification times, including files that are not the newest. No core Resource changes or third-party CDN are required. Deploy changed files with updated modification times; clear the Geeklog cache after upgrades. Contributor confirmed all six browser checks on commit 4c46188, including both editor instances, French UI, toolbar changes, image insertion, article save and resource caching enabled/disabled.

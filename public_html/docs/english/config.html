@@ -1240,11 +1240,17 @@ the admin panel.</p>
   <td valign="top">false</td>
   <td valign="top">Enable (if set to <code>true</code>) a WYSIWYG editor for
     article and comment submissions and static pages. Geeklog ships with <a
-    href="http://ckeditor.com">CKEditor</a>.</td></tr>
+    href="https://ckeditor.com/">CKEditor</a> and the self-hosted open-source
+    <a href="https://www.tiny.cloud/">TinyMCE</a> editor.</td></tr>
 <tr>
   <td valign="top"><a name="desc_advanced_editor_name">advanced_editor_name</a></td>
   <td valign="top">CKEditor</td>
-  <td valign="top">Default editor to use on the site</td></tr>
+  <td valign="top">Select the advanced editor to use on the site. CKEditor remains the default
+    for existing and new installations. TinyMCE is an alternative with no cloud account or API key required.
+    Enable the advanced editor and the user preference to use it. The native media library is available
+    according to the existing file manager settings and permissions. Switching editors does not require
+    a database migration; existing HTML may be normalized when edited and saved. Server-side HTML filtering
+    remains authoritative.</td></tr>
 <tr>
   <td valign="top"><a name="desc_wikitext_editor">wikitext_editor</a></td>
   <td valign="top">false</td>
