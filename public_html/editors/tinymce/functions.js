@@ -46,7 +46,8 @@
                 typeof event.data.url !== 'string') { return; }
             var selected;
             try { selected = new URL(event.data.url, url.origin); } catch (e) { return; }
-            if (selected.protocol !== 'https:' && selected.protocol !== 'http:') { return; }
+            if ((selected.protocol !== 'https:' && selected.protocol !== 'http:') ||
+                selected.origin !== url.origin || selected.username || selected.password) { return; }
             cleanup();
             popup.close();
             callback(selected.href);

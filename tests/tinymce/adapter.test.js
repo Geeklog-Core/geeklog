@@ -6,13 +6,18 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '../../public_html/editors/tinymce');
 const elements = Object.fromEntries(['intro','body','stuck','next'].map(id => [id,{value:id,offsetHeight:300,style:{}}]));
 const instances = {}, configs = {}, completions = {}, starts = [], timers = new Map();
+const listeners = new Map();
+const popup = {closed:false,close(){this.closed=true;}};
 let timerId = 0;
 const context = {
     AdvancedEditor:{api:{}}, geeklogAllowedHtml:{strong:1,em:1,p:{style:1},a:{href:1}},
-    geeklogFileManager:false, geeklogTinyMceBase:'/editors/tinymce/vendor',geeklogTinyMceLanguage:'en',
+    geeklogFileManager:false, geeklog:{site_url:'https://example.test'}, URL, geeklogTinyMceBase:'/editors/tinymce/vendor',geeklogTinyMceLanguage:'en',
     document:{getElementById:id=>elements[id]},
     window:{setTimeout:(fn,ms)=>{if(ms===0){queueMicrotask(fn);return 0;} timers.set(++timerId,fn);return timerId;},
-        clearTimeout:id=>timers.delete(id),console:{error:()=>{}}},
+        clearTimeout:id=>timers.delete(id),console:{error:()=>{}},
+        location:{href:'https://example.test/admin/article.php'},open:()=>popup,
+        addEventListener:(name,fn)=>listeners.set(name,fn),removeEventListener:name=>listeners.delete(name),
+        setInterval:()=>99,clearInterval:()=>{}},
     tinymce:{
         get:id=>instances[id],
         init:config=>{
@@ -75,5 +80,25 @@ const tick=()=>new Promise(resolve=>setImmediate(resolve));
     assert.equal(api.getContent('stuck'),'preserved');
     assert.equal(api.getContent('next'),'next');
     assert.equal(timers.size,0);
-    console.log('TinyMCE asynchronous adapter contract passed');
+    context.geeklogFileManager=true;
+    api.changeToolbar('intro','editor-toolbar2');
+    await tick();
+    completions.intro();
+    await tick();
+    let selected=[];
+    configs.intro.file_picker_callback(url=>selected.push(url),'',{filetype:'image'});
+    const receive=listeners.get('message');
+    const message=(origin,source,url,type='geeklog-media-selected')=>receive({origin,source,data:{type,url}});
+    message('https://evil.test',popup,'https://example.test/images/a.png');
+    message('https://example.test',{},'https://example.test/images/a.png');
+    message('https://example.test',popup,'javascript:alert(1)');
+    message('https://example.test',popup,'https://evil.test/a.png');
+    message('https://example.test',popup,'https://user:pass@example.test/a.png');
+    message('https://example.test',popup,'/images/a.png','wrong');
+    assert.deepEqual(selected,[]);
+    message('https://example.test',popup,'/images/a.png');
+    assert.deepEqual(selected,['https://example.test/images/a.png']);
+    assert.equal(popup.closed,true);
+    assert.equal(listeners.has('message'),false);
+    console.log('TinyMCE asynchronous adapter and media picker contract passed');
 })().catch(error=>{console.error(error);process.exitCode=1;});
