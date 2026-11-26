@@ -62,7 +62,7 @@
 {!endif}
         <button type="submit" name="mode" value="{lang_cancel}" class="uk-button">{lang_cancel}</button>
         <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-        <input type="hidden" name="old_pid" value="{poll_id}"{xhtml}>
+        <input type="hidden" name="old_pid" value="{old_poll_id}"{xhtml}>
       </div>
     </div>
   </form>
