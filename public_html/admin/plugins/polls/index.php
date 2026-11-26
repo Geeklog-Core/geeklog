@@ -639,6 +639,7 @@ function deletePoll($pid)
     }
 	
 	// Delete Comments for current item being deleted
+	require_once $_CONF['path_system'] . 'lib-comment.php';
 	CMT_deleteComment('', $pid, POLLS_PLUGIN_NAME, false);
 	
 	// Delete Likes for current item being deleted
