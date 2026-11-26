@@ -475,6 +475,28 @@ $display = $tt->finish($tt->get_var('output'));
 
 $header = '';
 if (!empty($current_topic)) {
+    // Register the topic listing through the core structured data mechanism.
+    if (is_array($A) && !empty($A['tid'])) {
+        $topic_url = TOPIC_getUrl($current_topic);
+        if ($page > 1) {
+            if ($_CONF['url_rewrite']) {
+                $topic_url .= '/' . $page;
+            } else {
+                $topic_url .= '&page=' . $page;
+            }
+        }
+
+        $properties = array(
+            'name' => stripslashes($title),
+            'url' => $topic_url,
+        );
+        if (!empty($A['meta_description'])) {
+            $properties['description'] = stripslashes($A['meta_description']);
+        }
+        $_STRUCT_DATA->add_type('topic', $current_topic, 'core-collectionpage', $properties,
+            array('multi_language' => true));
+    }
+
     // Meta Tags
     if ($_CONF['meta_tags'] > 0) {
         $header .= LB . PLG_getMetaTags(
