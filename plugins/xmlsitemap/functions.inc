@@ -458,6 +458,8 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
 	} else {
 		$url = PLG_idToURL($type, $sub_type, $id); 
     }
+	$wasPublic = !empty($_XMLSMAP_CONF['indexnow']) && $sitemap->containsURL($url);
+
 	// Always need to delete as item may exist already in sitemap but needs to be changed
 	$sitemap->deleteItem($type, $url); 
 	
@@ -476,9 +478,15 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id, $sub_type)
 		XMLSMAP_update($type);
     }
 	
-	// Ping IndexNow for changed url. For new, updated, and delete
-	if ($_XMLSMAP_CONF['indexnow']) {
-		$sitemap->submitURL($url);
+	// Notify newly public URLs, plus formerly public URLs removed or renamed.
+	if (!empty($_XMLSMAP_CONF['indexnow'])) {
+		$newUrl = !empty($newItem[0]) ? $newItem[0] : '';
+		if ($wasPublic && $url !== $newUrl) {
+			$sitemap->submitURL($url);
+		}
+		if ($newUrl !== '') {
+			$sitemap->submitURL($newUrl);
+		}
 	}
 }
 
@@ -534,6 +542,7 @@ function plugin_itemdeleted_xmlsitemap($id, $type, $sub_type)
 
         // PLG_getItemInfo doesn't work here, since the item has already been deleted from database
         $oldUrl = PLG_idToURL($type, $sub_type, $id);
+        $wasPublic = !empty($_XMLSMAP_CONF['indexnow']) && $sitemap->containsURL($oldUrl);
 		$sitemap->deleteItem($type, $oldUrl);
 		
 		$result = $sitemap->endUpdate();
@@ -541,6 +550,11 @@ function plugin_itemdeleted_xmlsitemap($id, $type, $sub_type)
         if (!$result) {
             XMLSMAP_update($type);
         }
+
+		// Do not disclose the URL of a deleted draft or other private item.
+		if ($wasPublic) {
+			$sitemap->submitURL($oldUrl);
+		}
     }
 }
 

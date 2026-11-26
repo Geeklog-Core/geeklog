@@ -882,6 +882,28 @@ class XMLSitemap
         }
     }
 
+
+    /**
+     * Check whether a URL was already exposed in a generated public sitemap.
+     * A missing or unreadable sitemap is not evidence of public visibility.
+     */
+    public function containsURL($url)
+    {
+        if (empty($url)) {
+            return false;
+        }
+        $target = '<loc>' . $this->normalizeURL($url) . '</loc>';
+        foreach ($this->getFileNames() as $filename) {
+            if (!empty($filename)) {
+                $contents = @file_get_contents($filename);
+                if ($contents !== false && strpos($contents, $target) !== false) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * Return if the entry is valid as a news sitemap item
      *
