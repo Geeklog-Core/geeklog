@@ -29,8 +29,8 @@ class Db_Pgsql extends Db
     {
         $this->args = $args;
 
-        if (!is_callable('pgsql_connect')) {
-            throw new \Exception(__METHOD__ . ': pgsql_connect is not supported.');
+        if (!is_callable('pg_connect')) {
+            throw new \Exception(__METHOD__ . ': pg_connect is not supported.');
         }
 
         $this->conn = pg_connect(sprintf('host=%s user=%s password=%s dbname=%s', $args['host'], $args['user'], $args['pass'], $args['name']));

@@ -1,0 +1,45 @@
+name: PostgreSQL smoke audit
+on:
+  push:
+    branches:
+      - test/950-postgresql-smoke
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'sql/pgsql_tableanddata.php'
+      - 'public_html/admin/install/classes/pgsql.class.php'
+      - 'tests/postgresql-950.php'
+      - '.github/workflows/postgresql-950.yml'
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        postgres: ['14', '16']
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: geeklog
+          POSTGRES_PASSWORD: smoke-only
+          POSTGRES_DB: geeklog_test950
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U geeklog -d geeklog_test950"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      PGHOST: 127.0.0.1
+      PGUSER: geeklog
+      PGPASSWORD: smoke-only
+      PGDATABASE: geeklog_test950
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pgsql
+      - run: php tests/postgresql-950.php
