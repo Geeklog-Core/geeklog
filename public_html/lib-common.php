@@ -4096,9 +4096,10 @@ function COM_formatEmailAddress($name, $address)
  * @param    int          $priority    (optional) add X-Priority header, if > 0
  * @param    mixed        $optional    (optional) other headers or CC:
  * @param    array        $attachments (optional) array of file names to attach
+ * @param    bool         $skip_footer (optional) true to omit the standard email footer for this message
  * @return   bool                      true if successful,  otherwise false
  */
-function COM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = array())
+function COM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = array(), $skip_footer = false)
 {
     global $_TABLES, $_CONF, $LANG31, $LANG08;
 
@@ -4123,45 +4124,50 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
         return false;
     }	
 		
-	// Create HTML and plaintext version of email footer 
-	$t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
-	$t->set_file(array('email_html' => 'email_footer-html.thtml'));
-	// Remove line feeds from plain text templates since required to use {LB} template variable
-	$t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on
-	$t->set_file(array('email_plaintext' => 'email_footer-plaintext.thtml'));
+    // Preserve the configured sender regardless of whether a footer is requested.
+    if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
+        $from = $_CONF['noreply_mail'];
+    } else {
+        $from = array($_CONF['site_mail'] => $_CONF['site_name']);
+    }
 
-	$t->set_var('email_divider', $LANG31['email_divider']);
-	$t->set_var('email_divider_html', $LANG31['email_divider_html']);
-	$t->set_var('LB', LB);
-	
-	if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
-		$from = $_CONF['noreply_mail'];
-		$t->set_var('lang_email_footer_msg_noreply', $LANG31['email_footer_msg_noreply']);
-		
-	} else {
-		$from = [$_CONF['site_mail'] => $_CONF['site_name']];
-	}
-	
-	$t->set_var('lang_email_footer_msg_content', $LANG31['email_footer_msg_content']);
-	
-	// Send IP that initiated email if email to site email
-	if ($email == $_CONF['site_mail']) {
-		$t->set_var('lang_ip_address_email', $LANG31['ip_address_email']);
-		$t->set_var('ip_address', \Geeklog\IP::getIPAddress());
-	}
-	
-	$t->set_var('lang_end_of_msg', $LANG08[34]);
-	
-	if (is_array($message)) {
-		$message[0] .= $t->parse('output', 'email_html');	
-		$message[1] .= $t->parse('output', 'email_plaintext');		
-	} else {
-		if ($html) {
-			$message .= $t->parse('output', 'email_html');	
-		} else {
-			$message .= $t->parse('output', 'email_plaintext');	
-		}
-	}
+    if (!$skip_footer) {
+        // Create HTML and plaintext version of email footer
+        $t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'emails/'));
+        $t->set_file(array('email_html' => 'email_footer-html.thtml'));
+        // Remove line feeds from plain text templates since required to use {LB} template variable
+        $t->preprocess_fn = "CTL_removeLineFeeds"; // Set preprocess_fn before the template file you want to use it on
+        $t->set_file(array('email_plaintext' => 'email_footer-plaintext.thtml'));
+
+        $t->set_var('email_divider', $LANG31['email_divider']);
+        $t->set_var('email_divider_html', $LANG31['email_divider_html']);
+        $t->set_var('LB', LB);
+
+        if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
+            $t->set_var('lang_email_footer_msg_noreply', $LANG31['email_footer_msg_noreply']);
+        }
+
+        $t->set_var('lang_email_footer_msg_content', $LANG31['email_footer_msg_content']);
+
+        // Send IP that initiated email if email to site email
+        if ($email == $_CONF['site_mail']) {
+            $t->set_var('lang_ip_address_email', $LANG31['ip_address_email']);
+            $t->set_var('ip_address', \Geeklog\IP::getIPAddress());
+        }
+
+        $t->set_var('lang_end_of_msg', $LANG08[34]);
+
+        if (is_array($message)) {
+            $message[0] .= $t->parse('output', 'email_html');
+            $message[1] .= $t->parse('output', 'email_plaintext');
+        } else {
+            if ($html) {
+                $message .= $t->parse('output', 'email_html');
+            } else {
+                $message .= $t->parse('output', 'email_plaintext');
+            }
+        }
+    }
 
     // If no status exists then assume no user account and email is being sent to someone else (which is fine and should be sent like to new users)
 	$status = '';
