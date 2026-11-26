@@ -540,7 +540,9 @@ class XML_RPC_Server
                 $XML_RPC_defencoding, $XML_RPC_Server_dmap;
 
         if ($data == '') {
-            $data = isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : '';
+            $data = isset($HTTP_RAW_POST_DATA)
+                ? $HTTP_RAW_POST_DATA
+                : file_get_contents('php://input');
         }
 
         if (!is_string($data) || trim($data) === '') {
