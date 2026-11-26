@@ -234,6 +234,24 @@ $GLOBALS['XML_RPC_valid_parents'] = array(
  */
 $GLOBALS['XML_RPC_xh'] = array();
 
+/**
+ * Return a stable array key for an XML parser.
+ *
+ * PHP 8 returns an XMLParser object while older PHP versions return a
+ * resource. Keep one key format that works with both implementations.
+ *
+ * @param resource|object $parser_resource XML parser
+ * @return int|string
+ */
+function XML_RPC_getParserKey($parser_resource)
+{
+    if (is_object($parser_resource)) {
+        return spl_object_hash($parser_resource);
+    }
+
+    return (int) $parser_resource;
+}
+
 
 /**
  * Start element handler for the XML parser
@@ -244,7 +262,7 @@ function XML_RPC_se($parser_resource, $name, $attrs)
 {
     global $XML_RPC_xh, $XML_RPC_valid_parents;
 
-    $parser = (int) $parser_resource;
+    $parser = XML_RPC_getParserKey($parser_resource);
 
     // if invalid xmlrpc already detected, skip all processing
     if ($XML_RPC_xh[$parser]['isf'] >= 2) {
@@ -373,7 +391,7 @@ function XML_RPC_ee($parser_resource, $name)
 {
     global $XML_RPC_xh;
 
-    $parser = (int) $parser_resource;
+    $parser = XML_RPC_getParserKey($parser_resource);
 
     if ($XML_RPC_xh[$parser]['isf'] >= 2) {
         return;
@@ -510,7 +528,7 @@ function XML_RPC_cd($parser_resource, $data)
 {
     global $XML_RPC_xh, $XML_RPC_backslash;
 
-    $parser = (int) $parser_resource;
+    $parser = XML_RPC_getParserKey($parser_resource);
 
     if ($XML_RPC_xh[$parser]['lv'] != 3) {
         // "lookforvalue==3" means that we've found an entire value
@@ -1428,7 +1446,7 @@ class XML_RPC_Message extends XML_RPC_Base
 
         $encoding = $this->getEncoding($data);
         $parser_resource = xml_parser_create($encoding);
-        $parser = (int) $parser_resource;
+        $parser = XML_RPC_getParserKey($parser_resource);
 
         $XML_RPC_xh = array();
         $XML_RPC_xh[$parser] = array();
@@ -1482,7 +1500,7 @@ class XML_RPC_Message extends XML_RPC_Base
         $this->response_payload = $data;
 
 //        if (!xml_parse($parser_resource, $data, sizeof($data))) {
-        if (!xml_parse($parser_resource, $data)) {
+        if (!xml_parse($parser_resource, $data, true)) {
             // thanks to Peter Kocks <peter.kocks@baygate.com>
             if (xml_get_current_line_number($parser_resource) == 1) {
                 $errstr = 'XML error at line 1, check URL';
@@ -1502,14 +1520,16 @@ class XML_RPC_Message extends XML_RPC_Base
 
         if ($this->debug) {
             print "\n<pre>---PARSED---\n";
-            var_dump($XML_RPC_xh[$parser]['value']);
+            var_dump(isset($XML_RPC_xh[$parser]['value'])
+                ? $XML_RPC_xh[$parser]['value'] : null);
             print "---END---</pre>\n";
         }
 
         if ($XML_RPC_xh[$parser]['isf'] > 1) {
             $r = new XML_RPC_Response(0, $XML_RPC_err['invalid_return'],
                                       $XML_RPC_str['invalid_return'].' '.$XML_RPC_xh[$parser]['isf_reason']);
-        } elseif (!is_object($XML_RPC_xh[$parser]['value'])) {
+        } elseif (!isset($XML_RPC_xh[$parser]['value']) ||
+                  !is_object($XML_RPC_xh[$parser]['value'])) {
             // then something odd has happened
             // and it's time to generate a client side error
             // indicating something odd went on
@@ -1526,7 +1546,9 @@ class XML_RPC_Message extends XML_RPC_Base
                 $r = new XML_RPC_Response($v);
             }
         }
-        $r->hdrs = preg_split("@\r?\n@", $XML_RPC_xh[$parser]['ha']);
+        $r->hdrs = isset($XML_RPC_xh[$parser]['ha'])
+            ? preg_split("@\r?\n@", $XML_RPC_xh[$parser]['ha'])
+            : array();
         return $r;
     }
 }
