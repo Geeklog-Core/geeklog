@@ -1500,7 +1500,7 @@ class XML_RPC_Message extends XML_RPC_Base
         $this->response_payload = $data;
 
 //        if (!xml_parse($parser_resource, $data, sizeof($data))) {
-        if (!xml_parse($parser_resource, $data)) {
+        if (!xml_parse($parser_resource, $data, true)) {
             // thanks to Peter Kocks <peter.kocks@baygate.com>
             if (xml_get_current_line_number($parser_resource) == 1) {
                 $errstr = 'XML error at line 1, check URL';
@@ -1520,14 +1520,16 @@ class XML_RPC_Message extends XML_RPC_Base
 
         if ($this->debug) {
             print "\n<pre>---PARSED---\n";
-            var_dump($XML_RPC_xh[$parser]['value']);
+            var_dump(isset($XML_RPC_xh[$parser]['value'])
+                ? $XML_RPC_xh[$parser]['value'] : null);
             print "---END---</pre>\n";
         }
 
         if ($XML_RPC_xh[$parser]['isf'] > 1) {
             $r = new XML_RPC_Response(0, $XML_RPC_err['invalid_return'],
                                       $XML_RPC_str['invalid_return'].' '.$XML_RPC_xh[$parser]['isf_reason']);
-        } elseif (!is_object($XML_RPC_xh[$parser]['value'])) {
+        } elseif (!isset($XML_RPC_xh[$parser]['value']) ||
+                  !is_object($XML_RPC_xh[$parser]['value'])) {
             // then something odd has happened
             // and it's time to generate a client side error
             // indicating something odd went on
@@ -1544,7 +1546,9 @@ class XML_RPC_Message extends XML_RPC_Base
                 $r = new XML_RPC_Response($v);
             }
         }
-        $r->hdrs = preg_split("@\r?\n@", $XML_RPC_xh[$parser]['ha']);
+        $r->hdrs = isset($XML_RPC_xh[$parser]['ha'])
+            ? preg_split("@\r?\n@", $XML_RPC_xh[$parser]['ha'])
+            : array();
         return $r;
     }
 }
