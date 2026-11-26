@@ -165,12 +165,28 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $topic_description, $me
     // Convert array values to numeric permission values
     list($perm_owner, $perm_group, $perm_members, $perm_anon) = SEC_getPermissionValues($perm_owner, $perm_group, $perm_members, $perm_anon);
 
+    $topic = is_string($topic) ? $topic : '';
+    $topic_description = is_string($topic_description)
+        ? $topic_description : '';
+    $meta_description = is_string($meta_description)
+        ? $meta_description : '';
+    $meta_keywords = is_string($meta_keywords)
+        ? $meta_keywords : '';
+
+    $raw_topic = $topic;
+    $raw_topic_description = $topic_description;
+    $raw_meta_description = $meta_description;
+    $raw_meta_keywords = $meta_keywords;
+
     $topic = COM_checkHTML($topic);
     $topic_description = GLText::stripTags($topic_description);
     $meta_description = GLText::stripTags($meta_description);
     $meta_keywords = GLText::stripTags($meta_keywords);
     $pid = COM_sanitizeID($pid);
     $old_pid = COM_sanitizeID($old_pid);
+    $submitted_pid = $pid;
+    $missing_pid = empty($pid) && empty($old_pid);
+
     if (empty($pid)) {
         if (empty($old_pid)) {
             $pid = COM_makeSid();
@@ -179,30 +195,19 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $topic_description, $me
         }
     }
 
-    // check if any question was entered
-    if (empty($topic) || (count($Q) === 0) || (strlen($Q[0]) === 0) || (strlen($A[0][0]) === 0)) {
-        $retval .= COM_showMessageText($LANG25[2], $LANG21[32]);
-        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG25[5]));
-
-        return $retval;
-    }
-
     if (!SEC_checkToken()) {
         COM_accessLog("User {$_USER['username']} tried to save poll $pid and failed CSRF checks.");
         COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php');
     }
 
-    // check for poll id change (on edits and new) to see if it matches another existing poll
-    if ((!empty($old_pid) && ($pid != $old_pid)) || (empty($old_pid) && !empty($pid))) {
-        // check if new pid is already in use
-        if (DB_count($_TABLES['polltopics'], 'pid', DB_escapeString($pid)) > 0) {
-            if (empty($old_pid)) { // New poll with no old id
-                $pid = COM_makeSid();
-            } else { // existing poll
-                $pid = $old_pid; // for now ...
-            }
-        }
+    // Legacy templates may submit a generated old_pid for new polls.
+    if (!empty($old_pid) &&
+        DB_count($_TABLES['polltopics'], 'pid',
+            DB_escapeString($old_pid)) == 0) {
+        $old_pid = '';
     }
+
+    $access_pid = $old_pid;
 
     // start processing the poll topic
     if ($_POLL_VERBOSE) {
@@ -210,10 +215,10 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $topic_description, $me
             . $_CONF['site_admin_url'] . '/plugins/polls/index.php ***');
     }
 
-    if (DB_count($_TABLES['polltopics'], 'pid', DB_escapeString($pid)) > 0) {
+    if (!empty($access_pid)) {
         $result = DB_query(
             "SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['polltopics']} "
-            . "WHERE pid = '" . DB_escapeString($pid) . "' "
+            . "WHERE pid = '" . DB_escapeString($access_pid) . "' "
         );
         $P = DB_fetchArray($result);
         $access = SEC_hasAccess(
@@ -241,6 +246,122 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $topic_description, $me
         COM_errorLog('group permissions: ' . $perm_group, 1);
         COM_errorLog('member permissions: ' . $perm_members, 1);
         COM_errorLog('anonymous permissions: ' . $perm_anon, 1);
+    }
+
+    $invalid_input = !is_array($Q) || !is_array($A)
+        || !is_array($V) || !is_array($R)
+        || !is_array($description);
+
+    $Q = is_array($Q) ? $Q : array();
+    $A = is_array($A) ? $A : array();
+    $V = is_array($V) ? $V : array();
+    $R = is_array($R) ? $R : array();
+    $description = is_array($description) ? $description : array();
+    $allow_multipleanswers = is_array($allow_multipleanswers)
+        ? $allow_multipleanswers : array();
+
+    $submitted = array(
+        'topic' => array(
+            'pid' => $submitted_pid,
+            'topic' => $raw_topic,
+            'description' => $raw_topic_description,
+            'meta_description' => $raw_meta_description,
+            'meta_keywords' => $raw_meta_keywords,
+            'display' => (int) ($mainPage === 'on'),
+            'is_open' => (int) ($open === 'on'),
+            'hideresults' => (int) ($hideResults === 'on'),
+            'statuscode' => $statusCode,
+            'commentcode' => $commentCode,
+            'owner_id' => $owner_id,
+            'group_id' => $group_id,
+            'perm_owner' => $perm_owner,
+            'perm_group' => $perm_group,
+            'perm_members' => $perm_members,
+            'perm_anon' => $perm_anon
+        ),
+        'questions' => array(),
+        'answers' => array()
+    );
+
+    for ($i = 0; $i < $_PO_CONF['maxquestions']; $i++) {
+        if (!isset($Q[$i]) || !is_string($Q[$i]) ||
+            !isset($description[$i]) ||
+            !is_string($description[$i])) {
+            $invalid_input = true;
+        }
+
+        $Q[$i] = isset($Q[$i]) && is_string($Q[$i]) ? $Q[$i] : '';
+        $description[$i] = isset($description[$i]) && is_string($description[$i])
+            ? $description[$i] : '';
+
+        $submitted['questions'][$i] = array(
+            'question' => $Q[$i],
+            'description' => $description[$i],
+            'allow_multipleanswers' => (int) (
+                isset($allow_multipleanswers[$i]) &&
+                $allow_multipleanswers[$i] === 'on'
+            )
+        );
+
+        foreach (array('A', 'V', 'R') as $field) {
+            if (!isset(${$field}[$i]) || !is_array(${$field}[$i])) {
+                $invalid_input = true;
+                ${$field}[$i] = array();
+            }
+
+            for ($j = 0; $j < $_PO_CONF['maxanswers']; $j++) {
+                if (!isset(${$field}[$i][$j]) ||
+                    !is_scalar(${$field}[$i][$j])) {
+                    $invalid_input = true;
+                    ${$field}[$i][$j] = '';
+                }
+            }
+        }
+
+        for ($j = 0; $j < $_PO_CONF['maxanswers']; $j++) {
+            $submitted['answers'][$i][$j] = array(
+                'answer' => $A[$i][$j],
+                'votes' => $V[$i][$j],
+                'remark' => $R[$i][$j]
+            );
+        }
+    }
+
+    if ($missing_pid || $invalid_input ||
+        trim($topic) === '' ||
+        !isset($Q[0]) || trim($Q[0]) === '' ||
+        !isset($A[0][0]) || trim($A[0][0]) === '') {
+        $message = $missing_pid ? $LANG25[17] : $LANG25[2];
+        $retval = COM_showMessageText($message, $LANG21[32]);
+        $retval .= editpoll($old_pid, $submitted);
+
+        return COM_createHTMLDocument(
+            $retval, array('pagetitle' => $LANG25[5])
+        );
+    }
+
+    $Q = array_intersect_key(
+        $Q, $submitted['questions']
+    );
+    ksort($Q);
+
+    for ($i = 0; $i < $_PO_CONF['maxquestions']; $i++) {
+        $A[$i] = array_intersect_key(
+            $A[$i], $submitted['answers'][$i]
+        );
+        ksort($A[$i]);
+    }
+
+    // check for poll id change (on edits and new) to see if it matches another existing poll
+    if ((!empty($old_pid) && ($pid != $old_pid)) || (empty($old_pid) && !empty($pid))) {
+        // check if new pid is already in use
+        if (DB_count($_TABLES['polltopics'], 'pid', DB_escapeString($pid)) > 0) {
+            if (empty($old_pid)) { // New poll with no old id
+                $pid = COM_makeSid();
+            } else { // existing poll
+                $pid = $old_pid; // for now ...
+            }
+        }
     }
 
     // we delete everything and re-create it with the input from the form
@@ -386,7 +507,7 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $topic_description, $me
  * @param    string $pid ID of poll to edit
  * @return   string          HTML for poll editor form
  */
-function editpoll($pid = '')
+function editpoll($pid = '', $submitted = null)
 {
     global $_CONF, $_PO_CONF, $_GROUPS, $_TABLES, $_USER, $LANG25, $LANG_ACCESS,
            $LANG_ADMIN, $MESSAGE, $LANG_POLLS, $_SCRIPTS;
@@ -398,6 +519,10 @@ function editpoll($pid = '')
             "SELECT * FROM {$_TABLES['polltopics']} WHERE pid='" . DB_escapeString($pid) . "' "
         );
         $T = DB_fetchArray($topic);
+
+        if (empty($T)) {
+            return COM_showMessageText($LANG25[22], $LANG25[21]);
+        }
 
         // Get permissions for poll
         $access = SEC_hasAccess($T['owner_id'], $T['group_id'], $T['perm_owner'], $T['perm_group'], $T['perm_members'], $T['perm_anon']);
@@ -444,7 +569,7 @@ function editpoll($pid = '')
     ));
 
     if (!empty($pid) && ($access == 3) && !empty($T['owner_id'])) {
-        $poll_templates->set_var('allow_delete', true);
+        $poll_templates->set_var('allow_delete', $submitted === null);
         $poll_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
         $poll_templates->set_var('confirm_message', $MESSAGE[76]);
     } else {
@@ -473,6 +598,12 @@ function editpoll($pid = '')
         $access = 3;
     }
 
+    if ($submitted !== null) {
+        $T = array_replace($T, $submitted['topic']);
+    }
+
+    $poll_templates->set_var('old_poll_id', COM_escHTML($pid));
+
     $poll_templates->set_var('noscript', COM_getNoScript(false, ''));
 
     // Add JavaScript
@@ -487,21 +618,21 @@ function editpoll($pid = '')
     }
 
     $poll_templates->set_var('lang_pollid', $LANG25[6]);
-    $poll_templates->set_var('poll_id', $T['pid']);
+    $poll_templates->set_var('poll_id', COM_escHTML($T['pid']));
     $poll_templates->set_var('lang_donotusespaces', $LANG25[7]);
     $poll_templates->set_var('lang_topic', $LANG25[9]);
     $poll_templates->set_var('poll_topic', COM_escHTML($T['topic']));
     $poll_templates->set_var('lang_mode', $LANG25[1]);
     $poll_templates->set_var('lang_topic_description', $LANG25[1003]);
-    $poll_templates->set_var('topic_description', $T['description']);
+    $poll_templates->set_var('topic_description', COM_escHTML($T['description'], ENT_QUOTES, $submitted !== null));
     $poll_templates->set_var('lang_metadescription',
         $LANG_ADMIN['meta_description']);
     $poll_templates->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
     if (!empty($T['meta_description'])) {
-        $poll_templates->set_var('meta_description', $T['meta_description']);
+        $poll_templates->set_var('meta_description', COM_escHTML($T['meta_description'], ENT_QUOTES, $submitted !== null));
     }
     if (!empty($T['meta_keywords'])) {
-        $poll_templates->set_var('meta_keywords', $T['meta_keywords']);
+        $poll_templates->set_var('meta_keywords', COM_escHTML($T['meta_keywords'], ENT_QUOTES, $submitted !== null));
     }
     if (($_CONF['meta_tags'] > 0) && ($_PO_CONF['meta_tags'] > 0)) {
         $poll_templates->set_var('hide_meta', '');
@@ -567,8 +698,13 @@ function editpoll($pid = '')
             "showhidePollsEditorDiv(\"$j\",$j,{$_PO_CONF['maxquestions']});return false;",
             true
         );
-        $Q = DB_fetchArray($questions);
-        $poll_templates->set_var('question_text', isset($Q['question']) ? $Q['question'] : '');
+        if ($submitted !== null) {
+            $Q = isset($submitted['questions'][$j])
+                ? $submitted['questions'][$j] : array();
+        } else {
+            $Q = DB_fetchArray($questions);
+        }
+        $poll_templates->set_var('question_text', isset($Q['question']) ? COM_escHTML($Q['question'], ENT_QUOTES, $submitted !== null) : '');
         $poll_templates->set_var('question_id', $j);
         $poll_templates->set_var('lang_question', $LANG25[31] . " $display_id");
         $poll_templates->set_var('lang_saveaddnew', $LANG25[32]);
@@ -581,7 +717,7 @@ function editpoll($pid = '')
         }
 
         $poll_templates->set_var('lang_questions_description', $LANG25[1002]);
-        $poll_templates->set_var('description', isset($Q['description']) ? $Q['description'] : '');
+        $poll_templates->set_var('description', isset($Q['description']) ? COM_escHTML($Q['description'], ENT_QUOTES, $submitted !== null) : '');
 
         // answers
         $answer_sql = "SELECT answer,aid,votes,remark FROM {$_TABLES['pollanswers']} "
@@ -590,11 +726,16 @@ function editpoll($pid = '')
         $answers = DB_query($answer_sql);
 
         for ($i = 0; $i < $_PO_CONF['maxanswers']; $i++) {
-            $A = DB_fetchArray($answers);
+            if ($submitted !== null) {
+                $A = isset($submitted['answers'][$j][$i])
+                    ? $submitted['answers'][$j][$i] : array();
+            } else {
+                $A = DB_fetchArray($answers);
+            }
             if (!empty($A)) {
                 $poll_templates->set_var('answer_text', COM_escHTML($A['answer']));
-                $poll_templates->set_var('answer_votes', $A['votes']);
-                $poll_templates->set_var('remark_text', $A['remark']);
+                $poll_templates->set_var('answer_votes', COM_escHTML($A['votes']));
+                $poll_templates->set_var('remark_text', COM_escHTML($A['remark'], ENT_QUOTES, $submitted !== null));
             } else {
                 $poll_templates->set_var('answer_text', '');
                 $poll_templates->set_var('answer_votes', '');
@@ -668,36 +809,31 @@ if ($mode === 'edit') {
     if (empty($pid) && !empty($old_pid)) {
         $pid = $old_pid;
     }
-    if (!empty($pid)) {
-        $statuscode = (int) Geeklog\Input::fPost('statuscode', 0);
-        $mainpage = Geeklog\Input::post('mainpage', '');
-        $open = Geeklog\Input::fPost('open', '');
-        $hideresults = Geeklog\Input::fPost('hideresults', '');
-        $display .= savepoll(
-            $pid, $old_pid,
-            Geeklog\Input::post('question'), $mainpage,
-            Geeklog\Input::post('topic'),
-            Geeklog\Input::post('topic_description'),
-            Geeklog\Input::post('meta_description'),
-            Geeklog\Input::post('meta_keywords'),
-            $statuscode, $open, $hideresults,
-            (int) Geeklog\Input::fPost('commentcode'),
-            Geeklog\Input::post('answer'),
-            Geeklog\Input::post('votes'),
-            Geeklog\Input::post('remark'),
-            (int) Geeklog\Input::fPost('owner_id'),
-            (int) Geeklog\Input::fPost('group_id'),
-            Geeklog\Input::post('perm_owner'),
-            Geeklog\Input::post('perm_group'),
-            Geeklog\Input::post('perm_members'),
-            Geeklog\Input::post('perm_anon'),
-            Geeklog\Input::post('allow_multipleanswers'),
-            Geeklog\Input::post('description')
-        );
-    } else {
-        $display .= COM_showMessageText($LANG25[17], $LANG21[32]) . editpoll();
-        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG25[5]));
-    }
+    $statuscode = (int) Geeklog\Input::fPost('statuscode', 0);
+    $mainpage = Geeklog\Input::post('mainpage', '');
+    $open = Geeklog\Input::fPost('open', '');
+    $hideresults = Geeklog\Input::fPost('hideresults', '');
+    $display .= savepoll(
+        $pid, $old_pid,
+        Geeklog\Input::post('question'), $mainpage,
+        Geeklog\Input::post('topic'),
+        Geeklog\Input::post('topic_description'),
+        Geeklog\Input::post('meta_description'),
+        Geeklog\Input::post('meta_keywords'),
+        $statuscode, $open, $hideresults,
+        (int) Geeklog\Input::fPost('commentcode'),
+        Geeklog\Input::post('answer'),
+        Geeklog\Input::post('votes'),
+        Geeklog\Input::post('remark'),
+        (int) Geeklog\Input::fPost('owner_id'),
+        (int) Geeklog\Input::fPost('group_id'),
+        Geeklog\Input::post('perm_owner'),
+        Geeklog\Input::post('perm_group'),
+        Geeklog\Input::post('perm_members'),
+        Geeklog\Input::post('perm_anon'),
+        Geeklog\Input::post('allow_multipleanswers'),
+        Geeklog\Input::post('description')
+    );
 } elseif (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $pid = Geeklog\Input::fPost('pid', '');
     if (empty($pid)) {
