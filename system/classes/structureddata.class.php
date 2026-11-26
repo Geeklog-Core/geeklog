@@ -111,6 +111,14 @@ class StructuredData
         $this->types[$name]['name']['property'] = $this::SCHEMA_PROPERTY_REQUIRED;
         $this->types[$name]['url']['property'] = $this::SCHEMA_PROPERTY;
 
+        // Topic listings are collections, without article-specific dates or authors.
+        $name = 'core-collectionpage';
+        $this->types[$name]['@type'] = 'CollectionPage';
+        $this->types[$name]['name']['property'] = $this::SCHEMA_PROPERTY_REQUIRED;
+        $this->types[$name]['url']['property'] = $this::SCHEMA_PROPERTY_REQUIRED;
+        $this->types[$name]['description']['property'] = $this::SCHEMA_PROPERTY;
+        $this->types[$name]['inLanguage']['property'] = $this::SCHEMA_PROPERTY_inLanguage;
+
         // These next structure types all share the same properties
         $sd_types = array(
             'core-webpage',
