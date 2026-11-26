@@ -1,0 +1,47 @@
+name: Likes index migration PostgreSQL
+on:
+  push:
+    branches:
+      - fix/1177-likes-block-performance
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'sql/updates/pgsql_2.2.2_to_2.2.3.php'
+      - 'tests/postgresql-likes-1177.php'
+      - '.github/workflows/postgresql-likes-1177.yml'
+jobs:
+  migration:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        postgres: ['14', '16']
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: geeklog
+          POSTGRES_PASSWORD: smoke-only
+          POSTGRES_DB: geeklog_likes1177
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U geeklog -d geeklog_likes1177"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      PGHOST: 127.0.0.1
+      PGUSER: geeklog
+      PGPASSWORD: smoke-only
+      PGDATABASE: geeklog_likes1177
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pgsql
+      - run: php -l public_html/admin/install/classes/Common.php
+      - run: php -l sql/updates/pgsql_2.2.2_to_2.2.3.php
+      - run: php -l sql/updates/mysql_2.2.2_to_2.2.3.php
+      - run: php tests/postgresql-likes-1177.php
