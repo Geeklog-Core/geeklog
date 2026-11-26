@@ -1,5 +1,8 @@
 name: PostgreSQL smoke audit
 on:
+  push:
+    branches:
+      - test/950-postgresql-smoke
   workflow_dispatch:
   pull_request:
     paths:
