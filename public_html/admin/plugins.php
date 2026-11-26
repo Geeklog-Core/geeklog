@@ -823,6 +823,7 @@ function plugin_upload()
             $pi_did_exist = false; // plugin directory already existed
             $pi_had_entry = false; // plugin had an entry in the database
             $pi_was_enabled = false; // plugin was enabled
+            $callback = 'plugin_enablestatechange_' . $dirName;
 
             if (file_exists($_CONF['path'] . 'plugins/' . $dirName)) {
                 $pi_did_exist = true;
@@ -834,8 +835,6 @@ function plugin_upload()
                     $pi_had_entry = true;
                     $pi_was_enabled = ($A['pi_enabled'] == 1);
                 }
-
-                $callback = 'plugin_enablestatechange_' . $dirName;
 
                 if ($pi_was_enabled) {
                     // disable temporarily while we move the files around
@@ -952,6 +951,9 @@ function plugin_upload()
             if (!$upload_success) {
                 COM_errorLog("Plugin upload failed while extracting or moving files for '$dirName'.");
                 plugin_restore_previous_files($dirName, $pi_did_exist);
+                if (!$pi_did_exist && is_dir($plg_path)) {
+                    Geeklog\FileSystem::remove($plg_path);
+                }
                 plugin_restore_upload_state($dirName, $pi_was_enabled, $callback);
                 COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=72');
                 exit;
