@@ -1616,6 +1616,20 @@ abstract class Common
 					$_SQL = [];
                     break;
 
+                case '2.2.2':
+                    // Activate this migration only when the release version is raised.
+                    if (version_compare(self::GL_VERSION, '2.2.3', '<')) {
+                        $done = true;
+                        break;
+                    }
+                    if (!$checkForMessage) {
+                        require $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.2.2_to_2.2.3.php';
+                        $this->updateDB($_SQL, $progress);
+                    }
+                    $currentGlVersion = '2.2.3';
+                    $_SQL = [];
+                    break;
+
                 default:
                     $done = true;
                     break;
