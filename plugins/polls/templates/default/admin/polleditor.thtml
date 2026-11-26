@@ -62,7 +62,7 @@
         <input type="submit" name="mode" value="{lang_delete}" class="submit" onclick="return confirm('{confirm_message}');"{xhtml}>
 {!endif}
         <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-        <input type="hidden" value="{poll_id}" name="old_pid"{xhtml}>
+        <input type="hidden" value="{old_poll_id}" name="old_pid"{xhtml}>
       </div>
     </div>
   </form>
