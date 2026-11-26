@@ -63,6 +63,14 @@ try {
         run950($db, $sql, 'Core schema statement ' . ($i + 1));
     }
     echo 'OK: Core schema (' . count($_SQL) . " statements)\n";
+    run950($db, "SET LOCAL TIME ZONE 'UTC'", 'set UTC timezone');
+    $result = run950($db, "SELECT UNIX_TIMESTAMP(TIMESTAMPTZ '2020-01-01 00:00:00+00') AS epoch, UNIX_TIMESTAMP(TIMESTAMPTZ '2020-01-01 07:00:00+07') AS offset_epoch, FROM_UNIXTIME(1577836800) AS stamp, UNIX_TIMESTAMP() AS current_epoch, FLOOR(EXTRACT(EPOCH FROM NOW()))::integer AS expected_epoch", 'timestamp conversion');
+    $row = pg_fetch_assoc($result);
+    if ($row['epoch'] !== '1577836800' || $row['offset_epoch'] !== '1577836800' ||
+        $row['stamp'] !== '2020-01-01 00:00:00' || $row['current_epoch'] !== $row['expected_epoch']) {
+        throw new RuntimeException('Timestamp conversion mismatch');
+    }
+    echo "OK: PostgreSQL timestamp compatibility functions\n";
     foreach ($_DATA as $i => $sql) {
         run950($db, $sql, 'Core seed statement ' . ($i + 1));
     }
