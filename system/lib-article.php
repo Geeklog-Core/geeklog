@@ -1194,8 +1194,13 @@ function STORY_updateLastArticlePublished()
     $sql = "SELECT date FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0 ORDER BY date DESC LIMIT 1";
     $result = DB_query($sql);
 
+    if ($result === false) {
+        return;
+    }
+
     $A = DB_fetchArray($result);
-    DB_query("UPDATE {$_TABLES['vars']} SET value='{$A['date']}' WHERE name='last_article_publish'");
+    $date = isset($A['date']) ? $A['date'] : '';
+    DB_query("UPDATE {$_TABLES['vars']} SET value='{$date}' WHERE name='last_article_publish'");
 
 }
 
