@@ -1,0 +1,25 @@
+name: Language audit
+
+on:
+  pull_request:
+    paths:
+      - 'language/**'
+      - 'plugins/*/language/**'
+      - 'tools/language-check/**'
+      - '.github/workflows/language-check.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - run: php tools/language-check/test.php
+      - run: php tools/language-check/check.php --all --identical > language-report.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: language-report
+          path: language-report.txt
