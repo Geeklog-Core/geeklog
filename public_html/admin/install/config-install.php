@@ -163,7 +163,7 @@ function install_config(ConfigInterface $c)
 
     $c->add('tab_trackback', NULL, 'tab', 1, 8, NULL, 0, TRUE, $me, 8);
     $c->add('fs_trackback', NULL, 'fieldset', 1, 8, NULL, 0, TRUE, $me, 8);
-    $c->add('trackback_enabled',TRUE,'select',1,8,1,1060,TRUE, $me, 8);
+    $c->add('trackback_enabled',FALSE,'select',1,8,1,1060,TRUE, $me, 8);
     $c->add('trackback_code',0,'select',1,8,3,1070,TRUE, $me, 8);
     $c->add('trackbackspeedlimit',300,'text',1,8,NULL,1080,TRUE, $me, 8);
     $c->add('check_trackback_link',2,'select',1,8,4,1090,TRUE, $me, 8);
@@ -171,10 +171,10 @@ function install_config(ConfigInterface $c)
 
     $c->add('tab_pingback', NULL, 'tab', 1, 9, NULL, 0, TRUE, $me, 9);
     $c->add('fs_pingback', NULL, 'fieldset', 1, 9, NULL, 0, TRUE, $me, 9);
-    $c->add('pingback_enabled',TRUE,'select',1,9,1,1110,TRUE, $me, 9);
+    $c->add('pingback_enabled',FALSE,'select',1,9,1,1110,TRUE, $me, 9);
     $c->add('pingback_excerpt',TRUE,'select',1,9,1,1120,TRUE, $me, 9);
     $c->add('pingback_self',0,'select',1,9,13,1130,TRUE, $me, 9);
-    $c->add('ping_enabled',TRUE,'select',1,9,1,1140,TRUE, $me, 9);
+    $c->add('ping_enabled',FALSE,'select',1,9,1,1140,TRUE, $me, 9);
 
     // Subgroup: Theme
     $c->add('sg_theme', NULL, 'subgroup', 2, 0, NULL, 0, TRUE, $me, 0);
