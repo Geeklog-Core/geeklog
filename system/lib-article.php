@@ -3038,6 +3038,9 @@ function service_get_story($args, &$output, &$svc_msg)
         }
         $output['username'] = $story->_username;
         $output['fullname'] = $story->_fullname;
+        if (!$args['gl_svc']) {
+            $output['unixmodified'] = $story->displayElements('unixmodified');
+        }
 
         if ($args['gl_svc']) {
             if (($output['statuscode'] == STORY_ARCHIVE_ON_EXPIRE) ||
