@@ -2164,8 +2164,11 @@ function SP_render_content($A)
     if (!empty($structured_data_type)) {
         $properties['headline'] = $A['sp_title'];
         $properties['url'] = $sp_url;
-        $properties['datePublished'] = $A['created'];
-        $properties['dateModified'] = $A['modified'];
+        // Use database timestamps in UTC, independent of display preferences.
+        $properties['datePublished'] = gmdate('c', (int) $A['created_timestamp']);
+        if (isset($A['modified_timestamp']) && $A['modified_timestamp'] !== '') {
+            $properties['dateModified'] = gmdate('c', (int) $A['modified_timestamp']);
+        }
         $properties['description'] = $A['meta_description'];
         $properties['keywords'] = $A['meta_keywords'];
         if ($A['commentcode'] >= 0) {
