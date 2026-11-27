@@ -773,7 +773,8 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                 $attributes['cache'] = true;
             }
 
-            $properties['headline'] = $story->displayElements('title');
+            $pageTitle = $story->displayElements('page_title');
+            $properties['headline'] = !empty($pageTitle) ? $pageTitle : $story->displayElements('title');
             $properties['url'] = $articleUrl;
             $properties['datePublished'] = $story->displayElements('date');
             // Don't include modified if empty or date is less than published
