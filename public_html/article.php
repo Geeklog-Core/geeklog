@@ -179,6 +179,7 @@ if ($A['count'] > 0) {
 
         $article->_username = $output['username'];
         $article->_fullname = $output['fullname'];
+        $article->_unixmodified = isset($output['unixmodified']) ? $output['unixmodified'] : false;
     }
 
     if ($output == STORY_PERMISSION_DENIED) {
