@@ -168,7 +168,7 @@ $LANG_CAL_ADMIN = array(
     34 => 'شناسه رویداد',
     35 => 'نمی توان حذف کرد',
     36 => 'با موفقیت حذف شد',
-    'num_events' => '%s Event(s)'
+    'num_events' => '%s رویداد'
 );
 
 $LANG_CAL_MESSAGE = array(
@@ -210,7 +210,7 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => 'حذف وقایع با مالک؟',
     'aftersave' => 'پس از ذخیره رویداد',
     'recaptcha' => 'reCAPTCHA',
-    'recaptcha_score' => 'reCAPTCHA Score',
+    'recaptcha_score' => 'امتیاز reCAPTCHA',
     'default_permissions' => 'مجوز های پیشفرض رویداد',
     'autotag_permissions_event' => '[رویداد: ] مجوز ها',
     'block_enable' => 'فعال شده',

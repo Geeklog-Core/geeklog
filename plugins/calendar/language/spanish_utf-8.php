@@ -86,11 +86,11 @@ $LANG_CAL_1 = array(
     45 => 'Enviar',
     46 => 'Eventos en el sistema',
     47 => '10 Eventos principales',
-    48 => 'Hits',
+    48 => 'Visitas',
     49 => 'Parece no haber ningún evento o que nadie ha visitado uno nunca.',
     50 => 'Eventos',
     51 => 'Borrar',
-    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_event' => '[event: id título alternativo] - Muestra un enlace a un evento del calendario usando el título del evento. Se puede especificar un título alternativo, pero no es obligatorio.'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -160,18 +160,18 @@ $LANG_CAL_ADMIN = array(
     23 => 'Fecha de inicio errónea.',
     24 => 'Fecha de terminación errónea.',
     25 => 'La fecha de terminación antecede a la de inicio.',
-    26 => 'Delete old entries',
-    27 => 'These are the events that are older than ',
-    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<br' . XHTML . '>Find all entries that are older than ',
-    29 => ' months.',
-    30 => 'Update List',
-    31 => 'Are You sure you want to permanently delete ALL selected users?',
-    32 => 'List all',
-    33 => 'No events selected for deletion',
-    34 => 'Event ID',
-    35 => 'could not be deleted',
-    36 => 'Sucessfully deleted',
-    'num_events' => '%s Event(s)'
+    26 => 'Eliminar entradas antiguas',
+    27 => 'Estos son los eventos con más de ',
+    28 => ' meses. Pulse el icono de la papelera en la parte inferior para eliminarlos o seleccione otro período:<br' . XHTML . '>Buscar todas las entradas con más de ',
+    29 => ' meses.',
+    30 => 'Actualizar lista',
+    31 => '¿Seguro que desea eliminar definitivamente TODOS los elementos seleccionados?',
+    32 => 'Mostrar todos',
+    33 => 'No hay eventos seleccionados para eliminar',
+    34 => 'ID del evento',
+    35 => 'no se pudo eliminar',
+    36 => 'Eliminado correctamente',
+    'num_events' => '%s evento(s)'
 );
 
 $LANG_CAL_MESSAGE = array(
@@ -191,68 +191,68 @@ $PLG_calendar_MESSAGE24 = 'El evento ha sido guardado en tu calendario.';
 $PLG_calendar_MESSAGE26 = 'El evento ha sido borrado correctamente.';
 
 // Messages for the plugin upgrade
-$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3001 = 'La actualización del plugin no está soportada.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['calendar'] = array(
-    'label' => 'Calendar',
-    'title' => 'Calendar Configuration'
+    'label' => 'Calendario',
+    'title' => 'Configuración del calendario'
 );
 
 $LANG_confignames['calendar'] = array(
-    'calendarloginrequired' => 'Calendar Login Required?',
-    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
-    'personalcalendars' => 'Enable Personal Calendars?',
-    'eventsubmission' => 'Enable Submission Queue?',
-    'showupcomingevents' => 'Show upcoming Events?',
-    'upcomingeventsrange' => 'Upcoming Events Range',
-    'event_types' => 'Event Types',
-    'hour_mode' => 'Hour Mode',
-    'notification' => 'Notification Email?',
-    'delete_event' => 'Delete Events with Owner?',
-    'aftersave' => 'After Saving Event',
+    'calendarloginrequired' => '¿Requerir inicio de sesión para el calendario?',
+    'hidecalendarmenu' => '¿Ocultar el calendario del menú?',
+    'personalcalendars' => '¿Activar calendarios personales?',
+    'eventsubmission' => '¿Activar la cola de envíos?',
+    'showupcomingevents' => '¿Mostrar próximos eventos?',
+    'upcomingeventsrange' => 'Rango de próximos eventos',
+    'event_types' => 'Tipos de evento',
+    'hour_mode' => 'Formato horario',
+    'notification' => '¿Notificación por correo electrónico?',
+    'delete_event' => '¿Eliminar eventos con su propietario?',
+    'aftersave' => 'Después de guardar el evento',
     'recaptcha' => 'reCAPTCHA',
-    'recaptcha_score' => 'reCAPTCHA Score',
-    'default_permissions' => 'Event Default Permissions',
-    'autotag_permissions_event' => '[event: ] Permissions',
-    'block_enable' => 'Enabled',
-    'block_isleft' => 'Display Block on Left',
-    'block_order' => 'Block Order',
-    'block_topic_option' => 'Topic Options',
-    'block_topic' => 'Topic',
-    'block_group_id' => 'Group',
-    'block_permissions' => 'Permissions'
+    'recaptcha_score' => 'Puntuación reCAPTCHA',
+    'default_permissions' => 'Permisos predeterminados de eventos',
+    'autotag_permissions_event' => 'Permisos de [event: ]',
+    'block_enable' => 'Activado',
+    'block_isleft' => 'Mostrar el bloque a la izquierda',
+    'block_order' => 'Orden del bloque',
+    'block_topic_option' => 'Opciones de tema',
+    'block_topic' => 'Tema',
+    'block_group_id' => 'Grupo',
+    'block_permissions' => 'Permisos del bloque'
 );
 
 $LANG_configsubgroups['calendar'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Configuración principal'
 );
 
 $LANG_tab['calendar'] = array(
-    'tab_main' => 'General Calendar Settings',
-    'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions',
-    'tab_events_block' => 'Events Block'
+    'tab_main' => 'Configuración general del calendario',
+    'tab_permissions' => 'Permisos predeterminados',
+    'tab_autotag_permissions' => 'Permisos de uso de autotags',
+    'tab_events_block' => 'Bloque de eventos'
 );
 
 $LANG_fs['calendar'] = array(
-    'fs_main' => 'General Calendar Settings',
-    'fs_permissions' => 'Default Permissions',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions',
-    'fs_block_settings' => 'Block Settings',
-    'fs_block_permissions' => 'Block Permissions'
+    'fs_main' => 'Configuración general del calendario',
+    'fs_permissions' => 'Permisos predeterminados',
+    'fs_autotag_permissions' => 'Permisos de uso de autotags',
+    'fs_block_settings' => 'Configuración del bloque',
+    'fs_block_permissions' => 'Permisos del bloque'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['calendar'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
+    0 => array('Sí' => 1, 'No' => 0),
+    1 => array('Sí' => true, 'No' => false),
     6 => array('12' => 12, '24' => 24),
-    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
-    13 => array('No access' => 0, 'Use' => 2),
-    14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
-    16 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
+    9 => array('Ir al evento' => 'item', 'Mostrar lista de administración' => 'list', 'Mostrar calendario' => 'plugin', 'Mostrar inicio' => 'home', 'Mostrar administración' => 'admin'),
+    12 => array('Sin acceso' => 0, 'Solo lectura' => 2, 'Lectura y escritura' => 3),
+    13 => array('Sin acceso' => 0, 'Usar' => 2),
+    14 => array('Sin acceso' => 0, 'Solo lectura' => 2),
+    15 => array('Todos' => 'all', 'Solo página de inicio' => 'homeonly', 'Seleccionar temas' => 'selectedtopics'),
+    16 => array('Desactivado' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
 );

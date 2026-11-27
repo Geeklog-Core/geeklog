@@ -86,7 +86,7 @@ $LANG_CAL_1 = array(
     49 => 'Es gibt keine Termine oder sie wurden von niemandem gelesen.',
     50 => 'Termine',
     51 => 'Löschen',
-    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_event' => '[event: id alternativer Titel] - Zeigt einen Link zu einem Kalendertermin mit dem Termintitel als Titel an. Ein alternativer Titel kann optional angegeben werden.'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -102,7 +102,7 @@ $_LANG_CAL_SEARCH = array(
 
 $LANG_CAL_2 = array(
     8 => 'Neuer Termin',
-    9 => 'Termin',
+    9 => '%s Termin',
     10 => 'Termine am',
     11 => 'Kalender',
     12 => 'Mein Kalender',
@@ -167,7 +167,7 @@ $LANG_CAL_ADMIN = array(
     34 => 'Termin ID',
     35 => 'konnte nicht gelöscht werden',
     36 => 'Erfolgreich gelöscht',
-    'num_events' => '%s Event(s)'
+    'num_events' => '%s Termin(e)'
 );
 
 $LANG_CAL_MESSAGE = array(
@@ -187,7 +187,7 @@ $PLG_calendar_MESSAGE24 = 'Der Termin wurde in Ihren Kalender eingetragen.';
 $PLG_calendar_MESSAGE26 = 'Der Termin wurde gelöscht.';
 
 // Messages for the plugin upgrade
-$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3001 = 'Ein Plugin-Upgrade wird nicht unterstützt.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
@@ -209,16 +209,16 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => 'Termine mit User löschen?',
     'aftersave' => 'Nach Speichern des Termins',
     'recaptcha' => 'reCAPTCHA',
-    'recaptcha_score' => 'reCAPTCHA Score',
+    'recaptcha_score' => 'reCAPTCHA-Bewertung',
     'default_permissions' => 'Grundeinstellungen Termine',
-    'autotag_permissions_event' => '[event: ] Permissions',
-    'block_enable' => 'Enabled',
-    'block_isleft' => 'Display Block on Left',
-    'block_order' => 'Block Order',
-    'block_topic_option' => 'Topic Options',
-    'block_topic' => 'Topic',
-    'block_group_id' => 'Group',
-    'block_permissions' => 'Permissions'
+    'autotag_permissions_event' => 'Berechtigungen für [event: ]',
+    'block_enable' => 'Aktiviert',
+    'block_isleft' => 'Block links anzeigen',
+    'block_order' => 'Blockreihenfolge',
+    'block_topic_option' => 'Themenoptionen',
+    'block_topic' => 'Thema',
+    'block_group_id' => 'Gruppe',
+    'block_permissions' => 'Blockberechtigungen'
 );
 
 $LANG_configsubgroups['calendar'] = array(
@@ -226,18 +226,18 @@ $LANG_configsubgroups['calendar'] = array(
 );
 
 $LANG_tab['calendar'] = array(
-    'tab_main' => 'General Calendar Settings',
-    'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions',
-    'tab_events_block' => 'Events Block'
+    'tab_main' => 'Allgemeine Kalendereinstellungen',
+    'tab_permissions' => 'Standardberechtigungen',
+    'tab_autotag_permissions' => 'Berechtigungen für Autotags',
+    'tab_events_block' => 'Terminblock'
 );
 
 $LANG_fs['calendar'] = array(
     'fs_main' => 'Allgemeine Kalendereinstellungen',
     'fs_permissions' => 'Grundeinstellungen Rechte',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions',
-    'fs_block_settings' => 'Block Settings',
-    'fs_block_permissions' => 'Block Permissions'
+    'fs_autotag_permissions' => 'Berechtigungen für Autotags',
+    'fs_block_settings' => 'Blockeinstellungen',
+    'fs_block_permissions' => 'Blockberechtigungen'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
@@ -247,8 +247,8 @@ $LANG_configselects['calendar'] = array(
     6 => array('12' => 12, '24' => 24),
     9 => array('Zum Termin weiterleiten' => 'item', 'Admin Liste anzeigen' => 'list', 'Kalender anzeigen' => 'plugin', 'Startseite anzeigen' => 'home', 'Schaltzentrale' => 'admin'),
     12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3),
-    13 => array('No access' => 0, 'Use' => 2),
-    14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
-    16 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
+    13 => array('Kein Zugriff' => 0, 'Verwenden' => 2),
+    14 => array('Kein Zugriff' => 0, 'Nur lesen' => 2),
+    15 => array('Alle' => 'all', 'Nur Startseite' => 'homeonly', 'Themen auswählen' => 'selectedtopics'),
+    16 => array('Deaktiviert' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
 );

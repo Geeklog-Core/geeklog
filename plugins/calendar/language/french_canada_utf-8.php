@@ -84,11 +84,11 @@ $LANG_CAL_1 = array(
     45 => 'Envoyez',
     46 => 'Évènements dans le système',
     47 => 'Le top10',
-    48 => 'Hits',
+    48 => 'Consultations',
     49 => 'Pas d\'évènements en perspective, ou vous n\'avez pas cliqué sur un évènement.',
     50 => 'Évènements',
     51 => 'Effacer',
-    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_event' => '[event: id titre alternatif] - Affiche un lien vers un évènement du calendrier en utilisant le titre de l\'évènement. Un titre alternatif peut être indiqué, mais il n\'est pas obligatoire.'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -104,7 +104,7 @@ $_LANG_CAL_SEARCH = array(
 
 $LANG_CAL_2 = array(
     8 => 'Choisissez',
-    9 => '%s Event',
+    9 => '%s évènement',
     10 => 'Évènement pour',
     11 => 'le calendrier général',
     12 => 'mon calendrier',
@@ -143,13 +143,13 @@ $LANG_CAL_ADMIN = array(
     8 => 'Description',
     9 => '(inclure http://)',
     10 => 'Vous devez compléter tous les champs',
-    11 => 'Calendar Manager',
-    12 => 'To modify or delete an event, click on that event\'s edit icon below.  To create a new event, click on "Create New" above. Click on the copy icon to create a copy of an existing event.',
+    11 => 'Gestionnaire du calendrier',
+    12 => 'Pour modifier ou supprimer un évènement, cliquez sur son icône de modification ci-dessous. Pour créer un nouvel évènement, cliquez sur « Créer » ci-dessus. Cliquez sur l\'icône de copie pour dupliquer un évènement existant.',
     13 => 'Auteur',
     14 => 'Date de départ',
     15 => 'Date de fin',
     16 => '',
-    17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/plugins/calendar/index.php\">go back to the event administration screen</a>.",
+    17 => "Vous tentez d'accéder à un évènement pour lequel vous n'avez pas les droits. Cette tentative a été enregistrée. Veuillez <a href=\"{$_CONF['site_admin_url']}/plugins/calendar/index.php\">revenir à l'administration des évènements</a>.",
     18 => '',
     19 => '',
     20 => 'sauvegarder',
@@ -158,28 +158,28 @@ $LANG_CAL_ADMIN = array(
     23 => 'Mauvaise date de départ.',
     24 => 'Mauvaise date de fin.',
     25 => 'La fin précède le départ.',
-    26 => 'Delete old entries',
-    27 => 'These are the events that are older than ',
-    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<br' . XHTML . '>Find all entries that are older than ',
-    29 => ' months.',
-    30 => 'Update List',
-    31 => 'Are You sure you want to permanently delete ALL selected users?',
-    32 => 'List all',
-    33 => 'No events selected for deletion',
-    34 => 'Event ID',
-    35 => 'could not be deleted',
-    36 => 'Sucessfully deleted',
-    'num_events' => '%s Event(s)'
+    26 => 'Supprimer les anciennes entrées',
+    27 => 'Voici les évènements plus anciens que ',
+    28 => ' mois. Cliquez sur l\'icône de corbeille en bas pour les supprimer, ou choisissez une autre période :<br' . XHTML . '>Trouver toutes les entrées plus anciennes que ',
+    29 => ' mois.',
+    30 => 'Mettre à jour la liste',
+    31 => 'Voulez-vous vraiment supprimer définitivement TOUS les éléments sélectionnés ?',
+    32 => 'Tout afficher',
+    33 => 'Aucun évènement sélectionné pour la suppression',
+    34 => 'ID de l\'évènement',
+    35 => 'n\'a pas pu être supprimé',
+    36 => 'Supprimé avec succès',
+    'num_events' => '%s évènement(s)'
 );
 
 $LANG_CAL_MESSAGE = array(
     'save' => 'Évènement ajouté avec succès.',
     'delete' => 'Évènement effacé avec succès.',
     'private' => 'Évènement sauvegardé à votre calendrier',
-    'login' => 'Cannot open your personal calendar until you login',
-    'removed' => 'Event was successfully removed from your personal calendar',
+    'login' => 'Impossible d\'ouvrir votre calendrier personnel tant que vous n\'êtes pas connecté',
+    'removed' => 'L\'évènement a été retiré de votre calendrier personnel avec succès',
     'noprivate' => 'Désolé, les calendriers persos ne sont pas admis sur ce site',
-    'unauth' => 'Sorry, you do not have access to the event administration page.  Please note that all attempts to access unauthorized features are logged'
+    'unauth' => 'Désolé, vous n\'avez pas accès à la page d\'administration des évènements. Toutes les tentatives d\'accès non autorisées sont enregistrées'
 );
 
 $PLG_calendar_MESSAGE4 = "Merci de soumettre un évènement à {$_CONF['site_name']}.  Vous pourrez le visualisé sur le <a href=\"{$_CONF['site_url']}/calendar/index.php\">calendrier</a> une fois approuvé.";
@@ -189,68 +189,68 @@ $PLG_calendar_MESSAGE24 = 'Évènement sauvegardé sur votre calendrier.';
 $PLG_calendar_MESSAGE26 = 'Évènement effacé avec succès.';
 
 // Messages for the plugin upgrade
-$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3001 = 'La mise à niveau du plugin n\'est pas prise en charge.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['calendar'] = array(
-    'label' => 'Calendar',
-    'title' => 'Calendar Configuration'
+    'label' => 'Calendrier',
+    'title' => 'Configuration du calendrier'
 );
 
 $LANG_confignames['calendar'] = array(
-    'calendarloginrequired' => 'Calendar Login Required?',
-    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
-    'personalcalendars' => 'Enable Personal Calendars?',
-    'eventsubmission' => 'Enable Submission Queue?',
-    'showupcomingevents' => 'Show upcoming Events?',
-    'upcomingeventsrange' => 'Upcoming Events Range',
-    'event_types' => 'Event Types',
-    'hour_mode' => 'Hour Mode',
-    'notification' => 'Notification Email?',
-    'delete_event' => 'Delete Events with Owner?',
-    'aftersave' => 'After Saving Event',
+    'calendarloginrequired' => 'Connexion requise pour le calendrier ?',
+    'hidecalendarmenu' => 'Masquer le calendrier dans le menu ?',
+    'personalcalendars' => 'Activer les calendriers personnels ?',
+    'eventsubmission' => 'Activer la file de soumission ?',
+    'showupcomingevents' => 'Afficher les évènements à venir ?',
+    'upcomingeventsrange' => 'Période des évènements à venir',
+    'event_types' => 'Types d\'évènement',
+    'hour_mode' => 'Mode horaire',
+    'notification' => 'Notification par courriel ?',
+    'delete_event' => 'Supprimer les évènements avec leur propriétaire ?',
+    'aftersave' => 'Après l\'enregistrement de l\'évènement',
     'recaptcha' => 'reCAPTCHA',
-    'recaptcha_score' => 'reCAPTCHA Score',
-    'default_permissions' => 'Event Default Permissions',
-    'autotag_permissions_event' => '[event: ] Permissions',
-    'block_enable' => 'Enabled',
-    'block_isleft' => 'Display Block on Left',
-    'block_order' => 'Block Order',
-    'block_topic_option' => 'Topic Options',
-    'block_topic' => 'Topic',
-    'block_group_id' => 'Group',
-    'block_permissions' => 'Permissions'
+    'recaptcha_score' => 'Score reCAPTCHA',
+    'default_permissions' => 'Permissions par défaut des évènements',
+    'autotag_permissions_event' => 'Permissions [event: ]',
+    'block_enable' => 'Activé',
+    'block_isleft' => 'Afficher le bloc à gauche',
+    'block_order' => 'Ordre du bloc',
+    'block_topic_option' => 'Options du sujet',
+    'block_topic' => 'Sujet',
+    'block_group_id' => 'Groupe',
+    'block_permissions' => 'Permissions du bloc'
 );
 
 $LANG_configsubgroups['calendar'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Paramètres principaux'
 );
 
 $LANG_tab['calendar'] = array(
-    'tab_main' => 'General Calendar Settings',
-    'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions',
-    'tab_events_block' => 'Events Block'
+    'tab_main' => 'Paramètres généraux du calendrier',
+    'tab_permissions' => 'Permissions par défaut',
+    'tab_autotag_permissions' => 'Permissions d\'utilisation des autotags',
+    'tab_events_block' => 'Bloc des évènements'
 );
 
 $LANG_fs['calendar'] = array(
-    'fs_main' => 'General Calendar Settings',
-    'fs_permissions' => 'Default Permissions',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions',
-    'fs_block_settings' => 'Block Settings',
-    'fs_block_permissions' => 'Block Permissions'
+    'fs_main' => 'Paramètres généraux du calendrier',
+    'fs_permissions' => 'Permissions par défaut',
+    'fs_autotag_permissions' => 'Permissions d\'utilisation des autotags',
+    'fs_block_settings' => 'Paramètres du bloc',
+    'fs_block_permissions' => 'Permissions du bloc'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['calendar'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
+    0 => array('Oui' => 1, 'Non' => 0),
+    1 => array('Oui' => true, 'Non' => false),
     6 => array('12' => 12, '24' => 24),
-    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
-    13 => array('No access' => 0, 'Use' => 2),
-    14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
-    16 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
+    9 => array('Afficher l\'évènement' => 'item', 'Afficher la liste d\'administration' => 'list', 'Afficher le calendrier' => 'plugin', 'Afficher l\'accueil' => 'home', 'Afficher l\'administration' => 'admin'),
+    12 => array('Aucun accès' => 0, 'Lecture seule' => 2, 'Lecture-écriture' => 3),
+    13 => array('Aucun accès' => 0, 'Utiliser' => 2),
+    14 => array('Aucun accès' => 0, 'Lecture seule' => 2),
+    15 => array('Tous' => 'all', 'Accueil seulement' => 'homeonly', 'Sélectionner les sujets' => 'selectedtopics'),
+    16 => array('Désactivé' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2, 'reCAPTCHA V3' => 4)
 );
