@@ -119,6 +119,7 @@ class Article
     var $_draft_flag;
     var $_date;
     var $_modified;
+    var $_unixmodified;
     var $_hits;
     var $_numpages;
     var $_numemails;
@@ -404,6 +405,9 @@ class Article
         } else {
             $this->_date = time();
         }
+
+        // Keep the database timestamp separate from the displayed modification date.
+        $this->_unixmodified = isset($story['unixmodified']) ? $story['unixmodified'] : false;
 
         if (!empty($story['expireunix'])) {
             $this->_expire = $story['expireunix'];
@@ -1918,7 +1922,7 @@ class Article
                 break;
 
             case 'unixmodified':
-                $return = $this->_modified;
+                $return = $this->_unixmodified;
 
                 break;
 

@@ -304,6 +304,7 @@ if ($_CONF['allow_user_photo'] == 1) {
 // The incorrect t.topic, t.imageurl will most likely be returned so removed from this statement
 // and added later in fixTopic function. (also because of MySQL 5.7 default install support)
 $msql = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
+            UNIX_TIMESTAMP(s.modified) AS unixmodified,
             UNIX_TIMESTAMP(s.expire) as expireunix,
             {$userfields}
             FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u,

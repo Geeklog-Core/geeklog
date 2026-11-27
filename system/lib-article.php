@@ -775,10 +775,13 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
 
             $properties['headline'] = $story->displayElements('title');
             $properties['url'] = $articleUrl;
-            $properties['datePublished'] = $story->displayElements('date');
-            // Don't include modified if empty or date is less than published
-            if (($story->displayElements('unixmodified') != false) && ($story->displayElements('unixmodified') > $story->displayElements('unixdate'))) {
-                $properties['dateModified'] = $story->displayElements('modified');
+            // Use database timestamps in UTC, independent of display preferences.
+            $published = $story->displayElements('unixdate');
+            $modified = $story->displayElements('unixmodified');
+            $properties['datePublished'] = gmdate('c', (int) $published);
+            // Don't include modified if empty or not later than published.
+            if ($modified != false && $modified > $published) {
+                $properties['dateModified'] = gmdate('c', (int) $modified);
             }
             $properties['description'] = $story->DisplayElements('meta_description');
             $properties['keywords'] = $story->DisplayElements('meta_keywords');
@@ -3035,6 +3038,9 @@ function service_get_story($args, &$output, &$svc_msg)
         }
         $output['username'] = $story->_username;
         $output['fullname'] = $story->_fullname;
+        if (!$args['gl_svc']) {
+            $output['unixmodified'] = $story->displayElements('unixmodified');
+        }
 
         if ($args['gl_svc']) {
             if (($output['statuscode'] == STORY_ARCHIVE_ON_EXPIRE) ||

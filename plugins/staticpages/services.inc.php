@@ -922,6 +922,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
 
         $sql = <<<SQL
 SELECT sp_id, sp_title, sp_page_title, sp_content, sp_onhits, sp_onlastupdate, sp_hits, created, modified, sp_format,
+        UNIX_TIMESTAMP(created) AS created_timestamp, UNIX_TIMESTAMP(modified) AS modified_timestamp,
         commentcode, structured_data_type, meta_description, meta_keywords, template_flag, template_id, page_data, draft_flag, search, likes, 
         owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon,
         sp_help, sp_php, sp_inblock, cache_time, sp_prev, sp_next, sp_parent
@@ -1034,10 +1035,10 @@ SQL;
         $limit = " LIMIT $offset, $max_items";
         $order = " ORDER BY modified DESC";
         $sql = array();
-        $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,template_flag,template_id,page_data,draft_flag,search,likes,owner_id,"
+        $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,UNIX_TIMESTAMP(created) AS created_timestamp,UNIX_TIMESTAMP(modified) AS modified_timestamp,sp_format,meta_description,meta_keywords,template_flag,template_id,page_data,draft_flag,search,likes,owner_id,"
             . "group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock,cache_time,structured_data_type "
             . " FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
-        $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,template_flag,template_id,page_data,draft_flag,search,likes,owner_id,"
+        $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,UNIX_TIMESTAMP(created) AS created_timestamp,UNIX_TIMESTAMP(modified) AS modified_timestamp,sp_format,meta_description,meta_keywords,template_flag,template_id,page_data,draft_flag,search,likes,owner_id,"
             . "group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock,cache_time,structured_data_type "
             . "FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
         $result = DB_query($sql);
