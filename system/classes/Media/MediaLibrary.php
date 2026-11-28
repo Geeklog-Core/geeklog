@@ -25,14 +25,45 @@ class MediaLibrary
             throw new \RuntimeException('You are not authorized to use the Media Library.');
         }
 
-        if ($admin) {
-            $root = $_CONF['path_images'];
-        } elseif (isset($_CONF_FCK['imgl'])) {
-            $root = $_CONF['path_html'] . trim($_CONF_FCK['imgl'], '/\\') . '/';
-        } elseif (isset($_CONF_FCK['imagelibrary'])) {
-            $root = $_CONF['path_html'] . trim($_CONF_FCK['imagelibrary'], '/\\') . '/';
-        } else {
-            $root = $_CONF['path_html'] . 'images/library/';
+        $siteImageRoot = rtrim($_CONF['path_images'], '/\\');
+        $siteImageReal = realpath($siteImageRoot);
+
+        if ($siteImageReal === false) {
+            throw new \RuntimeException('The site media directory is unavailable.');
+        }
+
+        $root = $siteImageRoot;
+
+        if (!$admin) {
+            $configured = '';
+
+            if (isset($_CONF_FCK['imgl'])) {
+                $configured = trim($_CONF_FCK['imgl'], '/\\');
+            } elseif (isset($_CONF_FCK['imagelibrary'])) {
+                $configured = trim($_CONF_FCK['imagelibrary'], '/\\');
+            }
+
+            // The historical default must follow the site-specific media root.
+            if ($configured === '' || $configured === 'images/library') {
+                $root = $siteImageRoot . '/library/';
+            } else {
+                $root = $_CONF['path_html'] . $configured . '/';
+            }
+
+            $editorReal = realpath($root);
+            $sitePrefix = rtrim($siteImageReal, DIRECTORY_SEPARATOR)
+                . DIRECTORY_SEPARATOR;
+
+            $insideSite = $editorReal !== false &&
+                (DIRECTORY_SEPARATOR === '\\'
+                    ? stripos($editorReal, $sitePrefix) === 0
+                    : strpos($editorReal, $sitePrefix) === 0);
+
+            if (!$insideSite) {
+                throw new \RuntimeException(
+                    'The configured editor library is outside the site media directory.'
+                );
+            }
         }
 
         $rootReal = realpath($root);
