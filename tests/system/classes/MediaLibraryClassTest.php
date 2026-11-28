@@ -252,10 +252,10 @@ class MediaLibraryClassTest extends TestCase
 
     public function testEditorCannotChangeImageScopeWithTypeParameter()
     {
-        require_once \\Tst::$root . 'system/classes/Media/MediaLibrary.php';
+        require_once \Tst::$root . 'system/classes/Media/MediaLibrary.php';
 
-        $editor = new \\Geeklog\\Media\\MediaLibrary(false, $this->storage);
-        $admin = new \\Geeklog\\Media\\MediaLibrary(true, $this->storage);
+        $editor = new \Geeklog\Media\MediaLibrary(false, $this->storage);
+        $admin = new \Geeklog\Media\MediaLibrary(true, $this->storage);
 
         foreach (['Root', 'Image', 'File', 'Media'] as $type) {
             $this->assertSame('Image', $editor->restrictType($type));
