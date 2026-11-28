@@ -28,6 +28,7 @@ check(strpos($_SCRIPTS->inline, 'geeklogTinyMceCacheSuffix') !== false, 'Cache s
 check(strpos($_SCRIPTS->inline, 'fr-FR') !== false, 'French language');
 $locales = array(
     'en'=>'en', 'fr'=>'fr-FR', 'de'=>'de', 'es'=>'es', 'ru'=>'ru',
+    'it'=>'it',
     'ja'=>'ja', 'he'=>'he-IL', 'fa'=>'fa', 'zh-Hans'=>'zh-CN', 'zh-Hant'=>'zh-TW',
     'FR_ca'=>'fr-FR', 'de-DE'=>'de', 'es_AR'=>'es', 'pt_BR'=>'pt-BR',
     'pt-PT'=>'pt-PT', 'zh_Hans_CN'=>'zh-CN', 'zh-Hant-HK'=>'zh-TW',
