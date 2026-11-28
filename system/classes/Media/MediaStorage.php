@@ -99,10 +99,10 @@ class MediaStorage
         if (is_link($target) || (file_exists($target) && !is_file($target))) {
             throw new \RuntimeException('The destination is not a regular file.');
         }
-        if (!move_uploaded_file($file['tmp_name'], $target)) {
+        if (!$this->filesystemCall('move_uploaded_file', $file['tmp_name'], $target)) {
             throw new \RuntimeException('The uploaded file could not be stored.');
         }
-        @chmod($target, 0644);
+        $this->filesystemCall('chmod', $target, 0644);
         return true;
     }
 
@@ -127,14 +127,14 @@ class MediaStorage
         }
         $image = MediaImageEditor::encodeUpload($file, $extension, $this->maxUploadBytes);
         $directory = dirname($source);
-        $temporary = @tempnam($directory, '.media-edit-');
+        $temporary = $this->filesystemCall('tempnam', $directory, '.media-edit-');
         if (!$temporary) {
             imagedestroy($image);
             throw new \RuntimeException('Cannot create a temporary image.');
         }
         try {
             MediaImageEditor::writeImage($image, $temporary, $extension);
-            @chmod($temporary, 0644);
+            $this->filesystemCall('chmod', $temporary, 0644);
             clearstatcache(true, $source);
             if (!is_file($source) || is_link($source)) {
                 throw new \RuntimeException('The original image is no longer available.');
@@ -147,7 +147,7 @@ class MediaStorage
                         . '-edited' . ($i > 1 ? '-' . $i : '') . '.' . $extension;
                     if (!file_exists($candidate) && !is_link($candidate)) {
                         // Exclusive creation prevents silently overwriting an existing copy.
-                        $handle = @fopen($candidate, 'x');
+                        $handle = $this->filesystemCall('fopen', $candidate, 'x');
                         if ($handle === false) {
                             continue;
                         }
@@ -159,8 +159,8 @@ class MediaStorage
                 if ($target === null) {
                     throw new \RuntimeException('Cannot allocate a filename for the copy.');
                 }
-                if (!@rename($temporary, $target)) {
-                    @unlink($target);
+                if (!$this->filesystemCall('rename', $temporary, $target)) {
+                    $this->filesystemCall('unlink', $target);
                     throw new \RuntimeException('Cannot save the image copy.');
                 }
                 return ['path' => ($logicalPath === basename($source) ? '' : dirname($logicalPath) . '/')
@@ -168,14 +168,14 @@ class MediaStorage
             }
             // Atomic on local POSIX filesystems. On platforms that prohibit overwrite,
             // this fails without first deleting the existing image.
-            if (!@rename($temporary, $source)) {
+            if (!$this->filesystemCall('rename', $temporary, $source)) {
                 throw new \RuntimeException('Cannot replace the original image.');
             }
             return ['path' => $logicalPath, 'copied' => false];
         } finally {
             imagedestroy($image);
             if (file_exists($temporary)) {
-                @unlink($temporary);
+                $this->filesystemCall('unlink', $temporary);
             }
         }
     }
@@ -191,7 +191,7 @@ class MediaStorage
         if (file_exists($target) || is_link($target)) {
             throw new \RuntimeException('An item with that name already exists.');
         }
-        if (!mkdir($target, 0755)) {
+        if (!$this->filesystemCall('mkdir', $target, 0755)) {
             throw new \RuntimeException('The folder could not be created.');
         }
         return true;
@@ -216,7 +216,7 @@ class MediaStorage
         if (file_exists($target) || is_link($target)) {
             throw new \RuntimeException('An item with that name already exists.');
         }
-        if (!rename($source, $target)) {
+        if (!$this->filesystemCall('rename', $source, $target)) {
             throw new \RuntimeException('The item could not be renamed.');
         }
         return true;
@@ -230,17 +230,36 @@ class MediaStorage
         }
         $target = $this->resolveExisting($logicalPath, null);
         if (is_dir($target)) {
-            $entries = scandir($target);
+            $entries = $this->filesystemCall('scandir', $target);
             if ($entries === false || count($entries) > 2) {
                 throw new \RuntimeException('Only empty folders can be deleted.');
             }
-            if (!rmdir($target)) {
+            if (!$this->filesystemCall('rmdir', $target)) {
                 throw new \RuntimeException('The folder could not be deleted.');
             }
-        } elseif (!unlink($target)) {
+        } elseif (!$this->filesystemCall('unlink', $target)) {
             throw new \RuntimeException('The file could not be deleted.');
         }
         return true;
+    }
+
+    /**
+     * Let filesystem operations report failure without invoking Geeklog's
+     * global warning handler, which may interrupt a JSON API response.
+     */
+    private function filesystemCall($function)
+    {
+        $arguments = array_slice(func_get_args(), 1);
+
+        set_error_handler(function () {
+            return true;
+        }, E_WARNING);
+
+        try {
+            return call_user_func_array($function, $arguments);
+        } finally {
+            restore_error_handler();
+        }
     }
 
     private function isExcludedDirectory($name)
